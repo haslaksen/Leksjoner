@@ -1,0 +1,1070 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vedlikehold 2 – Sikker jobb og LOTO</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#fab005; --yellow-soft:#fff6d6;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#6b7785; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.3rem}
+p{margin:0 0 .8em}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem; user-select:none}
+.btn:hover{border-color:var(--blue)}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn:disabled{opacity:.45; cursor:default}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:2.6rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1300px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.15rem; color:var(--muted); max-width:70ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2.wide-left{grid-template-columns:1.6fr 1fr}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.15rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg{display:block; width:100%; height:auto; max-height:66vh}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.7rem}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem; min-height:2.9em}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.7rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+details.laerer{margin-top:1.1rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.4rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.35rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.readout{display:grid; grid-template-columns:repeat(5,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.35rem .7rem}
+.readout span{display:block; font-size:.72rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.readout b.ok{color:var(--green)} .readout b.bad{color:var(--red)} .readout b.warn{color:var(--orange)}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.chip{font:inherit; font-size:.8rem; font-weight:600; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.4rem .75rem}
+.chip:hover{border-color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--orange); color:#fff; border-color:var(--orange)}
+.mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
+.mini3 .card{padding:.7rem .9rem; font-size:.9rem}
+.mini3 .card h3{font-size:1.05rem}
+.hot{cursor:pointer}
+.ecard h3{font-size:1.5rem}
+.ecard .row{display:grid; grid-template-columns:2.2rem 1fr; gap:.4rem; margin:.5rem 0; font-size:1rem}
+.ecard .row b{font-size:1.3rem}
+.checks{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.6rem}
+.checks span{font-size:.8rem; font-weight:700; padding:.25rem .65rem; border-radius:99px; background:var(--steel-soft); color:var(--muted)}
+.checks span.on{background:var(--green-soft); color:var(--green)}
+.steps{display:grid; grid-template-columns:repeat(7,1fr); gap:.5rem}
+.steps.s8{grid-template-columns:repeat(8,1fr)}
+.steps div{background:var(--bg); border:2px solid var(--line); border-radius:10px; padding:.5rem; font-size:.85rem; text-align:center; transition:all .3s; cursor:pointer}
+.steps div.on{border-color:var(--orange); background:var(--orange-soft)}
+.steps div.done{border-color:var(--green)}
+.steps .ic{display:block; font-size:1.8rem; line-height:1.2}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); height:2rem}
+.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
+.fasit b{color:var(--green)}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.3rem}
+.ot.c td, .ot.c th{text-align:center}
+.ot.c td:first-child, .ot.c th:first-child{text-align:left}
+.ofig{border:1px solid var(--muted); border-radius:8px; padding:.4rem; background:#fff; margin:.5rem 0}
+.ofig svg{display:block; width:100%; height:auto}
+.formelark{display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; font-size:.92rem; border:1px solid var(--muted); border-radius:8px; padding:.5rem .8rem; margin:.5rem 0 1rem}
+.scenario{border:1px dashed var(--muted); border-radius:8px; padding:.6rem .9rem; margin:.5rem 0; font-size:.95rem}
+.side{display:grid; grid-template-columns:1fr 260px; gap:1rem; align-items:start}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero,.side{grid-template-columns:1fr}
+  .mini3{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+  .readout{grid-template-columns:1fr 1fr 1fr}
+  .steps,.steps.s8{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:600px){ .steps,.steps.s8{grid-template-columns:1fr 1fr} .mini3{grid-template-columns:1fr} .readout{grid-template-columns:1fr 1fr} .card{overflow-wrap:anywhere} table.t{display:block; overflow-x:auto} .oppgave{overflow-x:auto} .ot{font-size:.75rem} }
+.grid2>*,.hero>*,.side>*{min-width:0}
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999; --steel-soft:#eee}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr, .ofig, .scenario{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Vedlikehold · <span>Leksjon 2</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- START -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Vedlikehold</div>
+      <h1>Leksjon 2<br>Sikker jobb – lås og merk</h1>
+      <p class="lead">Før du stikker hendene inn i en maskin, skal den være <b>død</b>: ingen strøm, ikke noe trykk, ingenting som kan falle, sprette eller starte.</p>
+      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <ol class="goals">
+        <li>forklare <b>hvorfor</b> en maskin må låses – ikke bare slås av</li>
+        <li>finne <b>alle energikildene</b> i en maskin</li>
+        <li>forklare og fjerne <b>restenergi</b> i riktig rekkefølge</li>
+        <li>gjennomføre <b>lås og merk</b> (LOTO) i sju trinn</li>
+        <li>bruke <b>gruppelås</b> når flere jobber på samme maskin</li>
+        <li>sette en maskin <b>trygt i drift</b> igjen etter vedlikehold</li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Kompetansemål (PIN02-03, vedlikehold)</h3>
+        <p style="margin-bottom:.4rem"><i>«bruke og reflektere over helse-, miljø- og sikkerhetskrav i rutiner for vedlikehold»</i></p>
+        <p style="margin-bottom:.4rem"><i>«utarbeide og følge sikker jobb-analyser ved farlige operasjoner …»</i></p>
+        <p style="margin-bottom:0"><i>«gjennomføre forebyggende vedlikehold og sørge for maskinsikkerhet etter en vedlikeholdsplan»</i></p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1 · Energien i maskinen</th></tr>
+          <tr><td>0–6 min</td><td>Del 1: av er ikke nok</td></tr>
+          <tr><td>6–15 min</td><td>Del 2: seks energikilder</td></tr>
+          <tr><td>15–25 min</td><td>Del 3: restenergi – simulator</td></tr>
+          <tr><td>25–45 min</td><td>Oppgave 1–3</td></tr>
+          <tr><th colspan="2">Time 2 · Lås, merk og start igjen</th></tr>
+          <tr><td>0–8 min</td><td>Del 4: LOTO i sju trinn</td></tr>
+          <tr><td>8–14 min</td><td>Del 5: gruppelås</td></tr>
+          <tr><td>14–20 min</td><td>Del 6: tilbake i drift</td></tr>
+          <tr><td>20–43 min</td><td>Oppgave 4–6</td></tr>
+          <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+      </div>
+      <div class="tip" style="margin-bottom:0"><b>Du kjenner allerede:</b> arbeidsordren (Vedlikehold 1), SJA og arbeidstillatelse (HMS 2) og de fem sikkerhetsreglene for elektro (Elektro 1). Nå lærer du å gjøre maskinen <b>energifri</b> før jobben.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 1 -->
+<section class="slide" id="hvorfor" data-nav="1 Av er ikke nok">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 6 min</div>
+    <h2>Av er ikke nok</h2>
+    <p class="lead">Kristian bytter reim. En kollega kommer forbi og ser at maskinen står. Følg med på begge sidene.</p>
+    <div class="fig">
+      <svg id="d1Svg" viewBox="0 0 1000 340" role="img" aria-label="To like situasjoner: bryter bare slått av, og bryter låst og merket"></svg>
+      <div class="controls">
+        <button class="btn" id="d1Restart">↺ Spill av igjen</button>
+      </div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>🔒 Personlig lås</h3>Én lås – <b>én nøkkel</b> – og den ligger i <b>din</b> lomme.</div>
+      <div class="card"><h3>🏷 Merkelapp</h3>Hvem jobber, hva gjøres, dato og telefon. Lappen <b>forklarer</b> låsen.</div>
+      <div class="card"><h3>✋ Bare du</h3>Bare den som har satt på låsen, tar den av.</div>
+    </div>
+    <div class="tip o"><b>LOTO</b> = <i>Lockout – Tagout</i>, på norsk <b>lås og merk</b>. Det betyr å stenge av all energi, låse av med egen lås og henge på merkelapp.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Spør først: «Hvem kan finne på å slå på en maskin som står?» Kollega, nattskiftet, en som skal teste noe, automatikk (tidsur, trykkbryter, fjernstyring). Forskrift om utførelse av arbeid krever at arbeidsutstyr som vedlikeholdes, skal være stoppet og sikret mot utilsiktet start. Stoppknappen er et styresignal – den bryter ikke energien, og en annen kan trykke start. En vanlig hengelås fra hjemme er ikke god nok: verkstedet skal ha egne LOTO-låser med én nøkkel per lås.</details>
+  </div>
+</section>
+
+<!-- DEL 2 -->
+<section class="slide" id="energi" data-nav="2 Energikilder">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 9 min</div>
+    <h2>Seks energikilder i hydraulikkpressa HP-01</h2>
+    <p class="lead">Strøm er bare én av dem. Klikk deg gjennom energiene.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="d2Svg" viewBox="0 0 1000 540" role="img" aria-label="Hydraulisk presse med aggregat, elskap og trykkluft"></svg>
+        <div class="controls"><span class="chips" id="d2Chips"></span></div>
+      </div>
+      <div class="card ecard" id="d2Card"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Akkumulator</h3>En trykkbeholder som lagrer olje under trykk – en «trykkluftflaske for olje». Den holder trykket etter at pumpa har stoppet.</div>
+      <div class="card"><h3>Manometer</h3>Trykkmåler. Den viser om det fortsatt er trykk i systemet (bar).</div>
+      <div class="card"><h3>Isolasjonspunkt</h3>Stedet der du stenger av en energi: hovedbryter, ventil, støpsel. Hvert punkt skal låses.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Hele hydraulikkretsen vises: tank → pumpe → styreventil → sylinder → retur til tank, med akkumulatoren koblet på trykkledningen. Akkumulatoren gjør at pressa kan gjøre raske slag uten stor pumpe – men den er også den farligste restenergien. Oljestråle under høyt trykk kan gå gjennom huden (injeksjonsskade) – det er en livsfarlig skade selv om såret ser lite ut. Tyngde: stempel og oververktøy på en presse kan veie flere tonn. Fjær: stripperfjærer i verktøyet, fjærbelastede bremser og klemmer. Bevegelse (svinghjul, vifte som går etter) kan også nevnes som sjuende energi. Måling av spenningsløshet er jobben til elektrofagperson; mekanikeren låser hovedbryteren etter instruks og gjør prøvestart.</details>
+  </div>
+</section>
+
+<!-- DEL 3 -->
+<section class="slide" id="rest" data-nav="3 Restenergi">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 10 min</div>
+    <h2>Restenergi – gjør pressa energifri</h2>
+    <p class="lead"><b>Restenergi</b> er energi som er igjen <b>etter</b> at strømmen er slått av. Fjern alt – i riktig rekkefølge. Gjør du feil, ser du det.</p>
+    <div class="fig">
+      <div class="side">
+        <svg id="d3Svg" viewBox="0 0 1000 540" role="img" aria-label="Hydraulisk presse – simulator for restenergi"></svg>
+        <div style="display:flex; flex-direction:column; gap:.45rem">
+          <button class="btn" id="d3Off">⏻ Slå av hovedbryter</button>
+          <button class="btn" id="d3Lock">🔒 Lås og merk</button>
+          <button class="btn" id="d3Block">🧱 Sett inn sikringsklosser</button>
+          <button class="btn" id="d3Bleed">💧 Avlast akkumulatoren</button>
+          <button class="btn" id="d3Air">💨 Steng og luft ut trykkluft</button>
+          <button class="btn" id="d3Cool">⏱ Vent til olja er kald</button>
+          <button class="btn primary" id="d3Test">▶ Prøvestart</button>
+          <button class="btn" id="d3Reset">↺ Start på nytt</button>
+        </div>
+      </div>
+      <div class="readout">
+        <div><span>⚡ Strøm</span><b id="r3El">PÅ</b></div>
+        <div><span>💧 Hydraulikk</span><b id="r3Hyd">140 bar</b></div>
+        <div><span>💨 Luft</span><b id="r3Air">6 bar</b></div>
+        <div><span>⬇ Stempel</span><b id="r3Ram">usikret</b></div>
+        <div><span>🔥 Olje</span><b id="r3Temp">60 °C</b></div>
+      </div>
+      <div class="checks" id="d3Checks"></div>
+      <div class="status info" id="d3Msg"></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>La elevene styre. Det typiske feilgrepet er å avlaste akkumulatoren før stempelet er sikret – da faller det. Når strømmen er av, siger stempelet sakte (lekkasje forbi ventilen) – dette skjer på ekte maskiner. <b>Sikringskloss</b> (sikringsstag) = kraftig kloss eller stag som holder stempelet mekanisk, uavhengig av hydraulikken. Alternativ: kjøre stempelet helt ned på et underlag før strømmen slås av. Prøvestart: trykk start – ingenting skal skje – og sett startbryteren tilbake. Rekkefølgen her er et eksempel; maskinens egen LOTO-instruks gjelder alltid.</details>
+  </div>
+</section>
+
+<!-- DEL 4 -->
+<section class="slide" id="loto" data-nav="4 LOTO">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 8 min</div>
+    <h2>Lås og merk i sju trinn</h2>
+    <p class="lead">Samme rekkefølge – hver gang, på hver maskin.</p>
+    <div class="fig">
+      <svg id="d4Svg" viewBox="0 0 1000 400" role="img" aria-label="LOTO trinn for trinn: betjening, hovedbryter og trykk"></svg>
+      <div class="controls">
+        <button class="btn primary" id="d4Next">▶ Neste trinn</button>
+        <button class="btn" id="d4Auto">▶ Automatisk</button>
+        <button class="btn" id="d4Reset">↺ Fra start</button>
+      </div>
+      <div class="status info" id="d4Msg"></div>
+    </div>
+    <div class="steps" id="d4Steps" style="margin-top:.8rem"></div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Trinn 1 knytter til SJA fra HMS 2: SJA-en finner farene, LOTO er ett av de viktigste tiltakene. Trinn 4: isoler med <b>energiskillet</b> (hovedbryter/arbeidsbryter, ventil) – ikke med styrekretsen (stoppknapp, nødstopp). Nødstopp er ikke et isolasjonspunkt. Trinn 5: én lås per person per isolasjonspunkt. Trinn 7: kontroller at energien virkelig er borte – prøvestart, manometer på 0, stempelet står på klossene. Etter prøvestart: sett startbryteren tilbake til stopp, så maskinen ikke starter når låsen tas av.</details>
+  </div>
+</section>
+
+<!-- DEL 5 -->
+<section class="slide" id="gruppe" data-nav="5 Gruppelås">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 6 min</div>
+    <h2>Gruppelås – flere på samme maskin</h2>
+    <p class="lead">Kristian, Sara og Ola jobber på pressa samtidig. Alle henger på <b>sin egen lås</b>. Ta av låsene og prøv å starte.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="d5Svg" viewBox="0 0 700 380" role="img" aria-label="Hovedbryter med låsehasp og tre personlige låser"></svg>
+        <div class="controls"><span class="chips" id="d5Chips"></span></div>
+        <div class="controls">
+          <button class="btn primary" id="d5Start">▶ Prøv å starte</button>
+          <button class="btn" id="d5Home">🏠 Ola dro hjem med låsen på</button>
+          <button class="btn" id="d5Reset">↺ Alle låser på</button>
+        </div>
+        <div class="status info" id="d5Msg"></div>
+      </div>
+      <div>
+        <div class="card"><h3>Låsehasp</h3>En stålklype med mange hull. Den låser hovedbryteren, og hver person henger sin lås i et eget hull. Klypa kan ikke åpnes før <b>siste</b> lås er av.</div>
+        <div class="card" style="margin-top:.7rem"><h3>Låseboks</h3>Mange isolasjonspunkter? Lås alle punktene, legg nøklene i en boks – og alle henger sin lås på boksen.</div>
+        <div class="card" style="margin-top:.7rem"><h3>Skiftbytte</h3>Den nye setter på sin lås <b>før</b> den gamle tar av sin. Maskinen er aldri ulåst.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Regelen er enkel: én person – én lås – én nøkkel. Ingen henger lås «for» andre. Glemt lås: lås skal aldri klippes av en kollega. Bedriften skal ha en skriftlig prosedyre der leder tar ansvar: prøver å nå personen, kontrollerer selv at ingen er i maskinen og at den er klar, fjerner låsen med vitne, dokumenterer, og informerer personen før neste skift.</details>
+  </div>
+</section>
+
+<!-- DEL 6 -->
+<section class="slide" id="drift" data-nav="6 Tilbake i drift">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 6 min</div>
+    <h2>Tilbake i drift – finn feilene før start</h2>
+    <p class="lead">Jobben er ferdig. Kristian vil fjerne låsen sin. Men noe er galt – det er <b>5 feil</b>. Klikk på dem.</p>
+    <div class="fig">
+      <svg id="d6Svg" viewBox="0 0 1000 540" role="img" aria-label="Pressa etter vedlikehold med fem feil"></svg>
+      <div class="controls">
+        <button class="btn" id="d6Show">👁 Vis alle</button>
+        <button class="btn" id="d6Reset">↺ Start på nytt</button>
+        <span class="caption" style="margin:0" id="d6Count">Funnet: 0 / 5</span>
+      </div>
+      <div class="status info" id="d6Msg"></div>
+    </div>
+    <div class="card" style="margin-top:1rem">
+      <h3>Oppstart etter vedlikehold</h3>
+      <div class="steps s8" id="d6Steps"></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Mange ulykker skjer ved oppstart: verktøy blir liggende, vern er ikke montert, eller en kollega er fortsatt inne. Ola-låsen: maskinen kan ikke startes før Ola selv har tatt av sin lås – det er nettopp poenget med gruppelås. Siste trinn kobler til Vedlikehold 1: arbeidsordren lukkes med funn, deler og tid, slik at historikken blir riktig.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <table class="t" style="font-size:1rem">
+          <tr><th>Energi</th><th>Gjør den trygg</th></tr>
+          <tr><td>⚡ Elektrisk</td><td>hovedbryter av, lås og merk</td></tr>
+          <tr><td>💧 Hydraulisk</td><td>avlast akkumulatoren, manometer 0</td></tr>
+          <tr><td>💨 Pneumatisk</td><td>steng og luft ut, lås ventilen</td></tr>
+          <tr><td>⬇ Tyngde</td><td>sikringsklosser – <b>før</b> avlasting</td></tr>
+          <tr><td>🌀 Fjær</td><td>avspenn etter instruks</td></tr>
+          <tr><td>🔥 Varme</td><td>la kjøle seg, hansker</td></tr>
+        </table>
+        <div class="tip">LOTO: <b>forbered → varsle → stopp → isoler → lås og merk → avlast → kontroller</b> → jobb.</div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>LOTO</span><span>lås og merk</span><span>energikilde</span><span>restenergi</span><span>isolasjonspunkt</span><span>hovedbryter</span><span>akkumulator</span><span>manometer</span><span>sikringskloss</span><span>personlig lås</span><span>merkelapp</span><span>låsehasp</span><span>låseboks</span><span>prøvestart</span><span>oppstart</span></div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Neste leksjon</h3>
+          <p style="margin:0"><b>Leksjon 3 – Smøring:</b> smøremidler, fettpresse og smørenipler, oljeskift og smøreplan. Før du smører en maskin med vernet av: lås og merk.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 43 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Vedlikehold 2 – Sikker jobb og LOTO · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <div class="formelark"><b>Husk:</b> <span>Energier: elektrisk · hydraulisk · pneumatisk · tyngde · fjær · varme</span><span>Restenergi = energi som er igjen etter at strømmen er av</span><span>Sikre stempelet FØR du avlaster</span><span>Én person – én lås – én nøkkel</span></div>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Finn energiene <small>Time 1 · 8 min</small></h3>
+        <p>Hydraulikkpressa HP-01. Fyll ut tabellen for nummer 1–6.</p>
+        <div class="ofig" id="o1fig"></div>
+        <table class="ot">
+          <tr><th style="width:2.5rem">Nr.</th><th style="width:20%">Energi</th><th>Hva kan skje?</th><th>Hvordan gjør du den trygg?</th></tr>
+          <tr><td>1</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>4</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>5</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>6</td><td class="tom"></td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> 1 Elektrisk (400 V) – støt, maskinen starter – hovedbryter av, lås og merk, prøvestart. 2 Hydraulisk (akkumulator 140 bar) – stempelet beveger seg, oljestråle – sikre stempelet, åpne avlastingsventilen, manometer 0. 3 Pneumatisk (6 bar) – klemma slår igjen, slange piskes – steng kuleventilen med utlufting, lås den. 4 Tyngde (stempel og oververktøy) – siger eller faller – sikringsklosser eller kjør ned på underlag. 5 Fjær (verktøyfjærer) – deler spretter ut – avspenn etter instruks. 6 Varme (olje 60 °C) – brannskade – la kjøle seg, bruk hansker.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Restenergi <small>Time 1 · 6 min</small></h3>
+        <p>a) Sant eller usant? Sett kryss.</p>
+        <table class="ot c">
+          <tr><th>Påstand</th><th style="width:5rem">Sant</th><th style="width:5rem">Usant</th></tr>
+          <tr><td>1. Når hovedbryteren er av, er det ingen energi igjen i maskinen.</td><td></td><td></td></tr>
+          <tr><td>2. En akkumulator kan holde trykk i timevis etter at pumpa har stoppet.</td><td></td><td></td></tr>
+          <tr><td>3. Et stempel som henger oppe, kan sige ned selv om pumpa står.</td><td></td><td></td></tr>
+          <tr><td>4. Du skal avlaste hydraulikken før du setter inn sikringsklosser.</td><td></td><td></td></tr>
+          <tr><td>5. Varm olje er også en energikilde.</td><td></td><td></td></tr>
+          <tr><td>6. Tar jobben bare to minutter, holder det å trykke på stoppknappen.</td><td></td><td></td></tr>
+        </table>
+        <p>b) Manometeret viser 0 bar, men stempelet henger fortsatt oppe uten klosser. Hvorfor er det farlig å løsne slangen til sylinderen?</p><div class="svar"></div><div class="svar"></div>
+        <p>c) Forklar med egne ord hva <b>restenergi</b> er.</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 1 U · 2 S · 3 S · 4 U (klossene først, ellers faller stempelet) · 5 S · 6 U (stoppknappen bryter ikke energien, og noen kan trykke start). b) Vekta av stempelet presser på olja i sylinderen og lager trykk der. Løsner du slangen, renner olja ut og stempelet faller. Tyngden må sikres med klosser først. c) Energi som er igjen i maskinen etter at strømmen er slått av – f.eks. trykk i akkumulatoren, trykkluft, et stempel som henger, spente fjærer eller varm olje.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Lås og merkelapp <small>Time 1 · 5 min</small></h3>
+        <div class="scenario">I dag kl. 08.15 skal <b>du</b> bytte oververktøyet i pressa <b>HP-01</b>. Jobben tar to timer. Fyll ut merkelappen.</div>
+        <div class="ofig" id="o3fig" style="max-width:330px"></div>
+        <p>b) Hvorfor skal hver person ha sin egen lås – med bare én nøkkel?</p><div class="svar"></div>
+        <p>c) Hvem har lov til å fjerne låsen din?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) Navn, telefon, dato og kl. 08.15, arbeid: «bytter oververktøy», maskin: HP-01. b) Da er det bare du som kan låse opp – ingen andre kan starte maskinen mens du er inne. Med to nøkler kan noen andre låse opp. c) Bare du. (Unntak: leder etter en skriftlig prosedyre hvis du har dratt hjem med låsen på.)</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – LOTO i riktig rekkefølge <small>Time 2 · 5 min</small></h3>
+        <p>a) Skriv riktig nummer (1–7).</p>
+        <table class="ot">
+          <tr><th style="width:4rem">Nr.</th><th>Trinn</th></tr>
+          <tr><td class="tom"></td><td>Lås og merk hovedbryteren og luftventilen</td></tr>
+          <tr><td class="tom"></td><td>Varsle operatøren og de som blir berørt</td></tr>
+          <tr><td class="tom"></td><td>Les instruksen og finn alle energikildene</td></tr>
+          <tr><td class="tom"></td><td>Prøvestart og sjekk at manometeret viser 0</td></tr>
+          <tr><td class="tom"></td><td>Stopp pressa med stoppknappen</td></tr>
+          <tr><td class="tom"></td><td>Sett inn sikringsklosser og avlast akkumulatoren</td></tr>
+          <tr><td class="tom"></td><td>Slå av hovedbryteren og steng luftventilen</td></tr>
+        </table>
+        <p>b) Du gjør prøvestart, og stempelet beveger seg. Hva gjør du?</p><div class="svar"></div>
+        <p>c) Hvorfor er ikke nødstoppen godt nok når du skal jobbe inne i maskinen?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 5, 2, 1, 7, 3, 6, 4. b) Stopp. Ikke start jobben. Noe er ikke isolert – sjekk alle isolasjonspunktene, spør leder. c) Nødstoppen er en del av styringen. Den bryter ikke energien, den kan trekkes ut av andre, og den er ikke låst og merket med din lås.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Isoleringsliste for kompressoren <small>Time 2 · 10 min</small></h3>
+        <div class="scenario">Du skal bytte kilereim på kompressoren <b>KO-01</b> (som i Vedlikehold 1). Kompressoren har <b>trykkbryter</b>: den starter av seg selv når lufttrykket i tanken faller.</div>
+        <div class="ofig" id="o5fig" style="max-width:620px"></div>
+        <table class="ot">
+          <tr><th style="width:18%">Energi</th><th style="width:3.5rem">Nr.</th><th>Slik isolerer / avlaster jeg</th><th>Slik kontrollerer jeg</th></tr>
+          <tr><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td class="tom"></td><td></td><td></td><td></td></tr>
+        </table>
+        <p>b) Hvorfor er det livsfarlig å bare trykke «av» på trykkbryteren og så stikke hånden inn til reima?</p><div class="svar"></div>
+        <p>c) Hva må være på plass før du fjerner låsen etter reimbyttet?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit (eksempel):</b> Elektrisk – 1 – trekk ut støpselet og lås det med støpsellås (eller hold det under egen kontroll), merk – prøv å starte på trykkbryteren: ingenting skjer. Pneumatisk – 3/6 – steng utløpsventilen; tøm tanken med tappekranen hvis instruksen krever det – manometeret. Bevegelse – 4 – vent til svinghjulet står helt stille – se. Varme – 5 – la kompressorblokka og trykkrøret kjøle seg, bruk hansker – kjenn forsiktig med baksiden av hånden. b) Trykkbryteren er bare styring. Kompressoren kan starte av seg selv, eller noen kan slå den på igjen. Reima og svinghjulet kan dra inn hånden. c) Reimvernet montert, verktøy ryddet, ingen i faresonen, operatøren varslet – så tar du av egen lås og prøvekjører.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Gruppelås og oppstart <small>Time 2 · 6 min</small></h3>
+        <div class="scenario"><b>Kristian</b> (mekaniker), <b>Sara</b> (elektriker) og <b>Ola</b> (lærling) jobber på pressa samtidig.</div>
+        <p>a) Hvor mange låser skal henge på hovedbryteren?</p><div class="svar"></div>
+        <p>b) Kristian blir ferdig først. Kan han ta av alle låsene? Begrunn.</p><div class="svar"></div>
+        <p>c) Ola har dratt hjem med låsen på. Hva skal skje?</p><div class="svar"></div>
+        <p>d) Oppstart: skriv riktig nummer (1–7).</p>
+        <table class="ot">
+          <tr><th style="width:4rem">Nr.</th><th>Trinn</th></tr>
+          <tr><td class="tom"></td><td>Fjern egen lås og merkelapp</td></tr>
+          <tr><td class="tom"></td><td>Ta ut sikringsklosser og rydd verktøy</td></tr>
+          <tr><td class="tom"></td><td>Prøvekjør</td></tr>
+          <tr><td class="tom"></td><td>Monter vernet</td></tr>
+          <tr><td class="tom"></td><td>Dokumenter i arbeidsordren</td></tr>
+          <tr><td class="tom"></td><td>Sjekk at ingen er i faresonen</td></tr>
+          <tr><td class="tom"></td><td>Varsle operatøren</td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) Tre – én per person. b) Nei. Han tar bare av sin egen. Sara og Ola kan fortsatt være inne i maskinen. c) Låsen skal ikke klippes av. Leder følger bedriftens prosedyre: prøver å nå Ola, sjekker selv at ingen er i maskinen og at den er klar, fjerner låsen med vitne, dokumenterer og gir beskjed til Ola. d) 4, 1, 6, 2, 7, 3, 5.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 2 min</small></h3>
+        <p>1. Nevn fire energikilder i en maskin.</p><div class="svar"></div>
+        <p>2. Hva er restenergi? Gi ett eksempel.</p><div class="svar"></div>
+        <p>3. Hvorfor gjør vi prøvestart etter at maskinen er låst?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) Elektrisk, hydraulisk, pneumatisk, tyngde, fjær, varme (og bevegelse). 2) Energi som er igjen etter at strømmen er av – f.eks. trykket i en akkumulator eller et stempel som henger oppe. 3) For å kontrollere at vi har låst riktig bryter og at maskinen virkelig ikke kan starte – før hendene går inn.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const nf = (x, d=0) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const RM = (()=>{ try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } })();
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
+
+/* Felles animasjonsløkke – bare synlige figurer oppdateres */
+const anims = [];
+function addAnim(node, tick){ const a = {tick, vis:false}; anims.push(a); new IntersectionObserver(es => es.forEach(e => a.vis = e.isIntersecting)).observe(node); return a; }
+let last = performance.now(), T = 0;
+function frame(now){ const dt = Math.min(.05, (now-last)/1000); last = now; T += RM ? dt*.4 : dt; anims.forEach(a => { if (a.vis) a.tick(dt, T); }); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+/* Tegnehjelp */
+const fx = v => +(+v).toFixed(1);
+const ln = (x1,y1,x2,y2,c,w=3,d="") => `<line x1="${fx(x1)}" y1="${fx(y1)}" x2="${fx(x2)}" y2="${fx(y2)}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${d?` stroke-dasharray="${d}"`:""}/>`;
+const TX = (x,y,s,o={}) => `<text x="${fx(x)}" y="${fx(y)}" font-size="${o.size||15}" fill="${o.fill||"var(--ink)"}" text-anchor="${o.anchor||"start"}"${o.weight?` font-weight="${o.weight}"`:""}${o.op!==undefined?` opacity="${o.op}"`:""}>${s}</text>`;
+const RC = (x,y,w,h,f,s="none",sw=2,rx=0,extra="") => `<rect x="${fx(x)}" y="${fx(y)}" width="${fx(Math.max(0,w))}" height="${fx(Math.max(0,h))}" rx="${rx}" fill="${f}" stroke="${s}" stroke-width="${sw}"${extra}/>`;
+const CI = (x,y,r,f,s="none",sw=2,extra="") => `<circle cx="${fx(x)}" cy="${fx(y)}" r="${fx(r)}" fill="${f}" stroke="${s}" stroke-width="${sw}"${extra}/>`;
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+function gear(cx,cy,r,n,ang,fill,stroke){
+  let d=""; const ri=r*.8;
+  for (let i=0;i<n;i++){ const a0=ang+i*2*Math.PI/n, a1=a0+Math.PI/n*.45, a2=a0+Math.PI/n*.55, a3=a0+Math.PI/n;
+    const P=(a,rr)=>fx(cx+rr*Math.cos(a))+" "+fx(cy+rr*Math.sin(a));
+    d += (i?"L":"M")+P(a0,ri)+"L"+P(a1,r)+"L"+P(a2,r)+"L"+P(a3,ri); }
+  return `<path d="${d}Z" fill="${fill}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/>`+CI(cx,cy,r*.28,"var(--panel)",stroke,2);
+}
+function gauge(cx,cy,r,val,max,pr,unit="bar"){
+  const ink = pr?"#000":"var(--ink)";
+  let s = CI(cx,cy,r,pr?"#fff":"#f8f9fa",pr?"#000":"#495057",3);
+  for (let i=0;i<=8;i++){ const a=(135+270*i/8)*Math.PI/180; s += ln(cx+r*.78*Math.cos(a),cy+r*.78*Math.sin(a),cx+r*.92*Math.cos(a),cy+r*.92*Math.sin(a),ink,1.5); }
+  if (!pr){ const a0=(135+270*.8)*Math.PI/180, a1=405*Math.PI/180; s += `<path d="M${fx(cx+r*.85*Math.cos(a0))} ${fx(cy+r*.85*Math.sin(a0))} A${fx(r*.85)} ${fx(r*.85)} 0 0 1 ${fx(cx+r*.85*Math.cos(a1))} ${fx(cy+r*.85*Math.sin(a1))}" fill="none" stroke="#e03131" stroke-width="${fx(r*.1)}"/>`; }
+  const a=(135+270*clamp(val/max,0,1))*Math.PI/180;
+  s += ln(cx,cy,cx+r*.72*Math.cos(a),cy+r*.72*Math.sin(a),pr?"#000":"#c92a2a",Math.max(2,r*.07))+CI(cx,cy,r*.1,pr?"#000":"#212529");
+  if (!pr) s += TX(cx,cy+r*.55,Math.round(val)+" "+unit,{size:Math.max(9,r*.26),weight:800,anchor:"middle",fill:val<.5?"var(--green)":"#c92a2a"});
+  return s;
+}
+function fig(x,y,col,ph=0,o={}){
+  const lg = 10*Math.sin(ph);
+  return CI(x,y-74,11,"var(--panel)",col,4)+ln(x,y-62,x,y-28,col,5)+ln(x,y-28,x+lg,y,col,5)+ln(x,y-28,x-lg,y,col,5)
+    +ln(x,y-54,x+(o.ax??14),y-(o.ay??34),col,5)+ln(x,y-54,x-(o.bx??12),y-(o.by??34),col,5);
+}
+function padlock(x,y,col,pr,sc=1){ // x,y = toppen av bøylen
+  const w=26*sc, h=22*sc;
+  return `<path d="M${fx(x-7*sc)} ${fx(y+10*sc)} v${fx(-4*sc)} a${fx(7*sc)} ${fx(7*sc)} 0 0 1 ${fx(14*sc)} 0 v${fx(4*sc)}" fill="none" stroke="${pr?"#000":"#868e96"}" stroke-width="${fx(3.5*sc)}"/>`
+   + RC(x-w/2,y+9*sc,w,h,pr?"#fff":col,pr?"#000":"#212529",1.5,4*sc) + CI(x,y+18*sc,2.6*sc,pr?"#000":"#212529");
+}
+function tagG(x,y,ang,name,pr,sc=1){ // hengende merkelapp, x,y = opphengspunkt
+  const w=56*sc, h=50*sc;
+  return `<g transform="rotate(${fx(ang)} ${fx(x)} ${fx(y)})">`+ln(x,y,x,y+8*sc,pr?"#000":"#495057",1.5)
+    + RC(x-w/2,y+8*sc,w,h,pr?"#fff":"#fff",pr?"#000":"#c92a2a",2,4)
+    + RC(x-w/2,y+8*sc,w,16*sc,pr?"#000":"#c92a2a","none",0,4)
+    + TX(x,y+20*sc,"IKKE START",{size:fx(8.5*sc),weight:800,anchor:"middle",fill:"#fff"})
+    + TX(x,y+40*sc,name||"",{size:fx(10*sc),weight:700,anchor:"middle",fill:"#000"})
+    + `</g>`;
+}
+const svgOpen = (w,h) => `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" font-family="Segoe UI, Arial, sans-serif"><rect width="${w}" height="${h}" fill="#fff"/>`;
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) nav.scrollTo({left: act.offsetLeft - nav.clientWidth/2 + act.offsetWidth/2, behavior:"smooth"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName)) return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  slides[Math.max(0, Math.min(slides.length-1, currentIndex()+dir))].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+
+/* =====================================================================
+   PRESSA HP-01 – felles tegning
+   ===================================================================== */
+function pressSVG(P, o={}){
+  const pr = P.print, t = o.t||0, ink = pr?"#000":"var(--ink)";
+  const ram = clamp(o.ram??0,0,1), rt = 170 + ram*150;
+  const on = (o.sw||"on")==="on", acc = o.acc??140, air = o.air??6, temp = o.temp??60, hl = o.hl||null;
+  const F = pr?"#fff":"#5c7cfa", FD = pr?"#000":"#364fc7", S = pr?"#fff":"#ced4da", SD = pr?"#000":"#495057";
+  const pipe = pr?"#000":"#c25e00", airC = pr?"#000":"#1c7ed6";
+  const L = (x,y,txt,a="start") => o.labels && !pr ? TX(x,y,txt,{size:13,fill:"var(--muted)",anchor:a,weight:600}) : "";
+  let s = "";
+  // gulv
+  s += RC(0,508,1000,32,pr?"#fff":"var(--steel-soft)")+ln(0,508,1000,508,ink,2);
+  // rør – hele hydraulikkretsen
+  const pP="M232 362 H330 V100 H380", aP="M275 180 V150 H330", toC="M430 86 H530 V30 H565", ret="M565 104 H450 V112 H430", retT="M380 112 H350 V410", bl="M275 370 V410";
+  [pP,aP,toC,ret,retT,bl].forEach(d => s += `<path d="${d}" fill="none" stroke="${pipe}" stroke-width="6" stroke-linejoin="round"/>`);
+  if (!pr){
+    if (on && (o.flow || hl==="hyd")) [pP,toC,ret,retT].forEach(d => s += `<path d="${d}" fill="none" stroke="#ffe8cc" stroke-width="2.5" stroke-dasharray="8 10" stroke-dashoffset="${fx(-t*60)}"/>`);
+    if (hl==="hyd" && acc>1) s += `<path d="${aP}" fill="none" stroke="#ffe8cc" stroke-width="2.5" stroke-dasharray="8 10" stroke-dashoffset="${fx(t*40)}"/>`;
+    if (o.bleeding) s += `<path d="${bl}" fill="none" stroke="#ffe8cc" stroke-width="3" stroke-dasharray="6 6" stroke-dashoffset="${fx(-t*80)}"/>`;
+  }
+  // styreventil
+  s += RC(380,70,50,56,pr?"#fff":"#adb5bd",SD,2,4)+ln(392,82,418,114,SD,1.5)+ln(418,82,392,114,SD,1.5)+L(405,62,"styreventil","middle");
+  // aggregat: tank, motor, pumpe
+  s += RC(40,410,270,96,pr?"#fff":"#868e96",SD,2,6);
+  s += RC(48,440,254,60,pr?"#fff":"rgba(240,140,0,.55)","none",0,4)+(pr?"":TX(175,478,"olje",{size:14,weight:700,anchor:"middle",fill:"#fff"}));
+  s += RC(58,330,112,70,pr?"#fff":"#748ffc",FD,2,8);
+  for (let x=70;x<162;x+=12) s += ln(x,336,x,394,FD,1.4);
+  s += RC(170,356,12,18,S,SD,1.5,2)+RC(182,342,50,46,pr?"#fff":"#2f9e44",SD,2,6);
+  s += L(114,322,"motor","middle")+L(207,334,"pumpe","middle")+L(48,430,"tank");
+  // akkumulator + manometer + avlastingsventil
+  s += RC(252,180,46,190,pr?"#fff":"#adb5bd",SD,2,22)+(pr?"":RC(258,190,8,170,"rgba(255,255,255,.5)","none",0,4));
+  s += ln(298,215,310,215,SD,3)+gauge(340,215,30,acc,160,pr);
+  s += `<path d="M264 380 L286 380 L275 390 Z M264 400 L286 400 L275 390 Z" fill="${pr?"#fff":"#fab005"}" stroke="${SD}" stroke-width="2"/>`;
+  s += o.bled ? ln(275,390,292,370,pr?"#000":"#e03131",5) : ln(275,390,304,390,pr?"#000":"#e03131",5);
+  s += L(246,200,"akkumulator","end")+L(375,262,"manometer")+L(292,406,"avlastingsventil");
+  // pressa: ramme, sylinder, stempel
+  s += RC(470,124,30,330,F,FD,2,3)+RC(720,124,30,330,F,FD,2,3)+RC(450,52,320,72,F,FD,2,8);
+  s += RC(565,4,100,120,S,SD,2,6)+ln(565,30,560,30,SD,3);
+  s += RC(607,124,16,rt-124,pr?"#fff":"#e9ecef",SD,1.5,2);
+  s += RC(495,rt,230,40,F,FD,2,4);
+  if (!pr) s += TX(610,rt+26,o.labels?"stempel":"",{size:14,weight:700,anchor:"middle",fill:"#fff"});
+  // verktøyfjærer + avstrykerplate + oververktøy
+  const fl = 24 + (hl==="fjaer" && !pr ? 5*Math.sin(t*9) : 0);
+  [555,665].forEach(x => { let d=`M${x} ${fx(rt+40)}`; for (let k=1;k<=6;k++) d += ` L${x+(k%2?9:-9)} ${fx(rt+40+fl*k/6)}`; s += `<path d="${d}" fill="none" stroke="${pr?"#000":"#2b8a3e"}" stroke-width="3"/>`; });
+  s += RC(525,rt+40+fl,170,7,S,SD,1.5,2)+RC(587,rt+40,46,38,S,SD,2,3);
+  // bord, underverktøy, sokkel, pneumatisk klemme
+  s += RC(490,420,240,30,F,FD,2,3)+RC(570,398,80,22,S,SD,2,3)+RC(460,450,300,58,F,FD,2,6);
+  s += RC(662,401,44,18,pr?"#fff":"#1c7ed6",SD,1.5,3)+L(684,394,"klemme","middle");
+  // sikringsklosser
+  const blk = (x) => { let g = RC(x,rt+40,28,420-rt-40,pr?"#fff":"#fab005",pr?"#000":"#212529",2,2); for (let y=rt+48;y<414;y+=18) g += RC(x+1,y,26,8,pr?"#999":"#212529","none",0); return g; };
+  if (o.blocks===true || o.blocks==="left") s += blk(505);
+  if (o.blocks===true) s += blk(687);
+  // vern foran verktøyet
+  if (o.guard) s += RC(500,286,220,132,pr?"none":"rgba(116,192,252,.18)",pr?"#000":"#1c7ed6",2.5,6)+ln(510,350,510,380,pr?"#000":"#1c7ed6",5);
+  // betjeningsboks
+  s += ln(773,124,773,200,SD,2)+RC(756,200,34,64,pr?"#fff":"#dee2e6",SD,1.5,4)+CI(773,218,8,pr?"#fff":"#2f9e44",SD,1.5)+CI(773,245,8,pr?"#fff":"#e03131",SD,1.5);
+  // elskap + hovedbryter
+  s += RC(800,110,130,190,pr?"#fff":"#e9ecef",SD,2,6)+TX(865,135,"⚡ 400 V",{size:14,weight:800,anchor:"middle",fill:pr?"#000":"#e8590c"});
+  s += RC(835,175,60,60,pr?"#fff":"#fab005",SD,1.5,4)+TX(865,170,"I",{size:12,weight:800,anchor:"middle",fill:ink})+TX(828,209,"0",{size:12,weight:800,anchor:"end",fill:ink});
+  const ang = o.swAng!==undefined ? o.swAng : (on?0:90);
+  s += `<g transform="rotate(${fx(ang)} 865 205)">`+RC(858,178,14,54,pr?"#fff":"#e03131",SD,1.5,5)+`</g>`+CI(865,205,9,pr?"#fff":"#c92a2a",SD,1.5);
+  if (o.lock){ s += padlock(865,240,"#e03131",pr); s += tagG(865,272,pr?0:5*Math.sin(t*2),o.lockName||"Kristian",pr); }
+  s += L(865,318,"hovedbryter","middle");
+  // kabel
+  const cab = "M865 300 V500 H114 V400";
+  s += `<path d="${cab}" fill="none" stroke="${pr?"#000":"#212529"}" stroke-width="6" stroke-linejoin="round"/>`;
+  if (!pr && on && (hl==="el" || o.flow)) s += `<path d="${cab}" fill="none" stroke="#ffd43b" stroke-width="2.5" stroke-dasharray="6 12" stroke-dashoffset="${fx(-t*90)}"/>`;
+  // trykkluft
+  const aL = "M965 0 V338", hose = "M965 362 V492 H770 V410 H706";
+  s += `<path d="${aL}" fill="none" stroke="${airC}" stroke-width="6"/><path d="${hose}" fill="none" stroke="${airC}" stroke-width="4" stroke-linejoin="round"/>`;
+  if (!pr && air>.1 && (hl==="pneu" || o.flow)) s += `<path d="${hose}" fill="none" stroke="#d0ebff" stroke-width="2" stroke-dasharray="5 9" stroke-dashoffset="${fx(-t*70)}"/>`;
+  s += CI(965,350,13,pr?"#fff":"#adb5bd",SD,2);
+  s += o.airClosed ? ln(965,350,996,350,pr?"#000":"#e03131",6) : ln(965,350,965,320,pr?"#000":"#e03131",6);
+  if (o.airLock){ s += padlock(965,368,"#e03131",pr,.8); s += tagG(965,393,pr?0:5*Math.sin(t*2+1),o.airLockName||"Kristian",pr,.8); }
+  s += L(955,70,"trykkluft 6 bar","end");
+  // varme
+  if (temp>40 || hl==="varme"){ const n = pr?3:3; for (let i=0;i<n;i++){ const x=95+i*40, ph = pr?0:(t*30+i*10)%30; let d=`M${x} ${fx(405-ph)}`; for (let k=1;k<=4;k++) d += ` q${k%2?6:-6} -6 0 -12`; s += `<path d="${d}" fill="none" stroke="${pr?"#000":"#e03131"}" stroke-width="2.5" opacity="${pr?1:fx(clamp((temp-30)/30,0,1)*(1-ph/30))}"/>`; } }
+  // tyngde-pil
+  if (hl==="tyngde" && !pr){ const b = 6*Math.abs(Math.sin(t*3)); s += `<path d="M445 ${fx(rt+10+b)} v60 m-14 -16 l14 18 l14 -18" fill="none" stroke="#c92a2a" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>`+TX(436,rt+4,"1,2 tonn",{size:16,weight:800,anchor:"end",fill:"#c92a2a"}); }
+  // markering av valgt energi
+  const RING = {el:[865,205,100], hyd:[285,260,115], pneu:[965,350,55], tyngde:[610,rt+20,140], fjaer:[610,rt+55,95], varme:[175,455,125]};
+  if (hl && RING[hl] && !pr){ const [x,y,r]=RING[hl]; s += CI(x,y,r+3*Math.sin(t*4),"none","var(--orange)",4,` stroke-dasharray="12 8"`); }
+  // nummer (oppgave)
+  if (o.nums){ [[1,812,98],[2,232,170],[3,930,350],[4,500,rt+20],[5,710,rt+52],[6,62,398]].forEach(([n,x,y]) => s += CI(x,y,15,"#fff","#000",2.5)+TX(x,y+6,n,{size:16,weight:800,anchor:"middle",fill:"#000"})); }
+  // feil etter vedlikehold
+  const E = o.post || new Set();
+  if (E.has("verktoy")) s += `<g transform="rotate(-8 535 412)"><path d="M505 409 h52 v7 h-52 z" fill="${pr?"#fff":"#868e96"}" stroke="${SD}" stroke-width="1.5"/><path d="M557 402 a10 10 0 1 1 0 21 l-3 -6 h6 v-9 h-6 z" fill="${pr?"#fff":"#868e96"}" stroke="${SD}" stroke-width="1.5"/></g>`;
+  if (E.has("vern")) s += RC(320,494,128,12,pr?"none":"rgba(116,192,252,.35)",pr?"#000":"#1c7ed6",2,3);
+  if (E.has("person")) s += fig(820,505,pr?"#000":"#7048e8",0,{ax:118,ay:118,bx:10,by:30});
+  if (E.has("ola")){ s += padlock(965,368,"#2b8a3e",pr,.8); s += tagG(965,393,pr?0:5*Math.sin(t*2+1),"Ola",pr,.8); }
+  return s;
+}
+
+/* =====================================================================
+   DEL 1 – av er ikke nok
+   ===================================================================== */
+(function(){
+  const LOOP = 11; let t0 = 0;
+  function panel(x0, locked, lt, t){
+    let s = RC(x0,6,484,328,"var(--bg)","var(--line)",1.5,12);
+    s += TX(x0+20,38,locked?"🔒 Låst og merket":"⏻ Bare slått av",{size:20,weight:800,fill:locked?"var(--green)":"var(--red)"});
+    const running = !locked && lt>=4.5;
+    const a = running ? (lt-4.5)*6 : 0;
+    // maskin
+    s += RC(x0+30,150,220,130,"var(--steel-soft)","var(--steel-dark)",2,10);
+    s += gear(x0+95,215,32,12,a,"#adb5bd","var(--steel-dark)")+gear(x0+180,215,22,9,-a*1.45,"#adb5bd","var(--steel-dark)");
+    s += `<path d="M${x0+95} 183 L${x0+180} 193 M${x0+95} 247 L${x0+180} 237" stroke="#212529" stroke-width="5"/>`;
+    // Kristians bein stikker ut
+    const kick = running ? 4*Math.sin(t*30) : 0;
+    s += ln(x0+238,262,x0+300,262+kick,"#1864ab",10)+ln(x0+238,274,x0+300,280-kick,"#1864ab",10);
+    s += RC(x0+298,252+kick,14,16,"#212529","none",0,3)+RC(x0+298,272-kick,14,16,"#212529","none",0,3);
+    s += TX(x0+140,310,"Kristian bytter reim inne i maskinen",{size:13,anchor:"middle",fill:"var(--muted)"});
+    // hovedbryter på veggen
+    s += ln(x0+380,70,x0+380,300,"var(--line)",3);
+    s += RC(x0+385,118,50,54,"#fab005","#495057",1.5,4);
+    const ang = running ? 0 : 90;
+    s += `<g transform="rotate(${ang} ${x0+410} 145)">`+RC(x0+405,122,10,46,"#e03131","#495057",1.5,4)+`</g>`+CI(x0+410,145,6,"#c92a2a");
+    if (locked){ s += padlock(x0+410,168,"#e03131",false,.8); s += tagG(x0+410,194,5*Math.sin(t*2),"Kristian",false,.85); }
+    // kollega
+    let kx, walk = 0;
+    if (lt<3){ kx = x0+478 - 26*(lt/3); walk = lt*7; }
+    else if (locked && lt>6.5){ kx = x0+452 + clamp((lt-6.5)/2.5,0,1)*40; walk = lt<9 ? lt*7 : 0; }
+    else kx = x0+452;
+    const reach = (!locked && lt>=4 && lt<5) || (locked && lt>=4 && lt<4.8);
+    s += fig(kx,300,"var(--purple)",walk,reach?{ax:-34,ay:56}:{});
+    // tankeboble
+    if (lt>=3 && lt<4.5) s += RC(x0+300,52,170,40,"var(--panel)","var(--purple)",2,12)+TX(x0+385,77,"Hvorfor er den av?",{size:13,weight:700,anchor:"middle",fill:"var(--purple)"});
+    if (locked && lt>=4.5 && lt<7.5) s += RC(x0+268,52,206,52,"var(--panel)","var(--green)",2,12)+TX(x0+371,74,"Lås og lapp: Kristian jobber.",{size:13,weight:700,anchor:"middle",fill:"var(--green)"})+TX(x0+371,94,"Jeg lar den være!",{size:13,weight:700,anchor:"middle",fill:"var(--green)"});
+    if (!locked && lt>=4.5 && lt<5.6) s += RC(x0+300,52,170,40,"var(--panel)","var(--purple)",2,12)+TX(x0+385,77,"Jeg slår den på!",{size:13,weight:700,anchor:"middle",fill:"var(--purple)"});
+    // utfall
+    if (running && lt>=5){ const fl = Math.floor(t*5)%2===0; s += RC(x0+30,150,220,130,fl?"rgba(201,42,42,.35)":"rgba(201,42,42,.12)","var(--red)",4,10); s += TX(x0+140,120,"⚠ Maskinen startet!",{size:20,weight:800,anchor:"middle",fill:"var(--red)"}); }
+    if (locked && lt>=7) s += TX(x0+140,120,"✓ Kristian er trygg",{size:20,weight:800,anchor:"middle",fill:"var(--green)"});
+    return s;
+  }
+  addAnim($("d1Svg"), (dt,t) => { const lt = (t - t0) % LOOP; $("d1Svg").innerHTML = panel(6,false,lt,t)+panel(510,true,lt,t); });
+  $("d1Restart").onclick = () => { t0 = T; };
+  $("d1Svg").innerHTML = panel(6,false,0,0)+panel(510,true,0,0);
+})();
+
+/* =====================================================================
+   DEL 2 – seks energikilder
+   ===================================================================== */
+const ENERGI = [
+  {k:"el", i:"⚡", n:"Elektrisk", hva:"400 V til motor, pumpe og styring.", fare:"Strømstøt, brann – og maskinen kan starte.", trygg:"Hovedbryter på 0. Lås og merk. Prøvestart."},
+  {k:"hyd", i:"💧", n:"Hydraulisk", hva:"Akkumulatoren holder 140 bar – også når pumpa står.", fare:"Stempelet beveger seg. Oljestråle kan gå gjennom huden.", trygg:"Sikre stempelet først. Åpne avlastingsventilen. Manometer = 0."},
+  {k:"pneu", i:"💨", n:"Pneumatisk", hva:"Trykkluft 6 bar i slangen til klemma.", fare:"Klemma slår igjen. Løs slange piskes rundt.", trygg:"Steng kuleventilen (med utlufting). Lås den. Sjekk at klemma er løs."},
+  {k:"tyngde", i:"⬇", n:"Tyngde", hva:"Stempel og oververktøy veier 1,2 tonn.", fare:"Stempelet siger eller faller ned.", trygg:"Sett inn sikringsklosser – eller kjør det helt ned på underlag."},
+  {k:"fjaer", i:"🌀", n:"Fjær", hva:"Fjærene i verktøyet er spent når stempelet er nede.", fare:"Deler spretter ut når verktøyet demonteres.", trygg:"Avspenn etter instruks, med riktig verktøy."},
+  {k:"varme", i:"🔥", n:"Varme", hva:"Olja er 60 °C etter drift.", fare:"Brannskade på rør, tank og olje.", trygg:"La den kjøle seg. Bruk hansker."}
+];
+(function(){
+  let sel = "el";
+  $("d2Chips").innerHTML = ENERGI.map(e => `<button class="chip" data-k="${e.k}" aria-pressed="${e.k===sel}">${e.i} ${e.n}</button>`).join("");
+  $("d2Chips").onclick = ev => { const b = ev.target.closest("[data-k]"); if (!b) return; sel = b.dataset.k; $("d2Chips").querySelectorAll("[data-k]").forEach(x => x.setAttribute("aria-pressed", String(x===b))); card(); };
+  function card(){ const e = ENERGI.find(x => x.k===sel), n = ENERGI.indexOf(e)+1;
+    $("d2Card").innerHTML = `<div class="kicker">Energi ${n} av 6</div><h3>${e.i} ${e.n}</h3>
+      <div class="row"><b>📍</b><span>${e.hva}</span></div>
+      <div class="row"><b>⚠</b><span style="color:var(--red)">${e.fare}</span></div>
+      <div class="row"><b>✓</b><span style="color:var(--green); font-weight:650">${e.trygg}</span></div>`; }
+  addAnim($("d2Svg"), (dt,t) => { $("d2Svg").innerHTML = pressSVG({print:false},{t, hl:sel, labels:true, flow:sel==="el"}); });
+  $("d2Svg").innerHTML = pressSVG({print:false},{hl:sel, labels:true});
+  card();
+})();
+
+/* =====================================================================
+   DEL 3 – restenergi-simulator
+   ===================================================================== */
+(function(){
+  let st;
+  function reset(){ st = {sw:"on", lock:false, blocks:false, acc:140, bled:false, bleeding:false, air:6, airClosed:false, airLock:false, temp:60, cooling:false, ram:0, falling:false, crash:false, tested:false, testAnim:0, warned:false}; msg("Pressa står stille, men alt er på. Gjør den energifri.","info"); }
+  function msg(m,c){ $("d3Msg").className = "status "+c; $("d3Msg").innerHTML = m; }
+  const safe = () => st.lock && st.blocks && st.acc<1 && st.air<.1 && st.temp<40 && st.tested && !st.crash;
+  $("d3Off").onclick = () => { if (st.sw==="off") return msg("Hovedbryteren er allerede av.","info"); st.sw="off"; msg("Strømmen er av. Men se på manometeret – trykket er der fortsatt. Og bryteren er ikke låst.","warn"); };
+  $("d3Lock").onclick = () => {
+    if (st.sw==="on") return msg("Slå av hovedbryteren først – så låser du den i 0-stilling.","warn");
+    st.lock = true; if (st.airClosed) st.airLock = true;
+    msg(st.airClosed ? "Hovedbryter og luftventil er låst og merket med din lås." : "Hovedbryteren er låst og merket. Husk: luftventilen må også stenges og låses.","ok"); };
+  $("d3Block").onclick = () => { if (st.crash) return; st.blocks = true; msg("Sikringsklossene står under stempelet. Nå kan det ikke falle – uansett hva som skjer med hydraulikken.","ok"); };
+  $("d3Bleed").onclick = () => {
+    if (st.crash) return;
+    if (st.sw==="on") return msg("Pumpa går fortsatt – trykket bygges opp igjen like fort. Slå av strømmen først.","warn");
+    st.bled = true; st.bleeding = true;
+    if (!st.blocks) msg("Avlastingsventilen er åpen … men stempelet er ikke sikret!","bad"); else msg("Olja renner fra akkumulatoren tilbake til tanken. Følg med på manometeret.","info"); };
+  $("d3Air").onclick = () => { st.airClosed = true; if (st.lock) st.airLock = true; msg(st.lock ? "Luftventilen er stengt, luftet ut og låst." : "Luftventilen er stengt og luftet ut. Den må også låses.","ok"); };
+  $("d3Cool").onclick = () => { st.cooling = true; msg("Du venter til olja er under 40 °C – eller bruker hansker der det er varmt.","info"); };
+  $("d3Test").onclick = () => {
+    if (st.crash) return;
+    if (st.sw==="on"){ st.testAnim = 1.2; return msg("Pressa STARTET! Stempelet beveger seg. Prøvestart er bare trygt når alt er låst – ellers er den en test av flaks.","bad"); }
+    if (!st.lock) return msg("Ingenting skjer – men bryteren er ikke låst. Hvem som helst kan slå den på igjen.","warn");
+    st.tested = true; msg("Du trykker START: ingenting skjer ✓. Sett startbryteren tilbake til stopp. Du har kontrollert at du låste riktig bryter.","ok"); };
+  $("d3Reset").onclick = reset;
+  function readout(){
+    const set = (id,txt,c) => { const b=$(id); b.textContent=txt; b.className=c; };
+    set("r3El", st.sw==="on"?"PÅ":st.lock?"låst ✓":"av – ulåst", st.sw==="on"?"bad":st.lock?"ok":"warn");
+    set("r3Hyd", Math.round(st.acc)+" bar", st.acc<1?"ok":"bad");
+    set("r3Air", nf(st.air,1)+" bar", st.air<.1?"ok":"bad");
+    set("r3Ram", st.crash?"FALT!":st.blocks?"sikret ✓":st.ram>.01?"siger!":"usikret", st.crash?"bad":st.blocks?"ok":st.ram>.01?"bad":"warn");
+    set("r3Temp", Math.round(st.temp)+" °C", st.temp<40?"ok":"warn");
+    const C = [["Strøm låst",st.lock],["Klosser",st.blocks],["Hydraulikk 0",st.acc<1],["Luft 0",st.air<.1],["Kald olje",st.temp<40],["Prøvestart",st.tested]];
+    $("d3Checks").innerHTML = C.map(c => `<span class="${c[1]?"on":""}">${c[1]?"✓":"○"} ${c[0]}</span>`).join("");
+  }
+  let doneShown = false;
+  addAnim($("d3Svg"), (dt,t) => {
+    if (st.sw==="on" && st.testAnim>0){ st.testAnim -= dt; st.ram = st.blocks ? st.ram : clamp(st.ram + dt*.8,0,.6); }
+    else if (st.testAnim<=0 && st.sw==="on" && st.ram>0 && !st.blocks) st.ram = Math.max(0, st.ram - dt*.5);
+    if (st.bleeding){ st.acc = Math.max(0, st.acc - dt*70); if (st.acc<=0) st.bleeding = false; }
+    if (st.airClosed) st.air = Math.max(0, st.air - dt*4);
+    if (st.cooling) st.temp = Math.max(28, st.temp - dt*12);
+    if (st.sw==="off" && !st.blocks && !st.crash){
+      if (st.acc < 30){ st.ram = Math.min(1, st.ram + dt*1.6); if (st.ram>=1){ st.crash = true; msg("💥 Stempelet FALT! Det var akkumulatoren som holdt det oppe. Regel: sikre tyngden FØR du avlaster hydraulikken. Trykk «Start på nytt».","bad"); } }
+      else { st.ram = Math.min(1, st.ram + dt*.012); if (st.ram>.05 && !st.warned){ st.warned = true; msg("Se på stempelet – det siger sakte nedover! Ventiler lekker alltid litt. Sett inn sikringsklosser.","warn"); } }
+    }
+    if (safe() && !doneShown){ doneShown = true; msg("✅ Null energi: låst, sikret, trykkløst, kaldt og kontrollert. Nå – og først nå – kan jobben starte.","ok"); }
+    if (!safe()) doneShown = false;
+    $("d3Svg").innerHTML = pressSVG({print:false},{t, sw:st.sw, lock:st.lock, blocks:st.blocks, acc:st.acc, bled:st.bled, bleeding:st.bleeding, air:st.air, airClosed:st.airClosed, airLock:st.airLock, temp:st.temp, ram:st.ram, flow:st.sw==="on" && st.testAnim>0, labels:true});
+    readout();
+  });
+  reset(); readout();
+  $("d3Svg").innerHTML = pressSVG({print:false},{labels:true});
+})();
+
+/* =====================================================================
+   DEL 4 – LOTO i sju trinn
+   ===================================================================== */
+(function(){
+  const STEPS = [
+    {i:"📋", n:"Forbered", t:"Les instruksen. Finn ALLE energikildene. Lag SJA hvis jobben er farlig."},
+    {i:"📣", n:"Varsle", t:"Si fra til operatøren og alle som blir berørt."},
+    {i:"⏹", n:"Stopp", t:"Stopp maskinen på vanlig måte med stoppknappen."},
+    {i:"⏻", n:"Isoler", t:"Hovedbryteren til 0. Steng luftventilen. (Nødstopp og stoppknapp er IKKE isolasjonspunkter.)"},
+    {i:"🔒", n:"Lås og merk", t:"Din personlige lås og merkelapp på hvert isolasjonspunkt."},
+    {i:"💧", n:"Avlast", t:"Sett inn sikringsklosser. Åpne avlastingsventilen. Vent til manometeret viser 0."},
+    {i:"✅", n:"Kontroller", t:"Prøvestart: ingenting skal skje. Sett startbryteren tilbake. Nå kan du jobbe."}
+  ];
+  let step = 0, lt = 0, auto = false, at = 0;
+  $("d4Steps").innerHTML = STEPS.map((x,i)=>`<div data-i="${i}"><span class="ic">${x.i}</span><b>${i+1}</b> ${x.n}</div>`).join("");
+  $("d4Steps").onclick = e => { const d = e.target.closest("[data-i]"); if (!d) return; go(+d.dataset.i); };
+  function go(i){ step = i; lt = 0; ui(); }
+  function ui(){
+    $("d4Steps").querySelectorAll("[data-i]").forEach(d => { const i=+d.dataset.i; d.classList.toggle("on", i===step); d.classList.toggle("done", i<step); });
+    $("d4Msg").className = step===6 ? "status ok" : "status info";
+    $("d4Msg").innerHTML = `<b>${step+1}. ${STEPS[step].n}:</b> ${STEPS[step].t}`;
+  }
+  function zone(x,w,act,title){ return RC(x,10,w,380,act?"var(--orange-soft)":"var(--panel)",act?"var(--orange)":"var(--line)",act?3:1.5,14)+TX(x+w/2,40,title,{size:17,weight:800,anchor:"middle",fill:act?"var(--orange)":"var(--muted)"}); }
+  function draw(t){
+    let s = "";
+    const aA = [0,1,2,6].includes(step), aB = [3,4].includes(step), aC = [3,4,5,6].includes(step);
+    s += zone(10,320,aA, step===0?"Forbered":step===1?"Varsle":"Betjening");
+    s += zone(340,320,aB,"Hovedbryter");
+    s += zone(670,320,aC,"Trykk og tyngde");
+    // Sone A
+    if (step===0){
+      s += RC(70,64,200,300,"#fff","#495057",2,10)+RC(140,54,60,22,"var(--steel)","#495057",1.5,5);
+      const n = Math.floor(lt/.45);
+      ENERGI.forEach((e,i) => { const y = 108+i*40; s += TX(92,y,e.i,{size:20,anchor:"middle"})+TX(112,y,e.n,{size:16,weight:600,fill:"#14181d"}); if (i<n) s += TX(246,y,"✓",{size:22,weight:800,anchor:"middle",fill:"#2b8a3e"}); });
+    } else if (step===1){
+      s += fig(105,350,"var(--orange)",0,{ax:40,ay:60})+fig(245,350,"var(--purple)");
+      s += RC(30,70,220,64,"var(--panel)","var(--orange)",2,12)+TX(140,98,"Jeg stopper pressa nå",{size:15,weight:700,anchor:"middle",fill:"var(--orange)"})+TX(140,120,"for vedlikehold!",{size:15,weight:700,anchor:"middle",fill:"var(--orange)"});
+      if (lt>1.2) s += RC(200,160,110,40,"var(--panel)","var(--purple)",2,12)+TX(255,186,"OK! 👍",{size:15,weight:700,anchor:"middle",fill:"var(--purple)"});
+    } else {
+      s += RC(105,70,130,270,"var(--steel-soft)","#495057",2,12);
+      const pS = step===2 && lt>.5 && lt<1.4, pG = step===6 && lt>.5 && lt<1.4;
+      s += CI(170,145,pG?30:34,"#2f9e44","#1b5e20",3)+TX(170,151,"START",{size:13,weight:800,anchor:"middle",fill:"#fff"});
+      s += CI(170,265,pS?30:34,"#e03131","#8a1c1c",3)+TX(170,271,"STOPP",{size:13,weight:800,anchor:"middle",fill:"#fff"});
+      if (step===2) s += TX(225,268 - (lt<.5?20*(1-lt*2):0),"👈",{size:40});
+      if (step===6) s += TX(225,148 - (lt<.5?20*(1-lt*2):0),"👈",{size:40});
+      if (step===2 && lt>1) s += TX(170,370,"Maskinen står",{size:16,weight:800,anchor:"middle",fill:"var(--muted)"});
+      if (step===6 && lt>1.2) s += TX(170,370,"✓ Starter ikke",{size:20,weight:800,anchor:"middle",fill:"var(--green)"});
+      if (step>2 && step<6) s += TX(170,370,"Stoppet",{size:15,anchor:"middle",fill:"var(--muted)"});
+    }
+    // Sone B – hovedbryter
+    s += RC(410,70,170,170,"#fab005","#495057",2,12)+TX(495,64,"I",{size:16,weight:800,anchor:"middle"})+TX(400,160,"0",{size:16,weight:800,anchor:"end"});
+    const ang = step<3 ? 0 : step===3 ? 90*clamp(lt/1,0,1) : 90;
+    s += `<g transform="rotate(${fx(ang)} 495 155)">`+RC(482,78,26,154,"#e03131","#8a1c1c",2,10)+`</g>`+CI(495,155,24,"#c92a2a","#8a1c1c",2);
+    if (step>=4){ const dy = step===4 ? -70*(1-clamp(lt/.7,0,1)) : 0;
+      s += padlock(495,242+dy,"#e03131",false,1.3);
+      if (step>4 || lt>.9) s += tagG(495,284,5*Math.sin(t*2),"Kristian",false,1.25); }
+    s += TX(600,380,step<3?"PÅ":"AV – 0",{size:16,weight:800,anchor:"end",fill:step<3?"var(--red)":"var(--green)"});
+    // Sone C – trykk, luft og stempel
+    const hyd = step<5 ? 140 : step===5 ? 140*clamp(1-(lt-.9)/1.4,0,1) : 0;
+    s += gauge(760,130,62,hyd,160,false)+TX(760,215,"hydraulikk",{size:13,anchor:"middle",fill:"var(--muted)"});
+    const airV = step<3 ? 6 : step===3 ? 6*clamp(1-lt/1.2,0,1) : 0;
+    s += ln(905,60,905,200,"#1c7ed6",7)+CI(905,130,15,"#adb5bd","#495057",2);
+    const closedA = step>=3 ? 90*(step===3?clamp(lt/.8,0,1):1) : 0;
+    s += `<g transform="rotate(${fx(closedA)} 905 130)">`+ln(905,130,905,96,"#e03131",7)+`</g>`;
+    if (step>=4) s += padlock(905,150,"#e03131",false,.8);
+    s += TX(905,230,"luft "+nf(airV,1)+" bar",{size:13,anchor:"middle",fill:airV<.1?"var(--green)":"var(--muted)",weight:700});
+    // stempel + klosser
+    s += RC(700,360,260,14,"#5c7cfa","#364fc7",2,3)+RC(720,262,220,28,"#5c7cfa","#364fc7",2,3)+ln(830,240,830,262,"#495057",8);
+    if (step>=5){ const slide = step===5 ? 60*(1-clamp(lt/.8,0,1)) : 0;
+      [[735-slide],[905+slide]].forEach(([x]) => { s += RC(x,290,22,70,"#fab005","#212529",2,2); for (let y=296;y<356;y+=14) s += RC(x+1,y,20,7,"#212529","none",0); }); }
+    else s += TX(830,330,"stempelet henger",{size:13,anchor:"middle",fill:"var(--red)",weight:700});
+    $("d4Svg").innerHTML = s;
+  }
+  $("d4Next").onclick = () => { auto=false; $("d4Auto").textContent="▶ Automatisk"; go(step>=6?0:step+1); };
+  $("d4Auto").onclick = () => { auto=!auto; at=0; $("d4Auto").textContent = auto ? "❚❚ Stopp" : "▶ Automatisk"; };
+  $("d4Reset").onclick = () => { auto=false; $("d4Auto").textContent="▶ Automatisk"; go(0); };
+  addAnim($("d4Svg"), (dt,t) => { lt += dt; if (auto){ at += dt; if (at>3.6){ at=0; go(step>=6?0:step+1); } } draw(t); });
+  ui(); draw(0);
+})();
+
+/* =====================================================================
+   DEL 5 – gruppelås
+   ===================================================================== */
+(function(){
+  const P = [{k:"K",n:"Kristian",r:"mekaniker",c:"#e03131"},{k:"S",n:"Sara",r:"elektriker",c:"#1c7ed6"},{k:"O",n:"Ola",r:"lærling",c:"#2b8a3e"}];
+  let on, run, home, ang = 0;
+  function reset(){ on = {K:true,S:true,O:true}; run=false; home=false; chips(); msg("Tre personer – tre låser. Klikk på navnene for å ta av en lås.","info"); }
+  function msg(m,c){ $("d5Msg").className="status "+c; $("d5Msg").innerHTML=m; }
+  function chips(){ $("d5Chips").innerHTML = P.map(p => `<button class="chip" data-k="${p.k}" aria-pressed="${on[p.k]}">${on[p.k]?"🔒":"🔓"} ${p.n} (${p.r})</button>`).join(""); }
+  $("d5Chips").onclick = e => { const b=e.target.closest("[data-k]"); if(!b) return; const k=b.dataset.k, p=P.find(x=>x.k===k);
+    if (k==="O" && home && on.O) return msg("Ola er ikke her. Låsen hans kan ikke tas av av andre – se knappen «Ola dro hjem».","warn");
+    on[k] = !on[k]; if (on[k]) run=false; chips();
+    const left = P.filter(x=>on[x.k]).map(x=>x.n);
+    msg(on[k] ? `${p.n} har satt på låsen sin igjen.` : (left.length ? `${p.n} er ferdig og tar av SIN lås. Fortsatt låst av: ${left.join(", ")}.` : "Alle låsene er av. Klypa kan åpnes."), on[k]?"info":left.length?"info":"ok"); };
+  $("d5Start").onclick = () => { const left = P.filter(x=>on[x.k]).map(x=>x.n);
+    if (left.length){ run=false; msg(`❌ Kan ikke starte – hovedbryteren er låst av ${left.join(", ")}. Hver lås = en person som kanskje er inne i maskinen.`,"bad"); }
+    else { run=true; msg("✓ Alle låser er av – bryteren kan slås på. Maskinen går. (Før dette: vern på og ingen i faresonen – se del 6.)","ok"); } };
+  $("d5Home").onclick = () => { home=true; on.O=true; run=false; chips();
+    msg("Olas lås henger fortsatt, og Ola er hjemme. <b>Ingen klipper den av.</b> Leder følger prosedyren: ringer Ola, sjekker selv at ingen er i maskinen, fjerner låsen med vitne og skriver det ned. Ola får beskjed før neste skift.","warn"); };
+  $("d5Reset").onclick = reset;
+  function draw(dt,t){
+    ang += run ? 90*dt*3 : 0; if (!run) ang = 0;
+    const handle = run ? 0 : 90;
+    let s = "";
+    s += RC(130,40,180,170,"#fab005","#495057",2,12)+TX(220,34,"I",{size:16,weight:800,anchor:"middle"})+TX(122,130,"0",{size:16,weight:800,anchor:"end"});
+    s += `<g transform="rotate(${handle} 220 125)">`+RC(207,50,26,150,"#e03131","#8a1c1c",2,10)+`</g>`+CI(220,125,22,"#c92a2a","#8a1c1c",2);
+    const n = P.filter(x=>on[x.k]).length;
+    if (n){
+      s += `<path d="M205 236 v-14 a15 15 0 0 1 30 0 v14" fill="none" stroke="#868e96" stroke-width="7"/>`;
+      s += RC(120,234,200,36,"#ced4da","#495057",2,10);
+      for (let i=0;i<6;i++) s += CI(137+i*33,252,7,"var(--panel)","#495057",1.5);
+      P.forEach((p,i) => { if (!on[p.k]) return; const x = 137 + (i*2)*33 + 0; s += padlock(x,244,p.c,false,1.1); s += tagG(x,280,4*Math.sin(t*2+i),p.n,false,1.05); });
+    } else s += TX(220,262,"ingen lås – klypa er av",{size:14,anchor:"middle",fill:"var(--muted)"});
+    // maskinen
+    s += RC(400,50,270,200,"var(--steel-soft)","var(--steel-dark)",2,12);
+    s += gear(490,150,48,14,ang*Math.PI/180,"#adb5bd","var(--steel-dark)")+gear(590,150,32,10,-ang*1.5*Math.PI/180,"#adb5bd","var(--steel-dark)");
+    s += CI(645,78,14,run?"#2f9e44":"#e03131","#212529",2)+TX(535,36,run?"Maskinen går":"Maskinen står",{size:18,weight:800,anchor:"middle",fill:run?"var(--green)":"var(--red)"});
+    // hvem er inne
+    P.forEach((p,i) => { if (!on[p.k]) return; s += fig(430+i*70,372,p.c,0,{ax:16,ay:40}); s += TX(430+i*70,290,p.n,{size:12,weight:700,anchor:"middle",fill:p.c}); });
+    $("d5Svg").innerHTML = s;
+  }
+  addAnim($("d5Svg"), draw);
+  reset(); draw(0,0);
+})();
+
+/* =====================================================================
+   DEL 6 – tilbake i drift
+   ===================================================================== */
+(function(){
+  const ERR = [
+    {k:"verktoy", x:532, y:410, r:42, n:"Verktøy på bordet", t:"En fastnøkkel ligger på bordet ved verktøyet. Den kan bli skutt ut når pressa går. Rydd alt verktøy."},
+    {k:"kloss", x:519, y:330, r:48, n:"Sikringskloss står igjen", t:"Den ene sikringsklossen står fortsatt under stempelet. Stempelet slår ned i den. Ta ut begge."},
+    {k:"vern", x:384, y:500, r:72, n:"Vernet ligger på gulvet", t:"Vernet foran verktøyet er ikke montert. Ingen start uten vern."},
+    {k:"person", x:800, y:410, r:70, n:"Kollega i faresonen", t:"En kollega strekker hånden inn i verktøyet. Sjekk at ingen er i faresonen – og si fra høyt før start."},
+    {k:"ola", x:965, y:395, r:48, n:"Olas lås på luftventilen", t:"Ola har fortsatt sin lås på luftventilen. Han kan være inne. Bare Ola tar av sin lås."}
+  ];
+  let found = new Set(), all = false, misses = [];
+  function msg(m,c){ $("d6Msg").className="status "+c; $("d6Msg").innerHTML=m; }
+  const svg = $("d6Svg");
+  svg.addEventListener("pointerdown", e => {
+    const p = svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; const q = p.matrixTransform(svg.getScreenCTM().inverse());
+    const i = ERR.findIndex(f => Math.hypot(q.x-f.x,q.y-f.y) <= f.r);
+    if (i<0){ misses.push([q.x,q.y,T]); return msg("Her ser det greit ut. Let videre!","warn"); }
+    found.add(i); $("d6Count").textContent = `Funnet: ${found.size} / 5`;
+    msg(`<b>${ERR[i].n}:</b> ${ERR[i].t}`, "bad");
+    if (found.size===5) setTimeout(()=>msg("Alle 5 feil funnet! Nå kan Kristian følge oppstartstrinnene under.","ok"),2600);
+  });
+  $("d6Show").onclick = () => { all=!all; $("d6Show").textContent = all ? "🙈 Skjul" : "👁 Vis alle"; };
+  $("d6Reset").onclick = () => { found.clear(); all=false; misses=[]; $("d6Show").textContent="👁 Vis alle"; $("d6Count").textContent="Funnet: 0 / 5"; msg("Se etter verktøy, vern, sikringsklosser, folk og låser.","info"); };
+  addAnim(svg, (dt,t) => {
+    misses = misses.filter(m => t-m[2] < 1.5);
+    let s = pressSVG({print:false},{t, sw:"off", lock:false, blocks:"left", acc:0, air:0, airClosed:true, temp:35, guard:false, post:new Set(ERR.map(e=>e.k)), ram:0});
+    ERR.forEach((f,i) => {
+      if (found.has(i)) s += CI(f.x,f.y,f.r,"rgba(43,138,62,.12)","var(--green)",4)+CI(f.x+f.r*.7,f.y-f.r*.7,15,"var(--green)","#fff",2)+TX(f.x+f.r*.7,f.y-f.r*.7+6,"✓",{size:15,weight:800,anchor:"middle",fill:"#fff"});
+      else if (all) s += CI(f.x,f.y,f.r,"none","var(--orange)",3.5,` stroke-dasharray="8 6"`)+TX(f.x,f.y-f.r-6,f.n,{size:13,weight:800,anchor:"middle",fill:"var(--orange)"});
+    });
+    misses.forEach(m => s += TX(m[0],m[1]+7,"✕",{size:22,weight:800,anchor:"middle",fill:"var(--red)",op:fx(Math.max(0,1-(t-m[2])/1.5))}));
+    svg.innerHTML = s;
+  });
+  msg("Se etter verktøy, vern, sikringsklosser, folk og låser.","info");
+  const STEPS = [["🧰","Rydd verktøy"],["🧱","Ta ut klossene"],["🛡","Monter vern"],["👀","Ingen i faresonen"],["🔓","Ta av EGEN lås"],["📣","Varsle operatøren"],["▶","Prøvekjør"],["📝","Lukk arbeidsordren"]];
+  $("d6Steps").innerHTML = STEPS.map((x,i)=>`<div data-i="${i}"><span class="ic">${x[0]}</span><b>${i+1}</b> ${x[1]}</div>`).join("");
+  let si = 0, sa = 0;
+  addAnim($("d6Steps"), dt => { sa += dt; if (sa>1.8){ sa=0; si=(si+1)%STEPS.length; $("d6Steps").querySelectorAll("[data-i]").forEach(d=>d.classList.toggle("on", +d.dataset.i===si)); } });
+})();
+
+/* =====================================================================
+   OPPGAVEFIGURER (svart-hvitt)
+   ===================================================================== */
+function kompSVG(){
+  const k = "#000", w = "#fff";
+  let s = ln(0,400,760,400,k,2);
+  // stikkontakt og kabel
+  s += ln(18,40,18,400,k,3)+RC(18,110,44,44,w,k,2,4)+CI(32,132,3,k)+CI(48,132,3,k)+RC(62,118,22,28,w,k,2,3);
+  s += `<path d="M84 132 H110 V200 H118" fill="none" stroke="${k}" stroke-width="4"/>`;
+  // tank
+  s += RC(90,250,450,120,w,k,2.5,60)+ln(150,370,140,398,k,4)+ln(480,370,490,398,k,4);
+  s += TX(315,320,"lufttank 10 bar",{size:15,anchor:"middle",fill:k});
+  s += `<path d="M300 370 v14 M292 384 h16 l-8 10 z" fill="${w}" stroke="${k}" stroke-width="2"/>`+TX(320,394,"tappekran",{size:11,fill:k});
+  // motor
+  s += RC(118,170,124,78,w,k,2,8); for (let x=128;x<236;x+=12) s += ln(x,176,x,242,k,1.3);
+  s += ln(242,205,258,205,k,5)+CI(266,205,18,w,k,2.5);
+  // kompressorblokk
+  s += RC(360,110,130,138,w,k,2.5,6); for (let y=118;y<170;y+=9) s += ln(366,y,484,y,k,1.3);
+  s += RC(380,96,90,16,w,k,2,3);
+  // svinghjul og reim
+  s += CI(420,205,56,w,k,3); for (let i=0;i<5;i++){ const a=i*1.2566; s += ln(420+10*Math.cos(a),205+10*Math.sin(a),420+48*Math.cos(a),205+48*Math.sin(a),k,2.5); } s += CI(420,205,10,w,k,2);
+  s += ln(266,187,420,149,k,4)+ln(266,223,420,261,k,4);
+  s += `<path d="M250 175 L430 136 A72 72 0 0 1 430 274 L250 235 Z" fill="none" stroke="${k}" stroke-width="1.5" stroke-dasharray="6 5"/>`+TX(342,140,"reimvern",{size:11,anchor:"middle",fill:k});
+  // trykkrør, trykkbryter, manometer, utløpsventil
+  s += `<path d="M490 150 H520 V250" fill="none" stroke="${k}" stroke-width="5"/>`;
+  s += RC(548,190,64,50,w,k,2,5)+TX(580,212,"AUTO",{size:11,weight:700,anchor:"middle",fill:k})+RC(568,218,24,12,w,k,1.5,3)+ln(580,240,580,250,k,4);
+  s += CI(650,214,20,w,k,2.5)+ln(650,214,662,202,k,2)+ln(650,234,650,262,k,4);
+  s += `<path d="M540 310 H700" fill="none" stroke="${k}" stroke-width="5"/>`+CI(620,310,11,w,k,2)+ln(620,310,620,290,k,5)+`<path d="M700 310 q30 0 30 40 v48" fill="none" stroke="${k}" stroke-width="3"/>`;
+  // nummer
+  [[1,40,90],[2,580,170],[3,220,330],[4,420,290],[5,425,80],[6,620,345]].forEach(([n,x,y]) => s += CI(x,y,15,w,k,2.5)+TX(x,y+6,n,{size:16,weight:800,anchor:"middle",fill:k}));
+  return s;
+}
+function lappSVG(){
+  const k="#000";
+  let s = `<path d="M30 40 L300 40 L300 400 L30 400 Z" fill="#fff" stroke="${k}" stroke-width="2.5"/>`+CI(165,70,14,"#fff",k,2.5);
+  s += RC(30,96,270,58,"#000")+TX(165,122,"⚠ FARE",{size:20,weight:800,anchor:"middle",fill:"#fff"})+TX(165,145,"IKKE START – ARBEID PÅGÅR",{size:13,weight:700,anchor:"middle",fill:"#fff"});
+  ["Navn","Telefon","Dato og kl.","Arbeid","Maskin"].forEach((f,i) => { const y=192+i*44; s += TX(44,y,f+":",{size:14,weight:700,fill:k})+ln(44,y+18,286,y+18,k,1); });
+  return s;
+}
+(function(){
+  $("o1fig").innerHTML = svgOpen(1000,540) + pressSVG({print:true},{nums:true, sw:"on", acc:140, temp:60}) + "</svg>";
+  $("o3fig").innerHTML = svgOpen(330,430) + lappSVG() + "</svg>";
+  $("o5fig").innerHTML = svgOpen(760,410) + kompSVG() + "</svg>";
+  document.querySelectorAll("#oppgavetekst .ofig svg").forEach(s => { s.removeAttribute("width"); s.removeAttribute("height"); });
+})();
+
+/* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToPng(svg){
+  const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
+  const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0,0,w,h); cx.drawImage(img,0,0,w,h);
+  return [cv.toDataURL("image/png"), vb.width];
+}
+$("btnCopy").onclick = async () => {
+  const src = $("oppgavetekst"), clone = src.cloneNode(true);
+  const svgs = [...src.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<svgs.length;i++){
+    try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.min(640, Math.round(w*.7)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
+  }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".scenario").forEach(s => { s.style.border="1px dashed #777"; s.style.padding="6px 10px"; });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>

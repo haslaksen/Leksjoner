@@ -1,0 +1,1369 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elektro 1 – Grunnleggende</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#fab005; --yellow-soft:#fff6d6;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --copper:#c0703a; --water:#a5d8ff;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+  --copper:#e0915a; --water:#1f4d75;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:62ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(260px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.85rem; font-weight:700; font-variant-numeric:tabular-nums}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+.tip.r{border-color:var(--red); background:var(--red-soft)}
+ul.clean{padding-left:1.1rem; margin:.3rem 0 .8rem} ul.clean li{margin:.25rem 0}
+details.laerer{margin-top:1.2rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+
+/* Størrelseskort */
+.qty{display:grid; grid-template-columns:3.2rem 1fr; gap:.2rem .8rem; align-items:center}
+.qty .sym{grid-row:span 2; font-size:2rem; font-weight:800; text-align:center; border-radius:12px; padding:.2rem 0}
+.qty .nm{font-weight:700}
+.qty .ds{font-size:.85rem; color:var(--muted)}
+
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout.r3{grid-template-columns:repeat(3,1fr)}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.72rem; color:var(--muted)}
+.readout b{font-size:1.25rem; font-variant-numeric:tabular-nums}
+
+.wire{fill:none; stroke:var(--ink); stroke-width:4; stroke-linejoin:round}
+.edot{fill:var(--blue)}
+.cdot{fill:var(--orange)}
+.cut{fill:var(--panel)}
+.lbl{font-size:16px; font-weight:700; fill:var(--ink)}
+.lbls{font-size:13px; fill:var(--muted)}
+.val{font-size:17px; font-weight:800; fill:var(--orange); font-variant-numeric:tabular-nums}
+
+/* Trekant */
+.uri text{font-size:44px; font-weight:800; text-anchor:middle; dominant-baseline:central; cursor:pointer}
+.uri .cov{fill:var(--orange); opacity:0; transition:opacity .3s}
+.uri .on .cov{opacity:1}
+.uri .on text{fill:#fff}
+.calc{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:.6rem}
+.calc label{display:flex; flex-direction:column; font-size:.8rem; color:var(--muted); gap:.2rem}
+.calc input{font:inherit; font-size:1rem; padding:.45rem .6rem; border-radius:8px; border:1px solid var(--line); background:var(--bg); color:var(--ink); width:100%}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.95rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.8rem 1rem; margin-top:.8rem}
+.steps div{margin:.2rem 0}
+.steps .res{color:var(--orange); font-weight:700; font-size:1.15rem}
+.formula{font-size:1.6rem; font-weight:800; text-align:center; padding:.4rem; color:var(--orange)}
+
+.mot{grid-template-columns:repeat(7,1fr); gap:.6rem}
+.mot .card{padding:.6rem .65rem; font-size:.9rem; overflow-wrap:anywhere; hyphens:auto}
+.mot .scene{max-height:90px}
+@media (max-width:1100px){ .mot{grid-template-columns:repeat(4,1fr)} }
+@media (max-width:600px){ .mot{grid-template-columns:1fr 1fr} }
+/* Kurs */
+.devs{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.6rem}
+.meter{background:var(--steel-soft); border-radius:8px; height:1.6rem; position:relative; overflow:hidden; margin-top:.5rem}
+.meter .fill{height:100%; width:0; background:var(--green); transition:width .5s, background .3s}
+.meter .lim{position:absolute; top:0; bottom:0; width:3px; background:var(--red)}
+.meter .txt{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:.85rem}
+
+/* Lås og merk */
+.rules{counter-reset:r; list-style:none; padding:0; margin:0}
+.rules li{counter-increment:r; display:flex; gap:.6rem; align-items:center; padding:.4rem .6rem; border-radius:10px; margin:.25rem 0; color:var(--muted); transition:background .3s, color .3s}
+.rules li::before{content:counter(r); flex:none; width:1.7rem; height:1.7rem; border-radius:50%; display:grid; place-items:center; font-weight:800; background:var(--steel-soft); color:var(--muted)}
+.rules li.done{color:var(--ink)}
+.rules li.done::before{background:var(--green); color:#fff}
+.rules li.cur{background:var(--orange-soft); color:var(--ink); font-weight:650}
+.rules li.cur::before{background:var(--orange); color:#fff}
+.loto .part{opacity:0; transition:opacity .6s, transform .6s}
+.loto .part.show{opacity:1; transform:none!important}
+.heart{transform-box:fill-box; transform-origin:center; animation:beat 1s infinite}
+.heart.fib{animation:fib .18s infinite; fill:var(--red)!important}
+@keyframes beat{0%,100%{transform:scale(1)} 15%{transform:scale(1.25)} 30%{transform:scale(1)}}
+@keyframes fib{0%,100%{transform:scale(1) rotate(0)} 50%{transform:scale(.85) rotate(8deg)}}
+.flash{animation:flash .6s ease-out}
+@keyframes flash{0%{opacity:1; r:6} 100%{opacity:0; r:60}}
+
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); height:2rem}
+.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
+.fasit b{color:var(--green)}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.minis{display:grid; grid-template-columns:repeat(4,1fr); gap:.8rem; margin:.6rem 0}
+.minis figure{margin:0; border:1px solid var(--muted); border-radius:8px; padding:.4rem; background:#fff}
+.minis figcaption{font-weight:700; font-size:.9rem; color:#000}
+.minis svg{display:block; width:100%; height:auto}
+.formelark{display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; font-size:.95rem; border:1px solid var(--muted); border-radius:8px; padding:.5rem .8rem; margin:.5rem 0 1rem}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid4,.grid3{grid-template-columns:1fr 1fr}
+  .minis{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+  .readout{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){ .grid4,.grid3{grid-template-columns:1fr} .card{overflow-wrap:anywhere} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr, .minis{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+  .minis{grid-template-columns:repeat(4,1fr)!important}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Elektro · <span>Leksjon 1</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- START -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Elektro</div>
+      <h1>Leksjon 1<br>Strøm, spenning og resistans</h1>
+      <p class="lead">CNC-maskinen, plasmaskjæreren og sensorene i robotcella går på strøm. Før du kan vedlikeholde og feilsøke dem, må du vite hva strøm er – og hvorfor den er farlig.</p>
+      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <ol class="goals">
+        <li>forklare <b>spenning, strøm og resistans</b> med symbol og enhet</li>
+        <li>forklare hvorfor en krets må være <b>lukket</b>, og hva en <b>sikring</b> gjør</li>
+        <li>forklare forskjellen på <b>likestrøm</b> og <b>vekselstrøm</b></li>
+        <li>regne med <b>Ohms lov</b>: U = R · I</li>
+        <li>regne ut <b>effekt</b> P = U · I og <b>energi</b> i kWh</li>
+        <li>forklare hvorfor <b>strøm gjennom kroppen</b> er farlig, og hva <b>lås og merk</b> betyr</li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p style="margin-bottom:.4rem"><b>Vedlikehold:</b> <i>«arbeide på elektriske og automatiserte systemer ved reparasjons- og vedlikeholdsarbeid etter instrukser»</i></p>
+        <p style="margin-bottom:.4rem"><b>Vedlikehold:</b> <i>«bruke og reflektere over helse-, miljø- og sikkerhetskrav i rutiner for vedlikehold»</i></p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Leksjonen legger grunnlaget for feilsøking og måling i senere leksjoner (Teknologi: «bruke og velge målemetode og måleutstyr …»).</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1</th></tr>
+          <tr><td>0–5 min</td><td>Del 1: strøm i verkstedet</td></tr>
+          <tr><td>5–28 min</td><td>Del 2–4: vannmodellen, kretsen, likestrøm/vekselstrøm</td></tr>
+          <tr><td>28–45 min</td><td>Oppgave 1 og 2</td></tr>
+          <tr><th colspan="2">Time 2</th></tr>
+          <tr><td>0–10 min</td><td>Del 5: Ohms lov</td></tr>
+          <tr><td>10–20 min</td><td>Oppgave 3</td></tr>
+          <tr><td>20–32 min</td><td>Del 6: effekt og energi + oppgave 4</td></tr>
+          <tr><td>32–43 min</td><td>Del 7: sikkerhet + oppgave 5</td></tr>
+          <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+      </div>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 1 -->
+<section class="slide" id="verksted" data-nav="1 I verkstedet">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 5 min</div>
+    <h2>Strøm i verkstedet</h2>
+    <p class="lead">Nesten alt som beveger seg, lyser eller måler noe i verkstedet, bruker elektrisk strøm.</p>
+    <div class="grid4" style="margin-top:1.4rem">
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Elmotor som driver en reimskive">
+          <rect x="30" y="40" width="84" height="54" rx="8" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>
+          <path d="M42 46 v42 M54 46 v42 M66 46 v42 M78 46 v42 M90 46 v42 M102 46 v42" style="stroke:var(--steel-dark);stroke-width:2"/>
+          <rect x="56" y="26" width="30" height="16" rx="2" style="fill:var(--steel-dark)"/>
+          <path d="M60 26 C 60 10, 20 14, 10 6 M68 26 C 68 8, 40 4, 30 0" style="fill:none;stroke:var(--ink);stroke-width:2.5"/>
+          <rect x="114" y="62" width="30" height="10" style="fill:var(--steel-dark)"/>
+          <g><animateTransform attributeName="transform" type="rotate" from="0 154 67" to="360 154 67" dur="1s" repeatCount="indefinite"/>
+            <circle cx="154" cy="67" r="24" style="fill:var(--orange)"/>
+            <path d="M154 45 V89 M132 67 H176 M139 52 L169 82 M169 52 L139 82" style="stroke:#a63c04;stroke-width:3"/>
+            <circle cx="154" cy="67" r="6" style="fill:var(--panel)"/>
+          </g>
+          <text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">elmotor · 400 V</text>
+        </svg>
+        <h3>Motorer</h3><p>Spindel og akser i CNC-maskinen drives av elmotorer.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Plasmaskjærer med lysbue">
+          <rect x="20" y="80" width="160" height="10" style="fill:var(--steel)"/>
+          <rect x="88" y="10" width="24" height="46" rx="4" style="fill:var(--steel-dark)"/>
+          <path d="M90 56 h20 l-4 14 h-12z" style="fill:var(--copper)"/>
+          <path d="M100 70 L97 74 L103 77 L99 80" style="fill:none;stroke:#74c0fc;stroke-width:5;stroke-linecap:round">
+            <animate attributeName="d" dur=".25s" repeatCount="indefinite" values="M100 70 L97 74 L103 77 L99 80;M100 70 L103 74 L97 77 L101 80;M100 70 L98 74 L102 77 L100 80;M100 70 L97 74 L103 77 L99 80"/></path>
+          <path d="M100 70 L100 80" style="stroke:#fff;stroke-width:2"/>
+          <g style="fill:var(--yellow)">
+            <circle r="2"><animateMotion dur=".6s" repeatCount="indefinite" path="M100 90 q-20 4 -40 12"/></circle>
+            <circle r="2"><animateMotion dur=".7s" begin=".2s" repeatCount="indefinite" path="M100 90 q15 6 34 12"/></circle>
+            <circle r="1.6"><animateMotion dur=".5s" begin=".35s" repeatCount="indefinite" path="M100 90 q-6 6 -16 12"/></circle>
+          </g>
+          <text x="100" y="118" text-anchor="middle" font-size="11" style="fill:var(--muted)">lysbue av strøm · over 100 A</text>
+        </svg>
+        <h3>Plasmaskjærer</h3><p>Strømmen går gjennom luft og lager en lysbue som smelter metallet.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Sensor som oppdager metallbiter på et transportbånd">
+          <rect x="92" y="6" width="16" height="44" rx="3" style="fill:var(--steel-dark)"/>
+          <rect x="90" y="44" width="20" height="8" rx="2" style="fill:var(--blue)"/>
+          <circle cx="100" cy="16" r="4.5" style="fill:var(--steel)">
+            <animate attributeName="fill" dur="4s" repeatCount="indefinite" calcMode="discrete" keyTimes="0;.385;.5;1" values="#8d99a6;#51cf66;#8d99a6;#8d99a6"/></circle>
+          <path d="M100 6 C 100 -4, 150 0, 190 4" style="fill:none;stroke:var(--ink);stroke-width:2"/>
+          <rect x="0" y="80" width="200" height="10" rx="5" style="fill:var(--steel-soft);stroke:var(--steel)"/>
+          <rect x="-30" y="64" width="30" height="16" rx="2" style="fill:var(--steel)"><animateTransform attributeName="transform" type="translate" from="0 0" to="260 0" dur="4s" repeatCount="indefinite"/></rect>
+          <text x="100" y="108" text-anchor="middle" font-size="11" style="fill:var(--muted)">sensor · 24 V styrestrøm</text>
+        </svg>
+        <h3>Sensorer</h3><p>En <b>induktiv sensor</b> merker metall uten å røre det. Lyset tennes når en metallbit passerer.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Batteridrill">
+          <path d="M40 30 h80 a12 12 0 0 1 12 12 v10 a12 12 0 0 1 -12 12 h-46 l-8 30 h-22 l6 -30 h-10 a12 12 0 0 1 -12 -12 v-10 a12 12 0 0 1 12 -12z" style="fill:var(--orange)"/>
+          <rect x="44" y="94" width="40" height="18" rx="3" style="fill:var(--steel-dark)"/>
+          <rect x="132" y="40" width="14" height="14" style="fill:var(--steel-dark)"/>
+          <rect x="146" y="44" width="40" height="6" style="fill:var(--steel)"/>
+          <path d="M150 44 l6 6 M160 44 l6 6 M170 44 l6 6 M180 44 l6 6" style="stroke:var(--steel-dark);stroke-width:2">
+            <animateTransform attributeName="transform" type="translate" values="0 0;10 0" dur=".2s" repeatCount="indefinite"/></path>
+          <text x="64" y="107" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">18 V</text>
+          <text x="100" y="18" text-anchor="middle" font-size="11" style="fill:var(--muted)">batteriverktøy</text>
+        </svg>
+        <h3>Batteriverktøy</h3><p>Drill og muttertrekker går på batteri, ofte 18 V.</p></div>
+    </div>
+    <div class="tip o"><b>Oppstart (2 min med sidemannen):</b> Hvilke maskiner i verkstedet bruker strøm? Hva skjer i verkstedet hvis strømmen går?</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Skriv svarene på tavla. Merk dem med «stor maskin» / «liten / batteri». Det brukes igjen i Del 4 (vekselstrøm/likestrøm) og Del 6 (effekt).</details>
+  </div>
+</section>
+
+<!-- DEL 2 -->
+<section class="slide" id="vannmodell" data-nav="2 Vannmodellen">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 10 min</div>
+    <h2>Hva er strøm? Tenk på vann i et rør</h2>
+    <p class="lead">I metall finnes det <b>elektroner</b> – bitte små partikler som kan flytte seg fritt (husker du «elektronsjøen» fra Materiallære 1?). Når de flytter seg samme vei, har vi <b>strøm</b>.</p>
+    <div class="grid2">
+      <div class="fig">
+        <div style="font-weight:650">Vannkrets</div>
+        <svg id="wSvg" viewBox="0 0 480 300" role="img" aria-label="Vannkrets med pumpe, kran og smalt rør">
+          <path id="wLoop" d="M60 150 V80 Q60 60 80 60 H400 Q420 60 420 80 V220 Q420 240 400 240 H80 Q60 240 60 220 Z" style="fill:none;stroke:var(--steel-dark);stroke-width:36"/>
+          <path d="M60 150 V80 Q60 60 80 60 H400 Q420 60 420 80 V220 Q420 240 400 240 H80 Q60 240 60 220 Z" style="fill:none;stroke:var(--water);stroke-width:28"/>
+          <g id="wDots"></g>
+          <rect id="wWallL" x="402" y="110" width="4" height="80" style="fill:var(--steel-dark)"/>
+          <rect id="wWallR" x="434" y="110" width="4" height="80" style="fill:var(--steel-dark)"/>
+          <text x="392" y="140" class="lbl" text-anchor="end">smalt</text><text x="392" y="158" class="lbl" text-anchor="end">rør</text>
+          <rect id="wGate" x="236" y="44" width="8" height="32" rx="2" style="fill:var(--red);opacity:0"/>
+          <path d="M226 32 l28 0 M240 32 v12" style="stroke:var(--steel-dark);stroke-width:5;stroke-linecap:round"/>
+          <text x="240" y="22" text-anchor="middle" class="lbl">kran</text>
+          <circle cx="60" cy="150" r="34" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:3"/>
+          <g id="wImp"><path d="M60 150 L60 124 M60 150 L82 163 M60 150 L38 163" style="stroke:var(--blue);stroke-width:7;stroke-linecap:round"/></g>
+          <circle cx="60" cy="150" r="6" style="fill:var(--steel-dark)"/>
+          <text x="104" y="104" class="lbl">pumpe</text>
+          <path d="M78 150 H122" style="stroke:var(--steel-dark);stroke-width:5"/>
+          <circle cx="150" cy="150" r="28" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:3"/>
+          <path d="M131 162 A22 22 0 1 1 169 162" style="fill:none;stroke:var(--line);stroke-width:4"/>
+          <line id="wNeedle" x1="150" y1="150" x2="150" y2="130" style="stroke:var(--red);stroke-width:3;stroke-linecap:round"/>
+          <circle cx="150" cy="150" r="3.5" style="fill:var(--ink)"/>
+          <text x="150" y="196" text-anchor="middle" class="lbl">trykk</text>
+          <text x="240" y="160" text-anchor="middle" class="val" id="wFlow">0 l/min</text>
+          <text x="240" y="180" text-anchor="middle" class="lbls">vannmengde</text>
+        </svg>
+      </div>
+      <div class="fig">
+        <div style="font-weight:650">Elektrisk krets</div>
+        <svg id="cSvg" viewBox="0 0 480 300" role="img" aria-label="Elektrisk krets med batteri, bryter og lampe">
+          <circle id="cGlow" cx="420" cy="150" r="58" style="fill:var(--yellow);opacity:0"/>
+          <path class="wire" d="M60 150 V80 Q60 60 80 60 H400 Q420 60 420 80 V220 Q420 240 400 240 H80 Q60 240 60 220 Z"/>
+          <g id="cArrows" style="display:none">
+            <path d="M150 52 l14 8 l-14 8z M330 232 l-14 8 l14 8z M428 110 l-8 14 l-8 -14z M52 200 l8 -14 l8 14z" style="fill:var(--orange)"/>
+          </g>
+          <g id="cDots"></g>
+          <rect class="cut" x="34" y="132" width="52" height="36"/>
+          <line x1="34" y1="142" x2="86" y2="142" style="stroke:var(--ink);stroke-width:4"/>
+          <line x1="48" y1="158" x2="72" y2="158" style="stroke:var(--ink);stroke-width:8"/>
+          <text x="96" y="146" class="lbl" style="fill:var(--red)">+</text><text x="96" y="168" class="lbl" style="fill:var(--blue)">−</text>
+          <text x="104" y="104" class="lbl">batteri</text>
+          <text x="116" y="160" class="val" id="cU">12 V</text>
+          <rect class="cut" x="214" y="50" width="52" height="20"/>
+          <circle cx="220" cy="60" r="5" style="fill:var(--ink)"/><circle cx="260" cy="60" r="5" style="fill:var(--ink)"/>
+          <line id="cLever" x1="220" y1="60" x2="261" y2="60" style="stroke:var(--ink);stroke-width:4;stroke-linecap:round;transition:transform .3s;transform-origin:220px 60px"/>
+          <text x="240" y="30" text-anchor="middle" class="lbl">bryter</text>
+          <circle cx="420" cy="150" r="26" class="cut" style="stroke:var(--ink);stroke-width:4"/>
+          <path d="M402 132 L438 168 M438 132 L402 168" style="stroke:var(--ink);stroke-width:3"/>
+          <text x="352" y="146" class="lbl" text-anchor="end">lampe</text>
+          <text x="352" y="166" class="val" text-anchor="end" id="cR">48 Ω</text>
+          <circle cx="240" cy="240" r="18" class="cut" style="stroke:var(--ink);stroke-width:3"/>
+          <text x="240" y="246" text-anchor="middle" class="lbl">A</text>
+          <text x="240" y="282" text-anchor="middle" class="val" id="cI">0,25 A</text>
+          <text x="240" y="208" text-anchor="middle" class="lbls">amperemeter (måler strøm)</text>
+        </svg>
+      </div>
+    </div>
+    <div class="controls no-print">
+      <label for="sU">Spenning U:</label><input type="range" id="sU" min="0" max="24" step="1" value="12">
+      <label for="sR">Resistans R:</label><input type="range" id="sR" min="12" max="96" step="4" value="48">
+      <button class="btn orange" id="btnSw">Slå av bryteren</button>
+      <button class="btn" id="btnDir">Vis elektronene</button>
+    </div>
+    <div class="status info" id="vmTxt"></div>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card qty"><div class="sym" style="background:var(--red-soft);color:var(--red)">U</div><div class="nm">Spenning · volt (V)</div><div class="ds">«Trykket» som dytter elektronene rundt. Som pumpa.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--blue-soft);color:var(--blue)">I</div><div class="nm">Strøm · ampere (A)</div><div class="ds">Hvor mange elektroner som passerer per sekund. Som vannmengden.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--green-soft);color:var(--green)">R</div><div class="nm">Resistans · ohm (Ω)</div><div class="ds">Hvor vanskelig det er for strømmen å komme gjennom. Som et smalt rør.</div></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Pek på at batteriet ikke «lager» elektroner – de er i ledningen hele tiden, akkurat som vannet i røret. Trykk «Vis elektronene»: elektronene går fra − til +, men i skjemaer tegner vi strømmen fra + til − (teknisk strømretning). Den ble bestemt før man kjente til elektronene, og vi har beholdt den.</details>
+  </div>
+</section>
+
+<!-- DEL 3 -->
+<section class="slide" id="kretsen" data-nav="3 Kretsen">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 8 min</div>
+    <h2>Kretsen må være lukket</h2>
+    <p class="lead">Strøm går bare når det er en hel vei <b>rundt</b> – fra kilden, gjennom lampa og tilbake. Velg en situasjon og se hva som skjer.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="kSvg" viewBox="0 0 610 300" role="img" aria-label="Krets med batteri, sikring, bryter og lampe">
+          <circle id="kGlow" cx="500" cy="150" r="58" style="fill:var(--yellow);opacity:0;transition:opacity .3s"/>
+          <path id="kPathA" class="wire" d="M60 150 V80 Q60 60 80 60 H480 Q500 60 500 80 V220 Q500 240 480 240 H80 Q60 240 60 220 Z"/>
+          <path id="kPathB" d="M60 150 V80 Q60 60 80 60 H440 V240 H80 Q60 240 60 220 Z" style="fill:none;stroke:none"/>
+          <path id="kShort" d="M440 60 V240" style="stroke:var(--red);stroke-width:5;display:none"/>
+          <g id="kDots"></g>
+          <!-- batteri -->
+          <rect class="cut" x="34" y="132" width="52" height="36"/>
+          <line x1="34" y1="142" x2="86" y2="142" style="stroke:var(--ink);stroke-width:4"/>
+          <line x1="48" y1="158" x2="72" y2="158" style="stroke:var(--ink);stroke-width:8"/>
+          <text x="96" y="146" class="lbl" style="fill:var(--red)">+</text><text x="96" y="168" class="lbl" style="fill:var(--blue)">−</text>
+          <text x="96" y="196" class="lbl">24 V</text>
+          <!-- sikring -->
+          <rect class="cut" x="126" y="48" width="58" height="24"/>
+          <rect x="130" y="50" width="50" height="20" rx="2" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"/>
+          <line id="kFuse" x1="126" y1="60" x2="184" y2="60" style="stroke:var(--ink);stroke-width:2.5"/>
+          <g id="kFuseBroken" style="display:none"><path d="M126 60 H150 l3 -6 M184 60 H160 l-3 6" style="fill:none;stroke:var(--red);stroke-width:2.5"/></g>
+          <circle id="kFlash" cx="155" cy="60" r="0" style="fill:var(--yellow)"/>
+          <text x="155" y="32" text-anchor="middle" class="lbl">sikring 2 A</text>
+          <!-- bryter -->
+          <rect class="cut" x="294" y="50" width="52" height="20"/>
+          <circle cx="300" cy="60" r="5" style="fill:var(--ink)"/><circle cx="340" cy="60" r="5" style="fill:var(--ink)"/>
+          <line id="kLever" x1="300" y1="60" x2="341" y2="60" style="stroke:var(--ink);stroke-width:4;stroke-linecap:round;transition:transform .3s;transform-origin:300px 60px"/>
+          <text x="320" y="32" text-anchor="middle" class="lbl">bryter</text>
+          <!-- lampe -->
+          <circle cx="500" cy="150" r="26" class="cut" style="stroke:var(--ink);stroke-width:4"/>
+          <path d="M482 132 L518 168 M518 132 L482 168" style="stroke:var(--ink);stroke-width:3"/>
+          <text x="534" y="146" class="lbl">lampe</text>
+          <text x="534" y="166" class="lbls">48 Ω</text>
+          <!-- brudd -->
+          <g id="kBreak" style="display:none">
+            <rect class="cut" x="236" y="230" width="30" height="20"/>
+            <path d="M246 228 l-6 8 h8 l-6 10" style="fill:none;stroke:var(--red);stroke-width:3"/>
+            <path d="M262 228 l-6 8 h8 l-6 10" style="fill:none;stroke:var(--red);stroke-width:3"/>
+            <text x="251" y="276" text-anchor="middle" class="lbl" style="fill:var(--red)">brudd</text>
+          </g>
+          <text id="kShortLbl" x="430" y="206" text-anchor="end" class="lbl" style="fill:var(--red);display:none">kortslutning</text>
+          <!-- måler -->
+          <rect x="180" y="110" width="160" height="56" rx="8" style="fill:var(--steel-soft);stroke:var(--line)"/>
+          <text x="260" y="130" text-anchor="middle" class="lbls">strøm i kretsen</text>
+          <text x="260" y="156" text-anchor="middle" class="val" id="kI" style="font-size:22px">0,50 A</text>
+        </svg>
+        <div class="controls no-print" id="kBtns">
+          <button class="btn on" data-s="normal">✔ Normal</button>
+          <button class="btn" data-s="av">Bryteren av</button>
+          <button class="btn" data-s="brudd">Brudd i ledningen</button>
+          <button class="btn" data-s="kort">⚡ Kortslutning</button>
+          <button class="btn primary" id="kReset">🔧 Bytt sikring</button>
+        </div>
+        <div class="status ok" id="kTxt">Kretsen er lukket. Strømmen går fra + gjennom sikring, bryter og lampe og tilbake til −.</div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem">
+          <h3>Sikring</h3>
+          <p style="margin:0">En tynn tråd som <b>smelter</b> (eller en bryter som slår ut) når strømmen blir for stor. Den beskytter ledningene mot å bli så varme at det begynner å brenne.</p>
+        </div>
+        <div class="card" style="margin-bottom:.8rem">
+          <h3>Kortslutning</h3>
+          <p style="margin:0">Strømmen finner en snarvei <b>utenom</b> lampa, nesten uten resistans. Da blir strømmen enorm – helt til sikringen går.</p>
+        </div>
+        <div class="card">
+          <svg viewBox="0 0 300 120" style="display:block;width:100%;height:auto" role="img" aria-label="Tverrsnitt av kabel">
+            <circle cx="62" cy="60" r="52" style="fill:#868e96"/>
+            <circle cx="62" cy="60" r="44" style="fill:var(--steel-soft)"/>
+            <circle cx="42" cy="48" r="17" fill="#8b5a2b"/><circle cx="42" cy="48" r="9" fill="#e8a46a"/>
+            <circle cx="82" cy="48" r="17" fill="#1c6fd1"/><circle cx="82" cy="48" r="9" fill="#e8a46a"/>
+            <circle cx="62" cy="82" r="17" fill="#f2c94c" stroke="#2b8a3e" stroke-width="6" stroke-dasharray="7 6"/><circle cx="62" cy="82" r="9" fill="#e8a46a"/>
+            <path d="M74 52 L150 30 M62 82 L150 92" style="stroke:var(--ink);stroke-width:1.5"/>
+            <text x="156" y="34" style="font-size:15px;font-weight:700;fill:var(--copper)">kobber: leder</text>
+            <text x="156" y="52" style="font-size:12px;fill:var(--muted)">frie elektroner</text>
+            <text x="156" y="96" style="font-size:15px;font-weight:700;fill:var(--ink)">plast: isolator</text>
+            <text x="156" y="114" style="font-size:12px;fill:var(--muted)">elektronene sitter fast</text>
+          </svg>
+          <p style="margin:.4rem 0 0; font-size:.9rem"><b>Leder</b> = slipper strøm gjennom (kobber, aluminium, stål). <b>Isolator</b> = stopper strøm (plast, gummi, glass).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 4 -->
+<section class="slide" id="dcac" data-nav="4 DC / AC">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 5 min</div>
+    <h2>Likestrøm og vekselstrøm</h2>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="acSvg" viewBox="0 0 640 310" role="img" aria-label="Elektroner i en ledning og spenning over tid">
+          <rect x="30" y="34" width="580" height="64" rx="32" style="fill:var(--orange-soft);stroke:var(--copper);stroke-width:3"/>
+          <text x="320" y="22" text-anchor="middle" class="lbls">elektronene i ledningen (sakte film)</text>
+          <g id="acDots"></g>
+          <g id="acArrow"><path d="M290 116 h60 l-10 -7 m10 7 l-10 7" style="fill:none;stroke:var(--blue);stroke-width:4;stroke-linecap:round"/></g>
+          <line x1="60" y1="150" x2="60" y2="290" style="stroke:var(--ink);stroke-width:2"/>
+          <line id="acZero" x1="60" y1="220" x2="610" y2="220" style="stroke:var(--ink);stroke-width:2"/>
+          <text x="66" y="150" class="lbls">spenning</text>
+          <text x="606" y="236" text-anchor="end" class="lbls">tid →</text>
+          <line id="acRms" x1="60" x2="610" y1="0" y2="0" stroke-dasharray="6 5" style="stroke:var(--green);stroke-width:2;display:none"/>
+          <text id="acRmsT" x="606" y="0" text-anchor="end" style="font-size:13px;font-weight:700;fill:var(--green);display:none">230 V effektivverdi</text>
+          <text id="acTop" x="54" y="164" text-anchor="end" class="lbls">+325</text>
+          <text id="acBot" x="54" y="282" text-anchor="end" class="lbls">−325</text>
+          <text x="54" y="224" text-anchor="end" class="lbls">0</text>
+          <polyline id="acTrace" points="" style="fill:none;stroke:var(--red);stroke-width:3.5;stroke-linejoin:round"/>
+          <circle id="acHead" r="6" style="fill:var(--red)"/>
+          <text id="acVal" x="600" y="290" text-anchor="end" class="val">0 V</text>
+        </svg>
+        <div class="controls no-print">
+          <button class="btn" id="btnDC">⎓ Likestrøm (DC)</button>
+          <button class="btn on" id="btnAC">~ Vekselstrøm (AC)</button>
+        </div>
+        <div class="status info" id="acTxt"></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem; border-top:6px solid var(--blue)">
+          <h3>⎓ Likestrøm (DC)</h3>
+          <p style="margin:0">Strømmen går <b>én vei</b> hele tiden. Kommer fra batterier og strømforsyninger.</p>
+          <p style="margin:.4rem 0 0; font-size:.9rem; color:var(--muted)">Eks: 24 V styrestrøm, sensorer, batteriverktøy.</p>
+        </div>
+        <div class="card" style="border-top:6px solid var(--red)">
+          <h3>~ Vekselstrøm (AC)</h3>
+          <p style="margin:0">Strømmen skifter retning <b>50 ganger i sekundet</b> = 50 hertz (Hz). Kommer fra strømnettet.</p>
+          <p style="margin:.4rem 0 0; font-size:.9rem; color:var(--muted)">Eks: stikkontakten 230 V, maskiner og motorer 400 V.</p>
+        </div>
+        <div class="tip"><b>230 V er ikke toppen.</b> Spenningen svinger helt opp til ca. 325 V. «230 V» er <b>effektivverdien</b>: den gir like mye varme som 230 V likestrøm.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 5 -->
+<section class="slide" id="ohm" data-nav="5 Ohms lov">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 10 min</div>
+    <h2>Ohms lov: U = R · I</h2>
+    <p class="lead">Spenning, strøm og resistans henger alltid sammen. Kjenner du to av dem, kan du regne ut den tredje.</p>
+    <div class="grid2">
+      <div class="fig">
+        <svg id="oSvg" viewBox="0 0 520 300" role="img" aria-label="Krets med spenningskilde, amperemeter, motstand og voltmeter">
+          <path class="wire" d="M60 150 V80 Q60 60 80 60 H400 Q420 60 420 80 V220 Q420 240 400 240 H80 Q60 240 60 220 Z"/>
+          <path class="wire" d="M420 100 H480 V134 M480 166 V200 H420" style="stroke-width:3"/>
+          <circle cx="420" cy="100" r="5" style="fill:var(--ink)"/><circle cx="420" cy="200" r="5" style="fill:var(--ink)"/>
+          <g id="oDots"></g>
+          <rect class="cut" x="34" y="132" width="52" height="36"/>
+          <line x1="34" y1="142" x2="86" y2="142" style="stroke:var(--ink);stroke-width:4"/>
+          <line x1="48" y1="158" x2="72" y2="158" style="stroke:var(--ink);stroke-width:8"/>
+          <text x="96" y="146" class="lbl" style="fill:var(--red)">+</text><text x="96" y="168" class="lbl" style="fill:var(--blue)">−</text>
+          <text x="96" y="196" class="val" id="oUt">12 V</text>
+          <circle cx="240" cy="60" r="18" class="cut" style="stroke:var(--ink);stroke-width:3"/>
+          <text x="240" y="66" text-anchor="middle" class="lbl">A</text>
+          <text x="240" y="30" text-anchor="middle" class="val" id="oIt">0,50 A</text>
+          <rect x="406" y="112" width="28" height="76" class="cut" style="stroke:var(--ink);stroke-width:4"/>
+          <text x="390" y="146" text-anchor="end" class="lbl">R</text>
+          <text x="390" y="168" text-anchor="end" class="val" id="oRt">24 Ω</text>
+          <circle cx="480" cy="150" r="16" class="cut" style="stroke:var(--ink);stroke-width:3"/>
+          <text x="480" y="156" text-anchor="middle" class="lbl">V</text>
+          <text x="480" y="228" text-anchor="middle" class="val" id="oVt">12 V</text>
+          <text x="140" y="282" class="lbls">A = amperemeter, i serie · V = voltmeter, over motstanden</text>
+        </svg>
+        <div class="controls no-print">
+          <label for="oU">Spenning U:</label><input type="range" id="oU" min="0" max="24" step="1" value="12" style="width:170px">
+          <label for="oR">Resistans R:</label><input type="range" id="oR" min="6" max="96" step="2" value="24" style="width:170px">
+        </div>
+        <div class="status info" id="oTxt"></div>
+      </div>
+      <div class="fig">
+        <svg id="oGraf" viewBox="0 0 510 350" role="img" aria-label="Graf over strøm mot spenning for ulike resistanser"></svg>
+        <p class="caption">Rett linje = Ohms lov. Bratt linje = liten resistans (mye strøm). Slak linje = stor resistans.</p>
+      </div>
+    </div>
+    <h3 style="margin-top:1.6rem">Hva kan en motstand være?</h3>
+    <p style="margin:0 0 .6rem">En <b>motstand</b> er noe strømmen må gjennom, og som bremser den. Noen ganger er det en egen liten komponent, men ofte er det selve utstyret. I skjema tegnes alt dette som et rektangel med R.</p>
+    <div class="grid3 mot">
+      <div class="card">
+        <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Motstandskomponent med fargeringer">
+          <path d="M8 40 H44 M116 40 H152" style="stroke:var(--steel-dark);stroke-width:3"/>
+          <rect x="44" y="26" width="72" height="28" rx="12" fill="#e9d8b4" stroke="#b08900" stroke-width="2"/>
+          <rect x="56" y="26" width="7" height="28" fill="#d6336c"/><rect x="69" y="26" width="7" height="28" fill="#d6336c"/>
+          <rect x="82" y="26" width="7" height="28" fill="#8b5a2b"/><rect x="101" y="26" width="5" height="28" fill="#c9a227"/>
+          <text x="80" y="74" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--ink)">220 Ω</text>
+        </svg>
+        <b>Motstands&shy;komponent</b><br><span style="font-size:.85rem;color:var(--muted)">Laget for én bestemt verdi. Begrenser f.eks. strømmen til en LED.</span></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Lyspære med glødetråd">
+          <circle cx="80" cy="34" r="30" style="fill:var(--yellow);opacity:.25"><animate attributeName="opacity" values=".15;.4;.15" dur="2s" repeatCount="indefinite"/></circle>
+          <path d="M62 52 C 50 40, 52 10, 80 8 C 108 10, 110 40, 98 52 Z" style="fill:none;stroke:var(--steel-dark);stroke-width:2.5"/>
+          <rect x="66" y="52" width="28" height="18" rx="3" style="fill:var(--steel)"/>
+          <path d="M70 52 L70 34 l4 -6 l4 6 l4 -6 l4 6 l4 -6 l0 24" style="fill:none;stroke:var(--orange);stroke-width:2.5"/>
+        </svg>
+        <b>Glødetråd i lampe</b><br><span style="font-size:.85rem;color:var(--muted)">Tynn tråd med stor resistans blir så varm at den lyser.</span></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Varmeelement som gløder">
+          <path d="M20 20 H140 V32 H20 V44 H140 V56 H20" style="fill:none;stroke-width:7;stroke-linejoin:round;stroke-linecap:round" stroke="#868e96">
+            <animate attributeName="stroke" values="#868e96;#e8590c;#ff6b00;#e8590c;#868e96" dur="4s" repeatCount="indefinite"/></path>
+          <text x="80" y="76" text-anchor="middle" font-size="11" style="fill:var(--muted)">varmeovn · loddebolt</text>
+        </svg>
+        <b>Varmeelement</b><br><span style="font-size:.85rem;color:var(--muted)">Lages for å gjøre strøm om til varme.</span></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Spole viklet av kobbertråd">
+          <rect x="44" y="14" width="72" height="44" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <path d="M50 14 v44 M58 14 v44 M66 14 v44 M74 14 v44 M82 14 v44 M90 14 v44 M98 14 v44 M106 14 v44" style="stroke:var(--copper);stroke-width:5"/>
+          <path d="M8 36 H44 M116 36 H152" style="stroke:var(--steel-dark);stroke-width:3"/>
+          <text x="80" y="76" text-anchor="middle" font-size="11" style="fill:var(--muted)">magnetventil · relé</text>
+        </svg>
+        <b>Spole</b><br><span style="font-size:.85rem;color:var(--muted)">Lang, viklet kobbertråd. Har resistans, f.eks. 96 Ω i en ventilspole.</span></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Elmotor som går rundt">
+          <rect x="26" y="16" width="76" height="48" rx="8" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>
+          <path d="M38 20 v40 M50 20 v40 M62 20 v40 M74 20 v40 M86 20 v40" style="stroke:var(--steel-dark);stroke-width:2"/>
+          <rect x="52" y="6" width="24" height="10" rx="2" style="fill:var(--steel-dark)"/>
+          <rect x="102" y="35" width="18" height="10" style="fill:var(--steel-dark)"/>
+          <g><animateTransform attributeName="transform" type="rotate" from="0 132 40" to="360 132 40" dur="1s" repeatCount="indefinite"/>
+            <circle cx="132" cy="40" r="20" style="fill:var(--orange)"/>
+            <path d="M132 22 V58 M114 40 H150" style="stroke:#a63c04;stroke-width:3"/>
+            <circle cx="132" cy="40" r="5" style="fill:var(--panel)"/></g>
+          <text x="64" y="76" text-anchor="middle" font-size="11" style="fill:var(--muted)">CNC · kompressor · vifte</text>
+        </svg>
+        <b>Motor</b><br><span style="font-size:.85rem;color:var(--muted)">Gjør strøm om til bevegelse. Trekker mye strøm i starten, mindre når den har fått opp farten.</span></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Potensiometer med dreieknapp">
+          <path d="M40 66 A40 40 0 1 1 120 66" style="fill:none;stroke:var(--line);stroke-width:10;stroke-linecap:round"/>
+          <path d="M40 66 A40 40 0 1 1 120 66" style="fill:none;stroke:var(--orange);stroke-width:10;stroke-linecap:round;stroke-dasharray:190" stroke-dashoffset="190">
+            <animate attributeName="stroke-dashoffset" values="190;20;190" dur="4s" repeatCount="indefinite"/></path>
+          <circle cx="80" cy="40" r="18" style="fill:var(--steel-dark)"/>
+          <line x1="80" y1="40" x2="80" y2="24" style="stroke:#fff;stroke-width:4;stroke-linecap:round">
+            <animateTransform attributeName="transform" type="rotate" values="-130 80 40;130 80 40;-130 80 40" dur="4s" repeatCount="indefinite"/></line>
+        </svg>
+        <b>Potensiometer</b><br><span style="font-size:.85rem;color:var(--muted)">Justerbar motstand, en dreieknapp. Eks: turtallsratt, lysdimmer.</span></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Lang tynn ledning og kort tykk ledning">
+          <path d="M10 22 C 40 6, 60 38, 90 22 S 140 6, 150 22" style="fill:none;stroke:var(--copper);stroke-width:2"/>
+          <text x="80" y="44" text-anchor="middle" font-size="11" style="fill:var(--red)">lang og tynn = mer R</text>
+          <rect x="40" y="52" width="80" height="10" rx="5" style="fill:var(--copper)"/>
+          <text x="80" y="76" text-anchor="middle" font-size="11" style="fill:var(--green)">kort og tykk = lite R</text>
+        </svg>
+        <b>Ledningen – og kroppen</b><br><span style="font-size:.85rem;color:var(--muted)">Alt strømmen går gjennom har resistans. Også kroppen din (se Del 7).</span></div>
+    </div>
+    <div class="grid2" style="margin-top:1.2rem">
+      <div class="card" style="display:grid; grid-template-columns:200px 1fr; gap:1rem; align-items:center">
+        <svg class="uri" id="uri" viewBox="0 0 240 210" role="img" aria-label="Ohms lov-trekant">
+          <path d="M120 8 L232 202 H8 Z" style="fill:var(--panel);stroke:var(--ink);stroke-width:3;stroke-linejoin:round"/>
+          <path d="M62 108 H178 M120 108 V202" style="stroke:var(--ink);stroke-width:3"/>
+          <g data-k="U"><path class="cov" d="M120 14 L174 104 H66 Z"/><text x="120" y="72" style="fill:var(--red)">U</text></g>
+          <g data-k="R"><path class="cov" d="M60 112 H116 V198 H14 Z"/><text x="80" y="160" style="fill:var(--green)">R</text></g>
+          <g data-k="I"><path class="cov" d="M124 112 H180 L226 198 H124 Z"/><text x="160" y="160" style="fill:var(--blue)">I</text></g>
+        </svg>
+        <div>
+          <p style="margin:0 0 .3rem"><b>Trykk på det du vil finne.</b> Det som er igjen, er formelen:</p>
+          <div class="formula" id="uriF">I = U / R</div>
+          <p style="margin:0; font-size:.85rem; color:var(--muted)">Ved siden av hverandre = gange. Over hverandre = dele.</p>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Regn ut</h3>
+        <div class="calc">
+          <label id="lA"><span>U (V)</span><input id="inA" type="text" inputmode="decimal" value="24"></label>
+          <label id="lB"><span>R (Ω)</span><input id="inB" type="text" inputmode="decimal" value="48"></label>
+        </div>
+        <div class="steps" id="uriSteps"></div>
+        <div class="tip" style="margin-bottom:0"><b>Prefikser:</b> 1 mA = 0,001 A (milli = tusendel) · 1 kΩ = 1 000 Ω (kilo = tusen)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 6 -->
+<section class="slide" id="effekt" data-nav="6 Effekt">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 7 min</div>
+    <h2>Effekt og energi</h2>
+    <p class="lead"><b>Effekt</b> (P) er hvor mye energi utstyret bruker hvert sekund. Enhet: <b>watt (W)</b>. 1 kW = 1 000 W.</p>
+    <div class="grid2">
+      <div class="fig">
+        <div class="formula">P = U · I</div>
+        <div style="font-weight:650">Én kurs i verkstedet: 230 V, sikring 16 A</div>
+        <p class="caption" style="margin-top:0">En <b>kurs</b> er én kabel fra sikringsskapet til en gruppe stikkontakter. Slå på utstyr:</p>
+        <svg id="kursSvg" viewBox="0 0 560 150" role="img" aria-label="Sikringsskap med en kurs og stikkontakter">
+          <rect x="10" y="10" width="110" height="130" rx="8" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <rect x="40" y="36" width="50" height="80" rx="5" style="fill:var(--panel);stroke:var(--ink);stroke-width:2"/>
+          <rect id="kursLever" x="55" y="46" width="20" height="30" rx="3" style="fill:var(--blue);transition:transform .25s;transform-origin:65px 76px"/>
+          <text x="65" y="134" text-anchor="middle" style="font-size:16px;font-weight:800;fill:var(--ink)">16 A</text>
+          <text x="65" y="28" text-anchor="middle" class="lbls">sikring</text>
+          <path d="M120 75 H545" style="stroke:var(--ink);stroke-width:4"/>
+          <g id="kursSockets"></g>
+        </svg>
+        <div class="devs no-print" id="kursBtns"></div>
+        <div class="meter"><div class="fill" id="kursFill"></div><div class="lim" style="left:80%"></div><div class="txt" id="kursTxtM">0 A</div></div>
+        <div class="readout r3"><div><span>Effekt P</span><b id="kursP">0 W</b></div><div><span>Strøm I = P / U</span><b id="kursI">0,0 A</b></div><div><span>Grense</span><b>16 A</b></div></div>
+        <div class="status info" id="kursTxt">Slå på utstyr. Rød strek = 16 A.</div>
+        <p class="caption">Forenklet: en ekte sikring tåler litt overlast en stund før den løser ut.</p>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Energi: E = P · t</h3>
+          <p>Strømregningen betaler du for <b>energi</b>, målt i <b>kilowattimer (kWh)</b>. 1 kWh = 1 000 W i 1 time.</p>
+          <div class="calc" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+            <label>Effekt P (kW)<input id="eP" type="text" inputmode="decimal" value="5,5"></label>
+            <label>Tid t (timer)<input id="eT" type="text" inputmode="decimal" value="8"></label>
+            <label>Pris (kr/kWh)<input id="eK" type="text" inputmode="decimal" value="1,50"></label>
+          </div>
+          <div class="steps" id="eSteps"></div>
+          <p class="caption">Eksempel: en kompressor på 5,5 kW som går en hel arbeidsdag.</p>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Typisk effekt</h3>
+          <div id="effBars"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 7 -->
+<section class="slide" id="sikkerhet" data-nav="7 Sikkerhet">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 8 min</div>
+    <h2>Strøm gjennom kroppen</h2>
+    <p class="lead">Det er <b>strømmen</b> som skader deg. <b>Spenningen</b> bestemmer hvor stor strømmen blir – Ohms lov gjelder også for kroppen.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div style="display:grid; grid-template-columns:200px 1fr; gap:1rem; align-items:center">
+          <svg id="bodySvg" viewBox="0 0 320 380" role="img" aria-label="Person som tar på en skadet ledning">
+            <rect x="0" y="350" width="320" height="30" style="fill:var(--steel-soft)"/>
+            <path d="M320 10 C 290 20, 270 40, 262 60" style="fill:none;stroke:#343a40;stroke-width:10;stroke-linecap:round"/>
+            <path d="M262 60 l-6 10" style="stroke:var(--copper);stroke-width:5;stroke-linecap:round"/>
+            <g style="stroke:var(--yellow);stroke-width:3;stroke-linecap:round"><path d="M250 56 l-10 -6 M252 74 l-12 4 M266 76 l4 10"><animate attributeName="opacity" values="1;0;1" dur=".3s" repeatCount="indefinite"/></path></g>
+            <g style="stroke:var(--steel-dark);stroke-linecap:round;fill:none">
+              <path d="M140 106 L188 96 L250 72" style="stroke-width:20"/>
+              <path d="M140 106 L108 186" style="stroke-width:20"/>
+              <path d="M140 200 L122 344 M140 200 L162 344" style="stroke-width:24"/>
+              <path d="M140 96 V204" style="stroke-width:40"/>
+            </g>
+            <g style="stroke:var(--steel);stroke-linecap:round;fill:none">
+              <path d="M140 106 L188 96 L250 72" style="stroke-width:14"/>
+              <path d="M140 106 L108 186" style="stroke-width:14"/>
+              <path d="M140 200 L122 344 M140 200 L162 344" style="stroke-width:18"/>
+              <path d="M140 96 V204" style="stroke-width:34"/>
+            </g>
+            <circle cx="140" cy="58" r="26" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:3"/>
+            <path class="heart" id="heart" d="M132 128 c-6 -8 -18 -2 -12 8 l12 12 l12 -12 c6 -10 -6 -16 -12 -8z" style="fill:#e03131"/>
+            <path id="bodyPath" d="M256 70 L188 96 L140 110 L140 200 L162 344 L162 360" style="fill:none;stroke:none"/>
+            <g id="bodyDots"></g>
+            <path d="M150 362 h24 M154 368 h16 M158 374 h8" style="stroke:var(--ink);stroke-width:2.5"/>
+          </svg>
+          <div>
+            <div class="controls" style="margin-top:0">
+              <label>Spenning:</label>
+              <span id="bU"><button class="btn small" data-u="24">24 V</button> <button class="btn small on" data-u="230">230 V</button> <button class="btn small" data-u="400">400 V</button></span>
+            </div>
+            <div class="controls">
+              <label>Huden:</label>
+              <span id="bH"><button class="btn small on" data-h="t">tørr</button> <button class="btn small" data-h="v">våt / svett</button></span>
+            </div>
+            <div class="steps" id="bSteps"></div>
+          </div>
+        </div>
+        <svg id="scaleSvg" viewBox="0 0 640 120" role="img" aria-label="Skala over virkning av strøm gjennom kroppen" style="margin-top:.6rem"></svg>
+        <div class="status bad" id="bTxt"></div>
+        <p class="caption">Forenklede, typiske verdier for vekselstrøm fra hånd til føtter. Kroppens resistans varierer mye fra person til person og situasjon til situasjon.</p>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem">
+          <h3>Jordfeilbryter</h3>
+          <p style="margin:0">Merker om strøm <b>lekker ut</b> av kretsen – for eksempel gjennom deg og ned i gulvet – og slår av på en brøkdel av et sekund. Løser ut ved <b>30 mA</b>.</p>
+        </div>
+        <div class="card">
+          <h3>Spenningsnivåer</h3>
+          <table class="t">
+            <tr><td style="white-space:nowrap"><b>24 V</b></td><td>Styrestrøm, sensorer. Regnes som ufarlig ved berøring under normale, tørre forhold.</td></tr>
+            <tr><td style="white-space:nowrap"><b>230 V</b></td><td>Stikkontakter. <span style="color:var(--red);font-weight:700">Livsfarlig.</span></td></tr>
+            <tr><td style="white-space:nowrap"><b>400 V</b></td><td>Maskiner og motorer. <span style="color:var(--red);font-weight:700">Livsfarlig.</span></td></tr>
+          </table>
+          <p style="margin:.6rem 0 0; font-size:.85rem; color:var(--muted)">230 V og 400 V kalles <b>lavspenning</b> – et ord som høres ufarlig ut, men ikke er det.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 style="margin-top:2rem">Før du jobber på en maskin: de fem sikkerhetsreglene</h3>
+    <div class="grid2">
+      <div class="fig">
+        <svg class="loto" id="loto" viewBox="0 0 520 300" role="img" aria-label="Hovedbryter som slås av, låses og merkes">
+          <rect x="20" y="20" width="250" height="260" rx="10" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
+          <text x="145" y="44" text-anchor="middle" class="lbls">maskin – elskap</text>
+          <circle cx="145" cy="140" r="70" style="fill:#fcc419;stroke:#e67700;stroke-width:3"/>
+          <text x="145" y="64" text-anchor="middle" style="font-size:22px;font-weight:800;fill:var(--ink)">I</text>
+          <text x="58" y="148" text-anchor="middle" style="font-size:22px;font-weight:800;fill:var(--ink)">0</text>
+          <g id="lHandle" style="transition:transform 1s;transform-origin:145px 140px">
+            <rect x="133" y="88" width="24" height="104" rx="10" style="fill:#e03131;stroke:#a51111;stroke-width:2"/>
+            <circle cx="145" cy="140" r="8" fill="#a51111"/>
+          </g>
+          <g class="part" id="lLock" style="transform:translateY(-30px)">
+            <path d="M90 168 v-14 a14 14 0 0 1 28 0 v14" style="fill:none;stroke:#868e96;stroke-width:6"/>
+            <rect x="84" y="166" width="40" height="34" rx="5" style="fill:#e03131"/>
+            <circle cx="104" cy="182" r="4" fill="#222"/>
+          </g>
+          <g class="part" id="lTag" style="transform:translateY(-20px)">
+            <line x1="104" y1="200" x2="104" y2="214" style="stroke:var(--ink);stroke-width:2"/>
+            <rect x="56" y="214" width="96" height="56" rx="4" style="fill:#fff;stroke:#c92a2a;stroke-width:3"/>
+            <rect x="56" y="214" width="96" height="16" style="fill:#c92a2a"/>
+            <text x="104" y="226" text-anchor="middle" style="font-size:10px;font-weight:800;fill:#fff">IKKE SLÅ PÅ!</text>
+            <text x="104" y="244" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#222">Arbeid pågår</text>
+            <text x="104" y="260" text-anchor="middle" style="font-size:9px;fill:#444">Navn: Ola N.</text>
+          </g>
+          <g class="part" id="lMeter" style="transform:translateX(30px)">
+            <rect x="320" y="60" width="110" height="160" rx="12" style="fill:#fab005;stroke:#e67700;stroke-width:3"/>
+            <rect x="334" y="76" width="82" height="40" rx="4" style="fill:#d8f5a2;stroke:#5c940d"/>
+            <text x="375" y="104" text-anchor="middle" style="font-size:22px;font-weight:800;fill:#222;font-family:Consolas,monospace">0,0 V</text>
+            <circle cx="375" cy="160" r="26" style="fill:#343a40"/>
+            <path d="M352 220 C 352 250, 300 250, 262 236" style="fill:none;stroke:#e03131;stroke-width:4"/><path d="M398 220 C 398 268, 320 270, 262 256" style="fill:none;stroke:#222;stroke-width:4"/>
+          </g>
+          <g class="part" id="lEarth" style="transform:translateY(10px)">
+            <path d="M470 60 v40 M450 100 h40 M456 108 h28 M462 116 h16" style="stroke:var(--green);stroke-width:4"/>
+            <text x="470" y="140" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--green)">jord</text>
+          </g>
+          <g class="part" id="lShield" style="transform:translateX(20px)">
+            <rect x="446" y="160" width="56" height="110" rx="4" style="fill:var(--blue-soft);stroke:var(--blue);stroke-width:3"/>
+            <path d="M452 170 l44 40 M452 200 l44 40 M452 230 l40 36" style="stroke:var(--blue);stroke-width:2"/>
+            <text x="474" y="290" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--blue)">skjerm</text>
+          </g>
+        </svg>
+        <div class="controls no-print">
+          <button class="btn orange" id="lNext">Neste regel ▶</button>
+          <button class="btn" id="lReset">↻ Start på nytt</button>
+        </div>
+      </div>
+      <div>
+        <ol class="rules" id="rules">
+          <li><span><b>Koble fra</b> – hovedbryteren på 0.</span></li>
+          <li><span><b>Sikre mot innkobling</b> – sett på din egen lås og et merke med navn.</span></li>
+          <li><span><b>Kontroller at det er spenningsløst</b> – mål med godkjent måler (test måleren først).</span></li>
+          <li><span><b>Jorde og kortslutte</b> – der det kreves. Gjøres av elektrofagfolk.</span></li>
+          <li><span><b>Avskjerme</b> deler i nærheten som fortsatt har spenning.</span></li>
+        </ol>
+        <div class="tip r"><b>Bare den som har satt på låsen, tar den av.</b> Arbeid inne i elskap og på 230/400 V-anlegg gjøres av fagfolk med elektroutdanning. Du skal jobbe <b>etter instruks</b> og kunne «lås og merk».</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <ol style="font-size:1.1rem">
+          <li><b>U</b> spenning (V) dytter · <b>I</b> strøm (A) flyter · <b>R</b> resistans (Ω) bremser.</li>
+          <li>Strøm går bare i en <b>lukket krets</b>. Sikringen bryter kretsen ved for stor strøm.</li>
+          <li><b>Likestrøm</b> går én vei. <b>Vekselstrøm</b> skifter retning 50 ganger i sekundet.</li>
+          <li><b>U = R · I</b> &nbsp;·&nbsp; <b>I = U / R</b> &nbsp;·&nbsp; <b>R = U / I</b></li>
+          <li><b>P = U · I</b> (watt) &nbsp;·&nbsp; <b>E = P · t</b> (kWh)</li>
+          <li>Strøm gjennom kroppen over ca. 30–50 mA kan stoppe hjertet. <b>Lås og merk</b> før arbeid.</li>
+        </ol>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>elektron</span><span>spenning</span><span>strøm</span><span>resistans</span><span>motstand</span><span>potensiometer</span><span>volt</span><span>ampere</span><span>ohm</span><span>lukket krets</span><span>leder</span><span>isolator</span><span>sikring</span><span>kortslutning</span><span>likestrøm</span><span>vekselstrøm</span><span>hertz</span><span>Ohms lov</span><span>effekt</span><span>kWh</span><span>kurs</span><span>jordfeilbryter</span><span>lås og merk</span></div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Neste leksjon</h3>
+          <p style="margin:0"><b>Leksjon 2 – Serie, parallell og måling:</b> hvorfor lyset i hele rekka slukker når én pære går, og hvordan du måler spenning, strøm og resistans riktig med multimeter.</p>
+        </div>
+        <p class="caption">Slå opp mer i <a href="https://verkstedhandboka.vercel.app/#elektro" target="_blank" rel="noopener">Verkstedhåndboka, emne 9 Elektro</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 50 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Elektro 1 – Strøm, spenning og resistans · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <div class="formelark"><b>Formler:</b> <span>U = R · I</span><span>I = U / R</span><span>R = U / I</span><span>P = U · I</span><span>E = P · t</span><span>1 mA = 0,001 A</span><span>1 kΩ = 1 000 Ω</span><span>1 kW = 1 000 W</span></div>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Størrelser og enheter <small>Time 1 · 8 min</small></h3>
+        <table class="ot">
+          <tr><th>Størrelse</th><th>Symbol</th><th>Enhet</th><th>Enhetssymbol</th><th>Hva tilsvarer det i vannmodellen?</th></tr>
+          <tr><td>Spenning</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>Strøm</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>Resistans</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>Effekt</td><td class="tom"></td><td></td><td></td><td>(ikke i vannmodellen)</td></tr>
+        </table>
+        <p>Hvilke av disse er <b>ledere</b>, og hvilke er <b>isolatorer</b>? Skriv L eller I.</p>
+        <p>kobber ___ &nbsp; plast ___ &nbsp; stål ___ &nbsp; gummi ___ &nbsp; aluminium ___ &nbsp; glass ___</p>
+        <div class="fasit" hidden><b>Fasit:</b> Spenning – U – volt – V – trykket fra pumpa. Strøm – I – ampere – A – vannmengden som strømmer. Resistans – R – ohm – Ω – smalt rør. Effekt – P – watt – W. Ledere: kobber, stål, aluminium. Isolatorer: plast, gummi, glass.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Lyser lampa? <small>Time 1 · 9 min</small></h3>
+        <p>Alle kretsene har batteri (24 V), sikring, bryter og lampe. Skriv <b>Ja</b> eller <b>Nei</b> og begrunn kort.</p>
+        <div class="minis" id="minis"></div>
+        <table class="ot">
+          <tr><th style="width:3rem"></th><th style="width:6rem">Lyser?</th><th>Fordi …</th></tr>
+          <tr><td>a)</td><td class="tom"></td><td></td></tr>
+          <tr><td>b)</td><td class="tom"></td><td></td></tr>
+          <tr><td>c)</td><td class="tom"></td><td></td></tr>
+          <tr><td>d)</td><td class="tom"></td><td></td></tr>
+        </table>
+        <p>Hva er en sikring, og hvorfor trenger vi den?</p>
+        <div class="svar"></div><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) Ja – kretsen er lukket. b) Nei – bryteren er åpen, kretsen er brutt. c) Nei – brudd i ledningen, ingen hel vei rundt. d) Nei – kortslutning: strømmen tar snarveien utenom lampa, strømmen blir svært stor og sikringen går. Sikringen er en tråd som smelter (eller en bryter som løser ut) når strømmen blir for stor. Den hindrer at ledningene blir så varme at det begynner å brenne.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Ohms lov <small>Time 2 · 10 min</small></h3>
+        <p>Skriv formelen, sett inn tallene og svar med enhet.</p>
+        <p>a) En lampe på 48 Ω er koblet til 24 V. Hvor stor er strømmen?</p><div class="svar"></div>
+        <p>b) Spolen i en magnetventil (en elektromagnet som åpner en luftventil) trekker 0,25 A på 24 V. Hva er resistansen?</p><div class="svar"></div>
+        <p>c) Det går 0,1 A gjennom en motstand på 220 Ω. Hva er spenningen over motstanden?</p><div class="svar"></div>
+        <p>d) En sensor på 24 V trekker 12 mA. Hva er resistansen? Svar i Ω og i kΩ.</p><div class="svar"></div><div class="svar"></div>
+        <p>e) Resistansen er den samme, men spenningen dobles. Hva skjer med strømmen?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) I = U / R = 24 / 48 = <b>0,5 A</b>. b) R = U / I = 24 / 0,25 = <b>96 Ω</b>. c) U = R · I = 220 · 0,1 = <b>22 V</b>. d) 12 mA = 0,012 A. R = 24 / 0,012 = <b>2 000 Ω = 2 kΩ</b>. e) Strømmen <b>dobles</b> også.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Effekt og energi <small>Time 2 · 7 min</small></h3>
+        <p>a) En vinkelsliper på 230 V trekker 9 A. Hvor stor effekt har den?</p><div class="svar"></div>
+        <p>b) En kurs har 16 A sikring og 230 V. Hvor stor effekt kan kursen gi før sikringen går?</p><div class="svar"></div>
+        <p>c) Kan du bruke vinkelsliperen og en varmeovn på 2 000 W på samme kurs samtidig? Vis utregning.</p><div class="svar"></div><div class="svar"></div>
+        <p>d) En CNC-maskin bruker 11 kW i 6 timer hver dag, 5 dager i uka. Hvor mange kWh blir det per uke? Hva koster det med 1,50 kr/kWh?</p><div class="svar"></div><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) P = U · I = 230 · 9 = <b>2 070 W</b>. b) P = 230 · 16 = <b>3 680 W</b>. c) 2 070 + 2 000 = 4 070 W, som er mer enn 3 680 W. I = 4 070 / 230 ≈ 17,7 A &gt; 16 A. <b>Nei</b>, sikringen løser ut. d) E = 11 kW · 6 h · 5 = <b>330 kWh</b>. Pris: 330 · 1,50 = <b>495 kr</b>.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Sikkerhet <small>Time 2 · 6 min</small></h3>
+        <p>a) En person med våt hud (ca. 1 000 Ω) tar på 230 V. Hvor stor blir strømmen i mA? Hva kan skje?</p><div class="svar"></div><div class="svar"></div>
+        <p>b) Hvorfor bruker vi 24 V til sensorer og styring?</p><div class="svar"></div>
+        <p>c) Sett de fem sikkerhetsreglene i riktig rekkefølge (1–5):</p>
+        <table class="ot" style="width:auto">
+          <tr><td style="width:3rem"></td><td>Kontroller at det er spenningsløst</td></tr>
+          <tr><td></td><td>Avskjerm deler i nærheten som har spenning</td></tr>
+          <tr><td></td><td>Koble fra</td></tr>
+          <tr><td></td><td>Jord og kortslutt</td></tr>
+          <tr><td></td><td>Sikre mot innkobling (lås og merk)</td></tr>
+        </table>
+        <p>d) Hva gjør en jordfeilbryter?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) I = U / R = 230 / 1 000 = 0,23 A = <b>230 mA</b>. Fare for hjerteflimmer – livsfarlig. b) Med lav spenning blir strømmen gjennom kroppen liten (24 / 10 000 Ω ≈ 2,4 mA), så det er mye tryggere å jobbe med. c) 3 – 5 – 1 – 4 – 2 (Koble fra = 1, Sikre = 2, Kontroller = 3, Jorde = 4, Avskjerme = 5). d) Den merker at strøm lekker ut av kretsen (f.eks. gjennom en person) og slår av strømmen raskt. Løser ut ved 30 mA.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Les merkeskiltet <small>Ekstra</small></h3>
+        <div style="max-width:420px" id="skilt"></div>
+        <p>a) Går maskinen på likestrøm eller vekselstrøm? Hvordan ser du det?</p><div class="svar"></div>
+        <p>b) Hvor stor strøm trekker den ved full effekt?</p><div class="svar"></div>
+        <p>c) Hvor mange kWh bruker den på 3 timer?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) Vekselstrøm – symbolet ~ og 50 Hz. b) I = P / U = 1 500 / 230 ≈ <b>6,5 A</b>. c) E = 1,5 kW · 3 h = <b>4,5 kWh</b>.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 2–3 min</small></h3>
+        <p>1. Hva er enheten for spenning, og hva er enheten for strøm?</p><div class="svar"></div>
+        <p>2. U = 12 V og R = 4 Ω. Hvor stor er strømmen?</p><div class="svar"></div>
+        <p>3. Nevn de tre første sikkerhetsreglene før du jobber på en maskin.</p><div class="svar"></div><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) Volt (V) og ampere (A). 2) I = 12 / 4 = 3 A. 3) Koble fra, sikre mot innkobling (lås og merk), kontroller at det er spenningsløst.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const num = s => parseFloat(String(s).replace(/\s/g,"").replace(",", "."));
+function el(tag, attrs, parent, text){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function onVisible(node, cb){ const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ cb(); io.disconnect(); } }), {threshold:.3}); io.observe(node); }
+
+/* Felles animasjonsløkke – bare synlige figurer oppdateres */
+const anims = [];
+function addAnim(node, tick){ const a = {tick, vis:false}; anims.push(a); new IntersectionObserver(es => es.forEach(e => a.vis = e.isIntersecting)).observe(node); }
+let last = performance.now();
+function frame(now){ const dt = Math.min(.05, (now-last)/1000); last = now; anims.forEach(a => { if (a.vis) a.tick(dt, now/1000); }); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+/* Prikker som går langs en sti */
+function flow(group, pathEl, n, cls, r=4.5){
+  const L = pathEl.getTotalLength();
+  const dots = Array.from({length:n}, (_,i) => ({s:i/n*L, c:el("circle",{r, class:cls}, group)}));
+  const o = {L, path:pathEl, move(ds){ dots.forEach(d => { d.s = ((d.s + ds) % o.L + o.L) % o.L; const p = o.path.getPointAtLength(d.s); d.c.setAttribute("cx", p.x); d.c.setAttribute("cy", p.y); }); },
+    setPath(p){ o.path = p; o.L = p.getTotalLength(); }, setClass(c){ dots.forEach(d => d.c.setAttribute("class", c)); }, show(v){ group.style.display = v ? "" : "none"; }};
+  o.move(0);
+  return o;
+}
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName)) return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  slides[Math.max(0, Math.min(slides.length-1, currentIndex()+dir))].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+
+/* ---------- Del 2: vannmodell + krets ---------- */
+const vm = {U:12, R:48, closed:true, electrons:false};
+const wFlow = flow($("wDots"), $("wLoop"), 34, "edot", 5);
+const cFlow = flow($("cDots"), $("wLoop"), 34, "cdot", 5);
+let impA = 0;
+function vmUpdate(){
+  const I = vm.closed ? vm.U/vm.R : 0;
+  const h = Math.max(3, 14*Math.sqrt(12/vm.R));
+  $("wWallL").setAttribute("x", 402); $("wWallL").setAttribute("width", 420-h-402);
+  $("wWallR").setAttribute("x", 420+h); $("wWallR").setAttribute("width", 438-(420+h));
+  $("wNeedle").setAttribute("transform", `rotate(${-120 + vm.U/24*240} 150 150)`);
+  $("wGate").style.opacity = vm.closed ? 0 : 1;
+  $("wFlow").textContent = fmt(I*20,0) + " l/min";
+  $("cU").textContent = vm.U + " V"; $("cR").textContent = vm.R + " Ω"; $("cI").textContent = fmt(I,2) + " A";
+  $("cLever").style.transform = vm.closed ? "none" : "rotate(-32deg)";
+  const P = vm.U*I; $("cGlow").style.opacity = Math.min(.85, Math.sqrt(P/48)*.9);
+  $("btnSw").textContent = vm.closed ? "Slå av bryteren" : "Slå på bryteren";
+  const t = $("vmTxt");
+  if (!vm.closed){ t.textContent = "Kranen og bryteren er stengt: ingen strøm. Men trykket (spenningen) er der fortsatt!"; t.className = "status warn"; }
+  else if (vm.U === 0){ t.textContent = "Ingen spenning = ingen trykk. Ingenting dytter elektronene, så det går ingen strøm."; t.className = "status info"; }
+  else { t.textContent = `Strøm I = ${fmt(I,2)} A. Mer spenning → mer strøm. Mer resistans → mindre strøm.`; t.className = "status ok"; }
+  vm.I = I;
+}
+addAnim($("wSvg"), dt => {
+  const v = vm.I * 220 * dt;
+  wFlow.move(v); cFlow.move(vm.electrons ? -v : v);
+  impA += vm.U * 30 * dt; $("wImp").setAttribute("transform", `rotate(${impA} 60 150)`);
+});
+$("sU").oninput = e => { vm.U = +e.target.value; vmUpdate(); };
+$("sR").oninput = e => { vm.R = +e.target.value; vmUpdate(); };
+$("btnSw").onclick = () => { vm.closed = !vm.closed; vmUpdate(); };
+$("btnDir").onclick = () => {
+  vm.electrons = !vm.electrons;
+  cFlow.setClass(vm.electrons ? "edot" : "cdot");
+  $("cArrows").style.display = vm.electrons ? "" : "none";
+  $("btnDir").textContent = vm.electrons ? "Vis teknisk strømretning" : "Vis elektronene";
+  toast(vm.electrons ? "Blå = elektroner: går fra − til +. Oransje piler = teknisk strømretning (+ til −)." : "Teknisk strømretning: fra + gjennom kretsen til −");
+};
+vmUpdate();
+
+/* ---------- Del 3: lukket/åpen krets ---------- */
+const k = {s:"normal", blown:false, I:0.5, t:0};
+const kFlow = flow($("kDots"), $("kPathA"), 40, "cdot", 4.5);
+function kSet(s){
+  k.s = s; k.t = 0;
+  [...$("kBtns").querySelectorAll("[data-s]")].forEach(b => b.classList.toggle("on", b.dataset.s === s));
+  $("kLever").style.transform = s === "av" ? "rotate(-32deg)" : "none";
+  $("kBreak").style.display = s === "brudd" ? "" : "none";
+  $("kShort").style.display = $("kShortLbl").style.display = s === "kort" ? "" : "none";
+  kFlow.setPath(s === "kort" ? $("kPathB") : $("kPathA"));
+  kUpdate();
+}
+function kUpdate(){
+  const t = $("kTxt");
+  let I = 0;
+  if (k.blown){ t.textContent = k.s === "kort" ? "Sikringen har smeltet og brutt kretsen. Ledningene er reddet fra å bli glødende varme." : "Sikringen er gått. Finn og fjern feilen først – så bytter du sikring."; t.className = "status bad"; }
+  else if (k.s === "normal"){ I = .5; t.textContent = "Kretsen er lukket. Strømmen går fra + gjennom sikring, bryter og lampe og tilbake til −."; t.className = "status ok"; }
+  else if (k.s === "av"){ t.textContent = "Bryteren er åpen. Kretsen er brutt – ingen strøm, lampa er slukket."; t.className = "status warn"; }
+  else if (k.s === "brudd"){ t.textContent = "Brudd i ledningen (f.eks. en kabel som er klemt av). Ingen hel vei rundt – ingen strøm."; t.className = "status warn"; }
+  else if (k.s === "kort"){ I = 240; t.textContent = "Kortslutning! Strømmen tar snarveien utenom lampa. Nesten ingen resistans → enorm strøm …"; t.className = "status bad"; }
+  k.I = I;
+  $("kI").textContent = I > 10 ? fmt(I,0) + " A !" : fmt(I,2) + " A";
+  $("kI").style.fill = I > 10 ? "var(--red)" : "";
+  $("kGlow").style.opacity = (I > 0 && I < 10) ? .75 : 0;
+  $("kFuse").style.display = k.blown ? "none" : ""; $("kFuseBroken").style.display = k.blown ? "" : "none";
+  kFlow.show(I > 0);
+}
+addAnim($("kSvg"), dt => {
+  if (k.s === "kort" && !k.blown){ k.t += dt; if (k.t > 1.1){ k.blown = true; const f = $("kFlash"); f.classList.remove("flash"); void f.getBoundingClientRect(); f.classList.add("flash"); kUpdate(); } }
+  if (k.I > 0) kFlow.move((k.I > 10 ? 900 : 110) * dt);
+});
+$("kBtns").querySelectorAll("[data-s]").forEach(b => b.onclick = () => kSet(b.dataset.s));
+$("kReset").onclick = () => { if (k.s === "kort"){ toast("Fjern kortslutningen først!"); kSet("normal"); } k.blown = false; kUpdate(); };
+kSet("normal");
+
+/* ---------- Del 4: DC / AC ---------- */
+const ac = {mode:"ac", t:0, hist:[]};
+const acG = $("acDots");
+const acD = Array.from({length:30}, (_,i) => ({x:40 + i*19.3 + Math.random()*8, y:44 + Math.random()*44, c:el("circle",{r:5, class:"edot"}, acG)}));
+const AY0 = 220, GX0 = 60, GX1 = 600;
+function acMode(m){
+  ac.mode = m; ac.hist = [];
+  $("btnDC").classList.toggle("on", m==="dc"); $("btnAC").classList.toggle("on", m==="ac");
+  $("acTop").textContent = m==="ac" ? "+325 V" : "+30 V"; $("acBot").textContent = m==="ac" ? "−325 V" : "−30 V";
+  const show = m==="ac" ? "" : "none";
+  $("acRms").style.display = $("acRmsT").style.display = show;
+  const yR = AY0 - 230/325*60; $("acRms").setAttribute("y1", yR); $("acRms").setAttribute("y2", yR); $("acRmsT").setAttribute("y", yR-6);
+  const t = $("acTxt");
+  if (m==="dc"){ t.textContent = "Likestrøm: spenningen er konstant (24 V), og elektronene vandrer hele tiden samme vei."; t.className = "status info"; }
+  else { t.textContent = "Vekselstrøm: spenningen svinger mellom +325 V og −325 V. Elektronene rister frem og tilbake – i virkeligheten 50 ganger i sekundet."; t.className = "status bad"; }
+}
+addAnim($("acSvg"), dt => {
+  ac.t += dt;
+  const f = .45, w = 2*Math.PI*f;
+  let u, vx;
+  if (ac.mode === "dc"){ u = 24/30; vx = 40; }
+  else { u = Math.sin(w*ac.t); vx = 130*Math.cos(w*ac.t); }
+  acD.forEach(d => { d.x += vx*dt; if (d.x > 600) d.x -= 560; if (d.x < 40) d.x += 560; d.c.setAttribute("cx", d.x); d.c.setAttribute("cy", d.y); });
+  $("acArrow").setAttribute("transform", vx >= 0 ? "" : "rotate(180 320 116)");
+  $("acArrow").style.opacity = Math.min(1, Math.abs(vx)/60);
+  ac.hist.push(u); const N = 260; if (ac.hist.length > N) ac.hist.shift();
+  const pts = ac.hist.map((v,i) => `${(GX0 + i*(GX1-GX0)/N).toFixed(1)},${(AY0 - v*60).toFixed(1)}`);
+  $("acTrace").setAttribute("points", pts.join(" "));
+  const hx = GX0 + (ac.hist.length-1)*(GX1-GX0)/N, hy = AY0 - u*60;
+  $("acHead").setAttribute("cx", hx); $("acHead").setAttribute("cy", hy);
+  $("acVal").textContent = ac.mode === "dc" ? "24 V" : `${fmt(u*325,0)} V`;
+});
+$("btnDC").onclick = () => acMode("dc"); $("btnAC").onclick = () => acMode("ac");
+acMode("ac");
+
+/* ---------- Del 5: Ohms lov ---------- */
+const o = {U:12, R:24};
+const oPath = el("path",{d:"M60 150 V80 Q60 60 80 60 H400 Q420 60 420 80 V220 Q420 240 400 240 H80 Q60 240 60 220 Z", style:"fill:none;stroke:none"}, $("oSvg"));
+const oFlow = flow($("oDots"), oPath, 34, "cdot", 4.5);
+const og = $("oGraf");
+const GX = U => 60 + U/24*390, GY = I => 300 - I/4.2*270;
+for (let i=1;i<=4;i++){ el("line",{x1:60,y1:GY(i),x2:450,y2:GY(i),style:"stroke:var(--line)"},og); el("text",{x:52,y:GY(i)+5,"text-anchor":"end","font-size":13,style:"fill:var(--muted)"},og,i); }
+for (let u=0;u<=24;u+=6) el("text",{x:GX(u),y:320,"text-anchor":"middle","font-size":13,style:"fill:var(--muted)"},og,u);
+el("line",{x1:60,y1:300,x2:455,y2:300,style:"stroke:var(--ink);stroke-width:2"},og);
+el("line",{x1:60,y1:300,x2:60,y2:20,style:"stroke:var(--ink);stroke-width:2"},og);
+el("text",{x:66,y:22,"font-size":14,"font-weight":700,style:"fill:var(--blue)"},og,"↑ strøm I (A)");
+el("text",{x:455,y:342,"text-anchor":"end","font-size":14,"font-weight":700,style:"fill:var(--red)"},og,"spenning U (V) →");
+[6,12,24,48,96].forEach(R => {
+  const Ue = Math.min(24, 4.2*R), Ie = Ue/R;
+  el("line",{x1:GX(0),y1:GY(0),x2:GX(Ue),y2:GY(Ie),style:"stroke:var(--steel);stroke-width:1.5;stroke-dasharray:5 4"},og);
+  el("text",{x:GX(Ue)+(Ue<24?4:6),y:GY(Ie)+(Ue<24?-4:4),"font-size":12,style:"fill:var(--muted)"},og,`${R} Ω`);
+});
+const oLine = el("line",{x1:GX(0),y1:GY(0),style:"stroke:var(--orange);stroke-width:4;stroke-linecap:round"},og);
+const oGuide = el("path",{"stroke-dasharray":"4 4",style:"fill:none;stroke:var(--ink);stroke-width:1.5"},og);
+const oPt = el("circle",{r:9,style:"fill:var(--orange);stroke:var(--panel);stroke-width:3"},og);
+function oUpdate(){
+  const I = o.U/o.R;
+  $("oUt").textContent = o.U + " V"; $("oVt").textContent = o.U + " V"; $("oRt").textContent = o.R + " Ω"; $("oIt").textContent = fmt(I,2) + " A";
+  const Ue = Math.min(24, 4.2*o.R);
+  oLine.setAttribute("x2", GX(Ue)); oLine.setAttribute("y2", GY(Ue/o.R));
+  oPt.setAttribute("cx", GX(o.U)); oPt.setAttribute("cy", GY(I));
+  oGuide.setAttribute("d", `M60 ${GY(I)} H${GX(o.U)} V300`);
+  $("oTxt").textContent = `I = U / R = ${o.U} V / ${o.R} Ω = ${fmt(I,2)} A`;
+  $("oTxt").className = "status " + (I > 2 ? "warn" : "info");
+}
+addAnim($("oSvg"), dt => oFlow.move(o.U/o.R * 90 * dt));
+$("oU").oninput = e => { o.U = +e.target.value; oUpdate(); };
+$("oR").oninput = e => { o.R = +e.target.value; oUpdate(); };
+oUpdate();
+
+// Trekant + kalkulator
+const URI = {
+  I:{f:"I = U / R", a:["U (V)","24"], b:["R (Ω)","48"], calc:(a,b)=>[a/b, `I = U / R = ${fmt(a,2)} / ${fmt(b,2)}`, "A"]},
+  U:{f:"U = R · I", a:["R (Ω)","48"], b:["I (A)","0,5"], calc:(a,b)=>[a*b, `U = R · I = ${fmt(a,2)} · ${fmt(b,3)}`, "V"]},
+  R:{f:"R = U / I", a:["U (V)","24"], b:["I (A)","0,5"], calc:(a,b)=>[a/b, `R = U / I = ${fmt(a,2)} / ${fmt(b,3)}`, "Ω"]}
+};
+let uriK = "I";
+function uriSel(key){
+  uriK = key; const d = URI[key];
+  $("uri").querySelectorAll("g[data-k]").forEach(g => g.classList.toggle("on", g.dataset.k === key));
+  $("uriF").textContent = d.f;
+  $("lA").querySelector("span").textContent = d.a[0]; $("inA").value = d.a[1];
+  $("lB").querySelector("span").textContent = d.b[0]; $("inB").value = d.b[1];
+  uriCalc();
+}
+function uriCalc(){
+  const a = num($("inA").value), b = num($("inB").value), d = URI[uriK];
+  if (!isFinite(a) || !isFinite(b) || (uriK !== "U" && b === 0)){ $("uriSteps").innerHTML = "<div>Skriv inn to tall.</div>"; return; }
+  const [r, txt, unit] = d.calc(a,b);
+  $("uriSteps").innerHTML = `<div>${d.f}</div><div>${txt}</div><div class="res">${uriK} = ${fmt(r, r<1?3:2)} ${unit}</div>`;
+}
+$("uri").querySelectorAll("g[data-k]").forEach(g => g.onclick = () => uriSel(g.dataset.k));
+["inA","inB"].forEach(id => $(id).addEventListener("input", uriCalc));
+uriSel("I");
+
+/* ---------- Del 6: kurs og energi ---------- */
+const DEV = [["💡","LED-arbeidslampe",50],["🔋","Batterilader",150],["🧹","Støvsuger",1200],["⚙️","Vinkelsliper",2000],["🔥","Varmeovn",2000]];
+const kurs = {on:DEV.map(()=>false), tripped:false};
+const sockG = $("kursSockets");
+const sockEls = DEV.map((d,i) => {
+  const x = 170 + i*78, g = el("g",{},sockG);
+  el("line",{x1:x,y1:75,x2:x,y2:92,style:"stroke:var(--ink);stroke-width:3"},g);
+  const box = el("rect",{x:x-30,y:92,width:60,height:50,rx:8,style:"fill:var(--panel);stroke:var(--line);stroke-width:2;transition:fill .3s"},g);
+  const ic = el("text",{x:x,y:124,"text-anchor":"middle",style:"font-size:24px;opacity:.3;transition:opacity .3s"},g,d[0]);
+  el("text",{x:x,y:30,"text-anchor":"middle","font-size":12,"font-weight":700,style:"fill:var(--ink)"},g,d[1].split("-")[0].replace("arbeidslampe","lampe"));
+  el("text",{x:x,y:48,"text-anchor":"middle","font-size":12,style:"fill:var(--muted)"},g,d[2]+" W");
+  return {box, ic};
+});
+DEV.forEach((d,i) => { const b = document.createElement("button"); b.className = "btn small"; b.textContent = `${d[0]} ${d[1]}`; b.onclick = () => { if (kurs.tripped) { toast("Sikringen er ute. Slå av noe og trykk «Slå på sikringen»."); return; } kurs.on[i] = !kurs.on[i]; kursUpdate(); }; $("kursBtns").appendChild(b); });
+const rb = document.createElement("button"); rb.className = "btn primary small"; rb.textContent = "↺ Slå på sikringen"; rb.onclick = () => { kurs.tripped = false; kurs.on = kurs.on.map(()=>false); kursUpdate(); }; $("kursBtns").appendChild(rb);
+let tripTimer = null;
+function kursUpdate(){
+  const P = kurs.tripped ? 0 : DEV.reduce((s,d,i) => s + (kurs.on[i] ? d[2] : 0), 0), I = P/230;
+  [...$("kursBtns").children].forEach((b,i) => { if (i < DEV.length) b.classList.toggle("on", kurs.on[i] && !kurs.tripped); });
+  sockEls.forEach((s,i) => { const on = kurs.on[i] && !kurs.tripped; s.ic.style.opacity = on ? 1 : .3; s.box.style.fill = on ? "var(--yellow-soft)" : "var(--panel)"; });
+  $("kursP").textContent = fmt(P,0) + " W"; $("kursI").textContent = fmt(I,1) + " A";
+  $("kursFill").style.width = Math.min(100, I/20*100) + "%";
+  $("kursFill").style.background = I > 16 ? "var(--red)" : I > 13 ? "var(--orange)" : "var(--green)";
+  $("kursTxtM").textContent = fmt(I,1) + " A";
+  $("kursLever").style.transform = kurs.tripped ? "translateY(34px)" : "none";
+  $("kursLever").style.fill = kurs.tripped ? "var(--red)" : "var(--blue)";
+  const t = $("kursTxt");
+  clearTimeout(tripTimer);
+  if (kurs.tripped){ t.textContent = "Sikringen har løst ut! Kursen er uten strøm. Fordel utstyret på flere kurser."; t.className = "status bad"; }
+  else if (I > 16){ t.textContent = `${fmt(I,1)} A er mer enn 16 A – kabelen blir for varm …`; t.className = "status bad"; tripTimer = setTimeout(() => { kurs.tripped = true; kursUpdate(); }, 1200); }
+  else if (P > 0){ t.textContent = `I = P / U = ${fmt(P,0)} W / 230 V = ${fmt(I,1)} A. Under 16 A – OK.`; t.className = "status ok"; }
+  else { t.textContent = "Slå på utstyr. Rød strek = 16 A."; t.className = "status info"; }
+}
+kursUpdate();
+function eCalc(){
+  const P = num($("eP").value), t = num($("eT").value), kr = num($("eK").value);
+  if (![P,t,kr].every(isFinite)){ $("eSteps").innerHTML = "<div>Skriv inn tall.</div>"; return; }
+  const E = P*t;
+  $("eSteps").innerHTML = `<div>E = P · t = ${fmt(P,1)} kW · ${fmt(t,1)} h = ${fmt(E,1)} kWh</div><div class="res">Pris = ${fmt(E,1)} kWh · ${fmt(kr,2)} kr = ${fmt(E*kr,2)} kr</div>`;
+}
+["eP","eT","eK"].forEach(id => $(id).addEventListener("input", eCalc)); eCalc();
+const EFF = [["LED-lampe",10],["Loddebolt",60],["Drill (230 V)",800],["Vinkelsliper",2000],["Kompressor",5500],["CNC-maskin",11000]];
+const eb = $("effBars");
+eb.innerHTML = EFF.map(e => `<div style="display:grid;grid-template-columns:7.5rem 1fr 4.5rem;gap:.5rem;align-items:center;margin:.3rem 0;font-size:.9rem"><div>${e[0]}</div><div style="background:var(--steel-soft);border-radius:6px;height:1.2rem;overflow:hidden"><div class="ef" data-w="${Math.max(1.2, e[1]/11000*100)}" style="height:100%;width:0;background:var(--orange);border-radius:6px;transition:width 1.2s"></div></div><div style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums">${e[1]>=1000 ? fmt(e[1]/1000, e[1]%1000?1:0)+" kW" : e[1]+" W"}</div></div>`).join("");
+onVisible(eb, () => eb.querySelectorAll(".ef").forEach((f,i) => setTimeout(() => f.style.width = f.dataset.w + "%", i*120)));
+
+/* ---------- Del 7: strøm gjennom kroppen ---------- */
+const RB = {24:{t:10000, v:3000}, 230:{t:1500, v:1000}, 400:{t:1200, v:900}};
+const b7 = {U:230, h:"t", mA:0};
+const bFlow = flow($("bodyDots"), $("bodyPath"), 12, "cdot", 5);
+const sc = $("scaleSvg"), SX = mA => 30 + (Math.log10(Math.max(.1, Math.min(1000, mA))) + 1)/4*580;
+[[.1,.5,"--steel-soft","kjennes ikke"],[.5,10,"--green-soft","prikking"],[10,50,"--orange-soft","krampe"],[50,1000,"--red-soft","hjerteflimmer"]].forEach(z => {
+  el("rect",{x:SX(z[0]),y:30,width:SX(z[1])-SX(z[0]),height:34,style:`fill:var(${z[2]})`},sc);
+  el("text",{x:z[3]==="krampe"?SX(17):(SX(z[0])+SX(z[1]))/2,y:52,"text-anchor":"middle","font-size":14,"font-weight":700,style:"fill:var(--ink)"},sc,z[3]);
+});
+[.1,1,10,100,1000].forEach(v => { el("line",{x1:SX(v),y1:64,x2:SX(v),y2:72,style:"stroke:var(--ink)"},sc); el("text",{x:SX(v),y:88,"text-anchor":"middle","font-size":12,style:"fill:var(--muted)"},sc,(v<1?"0,1":v)+" mA"); });
+el("line",{x1:SX(30),y1:22,x2:SX(30),y2:72,"stroke-dasharray":"4 3",style:"stroke:var(--blue);stroke-width:2.5"},sc);
+el("text",{x:SX(30),y:108,"text-anchor":"middle","font-size":12,"font-weight":700,style:"fill:var(--blue)"},sc,"jordfeilbryter 30 mA");
+const mk = el("g",{style:"transition:transform .8s cubic-bezier(.3,.1,.2,1)"},sc);
+el("path",{d:"M0 28 l-9 -14 h18z",style:"fill:var(--ink)"},mk);
+const mkT = el("text",{x:0,y:10,"text-anchor":"middle","font-size":14,"font-weight":800,style:"fill:var(--ink)"},mk,"");
+function bUpdate(){
+  const R = RB[b7.U][b7.h], I = b7.U/R, mA = I*1000; b7.mA = mA;
+  document.querySelectorAll("#bU .btn").forEach(b => b.classList.toggle("on", +b.dataset.u === b7.U));
+  document.querySelectorAll("#bH .btn").forEach(b => b.classList.toggle("on", b.dataset.h === b7.h));
+  $("bSteps").innerHTML = `<div>Kroppen: R ≈ ${fmt(R,0)} Ω</div><div>I = U / R = ${b7.U} / ${fmt(R,0)}</div><div class="res">I = ${fmt(I,4)} A = ${fmt(mA, mA<10?1:0)} mA</div>`;
+  mk.style.transform = `translateX(${SX(mA)}px)`; mkT.textContent = fmt(mA, mA<10?1:0) + " mA";
+  const t = $("bTxt"), heart = $("heart");
+  heart.classList.toggle("fib", mA >= 50);
+  if (mA < .5){ t.textContent = "Kjennes ikke."; t.className = "status info"; }
+  else if (mA < 10){ t.textContent = "Kjennes som prikking. Ikke farlig i seg selv – men du kan skvette og falle, for eksempel fra en stige."; t.className = "status ok"; }
+  else if (mA < 50){ t.textContent = "Muskelkrampe: hånda kan låse seg rundt ledningen, så du ikke klarer å slippe. Farlig!"; t.className = "status warn"; }
+  else { t.textContent = "Fare for hjerteflimmer: hjertet rister i stedet for å pumpe. LIVSFARLIG."; t.className = "status bad"; }
+}
+addAnim($("bodySvg"), dt => bFlow.move((20 + 70*Math.log10(1 + b7.mA)) * dt));
+document.querySelectorAll("#bU .btn").forEach(b => b.onclick = () => { b7.U = +b.dataset.u; bUpdate(); });
+document.querySelectorAll("#bH .btn").forEach(b => b.onclick = () => { b7.h = b.dataset.h; bUpdate(); });
+bUpdate();
+
+// Lås og merk
+const LP = ["lLock","lTag","lMeter","lEarth","lShield"];
+let lStep = 0;
+function lUpdate(){
+  $("lHandle").style.transform = lStep >= 1 ? "rotate(-90deg)" : "none";
+  $("lLock").classList.toggle("show", lStep >= 2); $("lTag").classList.toggle("show", lStep >= 2);
+  $("lMeter").classList.toggle("show", lStep >= 3);
+  $("lEarth").classList.toggle("show", lStep >= 4);
+  $("lShield").classList.toggle("show", lStep >= 5);
+  [...$("rules").children].forEach((li,i) => { li.classList.toggle("done", i < lStep - 1); li.classList.toggle("cur", i === lStep - 1); if (i === lStep-1) li.classList.remove("done"); });
+  $("lNext").textContent = lStep >= 5 ? "✔ Ferdig – trygt å jobbe" : "Neste regel ▶";
+}
+$("lNext").onclick = () => { if (lStep < 5) lStep++; lUpdate(); };
+$("lReset").onclick = () => { lStep = 0; lUpdate(); };
+lUpdate();
+
+/* ---------- Oppgavefigurer ---------- */
+function mini(type){
+  const s = "stroke:#000;stroke-width:2.5;fill:none";
+  let g = `<svg xmlns="${NS}" viewBox="0 0 200 130" width="400" height="260">`;
+  g += `<rect x="0" y="0" width="200" height="130" fill="#fff"/>`;
+  // ledningsløkke med åpninger for komponentene
+  g += `<path d="M30 52 V20 H62 M88 20 H112 M138 20 H170 V48 M170 82 V110 H${type==="c"?116:30} M${type==="c"?96:30} 110 H30 V78" style="${s}"/>`;
+  // batteri
+  g += `<line x1="16" y1="58" x2="44" y2="58" style="stroke:#000;stroke-width:2.5"/><line x1="23" y1="70" x2="37" y2="70" style="stroke:#000;stroke-width:6"/><path d="M30 52 v6 M30 70 v8" style="${s}"/>`;
+  g += `<text x="48" y="62" font-size="11" font-weight="700">+</text><text x="48" y="76" font-size="11" font-weight="700">−</text>`;
+  // sikring
+  g += `<rect x="62" y="13" width="26" height="14" style="stroke:#000;stroke-width:2;fill:#fff"/><line x1="62" y1="20" x2="88" y2="20" style="stroke:#000;stroke-width:1.5"/>`;
+  // bryter
+  g += `<circle cx="114" cy="20" r="3"/><circle cx="136" cy="20" r="3"/>`;
+  g += type==="b" ? `<line x1="114" y1="20" x2="134" y2="6" style="stroke:#000;stroke-width:2.5"/>` : `<line x1="114" y1="20" x2="137" y2="20" style="stroke:#000;stroke-width:2.5"/>`;
+  // lampe
+  g += `<circle cx="170" cy="65" r="17" style="stroke:#000;stroke-width:2.5;fill:#fff"/><path d="M158 53 L182 77 M182 53 L158 77" style="stroke:#000;stroke-width:2"/>`;
+  if (type==="c") g += `<path d="M100 103 l-4 7 h6 l-4 7 M116 103 l-4 7 h6 l-4 7" style="stroke:#000;stroke-width:1.8;fill:none"/>`;
+  if (type==="d") g += `<path d="M150 20 V110" style="stroke:#000;stroke-width:2.5"/><circle cx="150" cy="20" r="3"/><circle cx="150" cy="110" r="3"/>`;
+  return g + "</svg>";
+}
+$("minis").innerHTML = ["a","b","c","d"].map(t => `<figure><figcaption>${t})</figcaption>${mini(t)}</figure>`).join("");
+$("skilt").innerHTML = `<svg xmlns="${NS}" viewBox="0 0 320 150" width="640" height="300" style="display:block;width:100%;height:auto"><rect x="2" y="2" width="316" height="146" rx="10" fill="#e9ecef" stroke="#000" stroke-width="2.5"/><rect x="2" y="2" width="316" height="34" rx="10" fill="#343a40"/><rect x="2" y="26" width="316" height="10" fill="#343a40"/><text x="160" y="26" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">BÅNDSLIPER  BS-150</text><text x="20" y="66" font-size="17" font-weight="700" fill="#000">230 V ~ 50 Hz</text><text x="20" y="94" font-size="17" font-weight="700" fill="#000">1 500 W</text><text x="20" y="122" font-size="14" fill="#000">Båndhastighet 25 m/s</text><text x="300" y="66" text-anchor="end" font-size="13" fill="#000">Art.nr 41-0287</text><text x="300" y="94" text-anchor="end" font-size="13" fill="#000">Prod. 2024</text><text x="300" y="122" text-anchor="end" font-size="13" fill="#000">IP 20</text></svg>`;
+
+/* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToPng(svg){
+  const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
+  const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0,0,w,h); cx.drawImage(img,0,0,w,h);
+  return [cv.toDataURL("image/png"), vb.width, vb.height];
+}
+$("btnCopy").onclick = async () => {
+  const src = $("oppgavetekst"), clone = src.cloneNode(true);
+  const svgs = [...src.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<svgs.length;i++){
+    try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.round(w*(svgs[i].closest("#skilt") ? 1.3 : .9)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
+  }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".minis").forEach(m => { const t = document.createElement("table"); const tr = t.insertRow(); m.querySelectorAll("figure").forEach(f => { const td = tr.insertCell(); td.innerHTML = f.innerHTML; td.style.padding = "4px"; }); m.replaceWith(t); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>

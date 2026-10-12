@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leksjoner – Industriteknologi</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.2rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a:hover{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+
+section{padding:3rem 2.5rem; border-bottom:1px solid var(--line)}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:62ch}
+.grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:1rem; margin-top:1.4rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.6em}
+ol.lessons{list-style:none; padding:0; margin:0; counter-reset:l}
+ol.lessons li{counter-increment:l; margin:.3rem 0}
+ol.lessons a{display:flex; gap:.7rem; align-items:center; text-decoration:none; color:var(--ink); padding:.45rem .6rem; border-radius:10px; border:1px solid transparent}
+ol.lessons a::before{content:counter(l); flex:none; width:1.7rem; height:1.7rem; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:.85rem; background:var(--orange-soft); color:var(--orange)}
+ol.lessons a:hover{border-color:var(--blue); background:var(--blue-soft)}
+.sims{margin-top:.8rem; padding-top:.7rem; border-top:1px dashed var(--line); font-size:.85rem; color:var(--muted)}
+.sims a{display:inline-block; margin:.15rem .3rem 0 0; padding:.15rem .6rem; border-radius:99px; border:1px solid var(--line); text-decoration:none; font-weight:600; font-size:.8rem}
+.sims a:hover{border-color:var(--blue); background:var(--blue-soft)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1.2rem 0 0}
+footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
+@media (max-width:700px){ section{padding:2rem 1rem} h1{font-size:2.2rem} h2{font-size:1.6rem} .top nav{display:none} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Industriteknologi · <span>Leksjoner</span></div>
+  <nav>
+    <a href="#vg1">Vg1</a>
+    <a href="#vg2">Vg2</a>
+    <a href="#verktoy">Simulatorer og håndbok</a>
+  </nav>
+  <div class="tools">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="wrap">
+    <div class="kicker">Industriteknologi · Vg1 og Vg2</div>
+    <h1>Leksjoner</h1>
+    <p class="lead">Interaktive leksjoner for to skoletimer. Velg emne og leksjon. Bla i leksjonen med piltastene, og trykk A+ for større tekst på fremviser.</p>
+  </div>
+</section>
+
+<section id="vg1">
+  <div class="wrap">
+    <div class="kicker">Vg1 · Teknologi- og industrifag</div>
+    <h2>Vg1</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Elektro</h3>
+        <ol class="lessons">
+          <li><a href="vg1/elektro/leksjon-1-spenning-strom-og-motstand.html">Spenning, strøm og motstand</a></li>
+          <li><a href="vg1/elektro/leksjon-2-repetisjon-og-effekt.html">Repetisjon og effekt</a></li>
+        </ol>
+        <div class="sims">Simulator: <a data-sim="multimeter">Multimeter</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="vg2">
+  <div class="wrap">
+    <div class="kicker">Vg2 · Industriteknologi</div>
+    <h2>Vg2</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Elektro</h3>
+        <ol class="lessons">
+          <li><a href="vg2/elektro/leksjon-1-strom-spenning-og-resistans.html">Strøm, spenning og resistans</a></li>
+          <li><a href="vg2/elektro/leksjon-2-maling-med-multimeter.html">Måling med multimeter</a></li>
+          <li><a href="vg2/elektro/leksjon-3-motorstyring.html">Motorstyring</a></li>
+        </ol>
+        <div class="sims">Simulator: <a data-sim="multimeter">Multimeter</a></div>
+      </div>
+      <div class="card">
+        <h3>HMS</h3>
+        <ol class="lessons">
+          <li><a href="vg2/hms/leksjon-1-grunnleggende-hms.html">Grunnleggende HMS</a></li>
+          <li><a href="vg2/hms/leksjon-2-risikovurdering-og-sja.html">Risikovurdering og SJA</a></li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Materiallære</h3>
+        <ol class="lessons">
+          <li><a href="vg2/materiallaere/leksjon-1-grunnleggende.html">Grunnleggende</a></li>
+          <li><a href="vg2/materiallaere/leksjon-2-stal-og-jern.html">Stål og jern</a></li>
+          <li><a href="vg2/materiallaere/leksjon-3-mekanisk-proving.html">Mekanisk prøving</a></li>
+          <li><a href="vg2/materiallaere/leksjon-4-varmebehandling.html">Varmebehandling</a></li>
+        </ol>
+        <div class="sims">Simulatorer: <a data-sim="strekkprove">Strekkprøve</a><a data-sim="charpy">Charpy</a><a data-sim="bjelke">Bjelke</a></div>
+      </div>
+      <div class="card">
+        <h3>Pneumatikk</h3>
+        <ol class="lessons">
+          <li><a href="vg2/pneumatikk/leksjon-1-grunnleggende-pneumatikk.html">Grunnleggende pneumatikk</a></li>
+          <li><a href="vg2/pneumatikk/leksjon-2-styring-og-fart.html">Styring og fart</a></li>
+        </ol>
+        <div class="sims">Simulator: <a data-sim="pneumatikk">Pneumatikk og hydraulikk</a></div>
+      </div>
+      <div class="card">
+        <h3>Vedlikehold</h3>
+        <ol class="lessons">
+          <li><a href="vg2/vedlikehold/leksjon-1-vedlikeholdssystemer.html">Vedlikehold og vedlikeholdssystemer</a></li>
+          <li><a href="vg2/vedlikehold/leksjon-2-sikker-jobb-las-og-merk.html">Sikker jobb – lås og merk</a></li>
+          <li><a href="vg2/vedlikehold/leksjon-3-smoring.html">Smøring</a></li>
+        </ol>
+        <div class="sims">Simulatorer: <a data-sim="momentnokkel">Momentnøkkel</a><a data-sim="maleur">Måleur</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="verktoy">
+  <div class="wrap">
+    <div class="kicker">Verktøy</div>
+    <h2>Simulatorer og håndbok</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Simulatorer</h3>
+        <p>Øv på måleverktøy, materialprøving, maskinering, pneumatikk og styring.</p>
+        <a class="btn" data-sim="" style="text-decoration:none; display:inline-block">Åpne simulatorene</a>
+      </div>
+      <div class="card">
+        <h3>Verkstedhåndboka</h3>
+        <p>Formler, tabeller og oppslag for verkstedet.</p>
+        <a class="btn" href="https://verkstedhandboka.vercel.app/" style="text-decoration:none; display:inline-block">Åpne håndboka</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>Leksjonene lenker til Verkstedhåndboka. Håndboka lenker ikke tilbake hit.</footer>
+
+<script>
+// Adressen til simulatorene. Endres her hvis Vercel-adressen er en annen.
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => {
+  a.href = SIMULATORER + (a.dataset.sim ? a.dataset.sim + ".html" : "");
+});
+let scale = 1;
+document.getElementById("btnSize").onclick = e => {
+  scale = scale >= 1.3 ? 1 : +(scale + 0.15).toFixed(2);
+  document.documentElement.style.setProperty("--scale", scale);
+  e.target.textContent = scale === 1 ? "A+" : "A" + Math.round(scale * 100) + "%";
+};
+document.getElementById("btnTheme").onclick = () => {
+  const r = document.documentElement;
+  r.dataset.theme = r.dataset.theme === "dark" ? "light" : "dark";
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,792 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Elektro 2: Repetisjon og effekt</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Barlow+Condensed:wght@600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: projector-first lesson, one wide column of "stations"; every quantity keeps its own colour (U blue, I copper, R green) everywhere */
+:root{
+  --bg:#eef2f0; --surface:#ffffff; --ink:#16201c; --muted:#56635d; --line:#cfd8d4;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c4282c; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#f9e1e1;
+  --wire:#3a4641; --glow:#ffcf4a;
+  --display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --body:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101513; --surface:#19201d; --ink:#e6ece9; --muted:#9aa8a1; --line:#2d3833;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6e; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1b1c;
+  --wire:#b9c6c0; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101513; --surface:#19201d; --ink:#e6ece9; --muted:#9aa8a1; --line:#2d3833;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6e; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1b1c;
+  --wire:#b9c6c0; --glow:#ffd75e; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 clamp(17px,1.25vw,21px)/1.5 var(--body);margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.05;text-wrap:balance;margin:0}
+h1{font-size:clamp(44px,6vw,88px);letter-spacing:.005em}
+h2{font-size:clamp(34px,3.6vw,54px)}
+h3{font-size:clamp(24px,2vw,30px)}
+p{margin:0;max-width:62ch}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.top .in{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.top a{flex:none;color:var(--muted);text-decoration:none;font:600 15px/1 var(--body);padding:14px 10px;border-bottom:3px solid transparent}
+nav.top a:hover,nav.top a:focus-visible{color:var(--ink);border-bottom-color:var(--i);outline:none}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:12px;margin-top:22px;padding:0;list-style:none}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals b{font-family:var(--display);font-size:1.4em;min-width:1.2em}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* quantity cards */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q .sym{font:700 72px/0.9 var(--display)}
+.q .unit{font:700 18px/1.2 var(--mono)}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+
+.ex4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:6px;align-content:start}
+.ex svg{width:100%;height:auto;max-height:110px}
+.exv{font:700 34px/1 var(--mono)}
+.ex span{font-weight:700}
+.ex small{color:var(--muted);font-size:15px;line-height:1.35}
+.ex.hms{border-color:var(--bad)} .bad{color:var(--bad)}
+#eksempler svg text{font-variant-numeric:tabular-nums}
+/* lab */
+.lab{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:1.6fr 1fr;gap:clamp(16px,2.5vw,32px)}
+.lab>*{min-width:0}
+.lab svg{width:100%;height:auto;display:block}
+.controls{display:grid;gap:18px;align-content:start}
+.ctl label{display:flex;justify-content:space-between;align-items:baseline;font-weight:700}
+.ctl output{font:700 26px/1 var(--mono)}
+input[type=range]{width:100%;height:36px;margin:0}
+#sU{accent-color:var(--u)} #sR{accent-color:var(--r)}
+.readout{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dig{border-radius:10px;padding:10px 12px;display:grid;gap:2px}
+.dig span{font:700 12px/1 var(--body);letter-spacing:.1em;text-transform:uppercase;opacity:.8}
+.dig b{font:700 clamp(24px,2.2vw,32px)/1.1 var(--mono);font-variant-numeric:tabular-nums}
+.dig.I{background:var(--i-soft);color:var(--i);grid-column:1/-1}
+.dig.I b{font-size:clamp(34px,3.4vw,48px)}
+.dig.P{background:var(--bg);color:var(--ink)}
+.dig.Rr{background:var(--r-soft);color:var(--r)}
+.formula-live{font:700 20px/1.3 var(--mono);color:var(--muted)}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+.water{grid-column:1/-1;border-top:1px dashed var(--line);padding-top:14px;display:grid;grid-template-columns:1.6fr 1fr;gap:clamp(16px,2.5vw,32px);align-items:center}
+.water>*{min-width:0}
+.legend{display:grid;gap:10px;padding:0;margin:0;list-style:none}
+.legend li{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:baseline}
+.legend b{font-family:var(--display);font-size:24px}
+
+/* measuring */
+.measure{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mcard{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.mcard svg{width:100%;height:auto}
+.mcard .verdict{font:700 20px/1.2 var(--display);letter-spacing:.02em;min-height:1.2em}
+.mcard[data-shown="ok"]{border-color:var(--r);background:var(--r-soft)}
+.mcard[data-shown="bad"]{border-color:var(--bad);background:var(--bad-soft)}
+.mcard[data-shown="ok"] .verdict{color:var(--r)} .mcard[data-shown="bad"] .verdict{color:var(--bad)}
+.spark{animation:spark .35s steps(2) infinite}
+@keyframes spark{50%{opacity:0}}
+.fast{stroke-dasharray:3 9;animation:flow .25s linear infinite}
+
+/* ohm */
+.ohm{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:clamp(20px,4vw,56px);align-items:center}
+.ohm>*{min-width:0}
+.tri text{cursor:pointer;font:700 64px var(--display)}
+.tri .hit{cursor:pointer;fill:transparent}
+.tri g.covered text{opacity:.18}
+.tri g.covered .cover{opacity:1}
+.tri .cover{opacity:0;transition:opacity .25s}
+.bigf{font:700 clamp(40px,5vw,72px)/1.1 var(--mono);min-height:1.2em}
+.calc{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;display:grid;gap:14px}
+.calc .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.calc input[type=number]{font:700 20px var(--mono);width:8ch;padding:8px 10px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:999px;overflow:hidden}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{padding:9px 16px;font-weight:700;cursor:pointer}
+.seg input:checked+label{background:var(--ink);color:var(--bg)}
+.seg input:focus-visible+label{outline:3px solid var(--u);outline-offset:-3px}
+.steps{font:500 19px/1.6 var(--mono);white-space:pre-wrap;overflow-x:auto}
+
+/* tasks */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+#copyMsg{color:var(--muted);font-size:15px}
+details.teacher{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px 18px}
+details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
+.plan{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;padding-bottom:14px}
+.plan dt{font:700 16px/1.5 var(--mono);color:var(--muted)}
+.plan dd{margin:0}
+
+@media (max-width:860px){
+  .hero,.lab,.water,.ohm{grid-template-columns:1fr}
+  .trio,.measure{grid-template-columns:1fr}
+  .ex4{grid-template-columns:1fr 1fr}
+}
+@media (prefers-reduced-motion:reduce){.flow,.fast,.pulse,.spark{animation:none}}
+@media print{
+  nav.top,.hero,section:not(#oppgaver),details.teacher,.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+/* lesson 2 additions: P (effekt) gets its own colour, used everywhere effect appears */
+:root{--p:#7b3fb0;--p-soft:#efe3f8}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--p:#c493f2;--p-soft:#2e2140}}
+:root[data-theme="dark"]{--p:#c493f2;--p-soft:#2e2140}
+.p{color:var(--p)}
+.breathe{animation:breathe 3s ease-in-out infinite;opacity:.35}
+@keyframes breathe{0%,100%{opacity:.12}50%{opacity:.6}}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{position:relative;min-height:170px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;padding:16px;cursor:pointer;display:grid;place-items:center;text-align:center}
+.card .front{font:700 96px/1 var(--display)}
+.card .front svg{width:150px;height:auto}
+.card.U .front{color:var(--u)} .card.I .front{color:var(--i)} .card.R .front{color:var(--r)}
+.card .back{display:none;gap:4px}
+.card.flipped .front{display:none}
+.card.flipped .back{display:grid}
+.card.flipped{animation:flip .35s ease}
+@keyframes flip{from{transform:rotateY(80deg)}to{transform:none}}
+.card .back b{font:700 34px/1.1 var(--display)}
+.card .back em{font:700 20px/1.3 var(--mono);font-style:normal}
+.card .back small{color:var(--muted);font-size:16px}
+.card.U.flipped{border-color:var(--u);background:var(--u-soft)} .card.U .back em{color:var(--u)}
+.card.I.flipped{border-color:var(--i);background:var(--i-soft)} .card.I .back em{color:var(--i)}
+.card.R.flipped{border-color:var(--r);background:var(--r-soft)} .card.R .back em{color:var(--r)}
+.card.M.flipped{border-color:var(--ink)}
+
+.dig.Pp{background:var(--p-soft);color:var(--p)}
+.dig.U{background:var(--u-soft);color:var(--u)}
+
+.trainer{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:1.3fr 1fr;gap:clamp(16px,2.5vw,32px);align-items:center}
+.trainer>*{min-width:0}
+.trainer svg{width:100%;height:auto}
+.trform{display:grid;gap:14px}
+.trq{font:700 clamp(26px,2.4vw,36px)/1.1 var(--display)}
+.trform .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.trform input[type=number]{font:700 24px var(--mono);width:9ch;padding:8px 10px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.fb{font:700 20px/1.4 var(--body);min-height:1.4em;white-space:pre-wrap}
+.fb.ok{color:var(--r)} .fb.no{color:var(--bad)}
+.score b{font-size:28px;color:var(--r)}
+
+.ptri-wrap{display:grid;grid-template-columns:minmax(220px,340px) 1fr;gap:clamp(20px,4vw,56px);align-items:center}
+.ptri-wrap>*{min-width:0}
+.units{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.units div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:2px}
+.units b{font:700 48px/1 var(--display)}
+.units em{font:700 16px var(--mono);font-style:normal;color:var(--muted)}
+
+.app-pick{display:flex;flex-wrap:wrap;gap:8px}
+.app-pick button[aria-checked="true"]{background:var(--p);border-color:var(--p);color:var(--surface)}
+.bars{display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:7.5em 1fr;gap:8px;align-items:center;font-size:15px}
+.bar .track{height:16px;background:var(--bg);border-radius:4px;position:relative;overflow:hidden}
+.bar .fill{height:100%;background:var(--line);border-radius:4px;min-width:3px}
+.bar.on .fill{background:var(--p)}
+.bar.on span{font-weight:700;color:var(--p)}
+@media (max-width:860px){.trainer,.ptri-wrap{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.breathe,.card.flipped{animation:none}}
+/* fixes carried over from v1 */
+.card{min-width:0}
+.card .front svg{max-width:100%}
+.dig b{white-space:nowrap}
+#hverdag .dig.I b,#hverdag .dig.U b{font-size:clamp(22px,2vw,28px)}
+/* part 2: what is power */
+.divider{margin-top:clamp(48px,7vw,96px);border-radius:18px;background:var(--p-soft);border:2px solid var(--p);padding:clamp(18px,3vw,32px);display:grid;gap:6px}
+.divider b{font:700 clamp(40px,5vw,72px)/1 var(--display)}
+.race{display:grid;grid-template-columns:1fr 1fr minmax(0,0.9fr);gap:16px;align-items:center}
+.race>*{min-width:0}
+.kettle{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:6px;justify-items:center}
+.kettle svg{width:100%;max-width:240px;height:auto}
+.kw{font:700 40px/1 var(--mono)}
+.kread{font-size:18px;color:var(--muted)}
+.kettle.won{border:3px solid var(--r)}
+.race-side{display:grid;gap:14px;justify-items:start}
+#raceBtn{font-size:22px;padding:14px 28px;background:var(--p);border-color:var(--p);color:var(--surface)}
+.fbig{font:700 clamp(22px,2vw,30px)/1.25 var(--display)}
+.takeaway{background:var(--surface);border-left:6px solid var(--p);border-radius:8px;padding:16px 20px;font-size:1.2em;max-width:none}
+.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.steps3>div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:center}
+.steps3 b{font:700 48px/1 var(--display);grid-row:span 2}
+.steps3 svg{width:100%;max-width:160px;height:auto}
+.forms{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.forms>div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:4px;justify-items:center;text-align:center}
+.forms svg{width:100%;max-width:200px;height:auto}
+.forms b{font:700 30px/1.1 var(--display)}
+.forms span{color:var(--muted)}
+.spin{transform-origin:128px 62px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.rise{animation:rise 1.6s ease-in-out infinite}
+@keyframes rise{0%{transform:translateY(6px);opacity:.2}60%{opacity:1}100%{transform:translateY(-6px);opacity:0}}
+@media (max-width:860px){.race{grid-template-columns:1fr 1fr}.race-side{grid-column:1/-1}.steps3,.forms{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.spin,.rise{animation:none}}
+#pU{accent-color:var(--u)} #pI{accent-color:var(--i)}
+</style>
+<nav class="top" aria-label="Innhold"><div class="in">
+  <a href="#start">Start</a><a href="#husker">Husker du?</a><a href="#lab">Kretslab</a><a href="#trening">Ohms lov-trening</a><a href="#effekt">Hva er effekt?</a><a href="#formel">P = U × I</a><a href="#hverdag">Watt i hverdagen</a><a href="#oppgaver">Oppgaver</a>
+</div></nav>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Elektro Vg1 · Leksjon 2 · 2 skoletimer</div>
+    <h1 style="margin-top:10px">Repetisjon og <span class="p">effekt</span></h1>
+    <ul class="goals">
+      <li><b class="u">1</b><span>Jeg husker U, I og R, og enhetene.</span></li>
+      <li><b class="r">2</b><span>Jeg regner sikkert med Ohms lov.</span></li>
+      <li><b class="p">3</b><span>Jeg kan regne ut effekt med P = U × I.</span></li>
+    </ul>
+  </div>
+  <svg viewBox="0 0 420 300" role="img" aria-label="Krets der lampa lyser sterkere og svakere">
+    <rect x="40" y="40" width="340" height="220" rx="6" fill="none" stroke="var(--wire)" stroke-width="5"/>
+    <rect x="40" y="40" width="340" height="220" rx="6" fill="none" stroke="var(--i)" stroke-width="5" class="flow" stroke-linecap="round"/>
+    <rect x="18" y="120" width="44" height="60" fill="var(--bg)"/>
+    <line x1="14" y1="134" x2="66" y2="134" stroke="var(--u)" stroke-width="6"/>
+    <line x1="26" y1="164" x2="54" y2="164" stroke="var(--u)" stroke-width="10"/>
+    <circle cx="210" cy="40" r="60" fill="var(--glow)" class="breathe"/>
+    <circle cx="210" cy="40" r="26" fill="var(--bg)" stroke="var(--ink)" stroke-width="4"/>
+    <path d="M192 22 L228 58 M228 22 L192 58" stroke="var(--ink)" stroke-width="4"/>
+    <text x="210" y="160" text-anchor="middle" font-family="var(--display)" font-weight="700" font-size="54"><tspan fill="var(--u)">U</tspan><tspan fill="var(--muted)"> = </tspan><tspan fill="var(--r)">R</tspan><tspan fill="var(--muted)"> × </tspan><tspan fill="var(--i)">I</tspan></text>
+    <text x="210" y="200" text-anchor="middle" fill="var(--muted)" font-family="var(--body)" font-size="17">Først repetisjon, så noe nytt</text>
+  </svg>
+</header>
+
+<section id="husker">
+  <div class="tag">Del 1 · Repetisjon</div>
+  <h2>Husker du? Trykk på kortene</h2>
+  <div class="cards">
+    <button type="button" class="card U"><span class="front">U</span><span class="back"><b>Spenning</b><em>volt · V</em><small>Trykket som dytter strømmen</small></span></button>
+    <button type="button" class="card I"><span class="front">I</span><span class="back"><b>Strøm</b><em>ampere · A</em><small>Hvor mye som renner forbi</small></span></button>
+    <button type="button" class="card R"><span class="front">R</span><span class="back"><b>Motstand</b><em>ohm · Ω</em><small>Hvor mye strømmen bremses</small></span></button>
+    <button type="button" class="card M"><span class="front"><svg viewBox="0 0 120 70" aria-hidden="true"><circle cx="60" cy="35" r="26" fill="none" stroke="var(--u)" stroke-width="5"/><text x="60" y="47" text-anchor="middle" fill="var(--u)" font-family="var(--display)" font-weight="700" font-size="34">V</text></svg></span><span class="back"><b>Voltmeter</b><em>parallelt</em><small>Over komponenten</small></span></button>
+    <button type="button" class="card M"><span class="front"><svg viewBox="0 0 120 70" aria-hidden="true"><circle cx="60" cy="35" r="26" fill="none" stroke="var(--i)" stroke-width="5"/><text x="60" y="47" text-anchor="middle" fill="var(--i)" font-family="var(--display)" font-weight="700" font-size="34">A</text></svg></span><span class="back"><b>Amperemeter</b><em>i serie</em><small>All strømmen går gjennom</small></span></button>
+    <button type="button" class="card M"><span class="front"><svg viewBox="0 0 120 70" aria-hidden="true"><path d="M60 6 L112 64 H8 Z" fill="none" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/><line x1="30" y1="40" x2="90" y2="40" stroke="var(--ink)" stroke-width="3"/><line x1="60" y1="40" x2="60" y2="64" stroke="var(--ink)" stroke-width="3"/><text x="60" y="35" text-anchor="middle" fill="var(--u)" font-family="var(--display)" font-weight="700" font-size="18">U</text><text x="44" y="60" text-anchor="middle" fill="var(--r)" font-family="var(--display)" font-weight="700" font-size="17">R</text><text x="76" y="60" text-anchor="middle" fill="var(--i)" font-family="var(--display)" font-weight="700" font-size="17">I</text></svg></span><span class="back"><b>Ohms lov</b><em>U = R × I</em><small>I = U / R · R = U / I</small></span></button>
+  </div>
+  <button type="button" id="flipAll" style="justify-self:start">Snu alle kortene</button>
+</section>
+
+<section id="lab">
+  <div class="tag">Del 1 · Repetisjon</div>
+  <h2>Kretslab: skru på spenning og motstand</h2>
+  <div class="lab">
+    <svg id="circ" viewBox="0 0 640 340" role="img" aria-label="Krets med batteri og lampe. Strømmen endres med spenning og motstand.">
+      <path id="loop" d="M80 175 V90 H560 V300 H80 V215" fill="none" stroke="var(--wire)" stroke-width="4"/>
+      <g id="dots"></g>
+      <rect x="50" y="175" width="60" height="40" fill="var(--surface)"/>
+      <line x1="50" y1="180" x2="110" y2="180" stroke="var(--u)" stroke-width="5"/>
+      <line x1="64" y1="208" x2="96" y2="208" stroke="var(--u)" stroke-width="10"/>
+      <text x="30" y="187" fill="var(--u)" font-family="var(--display)" font-weight="700" font-size="24" text-anchor="middle">+</text>
+      <text x="30" y="218" fill="var(--u)" font-family="var(--display)" font-weight="700" font-size="28" text-anchor="middle">−</text>
+      <text id="tU" x="122" y="202" fill="var(--u)" font-family="var(--mono)" font-weight="700" font-size="22">12 V</text>
+      <circle id="glow" cx="320" cy="90" r="60" fill="var(--glow)" opacity=".3"/>
+      <circle cx="320" cy="90" r="26" fill="var(--surface)" stroke="var(--ink)" stroke-width="4"/>
+      <path d="M302 72 L338 108 M338 72 L302 108" stroke="var(--ink)" stroke-width="4"/>
+      <text id="tR" x="320" y="146" fill="var(--r)" font-family="var(--mono)" font-weight="700" font-size="20" text-anchor="middle">R = 60 Ω</text>
+      <rect x="410" y="176" width="128" height="40" rx="6" fill="var(--i-soft)" stroke="var(--i)" stroke-width="2"/>
+      <text id="tI" x="474" y="204" fill="var(--i)" font-family="var(--mono)" font-weight="700" font-size="22" text-anchor="middle">200 mA</text>
+      <text x="320" y="330" fill="var(--muted)" font-family="var(--body)" font-size="15" text-anchor="middle">Prikkene viser strømmen, fra + til −</text>
+    </svg>
+    <div class="controls">
+      <div class="ctl">
+        <label for="sU"><span class="u">Spenning U</span><output id="oU" class="u">12 V</output></label>
+        <input type="range" id="sU" min="0" max="24" step="1" value="12">
+      </div>
+      <div class="ctl">
+        <label for="sR"><span class="r">Motstand R</span><output id="oR" class="r">60 Ω</output></label>
+        <input type="range" id="sR" min="10" max="500" step="10" value="60">
+      </div>
+      <div class="readout">
+        <div class="dig I"><span>Strøm I = U / R</span><b id="dI">0,200 A</b></div>
+      </div>
+      <div class="formula-live" id="fl"></div>
+    </div>
+  </div>
+</section>
+
+<section id="trening">
+  <div class="tag">Del 1 · Ohms lov-trening</div>
+  <h2>Regn ut. Få ny oppgave.</h2>
+  <div class="trainer">
+    <svg id="trSvg" viewBox="0 0 520 220" role="img" aria-label="Oppgavekrets">
+      <rect x="60" y="40" width="400" height="150" fill="none" stroke="var(--wire)" stroke-width="4"/>
+      <rect x="40" y="95" width="40" height="40" fill="var(--surface)"/>
+      <line x1="36" y1="100" x2="84" y2="100" stroke="var(--u)" stroke-width="5"/>
+      <line x1="48" y1="128" x2="72" y2="128" stroke="var(--u)" stroke-width="9"/>
+      <rect x="220" y="24" width="80" height="32" fill="var(--r-soft)" stroke="var(--r)" stroke-width="4"/>
+      <text id="trU" x="96" y="124" fill="var(--u)" font-family="var(--mono)" font-weight="700" font-size="26">12 V</text>
+      <text id="trR" x="260" y="86" text-anchor="middle" fill="var(--r)" font-family="var(--mono)" font-weight="700" font-size="26">60 Ω</text>
+      <path d="M330 190 h40" stroke="var(--i)" stroke-width="4"/><path d="M362 182 l10 8 l-10 8" fill="none" stroke="var(--i)" stroke-width="4"/>
+      <text id="trI" x="350" y="176" text-anchor="middle" fill="var(--i)" font-family="var(--mono)" font-weight="700" font-size="26">I = ?</text>
+    </svg>
+    <div class="trform">
+      <div class="trq" id="trQ">Finn strømmen I</div>
+      <div class="row"><label for="trAns" class="tag">Svar</label><input type="number" id="trAns" step="any" inputmode="decimal"><span class="mono" id="trUnit">A</span></div>
+      <div class="row"><button type="button" id="trCheck">Sjekk</button><button type="button" id="trNew">Ny oppgave</button><button type="button" id="trHint">Vis formel</button></div>
+      <div id="trFb" class="fb" aria-live="polite"></div>
+      <div class="score"><span class="tag">Riktige på rad</span> <b id="trScore" class="mono">0</b></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span class="tag">Del 2</span><b>Nytt i dag: <span class="p">effekt</span></b></div>
+
+<section id="effekt">
+  <div class="tag">Hva er effekt? · Steg 1</div>
+  <h2>Hvilken vannkoker koker vannet først?</h2>
+  <p class="lead">Begge har 1 liter vann. Gjett før du trykker start.</p>
+  <div class="race">
+    <div class="kettle" id="k1">
+      <svg viewBox="0 0 220 260" aria-hidden="true">
+        <path d="M40 70 H150 L162 220 H28 Z" fill="var(--surface)" stroke="var(--wire)" stroke-width="5" stroke-linejoin="round"/>
+        <clipPath id="kc1"><path d="M40 70 H150 L162 220 H28 Z"/></clipPath>
+        <rect class="wtr" x="20" y="110" width="160" height="120" fill="var(--waterbg)" clip-path="url(#kc1)"/>
+        <g class="bub" clip-path="url(#kc1)"></g>
+        <path d="M150 90 q40 6 28 60 l-18 -2" fill="none" stroke="var(--wire)" stroke-width="5"/>
+        <path class="steam" d="M70 56 q10 -16 0 -32 M95 56 q10 -16 0 -32 M120 56 q10 -16 0 -32" fill="none" stroke="var(--muted)" stroke-width="4" stroke-linecap="round" opacity="0"/>
+        <rect x="190" y="40" width="18" height="180" rx="9" fill="var(--bg)" stroke="var(--wire)" stroke-width="3"/>
+        <rect class="therm" x="194" y="200" width="10" height="16" rx="5" fill="var(--bad)"/>
+      </svg>
+      <b class="kw p">1000 W</b>
+      <div class="kread mono"><span class="tC">20 °C</span> · <span class="tT">0 min 0 s</span></div>
+    </div>
+    <div class="kettle" id="k2">
+      <svg viewBox="0 0 220 260" aria-hidden="true">
+        <path d="M40 70 H150 L162 220 H28 Z" fill="var(--surface)" stroke="var(--wire)" stroke-width="5" stroke-linejoin="round"/>
+        <clipPath id="kc2"><path d="M40 70 H150 L162 220 H28 Z"/></clipPath>
+        <rect class="wtr" x="20" y="110" width="160" height="120" fill="var(--waterbg)" clip-path="url(#kc2)"/>
+        <g class="bub" clip-path="url(#kc2)"></g>
+        <path d="M150 90 q40 6 28 60 l-18 -2" fill="none" stroke="var(--wire)" stroke-width="5"/>
+        <path class="steam" d="M70 56 q10 -16 0 -32 M95 56 q10 -16 0 -32 M120 56 q10 -16 0 -32" fill="none" stroke="var(--muted)" stroke-width="4" stroke-linecap="round" opacity="0"/>
+        <rect x="190" y="40" width="18" height="180" rx="9" fill="var(--bg)" stroke="var(--wire)" stroke-width="3"/>
+        <rect class="therm" x="194" y="200" width="10" height="16" rx="5" fill="var(--bad)"/>
+      </svg>
+      <b class="kw p">2000 W</b>
+      <div class="kread mono"><span class="tC">20 °C</span> · <span class="tT">0 min 0 s</span></div>
+    </div>
+    <div class="race-side">
+      <button type="button" id="raceBtn">Start</button>
+      <p id="raceMsg" class="fbig" aria-live="polite">&nbsp;</p>
+    </div>
+  </div>
+  <div class="takeaway"><b class="p">Effekt</b> = hvor <b>fort</b> energi blir brukt. Dobbelt så mye effekt gjør jobben på halve tiden.</div>
+</section>
+
+<section id="pakker">
+  <div class="tag">Hva er effekt? · Steg 2</div>
+  <h2>Strømmen bærer energi til lampa</h2>
+  <div class="steps3">
+    <div><b class="u">U</b><span>Spenning = hvor mye energi hver ladning bærer</span><svg viewBox="0 0 120 40" aria-hidden="true"><circle cx="20" cy="20" r="6" fill="var(--glow)" stroke="var(--i)" stroke-width="2"/><circle cx="60" cy="20" r="11" fill="var(--glow)" stroke="var(--i)" stroke-width="2"/><circle cx="100" cy="20" r="17" fill="var(--glow)" stroke="var(--i)" stroke-width="2"/></svg></div>
+    <div><b class="i">I</b><span>Strøm = hvor mange ladninger som kommer hvert sekund</span><svg viewBox="0 0 120 40" aria-hidden="true"><g fill="var(--glow)" stroke="var(--i)" stroke-width="2"><circle cx="12" cy="20" r="7"/><circle cx="36" cy="20" r="7"/><circle cx="60" cy="20" r="7"/><circle cx="84" cy="20" r="7"/><circle cx="108" cy="20" r="7"/></g></svg></div>
+    <div><b class="p">P</b><span>Effekt = hvor mye energi lampa får hvert sekund</span><svg viewBox="0 0 120 40" aria-hidden="true"><circle cx="60" cy="20" r="18" fill="var(--glow)" opacity=".5"/><circle cx="60" cy="20" r="9" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/></svg></div>
+  </div>
+  <div class="lab">
+    <svg id="pk" viewBox="0 0 640 280" role="img" aria-label="Ladninger bærer energipakker fra batteriet til lampa og kommer tomme tilbake">
+      <path id="pkloop" d="M110 70 H530 V210 H110 Z" fill="none" stroke="var(--wire)" stroke-width="4"/>
+      <g id="pkdots"></g>
+      <rect x="80" y="115" width="60" height="50" fill="var(--surface)"/>
+      <line x1="80" y1="122" x2="140" y2="122" stroke="var(--u)" stroke-width="5"/>
+      <line x1="94" y1="156" x2="126" y2="156" stroke="var(--u)" stroke-width="10"/>
+      <text id="pkU" x="150" y="146" fill="var(--u)" font-family="var(--mono)" font-weight="700" font-size="22">12 V</text>
+      <circle id="pkGlow" cx="530" cy="140" r="60" fill="var(--glow)" opacity=".3"/>
+      <circle cx="530" cy="140" r="26" fill="var(--surface)" stroke="var(--ink)" stroke-width="4"/>
+      <path d="M512 122 L548 158 M548 122 L512 158" stroke="var(--ink)" stroke-width="4"/>
+      <text x="320" y="52" text-anchor="middle" fill="var(--i)" font-family="var(--body)" font-weight="700" font-size="16">fulle energipakker →</text>
+      <text x="320" y="244" text-anchor="middle" fill="var(--muted)" font-family="var(--body)" font-weight="700" font-size="16">← tomme tilbake til batteriet</text>
+    </svg>
+    <div class="controls">
+      <div class="ctl">
+        <label for="pU"><span class="u">Spenning U</span><output id="opU" class="u">12 V</output></label>
+        <input type="range" id="pU" min="0" max="24" step="1" value="12">
+      </div>
+      <div class="ctl">
+        <label for="pI"><span class="i">Strøm I</span><output id="opI" class="i">0,5 A</output></label>
+        <input type="range" id="pI" min="0" max="2" step="0.1" value="0.5">
+      </div>
+      <div class="readout">
+        <div class="dig Pp" style="grid-column:1/-1"><span>Effekt P = U × I</span><b id="pP" style="font-size:clamp(34px,3.4vw,48px)">6 W</b></div>
+      </div>
+      <div class="formula-live" id="pF">P = 12 V × 0,5 A = 6 W</div>
+      <p class="tag">Prøv: doble U. Doble så I.</p>
+    </div>
+  </div>
+</section>
+
+<section id="former">
+  <div class="tag">Hva er effekt? · Steg 3</div>
+  <h2>Energien blir til noe nyttig</h2>
+  <div class="forms">
+    <div><svg viewBox="0 0 160 120" aria-hidden="true"><rect x="20" y="40" width="120" height="66" rx="6" fill="var(--surface)" stroke="var(--wire)" stroke-width="4"/><path d="M40 52 v42 M60 52 v42 M80 52 v42 M100 52 v42 M120 52 v42" stroke="var(--bad)" stroke-width="4"/><path class="rise" d="M50 34 q8 -10 0 -22 M80 34 q8 -10 0 -22 M110 34 q8 -10 0 -22" fill="none" stroke="var(--bad)" stroke-width="3" stroke-linecap="round"/></svg><b>Varme</b><span>Panelovn, vannkoker</span></div>
+    <div><svg viewBox="0 0 160 120" aria-hidden="true"><circle cx="80" cy="54" r="44" fill="var(--glow)" class="breathe"/><circle cx="80" cy="54" r="24" fill="var(--surface)" stroke="var(--wire)" stroke-width="4"/><rect x="68" y="80" width="24" height="20" rx="3" fill="var(--line)" stroke="var(--wire)" stroke-width="3"/></svg><b>Lys</b><span>Lampe, skjerm</span></div>
+    <div><svg viewBox="0 0 160 120" aria-hidden="true"><rect x="30" y="34" width="70" height="56" rx="8" fill="var(--surface)" stroke="var(--wire)" stroke-width="4"/><line x1="100" y1="62" x2="118" y2="62" stroke="var(--wire)" stroke-width="5"/><g class="spin"><path d="M128 62 l0 -28 a14 14 0 0 1 0 28 M128 62 l0 28 a14 14 0 0 1 0 -28" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/></g><text x="65" y="70" text-anchor="middle" fill="var(--ink)" font-family="var(--display)" font-weight="700" font-size="22">M</text></svg><b>Bevegelse</b><span>Motor, vifte, drill</span></div>
+  </div>
+</section>
+
+<section id="formel">
+  <div class="tag">Formelen</div>
+  <h2>Regn ut effekten: <span class="p">P</span> = <span class="u">U</span> × <span class="i">I</span></h2>
+  <div class="ptri-wrap">
+    <svg class="tri" viewBox="0 0 300 270" role="group" aria-label="Effekttrekanten. Velg en bokstav.">
+      <path d="M150 10 L10 255 H290 Z" fill="var(--surface)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+      <line x1="62" y1="160" x2="238" y2="160" stroke="var(--ink)" stroke-width="4"/>
+      <line x1="150" y1="160" x2="150" y2="255" stroke="var(--ink)" stroke-width="4"/>
+      <text x="150" y="225" text-anchor="middle" fill="var(--muted)" font-family="var(--mono)" style="font-size:22px">×</text>
+      <g data-k="P" tabindex="0" role="button" aria-label="Finn P"><circle class="cover" cx="150" cy="112" r="40" fill="var(--p-soft)"/><text x="150" y="135" text-anchor="middle" fill="var(--p)">P</text><rect class="hit" x="90" y="60" width="120" height="96"/></g>
+      <g data-k="U" tabindex="0" role="button" aria-label="Finn U"><circle class="cover" cx="95" cy="210" r="38" fill="var(--u-soft)"/><text x="95" y="232" text-anchor="middle" fill="var(--u)">U</text><rect class="hit" x="40" y="164" width="106" height="88"/></g>
+      <g data-k="I" tabindex="0" role="button" aria-label="Finn I"><circle class="cover" cx="205" cy="210" r="38" fill="var(--i-soft)"/><text x="205" y="232" text-anchor="middle" fill="var(--i)">I</text><rect class="hit" x="154" y="164" width="106" height="88"/></g>
+    </svg>
+    <div style="display:grid;gap:18px;min-width:0">
+      <div class="bigf" id="bigf" aria-live="polite"><span class="p">P</span> = <span class="u">U</span> × <span class="i">I</span></div>
+      <div class="units">
+        <div><b class="p">P</b><span>effekt</span><em>watt · W</em></div>
+        <div><b class="u">U</b><span>spenning</span><em>volt · V</em></div>
+        <div><b class="i">I</b><span>strøm</span><em>ampere · A</em></div>
+      </div>
+      <p class="tag">1 kW = 1000 W · Trykk på en bokstav i trekanten</p>
+    </div>
+  </div>
+</section>
+
+<section id="hverdag">
+  <div class="tag">Del 2 · Watt i hverdagen · 230 V</div>
+  <h2>Velg et apparat</h2>
+  <div class="app-pick" role="radiogroup" aria-label="Apparat" id="apps"></div>
+  <div class="lab">
+    <svg id="appSvg" viewBox="0 0 640 300" role="img" aria-label="Stikkontakt, kabel og valgt apparat med strøm og effekt">
+      <!-- socket -->
+      <rect x="20" y="90" width="110" height="120" rx="18" fill="var(--surface)" stroke="var(--wire)" stroke-width="4"/>
+      <circle cx="58" cy="150" r="8" fill="var(--wire)"/><circle cx="92" cy="150" r="8" fill="var(--wire)"/>
+      <text x="75" y="240" text-anchor="middle" fill="var(--u)" font-family="var(--mono)" font-weight="700" font-size="22">230 V</text>
+      <path id="cable" d="M130 140 H420" fill="none" stroke="var(--wire)" stroke-width="12" stroke-linecap="round"/>
+      <path d="M130 160 H420" fill="none" stroke="var(--wire)" stroke-width="12" stroke-linecap="round"/>
+      <g id="cdots"></g>
+      <text id="appI" x="275" y="120" text-anchor="middle" fill="var(--i)" font-family="var(--mono)" font-weight="700" font-size="24">I = 8,7 A</text>
+      <circle id="appGlow" cx="520" cy="150" r="90" fill="var(--glow)" opacity=".3"/>
+      <g id="appIcon" transform="translate(520 150)"></g>
+      <text id="appName" x="520" y="280" text-anchor="middle" fill="var(--ink)" font-family="var(--body)" font-weight="700" font-size="20">Vannkoker</text>
+    </svg>
+    <div class="controls">
+      <div class="readout">
+        <div class="dig Pp" style="grid-column:1/-1"><span>Effekt P</span><b id="aP" style="font-size:clamp(34px,3.4vw,48px)">2000 W</b></div>
+        <div class="dig I" style="grid-column:auto"><span>Strøm I = P / U</span><b id="aI">8,70 A</b></div>
+        <div class="dig U"><span>Spenning U</span><b>230 V</b></div>
+      </div>
+      <div class="formula-live" id="aF"></div>
+      <div id="bars" class="bars" aria-label="Sammenligning av effekt"></div>
+    </div>
+  </div>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(30px,3vw,42px)">Oppgaver · Leksjon 2: Repetisjon og effekt</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Repetisjon av begreper</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Størrelse</th><th>Symbol</th><th>Enhet</th></tr>
+        <tr><td>Spenning</td><td class="blank"><span class="fasit" hidden>U</span></td><td class="blank"><span class="fasit" hidden>volt (V)</span></td></tr>
+        <tr><td>Strøm</td><td class="blank"><span class="fasit" hidden>I</span></td><td class="blank"><span class="fasit" hidden>ampere (A)</span></td></tr>
+        <tr><td>Motstand</td><td class="blank"><span class="fasit" hidden>R</span></td><td class="blank"><span class="fasit" hidden>ohm (Ω)</span></td></tr>
+        <tr><td>Effekt</td><td class="blank"><span class="fasit" hidden>P</span></td><td class="blank"><span class="fasit" hidden>watt (W)</span></td></tr>
+      </table></div>
+      <p style="margin-top:12px">Hvordan kobles et voltmeter, og hvordan kobles et amperemeter? ______ <span class="fasit" hidden>Voltmeter parallelt over komponenten, amperemeter i serie</span></p>
+    </div>
+
+    <div>
+      <h3>Del B · Ohms lov (vis formel, innsetting og svar med enhet)</h3>
+      <ol>
+        <li>En motstand på 400 Ω kobles til 24 V. Hvor stor blir strømmen? <span class="fasit" hidden>I = 24 / 400 = 0,06 A = 60 mA</span></li>
+        <li>Det går 0,2 A gjennom en motstand på 60 Ω. Hvor stor er spenningen? <span class="fasit" hidden>U = 60 × 0,2 = 12 V</span></li>
+        <li>En komponent får 12 V og trekker 30 mA. Hvor stor er motstanden? <span class="fasit" hidden>R = 12 / 0,030 = 400 Ω</span></li>
+        <li>Kroppen har en motstand på 1000 Ω. Hvor stor strøm går ved 50 V? Er det farlig? <span class="fasit" hidden>I = 50 / 1000 = 0,05 A = 50 mA. Ja, over 30 mA kan være livsfarlig</span></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del C · Effekt</h3>
+      <ol>
+        <li>En lampe får 12 V og trekker 2 A. Hvor stor er effekten? <span class="fasit" hidden>P = 12 × 2 = 24 W</span></li>
+        <li>En vannkoker på 2000 W kobles til 230 V. Hvor stor strøm trekker den? <span class="fasit" hidden>I = 2000 / 230 ≈ 8,7 A</span></li>
+        <li>En panelovn trekker 4,35 A på 230 V. Hvor stor er effekten? <span class="fasit" hidden>P = 230 × 4,35 ≈ 1000 W = 1 kW</span></li>
+        <li>Hvilken trekker mest strøm på 230 V: en LED-pære på 9 W eller en lyspære på 60 W? Regn ut begge. <span class="fasit" hidden>LED: 9 / 230 ≈ 0,04 A. Lyspære: 60 / 230 ≈ 0,26 A. Lyspæra trekker mest</span></li>
+        <li>Gjør om: 2,5 kW til W og 750 W til kW. <span class="fasit" hidden>2500 W og 0,75 kW</span></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del D · Virtuell lab (bruk Energipakker i steg 2)</h3>
+      <p>Still inn U og I, og les av effekten.</p>
+      <div class="tablewrap"><table>
+        <tr><th>U (V)</th><th>12</th><th>24</th><th>12</th></tr>
+        <tr><th>I (A)</th><th>0,5</th><th>0,5</th><th>1,0</th></tr>
+        <tr><th>P (W)</th><td class="blank"><span class="fasit" hidden>6</span></td><td class="blank"><span class="fasit" hidden>12</span></td><td class="blank"><span class="fasit" hidden>12</span></td></tr>
+      </table></div>
+      <p style="margin-top:12px">Hva skjer med effekten når spenningen dobles? Og når strømmen dobles? ______ <span class="fasit" hidden>Effekten dobles i begge tilfeller</span></p>
+      <p style="margin-top:12px">Vannkokeren på 2000 W koker vannet på halve tiden av den på 1000 W. Forklar hvorfor. ______ <span class="fasit" hidden>Den gir dobbelt så mye energi hvert sekund</span></p>
+    </div>
+
+    <div>
+      <h3>Exit ticket</h3>
+      <ol>
+        <li>Et apparat på 230 V trekker 0,5 A. Hvor stor er effekten? <span class="fasit" hidden>P = 230 × 0,5 = 115 W</span></li>
+        <li>Forklar med egne ord hva effekt er. <span class="fasit" hidden>Hvor mye energi som brukes hvert sekund</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section>
+  <details class="teacher">
+    <summary>Lærerens plan for 2 skoletimer (90 min)</summary>
+    <dl class="plan">
+      <dt>0–10</dt><dd>Husker du? Elevene gjetter før hvert kort snus. Del A.</dd>
+      <dt>10–25</dt><dd>Kretslab på storskjerm: hva skjer med strøm og lampe når U og R endres?</dd>
+      <dt>25–45</dt><dd>Ohms lov-trening på egen PC, gjerne konkurranse om flest riktige på rad. Del B.</dd>
+      <dt>45–55</dt><dd>Pause</dd>
+      <dt>55–62</dt><dd>Steg 1: la elevene gjette hvilken vannkoker som vinner før du trykker start.</dd>
+      <dt>62–70</dt><dd>Steg 2 og 3: energipakkene. Doble U, så I, og se lampa. Hva blir energien til?</dd>
+      <dt>70–75</dt><dd>Formelen og Watt i hverdagen. Spør: hvorfor har vannkokeren tykkere kabel enn mobilladeren?</dd>
+      <dt>75–85</dt><dd>Del C og D.</dd>
+      <dt>85–90</dt><dd>Exit ticket.</dd>
+    </dl>
+    <p style="padding-bottom:14px;color:var(--muted)">Bygger på <a href="leksjon-1-spenning-strom-og-motstand.html">leksjon 1</a>. Kompetansemål Vg1 konstruksjons- og styringsteknikk (TIP01-03): grunnleggende beregninger, simulering, HMS og sammenhengen mellom målte og beregnede størrelser.</p>
+  </details>
+</section>
+
+</div>
+
+<script>
+(function(){
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const $ = id => document.getElementById(id);
+  const fmt = (n,d) => n.toFixed(d).replace('.',',');
+  const NS = 'http://www.w3.org/2000/svg';
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("],[font-family*="var("]').forEach(el=>{
+    ['fill','stroke','font-family'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  function makeDots(g,n,r,fill){ const a=[]; for(let k=0;k<n;k++){ const c=document.createElementNS(NS,'circle'); c.setAttribute('r',r); c.style.fill=fill; g.appendChild(c); a.push(c);} return a; }
+
+  // ---------- flip cards ----------
+  const cards=[...document.querySelectorAll('.card')];
+  cards.forEach(c=>c.addEventListener('click',()=>c.classList.toggle('flipped')));
+  $('flipAll').addEventListener('click',()=>{ const all=cards.every(c=>c.classList.contains('flipped')); cards.forEach(c=>c.classList.toggle('flipped',!all)); $('flipAll').textContent=all?'Snu alle kortene':'Snu tilbake'; });
+
+  // ---------- circuit lab ----------
+  const sU=$('sU'), sR=$('sR'), loop=$('loop'), L=loop.getTotalLength(), N=32;
+  const dots=makeDots($('dots'),N,6,'var(--i)');
+  let I=0.2, off=0;
+  function update(){
+    const U=+sU.value, R=+sR.value; I=U/R; const P=U*I;
+    $('oU').textContent=U+' V'; $('oR').textContent=R+' Ω'; $('tU').textContent=U+' V'; $('tR').textContent='R = '+R+' Ω';
+    $('dI').textContent=fmt(I,3)+' A'; $('tI').textContent=I>=1?fmt(I,2)+' A':Math.round(I*1000)+' mA';
+    $('fl').textContent='I = '+U+' V / '+R+' Ω = '+fmt(I,3)+' A';
+    const f=Math.min(1,P/57.6);
+    $('glow').setAttribute('opacity',U===0?0:(0.08+Math.sqrt(f)*0.8).toFixed(2));
+    $('glow').setAttribute('r',(30+Math.sqrt(f)*60).toFixed(0));
+    if(reduce) drawLab();
+  }
+  function drawLab(){ for(let k=0;k<N;k++){ const p=loop.getPointAtLength(((off+k*L/N)%L+L)%L); dots[k].setAttribute('cx',p.x); dots[k].setAttribute('cy',p.y);} }
+  sU.addEventListener('input',update); sR.addEventListener('input',update);
+
+  // ---------- trainer ----------
+  const Rs=[10,20,30,40,50,60,100,120,150,200,240,300,400,470,500,600,1000];
+  const Is=[0.01,0.02,0.03,0.05,0.1,0.2,0.25,0.5,1,2];
+  let task=null, streak=0;
+  const unitOf={U:'V',I:'A',R:'Ω'}, nameOf={U:'spenningen U',I:'strømmen I',R:'motstanden R'};
+  const formula={U:'U = R × I',I:'I = U / R',R:'R = U / I'};
+  const show=v=>String(+v.toFixed(4)).replace('.',',');
+  function newTask(){
+    let R,I,U;
+    do{ R=Rs[Math.floor(Math.random()*Rs.length)]; I=Is[Math.floor(Math.random()*Is.length)]; U=+(R*I).toFixed(4); }while(U>230||U<1||Math.abs(U*10-Math.round(U*10))>1e-6);
+    const k=['U','I','R'][Math.floor(Math.random()*3)];
+    task={U,I,R,k};
+    $('trU').textContent=k==='U'?'U = ?':show(U)+' V';
+    $('trR').textContent=k==='R'?'R = ?':R+' Ω';
+    $('trI').textContent=k==='I'?'I = ?':(I<1?Math.round(I*1000)+' mA':show(I)+' A');
+    $('trQ').textContent='Finn '+nameOf[k];
+    $('trUnit').textContent=unitOf[k];
+    $('trAns').value=''; $('trFb').textContent=''; $('trFb').className='fb';
+  }
+  function check(){
+    if(!task) return;
+    const v=parseFloat(String($('trAns').value).replace(',','.'));
+    const fb=$('trFb'); const t=task[task.k];
+    if(isNaN(v)){ fb.className='fb no'; fb.textContent='Skriv inn et tall.'; return; }
+    const close=(a,b)=>Math.abs(a-b)<=Math.abs(b)*0.02+1e-9;
+    let ok=close(v,t), note='';
+    if(!ok && task.k==='I' && close(v,t*1000)){ ok=true; note=' (du svarte i mA)'; }
+    if(ok){ streak++; fb.className='fb ok'; fb.textContent='Riktig'+note+'! '+formula[task.k]+' = '+show(t)+' '+unitOf[task.k]; }
+    else { streak=0; fb.className='fb no'; fb.textContent='Ikke helt. Bruk '+formula[task.k]+(task.k!=='U'?'':'')+'. Husk å gjøre mA om til A.'; }
+    $('trScore').textContent=streak;
+  }
+  $('trCheck').addEventListener('click',check);
+  $('trAns').addEventListener('keydown',e=>{ if(e.key==='Enter') check(); });
+  $('trNew').addEventListener('click',newTask);
+  $('trHint').addEventListener('click',()=>{ if(task){ $('trFb').className='fb'; $('trFb').textContent=formula[task.k]; } });
+
+  // ---------- energy packets ----------
+  const pU=$('pU'), pI=$('pI'), pkl=$('pkloop'), PL=pkl.getTotalLength(), PN=24, LAMP=420+70;
+  const pk=[]; for(let k=0;k<PN;k++){ const c=document.createElementNS(NS,'circle'); c.style.stroke='var(--i)'; c.setAttribute('stroke-width','2'); $('pkdots').appendChild(c); pk.push(c); }
+  let pkI=0.5, pkU=12, pkoff=0;
+  function upPk(){
+    pkU=+pU.value; pkI=+pI.value; const P=pkU*pkI;
+    $('opU').textContent=pkU+' V'; $('opI').textContent=fmt(pkI,1)+' A'; $('pkU').textContent=pkU+' V';
+    $('pP').textContent=fmt(P,P%1?1:0)+' W'; $('pF').textContent='P = '+pkU+' V × '+fmt(pkI,1)+' A = '+fmt(P,P%1?1:0)+' W';
+    const f=Math.min(1,P/48);
+    $('pkGlow').setAttribute('opacity',P===0?0:(0.08+Math.sqrt(f)*0.8).toFixed(2));
+    $('pkGlow').setAttribute('r',(30+Math.sqrt(f)*55).toFixed(0));
+    drawPk();
+  }
+  function drawPk(){
+    const full=4+pkU/24*12;
+    for(let k=0;k<PN;k++){ const d=((pkoff+k*PL/PN)%PL+PL)%PL; const p=pkl.getPointAtLength(d); const c=pk[k];
+      c.setAttribute('cx',p.x); c.setAttribute('cy',p.y);
+      if(d<LAMP && pkU>0){ c.setAttribute('r',full.toFixed(1)); c.style.fill='var(--glow)'; }
+      else { c.setAttribute('r','4'); c.style.fill='var(--surface)'; } }
+  }
+  pU.addEventListener('input',upPk); pI.addEventListener('input',upPk);
+
+  // ---------- kettle race ----------
+  const K=[{el:$('k1'),P:1000},{el:$('k2'),P:2000}];
+  let raceT=0, racing=false, raceLast=0;
+  function drawRace(){
+    K.forEach(k=>{
+      const temp=Math.min(100,20+k.P*raceT/4186), frac=(temp-20)/80;
+      const th=16+frac*160; const r=k.el.querySelector('.therm'); r.setAttribute('y',(216-th).toFixed(0)); r.setAttribute('height',th.toFixed(0));
+      k.el.querySelector('.tC').textContent=Math.round(temp)+' °C';
+      const t=Math.min(raceT,4186*80/k.P); k.el.querySelector('.tT').textContent=Math.floor(t/60)+' min '+Math.round(t%60)+' s';
+      k.el.querySelector('.steam').setAttribute('opacity',temp>=100?1:frac*0.3);
+      k.el.classList.toggle('won',temp>=100);
+    });
+  }
+  function raceStep(t){
+    if(!racing) return;
+    const dt=Math.min(.05,(t-raceLast)/1000); raceLast=t; raceT+=dt*60;
+    drawRace();
+    if(20+1000*raceT/4186>=100){ racing=false; $('raceBtn').textContent='Kjør igjen'; $('raceMsg').innerHTML='2000 W brukte <b class="p">halve tiden</b> av 1000 W.'; return; }
+    if(20+2000*raceT/4186>=100 && !$('raceMsg').dataset.half){ $('raceMsg').dataset.half='1'; $('raceMsg').textContent='2000 W koker! Hvor lenge må 1000 W vente?'; }
+    requestAnimationFrame(raceStep);
+  }
+  $('raceBtn').addEventListener('click',()=>{
+    raceT=0; delete $('raceMsg').dataset.half; $('raceMsg').innerHTML='&nbsp;';
+    if(reduce){ raceT=4186*80/1000; drawRace(); $('raceMsg').innerHTML='2000 W brukte <b class="p">halve tiden</b> av 1000 W.'; return; }
+    racing=true; $('raceBtn').textContent='Varmer …'; raceLast=performance.now(); requestAnimationFrame(raceStep);
+  });
+
+  // ---------- effect triangle ----------
+  const F={P:'<span class="p">P</span> = <span class="u">U</span> × <span class="i">I</span>',
+           U:'<span class="u">U</span> = <span class="p">P</span> / <span class="i">I</span>',
+           I:'<span class="i">I</span> = <span class="p">P</span> / <span class="u">U</span>'};
+  const groups=document.querySelectorAll('.tri g[data-k]');
+  function pick(k){ groups.forEach(g=>g.classList.toggle('covered',g.dataset.k===k)); $('bigf').innerHTML=F[k]; }
+  groups.forEach(g=>{ g.addEventListener('click',()=>pick(g.dataset.k)); g.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();pick(g.dataset.k);} }); });
+
+  // ---------- appliances ----------
+  const S='stroke-width="5" fill="none" stroke="var(--ink)" stroke-linejoin="round" stroke-linecap="round"';
+  const APPS=[
+    {n:'LED-pære',p:9,ic:`<circle cx="0" cy="-15" r="34" ${S}/><path d="M-14 -10 h28 M-10 0 h20" ${S}/><rect x="-16" y="20" width="32" height="26" rx="4" ${S}/>`},
+    {n:'Mobillader',p:10,ic:`<rect x="-26" y="-40" width="52" height="56" rx="8" ${S}/><path d="M-10 16 v20 M10 16 v20" ${S}/><path d="M4 -28 l-12 16 h12 l-10 16" ${S}/>`},
+    {n:'Lyspære',p:60,ic:`<circle cx="0" cy="-15" r="34" ${S}/><path d="M-12 -8 q6 -16 12 0 q6 -16 12 0" ${S}/><rect x="-16" y="20" width="32" height="26" rx="4" ${S}/>`},
+    {n:'TV',p:100,ic:`<rect x="-60" y="-44" width="120" height="74" rx="6" ${S}/><path d="M-20 46 h40 M0 30 v16" ${S}/>`},
+    {n:'Støvsuger',p:900,ic:`<rect x="-50" y="-10" width="70" height="44" rx="20" ${S}/><circle cx="-30" cy="38" r="8" ${S}/><circle cx="6" cy="38" r="8" ${S}/><path d="M20 4 q30 -10 30 -50 M50 -46 h14" ${S}/>`},
+    {n:'Panelovn',p:1000,ic:`<rect x="-62" y="-40" width="124" height="74" rx="6" ${S}/><path d="M-44 -26 v46 M-24 -26 v46 M-4 -26 v46 M16 -26 v46 M36 -26 v46" ${S}/>`},
+    {n:'Vannkoker',p:2000,ic:`<path d="M-34 -40 H30 L38 44 H-42 Z" ${S}/><path d="M30 -28 q32 6 22 48 l-16 -2" ${S}/><path d="M-20 20 q8 -12 0 -24 M0 20 q8 -12 0 -24 M18 20 q8 -12 0 -24" fill="none" stroke="var(--i)" stroke-width="4" class="pulse"/>`}
+  ];
+  let cur=APPS[6], aI=cur.p/230, aoff=0;
+  const cable=$('cable'), CL=cable.getTotalLength(), CN=14;
+  const cdots=makeDots($('cdots'),CN,5,'var(--i)');
+  $('apps').innerHTML=APPS.map((a,i)=>`<button type="button" role="radio" aria-checked="false" data-i="${i}">${a.n} · ${a.p} W</button>`).join('');
+  $('bars').innerHTML=APPS.map((a,i)=>`<div class="bar" data-i="${i}"><span>${a.n}</span><div class="track"><div class="fill" style="width:${(a.p/2000*100).toFixed(1)}%"></div></div></div>`).join('');
+  function setApp(i){
+    cur=APPS[i]; aI=cur.p/230;
+    document.querySelectorAll('#apps button').forEach(b=>b.setAttribute('aria-checked',b.dataset.i==i));
+    document.querySelectorAll('.bar').forEach(b=>b.classList.toggle('on',b.dataset.i==i));
+    $('appIcon').innerHTML=cur.ic; fixVars($('appIcon'));
+    $('appName').textContent=cur.n;
+    $('aP').textContent=cur.p+' W'; $('aI').textContent=fmt(aI,2)+' A';
+    $('appI').textContent='I = '+fmt(aI,2)+' A';
+    $('aF').textContent='I = P / U = '+cur.p+' W / 230 V = '+fmt(aI,2)+' A';
+    const f=Math.log10(cur.p)/Math.log10(2000);
+    $('appGlow').setAttribute('opacity',(0.05+f*f*0.6).toFixed(2));
+    $('appGlow').setAttribute('r',(50+f*50).toFixed(0));
+    if(reduce) drawApp();
+  }
+  function drawApp(){ for(let k=0;k<CN;k++){ const p=cable.getPointAtLength(((aoff+k*CL/CN)%CL+CL)%CL); cdots[k].setAttribute('cx',p.x); cdots[k].setAttribute('cy',p.y);} }
+  document.querySelectorAll('#apps button').forEach(b=>b.addEventListener('click',()=>setApp(+b.dataset.i)));
+
+  // ---------- animation ----------
+  let last=performance.now();
+  function tick(t){
+    const dt=Math.min(.05,(t-last)/1000); last=t;
+    off+= (I>0? 18+210*Math.sqrt(Math.min(I,2.4)/2.4):0)*dt;
+    aoff+= (10+220*Math.sqrt(aI/8.7))*dt;
+    pkoff+= (pkI>0? 15+150*pkI/2:0)*dt;
+    drawLab(); drawApp(); drawPk(); requestAnimationFrame(tick);
+  }
+  fixVars(document);
+  update(); newTask(); setApp(6); drawLab(); drawApp(); upPk(); drawRace();
+  if(!reduce) requestAnimationFrame(tick);
+
+  // ---------- tasks ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit').forEach(e=>e.remove());
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent, msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem&&navigator.clipboard&&navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>navigator.clipboard.writeText(text).then(done,fallback));
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); } else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>

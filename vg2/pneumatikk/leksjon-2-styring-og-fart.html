@@ -1,0 +1,1369 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pneumatikk 2 – Styring og fart</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#fab005; --yellow-soft:#fff6d6;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --air:#74c0fc; --air-soft:#d0ebff; --water:#1971c2;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#6b7785; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+  --air:#4dabf7; --air-soft:#1b3550; --water:#74c0fc;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.3rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem; user-select:none; -webkit-user-select:none; touch-action:manipulation}
+.btn:hover{border-color:var(--blue)}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.big{font-size:1rem; padding:.7rem 1.3rem; font-weight:700}
+.btn.big.down{background:var(--orange); border-color:var(--orange); color:#fff; transform:translateY(2px)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:2.6rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1300px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.15rem; color:var(--muted); max-width:72ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2.wide-left{grid-template-columns:1.7fr 1fr}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.15rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg{display:block; width:100%; height:auto; touch-action:manipulation}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem .9rem; align-items:center; margin-top:.7rem}
+.slider{display:flex; align-items:center; gap:.6rem; font-size:.85rem}
+.slider label{color:var(--muted)}
+.slider input{width:min(220px,100%); accent-color:var(--orange)}
+.slider b{min-width:4.5rem; font-variant-numeric:tabular-nums}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem; min-height:2.9em}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.7rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+.tip.g{border-color:var(--green); background:var(--green-soft)}
+details.laerer{margin-top:1.1rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.4rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.35rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.35rem .7rem}
+.readout span{display:block; font-size:.72rem; color:var(--muted)}
+.readout b{font-size:1.2rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.chip{font:inherit; font-size:.78rem; font-weight:600; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.35rem .7rem}
+.chip:hover{border-color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--orange); color:#fff; border-color:var(--orange)}
+.mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
+.mini3 .card{padding:.7rem .9rem; font-size:.9rem}
+.mini3 .card h3{font-size:1.05rem}
+.formula{font-size:1.5rem; font-weight:800; text-align:center; padding:.4rem 0; color:var(--orange)}
+.calc{font-variant-numeric:tabular-nums; font-size:1.05rem; background:var(--bg); border:1px dashed var(--line); border-radius:10px; padding:.5rem .8rem; margin-top:.6rem}
+.hot{cursor:pointer}
+.flipgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem}
+.flip{background:var(--panel); border:2px solid var(--line); border-radius:var(--radius); padding:.9rem 1rem; cursor:pointer; min-height:9.5rem; transition:border-color .2s, background .2s; user-select:none}
+.flip .ic{font-size:2.3rem; line-height:1.1}
+.flip .q{font-weight:650; margin-top:.3rem}
+.flip .a{display:none; font-size:.88rem; margin-top:.4rem}
+.flip.open .a{display:block}
+.flip.open.yes{border-color:var(--green); background:var(--green-soft)}
+.flip.open.no{border-color:var(--red); background:var(--red-soft)}
+.flip .v{font-weight:800}
+.flip.yes .v{color:var(--green)} .flip.no .v{color:var(--red)}
+
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); height:2rem}
+.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
+.fasit b{color:var(--green)}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.3rem}
+.ot.c td, .ot.c th{text-align:center}
+.ot.c td:first-child, .ot.c th:first-child{text-align:left}
+.ofig{border:1px solid var(--muted); border-radius:8px; padding:.4rem; background:#fff; margin:.5rem 0}
+.ofig svg{display:block; width:100%; height:auto}
+.formelark{display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; font-size:.92rem; border:1px solid var(--muted); border-radius:8px; padding:.5rem .8rem; margin:.5rem 0 1rem}
+.ordbank{font-size:.9rem; border:1px dashed var(--muted); border-radius:8px; padding:.45rem .8rem; margin:.4rem 0}
+.scenario{border:1px dashed var(--muted); border-radius:8px; padding:.6rem .9rem; margin:.5rem 0; font-size:.95rem}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .mini3,.flipgrid{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+  .readout{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){ .mini3,.flipgrid{grid-template-columns:1fr} .card{overflow-wrap:anywhere} table.t{display:block; overflow-x:auto} .oppgave{overflow-x:auto} .ot{font-size:.75rem} }
+.grid2>*,.hero>*{min-width:0}
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999; --steel-soft:#eee}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr, .ofig, .scenario{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+.steps{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.6rem}
+.steps span{padding:.3rem .75rem; border-radius:99px; border:1px solid var(--line); font-size:.8rem; font-weight:600; color:var(--muted); transition:background .2s}
+.steps span.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Pneumatikk · <span>Leksjon 2</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- START -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Pneumatikk</div>
+      <h1>Leksjon 2<br>Styring og fart</h1>
+      <p class="lead">I leksjon 1 fikk vi sylinderen til å gå. Nå skal vi bestemme <b>hvor fort</b> den går, <b>hvem</b> som får starte den – og få den til å gå <b>av seg selv</b>.</p>
+      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <ol class="goals">
+        <li>stille <b>farten</b> med en strupe-tilbakeslagsventil – og forklare hvorfor vi struper <b>avlufta</b></li>
+        <li>forklare <b>indirekte styring</b>: en liten knapp sender et <b>luftsignal</b> til en stor ventil</li>
+        <li>forklare hvordan en <b>impulsventil</b> «husker»</li>
+        <li>bruke <b>OG</b> og <b>ELLER</b> med luft (tohåndsbetjening, start fra to steder)</li>
+        <li>lese et skjema for <b>automatisk tur-retur</b> med rulleventiler</li>
+        <li>finne feil ved å <b>se, lytte og tenke</b> i riktig rekkefølge</li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p style="margin-bottom:.4rem"><i>«montere, sette i drift og feilsøke automatiserte hydraulikk- og pneumatikkanlegg etter spesifikasjoner»</i> (teknologi)</p>
+        <p style="margin-bottom:.4rem"><i>«arbeide på elektriske og automatiserte systemer ved reparasjons- og vedlikeholdsarbeid etter instrukser og gjeldende forskrifter»</i> (vedlikehold)</p>
+        <p style="margin-bottom:0"><i>«bruke maskiner og utstyr … i tråd med gjeldende helse-, miljø- og sikkerhetsrutiner»</i> (teknologi)</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1 · Fart og signaler</th></tr>
+          <tr><td>0–4 min</td><td>Husker du? (leksjon 1)</td></tr>
+          <tr><td>4–11 min</td><td>Del 1: strupe-tilbakeslagsventilen</td></tr>
+          <tr><td>11–18 min</td><td>Del 2: fart – struper vi inn eller ut?</td></tr>
+          <tr><td>18–25 min</td><td>Del 3: indirekte styring</td></tr>
+          <tr><td>25–45 min</td><td>Oppgave 1–2</td></tr>
+          <tr><th colspan="2">Time 2 · Minne, logikk og automatikk</th></tr>
+          <tr><td>0–5 min</td><td>Del 4: impulsventil – minne</td></tr>
+          <tr><td>5–12 min</td><td>Del 5: OG og ELLER</td></tr>
+          <tr><td>12–22 min</td><td>Del 6: automatisk tur-retur + feilsøking</td></tr>
+          <tr><td>22–25 min</td><td>Del 7: trygg styring</td></tr>
+          <tr><td>25–43 min</td><td>Oppgave 3–6</td></tr>
+          <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+      </div>
+      <div class="tip" style="margin-bottom:0"><b>Bygger på leksjon 1:</b> 3/2- og 5/2-ventil, porttallene 1–2–4–3–5, enkelt- og dobbeltvirkende sylinder og koblingsskjema. Slå opp i <a href="https://verkstedhandboka.vercel.app/#hydraulikk-pneumatikk" target="_blank" rel="noopener">Verkstedhåndboka, emne 8</a>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- REPETISJON -->
+<section class="slide" id="rep" data-nav="Husker du?">
+  <div class="wrap">
+    <div class="kicker">Repetisjon · ca. 4 min</div>
+    <h2>Husker du fra leksjon 1?</h2>
+    <p class="lead">Svar høyt i klassen – klikk på kortet for å se svaret.</p>
+    <div class="flipgrid" id="repGrid"></div>
+  </div>
+</section>
+
+<!-- DEL 1 -->
+<section class="slide" id="strupe" data-nav="1 Strupe">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 7 min</div>
+    <h2>Strupe-tilbakeslagsventilen – «krana» for fart</h2>
+    <p class="lead">En <b>strupe</b> gjør hullet mindre. Mindre hull → mindre luft per sekund → <b>lavere fart</b>. Kula slipper lufta <b>fritt den andre veien</b>. Bytt retning og skru på skruen.</p>
+    <div class="fig">
+      <svg id="p1Svg" viewBox="0 0 1000 400" role="img" aria-label="Strupe-tilbakeslagsventil i snitt med nåleskrue, kule og fjær, og symbolet"></svg>
+      <div class="controls">
+        <span class="chips" id="p1Dir"></span>
+        <div class="slider"><label for="p1O">Strupeskrue (åpning)</label><input type="range" id="p1O" min="0" max="100" step="5" value="40"><b id="p1Ov">40 %</b></div>
+      </div>
+      <div class="readout" style="grid-template-columns:repeat(3,1fr)">
+        <div><span>Kula</span><b id="p1Ball">–</b></div>
+        <div><span>Lufta går</span><b id="p1Way">–</b></div>
+        <div><span>Sylinderen får</span><b id="p1Sp">–</b></div>
+      </div>
+      <div class="status info" id="p1Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Strupe</h3>En <b>innsnevring</b> i røret. En nåleskrue gjør hullet større eller mindre – som en kran.</div>
+      <div class="card"><h3>Tilbakeslagsventil</h3>En <b>enveisventil</b>. Kula løftes av setet den ene veien (åpen), og presses inn i setet den andre veien (stengt).</div>
+      <div class="card"><h3>Begge i ett hus</h3><b>Strupe-tilbakeslagsventil</b> = struper bare <b>én vei</b>. Den andre veien går lufta fritt forbi gjennom kula.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kalles også «enveis strupeventil» eller på engelsk «one-way flow control valve». Den sitter ofte skrudd rett inn i porten på sylinderen («banjo»-type), slik at slangevolumet mellom strupe og sylinder blir minst mulig. Pilen i symbolet betyr «justerbar». Symbolet i snitt-figuren er tegnet loddrett fordi den står slik i skjemaene våre: sylinderen øverst, ventilen under. Merk: ventilen struper alltid <i>i én retning</i> – og hvilken retning den er montert, avgjør om den struper tilluft eller avluft (del 2).</details>
+  </div>
+</section>
+
+<!-- DEL 2 -->
+<section class="slide" id="fart" data-nav="2 Fart">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 7 min</div>
+    <h2>Fart – struper vi lufta inn eller ut?</h2>
+    <p class="lead">Hold inne knappen. Se på grafen: <b style="color:var(--green)">jevn linje</b> = jevn fart. Bytt til tilluftstruping og se hva som skjer.</p>
+    <div class="fig">
+      <div class="controls" style="margin:0 0 .5rem"><span class="chips" id="p2Mode"></span></div>
+      <svg id="p2Svg" viewBox="0 0 1000 560" role="img" aria-label="Koblingsskjema med 5/2-ventil, to strupe-tilbakeslagsventiler og dobbeltvirkende sylinder, og en graf over stangas posisjon"></svg>
+      <div class="controls">
+        <button class="btn big" id="p2Btn">👆 Hold inne knappen</button>
+        <div class="slider"><label for="p2O">Strupene (åpning)</label><input type="range" id="p2O" min="10" max="100" step="5" value="50"><b id="p2Ov">50 %</b></div>
+      </div>
+      <div class="readout" style="grid-template-columns:repeat(3,1fr)">
+        <div><span>Slagtid (ca.)</span><b id="p2Time">–</b></div>
+        <div><span>Bevegelsen er</span><b id="p2Mov">–</b></div>
+        <div><span>Strupen som virker nå</span><b id="p2Now">–</b></div>
+      </div>
+      <div class="status info" id="p2Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Tilluft</h3>= lufta som går <b>inn</b> i sylinderen og skyver.</div>
+      <div class="card"><h3>Avluft</h3>= lufta som blir <b>presset ut</b> på den andre siden av stempelet.</div>
+      <div class="card"><h3>Huskeregel</h3>Vi struper <b>avlufta</b>. Strupen på <b>minussiden (B)</b> styrer farten <b>ut</b>, strupen på plussiden (A) styrer farten <b>inn</b>.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Avluftstruping: stempelet har trykk på begge sider («klemt mellom to luftputer»). Det gir jevn fart, også når lasten varierer eller drar i sylinderen. Tilluftstruping: minussiden tømmes fort, plussiden fylles sakte. Friksjonen i pakningene holder stempelet til trykket er høyt nok – så rykker det, trykket faller, og det stopper igjen («stick-slip»). Tilluftstruping brukes på <i>enkeltvirkende</i> sylindere (de har bare én luftport) og noen ganger på svært små sylindere. Fartsområdet i animasjonen er forenklet. Spør: «Hvilken skrue skrur du på hvis sylinderen går for fort UT?» (B – minussiden). Dette er den vanligste feilen elever gjør på verkstedet.</details>
+  </div>
+</section>
+
+<!-- DEL 3 -->
+<section class="slide" id="indirekte" data-nav="3 Indirekte">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 7 min</div>
+    <h2>Indirekte styring – knappen sender et signal</h2>
+    <p class="lead"><b>Direkte:</b> knappeventilen sender <i>all</i> lufta til sylinderen. <b>Indirekte:</b> knappen sender bare et lite <b>luftsignal</b> (stiplet linje) til en stor ventil ved maskinen. Hold inne knappen i begge.</p>
+    <div class="fig">
+      <div class="controls" style="margin:0 0 .5rem"><span class="chips" id="p3Mode"></span></div>
+      <svg id="p3Svg" viewBox="0 0 1000 580" role="img" aria-label="Direkte og indirekte styring av en stor sylinder, med betjeningspanel og maskin"></svg>
+      <div class="controls">
+        <button class="btn big" id="p3Btn">👆 Hold inne knappen S1</button>
+      </div>
+      <div class="readout" style="grid-template-columns:repeat(3,1fr)">
+        <div><span>Knappeventilen sender</span><b id="p3R1">–</b></div>
+        <div><span>Lange slanger fra panelet</span><b id="p3R2">–</b></div>
+        <div><span>Sylinderen starter etter ca.</span><b id="p3R3">–</b></div>
+      </div>
+      <div class="status info" id="p3Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Styresignal (pilot)</h3>Lufta skyver ventilen i stedet for hånda. Symbol: en liten <b>trekant</b> ved ruta, og port <b>14</b> eller <b>12</b>.</div>
+      <div class="card"><h3>To slags linjer</h3><b>Hel linje</b> = arbeidsledning (luft som gjør jobben).<br><b>Stiplet linje</b> = styreledning (bare et signal).</div>
+      <div class="card"><h3>Hvorfor indirekte?</h3>Store sylindere trenger mye luft. Knappen kan stå langt unna, slangene blir tynne, og vi kan koble på automatikk.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Ventilen ved maskinen kalles «hovedventil», «trykkstyrt ventil» eller «pilotstyrt ventil». Port 14 betyr: signal her kobler 1 til 4. Port 12 kobler 1 til 2. Dette er de samme tallene som i leksjon 1 – men nå er det luft, ikke en knapp, som påvirker. Forsinkelsen ved direkte styring kommer av at lange, tykke slanger må fylles og tømmes for hvert slag (stort «dødvolum»). Dette sløser også luft. I industrien er nesten all pneumatikk indirekte – og fra leksjon 4 er signalet elektrisk (magnetventil).</details>
+  </div>
+</section>
+
+<!-- DEL 4 -->
+<section class="slide" id="minne" data-nav="4 Minne">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 5 min</div>
+    <h2>Impulsventilen husker</h2>
+    <p class="lead">Trykk kort på <b>S1</b> og slipp. Hva gjør sylinderen? Prøv det samme med <b>fjærretur</b>. En impulsventil har <b>to signaler</b> og <b>ingen fjær</b>.</p>
+    <div class="fig">
+      <div class="controls" style="margin:0 0 .5rem"><span class="chips" id="p4Mode"></span></div>
+      <svg id="p4Svg" viewBox="0 0 1000 570" role="img" aria-label="Koblingsskjema med to knapper S1 og S2, 5/2 impulsventil og dobbeltvirkende sylinder"></svg>
+      <div class="controls">
+        <button class="btn big" id="p4S1">👆 S1 – ut (signal 14)</button>
+        <button class="btn big" id="p4S2">👆 S2 – inn (signal 12)</button>
+      </div>
+      <div class="readout">
+        <div><span>Signal på 14</span><b id="p4R14">–</b></div>
+        <div><span>Signal på 12</span><b id="p4R12">–</b></div>
+        <div><span>Ventilen står i</span><b id="p4RV">–</b></div>
+        <div><span>Sylinderen</span><b id="p4RC">–</b></div>
+      </div>
+      <div class="status info" id="p4Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Impuls</h3>Et <b>kort signal</b> – et «dytt». Det holder å trykke kort.</div>
+      <div class="card"><h3>Minne</h3>Ventilen blir stående til den får signal på <b>den andre siden</b>. Den husker det siste signalet.</div>
+      <div class="card"><h3>⚠ Pass på</h3>Den husker også <b>etter at lufta har vært borte</b>. Når lufta kommer tilbake, kan sylinderen gå.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Impulsventilen kalles også «bistabil ventil» eller «5/2 dobbeltpilot». Den har samme areal på begge sider, så hvis det er signal på både 12 og 14 samtidig, blir den stående der den var. Det kalles <i>signalkollisjon</i> og er hovedtema i leksjon 3. Fjærventilen kalles «monostabil»: den har én stilling den alltid går tilbake til. Sammenlign med en lysbryter (husker) og en ringeklokke (glemmer).</details>
+  </div>
+</section>
+
+<!-- DEL 5 -->
+<section class="slide" id="logikk" data-nav="5 OG/ELLER">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 7 min</div>
+    <h2>OG og ELLER – logikk med luft</h2>
+    <p class="lead">Slå signal <b>A</b> og <b>B</b> av og på. <b>ELLER</b>: én av dem holder. <b>OG</b>: begge må være på. Se på kula og sleiden inni.</p>
+    <div class="fig">
+      <div class="controls" style="margin:0 0 .5rem"><span class="chips" id="p5Kind"></span></div>
+      <svg id="p5Svg" viewBox="0 0 1000 420" role="img" aria-label="Vekselventil og tofrykkventil i snitt, sannhetstabell og symbol"></svg>
+      <div class="controls">
+        <button class="btn big" id="p5A" aria-pressed="false">Signal A: AV</button>
+        <button class="btn big" id="p5B" aria-pressed="false">Signal B: AV</button>
+      </div>
+      <div class="status info" id="p5Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>ELLER = vekselventil</h3>Start fra <b>to steder</b>: ved maskinen <i>eller</i> fra kontrollrommet.</div>
+      <div class="card"><h3>OG = tofrykkventil</h3><b>Tohåndsbetjening</b> på en presse: begge hendene på knappene – ingen hånd i pressa.</div>
+      <div class="card"><h3>1 og 0</h3><b>1</b> = signal (luft). <b>0</b> = ikke signal. Tabellen som viser alle muligheter, heter en <b>sannhetstabell</b>.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Vekselventil (shuttle valve): kula legger seg mot den inngangen som <i>ikke</i> har trykk, slik at lufta ikke lekker ut gjennom den andre knappens avlufting. Tofrykkventil (two-pressure valve): sleiden stenger den inngangen som kommer først; først når begge har trykk, slipper den siste gjennom. En ekte tohåndsbetjening for presser krever i tillegg at begge knappene trykkes innen ca. 0,5 s, og er en egen sikkerhetskomponent – tofrykkventilen viser bare prinsippet. Symbolene for OG og ELLER tegnes litt ulikt i ulike bøker; her står det OG/ELLER ved siden av for å hjelpe.</details>
+  </div>
+</section>
+
+<!-- DEL 6 -->
+<section class="slide" id="auto" data-nav="6 Tur-retur">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 10 min</div>
+    <h2>Automatisk tur-retur med rulleventiler</h2>
+    <p class="lead">Hele kretsen. Når stanga når ut, trykker kammen inn rulleventil <b>a1</b> – og sylinderen går tilbake av seg selv. <b>a0</b> sier «jeg er helt inne». Start = <b>S1 OG a0</b>.</p>
+    <div class="fig">
+      <svg id="p6Svg" viewBox="0 0 1000 580" role="img" aria-label="Koblingsskjema for automatisk tur-retur med startknapp, rulleventiler a0 og a1, tofrykkventil, impulsventil, strupe-tilbakeslagsventiler og sylinder"></svg>
+      <div class="steps" id="p6Steps"><span>① S1 OG a0 → signal 14</span><span>② sylinderen går ut</span><span>③ kammen treffer a1 → signal 12</span><span>④ sylinderen går inn til a0</span></div>
+      <div class="controls">
+        <button class="btn big" id="p6Btn">👆 Hold inne start S1</button>
+        <button class="btn" id="p6Lock" aria-pressed="false">🔒 Kontinuerlig drift: AV</button>
+        <div class="slider"><label for="p6A">Strupe A</label><input type="range" id="p6A" min="10" max="100" step="5" value="60"></div>
+        <div class="slider"><label for="p6B">Strupe B</label><input type="range" id="p6B" min="10" max="100" step="5" value="60"></div>
+        <span class="caption" id="p6Cnt" style="margin:0"></span>
+      </div>
+      <div class="controls">
+        <button class="btn primary" id="p6Rand">🎲 Lag en feil</button>
+        <span class="caption" style="margin:0">Hva er feilen?</span>
+        <span class="chips" id="p6Guess"></span>
+        <button class="btn small" id="p6Fix">🔧 Reparer</button>
+      </div>
+      <div class="status info" id="p6Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Rulleventil</h3>En 3/2-ventil med et <b>hjul (rulle)</b>. En <b>kam</b> på stanga trykker den inn. Den «kjenner» hvor stanga er.</div>
+      <div class="card"><h3>Endeposisjon</h3><b>a0</b> = stanga helt inne. <b>a1</b> = stanga helt ute. Strekene ved stanga viser hvor rulleventilene sitter.</div>
+      <div class="card"><h3>Feilsøk i rekkefølge</h3>1 Hva gjør sylinderen? 2 Hvilke ruller er trykket inn? 3 Hører du det hvese? 4 Følg signalet i skjemaet.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Hvorfor a0 i OG-en? Uten a0 kunne et langt trykk på S1 gi signal på 14 samtidig med signalet fra a1 på 12 – da står impulsventilen (signalkollisjon), og sylinderen blir stående ute. Med a0 kan en ny syklus bare starte når stanga er helt inne. Med «kontinuerlig drift» holdes S1 inne (en bryter med lås), og sylinderen går fram og tilbake til bryteren slås av. Feilspillet: (1) a1 er montert for langt ute – kammen når den aldri, (2) slangen fra a1 til 12 har løsnet – a1 trykkes inn, men signalet hveser ut, (3) a0 mangler luft – det blir aldri noe OG. Be elevene beskrive symptom → hva de ser/hører → årsak. Strupe B styrer farten ut, strupe A farten inn (avluftstruping, del 2).</details>
+  </div>
+</section>
+
+<!-- DEL 7 -->
+<section class="slide" id="hms" data-nav="7 Trygt">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 3 min</div>
+    <h2>Trygg styring – riktig eller galt?</h2>
+    <p class="lead">Klikk på kortene. Automatikk betyr at ting kan bevege seg <b>uten</b> at noen trykker.</p>
+    <div class="flipgrid" id="p7Grid"></div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kobles til LOTO i Vedlikehold 2: steng, avluft, lås og merk før arbeid i maskinen. Impulsventiler og fulle trykktanker gir lagret energi og «minne» – maskinen kan bevege seg når lufta slås på. Merk slangene med portnummer når kretsen kobles opp, det gjør feilsøking mye raskere. Tohåndsbetjening må aldri forbikobles.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <div class="fig"><svg id="pSumSvg" viewBox="0 0 1000 360" role="img" aria-label="Nye symboler i leksjon 2"></svg></div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Fire regler</h3>
+          <p style="margin:.2rem 0">🐢 <b>Strup avlufta.</b> Strupe B (minussiden) styrer farten ut.</p>
+          <p style="margin:.2rem 0">┄ <b>Stiplet linje = signal.</b> Hel linje = arbeidsluft.</p>
+          <p style="margin:.2rem 0">🧠 <b>Impuls husker – fjær glemmer.</b></p>
+          <p style="margin:.2rem 0">🔀 <b>OG</b> = begge. <b>ELLER</b> = minst én.</p>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>strupe</span><span>tilbakeslagsventil</span><span>strupe-tilbakeslagsventil</span><span>tilluft</span><span>avluft</span><span>styresignal (pilot)</span><span>styreledning</span><span>indirekte styring</span><span>impulsventil</span><span>minne</span><span>vekselventil (ELLER)</span><span>tofrykkventil (OG)</span><span>sannhetstabell</span><span>rulleventil</span><span>kam</span><span>a0 / a1</span><span>endeposisjon</span></div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Neste leksjon</h3>
+          <p style="margin:0"><b>Pneumatikk 3 – Sekvenser:</b> to sylindere som jobber etter hverandre, vei-steg-diagram og hva som skjer når to signaler kolliderer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 38 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Pneumatikk 2 – Styring og fart · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <div class="formelark"><b>Husk:</b> <span>Hel linje = arbeidsledning</span><span>Stiplet linje = styreledning (signal)</span><span>14 kobler 1→4 · 12 kobler 1→2</span><span>Strupe avlufta</span><span>OG = begge · ELLER = minst én</span><span>a0 = inne · a1 = ute</span></div>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Fart med strupe-tilbakeslagsventil <small>Time 1 · 10 min</small></h3>
+        <div class="ofig" id="o1fig"></div>
+        <p>a) Skriv navnet på delene 1–6. Bruk ordene i boksen.</p>
+        <div class="ordbank"><b>Ord:</b> trykkluftkilde · vedlikeholdsenhet · 5/2-ventil med knapp og fjær · strupe-tilbakeslagsventil (2 stk.) · dobbeltvirkende sylinder</div>
+        <table class="ot">
+          <tr><th style="width:2.5rem">Nr.</th><th>Navn</th><th style="width:2.5rem">Nr.</th><th>Navn</th></tr>
+          <tr><td>1</td><td class="tom"></td><td>4</td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td>5</td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td>6</td><td></td></tr>
+        </table>
+        <p>b) Hvilken strupe (4 eller 5) bestemmer farten når sylinderen går <b>ut</b>? Og når den går <b>inn</b>?</p><div class="svar"></div>
+        <p>c) Hva gjør kula inni strupe-tilbakeslagsventilen?</p><div class="svar"></div>
+        <p>d) Hvorfor struper vi <b>avlufta</b> og ikke tilluft på en dobbeltvirkende sylinder?</p><div class="svar"></div><div class="svar"></div>
+        <p>e) Hva skjer?</p>
+        <table class="ot">
+          <tr><th style="width:50%">Du gjør dette</th><th>Hva skjer med sylinderen?</th></tr>
+          <tr><td>Skrur strupe 5 nesten helt igjen</td><td class="tom"></td></tr>
+          <tr><td>Skrur strupe 4 helt opp</td><td class="tom"></td></tr>
+          <tr><td>Skrur strupe 5 helt igjen</td><td class="tom"></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) 1 trykkluftkilde, 2 vedlikeholdsenhet, 3 5/2-ventil med knapp og fjær, 4 strupe-tilbakeslagsventil A (plussiden), 5 strupe-tilbakeslagsventil B (minussiden), 6 dobbeltvirkende sylinder. b) Ut: <b>5</b> (den struper lufta som presses ut av minussiden). Inn: <b>4</b>. c) Kula slipper lufta fritt <i>inn</i> til sylinderen. Når lufta skal <i>ut</i>, presses kula inn i setet, og lufta må gjennom strupen. d) Med avluftstruping har stempelet trykk på begge sider – det er «klemt mellom to luftputer» og går jevnt. Tilluftstruping gir rykkete bevegelse. e) Går veldig sakte ut (inn som før). / Ut som før, inn går raskere. / Går ikke ut – lufta på minussiden kommer ikke ut.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Indirekte styring <small>Time 1 · 10 min</small></h3>
+        <div class="ofig" id="o2fig"></div>
+        <p>a) Skriv navnet på delene 1–6.</p>
+        <div class="ordbank"><b>Ord:</b> trykkluftkilde · vedlikeholdsenhet · 3/2-ventil med knapp (S1) · styreledning · 5/2-ventil styrt med luft · dobbeltvirkende sylinder</div>
+        <table class="ot">
+          <tr><th style="width:2.5rem">Nr.</th><th>Navn</th><th style="width:2.5rem">Nr.</th><th>Navn</th></tr>
+          <tr><td>1</td><td class="tom"></td><td>4</td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td>5</td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td>6</td><td></td></tr>
+        </table>
+        <p>b) Hva er forskjellen på en <b>hel</b> og en <b>stiplet</b> linje i skjemaet?</p><div class="svar"></div>
+        <p>c) Gi to grunner til å bruke indirekte styring.</p><div class="svar"></div><div class="svar"></div>
+        <p>d) Hva skjer når S1 trykkes inn? Skriv tre steg.</p><div class="svar"></div><div class="svar"></div>
+        <p>e) <b>Feilsøking:</b> Slangen 4 har løsnet ved ventil 5. Hva skjer med sylinderen når du trykker S1? Hva hører du?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 1 trykkluftkilde, 2 vedlikeholdsenhet, 3 3/2-ventil med knapp (S1), 4 styreledning, 5 5/2-ventil styrt med luft (pilot) og fjær, 6 dobbeltvirkende sylinder. b) Hel = arbeidsledning, luft som gjør jobben. Stiplet = styreledning, bare et signal. c) F.eks.: en stor sylinder trenger mye luft – en liten knappeventil holder; knappen kan stå langt unna maskinen; tynne slanger og mindre luftsløsing; raskere start; vi kan koble på automatikk (OG/ELLER, rulleventiler). d) S1 kobler 1 → 2 → luft i styreledningen til port 14 → ventil 5 skifter og kobler 1 → 4 → sylinderen går ut. e) Sylinderen står stille. Det hveser ved den løse slangen når S1 trykkes.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Fjær eller impuls? <small>Time 2 · 5 min</small></h3>
+        <p>a) Sylinderen står inne. Skriv hva sylinderen gjør: <b>går ut</b>, <b>går inn</b>, <b>blir stående ute</b> eller <b>blir stående inne</b>.</p>
+        <table class="ot c">
+          <tr><th>Steg</th><th>Hva du gjør</th><th style="width:26%">5/2 med fjærretur</th><th style="width:26%">5/2 impulsventil</th></tr>
+          <tr><td>1</td><td>Trykker S1 (signal 14) og holder</td><td class="tom"></td><td></td></tr>
+          <tr><td>2</td><td>Slipper S1</td><td class="tom"></td><td></td></tr>
+          <tr><td>3</td><td>Trykker S2 (signal 12) og holder</td><td class="tom">(finnes ikke)</td><td></td></tr>
+          <tr><td>4</td><td>Slipper S2</td><td class="tom">(finnes ikke)</td><td></td></tr>
+        </table>
+        <p>b) Hvorfor kalles impulsventilen en «minneventil»?</p><div class="svar"></div>
+        <p>c) Lufta har vært avstengt og blir slått på igjen. Hvorfor kan en impulsventil være farlig da?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) Fjærretur: 1 går ut, 2 går inn. Impulsventil: 1 går ut, 2 blir stående ute, 3 går inn, 4 blir stående inne. b) Den husker det siste signalet og blir stående til den får signal på den andre siden. c) Den husker stillingen sin. Når lufta kommer tilbake, kan sylinderen bevege seg uten at noen trykker på noe.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – OG eller ELLER? <small>Time 2 · 5 min</small></h3>
+        <div class="ofig" id="o4fig"></div>
+        <p>a) Hvilket symbol er OG (tofrykkventil), og hvilket er ELLER (vekselventil)? &nbsp; X = ______________ &nbsp; Y = ______________</p>
+        <p>b) Fyll ut sannhetstabellen. 1 = signal, 0 = ikke signal.</p>
+        <table class="ot c" style="max-width:520px">
+          <tr><th>A</th><th>B</th><th>OG gir ut</th><th>ELLER gir ut</th></tr>
+          <tr><td>0</td><td>0</td><td class="tom"></td><td></td></tr>
+          <tr><td>1</td><td>0</td><td class="tom"></td><td></td></tr>
+          <tr><td>0</td><td>1</td><td class="tom"></td><td></td></tr>
+          <tr><td>1</td><td>1</td><td class="tom"></td><td></td></tr>
+        </table>
+        <p>c) Sett kryss: trenger du OG eller ELLER?</p>
+        <table class="ot c">
+          <tr><th>Situasjon</th><th style="width:5rem">OG</th><th style="width:5rem">ELLER</th></tr>
+          <tr><td>Tohåndsbetjening på en presse</td><td></td><td></td></tr>
+          <tr><td>Start fra maskinen eller fra kontrollrommet</td><td></td><td></td></tr>
+          <tr><td>Sylinderen skal bare gå når døra er lukket og start er trykket</td><td></td><td></td></tr>
+          <tr><td>Porten skal kunne åpnes fra innsiden og fra utsiden</td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) X = ELLER (vekselventil, kula). Y = OG (tofrykkventil, sleiden). b) OG: 0, 0, 0, 1. ELLER: 0, 1, 1, 1. c) OG · ELLER · OG · ELLER.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Automatisk tur-retur <small>Time 2 · 10 min</small></h3>
+        <div class="ofig" id="o5fig"></div>
+        <p>a) Skriv navnet på delene 1–10.</p>
+        <div class="ordbank"><b>Ord:</b> trykkluftkilde · vedlikeholdsenhet · impulsventil 5/2 · strupe-tilbakeslagsventil A · strupe-tilbakeslagsventil B · sylinder · rulleventil a1 · startknapp S1 · rulleventil a0 · tofrykkventil (OG)</div>
+        <table class="ot">
+          <tr><th style="width:2.5rem">Nr.</th><th>Navn</th><th style="width:2.5rem">Nr.</th><th>Navn</th></tr>
+          <tr><td>1</td><td class="tom"></td><td>6</td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td>7</td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td>8</td><td></td></tr>
+          <tr><td>4</td><td class="tom"></td><td>9</td><td></td></tr>
+          <tr><td>5</td><td class="tom"></td><td>10</td><td></td></tr>
+        </table>
+        <p>b) Sett stegene i riktig rekkefølge (1–5).</p>
+        <table class="ot">
+          <tr><th style="width:4rem">Nr.</th><th>Steg</th></tr>
+          <tr><td class="tom"></td><td>Sylinderen går ut.</td></tr>
+          <tr><td class="tom"></td><td>S1 trykkes, og a0 er trykket inn → OG gir signal til 14.</td></tr>
+          <tr><td class="tom"></td><td>Sylinderen går inn til a0.</td></tr>
+          <tr><td class="tom"></td><td>Kammen treffer a1 → signal til 12.</td></tr>
+          <tr><td class="tom"></td><td>Impulsventilen skifter til 14-stilling.</td></tr>
+        </table>
+        <p>c) Hvorfor er a0 koblet inn sammen med S1 i en OG-ventil?</p><div class="svar"></div>
+        <p>d) <b>Feilsøking.</b> Finn den mest sannsynlige feilen.</p>
+        <table class="ot">
+          <tr><th style="width:55%">Symptom</th><th>Mest sannsynlig feil</th></tr>
+          <tr><td>Sylinderen går ut og blir stående ute. Rulla på a1 er ikke trykket inn.</td><td class="tom"></td></tr>
+          <tr><td>Sylinderen går ut og blir stående ute. Rulla på a1 er trykket inn, og det hveser ved impulsventilen.</td><td class="tom"></td></tr>
+          <tr><td>Ingenting skjer når du trykker S1. Sylinderen står inne.</td><td class="tom"></td></tr>
+          <tr><td>Sylinderen går altfor sakte ut, men inn går normalt.</td><td class="tom"></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) 1 trykkluftkilde, 2 vedlikeholdsenhet, 3 impulsventil 5/2, 4 strupe-tilbakeslagsventil A, 5 strupe-tilbakeslagsventil B, 6 sylinder, 7 rulleventil a1, 8 startknapp S1, 9 rulleventil a0, 10 tofrykkventil (OG). b) 3 – 1 – 5 – 4 – 2 (rekkefølgen er: S1 og a0 → impulsventilen skifter → går ut → a1 → går inn). c) En ny start skal bare kunne skje når stanga er helt inne. Ellers kan det komme signal på 14 og 12 samtidig, og sylinderen blir stående ute. d) a1 sitter for langt ute / er feiljustert. · Slangen fra a1 til 12 er løs eller lekker. · a0 får ikke luft eller blir ikke trykket inn (ev. S1 er defekt). · Strupe B (minussiden) er skrudd for langt igjen.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Trygg styring <small>Time 2 · 3 min</small></h3>
+        <table class="ot c">
+          <tr><th>Påstand</th><th style="width:5rem">Riktig</th><th style="width:5rem">Galt</th></tr>
+          <tr><td>a) Tohåndsbetjening skal sikre at begge hendene er utenfor farlig område.</td><td></td><td></td></tr>
+          <tr><td>b) Det er greit å teipe ned den ene knappen på en tohåndsbetjening.</td><td></td><td></td></tr>
+          <tr><td>c) En impulsventil kan få sylinderen til å gå når lufta slås på igjen.</td><td></td><td></td></tr>
+          <tr><td>d) Når du tester en ny krets, starter du med strupene nesten igjen.</td><td></td><td></td></tr>
+          <tr><td>e) Du kan justere rulleventilene mens maskinen går automatisk.</td><td></td><td></td></tr>
+          <tr><td>f) Før du kobler om slanger, stenger du og slipper ut lufta.</td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) riktig. b) galt. c) riktig. d) riktig. e) galt. f) riktig.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 2 min</small></h3>
+        <p>1. Hvilken strupe styrer farten <b>ut</b> på en dobbeltvirkende sylinder?</p><div class="svar"></div>
+        <p>2. Hva er forskjellen på en impulsventil og en ventil med fjærretur?</p><div class="svar"></div>
+        <p>3. Når gir en OG-ventil luft ut?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) Strupen på minussiden (den som struper avlufta når sylinderen går ut). 2) Impulsventilen husker siste signal og blir stående. Fjærventilen går tilbake når signalet forsvinner. 3) Bare når begge inngangene har signal.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const nf = (x, d=0) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const RM = (()=>{ try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } })();
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
+function rng(seed){ let a = seed>>>0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+
+/* Felles animasjonsløkke – bare synlige figurer oppdateres */
+const anims = [];
+function addAnim(node, tick){ const a = {tick, vis:false}; anims.push(a); new IntersectionObserver(es => es.forEach(e => a.vis = e.isIntersecting)).observe(node); return a; }
+let last = performance.now(), T = 0;
+function frame(now){ const dt = Math.min(.05, (now-last)/1000); last = now; T += RM ? 0 : dt; anims.forEach(a => { if (a.vis) a.tick(dt, T); }); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+/* Tegnehjelp */
+const fx = v => +(+v).toFixed(1);
+const ln = (x1,y1,x2,y2,c,w=3,d="") => `<line x1="${fx(x1)}" y1="${fx(y1)}" x2="${fx(x2)}" y2="${fx(y2)}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${d?` stroke-dasharray="${d}"`:""}/>`;
+const TX = (x,y,s,o={}) => `<text x="${fx(x)}" y="${fx(y)}" font-size="${o.size||15}" fill="${o.fill||"var(--ink)"}" text-anchor="${o.anchor||"start"}"${o.weight?` font-weight="${o.weight}"`:""}${o.op!==undefined?` opacity="${o.op}"`:""}>${s}</text>`;
+const RC = (x,y,w,h,f,s="none",sw=2,rx=0,extra="") => `<rect x="${fx(x)}" y="${fx(y)}" width="${fx(Math.max(0,w))}" height="${fx(Math.max(0,h))}" rx="${rx}" fill="${f}" stroke="${s}" stroke-width="${sw}"${extra}/>`;
+const CI = (x,y,r,f,s="none",sw=2,extra="") => `<circle cx="${fx(x)}" cy="${fx(y)}" r="${fx(r)}" fill="${f}" stroke="${s}" stroke-width="${sw}"${extra}/>`;
+const PL = (pts,c,w=3,extra="") => `<path d="M${pts.map(p=>fx(p[0])+" "+fx(p[1])).join(" L")}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"${extra}/>`;
+function arrow(x1,y1,x2,y2,c,w=2.2,hs=10){ const a=Math.atan2(y2-y1,x2-x1), bx=x2-hs*Math.cos(a), by=y2-hs*Math.sin(a), h=hs*.45;
+  return ln(x1,y1,bx,by,c,w)+`<path d="M${fx(x2)} ${fx(y2)} L${fx(bx+h*Math.sin(a))} ${fx(by-h*Math.cos(a))} L${fx(bx-h*Math.sin(a))} ${fx(by+h*Math.cos(a))} Z" fill="${c}"/>`; }
+function drop(x,y,s,c){ return `<path d="M${fx(x)} ${fx(y-s)} C${fx(x+s*.9)} ${fx(y)}, ${fx(x+s*.6)} ${fx(y+s*.8)}, ${fx(x)} ${fx(y+s*.8)} C${fx(x-s*.6)} ${fx(y+s*.8)}, ${fx(x-s*.9)} ${fx(y)}, ${fx(x)} ${fx(y-s)} Z" fill="${c}"/>`; }
+function badge(x,y,n,P,cur=false){ return CI(x,y,15,P.print?"#fff":(cur?"var(--orange)":"var(--ink)"),P.print?"#000":"var(--panel)",2.5)+TX(x,y+5.5,n,{size:15,weight:800,anchor:"middle",fill:P.print?"#000":(cur?"#fff":"var(--panel)")}); }
+const svgOpen = (w,h) => `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" font-family="Segoe UI, Arial, sans-serif"><rect width="${w}" height="${h}" fill="#fff"/>`;
+/* langs en polylinje */
+function pathLen(pts){ const L=[0]; for(let i=1;i<pts.length;i++) L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1])); return L; }
+function pointAt(pts,L,d){ d = clamp(d,0,L[L.length-1]); let i=1; while(i<L.length-1 && L[i]<d) i++; const f=(d-L[i-1])/((L[i]-L[i-1])||1); return [pts[i-1][0]+f*(pts[i][0]-pts[i-1][0]), pts[i-1][1]+f*(pts[i][1]-pts[i-1][1])]; }
+
+/* Paletter: skjerm og utskrift */
+const PS = {print:false, ink:"var(--ink)", muted:"var(--muted)", sheet:"var(--panel)", line:"var(--line)", blue:"var(--blue)", air:"var(--air)", airS:"var(--air-soft)", orange:"var(--orange)", oS:"var(--orange-soft)", green:"var(--green)", red:"var(--red)", steel:"#ced4da", steelD:"#495057"};
+const PB = {print:true, ink:"#000", muted:"#333", sheet:"#fff", line:"#999", blue:"#000", air:"#fff", airS:"#fff", orange:"#000", oS:"#fff", green:"#000", red:"#000", steel:"#fff", steelD:"#000"};
+
+/* =====================================================================
+   PNEUMATIKKSYMBOLER (ISO 1219)
+   ===================================================================== */
+const VDEF = {
+  "52": {top:{4:.25,2:.75}, bot:{5:.2,1:.5,3:.8}, n:[["a",1,2],["a",4,5],["t",3]], a:[["a",1,4],["a",2,3],["t",5]], sp:"12", bt:"14"},
+  "32": {top:{2:.5}, bot:{1:.25,3:.75}, n:[["a",2,3],["t",1]], a:[["a",1,2],["t",3]], sp:"", bt:"12"}
+};
+function vport(type,p,X0,Y,s){ const D=VDEF[type]; return D.top[p]!==undefined ? [X0+D.top[p]*s, Y] : [X0+D.bot[p]*s, Y+s]; }
+/* ventilsymbol: hvilerute til venstre (fjær), påvirket rute til høyre (trykknapp). k = 0..1 */
+function valveSym(type, X0, Y, s, k, P, o={}){
+  const D=VDEF[type], gx=X0-k*s, c=P.ink, sw=Math.max(1.8,s*.025); let g="";
+  [["n",gx],["a",gx+s]].forEach(([w,x]) => {
+    const live = !P.print && o.live && ((w==="n" && k<.5) || (w==="a" && k>=.5));
+    g += RC(x,Y,s,s,live?"var(--blue-soft)":P.sheet,c,sw);
+    D[w].forEach(e => {
+      if (e[0]==="a"){ const A=vport(type,e[1],x,Y,s), B=vport(type,e[2],x,Y,s); const dy = A[1]<B[1]? 1 : -1;
+        g += arrow(A[0],A[1]+dy*s*.06,B[0],B[1]-dy*s*.06,c,sw,s*.13); }
+      else { const A=vport(type,e[1],x,Y,s), dir = A[1]===Y ? 1 : -1, L=s*.24;
+        g += ln(A[0],A[1],A[0],A[1]+dir*L,c,sw)+ln(A[0]-s*.09,A[1]+dir*L,A[0]+s*.09,A[1]+dir*L,c,sw); }
+    });
+  });
+  const my = Y+s/2;
+  let d=`M${fx(gx)} ${fx(my)}`; for (let i=1;i<=7;i++) d += ` L${fx(gx-i*s*.055)} ${fx(my+(i%2?-1:1)*s*.15)}`; d += ` L${fx(gx-s*.44)} ${fx(my)}`;
+  g += `<path d="${d}" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linejoin="round"/>`;
+  const bx = gx+2*s;
+  g += ln(bx,my,bx+s*.26,my,c,sw)+`<path d="M${fx(bx+s*.26)} ${fx(my-s*.17)} h${fx(s*.09)} v${fx(s*.34)} h${fx(-s*.09)}" fill="none" stroke="${c}" stroke-width="${sw}"/>`+ln(bx+s*.26,my-s*.17,bx+s*.26,my+s*.17,c,sw);
+  if (o.labels!==false){
+    const fs = Math.max(11, s*.15);
+    Object.keys(D.top).forEach(p => { const [px,py]=vport(type,+p,X0,Y,s); g += TX(px+4,py-6,p,{size:fs,weight:700,fill:P.muted}); });
+    Object.keys(D.bot).forEach(p => { const [px,py]=vport(type,+p,X0,Y,s); g += TX(px+11,py+fs+2,p,{size:fs,weight:700,fill:P.muted}); });
+    if (D.sp) g += TX(gx-s*.22,Y-6,D.sp,{size:fs*.9,anchor:"middle",fill:P.muted});
+    g += TX(bx+s*.3,Y-6,D.bt,{size:fs*.9,anchor:"middle",fill:P.muted});
+  }
+  return g;
+}
+/* sylindersymbol. kind "D" dobbelt, "E" enkelt (fjær). pos 0..1 */
+function cylSym(kind, x, y, w, h, pos, P, o={}){
+  const c=P.ink, px = x+12+pos*(w-44), sw=2.4; let g="";
+  if (o.fillL) g += RC(x,y,px-x,h,o.fillL,"none",0);
+  if (o.fillR) g += RC(px+6,y,x+w-px-6,h,o.fillR,"none",0);
+  if (kind==="E"){ let d=`M${fx(px+6)} ${fx(y+h/2)}`; const n=8, L=(x+w-2)-(px+6); for (let i=1;i<n;i++) d += ` L${fx(px+6+i*L/n)} ${fx(y+h/2+(i%2?-1:1)*h*.32)}`; d += ` L${fx(x+w-2)} ${fx(y+h/2)}`; g += `<path d="${d}" fill="none" stroke="${c}" stroke-width="1.8"/>`; }
+  g += RC(x,y,w,h,"none",c,sw);
+  g += RC(px,y+1.5,6,h-3,c,"none",0);
+  g += RC(px+6,y+h/2-3.5,w-10,7,P.print?"#fff":c,c,1.2);
+  return g;
+}
+const cylRodEnd = (x,w,pos) => x+12+pos*(w-44)+6+(w-10);
+function exhaustSym(x,y,P,s=1){ return ln(x,y,x,y+10*s,P.ink,2)+`<path d="M${fx(x)} ${fx(y+24*s)} L${fx(x-9*s)} ${fx(y+10*s)} L${fx(x+9*s)} ${fx(y+10*s)} Z" fill="${P.sheet}" stroke="${P.ink}" stroke-width="2"/>`; }
+function sourceSym(cx,cy,P,r=15){ return CI(cx,cy,r,P.sheet,P.ink,2.2)+`<path d="M${fx(cx+r*.55)} ${fx(cy)} L${fx(cx-r*.35)} ${fx(cy-r*.5)} L${fx(cx-r*.35)} ${fx(cy+r*.5)} Z" fill="${P.sheet}" stroke="${P.ink}" stroke-width="2"/>`; }
+function gaugeSym(cx,cy,P,r=14,p=null,max=10){ const a = p===null ? -Math.PI/4 : Math.PI*.75 + clamp(p/max,0,1)*Math.PI*1.5;
+  return CI(cx,cy,r,P.sheet,P.ink,2)+arrow(cx-r*.6*Math.cos(a),cy-r*.6*Math.sin(a),cx+r*.75*Math.cos(a),cy+r*.75*Math.sin(a),p===null?P.ink:(P.print?"#000":"var(--orange)"),1.8,6); }
+/* vedlikeholdsenhet (filter, regulator m/manometer, smører) – flyt fra venstre til høyre, inn i (x, cy) */
+function frlSym(x,cy,P,o={}){
+  const c=P.ink; let g="";
+  g += RC(x,cy-42,150,84,"none",c,1.5,6,` stroke-dasharray="7 5"`);
+  g += ln(x-2,cy,x+150,cy,c,2.2);
+  const rh=(cx)=>`<path d="M${cx-18} ${cy} L${cx} ${cy-20} L${cx+18} ${cy} L${cx} ${cy+20} Z" fill="${P.sheet}" stroke="${c}" stroke-width="2.2"/>`;
+  g += rh(x+30)+ln(x+30,cy-16,x+30,cy+16,c,1.6,"4 3")+ln(x+30,cy+20,x+30,cy+30,c,2)+ln(x+24,cy+30,x+36,cy+30,c,2);
+  g += RC(x+57,cy-17,34,34,P.sheet,c,2.2)+arrow(x+60,cy+14,x+88,cy-14,c,1.8,7);
+  g += ln(x+74,cy-17,x+74,cy-26,c,2);
+  g += gaugeSym(x+74,cy-38,P,11,o.p===undefined?null:o.p,10).replace(/<circle/,'<circle');
+  g += rh(x+120)+ln(x+120,cy-20,x+120,cy+20,c,2);
+  return g;
+}
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) nav.scrollTo({left: act.offsetLeft - nav.clientWidth/2 + act.offsetWidth/2, behavior:"smooth"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName)) return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  slides[clamp(currentIndex()+dir,0,slides.length-1)].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+function chipGroup(el, items, cur, cb){
+  el.innerHTML = items.map(i=>`<button class="chip" data-v="${i[0]}" aria-pressed="${i[0]===cur}">${i[1]}</button>`).join("");
+  el.onclick = e => { const b=e.target.closest("[data-v]"); if(!b) return; el.querySelectorAll("[data-v]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); cb(b.dataset.v); };
+}
+function holdButton(btn, set){
+  const on = e => { e.preventDefault(); set(true); btn.classList.add("down"); };
+  const off = () => { set(false); btn.classList.remove("down"); };
+  btn.addEventListener("pointerdown", on); btn.addEventListener("pointerup", off); btn.addEventListener("pointerleave", off); btn.addEventListener("pointercancel", off);
+  btn.addEventListener("keydown", e => { if (e.key===" "||e.key==="Enter"){ e.preventDefault(); on(e); } });
+  btn.addEventListener("keyup", e => { if (e.key===" "||e.key==="Enter") off(); });
+}
+
+/* =====================================================================
+   NYE SYMBOLER I LEKSJON 2
+   ===================================================================== */
+/* påvirkning på siden av en ventil: "spring" | "button" | "pilot" | "roller". side −1 = venstre, +1 = høyre */
+function actuator(kind, ex, my, side, s, P, on){
+  const c=P.ink, sw=Math.max(1.8,s*.025); let g="";
+  if (kind==="spring"){ let d=`M${fx(ex)} ${fx(my)}`; for (let i=1;i<=7;i++) d += ` L${fx(ex+side*i*s*.055)} ${fx(my+(i%2?-1:1)*s*.15)}`; d += ` L${fx(ex+side*s*.44)} ${fx(my)}`; g += `<path d="${d}" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linejoin="round"/>`; }
+  else if (kind==="button"){ const b=ex+side*s*.26; g += ln(ex,my,b,my,c,sw)+`<path d="M${fx(b)} ${fx(my-s*.17)} h${fx(side*s*.09)} v${fx(s*.34)} h${fx(-side*s*.09)}" fill="none" stroke="${c}" stroke-width="${sw}"/>`+ln(b,my-s*.17,b,my+s*.17,c,sw); }
+  else if (kind==="pilot"){ const a=ex+side*s*.08, b=ex+side*s*.26, h=s*.1;
+    g += ln(ex,my,a,my,c,sw)+`<path d="M${fx(a)} ${fx(my)} L${fx(b)} ${fx(my-h)} L${fx(b)} ${fx(my+h)} Z" fill="${on&&!P.print?"var(--blue)":P.sheet}" stroke="${c}" stroke-width="${sw}" stroke-linejoin="round"/>`; }
+  else if (kind==="roller"){ const r=s*.1, cx=ex+side*(s*.2+r);
+    g += ln(ex,my,ex+side*s*.2,my,c,sw)+CI(cx,my,r,on&&!P.print?"var(--orange)":P.sheet,c,sw)+CI(cx,my,r*.25,c); }
+  return g;
+}
+/* ventil med valgfri påvirkning på begge sider. Venstre rute = stilling 12/hvile, høyre rute = stilling 14 */
+function valve2(type,X0,Y,s,k,P,o={}){
+  const D=VDEF[type], gx=X0-k*s, c=P.ink, sw=Math.max(1.8,s*.025); let g="";
+  [["n",gx],["a",gx+s]].forEach(([w,x]) => {
+    const live = !P.print && o.live && ((w==="n" && k<.5) || (w==="a" && k>=.5));
+    g += RC(x,Y,s,s,live?"var(--blue-soft)":P.sheet,c,sw);
+    D[w].forEach(e => {
+      if (e[0]==="a"){ const A=vport(type,e[1],x,Y,s), B=vport(type,e[2],x,Y,s); const dy = A[1]<B[1]? 1 : -1;
+        g += arrow(A[0],A[1]+dy*s*.06,B[0],B[1]-dy*s*.06,c,sw,s*.13); }
+      else { const A=vport(type,e[1],x,Y,s), dir = A[1]===Y ? 1 : -1, L=s*.24;
+        g += ln(A[0],A[1],A[0],A[1]+dir*L,c,sw)+ln(A[0]-s*.09,A[1]+dir*L,A[0]+s*.09,A[1]+dir*L,c,sw); }
+    });
+  });
+  const my=Y+s/2;
+  g += actuator(o.L||"spring",gx,my,-1,s,P,o.onL)+actuator(o.R||"button",gx+2*s,my,1,s,P,o.onR);
+  if (o.labels!==false){
+    const fs=Math.max(11,s*.15);
+    Object.keys(D.top).forEach(p => { const [px,py]=vport(type,+p,X0,Y,s); g += TX(px+4,py-6,p,{size:fs,weight:700,fill:P.muted}); });
+    Object.keys(D.bot).forEach(p => { const [px,py]=vport(type,+p,X0,Y,s); g += TX(px+(s<70?10:11),py+fs+2,p,{size:fs,weight:700,fill:P.muted}); });
+    if (o.L==="pilot") g += TX(gx-s*.18,my+s*.12+fs+3,D.sp,{size:fs*.95,anchor:"middle",weight:700,fill:P.muted});
+    if (o.R==="pilot") g += TX(gx+2*s+s*.18,my+s*.12+fs+3,D.bt,{size:fs*.95,anchor:"middle",weight:700,fill:P.muted});
+  }
+  return g;
+}
+const pilotX = (X0,s,k,side) => side<0 ? X0-k*s-s*.26 : X0-k*s+2*s+s*.26;
+/* ledning: arbeidsledning (hel) eller styreledning (stiplet). st "p" trykk · "ex" avlufting · "0" */
+function wire(pts, st, P, sig=false, flowDir=0){
+  const pr=P.print, col = (!pr && st==="p") ? "var(--blue)" : (!pr && st==="ex") ? "var(--orange)" : P.ink;
+  const w = (!pr && st==="p") ? (sig?3.4:4.5) : (sig?2:2.4);
+  let g = PL(pts,col,w, sig?` stroke-dasharray="10 7"`:"");
+  if (!pr && flowDir && !sig) g += PL(pts,"#fff",2.2,` stroke-dasharray="5 13" stroke-dashoffset="${fx(-flowDir*T*70)}" opacity=".9"`);
+  return g;
+}
+function puffs(x,y,on){ if (!on) return ""; let g=""; for (let i=0;i<3;i++){ const f=(T*1.6+i/3)%1; g += CI(x+(i-1)*6*f,y+28+f*26,3.5*(1-f)+1,"var(--orange)","none",0,` opacity="${fx(1-f)}"`); } return g; }
+function hiss(x,y,on){ if (!on) return ""; let g=""; for (let i=0;i<4;i++){ const f=(T*2+i/4)%1, a=-Math.PI/2+(i-1.5)*.5; g += CI(x+Math.cos(a)*f*30,y+Math.sin(a)*f*30,3.2*(1-f)+1,"var(--red)","none",0,` opacity="${fx(1-f)}"`); } return g; }
+const jdot = (x,y,P) => CI(x,y,4.5,P.ink);
+function svgPt(svg,e){ const p=svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+/* strupe-tilbakeslagsventil, loddrett. Inn nede, ut oppe. freeUp: kula slipper fritt oppover (mot sylinderen) */
+function stvSym(cx,cy,P,o={}){
+  const c=P.ink, k=o.sc||1, up=o.freeUp!==false, sw=2*Math.min(1.3,k); let g="";
+  const hl = o.hl && !P.print;
+  g += RC(cx-38*k,cy-40*k,76*k,80*k,hl?"var(--orange-soft)":"none",hl?"var(--orange)":c,hl?2.6:1.3,6,` stroke-dasharray="6 4"`);
+  g += ln(cx,cy+40*k,cx,cy+26*k,c,sw)+ln(cx,cy-40*k,cx,cy-26*k,c,sw);
+  g += ln(cx-18*k,cy-26*k,cx+18*k,cy-26*k,c,sw)+ln(cx-18*k,cy+26*k,cx+18*k,cy+26*k,c,sw);
+  const tx=cx-18*k;
+  g += ln(tx,cy-26*k,tx,cy+26*k,c,sw);
+  g += `<path d="M${fx(tx-8*k)} ${fx(cy-12*k)} Q${fx(tx-1*k)} ${fx(cy)} ${fx(tx-8*k)} ${fx(cy+12*k)} M${fx(tx+8*k)} ${fx(cy-12*k)} Q${fx(tx+1*k)} ${fx(cy)} ${fx(tx+8*k)} ${fx(cy+12*k)}" fill="none" stroke="${c}" stroke-width="${sw}"/>`;
+  g += arrow(tx-13*k,cy+15*k,tx+13*k,cy-15*k,c,sw*.8,8*k);
+  g += checkSym(cx+18*k,cy,P,k,up,26);
+  return g;
+}
+/* tilbakeslagsventil: kule i sete. up = fri strømning oppover */
+function checkSym(vx,cy,P,k=1,up=true,L=26){
+  const c=P.ink, d=up?1:-1, sw=2*Math.min(1.3,k);
+  return ln(vx,cy+d*L*k,vx,cy+d*12*k,c,sw)+PL([[vx-9*k,cy-d*1*k],[vx,cy+d*12*k],[vx+9*k,cy-d*1*k]],c,sw)+CI(vx,cy-d*3*k,6*k,P.sheet,c,sw)+ln(vx,cy-d*9*k,vx,cy-d*L*k,c,sw);
+}
+/* OG (tofrykkventil) og ELLER (vekselventil). Innganger venstre/høyre, utgang 2 oppe */
+function logicSym(kind,cx,cy,P,o={}){
+  const c=P.ink, w=72, h=34, sw=2; let g = RC(cx-w/2,cy-h/2,w,h,P.sheet,c,2.2);
+  g += PL([[cx-21,cy-10],[cx-30,cy],[cx-21,cy+10]],c,sw)+PL([[cx+21,cy-10],[cx+30,cy],[cx+21,cy+10]],c,sw);
+  if (kind==="eller") g += CI(cx+(o.b||0)*11,cy,8,P.sheet,c,2);
+  else { const d=o.d||0; g += RC(cx-13+d,cy-2.5,26,5,c)+RC(cx-17+d,cy-9,4,18,c)+RC(cx+13+d,cy-9,4,18,c); }
+  if (o.tag) g += TX(cx,cy+h/2+18,kind==="og"?"OG":"ELLER",{size:14,weight:800,anchor:"middle",fill:P.muted});
+  return g;
+}
+
+/* ---------- Repetisjon ---------- */
+(function(){
+  const C = [
+    ["🔢","Hva betyr «5/2-ventil»?","5 porter og 2 stillinger (to ruter i symbolet)."],
+    ["1️⃣","Hva er port 1? Og port 3 og 5?","1 = trykkluft inn. 3 og 5 = avlufting – lufta går ut i rommet."],
+    ["💪","Hvorfor er kraften inn mindre enn ut?","Stanga tar opp en del av stempelflata på minussiden. Mindre flate gir mindre kraft."],
+    ["↔️","Enkeltvirkende eller dobbeltvirkende?","Enkelt: luft én vei, fjær tilbake. Dobbelt: luft begge veier, to porter."],
+    ["🧾","Hva viser et koblingsskjema?","Hele kretsen med symboler: kilde → vedlikeholdsenhet → ventil → sylinder."],
+    ["🎛","Hva gjør regulatoren?","Stiller trykket, f.eks. 6 bar. Manometeret viser hva den står på."]
+  ];
+  const g=$("repGrid");
+  g.innerHTML = C.map(c=>`<div class="flip yes" tabindex="0" role="button"><div class="ic">${c[0]}</div><div class="q">${c[1]}</div><div class="a">${c[2]}</div></div>`).join("");
+  g.onclick = e => { const f=e.target.closest(".flip"); if (f) f.classList.toggle("open"); };
+  g.onkeydown = e => { if ((e.key==="Enter"||e.key===" ") && e.target.classList.contains("flip")){ e.preventDefault(); e.target.classList.toggle("open"); } };
+})();
+
+/* =====================================================================
+   DEL 1 – strupe-tilbakeslagsventil i snitt
+   ===================================================================== */
+(function(){
+  const svg=$("p1Svg"); let dir="inn", open=.4, ball=1, offU=0, offD=0;
+  const PU=[[20,195],[180,195],[180,105],[580,105],[580,195],[740,195]];
+  const PD=[[20,195],[180,195],[180,285],[580,285],[580,195],[740,195]];
+  const LU=pathLen(PU), LD=pathLen(PD);
+  chipGroup($("p1Dir"), [["inn","→ Luft inn til sylinderen"],["ut","← Luft ut fra sylinderen"]], "inn", v => { dir=v; msg(); });
+  $("p1O").oninput = e => { open=+e.target.value/100; $("p1Ov").textContent = Math.round(open*100)+" %"; msg(); };
+  function msg(){
+    const m=$("p1Msg"), fwd = dir==="inn";
+    $("p1Ball").textContent = fwd ? "løftet av setet" : "presset i setet";
+    $("p1Way").textContent = fwd ? "fritt forbi kula" : (open>0 ? "bare gjennom strupen" : "ingen vei");
+    $("p1Sp").textContent = fwd ? "full fart" : (open>0 ? (open<.35?"lav fart":open<.7?"middels fart":"høy fart") : "står stille");
+    if (fwd){ m.className="status ok"; m.innerHTML="<b>Lufta skal inn:</b> den skyver kula av setet og går fritt. Strupen betyr nesten ingenting denne veien."; }
+    else if (open>0){ m.className="status warn"; m.innerHTML="<b>Lufta skal ut:</b> den presser kula inn i setet. All luft må gjennom strupen. Skru inn = mindre hull = saktere."; }
+    else { m.className="status bad"; m.innerHTML="<b>Strupen er skrudd helt igjen.</b> Lufta kommer ikke ut – sylinderen står stille."; }
+  }
+  addAnim(svg, dt => {
+    const fwd = dir==="inn";
+    ball += clamp((fwd?1:0)-ball,-dt*5,dt*5); if (RM) ball = fwd?1:0;
+    const vU = open>0 ? 50+230*open : 0;
+    offU += dt*vU*(fwd?1:-1); offD += dt*(fwd?320:0);
+    const metal="url(#g1m)", air="rgba(28,111,209,.22)";
+    let s = `<defs><linearGradient id="g1m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ced4da"/><stop offset=".5" stop-color="#f1f3f5"/><stop offset="1" stop-color="#adb5bd"/></linearGradient></defs>`;
+    s += RC(80,48,600,300,metal,"var(--steel-dark)",2.5,18);
+    s += PL(PU,"var(--steel-dark)",48)+PL(PD,"var(--steel-dark)",48)+PL(PU,"var(--panel)",44)+PL(PD,"var(--panel)",44);
+    s += PL(PU,air,44)+PL(PD,air,44);
+    // sete og kule
+    s += RC(328,262,16,15,"var(--steel-dark)","none",0,2)+RC(328,293,16,15,"var(--steel-dark)","none",0,2);
+    const bx = 362 + ball*40;
+    s += RC(520,264,10,42,"var(--steel-dark)","none",0,2);
+    let d=`M${fx(bx+18)} 285`; const n=9, L=520-(bx+18); for (let i=1;i<n;i++) d += ` L${fx(bx+18+i*L/n)} ${285+(i%2?-13:13)}`; d += ` L520 285`;
+    s += `<path d="${d}" fill="none" stroke="#868e96" stroke-width="3.5" stroke-linejoin="round"/>`;
+    s += `<defs><radialGradient id="g1b" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#495057"/></radialGradient></defs>`;
+    s += CI(bx,285,18,"url(#g1b)",fwd?"var(--green)":"var(--red)",2.5);
+    // nåleskrue
+    const tip = 127 - 8 - open*34;
+    s += RC(352,6,56,26,"#495057","var(--ink)",1.5,6);
+    for (let i=0;i<5;i++){ const x = 358 + ((i*11 + open*40) % 50); s += ln(x,9,x,29,"#adb5bd",2); }
+    s += `<path d="M368 32 L392 32 L392 ${fx(tip-16)} L380 ${fx(tip)} L368 ${fx(tip-16)} Z" fill="#adb5bd" stroke="var(--steel-dark)" stroke-width="2"/>`;
+    for (let y=38;y<60;y+=5) s += ln(368,y,392,y+3,"var(--steel-dark)",1);
+    // partikler
+    const NU=12, ND=12;
+    if (open>0 || fwd) for (let i=0;i<NU;i++){ const dd = ((offU % LU[LU.length-1]) + LU[LU.length-1] + i*LU[LU.length-1]/NU) % LU[LU.length-1]; const [x,y]=pointAt(PU,LU,dd); s += CI(x,y,5,fwd?"var(--blue)":"var(--orange)","#fff",1.5); }
+    if (fwd) for (let i=0;i<ND;i++){ const dd = (offD + i*LD[LD.length-1]/ND) % LD[LD.length-1]; const [x,y]=pointAt(PD,LD,dd); if (x<bx-24 || x>bx+24) s += CI(x,y,5,"var(--blue)","#fff",1.5); }
+    if (!fwd) s += arrow(560,285,bx+26,285,"var(--orange)",4,14);
+    // retningspiler og tekster
+    s += fwd ? arrow(20,150,74,150,"var(--blue)",5,16) : arrow(74,150,20,150,"var(--orange)",5,16);
+    s += fwd ? arrow(686,150,740,150,"var(--blue)",5,16) : arrow(740,150,686,150,"var(--orange)",5,16);
+    s += TX(16,382,"fra ventilen",{size:14,weight:700,fill:"var(--muted)"})+TX(744,382,"til sylinderen",{size:14,weight:700,anchor:"end",fill:"var(--muted)"})+ln(40,222,40,362,"var(--line)",1.5)+ln(720,222,720,362,"var(--line)",1.5);
+    s += TX(420,24,"strupe (nåleskrue)",{size:15,weight:700,fill:"var(--orange)"});
+    s += TX(390,382,"tilbakeslagsventil: kule + fjær",{size:15,weight:700,anchor:"middle",fill:"var(--muted)"});
+    s += TX(336,333,"sete",{size:12,anchor:"middle",fill:"var(--muted)"});
+    // symbol
+    s += RC(785,20,200,365,"var(--panel)","var(--line)",1.5,12)+TX(885,46,"Symbol",{size:16,weight:800,anchor:"middle"});
+    s += ln(885,286,885,330,"var(--ink)",3)+ln(885,114,885,80,"var(--ink)",3);
+    s += TX(885,72,"til sylinderen",{size:13,anchor:"middle",fill:"var(--muted)"})+TX(885,350,"fra ventilen",{size:13,anchor:"middle",fill:"var(--muted)"});
+    s += stvSym(885,200,PS,{sc:2.15});
+    s += fwd ? arrow(966,250,966,150,"var(--blue)",4,14) : (open>0 ? arrow(818,150,818,250,"var(--orange)",4,14) : TX(818,206,"✗",{size:28,weight:800,anchor:"middle",fill:"var(--red)"}));
+    svg.innerHTML = s;
+  });
+  msg();
+})();
+
+/* =====================================================================
+   DEL 2 – fart: tilluft eller avluft
+   ===================================================================== */
+const CY2={x:300,y:60,w:300,h:56}, V2={X0:405,Y:250,s:90};
+function fartSVG(P, st){
+  const pr=P.print, {X0,Y,s}=V2, port=p=>vport("52",p,X0,Y,s);
+  const bx=CY2.x+14, rx=CY2.x+CY2.w-14, cb=CY2.y+CY2.h, p1=port(1), p2=port(2), p4=port(4);
+  let g="";
+  g += wire([[145,470],[230,470]],st.sup,P)+wire([[380,470],[p1[0],470],[p1[0],Y+s]],st.sup,P,false,st.flowSup?1:0);
+  g += wire([[bx,cb],[bx,125]],st.bore,P,false,st.fB)+wire([[bx,205],[bx,220],[p4[0],220],[p4[0],Y]],st.bore,P,false,st.fB);
+  g += wire([[rx,cb],[rx,125]],st.rod,P,false,st.fR)+wire([[rx,205],[rx,212],[p2[0],212],[p2[0],Y]],st.rod,P,false,st.fR);
+  const fu = st.mode!=="til";
+  g += stvSym(bx,165,P,{freeUp:fu,hl:st.hlB})+stvSym(rx,165,P,{freeUp:fu,hl:st.hlR});
+  [5,3].forEach(p => { const [x,y]=port(p); g += exhaustSym(x,y,P,1)+(!pr?puffs(x,y,st.exActive===p):""); });
+  g += valve2("52",X0,Y,s,st.k,P,{L:"spring",R:"button",live:!pr});
+  g += sourceSym(130,470,P,15)+frlSym(230,470,P,{p:pr?null:6});
+  const cush = !pr && st.mode!=="til" && st.moving;
+  g += cylSym("D",CY2.x,CY2.y,CY2.w,CY2.h,st.x,P,{
+    fillL: (!pr && st.bore==="p") ? "rgba(28,111,209,.28)" : (cush && !st.out ? "rgba(232,89,12,.28)" : null),
+    fillR: (!pr && st.rod==="p") ? "rgba(28,111,209,.28)" : (cush && st.out ? "rgba(232,89,12,.28)" : null)});
+  if (!st.nums){
+    const m={size:13,anchor:"middle",fill:P.muted};
+    g += TX(130,505,"trykkluft-",m)+TX(130,521,"kilde",m)+TX(305,535,"vedlikeholdsenhet",m);
+    g += TX(X0+s+18,Y+s+70,"5/2-ventil",{size:14,weight:700,anchor:"middle",fill:P.muted});
+    g += TX(bx-46,160,"strupe-",{size:13,anchor:"end",fill:P.muted})+TX(bx-46,176,"tilbakeslag",{size:13,anchor:"end",fill:P.muted})+TX(bx-46,196,"A",{size:18,weight:800,anchor:"end",fill:P.ink});
+    g += TX(rx+46,160,"strupe-",{size:13,fill:P.muted})+TX(rx+46,176,"tilbakeslag",{size:13,fill:P.muted})+TX(rx+46,196,"B",{size:18,weight:800,fill:P.ink});
+    g += TX(CY2.x+80,CY2.y-14,"plussiden",{size:13,anchor:"middle",fill:"var(--blue)",weight:700})+TX(CY2.x+CY2.w-80,CY2.y-14,"minussiden",{size:13,anchor:"middle",fill:"var(--blue)",weight:700});
+  } else {
+    g += badge(130,435,1,P)+badge(305,400,2,P)+badge(X0-70,Y+s/2+38,3,P)+badge(bx-62,165,4,P)+badge(rx+62,165,5,P)+badge(CY2.x+CY2.w/2,CY2.y-22,6,P);
+  }
+  if (st.hist && !pr){
+    const gx0=700, gx1=975, gy0=300, gy1=470;
+    g += RC(gx0-10,gy0-10,gx1-gx0+20,gy1-gy0+20,"var(--panel)","var(--line)",1.5,10);
+    g += TX(gx0,gy0+12,"Stanga – posisjon over tid",{size:14,weight:700,fill:"var(--muted)"});
+    const ax0=gx0+40, ay0=gy1-14, ay1=gy0+38, W=gx1-5-ax0;
+    g += ln(ax0,ay0,gx1-5,ay0,"var(--muted)",1.5)+ln(ax0,ay0,ax0,ay1-8,"var(--muted)",1.5);
+    g += TX(ax0-6,ay1+5,"ute",{size:12,anchor:"end",fill:"var(--muted)"})+TX(ax0-6,ay0+4,"inne",{size:12,anchor:"end",fill:"var(--muted)"})+TX(gx1-5,ay0-6,"tid →",{size:12,anchor:"end",fill:"var(--muted)"});
+    if (st.hist.length>1){ const pts = st.hist.map(h=>[gx1-5-(T-h.t)/5*W, ay0-h.x*(ay0-ay1)]); g += PL(pts, st.mode==="til"?"var(--red)":"var(--green)",3.5); }
+  }
+  return g;
+}
+(function(){
+  const svg=$("p2Svg"), st={mode:"av", k:0, x:0, open:.5, hist:[], ph:0, sup:"p", bore:"0", rod:"p", moving:false, out:false};
+  let press=false, lp=-1;
+  chipGroup($("p2Mode"), [["av","Avluftstruping ✓"],["til","Tilluftstruping"]], "av", v => { st.mode=v; st.hist=[]; info(); });
+  holdButton($("p2Btn"), v => press=v);
+  svg.addEventListener("pointerdown", e => { const q=svgPt(svg,e); if (q.x>V2.X0+2*V2.s-60 && q.x<V2.X0+2*V2.s+45 && q.y>V2.Y && q.y<V2.Y+V2.s){ press=true; $("p2Btn").classList.add("down"); } });
+  window.addEventListener("pointerup", () => { if (press){ press=false; $("p2Btn").classList.remove("down"); } });
+  $("p2O").oninput = e => { st.open=+e.target.value/100; $("p2Ov").textContent = Math.round(st.open*100)+" %"; };
+  function info(){ const m=$("p2Msg");
+    if (st.mode==="av"){ m.className="status ok"; m.innerHTML="<b>Avluftstruping:</b> lufta går fritt <i>inn</i> gjennom kula, men må presses <i>ut</i> gjennom strupen. Stempelet er klemt mellom to luftputer – det går <b>jevnt</b>."; }
+    else { m.className="status bad"; m.innerHTML="<b>Tilluftstruping:</b> lufta inn er strupet, lufta ut slipper fritt. Stempelet står, trykket bygger seg opp, så <b>rykker</b> det. Brukes nesten bare på enkeltvirkende sylindere."; } }
+  addAnim(svg, dt => {
+    st.k += clamp((press?1:0)-st.k,-dt*6,dt*6); if (RM) st.k=press?1:0;
+    const out = st.k>.5, v = .12+.9*st.open; let sp=v;
+    if (st.mode==="til"){ st.ph=(st.ph+dt*2.4)%1; sp = st.ph<.55 ? v*.04 : v*2.1; }
+    st.x += clamp((out?1:0)-st.x,-dt*sp,dt*sp);
+    const moving = Math.abs((out?1:0)-st.x)>1e-3;
+    st.out=out; st.moving=moving;
+    st.bore = out ? "p" : (moving?"ex":"0"); st.rod = !out ? "p" : (moving?"ex":"0");
+    st.fB = moving ? (out?-1:1) : 0; st.fR = moving ? (out?1:-1) : 0;
+    st.flowSup = moving; st.exActive = moving ? (out?3:5) : null;
+    const av = st.mode==="av";
+    st.hlR = moving && (av ? out : !out); st.hlB = moving && (av ? !out : out);
+    if (T-lp>.03 || T<lp){ lp=T; st.hist.push({t:T,x:st.x}); st.hist = st.hist.filter(h=>h.t>T-5 && h.t<=T); }
+    svg.innerHTML = fartSVG(PS, st);
+    $("p2Time").textContent = nf(1/v,1)+" s";
+    const mv=$("p2Mov"); mv.textContent = moving ? (av?"jevn ✓":"rykkete ✗") : "står stille"; mv.style.color = moving ? (av?"var(--green)":"var(--red)") : "var(--muted)";
+    $("p2Now").textContent = moving ? (st.hlR ? "B – minussiden" : "A – plussiden") : "–";
+  });
+  info();
+})();
+
+/* =====================================================================
+   DEL 3 – direkte og indirekte styring
+   ===================================================================== */
+const CY3={x:470,y:60,w:270,h:80}, V3={X0:600,Y:290,s:90}, S3={X0:200,Y:300,s:70}, D3={X0:190,Y:300,s:80}, SY3=520;
+function indirSVG(P, st){
+  const pr=P.print, ind = st.mode==="ind"; let g="";
+  const bx=CY3.x+14, rx=CY3.x+CY3.w-14, cb=CY3.y+CY3.h;
+  const m={size:13,anchor:"middle",fill:P.muted};
+  // områder
+  g += RC(15,165,390,300,"none",P.muted,1.5,14,` stroke-dasharray="10 6"`)+TX(30,452,"Betjeningspanel",{size:15,weight:800,fill:P.muted});
+  g += RC(425,15,565,450,"none",P.muted,1.5,14,` stroke-dasharray="10 6"`)+TX(975,452,"Maskin",{size:15,weight:800,anchor:"end",fill:P.muted});
+  g += sourceSym(25,SY3,P,15)+frlSym(45,SY3,P,{p:pr?null:6});
+  if (ind){
+    const {X0,Y,s}=V3, port=p=>vport("52",p,X0,Y,s), sp=p=>vport("32",p,S3.X0,S3.Y,S3.s);
+    g += wire([[195,SY3],[port(1)[0],SY3],[port(1)[0],Y+s]],"p",P,false,st.flowSup?1:0);
+    g += wire([[sp(1)[0],SY3],[sp(1)[0],S3.Y+S3.s]],"p",P)+jdot(sp(1)[0],SY3,P);
+    const my=Y+s/2, rA=pilotX(X0,s,st.k,1);
+    g += wire([[sp(2)[0],S3.Y],[sp(2)[0],250],[850,250],[850,my],[rA,my]],st.sig,P,true);
+    g += wire([[bx,cb],[bx,240],[port(4)[0],240],[port(4)[0],Y]],st.bore,P,false,st.fB);
+    g += wire([[rx,cb],[rx,225],[port(2)[0],225],[port(2)[0],Y]],st.rod,P,false,st.fR);
+    [5,3].forEach(p => { const [x,y]=port(p); g += exhaustSym(x,y,P,1)+(!pr?puffs(x,y,st.exActive===p):""); });
+    g += exhaustSym(sp(3)[0],sp(3)[1],P,.8);
+    g += valve2("32",S3.X0,S3.Y,S3.s,st.kS,P,{L:"spring",R:"button",live:!pr});
+    g += valve2("52",X0,Y,s,st.k,P,{L:"spring",R:"pilot",onR:st.sig==="p",live:!pr});
+    if (!st.nums){
+      g += TX(300,240,"styreledning 12 m (tynn)",{size:13,weight:700,fill:pr?P.muted:"var(--blue)"});
+      g += TX(S3.X0+2*S3.s+22,S3.Y-8,"S1",{size:16,weight:800,anchor:"middle",fill:P.ink});
+      g += TX(760,420,"5/2-ventil styrt med luft",{size:13,weight:700,fill:P.muted});
+    } else {
+      g += badge(25,486,1,P)+badge(120,462,2,P)+badge(S3.X0-28,S3.Y-8,3,P)+badge(560,250,4,P)+badge(X0-28,Y-8,5,P)+badge(CY3.x+CY3.w/2,CY3.y-22,6,P);
+    }
+  } else {
+    const {X0,Y,s}=D3, port=p=>vport("52",p,X0,Y,s);
+    g += wire([[195,SY3],[port(1)[0],SY3],[port(1)[0],Y+s]],"p",P,false,st.flowSup?1:0);
+    g += wire([[port(4)[0],Y],[port(4)[0],200],[bx,200],[bx,cb]],st.bore,P,false,-st.fB);
+    g += wire([[port(2)[0],Y],[port(2)[0],215],[rx,215],[rx,cb]],st.rod,P,false,-st.fR);
+    [5,3].forEach(p => { const [x,y]=port(p); g += exhaustSym(x,y,P,1)+(!pr?puffs(x,y,st.exActive===p):""); });
+    g += valve2("52",X0,Y,s,st.kS,P,{L:"spring",R:"button",live:!pr});
+    g += TX(330,193,"slange 12 m (tykk)",{size:13,weight:700,fill:P.muted})+TX(560,236,"slange 12 m (tykk)",{size:13,weight:700,fill:P.muted});
+    g += TX(X0+2*s+22,Y-8,"S1",{size:16,weight:800,anchor:"middle",fill:P.ink});
+  }
+  g += cylSym("D",CY3.x,CY3.y,CY3.w,CY3.h,st.x,P,{fillL:(!pr&&st.bore==="p")?"rgba(28,111,209,.28)":null, fillR:(!pr&&st.rod==="p")?"rgba(28,111,209,.28)":null});
+  if (!st.nums) g += TX(CY3.x+CY3.w/2,CY3.y-14,"stor sylinder Ø100",m);
+  return g;
+}
+(function(){
+  const svg=$("p3Svg"), st={mode:"ind",x:0,k:0,kS:0,sig:"0",bore:"0",rod:"p",cmd:false,since:9,eff:false};
+  let press=false;
+  chipGroup($("p3Mode"), [["dir","Direkte styring"],["ind","Indirekte styring"]], "ind", v=>{ st.mode=v; st.x=0; st.k=0; st.eff=false; info(); });
+  holdButton($("p3Btn"), v=>press=v);
+  function info(){
+    const ind = st.mode==="ind", m=$("p3Msg");
+    $("p3R1").textContent = ind ? "bare et lite signal" : "all lufta til sylinderen";
+    $("p3R2").textContent = ind ? "1 tynn styreslange" : "2 tykke slanger";
+    $("p3R3").textContent = ind ? "0,1 s" : "0,6 s";
+    m.className="status info";
+    m.innerHTML = ind ? "<b>Indirekte:</b> S1 sender luft i den stiplede styreledningen til port <b>14</b>. Den store ventilen ved maskinen skifter og sender arbeidslufta en kort vei til sylinderen."
+      : "<b>Direkte:</b> knappeventilen må sende all lufta gjennom to lange, tykke slanger. Slangene må fylles og tømmes hver gang – det tar tid og sløser luft.";
+  }
+  addAnim(svg, dt => {
+    const ind = st.mode==="ind";
+    st.kS += clamp((press?1:0)-st.kS,-dt*6,dt*6); if (RM) st.kS=press?1:0;
+    if (press!==st.cmd){ st.cmd=press; st.since=0; } else st.since += dt;
+    if (st.since >= (ind?.12:.6)) st.eff = st.cmd;
+    st.k += clamp(((st.since>=.08?st.cmd:!st.cmd)?1:0)-st.k,-dt*6,dt*6); if (RM) st.k = st.cmd?1:0;
+    const old=st.x; st.x += clamp((st.eff?1:0)-st.x,-dt*(ind?.9:.55),dt*(ind?.9:.55));
+    const moving=Math.abs(st.x-old)>1e-4, von = ind ? st.k>.5 : st.kS>.5;
+    st.sig = st.kS>.5 ? "p" : "0";
+    st.bore = von ? "p" : (moving?"ex":"0"); st.rod = !von ? "p" : (moving?"ex":"0");
+    st.fB = moving ? (von?-1:1) : 0; st.fR = moving ? (von?1:-1) : 0;
+    st.flowSup = moving; st.exActive = moving ? (von?3:5) : null;
+    svg.innerHTML = indirSVG(PS, st);
+  });
+  info();
+})();
+
+/* =====================================================================
+   DEL 4 – impulsventil (minne)
+   ===================================================================== */
+const CY4={x:330,y:60,w:300,h:56}, V4={X0:455,Y:230,s:90}, S4a={X0:720,Y:390,s:60}, S4b={X0:240,Y:390,s:60}, SY4=520;
+function minneSVG(P, st){
+  const pr=P.print, imp = st.mode==="impuls", {X0,Y,s}=V4, port=p=>vport("52",p,X0,Y,s); let g="";
+  const bx=CY4.x+14, rx=CY4.x+CY4.w-14, cb=CY4.y+CY4.h, my=Y+s/2;
+  const a=p=>vport("32",p,S4a.X0,S4a.Y,S4a.s), b=p=>vport("32",p,S4b.X0,S4b.Y,S4b.s);
+  g += wire([[195,SY4],[a(1)[0],SY4],[a(1)[0],S4a.Y+S4a.s]],"p",P)+wire([[port(1)[0],SY4],[port(1)[0],Y+s]],"p",P,false,st.flowSup?1:0)+jdot(port(1)[0],SY4,P);
+  g += wire([[a(2)[0],S4a.Y],[a(2)[0],my],[pilotX(X0,s,st.k,1),my]],st.s1?"p":"0",P,true);
+  let g2 = wire([[b(1)[0],SY4],[b(1)[0],S4b.Y+S4b.s]],"p",P)+jdot(b(1)[0],SY4,P);
+  g2 += imp ? wire([[b(2)[0],S4b.Y],[b(2)[0],my],[pilotX(X0,s,st.k,-1),my]],st.s2?"p":"0",P,true)
+            : wire([[b(2)[0],S4b.Y],[b(2)[0],my],[360,my]],"0",P,true)+ln(360,my-9,360,my+9,P.ink,3);
+  g2 += valve2("32",S4b.X0,S4b.Y,S4b.s,st.kS2,P,{L:"spring",R:"button",live:!pr})+exhaustSym(b(3)[0],b(3)[1],P,.8);
+  g2 += TX(S4b.X0+S4b.s*1.3,S4b.Y-12,"S2 – inn",{size:15,weight:800,fill:P.ink});
+  g += imp ? g2 : `<g opacity=".25">${g2}</g>`;
+  if (!imp && !pr) g += TX(250,380,"S2 trengs ikke",{size:14,weight:700,fill:P.muted});
+  g += wire([[bx,cb],[bx,190],[port(4)[0],190],[port(4)[0],Y]],st.bore,P,false,st.fB);
+  g += wire([[rx,cb],[rx,175],[port(2)[0],175],[port(2)[0],Y]],st.rod,P,false,st.fR);
+  [5,3].forEach(p => { const [x,y]=port(p); g += exhaustSym(x,y,P,1)+(!pr?puffs(x,y,st.exActive===p):""); });
+  g += valve2("32",S4a.X0,S4a.Y,S4a.s,st.kS1,P,{L:"spring",R:"button",live:!pr})+exhaustSym(a(3)[0],a(3)[1],P,.8);
+  g += TX(S4a.X0+S4a.s*1.3,S4a.Y-12,"S1 – ut",{size:15,weight:800,fill:P.ink});
+  g += valve2("52",X0,Y,s,st.k,P,{L:imp?"pilot":"spring",R:"pilot",onL:imp&&st.s2,onR:st.s1,live:!pr});
+  g += TX(X0-40,Y+s+24,imp?"5/2 impulsventil":"5/2 med fjærretur",{size:14,weight:700,anchor:"end",fill:P.muted});
+  g += sourceSym(25,SY4,P,15)+frlSym(45,SY4,P,{p:pr?null:6});
+  g += cylSym("D",CY4.x,CY4.y,CY4.w,CY4.h,st.x,P,{fillL:(!pr&&st.bore==="p")?"rgba(28,111,209,.28)":null, fillR:(!pr&&st.rod==="p")?"rgba(28,111,209,.28)":null});
+  if (!pr && imp){ const on = st.mem===1;
+    g += RC(700,150,200,48,on?"var(--orange-soft)":"var(--blue-soft)",on?"var(--orange)":"var(--blue)",2,10)+TX(800,181,"🧠 husker: "+(on?"UT (14)":"INN (12)"),{size:16,weight:800,anchor:"middle",fill:on?"var(--orange)":"var(--blue)"}); }
+  return g;
+}
+(function(){
+  const svg=$("p4Svg"), st={mode:"impuls",k:0,x:0,mem:0,kS1:0,kS2:0,s1:false,s2:false};
+  chipGroup($("p4Mode"), [["fjaer","5/2 med fjærretur"],["impuls","5/2 impulsventil"]], "impuls", v=>{ st.mode=v; st.mem=0; });
+  holdButton($("p4S1"), v=>st.s1=v); holdButton($("p4S2"), v=>st.s2=v);
+  let lastMsg="";
+  function msg(){
+    const imp=st.mode==="impuls"; let c="status info", t;
+    if (!imp){ t = st.s1 ? "<b>S1 holdes inne:</b> signal på 14. Ventilen står i 14-stilling, og sylinderen går ut." : (st.s2 ? "Med fjærretur er det ingen port 12 å sende signal til. S2 gjør ingenting." : "<b>Ingen signal:</b> fjæra skyver ventilen tilbake. Sylinderen går inn. Ventilen <b>glemmer</b> signalet."); }
+    else if (st.s1 && st.s2){ c="status warn"; t="<b>Signal på både 14 og 12:</b> ventilen blir stående der den var. Det kalles <b>signalkollisjon</b> – mer om det i leksjon 3."; }
+    else if (st.s1){ t="<b>Signal på 14:</b> ventilen skifter til 14-stilling, og sylinderen går ut. Slipp knappen – hva skjer?"; }
+    else if (st.s2){ t="<b>Signal på 12:</b> ventilen skifter tilbake til 12-stilling, og sylinderen går inn."; }
+    else if (st.mem===1){ c="status ok"; t="<b>Ingen signal – men ventilen står fortsatt i 14-stilling.</b> Den husker det siste signalet. Det er <b>minnet</b>!"; }
+    else { t="Ventilen står i 12-stilling. Sylinderen er inne. Trykk kort på S1."; }
+    if (t!==lastMsg){ lastMsg=t; $("p4Msg").className=c; $("p4Msg").innerHTML=t; }
+  }
+  addAnim(svg, dt => {
+    const imp=st.mode==="impuls";
+    st.kS1 += clamp((st.s1?1:0)-st.kS1,-dt*6,dt*6); st.kS2 += clamp((st.s2&&imp?1:0)-st.kS2,-dt*6,dt*6);
+    if (imp){ if (st.s1 && !st.s2) st.mem=1; else if (st.s2 && !st.s1) st.mem=0; } else st.mem = st.s1?1:0;
+    st.k += clamp(st.mem-st.k,-dt*6,dt*6); if (RM){ st.k=st.mem; st.kS1=st.s1?1:0; st.kS2=st.s2&&imp?1:0; }
+    const von = st.k>.5, old=st.x; st.x += clamp((von?1:0)-st.x,-dt*.9,dt*.9);
+    const moving=Math.abs(st.x-old)>1e-4;
+    st.bore = von ? "p" : (moving?"ex":"0"); st.rod = !von ? "p" : (moving?"ex":"0");
+    st.fB = moving ? (von?-1:1) : 0; st.fR = moving ? (von?1:-1) : 0; st.flowSup=moving; st.exActive = moving ? (von?3:5) : null;
+    svg.innerHTML = minneSVG(PS, st);
+    const on = (id,v) => { const e=$(id); e.textContent = v?"JA":"nei"; e.style.color = v?"var(--blue)":"var(--muted)"; };
+    on("p4R14", st.s1); on("p4R12", st.s2 && imp);
+    $("p4RV").textContent = von ? "14-stilling" : "12-stilling";
+    $("p4RC").textContent = moving ? (von?"går ut →":"← går inn") : (st.x>.5?"står ute":"står inne");
+    msg();
+  });
+})();
+
+/* =====================================================================
+   DEL 5 – OG og ELLER
+   ===================================================================== */
+(function(){
+  const svg=$("p5Svg"); let kind="eller", A=false, B=false, ball=300, bt=300, c=300, ct=300, ox=0;
+  chipGroup($("p5Kind"), [["eller","ELLER – vekselventil"],["og","OG – tofrykkventil"]], "eller", v=>{ kind=v; ball=bt=c=ct=300; upd(); });
+  const setBtn = (id,v,n) => { const b=$(id); b.classList.toggle("down",v); b.setAttribute("aria-pressed",String(v)); b.textContent = `Signal ${n}: ${v?"PÅ":"AV"}`; };
+  $("p5A").onclick = () => { A=!A; setBtn("p5A",A,"A"); upd(); };
+  $("p5B").onclick = () => { B=!B; setBtn("p5B",B,"B"); upd(); };
+  const outOf = (k,a,b) => k==="eller" ? (a||b) : (a&&b);
+  function upd(){
+    if (kind==="eller"){ if (A&&!B) bt=344; else if (B&&!A) bt=256; }
+    else { if (A&&!B) ct=310; else if (B&&!A) ct=290; else if (A&&B && ct===300) ct=310; }
+    const m=$("p5Msg"), o=outOf(kind,A,B);
+    m.className = o ? "status ok" : "status info";
+    if (kind==="eller") m.innerHTML = !A&&!B ? "Ingen signal – ingen luft ut." : (A&&B ? "<b>Begge har signal:</b> lufta kommer ut uansett. ELLER = <b>minst én</b>." : `<b>Bare ${A?"A":"B"}:</b> kula skyves over og stenger ${A?"B":"A"}-siden. Lufta går til utgang 2.`);
+    else m.innerHTML = !A&&!B ? "Ingen signal – ingen luft ut." : (A&&B ? "<b>Begge har signal:</b> sleiden stenger bare den ene siden. Lufta fra den andre går til utgang 2. OG = <b>begge</b>." : `<b>Bare ${A?"A":"B"}:</b> lufta skyver sleiden og stenger sin egen vei. Ingen luft ut – det trengs to!`);
+  }
+  addAnim(svg, dt => {
+    ball += clamp(bt-ball,-dt*400,dt*400); c += clamp(ct-c,-dt*150,dt*150); if (RM){ ball=bt; c=ct; }
+    const o = outOf(kind,A,B); ox += clamp((o?1:0)-ox,-dt*1.6,dt*1.6); if (RM) ox=o?1:0;
+    const air="rgba(28,111,209,.5)", pan="var(--panel)", sd="var(--steel-dark)";
+    let s = `<defs><linearGradient id="g5m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ced4da"/><stop offset=".5" stop-color="#f1f3f5"/><stop offset="1" stop-color="#adb5bd"/></linearGradient><radialGradient id="g5b" cx=".35" cy=".35" r=".7"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#495057"/></radialGradient></defs>`;
+    s += RC(60,165,520,150,"url(#g5m)",sd,2.5,16);
+    const ch = (x,y,w,h,f) => RC(x,y,w,h,pan,sd,1.5)+(f?RC(x,y,w,h,air,"none",0):"");
+    s += ch(10,225,130,30,A)+ch(140,200,80,80,A)+ch(220,232,16,16,A)+ch(380,200,80,80,B)+ch(364,232,16,16,B)+ch(460,225,130,30,B);
+    s += ch(236,200,128,80,o)+ch(285,110,30,90,o);
+    s += RC(237,201,126,78,o?air:pan,"none",0);
+    // bevegelige deler
+    if (kind==="eller") s += CI(ball,240,20,"url(#g5b)",sd,2);
+    else s += RC(c-104,236,208,8,"#868e96",sd,1,2)+RC(c-104,210,14,60,"#495057",sd,1,3)+RC(c+90,210,14,60,"#495057",sd,1,3);
+    // strømning
+    const dots = (x0,y0,x1,y1,col) => { let g=""; for (let i=0;i<4;i++){ const f=(T*1.3+i/4)%1; g += CI(x0+(x1-x0)*f,y0+(y1-y0)*f,4.5,col,"#fff",1.2); } return g; };
+    const flowA = A && (kind==="eller" ? ball>300 : (o && c<300) );
+    const flowB = B && (kind==="eller" ? ball<300 : (o && c>300) );
+    if (A) s += dots(14,240,flowA&&ox<1?200:126,240,"var(--blue)");
+    if (B) s += dots(586,240,flowB&&ox<1?400:474,240,"var(--blue)");
+    if (o && ox<1) s += dots(300,195,300,114,"var(--blue)");
+    // utgang til sylinder
+    s += PL([[300,110],[300,98],[344,98],[344,84]],o?"var(--blue)":"var(--ink)",o?4.5:2.4);
+    s += cylSym("E",330,44,190,40,ox,PS,{fillL:o?"rgba(28,111,209,.3)":null});
+    s += TX(30,212,"A",{size:26,weight:800,fill:A?"var(--blue)":"var(--muted)"})+TX(570,212,"B",{size:26,weight:800,anchor:"end",fill:B?"var(--blue)":"var(--muted)"});
+    s += TX(270,132,"2",{size:22,weight:800,fill:o?"var(--blue)":"var(--muted)"})+TX(330,30,"utgang 2 → en liten sylinder",{size:13,fill:"var(--muted)"});
+    s += TX(320,345,kind==="eller"?"Kula legger seg mot siden UTEN luft.":"Sleiden stenger siden som kommer FØRST.",{size:16,weight:700,anchor:"middle",fill:"var(--muted)"});
+    s += TX(320,372,kind==="eller"?"vekselventil":"tofrykkventil",{size:14,anchor:"middle",fill:"var(--muted)"});
+    // sannhetstabell
+    s += TX(650,32,kind==="eller"?"ELLER: minst én":"OG: begge",{size:22,weight:800,fill:"var(--orange)"});
+    const cols=[690,760,880];
+    s += RC(645,48,340,38,"var(--steel-soft)","var(--line)",1)+TX(cols[0],73,"A",{size:16,weight:800,anchor:"middle"})+TX(cols[1],73,"B",{size:16,weight:800,anchor:"middle"})+TX(cols[2],73,"utgang 2",{size:16,weight:800,anchor:"middle"});
+    [[0,0],[1,0],[0,1],[1,1]].forEach((r,i) => { const y=86+i*38, cur = (r[0]===+A && r[1]===+B), v=+outOf(kind,!!r[0],!!r[1]);
+      s += RC(645,y,340,38,cur?"var(--orange-soft)":"var(--panel)",cur?"var(--orange)":"var(--line)",cur?2.5:1);
+      s += TX(cols[0],y+26,r[0],{size:18,weight:700,anchor:"middle"})+TX(cols[1],y+26,r[1],{size:18,weight:700,anchor:"middle"})+TX(cols[2],y+26,v,{size:20,weight:800,anchor:"middle",fill:v?"var(--blue)":"var(--muted)"}); });
+    // symbol
+    s += TX(815,280,"Symbol",{size:14,weight:700,anchor:"middle",fill:"var(--muted)"});
+    s += ln(745,345,779,345,A?"var(--blue)":"var(--ink)",A?4:2.4)+ln(851,345,885,345,B?"var(--blue)":"var(--ink)",B?4:2.4)+ln(815,328,815,298,o?"var(--blue)":"var(--ink)",o?4:2.4);
+    s += logicSym(kind,815,345,PS,{b:(ball-300)/44, d:(c-300)*.4, tag:true});
+    s += TX(737,350,"A",{size:15,weight:800,anchor:"end"})+TX(893,350,"B",{size:15,weight:800})+TX(825,306,"2",{size:15,weight:800});
+    svg.innerHTML = s;
+  });
+  upd();
+})();
+
+/* =====================================================================
+   DEL 6 – automatisk tur-retur
+   ===================================================================== */
+const CY6={x:330,y:60,w:300,h:56}, V6={X0:455,Y:230,s:90}, R6={a1:{X0:250,Y:410,s:56}, s1:{X0:620,Y:410,s:56}, a0:{X0:850,Y:410,s:56}}, AND6={cx:793,cy:345}, SY6=545;
+function autoSVG(P, st){
+  const pr=P.print, {X0,Y,s}=V6, port=p=>vport("52",p,X0,Y,s), my=Y+s/2; let g="";
+  const bx=CY6.x+14, rx=CY6.x+CY6.w-14, cb=CY6.y+CY6.h;
+  const rp=(n,p)=>vport("32",p,R6[n].X0,R6[n].Y,R6[n].s);
+  // forsyning
+  const xa01=rp("a0",1)[0], a0off = st.fault==="a0luft";
+  g += wire([[195,SY6],[xa01,SY6],[xa01,SY6-30]],"p",P)+wire([[xa01,SY6-30],[xa01,R6.a0.Y+R6.a0.s]],a0off?"0":"p",P);
+  [["a1",1],["s1",1]].forEach(([n,p]) => { const x=rp(n,p)[0]; g += wire([[x,SY6],[x,R6[n].Y+R6[n].s]],"p",P)+jdot(x,SY6,P); });
+  g += wire([[port(1)[0],SY6],[port(1)[0],Y+s]],"p",P,false,st.flowSup?1:0)+jdot(port(1)[0],SY6,P);
+  if (st.fault==="a0luft" && st.showFault && !pr) g += CI(rp("a0",1)[0],SY6-30,16,"none","var(--red)",3);
+  if (st.fault==="a0luft") g += ln(rp("a0",1)[0]-10,SY6-30,rp("a0",1)[0]+10,SY6-30,P.ink,4);
+  // signaler
+  const xs=rp("s1",2)[0], xa0=rp("a0",2)[0], xa1=rp("a1",2)[0];
+  g += wire([[xs,R6.s1.Y],[xs,AND6.cy],[AND6.cx-36,AND6.cy]],st.sS1,P,true);
+  g += wire([[xa0,R6.a0.Y],[xa0,AND6.cy],[AND6.cx+36,AND6.cy]],st.sA0,P,true);
+  g += wire([[AND6.cx,AND6.cy-17],[AND6.cx,my],[pilotX(X0,s,st.k,1),my]],st.sAND,P,true);
+  if (st.fault==="lekk"){
+    g += wire([[xa1,R6.a1.Y],[xa1,my],[315,my]],st.sA1,P,true)+wire([[340,my],[pilotX(X0,s,st.k,-1),my]],"0",P,true);
+    if (!pr) g += hiss(315,my,st.sA1==="p");
+    if (st.showFault && !pr) g += CI(327,my,20,"none","var(--red)",3);
+  } else g += wire([[xa1,R6.a1.Y],[xa1,my],[pilotX(X0,s,st.k,-1),my]],st.sA1,P,true);
+  // arbeidsledninger
+  g += wire([[bx,cb],[bx,120]],st.bore,P,false,st.fB)+wire([[bx,200],[bx,214],[port(4)[0],214],[port(4)[0],Y]],st.bore,P,false,st.fB);
+  g += wire([[rx,cb],[rx,120]],st.rod,P,false,st.fR)+wire([[rx,200],[rx,214],[port(2)[0],214],[port(2)[0],Y]],st.rod,P,false,st.fR);
+  g += stvSym(bx,160,P,{hl:st.hlB})+stvSym(rx,160,P,{hl:st.hlR});
+  [5,3].forEach(p => { const [x,y]=port(p); g += exhaustSym(x,y,P,1)+(!pr?puffs(x,y,st.exActive===p):""); });
+  ["a1","s1","a0"].forEach(n => { const [x,y]=rp(n,3); g += exhaustSym(x,y,P,.8); });
+  // ventiler
+  g += valve2("52",X0,Y,s,st.k,P,{L:"pilot",R:"pilot",onL:st.sA1==="p"&&st.fault!=="lekk",onR:st.sAND==="p",live:!pr});
+  g += valve2("32",R6.a1.X0,R6.a1.Y,R6.a1.s,st.kA1,P,{L:"spring",R:"roller",onR:st.kA1>.5,live:!pr});
+  g += valve2("32",R6.s1.X0,R6.s1.Y,R6.s1.s,st.kS1,P,{L:"spring",R:"button",live:!pr});
+  g += valve2("32",R6.a0.X0,R6.a0.Y,R6.a0.s,st.kA0,P,{L:"spring",R:"roller",onR:st.kA0>.5,live:!pr});
+  g += logicSym("og",AND6.cx,AND6.cy,P,{d:(st.and?4:0),tag:!st.nums});
+  g += sourceSym(25,SY6,P,15)+frlSym(45,SY6,P,{p:pr?null:6});
+  // sylinder, kam og endeposisjoner
+  g += cylSym("D",CY6.x,CY6.y,CY6.w,CY6.h,st.x,P,{fillL:(!pr&&st.bore==="p")?"rgba(28,111,209,.28)":null, fillR:(!pr&&st.rod==="p")?"rgba(28,111,209,.28)":null});
+  const re = cylRodEnd(CY6.x,CY6.w,st.x), cy=CY6.y+CY6.h/2;
+  g += RC(re-5,cy-14,10,28,pr?"#fff":"var(--orange)",P.ink,1.5,2);
+  const m0 = cylRodEnd(CY6.x,CY6.w,0), m1 = st.fault==="a1" ? 940 : cylRodEnd(CY6.x,CY6.w,1);
+  [[m0,"a0",st.kA0>.5],[m1,"a1",st.kA1>.5]].forEach(([x,l,on]) => { g += ln(x,cy-34,x,cy-14,on&&!pr?"var(--orange)":P.ink,on&&!pr?4:2.4)+TX(x,cy-40,l,{size:16,weight:800,anchor:"middle",fill:on&&!pr?"var(--orange)":P.ink}); });
+  if (st.fault==="a1" && st.showFault && !pr) g += CI(m1,cy-30,24,"none","var(--red)",3);
+  if (!st.nums){
+    const lb=(x,y,t,a="middle")=>TX(x,y,t,{size:14,weight:800,anchor:a,fill:P.ink});
+    g += lb(R6.a1.X0+R6.a1.s+22,R6.a1.Y-10,"a1","start")+lb(R6.s1.X0+R6.s1.s,R6.s1.Y+R6.s1.s+52,"S1 start")+lb(R6.a0.X0+R6.a0.s+22,R6.a0.Y-10,"a0","start");
+    g += TX(X0-40,Y+s+22,"impulsventil",{size:13,weight:700,anchor:"end",fill:P.muted});
+    g += TX(bx-46,166,"A",{size:18,weight:800,anchor:"end"})+TX(rx+46,166,"B",{size:18,weight:800});
+  } else {
+    g += badge(25,510,1,P)+badge(120,492,2,P)+badge(650,318,3,P)+badge(bx-62,160,4,P)+badge(rx+62,160,5,P)+badge(480,40,6,P)+badge(R6.a1.X0-38,R6.a1.Y+10,7,P)+badge(R6.s1.X0+R6.s1.s+42,R6.s1.Y-8,8,P)+badge(R6.a0.X0+R6.a0.s+50,R6.a0.Y-8,9,P)+badge(735,318,10,P);
+  }
+  return g;
+}
+(function(){
+  const svg=$("p6Svg");
+  const st={x:0,k:0,mem:0,kS1:0,kA0:1,kA1:0,lock:false,fault:null,show:false,oA:.6,oB:.6,count:0,wasOut:false,step:0};
+  let press=false;
+  const FAULTS = {a1:"a1 nås ikke", lekk:"Løs slange til 12", a0luft:"Ingen luft til a0"};
+  $("p6Guess").innerHTML = Object.entries(FAULTS).map(([k,v])=>`<button class="chip" data-g="${k}">${v}</button>`).join("");
+  $("p6Guess").onclick = e => { const b=e.target.closest("[data-g]"); if(!b) return; const m=$("p6Msg");
+    if (!st.fault){ m.className="status info"; m.textContent="Det er ingen feil i anlegget nå. Trykk «Lag en feil» først."; return; }
+    if (b.dataset.g===st.fault){ st.show=true; m.className="status ok"; m.innerHTML = "✓ Riktig! " + ({
+      a1:"Rulleventil a1 sitter for langt ute. Kammen når den aldri, så det kommer ikke noe signal på 12 – sylinderen blir stående ute.",
+      lekk:"Slangen fra a1 til port 12 har løsnet. a1 blir trykket inn, men signalet hveser ut i lufta. Impulsventilen får ikke beskjed om å gå tilbake.",
+      a0luft:"a0 får ikke luft. Da blir det aldri signal fra a0, og OG-ventilen gir ikke signal til 14 – start gjør ingenting."})[st.fault]; }
+    else { m.className="status bad"; m.textContent="Ikke riktig. Start sylinderen. Se på rullene a0 og a1, se hvilke linjer som blir blå, og se etter hvesing."; } };
+  $("p6Rand").onclick = () => { const ks=Object.keys(FAULTS).filter(k=>k!==st.fault); st.fault=ks[Math.floor(Math.random()*ks.length)]; st.show=false; st.x=0; st.mem=0; st.k=0;
+    $("p6Msg").className="status warn"; $("p6Msg").textContent="Det er laget en feil i anlegget. Tegningen viser hvordan det skal være. Start sylinderen og se, lytt og tenk."; };
+  $("p6Fix").onclick = () => { st.fault=null; st.show=false; info(); };
+  holdButton($("p6Btn"), v=>press=v);
+  $("p6Lock").onclick = () => { st.lock=!st.lock; const b=$("p6Lock"); b.setAttribute("aria-pressed",String(st.lock)); b.textContent = `🔒 Kontinuerlig drift: ${st.lock?"PÅ":"AV"}`; b.classList.toggle("primary",st.lock); };
+  $("p6A").oninput = e => st.oA=+e.target.value/100; $("p6B").oninput = e => st.oB=+e.target.value/100;
+  svg.addEventListener("pointerdown", e => { const q=svgPt(svg,e), S=R6.s1; if (q.x>S.X0+2*S.s-30 && q.x<S.X0+2*S.s+30 && q.y>S.Y && q.y<S.Y+S.s){ press=true; $("p6Btn").classList.add("down"); } });
+  window.addEventListener("pointerup", () => { if (press){ press=false; $("p6Btn").classList.remove("down"); } });
+  function info(){ const m=$("p6Msg"); m.className="status info"; m.innerHTML="Hold inne <b>S1</b> (eller slå på kontinuerlig drift). Følg signalet: S1 OG a0 → <b>14</b> → ut → a1 → <b>12</b> → inn. Strupe <b>B</b> styrer farten ut, strupe <b>A</b> farten inn."; }
+  const steps=[...$("p6Steps").children];
+  addAnim(svg, dt => {
+    const s1 = press || st.lock;
+    const a0 = st.x<.015, a1hit = st.x>.985 && st.fault!=="a1";
+    st.kS1 += clamp((s1?1:0)-st.kS1,-dt*6,dt*6); st.kA0 += clamp((a0?1:0)-st.kA0,-dt*8,dt*8); st.kA1 += clamp((a1hit?1:0)-st.kA1,-dt*8,dt*8);
+    if (RM){ st.kS1=s1?1:0; st.kA0=a0?1:0; st.kA1=a1hit?1:0; }
+    const sigA0 = st.kA0>.5 && st.fault!=="a0luft", sigS1 = st.kS1>.5, and = sigS1 && sigA0;
+    const sigA1 = st.kA1>.5, sig12 = sigA1 && st.fault!=="lekk";
+    if (and && !sig12) st.mem=1; else if (sig12 && !and) st.mem=0;
+    st.k += clamp(st.mem-st.k,-dt*6,dt*6); if (RM) st.k=st.mem;
+    const von = st.k>.5, sp = von ? .15+.9*st.oB : .15+.9*st.oA;
+    const old=st.x; st.x += clamp((von?1:0)-st.x,-dt*sp,dt*sp);
+    const moving = Math.abs(st.x-old)>1e-4;
+    if (st.x>.98) st.wasOut=true; if (st.wasOut && st.x<.02){ st.wasOut=false; st.count++; }
+    st.and=and; st.sS1 = sigS1?"p":"0"; st.sA0 = sigA0?"p":"0"; st.sAND = and?"p":"0"; st.sA1 = sigA1?"p":"0";
+    st.bore = von ? "p" : (moving?"ex":"0"); st.rod = !von ? "p" : (moving?"ex":"0");
+    st.fB = moving ? (von?-1:1) : 0; st.fR = moving ? (von?1:-1) : 0; st.flowSup=moving; st.exActive = moving ? (von?3:5) : null;
+    st.hlR = moving && von; st.hlB = moving && !von; st.showFault = st.show;
+    svg.innerHTML = autoSVG(PS, st);
+    const step = and ? 0 : (moving && von) ? 1 : sigA1 ? 2 : (moving && !von) ? 3 : -1;
+    steps.forEach((e,i)=>e.classList.toggle("on", i===step));
+    $("p6Cnt").textContent = `Fulle slag: ${st.count}`;
+  });
+  info();
+})();
+
+/* =====================================================================
+   DEL 7 – trygg styring
+   ===================================================================== */
+(function(){
+  const C = [
+    ["🙌","Teipe ned den ene knappen på tohåndsbetjeningen.",false,"Galt! Da kan den andre hånda være i pressa. Tohåndsbetjening skal aldri forbikobles."],
+    ["🧠","Slå på lufta uten å sjekke hvor impulsventilen står.",false,"Galt! Impulsventilen husker. Sylinderen kan gå med en gang lufta kommer. Sjekk først og hold deg unna."],
+    ["🐢","Starte en ny krets med strupene nesten igjen.",true,"Riktig! Da går sylinderen sakte første gang. Åpne strupene litt og litt."],
+    ["✋","Justere en rulleventil mens maskinen går automatisk.",false,"Galt! Stopp, steng og avluft. Juster – og test sakte etterpå."],
+    ["🔌","Stenge og slippe ut lufta før du kobler om slanger.",true,"Riktig! Slanger under trykk kan piske. Steng, avluft, lås og merk."],
+    ["🏷️","Merke slangene med portnummer (12, 14 …) når du kobler opp.",true,"Riktig! Da er det lett å koble riktig og raskt å feilsøke."]
+  ];
+  const g=$("p7Grid");
+  g.innerHTML = C.map((c,i)=>`<div class="flip ${c[2]?"yes":"no"}" data-i="${i}" tabindex="0" role="button"><div class="ic">${c[0]}</div><div class="q">${c[1]}</div><div class="a"><span class="v">${c[2]?"✓ ":"✗ "}</span>${c[3]}</div></div>`).join("");
+  g.onclick = e => { const f=e.target.closest(".flip"); if (f) f.classList.toggle("open"); };
+  g.onkeydown = e => { if ((e.key==="Enter"||e.key===" ") && e.target.classList.contains("flip")){ e.preventDefault(); e.target.classList.toggle("open"); } };
+})();
+
+/* =====================================================================
+   SYMBOLARK – nye symboler
+   ===================================================================== */
+function symSheet2(P){
+  let s = "";
+  const cell = i => [ (i%4)*250, Math.floor(i/4)*180 ];
+  const L = [["A","Strupe-tilbakeslagsventil"],["B","Tilbakeslagsventil"],["C","5/2 styrt med luft / fjær"],["D","5/2 impulsventil"],["E","3/2 rulleventil"],["F","Tofrykkventil (OG)"],["G","Vekselventil (ELLER)"],["H","Arbeids- og styreledning"]];
+  L.forEach((l,i) => { const [x,y]=cell(i); s += RC(x+6,y+6,238,168,"none",P.line,1,10)+TX(x+20,y+32,l[0],{size:20,weight:800})+TX(x+125,y+162,l[1],{size:14,weight:700,anchor:"middle",fill:P.muted}); });
+  let [x,y]=cell(0); s += stvSym(x+125,y+82,P,{sc:1.05})+ln(x+125,y+40,x+125,y+30,P.ink,2.4)+ln(x+125,y+124,x+125,y+134,P.ink,2.4);
+  [x,y]=cell(1); s += checkSym(x+125,y+85,P,1.6,true,24);
+  [x,y]=cell(2); s += valve2("52",x+65,y+55,60,0,P,{L:"spring",R:"pilot"});
+  [x,y]=cell(3); s += valve2("52",x+65,y+55,60,0,P,{L:"pilot",R:"pilot"});
+  [x,y]=cell(4); s += valve2("32",x+65,y+55,60,0,P,{L:"spring",R:"roller"});
+  [x,y]=cell(5); s += logicSym("og",x+125,y+95,P)+ln(x+60,y+95,x+89,y+95,P.ink,2.4)+ln(x+161,y+95,x+190,y+95,P.ink,2.4)+ln(x+125,y+78,x+125,y+55,P.ink,2.4);
+  [x,y]=cell(6); s += logicSym("eller",x+125,y+95,P)+ln(x+60,y+95,x+89,y+95,P.ink,2.4)+ln(x+161,y+95,x+190,y+95,P.ink,2.4)+ln(x+125,y+78,x+125,y+55,P.ink,2.4);
+  [x,y]=cell(7); s += ln(x+40,y+70,x+210,y+70,P.ink,3)+TX(x+125,y+92,"arbeidsledning",{size:13,anchor:"middle",fill:P.muted})+PL([[x+40,y+118],[x+210,y+118]],P.ink,2.2,` stroke-dasharray="10 7"`)+TX(x+125,y+140,"styreledning (signal)",{size:13,anchor:"middle",fill:P.muted});
+  return s;
+}
+$("pSumSvg").innerHTML = symSheet2(PS);
+
+/* =====================================================================
+   OPPGAVEFIGURER (svart-hvitt)
+   ===================================================================== */
+(function(){
+  const z = {k:0, x:0, sup:"0", bore:"0", rod:"0", nums:true};
+  $("o1fig").innerHTML = svgOpen(720,550) + fartSVG(PB,{...z, mode:"av"}) + "</svg>";
+  $("o2fig").innerHTML = svgOpen(1000,570) + indirSVG(PB,{...z, mode:"ind", kS:0, sig:"0"}) + "</svg>";
+  let f4 = svgOpen(1000,170);
+  f4 += RC(40,20,420,130,"none","#999",1,10)+TX(60,52,"X",{size:22,weight:800,fill:"#000"})+logicSym("eller",250,95,PB)+ln(150,95,214,95,"#000",2.4)+ln(286,95,350,95,"#000",2.4)+ln(250,78,250,40,"#000",2.4);
+  f4 += RC(540,20,420,130,"none","#999",1,10)+TX(560,52,"Y",{size:22,weight:800,fill:"#000"})+logicSym("og",750,95,PB)+ln(650,95,714,95,"#000",2.4)+ln(786,95,850,95,"#000",2.4)+ln(750,78,750,40,"#000",2.4);
+  [[140,"A"],[360,"B"],[640,"A"],[860,"B"]].forEach(([x,t]) => f4 += TX(x,101,t,{size:16,weight:800,anchor:x<200||(x>600&&x<700)?"end":"start",fill:"#000"}));
+  $("o4fig").innerHTML = f4 + "</svg>";
+  $("o5fig").innerHTML = svgOpen(1000,580) + autoSVG(PB,{...z, kS1:0, kA0:1, kA1:0, sS1:"0", sA0:"0", sAND:"0", sA1:"0"}) + "</svg>";
+  document.querySelectorAll("#oppgavetekst .ofig svg").forEach(s => { s.removeAttribute("width"); s.removeAttribute("height"); });
+})();
+
+/* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToPng(svg){
+  const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
+  const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0,0,w,h); cx.drawImage(img,0,0,w,h);
+  return [cv.toDataURL("image/png"), vb.width];
+}
+$("btnCopy").onclick = async () => {
+  const src = $("oppgavetekst"), clone = src.cloneNode(true);
+  const svgs = [...src.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<svgs.length;i++){
+    try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.min(640, Math.round(w*.62)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
+  }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".scenario,.ordbank").forEach(s => { s.style.border="1px dashed #777"; s.style.padding="6px 10px"; });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>

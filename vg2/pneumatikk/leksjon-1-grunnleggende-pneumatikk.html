@@ -1,0 +1,1259 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pneumatikk 1 – Grunnleggende</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#fab005; --yellow-soft:#fff6d6;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --air:#74c0fc; --air-soft:#d0ebff; --water:#1971c2;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#6b7785; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+  --air:#4dabf7; --air-soft:#1b3550; --water:#74c0fc;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.3rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem; user-select:none; -webkit-user-select:none; touch-action:manipulation}
+.btn:hover{border-color:var(--blue)}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.big{font-size:1rem; padding:.7rem 1.3rem; font-weight:700}
+.btn.big.down{background:var(--orange); border-color:var(--orange); color:#fff; transform:translateY(2px)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:2.6rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1300px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.15rem; color:var(--muted); max-width:72ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2.wide-left{grid-template-columns:1.7fr 1fr}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.15rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg{display:block; width:100%; height:auto; touch-action:manipulation}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem .9rem; align-items:center; margin-top:.7rem}
+.slider{display:flex; align-items:center; gap:.6rem; font-size:.85rem}
+.slider label{color:var(--muted)}
+.slider input{width:min(220px,100%); accent-color:var(--orange)}
+.slider b{min-width:4.5rem; font-variant-numeric:tabular-nums}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem; min-height:2.9em}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.7rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+.tip.g{border-color:var(--green); background:var(--green-soft)}
+details.laerer{margin-top:1.1rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.4rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.35rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.35rem .7rem}
+.readout span{display:block; font-size:.72rem; color:var(--muted)}
+.readout b{font-size:1.2rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.chip{font:inherit; font-size:.78rem; font-weight:600; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.35rem .7rem}
+.chip:hover{border-color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--orange); color:#fff; border-color:var(--orange)}
+.mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
+.mini3 .card{padding:.7rem .9rem; font-size:.9rem}
+.mini3 .card h3{font-size:1.05rem}
+.formula{font-size:1.5rem; font-weight:800; text-align:center; padding:.4rem 0; color:var(--orange)}
+.calc{font-variant-numeric:tabular-nums; font-size:1.05rem; background:var(--bg); border:1px dashed var(--line); border-radius:10px; padding:.5rem .8rem; margin-top:.6rem}
+.hot{cursor:pointer}
+.flipgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem}
+.flip{background:var(--panel); border:2px solid var(--line); border-radius:var(--radius); padding:.9rem 1rem; cursor:pointer; min-height:9.5rem; transition:border-color .2s, background .2s; user-select:none}
+.flip .ic{font-size:2.3rem; line-height:1.1}
+.flip .q{font-weight:650; margin-top:.3rem}
+.flip .a{display:none; font-size:.88rem; margin-top:.4rem}
+.flip.open .a{display:block}
+.flip.open.yes{border-color:var(--green); background:var(--green-soft)}
+.flip.open.no{border-color:var(--red); background:var(--red-soft)}
+.flip .v{font-weight:800}
+.flip.yes .v{color:var(--green)} .flip.no .v{color:var(--red)}
+
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); height:2rem}
+.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
+.fasit b{color:var(--green)}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.3rem}
+.ot.c td, .ot.c th{text-align:center}
+.ot.c td:first-child, .ot.c th:first-child{text-align:left}
+.ofig{border:1px solid var(--muted); border-radius:8px; padding:.4rem; background:#fff; margin:.5rem 0}
+.ofig svg{display:block; width:100%; height:auto}
+.formelark{display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; font-size:.92rem; border:1px solid var(--muted); border-radius:8px; padding:.5rem .8rem; margin:.5rem 0 1rem}
+.ordbank{font-size:.9rem; border:1px dashed var(--muted); border-radius:8px; padding:.45rem .8rem; margin:.4rem 0}
+.scenario{border:1px dashed var(--muted); border-radius:8px; padding:.6rem .9rem; margin:.5rem 0; font-size:.95rem}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .mini3,.flipgrid{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+  .readout{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){ .mini3,.flipgrid{grid-template-columns:1fr} .card{overflow-wrap:anywhere} table.t{display:block; overflow-x:auto} .oppgave{overflow-x:auto} .ot{font-size:.75rem} }
+.grid2>*,.hero>*{min-width:0}
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999; --steel-soft:#eee}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr, .ofig, .scenario{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Pneumatikk · <span>Leksjon 1</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- START -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Pneumatikk</div>
+      <h1>Leksjon 1<br>Grunnleggende pneumatikk</h1>
+      <p class="lead"><b>Pneumatikk</b> = å flytte og skyve ting med <b>trykkluft</b>. Lufta er gratis – men den må trykkes sammen, renses og styres.</p>
+      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <ol class="goals">
+        <li>forklare hva <b>trykk</b> er, og forskjellen på <b>overtrykk</b> og <b>absolutt trykk</b></li>
+        <li>følge lufta fra <b>kompressor</b> til <b>sylinder</b> og si hva hver del gjør</li>
+        <li>regne ut <b>kraften</b> fra en sylinder: <b>F = p · A</b></li>
+        <li>forklare <b>enkeltvirkende</b> og <b>dobbeltvirkende</b> sylinder</li>
+        <li>lese symbolet for en <b>3/2-</b> og en <b>5/2-ventil</b> og tallene på portene</li>
+        <li>lese et enkelt <b>koblingsskjema</b> og finne en feil</li>
+        <li>jobbe <b>trygt</b> med trykkluft</li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p style="margin-bottom:.4rem"><i>«montere, sette i drift og feilsøke automatiserte hydraulikk- og pneumatikkanlegg etter spesifikasjoner»</i> (teknologi)</p>
+        <p style="margin-bottom:.4rem"><i>«arbeide på elektriske og automatiserte systemer ved reparasjons- og vedlikeholdsarbeid etter instrukser og gjeldende forskrifter»</i> (vedlikehold)</p>
+        <p style="margin-bottom:0"><i>«bruke maskiner og utstyr … i tråd med gjeldende helse-, miljø- og sikkerhetsrutiner»</i> (teknologi)</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1 · Fra luft til kraft</th></tr>
+          <tr><td>0–6 min</td><td>Del 1: luft er en fjær – trykk</td></tr>
+          <tr><td>6–16 min</td><td>Del 2: luftforsyningen</td></tr>
+          <tr><td>16–26 min</td><td>Del 3: kraft – F = p · A</td></tr>
+          <tr><td>26–45 min</td><td>Oppgave 1–2</td></tr>
+          <tr><th colspan="2">Time 2 · Sylindere, ventiler og skjema</th></tr>
+          <tr><td>0–5 min</td><td>Del 4: sylindere</td></tr>
+          <tr><td>5–12 min</td><td>Del 5: ventiler og symboler</td></tr>
+          <tr><td>12–21 min</td><td>Del 6: første koblingsskjema</td></tr>
+          <tr><td>21–24 min</td><td>Del 7: trygt med trykkluft</td></tr>
+          <tr><td>24–43 min</td><td>Oppgave 3–6</td></tr>
+          <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+      </div>
+      <div class="tip" style="margin-bottom:0"><b>Du kjenner allerede:</b> trykkluft som restenergi og at lufta må slippes ut før du jobber (Vedlikehold 2). Slå opp i <a href="https://verkstedhandboka.vercel.app/#hydraulikk-pneumatikk" target="_blank" rel="noopener">Verkstedhåndboka, emne 8</a>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 1 -->
+<section class="slide" id="trykk" data-nav="1 Trykk">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 6 min</div>
+    <h2>Luft er en fjær</h2>
+    <p class="lead">Skyv stempelet inn. Luftmolekylene får mindre plass, treffer veggene oftere – og <b>trykket stiger</b>.</p>
+    <div class="fig">
+      <svg id="p1Svg" viewBox="0 0 1000 360" role="img" aria-label="Sylinder med luftmolekyler som trykkes sammen, og et manometer"></svg>
+      <div class="controls">
+        <div class="slider"><label for="p1V">Skyv stempelet</label><input type="range" id="p1V" min="0" max="100" step="1" value="0"></div>
+        <span class="chips" id="p1M"></span>
+      </div>
+      <div class="readout">
+        <div><span>Volum</span><b id="p1Vol">100 %</b></div>
+        <div><span>Absolutt trykk</span><b id="p1Abs">1,0 bar</b></div>
+        <div><span>Manometeret viser (overtrykk)</span><b id="p1Over">0,0 bar</b></div>
+        <div><span>Kraft per cm²</span><b id="p1Fcm">0 N</b></div>
+      </div>
+      <div class="status info" id="p1Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Trykk = kraft per flate</h3>1 bar = 10 N på hver cm². Lufta rundt oss presser med ca. <b>1 bar</b> hele tiden.</div>
+      <div class="card"><h3>Manometeret</h3>viser <b>overtrykk</b> – hvor mye mer enn lufta rundt. <br>Absolutt = overtrykk + 1 bar.</div>
+      <div class="card"><h3>Luft eller olje?</h3>Luft kan trykkes sammen (myk, rask, ren). Olje nesten ikke (stiv, sterk) – det er hydraulikk.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Boyles lov p₁·V₁ = p₂·V₂ gjelder med <i>absolutt</i> trykk og konstant temperatur. I virkeligheten blir lufta varm når den trykkes sammen (kompressoren). Poeng: 1/7 av volumet gir 7 bar absolutt = 6 bar på manometeret – vanlig nettrykk i verksteder. Trykk på «Olje»: et volum olje må få ca. 75 bar for å krympe 0,5 % (kompresjonsmodul ca. 1,5 GPa). Derfor er hydraulikk stiv og presis, mens pneumatikk er «fjærende» og vanskelig å stoppe midt i slaget. 1 bar = 100 000 Pa = 0,1 N/mm² = 10 N/cm².</details>
+  </div>
+</section>
+
+<!-- DEL 2 -->
+<section class="slide" id="forsyning" data-nav="2 Forsyning">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 10 min</div>
+    <h2>Luftforsyningen – fra uteluft til sylinder</h2>
+    <p class="lead">Følg lufta. Klikk på tallene. Se etter <b style="color:var(--water)">vanndråpene</b> – hvor kommer de fra, og hvor blir de borte?</p>
+    <div class="fig">
+      <svg id="p2Svg" viewBox="0 0 1100 470" role="img" aria-label="Luftforsyning: inntak, kompressor, etterkjøler, tank, tørker, rørnett, vedlikeholdsenhet, ventil og sylinder"></svg>
+      <div class="readout">
+        <div><span>Tanktrykk</span><b id="p2P">– bar</b></div>
+        <div><span>Kompressor</span><b id="p2Run">–</b></div>
+        <div><span>Trykkbryter</span><b>start 6,5 · stopp 8</b></div>
+        <div><span>Til maskinene</span><b>6 bar</b></div>
+      </div>
+      <div class="status info" id="p2Msg">Klikk på et tall for å se hva delen gjør.</div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>💧 Lufta er våt</h3>Uteluft inneholder vanndamp. Når lufta trykkes sammen og avkjøles, blir dampen til <b>vann</b> (kondens).</div>
+      <div class="card"><h3>Vann ødelegger</h3>Rust i rør, slitte pakninger, ventiler som henger. Derfor: kjøle, drenere, tørke og filtrere.</div>
+      <div class="card"><h3>Vedlikeholdsenheten</h3><b>F</b>ilter · <b>R</b>egulator (med manometer) · <b>S</b>mører. Står foran hver maskin.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kompressoren gjør lufta varm (ofte over 100 °C ved utløpet). Etterkjøleren kjøler den, og mye vann felles ut. Tanken jevner ut trykket og gir kompressoren pauser (trykkbryter: starter ved lavt trykk, stopper ved høyt). Sikkerhetsventilen åpner hvis trykkbryteren svikter. Tanken må dreneres – automatisk eller manuelt – og kontrolleres etter forskrift om trykkpåkjent utstyr. Tørkeren (kjøletørker) senker duggpunktet. Rørnettet legges med fall (ca. 1–2 %) mot et dreneringspunkt, og uttak tas fra <i>toppen</i> av røret (svanehals) så vannet ikke renner med. Smøreren brukes mindre i dag: mange komponenter er smurt fra fabrikk og skal ha oljefri luft – har du først begynt å smøre, må du fortsette. Lekkasjer koster mye strøm – det kommer i leksjon 6.</details>
+  </div>
+</section>
+
+<!-- DEL 3 -->
+<section class="slide" id="kraft" data-nav="3 Kraft">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 10 min</div>
+    <h2>Hvor sterk er sylinderen? F = p · A</h2>
+    <p class="lead">Trykket virker på hele stempelflaten. <b>Større flate</b> eller <b>høyere trykk</b> = mer kraft.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="p3Svg" viewBox="0 0 1000 420" role="img" aria-label="Sylinder i snitt med trykkpiler på stempelet og kraftpil på stempelstanga"></svg>
+        <div class="controls">
+          <div class="slider"><label for="p3P">Trykk</label><input type="range" id="p3P" min="1" max="10" step="0.5" value="6"><b id="p3Pv">6 bar</b></div>
+          <div class="slider"><label for="p3D">Sylinder Ø</label><input type="range" id="p3D" min="0" max="9" step="1" value="6"><b id="p3Dv">50 mm</b></div>
+          <span class="chips" id="p3Dir"></span>
+        </div>
+        <div class="readout" style="grid-template-columns:repeat(3,1fr)">
+          <div><span>Areal A</span><b id="p3A">–</b></div>
+          <div><span>Kraft F</span><b id="p3F">–</b></div>
+          <div><span>Kan løfte ca.</span><b id="p3Kg">–</b></div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Formelen</h3>
+          <div class="formula">F = p · A</div>
+          <p style="margin:.2rem 0">F = kraft i <b>N</b> · p = trykk · A = areal i <b>mm²</b></p>
+          <p style="margin:.2rem 0">Triks: <b>1 bar = 0,1 N/mm²</b></p>
+          <div class="formula" style="font-size:1.25rem">F = p<sub>bar</sub> · 0,1 · A<sub>mm²</sub></div>
+          <p style="margin:.2rem 0">Areal av sirkel: <b>A = π · d² / 4</b></p>
+          <div class="calc" id="p3Calc"></div>
+        </div>
+        <div class="tip o"><b>Inn er svakere enn ut!</b> På vei inn tar stanga opp en del av flata. Trykk «Inn» og se ringen.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Dette er teoretisk kraft. Friksjon i pakninger tar ca. 10 % (mer i små sylindere), og i praksis velger man sylinder med god margin (ofte bare 50–70 % utnyttelse for dynamisk bevegelse). Stangdiametre etter vanlige standardserier: Ø32–Ø50 har stang 12–20 mm. «Kan løfte ca.» = F / 9,81, uten friksjon og margin. Spør: Hvorfor er Ø100 nesten fire ganger så sterk som Ø50? (Arealet går med diameteren i andre.)</details>
+  </div>
+</section>
+
+<!-- DEL 4 -->
+<section class="slide" id="sylinder" data-nav="4 Sylindere">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 5 min</div>
+    <h2>To typer sylindere</h2>
+    <p class="lead">Øverst: slik ser den ut inni. Nederst: <b>symbolet</b> vi bruker i skjema. <span style="color:var(--blue)">Blått</span> = trykkluft, <span style="color:var(--orange)">oransje</span> = luft som slippes ut.</p>
+    <div class="fig">
+      <svg id="p4Svg" viewBox="0 0 1000 400" role="img" aria-label="Enkeltvirkende og dobbeltvirkende sylinder i snitt og som symbol"></svg>
+      <div class="controls">
+        <button class="btn primary" id="p4Go">❚❚ Pause</button>
+        <button class="btn" id="p4Ut">→ Ut</button>
+        <button class="btn" id="p4Inn">← Inn</button>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="card"><h3>Enkeltvirkende</h3>Én luftport. Lufta skyver ut – <b>fjæra</b> skyver tilbake.<br><b style="color:var(--green)">+</b> Halvparten av lufta, enkel. <b style="color:var(--red)">−</b> Kraft bare én vei, fjæra «spiser» litt kraft, kort slag.<br><i>Eks.: klemme, stemple, låse.</i></div>
+      <div class="card"><h3>Dobbeltvirkende</h3>To luftporter. Lufta skyver <b>både ut og inn</b>.<br><b style="color:var(--green)">+</b> Kraft begge veier, langt slag, vanligst i industrien. <b style="color:var(--red)">−</b> Bruker mer luft.<br><i>Eks.: skyve deler, åpne porter, løfte.</i></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Plussiden (stempelsiden) og minussiden (stangsiden) er vanlige ord – kobles til Del 3. Enkeltvirkende sylinder har et lufthull med filter på fjærsiden («pustehull»). Mange sylindere har endedemping og magnet i stempelet for sensorer – kommer i senere leksjoner.</details>
+  </div>
+</section>
+
+<!-- DEL 5 -->
+<section class="slide" id="ventil" data-nav="5 Ventiler">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 7 min</div>
+    <h2>Ventiler – les symbolet</h2>
+    <p class="lead"><b>5/2-ventil</b> = <b>5</b> porter, <b>2</b> stillinger. Hver <b>rute</b> er én stilling. Pilene viser hvor lufta går. <b>Hold inne knappen</b> og se både sleiden og symbolet bytte.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="p5Svg" viewBox="0 0 1000 480" role="img" aria-label="Sleideventil i snitt og ventilsymbol"></svg>
+        <div class="controls">
+          <button class="btn big" id="p5Btn">👆 Hold inne knappen</button>
+          <span class="chips" id="p5T"></span>
+        </div>
+        <div class="status info" id="p5Msg"></div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Tallene på portene</h3>
+          <table class="t">
+            <tr><th>Port</th><th>Betyr</th><th>Gammelt</th></tr>
+            <tr><td><b style="color:var(--blue)">1</b></td><td>trykkluft inn</td><td>P</td></tr>
+            <tr><td><b>2 og 4</b></td><td>arbeidsporter – til sylinderen</td><td>B, A</td></tr>
+            <tr><td><b style="color:var(--orange)">3 og 5</b></td><td>avlufting – ut i lufta</td><td>R, S</td></tr>
+            <tr><td><b>12 og 14</b></td><td>styring: 14 kobler 1 til 4, 12 kobler 1 til 2</td><td>–</td></tr>
+          </table>
+        </div>
+        <div class="card" style="margin-top:.8rem">
+          <h3>Slik leser du det</h3>
+          <ol style="margin:0; padding-left:1.2rem">
+            <li>Tell <b>ruter</b> = antall stillinger.</li>
+            <li>Tell portene på én rute = antall porter.</li>
+            <li>Portene tegnes på ruta som er i bruk <b>nå</b> (hvilestilling).</li>
+            <li>Det som står ved siden av ruta, <b>skyver</b> ruta inn: knapp, fjær …</li>
+            <li><b>⊥</b> = stengt port.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Symbolene følger ISO 1219-1 og portnummer ISO 5599-3. Tenk på symbolet som en skuff: ruta skyves sideveis inn under portene. Det er derfor det animerte symbolet beveger seg. 3/2 «normalt stengt» (NC): uten signal er 1 stengt og 2 avluftet mot 3. Her er knappen tegnet til høyre og fjæra til venstre – det kan like gjerne være motsatt; det viktige er at påvirkningen står ved den ruta den kobler inn. Ventiltyper med to signaler (impulsventil/minne) kommer i leksjon 2.</details>
+  </div>
+</section>
+
+<!-- DEL 6 -->
+<section class="slide" id="skjema" data-nav="6 Skjema">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 9 min</div>
+    <h2>Første koblingsskjema</h2>
+    <p class="lead">Hele kretsen: <b>kilde → vedlikeholdsenhet → ventil → sylinder</b>. Hold inne knappen. Følg den <span style="color:var(--blue)">blå</span> lufta inn og den <span style="color:var(--orange)">oransje</span> ut.</p>
+    <div class="fig">
+      <div class="controls" style="margin:0 0 .5rem"><span class="chips" id="p6Mode"></span></div>
+      <svg id="p6Svg" viewBox="0 0 1000 560" role="img" aria-label="Pneumatisk koblingsskjema med trykkluftkilde, vedlikeholdsenhet, ventil og sylinder"></svg>
+      <div class="controls">
+        <button class="btn big" id="p6Btn">👆 Hold inne knappen</button>
+        <div class="slider"><label for="p6P">Regulator</label><input type="range" id="p6P" min="0" max="8" step="0.5" value="6"><b id="p6Pv">6 bar</b></div>
+        <span class="caption" id="p6Cnt" style="margin:0"></span>
+      </div>
+      <div class="controls" id="p6Faults">
+        <button class="btn primary" id="p6Rand">🎲 Lag en feil</button>
+        <span class="caption" style="margin:0">Hva er feilen?</span>
+        <span class="chips" id="p6Guess"></span>
+        <button class="btn small" id="p6Fix">🔧 Reparer</button>
+      </div>
+      <div class="status info" id="p6Msg"></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Krets 2 presser en bøssing inn i et hull. Ø32-sylinder: A = 804 mm². Bøssinga trenger 400 N. Ved 6 bar gir sylinderen 482 N – nok. Skru regulatoren ned til 4 bar (322 N): sylinderen stopper ved hullet – kobling til Del 3. Feilspillet: feilen ligger i <i>anlegget</i>, ikke i tegningen. La elevene trykke, se på manometrene og gjette. De tre feilene: (1) regulatoren står på 2 bar, (2) slangene til port 2 og 4 er byttet, (3) lyddemperen på port 3 er tett – lufta på minussiden kan ikke komme ut, trykket der stiger (≈ 7 bar fordi arealet er mindre), og sylinderen står nesten stille. Dette er systematisk feilsøking: symptom → måling → årsak.</details>
+  </div>
+</section>
+
+<!-- DEL 7 -->
+<section class="slide" id="hms" data-nav="7 HMS">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 3 min</div>
+    <h2>Trygt med trykkluft – riktig eller galt?</h2>
+    <p class="lead">Klikk på kortene. Trykkluft ser ufarlig ut – det er det ikke.</p>
+    <div class="flipgrid" id="p7Grid"></div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Trykkluft kan presses inn gjennom huden eller små sår og gi alvorlige skader (luftemboli). Spon og støv blåses i øynene. Blåsing gir ofte over 85 dB. En slange som løsner under trykk, kan piske og treffe hode og øyne – bruk sikkerhetskoblinger og avlufte før du løsner. Ved vedlikehold: steng, avluft, lås og merk (LOTO, Vedlikehold 2). Bruk kost eller støvsuger til spon der det går.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <div class="fig"><svg id="pSumSvg" viewBox="0 0 1000 360" role="img" aria-label="Symbolark for pneumatikk"></svg></div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Tre regler</h3>
+          <p style="margin:.2rem 0">🔵 <b>1 bar = 0,1 N/mm²</b> · absolutt = overtrykk + 1</p>
+          <p style="margin:.2rem 0">💪 <b>F = p · 0,1 · A</b> · inn er svakere enn ut</p>
+          <p style="margin:.2rem 0">🔢 <b>x/y-ventil</b> = x porter, y stillinger · 1 inn · 2/4 ut · 3/5 avlufting</p>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>trykkluft</span><span>overtrykk</span><span>absolutt trykk</span><span>manometer</span><span>kompressor</span><span>trykktank</span><span>kondens</span><span>tørker</span><span>vedlikeholdsenhet</span><span>regulator</span><span>enkeltvirkende</span><span>dobbeltvirkende</span><span>plusside / minusside</span><span>3/2-ventil</span><span>5/2-ventil</span><span>avlufting</span><span>koblingsskjema</span></div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Neste leksjon</h3>
+          <p style="margin:0"><b>Pneumatikk 2 – Styring og fart:</b> strupe-tilbakeslagsventil, indirekte styring, OG/ELLER-ventiler og automatisk tur-retur med rulleventil.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 39 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Pneumatikk 1 – Grunnleggende · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <div class="formelark"><b>Formler:</b> <span>1 bar = 0,1 N/mm² = 10 N/cm²</span><span>Absolutt trykk = overtrykk + 1 bar</span><span>A = π · d² / 4</span><span>F = p · 0,1 · A (bar, mm², N)</span><span>Minussiden: A = A<sub>stempel</sub> − A<sub>stang</sub></span><span>Masse ≈ F / 9,81</span></div>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Luftforsyningen <small>Time 1 · 8 min</small></h3>
+        <p>Skriv navnet på delene 1–9 og hva de gjør. Bruk ordene i boksen.</p>
+        <div class="ofig" id="o1fig"></div>
+        <div class="ordbank"><b>Ord:</b> kompressor · trykktank · vedlikeholdsenhet · etterkjøler · inntaksfilter · tørker · rørnett med svanehals · ventil · sylinder</div>
+        <table class="ot">
+          <tr><th style="width:2.5rem">Nr.</th><th style="width:32%">Navn</th><th>Hva gjør den?</th></tr>
+          <tr><td>1</td><td class="tom"></td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td></td></tr>
+          <tr><td>4</td><td class="tom"></td><td></td></tr>
+          <tr><td>5</td><td class="tom"></td><td></td></tr>
+          <tr><td>6</td><td class="tom"></td><td></td></tr>
+          <tr><td>7</td><td class="tom"></td><td></td></tr>
+          <tr><td>8</td><td class="tom"></td><td></td></tr>
+          <tr><td>9</td><td class="tom"></td><td></td></tr>
+        </table>
+        <p>b) Hvorfor tar vi uttaket fra <b>toppen</b> av røret (svanehals)?</p><div class="svar"></div>
+        <p>c) Nevn to ting vann i trykklufta kan ødelegge.</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1 Inntaksfilter – holder støv ute. 2 Kompressor – trykker sammen lufta (den blir varm). 3 Etterkjøler – kjøler lufta, vann felles ut. 4 Trykktank – lagrer luft, jevner ut trykket, kompressoren får pauser; har manometer, sikkerhetsventil, trykkbryter og drenering. 5 Tørker – tar ut resten av vannet. 6 Rørnett med svanehals – frakter lufta, legges med fall mot drenering. 7 Vedlikeholdsenhet – filter, regulator (stiller trykket) og manometer (+ ev. smører). 8 Ventil – styrer lufta. 9 Sylinder – gjør arbeidet. b) Vannet renner i bunnen av røret; tar vi lufta fra toppen, blir vannet igjen og går til drenering. c) Rust i rør og komponenter, slitte pakninger, ventiler som henger/fryser, ødelagt smøring, dårlig lakk ved lakkering.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Trykk og kraft <small>Time 1 · 10 min</small></h3>
+        <p>a) Manometeret viser <b>6 bar</b>. Hva er det absolutte trykket? Hvor mange N/mm² er 6 bar?</p><div class="svar"></div>
+        <p>b) Regn ut areal og kraft <b>ut</b> (plussiden). Vis utregning.</p>
+        <table class="ot c">
+          <tr><th>Sylinder</th><th>Trykk</th><th style="width:28%">Areal A (mm²)</th><th style="width:28%">Kraft F (N)</th></tr>
+          <tr><td>Ø25</td><td>6 bar</td><td class="tom"></td><td></td></tr>
+          <tr><td>Ø50</td><td>6 bar</td><td class="tom"></td><td></td></tr>
+          <tr><td>Ø50</td><td>3 bar</td><td class="tom"></td><td></td></tr>
+        </table>
+        <p>c) Ø50-sylinderen har stang <b>Ø20</b>. Regn ut kraften <b>inn</b> ved 6 bar. Hvorfor er den mindre?</p><div class="svar"></div><div class="svar"></div>
+        <p>d) Du trenger <b>1000 N</b> ut ved 6 bar. Hvilken er den minste sylinderen som holder: Ø32, Ø40, Ø50 eller Ø63? Vis regning.</p><div class="svar"></div><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 7 bar absolutt. 6 · 0,1 = 0,6 N/mm². b) Ø25: A = π·25²/4 = 491 mm², F = 6·0,1·491 = <b>295 N</b>. Ø50: A = 1963 mm², F = <b>1178 N</b>. Ø50 ved 3 bar: <b>589 N</b> (halvt trykk = halv kraft). c) A<sub>stang</sub> = 314 mm², ringareal = 1963 − 314 = 1649 mm², F = 6·0,1·1649 = <b>989 N</b>. Stanga tar opp en del av flata, så lufta har mindre å trykke på. d) Ø40: A = 1257 mm² → 754 N (for lite). Ø50: 1178 N → <b>Ø50</b> (i praksis velger man gjerne litt margin for friksjon).</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Les symbolene <small>Time 2 · 6 min</small></h3>
+        <div class="ofig" id="o3fig"></div>
+        <table class="ot">
+          <tr><th style="width:2.5rem">Bokstav</th><th>Navn på symbolet</th></tr>
+          <tr><td>A</td><td class="tom"></td></tr><tr><td>B</td><td class="tom"></td></tr><tr><td>C</td><td class="tom"></td></tr><tr><td>D</td><td class="tom"></td></tr>
+          <tr><td>E</td><td class="tom"></td></tr><tr><td>F</td><td class="tom"></td></tr><tr><td>G</td><td class="tom"></td></tr><tr><td>H</td><td class="tom"></td></tr>
+        </table>
+        <p>b) Hva betyr tallene i «5/2-ventil»?</p><div class="svar"></div>
+        <p>c) Hva betyr port <b>1</b>, port <b>4</b> og port <b>3</b>?</p><div class="svar"></div>
+        <p>d) Se på C. Hvor går lufta når knappen <b>ikke</b> er trykket?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> A trykkluftkilde. B vedlikeholdsenhet (filter, regulator, manometer). C 3/2-ventil, normalt stengt, med trykknapp og fjær. D 5/2-ventil med trykknapp og fjær. E enkeltvirkende sylinder med fjærretur. F dobbeltvirkende sylinder. G manometer. H avlufting (utløp til luft, ofte med lyddemper). b) 5 porter, 2 stillinger. c) 1 = trykkluft inn, 4 = arbeidsport (til sylinderen), 3 = avlufting. d) Port 1 er stengt. Port 2 er koblet til 3 – sylinderen er avluftet.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Enkelt eller dobbelt? <small>Time 2 · 3 min</small></h3>
+        <table class="ot c">
+          <tr><th>Jobb</th><th style="width:7rem">Enkelt­virkende</th><th style="width:7rem">Dobbelt­virkende</th></tr>
+          <tr><td>a) Stemple et nummer i en plate (kort slag)</td><td></td><td></td></tr>
+          <tr><td>b) Skyve en kasse av et transportbånd og trekke tilbake med kraft</td><td></td><td></td></tr>
+          <tr><td>c) Åpne og lukke en tung port</td><td></td><td></td></tr>
+          <tr><td>d) Holde fast en liten del i en jigg</td><td></td><td></td></tr>
+          <tr><td>e) Løfte en last opp og senke den kontrollert</td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) enkelt. b) dobbelt. c) dobbelt. d) enkelt. e) dobbelt. (Kraft begge veier / langt slag → dobbelt. Kort slag, kraft én vei → enkelt.)</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Koblingsskjema og feilsøking <small>Time 2 · 7 min</small></h3>
+        <div class="ofig" id="o5fig"></div>
+        <p>a) Skriv navnet på 1–6: &nbsp;1 ____________ &nbsp;2 ____________ &nbsp;3 ____________ &nbsp;4 ____________ &nbsp;5 ____________ &nbsp;6 ____________</p>
+        <p>b) Hva skjer når knappen trykkes inn? Og når den slippes?</p><div class="svar"></div><div class="svar"></div>
+        <p>c) Finn feilen.</p>
+        <table class="ot">
+          <tr><th style="width:55%">Symptom</th><th>Mest sannsynlig feil</th></tr>
+          <tr><td>Sylinderen går ut av seg selv når lufta slås på. Når knappen trykkes, går den inn.</td><td class="tom"></td></tr>
+          <tr><td>Knappen trykkes. Sylinderen går ut, men stopper før bøssinga er presset inn. Manometeret på plussiden viser 2 bar.</td><td class="tom"></td></tr>
+          <tr><td>Knappen trykkes. Sylinderen rører seg nesten ikke. Plussiden viser 6 bar og minussiden 7 bar.</td><td class="tom"></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) 1 trykkluftkilde, 2 vedlikeholdsenhet, 3 5/2-ventil (trykknapp/fjær), 4 avlufting (port 3/5), 5 dobbeltvirkende sylinder, 6 manometer. b) Inn: 1 kobles til 4, plussiden får luft, minussiden avluftes gjennom 2 → 3, sylinderen går ut. Slippes: fjæra skyver ventilen tilbake, 1 → 2, sylinderen går inn, plussiden avluftes 4 → 5. c) 1: slangene på port 2 og 4 er byttet om. 2: for lavt trykk – regulatoren står på 2 bar (kraft 161 N < 400 N); still til 6 bar. 3: lufta på minussiden kommer ikke ut – tett lyddemper/avlufting på port 3.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Trygt med trykkluft <small>Time 2 · 3 min</small></h3>
+        <table class="ot c">
+          <tr><th>Påstand</th><th style="width:5rem">Riktig</th><th style="width:5rem">Galt</th></tr>
+          <tr><td>a) Det er greit å blåse spon av klærne hvis trykket er lavt.</td><td></td><td></td></tr>
+          <tr><td>b) Før du løsner en slange, stenger du og slipper ut lufta.</td><td></td><td></td></tr>
+          <tr><td>c) Vernebriller trengs bare ved sveising, ikke ved blåsing.</td><td></td><td></td></tr>
+          <tr><td>d) Trykkluft kan gå gjennom huden og gi alvorlig skade.</td><td></td><td></td></tr>
+          <tr><td>e) En slange som løsner under trykk, kan piske.</td><td></td><td></td></tr>
+          <tr><td>f) Blåsing kan gi så mye støy at du trenger hørselvern.</td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) galt. b) riktig. c) galt. d) riktig. e) riktig. f) riktig.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 2 min</small></h3>
+        <p>1. Manometeret viser 6 bar. Hva er det absolutte trykket?</p><div class="svar"></div>
+        <p>2. Hvorfor er kraften inn mindre enn kraften ut på en dobbeltvirkende sylinder?</p><div class="svar"></div>
+        <p>3. Hva betyr 3/2 i «3/2-ventil»?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) 7 bar. 2) Stanga tar opp en del av stempelflata på minussiden – mindre areal gir mindre kraft. 3) 3 porter og 2 stillinger.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const nf = (x, d=0) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const RM = (()=>{ try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } })();
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
+function rng(seed){ let a = seed>>>0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+
+/* Felles animasjonsløkke – bare synlige figurer oppdateres */
+const anims = [];
+function addAnim(node, tick){ const a = {tick, vis:false}; anims.push(a); new IntersectionObserver(es => es.forEach(e => a.vis = e.isIntersecting)).observe(node); return a; }
+let last = performance.now(), T = 0;
+function frame(now){ const dt = Math.min(.05, (now-last)/1000); last = now; T += RM ? 0 : dt; anims.forEach(a => { if (a.vis) a.tick(dt, T); }); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+/* Tegnehjelp */
+const fx = v => +(+v).toFixed(1);
+const ln = (x1,y1,x2,y2,c,w=3,d="") => `<line x1="${fx(x1)}" y1="${fx(y1)}" x2="${fx(x2)}" y2="${fx(y2)}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${d?` stroke-dasharray="${d}"`:""}/>`;
+const TX = (x,y,s,o={}) => `<text x="${fx(x)}" y="${fx(y)}" font-size="${o.size||15}" fill="${o.fill||"var(--ink)"}" text-anchor="${o.anchor||"start"}"${o.weight?` font-weight="${o.weight}"`:""}${o.op!==undefined?` opacity="${o.op}"`:""}>${s}</text>`;
+const RC = (x,y,w,h,f,s="none",sw=2,rx=0,extra="") => `<rect x="${fx(x)}" y="${fx(y)}" width="${fx(Math.max(0,w))}" height="${fx(Math.max(0,h))}" rx="${rx}" fill="${f}" stroke="${s}" stroke-width="${sw}"${extra}/>`;
+const CI = (x,y,r,f,s="none",sw=2,extra="") => `<circle cx="${fx(x)}" cy="${fx(y)}" r="${fx(r)}" fill="${f}" stroke="${s}" stroke-width="${sw}"${extra}/>`;
+const PL = (pts,c,w=3,extra="") => `<path d="M${pts.map(p=>fx(p[0])+" "+fx(p[1])).join(" L")}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"${extra}/>`;
+function arrow(x1,y1,x2,y2,c,w=2.2,hs=10){ const a=Math.atan2(y2-y1,x2-x1), bx=x2-hs*Math.cos(a), by=y2-hs*Math.sin(a), h=hs*.45;
+  return ln(x1,y1,bx,by,c,w)+`<path d="M${fx(x2)} ${fx(y2)} L${fx(bx+h*Math.sin(a))} ${fx(by-h*Math.cos(a))} L${fx(bx-h*Math.sin(a))} ${fx(by+h*Math.cos(a))} Z" fill="${c}"/>`; }
+function drop(x,y,s,c){ return `<path d="M${fx(x)} ${fx(y-s)} C${fx(x+s*.9)} ${fx(y)}, ${fx(x+s*.6)} ${fx(y+s*.8)}, ${fx(x)} ${fx(y+s*.8)} C${fx(x-s*.6)} ${fx(y+s*.8)}, ${fx(x-s*.9)} ${fx(y)}, ${fx(x)} ${fx(y-s)} Z" fill="${c}"/>`; }
+function badge(x,y,n,P,cur=false){ return CI(x,y,15,P.print?"#fff":(cur?"var(--orange)":"var(--ink)"),P.print?"#000":"var(--panel)",2.5)+TX(x,y+5.5,n,{size:15,weight:800,anchor:"middle",fill:P.print?"#000":(cur?"#fff":"var(--panel)")}); }
+const svgOpen = (w,h) => `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" font-family="Segoe UI, Arial, sans-serif"><rect width="${w}" height="${h}" fill="#fff"/>`;
+/* langs en polylinje */
+function pathLen(pts){ const L=[0]; for(let i=1;i<pts.length;i++) L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1])); return L; }
+function pointAt(pts,L,d){ d = clamp(d,0,L[L.length-1]); let i=1; while(i<L.length-1 && L[i]<d) i++; const f=(d-L[i-1])/((L[i]-L[i-1])||1); return [pts[i-1][0]+f*(pts[i][0]-pts[i-1][0]), pts[i-1][1]+f*(pts[i][1]-pts[i-1][1])]; }
+
+/* Paletter: skjerm og utskrift */
+const PS = {print:false, ink:"var(--ink)", muted:"var(--muted)", sheet:"var(--panel)", line:"var(--line)", blue:"var(--blue)", air:"var(--air)", airS:"var(--air-soft)", orange:"var(--orange)", oS:"var(--orange-soft)", green:"var(--green)", red:"var(--red)", steel:"#ced4da", steelD:"#495057"};
+const PB = {print:true, ink:"#000", muted:"#333", sheet:"#fff", line:"#999", blue:"#000", air:"#fff", airS:"#fff", orange:"#000", oS:"#fff", green:"#000", red:"#000", steel:"#fff", steelD:"#000"};
+
+/* =====================================================================
+   PNEUMATIKKSYMBOLER (ISO 1219)
+   ===================================================================== */
+const VDEF = {
+  "52": {top:{4:.25,2:.75}, bot:{5:.2,1:.5,3:.8}, n:[["a",1,2],["a",4,5],["t",3]], a:[["a",1,4],["a",2,3],["t",5]], sp:"12", bt:"14"},
+  "32": {top:{2:.5}, bot:{1:.25,3:.75}, n:[["a",2,3],["t",1]], a:[["a",1,2],["t",3]], sp:"", bt:"12"}
+};
+function vport(type,p,X0,Y,s){ const D=VDEF[type]; return D.top[p]!==undefined ? [X0+D.top[p]*s, Y] : [X0+D.bot[p]*s, Y+s]; }
+/* ventilsymbol: hvilerute til venstre (fjær), påvirket rute til høyre (trykknapp). k = 0..1 */
+function valveSym(type, X0, Y, s, k, P, o={}){
+  const D=VDEF[type], gx=X0-k*s, c=P.ink, sw=Math.max(1.8,s*.025); let g="";
+  [["n",gx],["a",gx+s]].forEach(([w,x]) => {
+    const live = !P.print && o.live && ((w==="n" && k<.5) || (w==="a" && k>=.5));
+    g += RC(x,Y,s,s,live?"var(--blue-soft)":P.sheet,c,sw);
+    D[w].forEach(e => {
+      if (e[0]==="a"){ const A=vport(type,e[1],x,Y,s), B=vport(type,e[2],x,Y,s); const dy = A[1]<B[1]? 1 : -1;
+        g += arrow(A[0],A[1]+dy*s*.06,B[0],B[1]-dy*s*.06,c,sw,s*.13); }
+      else { const A=vport(type,e[1],x,Y,s), dir = A[1]===Y ? 1 : -1, L=s*.24;
+        g += ln(A[0],A[1],A[0],A[1]+dir*L,c,sw)+ln(A[0]-s*.09,A[1]+dir*L,A[0]+s*.09,A[1]+dir*L,c,sw); }
+    });
+  });
+  const my = Y+s/2;
+  let d=`M${fx(gx)} ${fx(my)}`; for (let i=1;i<=7;i++) d += ` L${fx(gx-i*s*.055)} ${fx(my+(i%2?-1:1)*s*.15)}`; d += ` L${fx(gx-s*.44)} ${fx(my)}`;
+  g += `<path d="${d}" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linejoin="round"/>`;
+  const bx = gx+2*s;
+  g += ln(bx,my,bx+s*.26,my,c,sw)+`<path d="M${fx(bx+s*.26)} ${fx(my-s*.17)} h${fx(s*.09)} v${fx(s*.34)} h${fx(-s*.09)}" fill="none" stroke="${c}" stroke-width="${sw}"/>`+ln(bx+s*.26,my-s*.17,bx+s*.26,my+s*.17,c,sw);
+  if (o.labels!==false){
+    const fs = Math.max(11, s*.15);
+    Object.keys(D.top).forEach(p => { const [px,py]=vport(type,+p,X0,Y,s); g += TX(px+4,py-6,p,{size:fs,weight:700,fill:P.muted}); });
+    Object.keys(D.bot).forEach(p => { const [px,py]=vport(type,+p,X0,Y,s); g += TX(px+11,py+fs+2,p,{size:fs,weight:700,fill:P.muted}); });
+    if (D.sp) g += TX(gx-s*.22,Y-6,D.sp,{size:fs*.9,anchor:"middle",fill:P.muted});
+    g += TX(bx+s*.3,Y-6,D.bt,{size:fs*.9,anchor:"middle",fill:P.muted});
+  }
+  return g;
+}
+/* sylindersymbol. kind "D" dobbelt, "E" enkelt (fjær). pos 0..1 */
+function cylSym(kind, x, y, w, h, pos, P, o={}){
+  const c=P.ink, px = x+12+pos*(w-44), sw=2.4; let g="";
+  if (o.fillL) g += RC(x,y,px-x,h,o.fillL,"none",0);
+  if (o.fillR) g += RC(px+6,y,x+w-px-6,h,o.fillR,"none",0);
+  if (kind==="E"){ let d=`M${fx(px+6)} ${fx(y+h/2)}`; const n=8, L=(x+w-2)-(px+6); for (let i=1;i<n;i++) d += ` L${fx(px+6+i*L/n)} ${fx(y+h/2+(i%2?-1:1)*h*.32)}`; d += ` L${fx(x+w-2)} ${fx(y+h/2)}`; g += `<path d="${d}" fill="none" stroke="${c}" stroke-width="1.8"/>`; }
+  g += RC(x,y,w,h,"none",c,sw);
+  g += RC(px,y+1.5,6,h-3,c,"none",0);
+  g += RC(px+6,y+h/2-3.5,w-10,7,P.print?"#fff":c,c,1.2);
+  return g;
+}
+const cylRodEnd = (x,w,pos) => x+12+pos*(w-44)+6+(w-10);
+function exhaustSym(x,y,P,s=1){ return ln(x,y,x,y+10*s,P.ink,2)+`<path d="M${fx(x)} ${fx(y+24*s)} L${fx(x-9*s)} ${fx(y+10*s)} L${fx(x+9*s)} ${fx(y+10*s)} Z" fill="${P.sheet}" stroke="${P.ink}" stroke-width="2"/>`; }
+function sourceSym(cx,cy,P,r=15){ return CI(cx,cy,r,P.sheet,P.ink,2.2)+`<path d="M${fx(cx+r*.55)} ${fx(cy)} L${fx(cx-r*.35)} ${fx(cy-r*.5)} L${fx(cx-r*.35)} ${fx(cy+r*.5)} Z" fill="${P.sheet}" stroke="${P.ink}" stroke-width="2"/>`; }
+function gaugeSym(cx,cy,P,r=14,p=null,max=10){ const a = p===null ? -Math.PI/4 : Math.PI*.75 + clamp(p/max,0,1)*Math.PI*1.5;
+  return CI(cx,cy,r,P.sheet,P.ink,2)+arrow(cx-r*.6*Math.cos(a),cy-r*.6*Math.sin(a),cx+r*.75*Math.cos(a),cy+r*.75*Math.sin(a),p===null?P.ink:(P.print?"#000":"var(--orange)"),1.8,6); }
+/* vedlikeholdsenhet (filter, regulator m/manometer, smører) – flyt fra venstre til høyre, inn i (x, cy) */
+function frlSym(x,cy,P,o={}){
+  const c=P.ink; let g="";
+  g += RC(x,cy-42,150,84,"none",c,1.5,6,` stroke-dasharray="7 5"`);
+  g += ln(x-2,cy,x+150,cy,c,2.2);
+  const rh=(cx)=>`<path d="M${cx-18} ${cy} L${cx} ${cy-20} L${cx+18} ${cy} L${cx} ${cy+20} Z" fill="${P.sheet}" stroke="${c}" stroke-width="2.2"/>`;
+  g += rh(x+30)+ln(x+30,cy-16,x+30,cy+16,c,1.6,"4 3")+ln(x+30,cy+20,x+30,cy+30,c,2)+ln(x+24,cy+30,x+36,cy+30,c,2);
+  g += RC(x+57,cy-17,34,34,P.sheet,c,2.2)+arrow(x+60,cy+14,x+88,cy-14,c,1.8,7);
+  g += ln(x+74,cy-17,x+74,cy-26,c,2);
+  g += gaugeSym(x+74,cy-38,P,11,o.p===undefined?null:o.p,10).replace(/<circle/,'<circle');
+  g += rh(x+120)+ln(x+120,cy-20,x+120,cy+20,c,2);
+  return g;
+}
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) nav.scrollTo({left: act.offsetLeft - nav.clientWidth/2 + act.offsetWidth/2, behavior:"smooth"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName)) return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  slides[clamp(currentIndex()+dir,0,slides.length-1)].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+function chipGroup(el, items, cur, cb){
+  el.innerHTML = items.map(i=>`<button class="chip" data-v="${i[0]}" aria-pressed="${i[0]===cur}">${i[1]}</button>`).join("");
+  el.onclick = e => { const b=e.target.closest("[data-v]"); if(!b) return; el.querySelectorAll("[data-v]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); cb(b.dataset.v); };
+}
+function holdButton(btn, set){
+  const on = e => { e.preventDefault(); set(true); btn.classList.add("down"); };
+  const off = () => { set(false); btn.classList.remove("down"); };
+  btn.addEventListener("pointerdown", on); btn.addEventListener("pointerup", off); btn.addEventListener("pointerleave", off); btn.addEventListener("pointercancel", off);
+  btn.addEventListener("keydown", e => { if (e.key===" "||e.key==="Enter"){ e.preventDefault(); on(e); } });
+  btn.addEventListener("keyup", e => { if (e.key===" "||e.key==="Enter") off(); });
+}
+
+/* =====================================================================
+   DEL 1 – luft er en fjær
+   ===================================================================== */
+(function(){
+  const svg=$("p1Svg"), X0=70, X1=690, Y0=70, Y1=290;
+  let sv=0, oil=false, v=1;
+  const r=rng(11), parts=[];
+  for (let i=0;i<44;i++){ const a=r()*Math.PI*2, sp=150+r()*130; parts.push({x:X0+20+r()*580, y:Y0+15+r()*190, vx:Math.cos(a)*sp, vy:Math.sin(a)*sp, hit:0}); }
+  chipGroup($("p1M"), [["luft","💨 Luft"],["olje","🛢 Olje"]], "luft", m => { oil = m==="olje"; upd(); });
+  $("p1V").oninput = e => { sv = +e.target.value; upd(); };
+  function upd(){
+    v = oil ? 1 - sv/100*0.005 : 1 - sv/100*0.875;
+    const pAbs = oil ? 1 + 15000*(1-v) : 1/v, over = pAbs-1;
+    $("p1Vol").textContent = nf(v*100, oil?1:0) + " %";
+    $("p1Abs").textContent = nf(pAbs,1) + " bar";
+    $("p1Over").textContent = nf(over,1) + " bar";
+    $("p1Fcm").textContent = nf(over*10,0) + " N";
+    const m=$("p1Msg");
+    if (oil){ m.className = sv>0?"status warn":"status info"; m.textContent = sv>0 ? `Olje: volumet krymper bare ${nf((1-v)*100,1)} % – men trykket er allerede ca. ${nf(over,0)} bar! Olje er nesten «stiv». Det er derfor hydraulikk er så sterk og presis.` : "Olje: skyv stempelet og se hva som skjer."; }
+    else if (sv<3){ m.className="status info"; m.textContent="Manometeret viser 0. Men lufta presser likevel med ca. 1 bar – det er lufttrykket rundt oss (absolutt trykk)."; }
+    else if (Math.abs(v-.5)<.03){ m.className="status ok"; m.textContent="Halvt volum = dobbelt absolutt trykk: 2 bar absolutt = 1 bar på manometeret."; }
+    else if (Math.abs(v-1/7)<.012){ m.className="status ok"; m.textContent="1/7 av volumet = 7 bar absolutt = 6 bar på manometeret. Det er vanlig trykk i verkstedets trykkluftnett."; }
+    else { m.className="status info"; m.textContent = `Mindre plass → flere treff på veggene → høyere trykk. Absolutt trykk = 1 / volum = ${nf(pAbs,1)} bar.`; }
+  }
+  function gauge(cx,cy,R,p){
+    let s = CI(cx,cy,R+8,"var(--steel-soft)","var(--steel-dark)",3)+CI(cx,cy,R,"var(--panel)","var(--line)",1.5);
+    for (let i=0;i<=10;i++){ const a=Math.PI*.75+i/10*Math.PI*1.5, c=Math.cos(a), sn=Math.sin(a);
+      s += ln(cx+c*(R-4),cy+sn*(R-4),cx+c*(R-(i%2?10:15)),cy+sn*(R-(i%2?10:15)),"var(--ink)",i%2?1.5:2.5);
+      if (i%2===0) s += TX(cx+c*(R-28),cy+sn*(R-28)+5,i,{size:13,weight:700,anchor:"middle"}); }
+    s += `<path d="M${fx(cx+Math.cos(Math.PI*2.05)*(R-6))} ${fx(cy+Math.sin(Math.PI*2.05)*(R-6))} A${R-6} ${R-6} 0 0 1 ${fx(cx+Math.cos(Math.PI*2.25)*(R-6))} ${fx(cy+Math.sin(Math.PI*2.25)*(R-6))}" stroke="var(--red)" stroke-width="5" fill="none"/>`;
+    const a = Math.PI*.75 + clamp(p/10,0,1.03)*Math.PI*1.5;
+    s += ln(cx,cy,cx+Math.cos(a)*(R-14),cy+Math.sin(a)*(R-14),"var(--orange)",4)+CI(cx,cy,7,"var(--ink)");
+    s += TX(cx,cy+R*.45,"bar",{size:13,anchor:"middle",fill:"var(--muted)"})+TX(cx,cy+R+30,"manometer",{size:14,weight:700,anchor:"middle",fill:"var(--muted)"});
+    return s;
+  }
+  function draw(dt){
+    const px = X0 + v*(X1-X0);
+    let s = "";
+    s += `<defs><linearGradient id="p1m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dee2e6"/><stop offset=".45" stop-color="#f8f9fa"/><stop offset="1" stop-color="#868e96"/></linearGradient></defs>`;
+    s += RC(X0-14,Y0-14,X1-X0+60,Y1-Y0+28,"url(#p1m)","var(--steel-dark)",2,10);
+    s += RC(X0,Y0,X1-X0+30,Y1-Y0,"var(--panel)","none",0,4);
+    const dens = oil ? 1 : clamp(.08+.9*(1/v-1)/7,0,1);
+    s += RC(X0,Y0,px-X0,Y1-Y0,oil?"rgba(250,176,5,.35)":`rgba(116,192,252,${fx(dens*.55)})`,"none",0,4);
+    if (oil){
+      for (let row=0; row<10; row++) for (let col=0; col<27; col++){ const x = X0+11+col*22.6 + 1.5*Math.sin(T*9+row*3+col), y=Y0+11+row*22 + 1.5*Math.cos(T*8+col*2+row); if (x < px-8) s += CI(x,y,10.5,"#f59f00","#e67700",1); }
+    } else {
+      parts.forEach(q => {
+        q.x += q.vx*dt; q.y += q.vy*dt;
+        if (q.x < X0+7){ q.x = X0+7; q.vx = Math.abs(q.vx); q.hit=.25; }
+        if (q.x > px-7){ q.x = px-7; q.vx = -Math.abs(q.vx); q.hit=.25; }
+        if (q.y < Y0+7){ q.y = Y0+7; q.vy = Math.abs(q.vy); q.hit=.25; }
+        if (q.y > Y1-7){ q.y = Y1-7; q.vy = -Math.abs(q.vy); q.hit=.25; }
+        q.hit = Math.max(0, q.hit-dt);
+        s += CI(q.x,q.y,7,q.hit>0?"var(--orange)":"var(--blue)","#fff",1.5);
+      });
+    }
+    // stempel og stang
+    s += RC(px,Y0-2,24,Y1-Y0+4,"url(#p1m)","var(--steel-dark)",2,3)+RC(px+5,Y0-2,4,Y1-Y0+4,"#495057","none",0)+RC(px+15,Y0-2,4,Y1-Y0+4,"#495057","none",0);
+    s += RC(px+24,(Y0+Y1)/2-12,90,24,"url(#p1m)","var(--steel-dark)",2,4)+RC(px+114,(Y0+Y1)/2-45,26,90,"var(--orange)","var(--ink)",2,8);
+    if (sv>0 && sv<100) s += arrow(px+190,(Y0+Y1)/2-70,px+150,(Y0+Y1)/2-70,"var(--orange)",5,18);
+    s += TX(X0+8,Y0-24,oil?"Olje":"Luft",{size:20,weight:800,fill:oil?"#e67700":"var(--blue)"})+TX(X0+70,Y0-24,oil?"– tett i tett, kan nesten ikke trykkes sammen":"– molekyler med god plass mellom seg",{size:15,fill:"var(--muted)"});
+    const pAbs = oil ? 1 + 15000*(1-v) : 1/v;
+    s += gauge(915,180,72,pAbs-1);
+    svg.innerHTML = s;
+  }
+  addAnim(svg, dt => draw(dt));
+  upd(); draw(0);
+})();
+
+/* =====================================================================
+   DEL 2 – luftforsyningen
+   ===================================================================== */
+const FORS = [
+  {n:1, x:60, y:270, h:"Inntaksfilter", t:"Holder støv og skitt ute før lufta kommer inn i kompressoren."},
+  {n:2, x:170, y:405, h:"Kompressor", t:"En elektromotor driver et stempel som trykker sammen lufta. Lufta blir varm – ofte over 100 °C."},
+  {n:3, x:305, y:148, h:"Etterkjøler", t:"Kjøler den varme lufta. Når lufta blir kald, blir vanndampen til vanndråper (kondens)."},
+  {n:4, x:458, y:395, h:"Trykktank", t:"Lager trykkluft og jevner ut trykket. Trykkbryteren starter kompressoren ved 6,5 bar og stopper den ved 8 bar. Sikkerhetsventilen slipper ut luft hvis trykket blir for høyt. Vannet i bunnen må dreneres."},
+  {n:5, x:500, y:300, h:"Tørker", t:"Kjøler lufta ned mot frysepunktet så nesten alt vannet felles ut. Etter tørkeren er lufta tørr."},
+  {n:6, x:850, y:85, h:"Rørnett med svanehals", t:"Røret har fall mot et dreneringspunkt. Uttaket tas fra toppen av røret (svanehals), så vann som renner i bunnen ikke følger med."},
+  {n:7, x:765, y:212, h:"Vedlikeholdsenhet", t:"Filter (tar vann og partikler), regulator med manometer (stiller trykket, f.eks. 6 bar) og ev. smører. Står foran hver maskin."},
+  {n:8, x:955, y:235, h:"Ventil", t:"Styrer hvor lufta skal gå – til sylinderen eller ut i lufta."},
+  {n:9, x:870, y:395, h:"Sylinder", t:"Gjør arbeidet: skyver, løfter, klemmer. Her blir trykket til bevegelse og kraft."}
+];
+const PA = [[8,320],[85,320],[110,320],[110,245],[200,245],[225,240],[262,240],[262,190],[340,190],[362,200],[395,260],[430,215]];
+const PBp = [[430,215],[462,215],[540,215],[560,215],[560,110],[700,113],[700,80],[730,80],[730,265],[905,265],[925,265],[955,268],[955,310],[918,310],[918,348]];
+const LA = pathLen(PA), LB = pathLen(PBp);
+const dryEndB = LB[3];
+function forsyningSVG(P, st={}){
+  const pr=P.print, t=st.t||0, run=st.run!==false, ang=st.ang||0;
+  const pipe = pr?"#000":"#868e96", stD = P.steelD, ink=P.ink;
+  let s = "";
+  if (!pr) s += `<defs><linearGradient id="p2m" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#adb5bd"/><stop offset=".5" stop-color="#f1f3f5"/><stop offset="1" stop-color="#868e96"/></linearGradient></defs>`;
+  const metal = pr ? "#fff" : "url(#p2m)";
+  s += ln(0,452,1100,452,ink,2);
+  // rør
+  const tube = pts => PL(pts,pipe,pr?3:10)+(pr?"":PL(pts,"#e9ecef",4));
+  s += tube(PA.slice(0,5))+tube([[225,240],[262,240],[262,190],[355,190],[360,200]]);
+  s += tube([[430,215],[462,215]])+tube([[540,215],[560,215],[560,110],[1000,124],[1000,195]]);
+  s += tube([[700,113],[700,80],[730,80],[730,265],[748,265]])+tube([[902,265],[925,265]])+tube([[955,285],[955,310],[918,310],[918,342]]);
+  // fall-markering
+  s += TX(800,105,"fall →",{size:13,fill:P.muted});
+  // 1 inntaksfilter
+  s += RC(40,298,44,44,pr?"#fff":"#dee2e6",stD,2,5); for (let i=0;i<5;i++) s += ln(46+i*8,302,46+i*8,338,stD,1.5);
+  // 2 kompressor: motor, reimskive, sylinder
+  const fw=[178,372], pin=[fw[0]+15*Math.cos(ang), fw[1]+15*Math.sin(ang)], pistY = 270 + 15*Math.sin(ang) ;
+  s += RC(92,345,62,52,pr?"#fff":"#4c6ef5",pr?"#000":"#364fc7",2,8); for (let x=100;x<150;x+=8) s += ln(x,349,x,393,pr?"#000":"#364fc7",1.2);
+  s += TX(123,376,"M",{size:18,weight:800,anchor:"middle",fill:pr?"#000":"#fff"});
+  s += ln(154,362,fw[0],fw[1]-24,stD,3)+ln(154,384,fw[0],fw[1]+24,stD,3);
+  s += CI(fw[0],fw[1],25,pr?"#fff":"#ced4da",stD,2.5); for (let k=0;k<4;k++){ const a=ang+k*Math.PI/2; s += ln(fw[0],fw[1],fw[0]+20*Math.cos(a),fw[1]+20*Math.sin(a),stD,3); }
+  s += RC(195,228,58,110,metal,stD,2,4); for (let y=252;y<330;y+=9) s += ln(190,y,258,y,stD,1.5);
+  s += RC(203,pistY,42,20,pr?"#fff":"#868e96",stD,2,2);
+  s += ln(224,pistY+20,pin[0],pin[1],stD,4)+CI(pin[0],pin[1],4,stD);
+  if (!pr && run) for (let i=0;i<3;i++){ const ph=(t*30+i*10)%30; let d=`M${236+i*10} ${222-ph}`; for (let k=1;k<=3;k++) d+=` q${k%2?5:-5} -5 0 -10`; s += `<path d="${d}" fill="none" stroke="#e03131" stroke-width="2" opacity="${fx(1-ph/30)}"/>`; }
+  // 3 etterkjøler
+  for (let x=272;x<=340;x+=7) s += ln(x,175,x,205,pr?"#000":"#495057",2);
+  // 4 tank
+  s += RC(355,160,80,250,metal,stD,2.5,38);
+  const wl = st.water||0; if (!pr) s += `<clipPath id="p2tc"><rect x="355" y="160" width="80" height="250" rx="38"/></clipPath><rect x="355" y="${fx(405-wl*30)}" width="80" height="${fx(wl*30+6)}" fill="rgba(25,113,194,.55)" clip-path="url(#p2tc)"/>`;
+  s += ln(395,160,395,146,stD,3)+gaugeSym(395,130,P,15,st.p===undefined?null:st.p,10);
+  s += RC(412,148,16,14,pr?"#fff":"#fab005",stD,1.5,2)+TX(436,152,"SV",{size:11,fill:P.muted,weight:700});
+  s += RC(352,142,22,18,pr?"#fff":"#adb5bd",stD,1.5,3)+TX(346,140,"TB",{size:11,fill:P.muted,weight:700,anchor:"end"});
+  s += `<path d="M352 151 C 300 150, 160 300, 130 345" fill="none" stroke="${pr?"#000":"#868e96"}" stroke-width="1.5" stroke-dasharray="5 4"/>`;
+  s += ln(395,410,395,424,stD,4)+RC(386,422,18,10,pr?"#fff":"#e03131",stD,1.5,2);
+  // 5 tørker
+  s += RC(462,195,78,80,pr?"#fff":"#e7f5ff",stD,2,8)+TX(501,248,"❄",{size:30,anchor:"middle",fill:pr?"#000":"#1c7ed6"});
+  s += ln(501,275,501,288,stD,3);
+  // 6 drenering i enden av rørnettet
+  s += RC(992,195,16,10,pr?"#fff":"#e03131",stD,1.5,2);
+  // 7 vedlikeholdsenhet
+  s += RC(748,240,154,50,pr?"#fff":"#dee2e6",stD,2,6);
+  s += `<path d="M760 290 h34 v40 q-17 18 -34 0 z" fill="${pr?"#fff":"rgba(208,235,255,.9)"}" stroke="${stD}" stroke-width="2"/>`;
+  if (!pr) s += `<path d="M762 318 h30 v12 q-15 15 -30 0 z" fill="rgba(25,113,194,.6)"/>`;
+  s += RC(806,226,38,14,pr?"#fff":"#495057",stD,1.5,4)+gaugeSym(825,207,P,13,st.p===undefined?null:6,10);
+  s += `<path d="M856 290 h34 v34 q-17 16 -34 0 z" fill="${pr?"#fff":"rgba(255,236,153,.9)"}" stroke="${stD}" stroke-width="2"/>`;
+  if (!pr) s += TX(777,282,"F",{size:14,weight:800,anchor:"middle",fill:"#495057"})+TX(825,282,"R",{size:14,weight:800,anchor:"middle",fill:"#495057"})+TX(873,282,"S",{size:14,weight:800,anchor:"middle",fill:"#495057"});
+  // 8 ventil
+  s += RC(925,250,58,35,pr?"#fff":"#74c0fc",stD,2,5)+RC(983,259,10,17,pr?"#fff":"#2f9e44",stD,1.5,2);
+  // 9 sylinder
+  const cx0=900, cpos = st.cyl||0, pX = cx0+12+cpos*90;
+  s += RC(cx0,348,160,34,metal,stD,2,6)+RC(pX,350,12,30,pr?"#fff":"#495057",stD,1,2)+RC(pX+12,360,150,10,pr?"#fff":"#dee2e6",stD,1.5,2);
+  // partikler
+  if (!pr){
+    const NA=16, NB=26;
+    for (let i=0;i<NA;i++){ const d = ((st.offA||0) + i*LA[LA.length-1]/NA) % LA[LA.length-1]; const [x,y]=pointAt(PA,LA,d);
+      const wet = d > LA[6] && i%3===0; s += wet ? drop(x,y,7,"var(--water)") : CI(x,y,4.5,"#fff","var(--blue)",2); }
+    for (let i=0;i<NB;i++){ const d = ((st.offB||0) + i*LB[LB.length-1]/NB) % LB[LB.length-1]; const [x,y]=pointAt(PBp,LB,d);
+      const wet = d < dryEndB && i%3===0; s += wet ? drop(x,y,7,"var(--water)") : CI(x,y,4.5,"#fff","var(--blue)",2); }
+    (st.drips||[]).forEach(dd => s += drop(dd[0],dd[1],5,"var(--water)"));
+  }
+  // etiketter
+  const L = [[62,360,"inntak"],[123,420,"motor"],[160,228,"kompressor"],[305,228,"etterkjøler"],[395,100,"trykktank"],[501,190,"tørker"],[640,98,"rørnett"],[1000,222,"drenering"],[825,362,"vedlikeholdsenhet"],[955,240,""],[980,400,"sylinder"]];
+  if (!st.nums) L.forEach(l => { if (l[2]) s += TX(l[0],l[1],l[2],{size:13,weight:700,anchor:"middle",fill:P.muted}); });
+  FORS.forEach(f => s += `<g class="${pr?"":"hot"}" data-n="${f.n}">`+badge(f.x,f.y,f.n,P,st.sel===f.n)+`</g>`);
+  return s;
+}
+(function(){
+  const svg=$("p2Svg"); const st = {p:6.6, run:true, ang:0, offA:0, offB:0, water:.2, drips:[], cyl:0, sel:0, t:0};
+  let cphase = 0;
+  svg.addEventListener("pointerdown", e => { const g=e.target.closest("[data-n]"); if(!g) return; st.sel=+g.dataset.n; const f=FORS[st.sel-1];
+    $("p2Msg").className="status ok"; $("p2Msg").innerHTML = `<b>${f.n}. ${f.h}:</b> ${f.t}`; });
+  addAnim(svg, dt => {
+    st.t = T;
+    if (st.run){ st.p += .45*dt; if (st.p>=8){ st.p=8; st.run=false; } st.ang += dt*11; st.offA += dt*120; st.water = Math.min(1, st.water + dt*.05); }
+    else { st.p -= .16*dt; if (st.p<=6.5){ st.run=true; } }
+    st.offB += dt*85;
+    if (st.water>.85 && !RM){ st.water -= .4; for (let i=0;i<4;i++) st.drips.push([395+(i-1.5)*3,432-i*14]); }
+    st.drips.forEach(d => d[1] += dt*90); st.drips = st.drips.filter(d => d[1]<450);
+    if (Math.random()<dt*.6) st.drips.push([501,292]);
+    if (Math.random()<dt*.3) st.drips.push([1000,208]);
+    cphase = (cphase + dt/4) % 1; const tgt = cphase<.5 ? 1 : 0; st.cyl += clamp(tgt-st.cyl,-dt*1.2,dt*1.2);
+    svg.innerHTML = forsyningSVG(PS, st);
+    $("p2P").textContent = nf(st.p,1)+" bar"; $("p2Run").textContent = st.run ? "går ▶" : "står ❚❚";
+    $("p2Run").style.color = st.run ? "var(--green)" : "var(--muted)";
+  });
+  svg.innerHTML = forsyningSVG(PS, st);
+})();
+
+/* =====================================================================
+   DEL 3 – F = p · A
+   ===================================================================== */
+(function(){
+  const DS=[12,16,20,25,32,40,50,63,80,100], RODS={12:6,16:6,20:8,25:10,32:12,40:16,50:20,63:20,80:25,100:25};
+  let p=6, di=6, dir="ut";
+  chipGroup($("p3Dir"), [["ut","→ Ut (plussiden)"],["inn","← Inn (minussiden)"]], "ut", v => { dir=v; draw(); });
+  $("p3P").oninput = e => { p=+e.target.value; draw(); };
+  $("p3D").oninput = e => { di=+e.target.value; draw(); };
+  function draw(){
+    const D=DS[di], d=RODS[D], A1=Math.PI*D*D/4, A2=A1-Math.PI*d*d/4, A = dir==="ut"?A1:A2, F=p*.1*A;
+    const cy=200, h=46+D*1.55, rh=Math.max(8,d*1.7), bx0=90, bx1=560, px=300, pw=22;
+    let s = `<defs><linearGradient id="p3m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#adb5bd"/><stop offset=".45" stop-color="#f8f9fa"/><stop offset="1" stop-color="#868e96"/></linearGradient></defs>`;
+    s += RC(bx0-12,cy-h/2-12,bx1-bx0+24,h+24,"url(#p3m)","var(--steel-dark)",2,8);
+    s += RC(bx0,cy-h/2,bx1-bx0,h,"var(--panel)","none",0,2);
+    const alpha = fx(.12+.055*p);
+    if (dir==="ut") s += RC(bx0,cy-h/2,px-bx0,h,`rgba(28,111,209,${alpha})`,"none",0);
+    else { s += RC(px+pw,cy-h/2,bx1-px-pw,(h-rh)/2,`rgba(28,111,209,${alpha})`,"none",0)+RC(px+pw,cy+rh/2,bx1-px-pw,(h-rh)/2,`rgba(28,111,209,${alpha})`,"none",0); }
+    // trykkpiler
+    const rows = Math.max(2, Math.floor(h/24)), al = 16+4*p;
+    for (let i=0;i<rows;i++){ const y = cy-h/2 + (i+.5)*h/rows;
+      if (dir==="ut") s += arrow(px-al-6,y,px-3,y,"var(--blue)",2.4,9);
+      else if (Math.abs(y-cy) > rh/2+5) s += arrow(px+pw+al+6,y,px+pw+3,y,"var(--blue)",2.4,9); }
+    // stempel og stang
+    s += RC(px,cy-h/2+1,pw,h-2,"url(#p3m)","var(--steel-dark)",2,3);
+    s += RC(px+pw,cy-rh/2,430,rh,"url(#p3m)","var(--steel-dark)",1.5,2);
+    s += RC(bx1-2,cy-rh/2-6,16,rh+12,"#495057","none",0,2);
+    // porter
+    s += RC(bx0+14,cy+h/2,18,26,"#495057","none",0,2)+RC(bx1-34,cy+h/2,18,26,"#495057","none",0,2);
+    s += TX(bx0+23,cy+h/2+44,dir==="ut"?"luft inn":"ut",{size:13,anchor:"middle",weight:700,fill:dir==="ut"?"var(--blue)":"var(--orange)"})+TX(bx1-25,cy+h/2+44,dir==="inn"?"luft inn":"ut",{size:13,anchor:"middle",weight:700,fill:dir==="inn"?"var(--blue)":"var(--orange)"});
+    // kraftpil
+    const L = 30 + 200*Math.sqrt(F/7854);
+    if (dir==="ut") s += arrow(752,cy,752+L,cy,"var(--orange)",9,26)+TX(752+L/2,cy-24,nf(F,0)+" N",{size:22,weight:800,anchor:"middle",fill:"var(--orange)"});
+    else s += arrow(752,cy-rh/2-30,752-L,cy-rh/2-30,"var(--orange)",9,26)+TX(752-L/2,cy-rh/2-50,nf(F,0)+" N",{size:22,weight:800,anchor:"middle",fill:"var(--orange)"});
+    // areal-innfelt
+    const icx=880, icy=330, R=D*.62+8, rr=R*d/D;
+    s += CI(icx,icy,R,"rgba(28,111,209,.35)","var(--blue)",2.5);
+    if (dir==="inn") s += CI(icx,icy,rr,"var(--panel)","var(--steel-dark)",2)+TX(icx,icy+4,"stang",{size:11,anchor:"middle",fill:"var(--muted)"});
+    s += TX(icx,icy-R-10,"Flata lufta trykker på",{size:13,anchor:"middle",weight:700,fill:"var(--muted)"});
+    s += TX(px+pw/2,cy-h/2-24,"stempel",{size:13,anchor:"middle",fill:"var(--muted)"})+TX(bx0+(px-bx0)/2,cy-h/2-24,dir==="ut"?"plussiden":"",{size:13,anchor:"middle",fill:"var(--blue)",weight:700})+TX(px+pw+(bx1-px-pw)/2,cy-h/2-24,dir==="inn"?"minussiden":"",{size:13,anchor:"middle",fill:"var(--blue)",weight:700});
+    s += TX(bx0,40,`Ø${D}`,{size:24,weight:800})+TX(bx0+70,40,`stang Ø${d}`,{size:16,fill:"var(--muted)"});
+    $("p3Svg").innerHTML = s;
+    $("p3Pv").textContent = nf(p,1)+" bar"; $("p3Dv").textContent = D+" mm";
+    $("p3A").textContent = nf(A,0)+" mm²"; $("p3F").textContent = nf(F,0)+" N"; $("p3Kg").textContent = nf(F/9.81,0)+" kg";
+    $("p3Calc").innerHTML = dir==="ut"
+      ? `A = π · ${D}² / 4 = <b>${nf(A,0)} mm²</b><br>F = ${nf(p,1)} · 0,1 · ${nf(A,0)} = <b style="color:var(--orange)">${nf(F,0)} N</b>`
+      : `A = ${nf(A1,0)} − ${nf(A1-A2,0)} (stang) = <b>${nf(A,0)} mm²</b><br>F = ${nf(p,1)} · 0,1 · ${nf(A,0)} = <b style="color:var(--orange)">${nf(F,0)} N</b>`;
+  }
+  draw();
+})();
+
+/* =====================================================================
+   DEL 4 – enkeltvirkende og dobbeltvirkende
+   ===================================================================== */
+(function(){
+  const svg=$("p4Svg"); let auto=true, ph=0, pos=[0,0], tgt=[0,0], mv=[0,0];
+  $("p4Go").onclick = () => { auto=!auto; $("p4Go").textContent = auto ? "❚❚ Pause" : "▶ Automatisk"; };
+  $("p4Ut").onclick = () => { auto=false; $("p4Go").textContent="▶ Automatisk"; tgt=[1,1]; };
+  $("p4Inn").onclick = () => { auto=false; $("p4Go").textContent="▶ Automatisk"; tgt=[0,0]; };
+  function panel(ox, kind, ps, out, moving){
+    let s = "";
+    const bx0=ox+40, bx1=ox+310, y0=78, y1=152, px=ox+56+ps*150, rodEnd=px+18+260;
+    s += TX(ox+175,34,kind==="E"?"Enkeltvirkende":"Dobbeltvirkende",{size:22,weight:800,anchor:"middle"});
+    s += RC(bx0-10,y0-10,bx1-bx0+20,y1-y0+20,"url(#p4m)","var(--steel-dark)",2,8);
+    s += RC(bx0,y0,bx1-bx0,y1-y0,"var(--panel)","none",0,2);
+    const pressL = out, pressR = kind==="D" && !out;
+    s += RC(bx0,y0,px-bx0,y1-y0,pressL?"rgba(28,111,209,.4)":(moving&&!out?"rgba(232,89,12,.2)":"transparent"),"none",0);
+    s += RC(px+18,y0,bx1-px-18,y1-y0,pressR?"rgba(28,111,209,.4)":(kind==="D"&&moving&&out?"rgba(232,89,12,.2)":"transparent"),"none",0);
+    if (kind==="E"){ let d=`M${fx(px+18)} ${(y0+y1)/2}`; const n=11, L=bx1-px-20; for (let i=1;i<n;i++) d += ` L${fx(px+18+i*L/n)} ${fx((y0+y1)/2+(i%2?-1:1)*30)}`; d += ` L${bx1} ${(y0+y1)/2}`; s += `<path d="${d}" fill="none" stroke="#868e96" stroke-width="4" stroke-linejoin="round"/>`; }
+    s += RC(px,y0+1,18,y1-y0-2,"url(#p4m)","var(--steel-dark)",2,3)+RC(px+3,y0+1,3,y1-y0-2,"#212529","none",0)+RC(px+12,y0+1,3,y1-y0-2,"#212529","none",0);
+    s += RC(px+18,(y0+y1)/2-9,260,18,"url(#p4m)","var(--steel-dark)",1.5,3);
+    s += RC(bx1-2,(y0+y1)/2-14,12,28,"#495057","none",0,2);
+    // porter
+    const pL=ox+62, pR=ox+288;
+    s += RC(pL-10,y1+10,20,26,"#495057","none",0,2);
+    if (kind==="D") s += RC(pR-10,y1+10,20,26,"#495057","none",0,2);
+    else { s += RC(pR-8,y0-24,16,14,"#adb5bd","#495057",1.5,2)+TX(pR+14,y0-12,"pustehull",{size:12,fill:"var(--muted)"}); }
+    const flowA = (x,yA,yB,c) => { let g=""; for (let i=0;i<3;i++){ const f=((T*1.5+i/3)%1); g += CI(x,yA+(yB-yA)*f,4,c,"#fff",1); } return g; };
+    if (moving){
+      if (out){ s += flowA(pL,y1+40,y1-6,"var(--blue)"); if (kind==="D") s += flowA(pR,y1-6,y1+40,"var(--orange)"); else s += flowA(pR,y0+4,y0-30,"var(--orange)"); }
+      else { s += flowA(pL,y1-6,y1+40,"var(--orange)"); if (kind==="D") s += flowA(pR,y1+40,y1-6,"var(--blue)"); else s += flowA(pR,y0-30,y0+4,"var(--blue)"); }
+    }
+    // symbol
+    const sx=ox+80, sy=262, sw=230, sh=48;
+    s += cylSym(kind,sx,sy,sw,sh,ps,PS,{fillL:pressL?"rgba(28,111,209,.3)":null, fillR:pressR?"rgba(28,111,209,.3)":null});
+    s += ln(sx+14,sy+sh,sx+14,sy+sh+30,pressL?"var(--blue)":"var(--ink)",pressL?4:2.4);
+    if (kind==="D") s += ln(sx+sw-14,sy+sh,sx+sw-14,sy+sh+30,pressR?"var(--blue)":"var(--ink)",pressR?4:2.4);
+    s += TX(ox+175,385,kind==="E"?"Symbol: én port + fjær":"Symbol: to porter",{size:14,anchor:"middle",fill:"var(--muted)"});
+    s += TX(ox+30,232,"↓ symbol",{size:13,fill:"var(--muted)"});
+    return s;
+  }
+  addAnim(svg, dt => {
+    if (auto){ ph = (ph + dt/5) % 1; tgt = ph<.5 ? [1,1] : [0,0]; }
+    for (let i=0;i<2;i++){ const sp = i===0 && tgt[i]===0 ? 1.4 : .8; const nd = clamp(tgt[i]-pos[i],-dt*sp,dt*sp); pos[i]+=nd; mv[i]=Math.abs(nd)>1e-4; }
+    let s = `<defs><linearGradient id="p4m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#adb5bd"/><stop offset=".45" stop-color="#f8f9fa"/><stop offset="1" stop-color="#868e96"/></linearGradient></defs>`;
+    s += ln(500,20,500,390,"var(--line)",2);
+    s += panel(0,"E",pos[0],tgt[0]===1,mv[0])+panel(500,"D",pos[1],tgt[1]===1,mv[1]);
+    svg.innerHTML = s;
+  });
+})();
+
+/* =====================================================================
+   DEL 5 – ventiler: sleide i snitt + symbol
+   ===================================================================== */
+(function(){
+  const svg=$("p5Svg"); let type="52", k=0, press=false;
+  const CUT = {
+    "52":{ports:[[5,180,"b"],[4,265,"t"],[1,350,"b"],[2,435,"t"],[3,520,"b"]], lands:[307,477], shift:-85, x0:130, x1:570},
+    "32":{ports:[[3,230,"b"],[2,310,"t"],[1,390,"b"]], lands:[350], shift:-80, x0:170, x1:470}
+  };
+  chipGroup($("p5T"), [["52","5/2-ventil"],["32","3/2-ventil"]], "52", v => { type=v; k=0; msg(); });
+  holdButton($("p5Btn"), v => { press=v; msg(); });
+  svg.addEventListener("pointerdown", e => { if (e.target.closest("[data-btn]")){ press=true; $("p5Btn").classList.add("down"); msg(); } });
+  window.addEventListener("pointerup", () => { if (press){ press=false; $("p5Btn").classList.remove("down"); msg(); } });
+  function msg(){
+    const m=$("p5Msg");
+    if (type==="52") m.innerHTML = press ? "<b>Knappen trykket:</b> 1 → 4 (sylinderen går ut) og 2 → 3 (lufta ut). Port 5 er stengt." : "<b>Hvile – fjæra holder:</b> 1 → 2 og 4 → 5. Port 3 er stengt.";
+    else m.innerHTML = press ? "<b>Knappen trykket:</b> 1 → 2. Lufta går til sylinderen. Port 3 er stengt." : "<b>Hvile – fjæra holder:</b> port 1 er stengt (normalt stengt). 2 → 3: sylinderen er avluftet.";
+    m.className = press ? "status warn" : "status info";
+  }
+  const OX = 160;
+  function draw(){
+    const C = CUT[type], off = k*C.shift, lands = C.lands.map(l=>l+off), lw=36;
+    const x0=C.x0+OX, x1=C.x1+OX, yT=70, yB=190, b0=115, b1=145;
+    let s = `<defs><linearGradient id="p5m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ced4da"/><stop offset=".5" stop-color="#f8f9fa"/><stop offset="1" stop-color="#adb5bd"/></linearGradient></defs>`;
+    // segmenter i boringen
+    const edges=[x0]; lands.forEach(l=>{ edges.push(l+OX-lw/2, l+OX+lw/2); }); edges.push(x1);
+    const segs=[]; for (let i=0;i<edges.length;i+=2) segs.push([edges[i],edges[i+1]]);
+    const cls = seg => { const ps = C.ports.filter(p=>p[1]+OX>seg[0] && p[1]+OX<seg[1]).map(p=>p[0]); if (ps.includes(1)) return ["p",ps]; if (ps.some(q=>q===3||q===5) && ps.some(q=>q===2||q===4)) return ["ex",ps]; return ["0",ps]; };
+    const col = c => c==="p" ? "rgba(28,111,209,.55)" : c==="ex" ? "rgba(232,89,12,.4)" : "rgba(134,142,150,.15)";
+    s += RC(x0-40,yT,x1-x0+80,yB-yT,"url(#p5m)","var(--steel-dark)",2.5,10);
+    const portCls = {};
+    segs.forEach(sg => { const [c,ps]=cls(sg); ps.forEach(q=>portCls[q]=c); s += RC(sg[0],b0,sg[1]-sg[0],b1-b0,col(c),"none",0); });
+    C.ports.forEach(([n,x,tb]) => { const X=x+OX, c=portCls[n]||"0";
+      if (tb==="t"){ s += RC(X-14,yT-38,28,b0-yT+38,col(c),"var(--steel-dark)",1.5)+TX(X,yT-46,n,{size:22,weight:800,anchor:"middle",fill:n===1?"var(--blue)":(n===3||n===5)?"var(--orange)":"var(--ink)"}); }
+      else { s += RC(X-14,b1,28,yB-b1+38,col(c),"var(--steel-dark)",1.5)+TX(X,yB+62,n,{size:22,weight:800,anchor:"middle",fill:n===1?"var(--blue)":(n===3||n===5)?"var(--orange)":"var(--ink)"}); }
+      // strømningspiler
+      if (c!=="0"){ const up = (tb==="t") === (c==="p"); const y0 = tb==="t" ? yT-30 : yB+30, y1 = tb==="t" ? b0-4 : b1+4;
+        const f = (T*1.2)%1, yy = up ? y1+(y0-y1)*f : y0+(y1-y0)*f;
+        if (n!==1 || c==="p") s += CI(X,yy,5,c==="p"?"var(--blue)":"var(--orange)","#fff",1.5); }
+    });
+    s += RC(x0,b0,x1-x0,b1-b0,"none","var(--steel-dark)",1.2);
+    // sleide
+    const sx0 = x0-70+off, sx1 = x1+50+off;
+    s += RC(sx0,124,sx1-sx0,12,"url(#p5m)","var(--steel-dark)",1.5,3);
+    lands.forEach(l => s += RC(l+OX-lw/2,b0+1,lw,b1-b0-2,"url(#p5m)","var(--steel-dark)",2,3)+ln(l+OX-lw/2+6,b0+1,l+OX-lw/2+6,b1-1,"#212529",2)+ln(l+OX+lw/2-6,b0+1,l+OX+lw/2-6,b1-1,"#212529",2));
+    // fjær venstre
+    const wallX = x0-110; s += RC(wallX-10,100,10,60,"#495057","none",0,2);
+    let d=`M${wallX} 130`; const n=10, L=sx0-wallX; for (let i=1;i<n;i++) d += ` L${fx(wallX+i*L/n)} ${130+(i%2?-18:18)}`; d += ` L${fx(sx0)} 130`;
+    s += `<path d="${d}" fill="none" stroke="#868e96" stroke-width="4" stroke-linejoin="round"/>`+TX(wallX+20,90,"fjær",{size:14,fill:"var(--muted)",anchor:"middle"});
+    // knapp høyre
+    s += `<g class="hot" data-btn="1">`+RC(sx1,108,20,44,"#2f9e44","#1b5e20",2,6)+RC(sx1+20,118,30,24,"transparent","none",0)+`</g>`+TX(sx1+10,96,"knapp",{size:14,fill:"var(--muted)",anchor:"middle"});
+    if (k>.5) s += TX(sx1+60,140,"👈",{size:34});
+    // symbol
+    const ss=104, SX0=type==="52"?450:450, SY=318;
+    s += valveSym(type,SX0,SY,ss,k,PS,{live:true});
+    const D=VDEF[type];
+    Object.keys(D.top).forEach(p => { const [x,y]=vport(type,+p,SX0,SY,ss); s += ln(x,y,x,y-22,PS.ink,2.4); });
+    Object.keys(D.bot).forEach(p => { const [x,y]=vport(type,+p,SX0,SY,ss); if (+p===1) s += ln(x,y,x,y+30,"var(--blue)",4); else s += exhaustSym(x,y,PS,1); });
+    s += TX(20,360,type==="52"?"5 porter":"3 porter",{size:20,weight:800,fill:"var(--orange)"})+TX(20,390,"2 stillinger (ruter)",{size:20,weight:800,fill:"var(--orange)"});
+    s += TX(20,420,"= "+(type==="52"?"5/2":"3/2")+"-ventil",{size:20,weight:800});
+    s += TX(SX0-ss*.5-k*ss,SY+ss+40,"hvile",{size:13,anchor:"middle",fill:"var(--muted)"})+TX(SX0+ss*1.5-k*ss,SY+ss+40,"trykket",{size:13,anchor:"middle",fill:"var(--muted)"});
+    svg.innerHTML = s;
+  }
+  addAnim(svg, dt => { const t = press?1:0; k += clamp(t-k,-dt*5,dt*5); if (RM) k=t; draw(); });
+  msg(); draw();
+})();
+
+/* =====================================================================
+   DEL 6 – koblingsskjema (hele kretsen)
+   ===================================================================== */
+const CY = {x:330, y:70, w:280, h:60};
+function circuitSVG(P, st){
+  const pr=P.print, t=st.t||0, mode=st.mode;
+  const type = mode==="A" ? "32" : "52", s=90, X0=455, VY=250;
+  const lineCol = state => (!pr && state==="p") ? "var(--blue)" : (!pr && state==="ex") ? "var(--orange)" : P.ink;
+  const lineW = state => (!pr && state==="p") ? 4.5 : 2.4;
+  const flow = (pts,dir,state) => (!pr && dir) ? PL(pts, state==="ex"?"#fff":"#fff", 2.2, ` stroke-dasharray="5 13" stroke-dashoffset="${fx(-dir*t*70)}" opacity=".9"`) : "";
+  let g = "";
+  const port = p => vport(type,p,X0,VY,s);
+  // linjer
+  const p1 = port(1);
+  const sup = [[145,470],[230,470]], sup2 = [[380,470],[p1[0],470],[p1[0],VY+s]];
+  g += PL(sup,lineCol(st.supply),lineW(st.supply))+PL(sup2,lineCol(st.supply),lineW(st.supply));
+  const boreX = CY.x+14, rodX = CY.x+CY.w-14, cyB = CY.y+CY.h;
+  let bore, rod=null;
+  if (mode==="A"){ const p2=port(2); bore=[[boreX,cyB],[boreX,200],[p2[0],200],[p2[0],VY]]; }
+  else { const p4=port(4), p2=port(2); bore=[[boreX,cyB],[boreX,200],[p4[0],200],[p4[0],VY]]; rod=[[rodX,cyB],[rodX,180],[p2[0],180],[p2[0],VY]]; }
+  g += PL(bore,lineCol(st.bore),lineW(st.bore))+flow(bore,st.boreFlow,st.bore);
+  if (rod) g += PL(rod,lineCol(st.rod),lineW(st.rod))+flow(rod,st.rodFlow,st.rod);
+  if (st.flowSup && !pr) g += flow(sup,1,"p")+flow(sup2,1,"p");
+  // avlufting
+  const exPorts = mode==="A" ? [3] : [5,3];
+  exPorts.forEach(p => { const [x,y]=port(p); const active = st.exActive===p;
+    g += exhaustSym(x,y,P,1);
+    if (active && !pr) for (let i=0;i<3;i++){ const f=(t*1.6+i/3)%1; g += CI(x+(i-1)*6*f,y+28+f*26,3.5*(1-f)+1,"var(--orange)","none",0,` opacity="${fx(1-f)}"`); }
+    if (st.blocked===p && st.showFault) g += CI(x,y+18,16,"none","var(--red)",3);
+  });
+  // ventil
+  g += valveSym(type,X0,VY,s,st.k,P,{live:!pr});
+  // kilde og vedlikeholdsenhet
+  g += sourceSym(130,470,P,15)+frlSym(230,470,P,{p:pr?null:st.pe});
+  // sylinder
+  g += cylSym(mode==="A"?"E":"D",CY.x,CY.y,CY.w,CY.h,st.x,P,{fillL:(!pr&&st.bore==="p")?"rgba(28,111,209,.25)":null, fillR:(!pr&&rod&&st.rod==="p")?"rgba(28,111,209,.25)":null});
+  // manometre
+  g += ln(boreX-18,165,boreX,165,P.ink,2)+gaugeSym(boreX-32,165,P,14,pr?null:st.gB,10);
+  if (!pr) g += TX(boreX-32,138,nf(st.gB,1)+" bar",{size:14,weight:800,anchor:"middle",fill:st.gB>.2?"var(--blue)":"var(--muted)"});
+  if (rod){ g += ln(rodX,155,rodX+18,155,P.ink,2)+gaugeSym(rodX+32,155,P,14,pr?null:st.gR,10);
+    if (!pr) g += TX(rodX+32,128,nf(st.gR,1)+" bar",{size:14,weight:800,anchor:"middle",fill:st.gR>6.6?"var(--red)":st.gR>.2?"var(--blue)":"var(--muted)"}); }
+  // last: bøssing som presses inn (krets B)
+  if (mode==="B"){
+    const bl = st.bushL, bc = pr?"#fff":"#f08c00";
+    g += RC(848,62,110,76,pr?"#fff":"#adb5bd",P.ink,2,4)+RC(848,84,52,32,pr?"#fff":"#495057","none",0);
+    if (pr) g += RC(848,84,52,32,"none",P.ink,1.5);
+    g += RC(735,116,60,10,pr?"#fff":"#ced4da",P.ink,1.5,2);
+    g += RC(bl,85,50,30,bc,P.ink,2,3)+ln(bl+6,85,bl+6,115,P.ink,1)+ln(bl+44,85,bl+44,115,P.ink,1);
+    g += TX(903,158,"arbeidsstykke",{size:13,anchor:"middle",fill:P.muted});
+    if (!st.nums) g += TX(770,60,"bøssing",{size:13,anchor:"middle",fill:P.muted});
+  }
+  // tekster
+  if (!st.nums){
+    g += TX(130,505,"trykkluft-",{size:13,anchor:"middle",fill:P.muted})+TX(130,521,"kilde",{size:13,anchor:"middle",fill:P.muted});
+    g += TX(305,535,"vedlikeholdsenhet",{size:13,anchor:"middle",fill:P.muted});
+    g += TX(CY.x+CY.w/2,CY.y-14,mode==="A"?"enkeltvirkende sylinder":"dobbeltvirkende sylinder (Ø32)",{size:14,anchor:"middle",fill:P.muted});
+    g += TX(X0+s+70,VY+s/2+5,mode==="A"?"3/2-ventil":"5/2-ventil",{size:14,weight:700,fill:P.muted});
+  } else {
+    g += badge(130,435,1,P)+badge(305,400,2,P)+badge(X0-75,VY-12,3,P)+badge(port(5)[0]-30,VY+s+40,4,P)+badge(CY.x+CY.w/2,CY.y-22,5,P)+badge(boreX-70,165,6,P);
+  }
+  return g;
+}
+(function(){
+  const svg=$("p6Svg");
+  const A1 = Math.PI*32*32/4, A2 = A1 - Math.PI*12*12/4, NEED = 400;
+  const st = {mode:"A", k:0, x:0, pe:6, preg:6, fault:null, show:false, bushL:740, pressed:false, reset:0, count:0, t:0, gB:0, gR:0};
+  let press=false;
+  const FAULTS = {lav:"Regulatoren står på 2 bar", bytt:"Slangene på port 2 og 4 er byttet", tett:"Avluftingen på port 3 er tett"};
+  chipGroup($("p6Mode"), [["A","Krets 1: 3/2-ventil + enkeltvirkende"],["B","Krets 2: 5/2-ventil + dobbeltvirkende"]], "A", v => { st.mode=v; st.x=0; st.fault=null; st.show=false; st.bushL=740; st.pressed=false; $("p6Faults").style.display = v==="B"?"flex":"none"; info(); });
+  $("p6Faults").style.display = "none";
+  $("p6Guess").innerHTML = Object.entries(FAULTS).map(([k,v])=>`<button class="chip" data-g="${k}">${v.replace("Regulatoren står på 2 bar","For lavt trykk").replace("Slangene på port 2 og 4 er byttet","Slangene byttet").replace("Avluftingen på port 3 er tett","Tett avlufting")}</button>`).join("");
+  $("p6Guess").onclick = e => { const b=e.target.closest("[data-g]"); if(!b) return;
+    const m=$("p6Msg");
+    if (!st.fault){ m.className="status info"; m.textContent="Det er ingen feil i anlegget nå. Trykk «Lag en feil» først."; return; }
+    if (b.dataset.g===st.fault){ st.show=true; m.className="status ok"; m.innerHTML = `✓ Riktig! ${FAULTS[st.fault]}. ` + ({lav:"Kraften blir bare 2 · 0,1 · 804 = 161 N – for lite til å presse inn bøssinga (400 N).", bytt:"Sylinderen gjør det motsatte av det den skal: plussiden får luft når ventilen er i hvile.", tett:"Lufta på minussiden kommer ikke ut. Den trykkes sammen, og trykket stiger til ca. 7 bar – da står sylinderen."})[st.fault]; }
+    else { m.className="status bad"; m.textContent = "Ikke riktig. Trykk på knappen, se hva sylinderen gjør og les av manometrene."; }
+  };
+  $("p6Rand").onclick = () => { const ks = Object.keys(FAULTS).filter(k=>k!==st.fault); st.fault = ks[Math.floor(Math.random()*ks.length)]; st.show=false; st.x = 0; st.bushL=740; st.pressed=false;
+    $("p6Msg").className="status warn"; $("p6Msg").textContent="Det er laget en feil i anlegget. Tegningen er riktig – feilen er i slangene eller komponentene. Trykk på knappen og se på manometrene."; };
+  $("p6Fix").onclick = () => { st.fault=null; st.show=false; info(); };
+  holdButton($("p6Btn"), v => press=v);
+  svg.addEventListener("pointerdown", e => { const p = svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; const q=p.matrixTransform(svg.getScreenCTM().inverse());
+    if (q.x>560 && q.x<620 && q.y>270 && q.y<320){ press=true; $("p6Btn").classList.add("down"); } });
+  window.addEventListener("pointerup", () => { if (press){ press=false; $("p6Btn").classList.remove("down"); } });
+  $("p6P").oninput = e => { st.preg=+e.target.value; $("p6Pv").textContent = nf(st.preg,1)+" bar"; };
+  function info(){ const m=$("p6Msg"); m.className="status info";
+    m.innerHTML = st.mode==="A" ? "Krets 1: Trykk → 3/2-ventilen kobler <b>1 → 2</b>, sylinderen går ut. Slipp → fjæra i ventilen skyver tilbake, lufta går <b>2 → 3</b> ut, og fjæra i sylinderen tar stanga inn."
+      : "Krets 2: Trykk → <b>1 → 4</b>, plussiden får luft, minussiden tømmes <b>2 → 3</b>. Bøssinga trenger 400 N. Prøv regulatoren på 4 bar!"; }
+  addAnim(svg, dt => {
+    st.t = T;
+    st.k += clamp((press?1:0)-st.k,-dt*6,dt*6); if (RM) st.k = press?1:0;
+    const act = st.k>.5;
+    const pe = st.mode==="B" && st.fault==="lav" ? Math.min(2,st.preg) : st.preg; st.pe = pe;
+    let boreP=false, rodP=false, exPort=null, blocked=null, target=st.x, xmax=1;
+    if (st.mode==="A"){ boreP = act && pe>0; target = act ? (pe>.3?1:st.x) : 0; exPort = !act ? 3 : null; }
+    else {
+      const hb = st.fault==="bytt"?2:4, hr = st.fault==="bytt"?4:2, pP = act?4:2, exVia = act?3:5;
+      boreP = hb===pP && pe>0; rodP = hr===pP && pe>0;
+      exPort = exVia; blocked = st.fault==="tett" ? 3 : null;
+      if (pe>.3) target = boreP ? 1 : 0;
+      const exBlocked = st.fault==="tett" && exVia===3;
+      if (target===1){ const F = pe*.1*A1; if (!st.pressed && F<NEED) xmax = (798-612)/236; if (exBlocked) xmax = Math.min(xmax,.16); }
+    }
+    const old = st.x; const goal = Math.min(target, xmax);
+    st.x += clamp(goal-st.x,-dt*.9,dt*.9);
+    const moving = Math.abs(st.x-old) > 1e-4, dirOut = st.x>old;
+    // bøssing
+    if (st.mode==="B"){ const rodEnd = 612+236*st.x;
+      if (!st.pressed && rodEnd > st.bushL) st.bushL = Math.min(848, rodEnd);
+      if (st.bushL>=847.9 && !st.pressed){ st.pressed=true; }
+      if (st.pressed && st.x<.02){ st.reset += dt; if (st.reset>.7){ st.reset=0; st.pressed=false; st.bushL=740; st.count++; } } }
+    // linjetilstand og manometre
+    st.supply = pe>0 ? "p" : "0";
+    st.bore = boreP ? "p" : (moving && !dirOut ? "ex" : "0");
+    st.rod = rodP ? "p" : (moving && dirOut ? "ex" : "0");
+    st.boreFlow = moving ? (boreP ? -1 : 1) : 0;
+    st.rodFlow = moving ? (rodP ? -1 : 1) : 0;
+    st.flowSup = moving;
+    st.exActive = moving ? exPort : null;
+    st.gB = boreP ? pe : 0;
+    st.gR = rodP ? pe : 0;
+    if (st.mode==="B" && st.fault==="tett" && act && !rodP){ st.rod="p"; st.gR = pe*A1/A2 * Math.min(1, st.x/.16); st.exActive=null; }
+    st.blocked = blocked; st.showFault = st.show;
+    svg.innerHTML = circuitSVG(PS, st);
+    $("p6Cnt").textContent = st.mode==="B" ? `Kraft ut: ${nf(pe*.1*A1,0)} N (trenger 400 N) · Bøssinger presset: ${st.count}` : `Kraft ut: ca. ${nf(pe*.1*A1,0)} N minus fjærkraften`;
+  });
+  info();
+})();
+
+/* =====================================================================
+   DEL 7 – HMS-kort
+   ===================================================================== */
+(function(){
+  const C = [
+    ["🧥","Blåse spon og støv av klærne med trykkluft.",false,"Galt! Lufta kan presses inn gjennom huden, og spon blåses i øynene. Bruk kost, børste eller støvsuger."],
+    ["🔧","Stenge og slippe ut lufta før du løsner en slange.",true,"Riktig! Trykk i slangen er restenergi. Steng, avluft – og ved vedlikehold: lås og merk."],
+    ["🥽","Bruke vernebriller når du blåser rent en maskin.",true,"Riktig! Spon og olje kan treffe øynene. Bruk sikkerhetsdyse og blås bort fra deg selv og andre."],
+    ["😜","Rette blåsepistolen mot en kamerat – for moro skyld.",false,"Galt! Det kan gi alvorlige skader i øyne, ører og under huden. Aldri rett trykkluft mot mennesker."],
+    ["🐍","Løsne en hurtigkobling mens det er trykk i slangen.",false,"Galt! Slangen kan piske og treffe hode og øyne. Bruk sikkerhetskobling og slipp ut trykket først."],
+    ["🎧","Bruke hørselvern når du blåser mye med trykkluft.",true,"Riktig! Blåsing kan gi over 85 dB – grensen for når hørselvern er påbudt."]
+  ];
+  const g=$("p7Grid");
+  g.innerHTML = C.map((c,i)=>`<div class="flip ${c[2]?"yes":"no"}" data-i="${i}" tabindex="0" role="button"><div class="ic">${c[0]}</div><div class="q">${c[1]}</div><div class="a"><span class="v">${c[2]?"✓ ":"✗ "}</span>${c[3]}</div></div>`).join("");
+  g.onclick = e => { const f=e.target.closest(".flip"); if (f) f.classList.toggle("open"); };
+  g.onkeydown = e => { if ((e.key==="Enter"||e.key===" ") && e.target.classList.contains("flip")){ e.preventDefault(); e.target.classList.toggle("open"); } };
+})();
+
+/* =====================================================================
+   SYMBOLARK (oppsummering og oppgave 3)
+   ===================================================================== */
+function symSheet(P, labels){
+  let s = "";
+  const cell = (i) => [ (i%4)*250, Math.floor(i/4)*180 ];
+  const L = [["A","Trykkluftkilde"],["B","Vedlikeholdsenhet"],["C","3/2-ventil, knapp/fjær"],["D","5/2-ventil, knapp/fjær"],["E","Enkeltvirkende sylinder"],["F","Dobbeltvirkende sylinder"],["G","Manometer"],["H","Avlufting"]];
+  L.forEach((l,i) => { const [x,y]=cell(i); s += RC(x+6,y+6,238,168,"none",P.line,1,10)+TX(x+20,y+32,l[0],{size:20,weight:800});
+    if (labels) s += TX(x+125,y+160,l[1],{size:15,weight:700,anchor:"middle",fill:P.muted}); });
+  let [x,y]=cell(0); s += sourceSym(x+125,y+90,P,22)+ln(x+147,y+90,x+200,y+90,P.ink,2.4);
+  [x,y]=cell(1); s += frlSym(x+50,y+98,P,{});
+  [x,y]=cell(2); s += valveSym("32",x+85,y+60,62,0,P,{labels:true});
+  [x,y]=cell(3); s += valveSym("52",x+85,y+60,62,0,P,{labels:true});
+  [x,y]=cell(4); s += cylSym("E",x+40,y+70,165,40,0,P)+ln(x+54,y+110,x+54,y+130,P.ink,2.4);
+  [x,y]=cell(5); s += cylSym("D",x+40,y+70,165,40,0,P)+ln(x+54,y+110,x+54,y+130,P.ink,2.4)+ln(x+191,y+110,x+191,y+130,P.ink,2.4);
+  [x,y]=cell(6); s += ln(x+125,y+124,x+125,y+112,P.ink,2.4)+gaugeSym(x+125,y+90,P,22,null);
+  [x,y]=cell(7); s += ln(x+125,y+55,x+125,y+75,P.ink,2.4)+exhaustSym(x+125,y+75,P,1.5);
+  return s;
+}
+$("pSumSvg").innerHTML = symSheet(PS,true);
+
+/* =====================================================================
+   OPPGAVEFIGURER (svart-hvitt)
+   ===================================================================== */
+(function(){
+  $("o1fig").innerHTML = svgOpen(1100,470) + forsyningSVG(PB,{nums:true}) + "</svg>";
+  $("o3fig").innerHTML = svgOpen(1000,360) + symSheet(PB,false) + "</svg>";
+  $("o5fig").innerHTML = svgOpen(1000,560) + circuitSVG(PB,{mode:"B", k:0, x:0, pe:6, bushL:740, supply:"0", bore:"0", rod:"0", gB:0, gR:0, nums:true}) + "</svg>";
+  document.querySelectorAll("#oppgavetekst .ofig svg").forEach(s => { s.removeAttribute("width"); s.removeAttribute("height"); });
+})();
+
+/* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToPng(svg){
+  const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
+  const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0,0,w,h); cx.drawImage(img,0,0,w,h);
+  return [cv.toDataURL("image/png"), vb.width];
+}
+$("btnCopy").onclick = async () => {
+  const src = $("oppgavetekst"), clone = src.cloneNode(true);
+  const svgs = [...src.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<svgs.length;i++){
+    try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.min(640, Math.round(w*.62)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
+  }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".scenario,.ordbank").forEach(s => { s.style.border="1px dashed #777"; s.style.padding="6px 10px"; });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>

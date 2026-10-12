@@ -1,0 +1,1324 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Materiallære 3 – Mekanisk prøving</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#e0a800; --yellow-soft:#fff8db;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:66ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg, .fig canvas{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.8rem; font-weight:600}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.75rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.legend{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin:.2rem 0 .3rem}
+.legend i{display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:.4rem}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem; line-height:1.7}
+.steps .res{color:var(--orange); font-weight:700; font-size:1.1rem}
+.formula{font-family:"Cascadia Mono", Consolas, monospace; font-size:1.5rem; font-weight:700; text-align:center; padding:.6rem; background:var(--bg); border-radius:10px; margin:.4rem 0}
+
+/* Repetisjon */
+.flip{cursor:pointer; text-align:left; font:inherit; color:inherit; width:100%; min-height:9rem; display:flex; flex-direction:column; justify-content:space-between}
+.flip .q{font-weight:650; font-size:1.05rem}
+.flip .a{display:none; color:var(--green); font-weight:600; margin-top:.6rem}
+.flip.show .a{display:block}
+.flip .hint{font-size:.75rem; color:var(--muted); margin-top:.6rem}
+.flip.show .hint{display:none}
+
+/* Meter */
+.meter{position:relative; height:1.6rem; background:var(--steel-soft); border-radius:8px; margin:1.4rem 0 .4rem}
+.meter .fill{height:100%; width:0; border-radius:8px; transition:width .3s, background .3s}
+.meter .mark{position:absolute; top:-1.2rem; bottom:-.2rem; border-left:2px dashed var(--ink); font-size:.7rem; color:var(--muted); padding-left:.2rem; white-space:nowrap}
+
+/* Tabs */
+.tabs{display:flex; gap:.4rem; flex-wrap:wrap}
+.tabs .btn{font-size:.9rem; padding:.5rem 1rem}
+
+/* Sertifikat */
+.paper{background:#fffdf6; color:#1a1a1a; border:1px solid #cbbf9a; border-radius:6px; padding:1rem 1.2rem; font-size:.82rem; box-shadow:0 4px 18px rgba(0,0,0,.08); position:relative; overflow:hidden}
+.paper::after{content:"EKSEMPEL"; position:absolute; right:-2.5rem; top:1.2rem; transform:rotate(30deg); background:#c92a2a; color:#fff; font-weight:800; letter-spacing:.15em; padding:.2rem 3rem; font-size:.75rem}
+.paper h4{margin:0 0 .2rem; font-size:1rem}
+.paper table{border-collapse:collapse; width:100%; margin:.5rem 0}
+.paper td,.paper th{border:1px solid #b9ad88; padding:.25rem .35rem; text-align:center}
+.paper th{background:#f1ead2; font-weight:700}
+.paper td.good{background:#d3f9d8; font-weight:700}
+.paper td.badv{background:#ffc9c9; font-weight:700}
+
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); height:2rem}
+.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
+.fasit b{color:var(--green)}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.oppfig{max-width:620px; margin:.4rem 0; background:#fff; border:1px solid #999; border-radius:6px}
+.oppfig svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr 1fr}
+  .readout{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .paper{overflow-x:auto} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Materiallære · <span>Leksjon 3</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- FORSIDE -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Materiallære</div>
+      <h1>Leksjon 3<br>Mekanisk prøving</h1>
+      <p class="lead">Hvordan vet vi at S355 tåler 355 MPa? Noen har strukket, presset og slått på stålet til det ga etter. Tallene havner på materialsertifikatet.</p>
+      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <ol class="goals">
+        <li>regne ut <b>spenning</b> med σ = F / A₀</li>
+        <li>forklare hva som skjer i en <b>strekkprøve</b>, fra elastisk til brudd</li>
+        <li>forklare forskjellen på <b>stivhet (E-modul)</b> og <b>styrke</b></li>
+        <li>forklare hva <b>R<sub>p0,2</sub></b> er, og hvorfor plater fjærer tilbake etter bøying</li>
+        <li>regne ut <b>bruddforlengelse A</b></li>
+        <li>velge riktig <b>hardhetsmåling</b>: Brinell, Vickers eller Rockwell</li>
+        <li>forklare <b>Charpy-prøven</b> og hvorfor stål kan bli sprøtt i kulde</li>
+        <li>sjekke et <b>materialsertifikat</b> mot kravene</li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Kompetansemål (PIN02-03, Teknologi)</h3>
+        <p><i>«vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer»</i></p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Støtter også kvalitetskontroll og dokumentasjon. Bygger på leksjon 1 (flytekurve, hard/seig/sprø, Charpy) og leksjon 2 (S355J2, herding, 3.1-sertifikat).</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1</th></tr>
+          <tr><td>0–5 min</td><td>Repetisjon fra leksjon 1 og 2</td></tr>
+          <tr><td>5–20 min</td><td>Del 1–2: spenning, strekkprøven</td></tr>
+          <tr><td>20–32 min</td><td>Oppgave 1 og 2</td></tr>
+          <tr><td>32–45 min</td><td>Del 3–5: E-modul, R<sub>p0,2</sub>, bruddforlengelse</td></tr>
+          <tr><th colspan="2">Time 2</th></tr>
+          <tr><td>0–10 min</td><td>Oppgave 3</td></tr>
+          <tr><td>10–22 min</td><td>Del 6: hardhet</td></tr>
+          <tr><td>22–29 min</td><td>Oppgave 4</td></tr>
+          <tr><td>29–37 min</td><td>Del 7–8: Charpy, sertifikat</td></tr>
+          <tr><td>37–42 min</td><td>Oppgave 5 (oppgave 6 er ekstra)</td></tr>
+          <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+      </div>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REPETISJON -->
+<section class="slide" id="rep" data-nav="Repetisjon">
+  <div class="wrap">
+    <div class="kicker">Repetisjon · ca. 5 min</div>
+    <h2>Husker du?</h2>
+    <p class="lead">Svar muntlig med sidemannen. Klikk på kortet for å se svaret.</p>
+    <div class="grid4" style="margin-top:1.2rem">
+      <button class="card flip"><span class="q">Hva skjer med atomlagene når metall bøyes varig?</span><span class="a">De glir forbi hverandre (leksjon 1).</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva betyr 355 i S355?</span><span class="a">Minste flytegrense: 355 MPa.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva betyr J2 i S355J2?</span><span class="a">Minst 27 J slagseighet ved −20 °C (Charpy).</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvorfor blir C45 hardt når det bråkjøles?</span><span class="a">Karbonet låses inne i gitteret (martensitt), så lagene ikke kan gli.</span><span class="hint">Klikk for svar</span></button>
+    </div>
+    <div class="tip o"><b>I dag:</b> Hvordan <b>måler</b> vi flytegrense, styrke, hardhet og seighet? Og hvordan leser vi tallene?</div>
+  </div>
+</section>
+
+<!-- DEL 1 SPENNING -->
+<section class="slide" id="spenning" data-nav="1 Spenning">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 7 min</div>
+    <h2>Kraft er ikke det samme som spenning</h2>
+    <p class="lead">En tynn stang ryker før en tykk med samme kraft. Det som teller, er hvor mye kraft hver mm² må bære. Det kaller vi <b>spenning</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="spSvg" viewBox="0 0 560 390" role="img" aria-label="Stang med kraft og tverrsnitt"></svg>
+        <div class="controls">
+          <label for="spF">Kraft F:</label><input type="range" id="spF" min="0" max="60" step="1" value="20">
+          <span class="pill" id="spFv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">20 kN</span>
+        </div>
+        <div class="controls" style="margin-top:.3rem">
+          <label for="spD">Diameter d:</label><input type="range" id="spD" min="6" max="30" step="1" value="10">
+          <span class="pill" id="spDv" style="background:var(--blue-soft);color:var(--blue);font-size:1rem">Ø10 mm</span>
+        </div>
+        <div class="meter" id="spMeter"><div class="fill" id="spBar"></div>
+          <div class="mark" style="left:50.7%">R<sub>eH</sub> 355</div><div class="mark" style="left:72.9%">R<sub>m</sub> 510</div></div>
+        <div class="status info" id="spTxt"></div>
+      </div>
+      <div>
+        <div class="formula">σ = F / A₀</div>
+        <div class="card" style="margin-bottom:.7rem">
+          <b>σ</b> (sigma) = <b>spenning</b> i MPa<br>
+          <b>F</b> = kraft i newton (N). 1 kN = 1000 N ≈ vekten av 100 kg<br>
+          <b>A₀</b> = <b>tverrsnitt</b>: arealet du ser hvis du kapper stangen på tvers, i mm²
+        </div>
+        <div class="steps" id="spSteps"></div>
+        <div class="tip"><b>1 MPa = 1 N/mm².</b> S355 tåler 355 N på hver eneste mm² før det begynner å flyte.</div>
+        <p class="caption">Tverrsnitt: rund A = π·d²/4 · flatstål A = b·t (bredde · tykkelse) · rør A = π·(D² − d²)/4</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 2 STREKKPRØVEN -->
+<section class="slide" id="strekk" data-nav="2 Strekkprøven">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 8 min</div>
+    <h2>Strekkprøven</h2>
+    <p class="lead">En prøvestav dras langsomt fra hverandre til den ryker. Maskinen måler kraften og forlengelsen hele veien. Resultatet er <b>strekkdiagrammet</b> – flytekurven fra leksjon 1.</p>
+    <div class="grid2" style="grid-template-columns:.8fr 1.2fr">
+      <div class="fig">
+        <svg id="tm" viewBox="0 0 420 520" role="img" aria-label="Strekkmaskin med prøvestav"></svg>
+      </div>
+      <div class="fig">
+        <div class="controls no-print" id="matBtns" style="margin-top:0"></div>
+        <svg id="ssGraf" viewBox="0 0 560 390" role="img" aria-label="Spenning-tøyning-diagram" style="margin-top:.4rem"></svg>
+        <div class="controls">
+          <button class="btn orange no-print" id="btnTest">▶ Start prøven</button>
+          <input type="range" id="ssU" min="0" max="1000" value="0" aria-label="Spol i prøven">
+        </div>
+        <div class="readout">
+          <div><span>Kraft F</span><b id="rF">0 kN</b></div>
+          <div><span>Forlengelse ΔL</span><b id="rL">0 mm</b></div>
+          <div><span>Spenning σ</span><b id="rS">0 MPa</b></div>
+          <div><span>Tøyning ε</span><b id="rE">0 %</b></div>
+        </div>
+        <div class="status info" id="ssTxt">Velg materiale og trykk Start.</div>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card"><b>Prøvestaven</b><br>Rund, Ø10 mm (A₀ = 78,5 mm²). Mellom to merker er det <b>L₀ = 50 mm</b> – målelengden. Tykkere ender gir godt grep.</div>
+      <div class="card"><b>Tøyning ε</b> (epsilon)<br>Hvor mye staven er forlenget i forhold til starten: <b>ε = ΔL / L₀</b>. Oppgis i %. 5 mm forlengelse på 50 mm = 10 %.</div>
+      <div class="card"><b>Måleutstyret</b><br><b>Kraftmåler</b> over staven måler F. <b>Ekstensometeret</b> klemmes på merkene og måler ΔL svært nøyaktig.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 3 E-MODUL -->
+<section class="slide" id="emodul" data-nav="3 E-modul">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 4 min</div>
+    <h2>Stivhet: E-modul</h2>
+    <p class="lead">I starten av strekkprøven oppfører metallet seg som en fjær: dobbel spenning gir dobbel forlengelse (<b>Hookes lov</b>). Hvor bratt linja er, kalles <b>E-modulen</b>. Den måler <b>stivhet</b> – hvor lite materialet gir etter.</p>
+    <div class="grid2">
+      <div class="fig">
+        <div class="legend"><span><i style="border-color:var(--steel-dark)"></i>S355</span><span><i style="border-color:var(--blue);border-top-style:dashed"></i>42CrMo4 seigherdet</span><span><i style="border-color:var(--purple)"></i>Titan</span><span><i style="border-color:var(--green)"></i>Aluminium</span></div>
+        <svg id="eGraf" viewBox="0 0 520 350" role="img" aria-label="Elastisk del av strekkdiagrammet"></svg>
+        <p class="caption">Bare den elastiske delen, kraftig forstørret i x-retning. Prikken = der varig deformasjon begynner. «Seigherdet» = herdet og deretter varmet litt opp igjen (leksjon 4).</p>
+      </div>
+      <div class="fig">
+        <div style="font-weight:650">Tre stenger, 1 meter lange, med samme spenning</div>
+        <svg id="eBars" viewBox="0 0 560 230" role="img" aria-label="Forlengelse av tre stenger"></svg>
+        <div class="controls">
+          <label for="eS">Spenning:</label><input type="range" id="eS" min="0" max="250" step="5" value="100">
+          <span class="pill" id="eSv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">100 MPa</span>
+        </div>
+        <div class="formula" style="font-size:1.2rem">E = σ / ε &nbsp;→&nbsp; ΔL = σ · L₀ / E</div>
+        <table class="t" style="font-size:.85rem"><tr><th>Materiale</th><th>E-modul</th><th>Stivhet</th></tr>
+          <tr><td>Stål (alle typer)</td><td>ca. 210 000 MPa (210 GPa)</td><td>3 × aluminium</td></tr>
+          <tr><td>Titan</td><td>ca. 110 000 MPa</td><td>halvparten av stål</td></tr>
+          <tr><td>Aluminium</td><td>ca. 70 000 MPa</td><td>1/3 av stål</td></tr></table>
+      </div>
+    </div>
+    <div class="tip o"><b>Stiv ≠ sterk.</b> Herdet og mykt stål har nesten samme E-modul. En herdet aksel bøyer seg like mye under samme last – den tåler bare mye mer før den blir <b>varig</b> bøyd. GPa = gigapascal = 1000 MPa.</div>
+  </div>
+</section>
+
+<!-- DEL 4 RP0,2 -->
+<section class="slide" id="rp" data-nav="4 Rp0,2">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 4 min</div>
+    <h2>R<sub>p0,2</sub> – når det ikke finnes en tydelig flytegrense</h2>
+    <p class="lead">Aluminium og rustfritt bøyer kurven mykt, uten knekk. Da avtaler vi en grense: spenningen som gir <b>0,2 % varig forlengelse</b>. Last opp, og slipp – se hva som blir igjen.</p>
+    <div class="grid2">
+      <div class="fig">
+        <svg id="rpGraf" viewBox="0 0 540 360" role="img" aria-label="Pålasting og avlasting av aluminium"></svg>
+        <div class="controls">
+          <label for="rpS">Last opp til:</label><input type="range" id="rpS" min="0" max="286" step="1" value="200">
+          <span class="pill" id="rpSv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">200 MPa</span>
+        </div>
+        <div class="controls no-print">
+          <button class="btn orange" id="btnUnload">⬇ Slipp (avlast)</button>
+          <button class="btn primary" id="btnRp">Finn R<sub>p0,2</sub></button>
+          <button class="btn" id="btnRpR">↻</button>
+        </div>
+        <div class="readout" style="grid-template-columns:repeat(3,1fr)">
+          <div><span>Tøyning under last</span><b id="rpT">–</b></div>
+          <div><span>Fjærer tilbake (elastisk)</span><b id="rpE">–</b></div>
+          <div><span>Blir igjen (varig)</span><b id="rpP">–</b></div>
+        </div>
+        <div class="status info" id="rpTxt"></div>
+        <p class="caption">Aluminium 6082, typiske verdier. Avlastingslinja er parallell med den elastiske linja.</p>
+      </div>
+      <div class="fig">
+        <div style="font-weight:650">Samme fysikk i kantpressa: tilbakefjæring</div>
+        <svg id="bend" viewBox="0 0 520 300" role="img" aria-label="Bøying i kantpresse med tilbakefjæring"></svg>
+        <div class="controls no-print">
+          <button class="btn small on" id="bSt">Stål S355</button>
+          <button class="btn small" id="bAl">Aluminium 6082</button>
+          <button class="btn orange small" id="bGo">▶ Bøy til 90°</button>
+        </div>
+        <div class="status info" id="bTxt">Velg materiale og bøy.</div>
+        <p class="caption">Vinkelendringen er forstørret 3× i figuren. Typisk: stål 1–2°, aluminium 3–5°. Derfor «overbøyer» operatøren litt.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 5 BRUDDFORLENGELSE -->
+<section class="slide" id="bruddA" data-nav="5 Forlengelse">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 4 min</div>
+    <h2>Bruddforlengelse A og innsnevring Z</h2>
+    <p class="lead">Etter bruddet settes bitene sammen og målelengden måles igjen. Jo mer staven ble forlenget, jo <b>seigere</b> er materialet – og jo bedre tåler det bøying og forming.</p>
+    <div class="fig">
+      <div class="controls no-print" id="azBtns" style="margin-top:0"></div>
+      <svg id="azSvg" viewBox="0 0 780 300" role="img" aria-label="Prøvestav før og etter brudd" style="margin-top:.5rem"></svg>
+      <div class="controls no-print"><button class="btn orange" id="azGo">🧩 Sett bitene sammen og mål</button></div>
+    </div>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="steps" id="azSteps" style="margin-top:0"></div>
+      <div>
+        <div class="card" style="margin-bottom:.7rem"><b>L<sub>u</sub></b> = målelengden etter brudd (u = «ultimate», til slutt). <b>S<sub>u</sub></b> = minste tverrsnitt i halsen.</div>
+        <div class="card"><b>Innsnevring Z</b> viser hvor mye halsen trakk seg sammen. Stor Z = seigt. Gråjern får nesten ingen hals – det er sprøtt.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 6 HARDHET -->
+<section class="slide" id="hardhet" data-nav="6 Hardhet">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 12 min</div>
+    <h2>Hardhetsmåling</h2>
+    <p class="lead">Hardhet = motstand mot inntrykk (leksjon 1). Vi presser en hard spiss inn med kjent kraft og måler hvor stort merket – <b>inntrykket</b> – blir. Lite merke = hardt materiale.</p>
+    <div class="tabs no-print" id="hdTabs"></div>
+    <div class="grid2 wide-left" style="margin-top:.8rem">
+      <div class="fig">
+        <div class="controls no-print" id="hdMats" style="margin-top:0"></div>
+        <svg id="hdSvg" viewBox="0 0 660 380" role="img" aria-label="Hardhetsmåling" style="margin-top:.5rem"></svg>
+        <div class="controls no-print"><button class="btn orange" id="hdGo">▶ Mål hardheten</button></div>
+        <div class="status info" id="hdTxt"></div>
+      </div>
+      <div>
+        <div class="card" id="hdInfo"></div>
+        <div class="steps" id="hdSteps"></div>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card" style="border-top:6px solid var(--blue)"><b>Brinell (HB)</b> – stor kule, stort merke<br><span style="font-size:.9rem">Bra for mykt og grovt materiale: støpejern, aluminium, ikke-herdet stål. Merket dekker mange korn og gir et godt gjennomsnitt. Ikke for herdet stål.</span></div>
+      <div class="card" style="border-top:6px solid var(--purple)"><b>Vickers (HV)</b> – diamantpyramide<br><span style="font-size:.9rem">Én skala for alt fra mykt til svært hardt. Med liten kraft kan den måle tynne herdede lag. Brukes mest i laboratorium – merket må måles i mikroskop.</span></div>
+      <div class="card" style="border-top:6px solid var(--orange)"><b>Rockwell (HRC)</b> – diamantkjegle, måler dybden<br><span style="font-size:.9rem">Rask: tallet leses rett av. Standard for herdet stål og verktøy på verkstedet. HRC gjelder ca. 20–70. Mykere stål: HRB med stålkule.</span></div>
+    </div>
+    <h3 style="margin-top:1.6rem">Omtrentlig sammenheng for stål</h3>
+    <table class="t" style="font-size:.88rem">
+      <tr><th>HB</th><td>120</td><td>160</td><td>200</td><td>250</td><td>300</td><td>400</td><td>–</td><td>–</td><td>–</td></tr>
+      <tr><th>HV</th><td>125</td><td>170</td><td>210</td><td>265</td><td>315</td><td>420</td><td>515</td><td>700</td><td>865</td></tr>
+      <tr><th>HRC</th><td>–</td><td>–</td><td>–</td><td>24</td><td>32</td><td>43</td><td>50</td><td>60</td><td>66</td></tr>
+      <tr><th>R<sub>m</sub> ca.</th><td>400</td><td>530</td><td>660</td><td>830</td><td>990</td><td>1320</td><td>–</td><td>–</td><td>–</td></tr>
+      <tr><th>Eksempel</th><td>S235</td><td>S355</td><td>C45</td><td colspan="2">42CrMo4 seigherdet</td><td>fjærstål</td><td>bolt 12.9 ++</td><td>herdet C45</td><td>fil, HSS</td></tr>
+    </table>
+    <p class="caption">Avrundede verdier etter ISO 18265, bare for stål. Tommelfingerregel: <b>R<sub>m</sub> ≈ 3,3 · HB</b>. På verkstedet brukes også håndholdte målere (sprett-metoden) og filtesten fra leksjon 2.</p>
+  </div>
+</section>
+
+<!-- DEL 7 CHARPY -->
+<section class="slide" id="charpy" data-nav="7 Charpy">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 5 min</div>
+    <h2>Charpy: seig eller sprø i kulde?</h2>
+    <p class="lead">En pendel slår av en liten prøve med et V-hakk (leksjon 1). Energien som går med til å knuse prøven, er <b>slagseigheten KV</b> i joule. Prøven kjøles eller varmes til ønsket temperatur først.</p>
+    <div class="grid2">
+      <div class="fig">
+        <svg id="pend" viewBox="0 0 520 440" role="img" aria-label="Charpy-pendel"></svg>
+        <div class="controls">
+          <label for="kT">Temperatur:</label><input type="range" id="kT" min="-60" max="40" step="5" value="-20">
+          <span class="pill" id="kTv" style="background:var(--blue-soft);color:var(--blue);font-size:1rem">−20 °C</span>
+        </div>
+        <div class="controls no-print" id="kMats"></div>
+        <div class="controls no-print"><button class="btn orange" id="kGo">🔨 Slipp pendelen</button></div>
+      </div>
+      <div class="fig">
+        <svg id="kvGraf" viewBox="0 0 520 330" role="img" aria-label="Slagseighet mot temperatur"></svg>
+        <div class="grid2" style="gap:1rem; align-items:center; grid-template-columns:auto 1fr">
+          <svg id="frac" viewBox="0 0 170 190" style="width:150px" role="img" aria-label="Bruddflate"></svg>
+          <div class="status info" id="kTxt" style="margin:0"></div>
+        </div>
+        <p class="caption"><b>KV = m · g · (h₁ − h₂)</b>. m = 20 kg, g = 9,81 m/s², h₁ = 1,5 m. Kurvene er typiske, forenklede.</p>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card"><b>Overgangstemperatur</b><br>Temperaturen der stålet går fra seigt til sprøtt. Under den kan en sprekk løpe gjennom stålet nesten uten motstand.</div>
+      <div class="card"><b>Bruddflaten forteller</b><br>Seigt brudd: matt, grå og fibrete, med kanter som er dratt ut. Sprøtt brudd: blank og krystallinsk – den glitrer.</div>
+      <div class="card"><b>Austenittisk rustfritt</b> (304/316) har ingen overgangstemperatur. Det er seigt ned til −196 °C – brukes til tanker for flytende gass.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 8 SERTIFIKAT -->
+<section class="slide" id="sert" data-nav="8 Sertifikat">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 3 min</div>
+    <h2>Les materialsertifikatet</h2>
+    <p class="lead">Alle prøvene havner på <b>3.1-sertifikatet</b> (EN 10204) som følger stålet. Før stålet brukes i en sveist konstruksjon, sjekker vi at tallene holder kravene.</p>
+    <div class="grid2 wide-left">
+      <div>
+        <div class="controls no-print" id="certBtns" style="margin-top:0"></div>
+        <div class="paper" id="cert" style="margin-top:.7rem"></div>
+        <div class="controls no-print"><button class="btn orange" id="certChk">✔ Sjekk mot kravene</button></div>
+        <div class="status info" id="certTxt">Velg et sertifikat og sjekk det.</div>
+      </div>
+      <div class="card">
+        <h3>Krav til S355J2 (EN 10025-2)</h3>
+        <table class="t" style="font-size:.88rem">
+          <tr><th>Egenskap</th><th>Krav (tykkelse ≤ 16 mm)</th></tr>
+          <tr><td>R<sub>eH</sub></td><td>minst 355 MPa</td></tr>
+          <tr><td>R<sub>m</sub></td><td>470–630 MPa</td></tr>
+          <tr><td>A</td><td>minst 22 %</td></tr>
+          <tr><td>KV ved −20 °C</td><td>snitt av 3 prøver minst 27 J. Ingen enkeltverdi under 19 J (70 %)</td></tr>
+          <tr><td>CEV</td><td>høyst 0,45 (leksjon 2)</td></tr>
+        </table>
+        <p class="caption">Forenklet utdrag. Kravene varierer med tykkelse – sjekk alltid standarden.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <ol style="font-size:1.08rem">
+          <li><b>Spenning σ = F / A₀</b> i MPa (= N/mm²). Det er spenningen, ikke kraften, som avgjør om delen tåler lasten.</li>
+          <li>Strekkprøven: <b>elastisk → flyt (R<sub>eH</sub>) → fastning → R<sub>m</sub> → innsnevring → brudd</b>.</li>
+          <li><b>Tøyning ε = ΔL / L₀</b>. <b>E-modul</b> = stivhet. Stål ca. 210 GPa, aluminium ca. 70 GPa. Herding endrer ikke E.</li>
+          <li><b>R<sub>p0,2</sub></b> = spenningen som gir 0,2 % varig forlengelse. Brukes når kurven ikke har tydelig knekk.</li>
+          <li><b>A = (L<sub>u</sub> − L₀) / L₀ · 100 %</b>. Stor A = seigt.</li>
+          <li><b>Brinell</b>: mykt og grovt. <b>Vickers</b>: alt, tynne lag. <b>Rockwell C</b>: herdet stål, raskt. R<sub>m</sub> ≈ 3,3 · HB.</li>
+          <li><b>Charpy KV</b> = energi i joule. Vanlig stål blir sprøtt under overgangstemperaturen. J2 = 27 J ved −20 °C.</li>
+          <li>Sjekk <b>3.1-sertifikatet</b> mot kravene før bruk.</li>
+        </ol>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>spenning σ</span><span>tverrsnitt A₀</span><span>MPa = N/mm²</span><span>strekkprøve</span><span>målelengde L₀</span><span>tøyning ε</span><span>elastisk</span><span>plastisk</span><span>fastning</span><span>innsnevring</span><span>E-modul</span><span>stivhet</span><span>R<sub>p0,2</sub></span><span>tilbakefjæring</span><span>bruddforlengelse A</span><span>Brinell</span><span>Vickers</span><span>Rockwell</span><span>inntrykk</span><span>slagseighet KV</span><span>overgangstemperatur</span><span>3.1-sertifikat</span></div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Neste leksjon</h3>
+          <p style="margin:0"><b>Leksjon 4 – Varmebehandling:</b> herding, anløping, seigherding, normalisering, gløding og settherding. Vi bruker hardhetsmålingen fra i dag til å se hva som skjer.</p>
+        </div>
+        <p class="caption">Slå opp mer i <a href="https://verkstedhandboka.vercel.app/#materialer" target="_blank" rel="noopener">Verkstedhåndboka, emne 7 Materialer</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 45 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Materiallære 3 – Mekanisk prøving · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <p style="font-size:.9rem">Du trenger bare penn og kalkulator (mobil/PC er greit). Formler: σ = F / A₀ · A₀ = π·d²/4 · ε = ΔL / L₀ · E = σ / ε · A = (L<sub>u</sub> − L₀) / L₀ · 100 %</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Spenning <small>Time 1 · 7 min</small></h3>
+        <p>a) En rundstang Ø12 mm i S355 trekkes med F = 30 kN. Regn ut A₀ og σ. Begynner stangen å flyte? (R<sub>eH</sub> = 355 MPa)</p>
+        <div class="svar"></div><div class="svar"></div>
+        <p>b) Et flatstål 40 × 8 mm trekkes med 100 kN. Regn ut σ. Flyter det?</p>
+        <div class="svar"></div><div class="svar"></div>
+        <p>c) En stang skal tåle 50 kN, og spenningen skal være høyst 200 MPa. Hvilket tverrsnitt trengs? Hvilken diameter (rund opp til hel mm)?</p>
+        <div class="svar"></div><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) A₀ = π · 12² / 4 = 113,1 mm². σ = 30 000 N / 113,1 mm² = 265 MPa. Under 355 → flyter ikke. b) A₀ = 40 · 8 = 320 mm². σ = 100 000 / 320 = 312,5 MPa. Flyter ikke, men nær. c) A₀ = 50 000 / 200 = 250 mm². d = √(4 · 250 / π) = 17,8 mm → <b>18 mm</b>.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Les strekkdiagrammet <small>Time 1 · 5 min</small></h3>
+        <p>Diagrammet viser en strekkprøve av et stål. Prøvestaven var Ø10 mm (A₀ = 78,5 mm²).</p>
+        <div class="oppfig"><svg id="oppDiag" viewBox="0 0 620 340" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <table class="ot">
+          <tr><th style="width:62%">Spørsmål</th><th>Svar</th></tr>
+          <tr><td>a) Øvre flytegrense R<sub>eH</sub></td><td class="tom"></td></tr>
+          <tr><td>b) Strekkfasthet R<sub>m</sub></td><td class="tom"></td></tr>
+          <tr><td>c) Forlengelse ved brudd (ca. %)</td><td class="tom"></td></tr>
+          <tr><td>d) Ved hvilken tøyning starter innsnevringen?</td><td class="tom"></td></tr>
+          <tr><td>e) Hvor i diagrammet er det elastiske området? Skraver det.</td><td class="tom"></td></tr>
+          <tr><td>f) Hvor stor var kraften ved R<sub>m</sub>? (F = σ · A₀)</td><td class="tom"></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) ca. 300 MPa. b) ca. 450 MPa. c) ca. 32 %. d) ca. 20 % (der kurven er høyest, ved R<sub>m</sub>). e) Den nesten loddrette linja helt til venstre, fra 0 opp til ca. 300 MPa. f) 450 · 78,5 = 35 300 N ≈ 35 kN.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Regn ut en strekkprøve <small>Time 2 · 10 min</small></h3>
+        <p>En prøvestav fra en S355J2-plate: d₀ = 10 mm, L₀ = 50 mm. Målt: kraft ved flytegrensen 29,5 kN, største kraft 44,0 kN. Etter brudd: L<sub>u</sub> = 61,0 mm, minste diameter i halsen 6,0 mm.</p>
+        <table class="ot">
+          <tr><th style="width:52%">Regn ut</th><th>Utregning og svar</th></tr>
+          <tr><td>a) A₀</td><td class="tom"></td></tr>
+          <tr><td>b) R<sub>eH</sub></td><td class="tom"></td></tr>
+          <tr><td>c) R<sub>m</sub></td><td class="tom"></td></tr>
+          <tr><td>d) Bruddforlengelse A</td><td class="tom"></td></tr>
+          <tr><td>e) Innsnevring Z = (A₀ − S<sub>u</sub>) / A₀ · 100 %</td><td class="tom"></td></tr>
+          <tr><td>f) Er kravene til S355J2 oppfylt? (R<sub>eH</sub> ≥ 355, R<sub>m</sub> 470–630, A ≥ 22 %)</td><td class="tom"></td></tr>
+          <tr><td>g) Ved F = 10 kN var ΔL = 0,030 mm. Regn ut σ, ε og E. Stemmer det med stål?</td><td class="tom"></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) π · 10² / 4 = 78,5 mm². b) 29 500 / 78,5 = 376 MPa. c) 44 000 / 78,5 = 560 MPa. d) (61 − 50) / 50 · 100 = 22 %. e) S<sub>u</sub> = π · 6² / 4 = 28,3 mm². Z = (78,5 − 28,3) / 78,5 · 100 = 64 %. f) Ja – A er akkurat på grensen. g) σ = 10 000 / 78,5 = 127 MPa. ε = 0,030 / 50 = 0,0006. E = 127 / 0,0006 ≈ 212 000 MPa ≈ 210 GPa → stål.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Hardhet <small>Time 2 · 7 min</small></h3>
+        <p>a) Hvilken metode passer best? Skriv Brinell, Vickers eller Rockwell C.</p>
+        <table class="ot">
+          <tr><th style="width:62%">Situasjon</th><th>Metode</th></tr>
+          <tr><td>1. Kontroll av en herdet aksel (ca. 58 HRC) på verkstedet</td><td class="tom"></td></tr>
+          <tr><td>2. Maskinstativ i gråjern</td><td class="tom"></td></tr>
+          <tr><td>3. Et settherdet lag som er bare 0,3 mm tykt</td><td class="tom"></td></tr>
+          <tr><td>4. Mange herdede stanser skal kontrolleres raskt</td><td class="tom"></td></tr>
+        </table>
+        <p>b) Vickers HV30 (F = 294,2 N). Diagonalene måles til 0,41 mm og 0,39 mm. Regn ut HV = 0,1891 · F / d², der d er snittet av diagonalene.</p>
+        <div class="svar"></div><div class="svar"></div>
+        <p>c) Rockwell C: inntrykket ble 0,080 mm dypere enn ved forlasten. HRC = 100 − dybde / 0,002. Regn ut HRC. Kan du bore i delen med et vanlig HSS-bor?</p>
+        <div class="svar"></div><div class="svar"></div>
+        <p>d) Et stål måles til 180 HB. Anslå strekkfastheten.</p>
+        <div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 1 Rockwell C · 2 Brinell · 3 Vickers (liten kraft) · 4 Rockwell C. b) d = 0,40 mm. HV = 0,1891 · 294,2 / 0,16 = <b>348 HV30</b>. c) HRC = 100 − 0,080 / 0,002 = 100 − 40 = <b>60 HRC</b>. Nei – like hardt som et HSS-bor. Bruk hardmetall, eller gløde delen først. d) R<sub>m</sub> ≈ 3,3 · 180 ≈ <b>590 MPa</b>.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Charpy <small>Time 2 · 5 min</small></h3>
+        <p>Pendelen har m = 20 kg og starter i h₁ = 1,5 m. KV = m · g · (h₁ − h₂), g = 9,81 m/s². Fyll ut.</p>
+        <table class="ot">
+          <tr><th>Temperatur</th><th>h₂ (m)</th><th>KV (J)</th><th>Seigt eller sprøtt?</th></tr>
+          <tr><td>+20 °C</td><td>0,95</td><td class="tom"></td><td></td></tr>
+          <tr><td>−20 °C</td><td>1,32</td><td class="tom"></td><td></td></tr>
+          <tr><td>−40 °C</td><td>1,44</td><td class="tom"></td><td></td></tr>
+        </table>
+        <p>Holder stålet kravet til J2 (27 J ved −20 °C)? Kan det brukes i en konstruksjon ute ved −40 °C?</p>
+        <div class="svar"></div><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> +20 °C: 20 · 9,81 · 0,55 = 108 J, seigt. −20 °C: 20 · 9,81 · 0,18 = 35 J, mellomting. −40 °C: 20 · 9,81 · 0,06 = 12 J, sprøtt. J2 er oppfylt (35 ≥ 27 J). Ikke ved −40 °C – der er stålet sprøtt. Velg f.eks. S355NL (prøvd ved −50 °C).</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Sjekk sertifikatet <small>Ekstra · 5 min</small></h3>
+        <p>Et 3.1-sertifikat for S355J2, 12 mm plate, viser: R<sub>eH</sub> = 371 MPa, R<sub>m</sub> = 528 MPa, A = 24 %, KV ved −20 °C: 41 J, 17 J og 35 J, CEV = 0,41. Bruk kravtabellen fra del 8. Kan plata brukes? Begrunn.</p>
+        <div class="svar"></div><div class="svar"></div><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> R<sub>eH</sub>, R<sub>m</sub>, A og CEV er OK. Snittet av KV er (41 + 17 + 35) / 3 = 31 J, som er over 27 J. Men én verdi (17 J) er under 19 J (70 % av 27 J). <b>Ikke godkjent</b> – kontakt leverandøren.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 3 min</small></h3>
+        <p>1. Hva er forskjellen på kraft og spenning?</p><div class="svar"></div>
+        <p>2. Hva betyr R<sub>p0,2</sub>?</p><div class="svar"></div>
+        <p>3. Hvilken hardhetsmåling er raskest for herdet stål, og hvorfor?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) Kraft er i N. Spenning er kraft per areal (N/mm² = MPa). 2) Spenningen som gir 0,2 % varig forlengelse. 3) Rockwell C – tallet leses rett av, ingen måling i mikroskop.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const fmtT = (x, d=2) => x.toLocaleString("nb-NO", {maximumFractionDigits:d});
+function el(tag, attrs, parent, text){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function setStatus(id, txt, cls){ const s=$(id); s.textContent=txt; s.className="status "+cls; }
+function sgrad(svg, id){ const defs=el("defs",{},svg); const g=el("linearGradient",{id,x1:"0",y1:"0",x2:"1",y2:"0"},defs);
+  el("stop",{offset:"0","stop-color":"#7d8894"},g); el("stop",{offset:".35","stop-color":"#dfe4ea"},g); el("stop",{offset:"1","stop-color":"#6c7783"},g); return defs; }
+function axes(svg, o){
+  const xmin = o.xmin||0, X = v => o.x0 + (v-xmin)/(o.xmax-xmin)*(o.x1-o.x0), Y = v => o.y0 - v/o.ymax*(o.y0-o.y1);
+  const g = el("g",{},svg);
+  o.yt.forEach(v => { el("line",{x1:o.x0,y1:Y(v),x2:o.x1,y2:Y(v),style:"stroke:var(--line)"},g); el("text",{x:o.x0-7,y:Y(v)+4,"text-anchor":"end","font-size":12,style:"fill:var(--muted)"},g,fmtT(v,2)); });
+  o.xt.forEach(v => { el("line",{x1:X(v),y1:o.y0,x2:X(v),y2:o.y0+5,style:"stroke:var(--ink)"},g); el("text",{x:X(v),y:o.y0+19,"text-anchor":"middle","font-size":12,style:"fill:var(--muted)"},g,fmtT(v,2)); });
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x1,y2:o.y0,style:"stroke:var(--ink);stroke-width:2"},g);
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x0,y2:o.y1-8,style:"stroke:var(--ink);stroke-width:2"},g);
+  el("text",{x:o.x1,y:o.y0+36,"text-anchor":"end","font-size":13,"font-weight":600,style:"fill:var(--ink)"},g,o.xl);
+  el("text",{x:o.x0+4,y:o.y1-14,"font-size":13,"font-weight":600,style:"fill:var(--ink)"},g,o.yl);
+  return {X, Y};
+}
+function arrowDefs(svg, id, color){ const d = el("defs",{},svg); const m = el("marker",{id, viewBox:"0 0 10 10", refX:"8", refY:"5", markerWidth:"5", markerHeight:"5", orient:"auto-start-reverse"}, d); el("path",{d:"M0 0 L10 5 L0 10 z", style:`fill:${color}`}, m); }
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName) && e.target.type!=="range") return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  const i = Math.max(0, Math.min(slides.length-1, currentIndex()+dir));
+  slides[i].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.classList.toggle("show"));
+
+/* ---------- Del 1: spenning ---------- */
+const sp = $("spSvg");
+function drawSp(){
+  const F = +$("spF").value, d = +$("spD").value, A = Math.PI*d*d/4, s = F*1000/A;
+  $("spFv").textContent = F + " kN"; $("spDv").textContent = "Ø" + d + " mm";
+  sp.replaceChildren(); sgrad(sp,"spg"); arrowDefs(sp,"spArr",css("--red"));
+  const st = s>=510 ? "brudd" : s>=355 ? "flyt" : s>=213 ? "hoy" : "ok";
+  const col = {ok:css("--green"), hoy:css("--yellow"), flyt:css("--orange"), brudd:css("--red")}[st];
+  const w = d*4, cx = 150; let top = 100, bot = 312;
+  if (st==="flyt"){ top -= 8; bot += 8; }
+  if (st==="brudd"){
+    el("path",{d:`M${cx-w/2} ${top} H${cx+w/2} V186 l-${w*0.3} 8 l-${w*0.4} -6 L${cx-w/2} 192 Z`, fill:"url(#spg)", style:`stroke:${col};stroke-width:3`}, sp);
+    el("path",{d:`M${cx-w/2} 212 l${w*0.3} -6 l${w*0.4} 7 L${cx+w/2} 204 V${bot} H${cx-w/2} Z`, fill:"url(#spg)", style:`stroke:${col};stroke-width:3`}, sp);
+    top -= 14; bot += 14;
+  } else {
+    el("rect",{x:cx-w/2, y:top, width:w, height:bot-top, rx:3, fill:"url(#spg)", style:`stroke:${col};stroke-width:3`}, sp);
+  }
+  const aw = 2 + F/7;
+  if (F>0){
+    el("line",{x1:cx, y1:top-6, x2:cx, y2:top-58, "marker-end":"url(#spArr)", style:`stroke:var(--red);stroke-width:${aw}`}, sp);
+    el("line",{x1:cx, y1:bot+6, x2:cx, y2:bot+58, "marker-end":"url(#spArr)", style:`stroke:var(--red);stroke-width:${aw}`}, sp);
+  }
+  el("text",{x:cx+16, y:top-30, "font-size":17, "font-weight":700, style:"fill:var(--red)"}, sp, `F = ${F} kN`);
+  el("text",{x:cx+16, y:bot+42, "font-size":17, "font-weight":700, style:"fill:var(--red)"}, sp, `F = ${F} kN`);
+  // snitt
+  el("line",{x1:cx-w/2-14, y1:200, x2:cx+w/2+14, y2:200, "stroke-dasharray":"6 4", style:"stroke:var(--ink);stroke-width:1.5"}, sp);
+  el("path",{d:`M${cx+w/2+16} 200 C 290 200 290 200 ${420-d*4-10} 200`, "stroke-dasharray":"3 5", style:"fill:none;stroke:var(--muted);stroke-width:1.5"}, sp);
+  const R = d*4, ccx = 420, ccy = 200;
+  el("circle",{cx:ccx, cy:ccy, r:R, style:"fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2.5"}, sp);
+  const n = Math.round(F);
+  for (let i=0;i<n;i++){ const r = Math.sqrt((i+0.5)/n)*R*0.9, a = i*2.39996; el("circle",{cx:ccx+r*Math.cos(a), cy:ccy+r*Math.sin(a), r:Math.max(2.2,Math.min(4,R/12)), style:`fill:${col}`}, sp); }
+  el("text",{x:ccx, y:ccy+R+24, "text-anchor":"middle", "font-size":15, "font-weight":700, style:"fill:var(--ink)"}, sp, `A₀ = ${fmt(A,1)} mm²`);
+  el("text",{x:ccx, y:ccy+R+42, "text-anchor":"middle", "font-size":12, style:"fill:var(--muted)"}, sp, "1 prikk = 1 kN · tett = høy spenning");
+  el("text",{x:ccx, y:28, "text-anchor":"middle", "font-size":14, "font-weight":700, style:"fill:var(--ink)"}, sp, "Tverrsnittet (kappet på tvers)");
+  el("text",{x:cx, y:28, "text-anchor":"middle", "font-size":14, "font-weight":700, style:"fill:var(--ink)"}, sp, "Stang i S355");
+  $("spSteps").innerHTML = `A₀ = π · d² / 4 = π · ${d}² / 4 = <b>${fmt(A,1)} mm²</b><br>σ = F / A₀ = ${fmtT(F*1000,0)} N / ${fmt(A,1)} mm²<br><span class="res">σ = ${fmt(s,0)} MPa</span>`;
+  $("spBar").style.width = Math.min(100, s/700*100) + "%"; $("spBar").style.background = col;
+  const m = {ok:[`${fmt(s,0)} MPa: godt under flytegrensen. Stangen strekker seg litt, men går tilbake (elastisk).`,"ok"],
+    hoy:[`${fmt(s,0)} MPa: fortsatt elastisk, men over 60 % av flytegrensen. Lite sikkerhetsmargin.`,"warn"],
+    flyt:[`${fmt(s,0)} MPa: over R_eH = 355 MPa. Atomlagene glir – stangen blir varig forlenget.`,"warn"],
+    brudd:[`${fmt(s,0)} MPa: over strekkfastheten R_m ≈ 510 MPa. Stangen ryker!`,"bad"]}[st];
+  setStatus("spTxt", m[0].replace("R_eH","ReH").replace("R_m","Rm"), m[1]);
+}
+$("spF").addEventListener("input", drawSp); $("spD").addEventListener("input", drawSp); drawSp();
+
+/* ---------- Del 2: strekkprøven ---------- */
+const MAT = [
+  {k:"s355", n:"S355", col:"--steel-dark", E:210000, ReH:380, ReL:365, epl:1.8, Rm:530, eu:16, ef:28, sf:420, Z:65, A:28},
+  {k:"r316", n:"Rustfritt 316L", col:"--blue", E:200000, Rp:280, Rm:600, eu:40, ef:52, sf:470, Z:72, A:52, a:110, tau:0.15},
+  {k:"al", n:"Aluminium 6082", col:"--green", E:70000, Rp:260, Rm:310, eu:7, ef:11, sf:270, Z:38, A:11, a:70, tau:0.12},
+  {k:"gj", n:"Gråjern GJL-250", col:"--purple", E:110000, Rm:260, ef:0.6, Z:0, A:0.5}
+];
+function sigma(m, e){
+  if (m.k==="s355"){ const ey = m.ReH/m.E*100;
+    if (e<ey) return m.E*e/100;
+    if (e<0.3) return m.ReH-(m.ReH-m.ReL)*(e-ey)/(0.3-ey);
+    if (e<m.epl) return m.ReL+4*Math.sin(e*14);
+    if (e<m.eu){ const t=(e-m.epl)/(m.eu-m.epl); return m.ReL+(m.Rm-m.ReL)*(1-Math.pow(1-t,2.4)); }
+    const t=Math.min(1,(e-m.eu)/(m.ef-m.eu)); return m.Rm-(m.Rm-m.sf)*Math.pow(t,1.8); }
+  if (m.k==="gj"){ const t=Math.min(1,e/m.ef); return m.Rm*(1-Math.pow(1-t,1.7)); }
+  const s0 = 0.7*m.Rp, eel = s0/m.E*100;
+  if (e<eel) return m.E*e/100;
+  if (e<m.eu){ const x=e-eel, X=m.eu-eel; return s0+m.a*(1-Math.exp(-x/m.tau))+(m.Rm-s0-m.a)*(1-Math.pow(1-x/X,2)); }
+  const t=Math.min(1,(e-m.eu)/(m.ef-m.eu)); return m.Rm-(m.Rm-m.sf)*Math.pow(t,1.8);
+}
+MAT.forEach(m => { if (m.Rp){ let e=0.2; while (sigma(m,e) > m.E*(e-0.2)/100 && e<5) e+=0.001; m.rp = Math.round(sigma(m,e)/5)*5; } });
+// graf
+const sg = $("ssGraf");
+const SA = axes(sg, {x0:62, y0:330, x1:540, y1:34, xmax:55, ymax:700, xt:[0,10,20,30,40,50], yt:[0,100,200,300,400,500,600,700], xl:"tøyning ε (%) →", yl:"↑ spenning σ (MPa)"});
+const ssDone = el("g",{},sg), ssLive = el("polyline",{fill:"none", style:"stroke-width:3.5;stroke-linejoin:round"}, sg), ssMarks = el("g",{},sg);
+const ssDot = el("circle",{r:6, style:"fill:var(--red);stroke:var(--panel);stroke-width:2"}, sg);
+const done = new Set();
+function curvePts(m, eMax){ const pts=[]; const N=260; for (let i=0;i<=N;i++){ const e = eMax*Math.pow(i/N,1.6); pts.push(`${SA.X(e).toFixed(1)},${SA.Y(sigma(m,e)).toFixed(1)}`); } return pts.join(" "); }
+function drawDone(){ ssDone.replaceChildren(); done.forEach(i => { const m=MAT[i]; el("polyline",{points:curvePts(m,m.ef*0.999), fill:"none", style:`stroke:var(${m.col});stroke-width:2;opacity:.35`}, ssDone);
+  el("text",{x:SA.X(m.ef)+5, y:SA.Y(sigma(m,m.ef*0.999))+4, "font-size":11, style:`fill:var(${m.col});opacity:.7`}, ssDone, m.n); }); }
+// maskin
+const tm = $("tm"); sgrad(tm,"tmg");
+el("rect",{x:30, y:470, width:360, height:36, rx:6, style:"fill:var(--steel-dark)"}, tm);
+el("rect",{x:30, y:6, width:360, height:26, rx:6, style:"fill:var(--steel-dark)"}, tm);
+[70,350].forEach(x => { el("rect",{x:x-8, y:32, width:16, height:438, style:"fill:var(--steel)"}, tm);
+  for (let y=40;y<470;y+=10) el("line",{x1:x-8, y1:y, x2:x+8, y2:y+6, style:"stroke:var(--steel-dark);stroke-width:1.5"}, tm); });
+el("text",{x:210, y:497, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:#fff"}, tm, "STREKKMASKIN");
+const tmDyn = el("g",{}, tm);
+const CX = 210, YB = 440, GRIP = 46, TR = 16, L0PX = 150, W0 = 22, WG = 34;
+function drawSpec(m, e, broken){
+  tmDyn.replaceChildren();
+  const eu = m.eu ? Math.min(e, m.eu) : e;
+  const Lg = L0PX*(1+e/100), yt = YB - (2*(GRIP+TR) + Lg);
+  const wu = W0/Math.sqrt(1+eu/100);
+  const nk = (m.eu && e>m.eu) ? Math.min(1,(e-m.eu)/(m.ef-m.eu)) : 0;
+  const zf = 1-Math.sqrt(1-m.Z/100);
+  const g0 = YB-GRIP, g1 = YB-GRIP-TR, g2 = yt+GRIP+TR, g3 = yt+GRIP, yc = g1 - Lg*0.56;
+  const hw = y => {
+    if (y>=g0 || y<=g3) return WG/2;
+    if (y>g1) return WG/2 + (wu/2-WG/2)*(g0-y)/TR;
+    if (y<g2) return WG/2 + (wu/2-WG/2)*(y-g3)/TR;
+    return wu/2*(1 - zf*nk*Math.exp(-Math.pow((y-yc)/15,2)));
+  };
+  const poly = (ya, yb2, dy) => { const L=[], R=[]; for (let y=ya; y>=yb2; y-=2){ L.push(`${(CX-hw(y)).toFixed(1)},${(y+dy).toFixed(1)}`); R.unshift(`${(CX+hw(y)).toFixed(1)},${(y+dy).toFixed(1)}`); } return L.concat(R).join(" "); };
+  const sty = "fill:url(#tmg);stroke:var(--steel-dark);stroke-width:1.5";
+  if (!broken) el("polygon",{points:poly(YB, yt, 0), style:sty}, tmDyn);
+  else {
+    const gap = 16;
+    const lo = el("polygon",{points:poly(YB, yc, 0), style:sty}, tmDyn);
+    el("polygon",{points:poly(yc, yt, 0), style:sty, transform:`translate(0,${-gap})`}, tmDyn);
+    if (m.k==="gj"){ /* flat */ }
+    else { el("path",{d:`M${CX-hw(yc)} ${yc} q${hw(yc)} -5 ${2*hw(yc)} 0`, style:"fill:none;stroke:var(--steel-dark);stroke-width:2"}, tmDyn); }
+  }
+  const top = broken ? yt-16 : yt;
+  // grep
+  el("rect",{x:CX-30, y:YB-GRIP-4, width:60, height:GRIP+30, rx:4, style:"fill:var(--steel-dark);opacity:.92"}, tmDyn);
+  el("rect",{x:CX-30, y:top-26, width:60, height:GRIP+30, rx:4, style:"fill:var(--steel-dark);opacity:.92"}, tmDyn);
+  // traverse + kraftmåler
+  el("rect",{x:56, y:top-76, width:308, height:28, rx:4, style:"fill:var(--blue)"}, tmDyn);
+  el("text",{x:110, y:top-57, "font-size":12, "font-weight":700, style:"fill:#fff"}, tmDyn, "traverse ↑");
+  el("rect",{x:CX-22, y:top-48, width:44, height:22, rx:3, style:"fill:var(--yellow)"}, tmDyn);
+  el("text",{x:CX+28, y:top-32, "font-size":12, "font-weight":600, style:"fill:var(--ink)"}, tmDyn, "kraftmåler");
+  // målemerker + ekstensometer
+  const mT = broken ? g2-16 : g2;
+  [[g1,0],[mT,1]].forEach(([y]) => { el("line",{x1:CX-hw(y)-8, y1:y, x2:CX+hw(y)+40, y2:y, style:"stroke:var(--red);stroke-width:2"}, tmDyn); });
+  el("line",{x1:CX+hw(g1)+40, y1:g1, x2:CX+hw(g1)+40, y2:mT, style:"stroke:var(--red);stroke-width:2"}, tmDyn);
+  el("rect",{x:CX+hw(g1)+34, y:(g1+mT)/2-22, width:12, height:44, rx:3, style:"fill:var(--red)"}, tmDyn);
+  el("text",{x:CX+hw(g1)+52, y:(g1+mT)/2-4, "font-size":12, "font-weight":700, style:"fill:var(--red)"}, tmDyn, "ekstenso-");
+  el("text",{x:CX+hw(g1)+52, y:(g1+mT)/2+11, "font-size":12, "font-weight":700, style:"fill:var(--red)"}, tmDyn, "meter");
+  el("text",{x:CX-hw(g1)-14, y:(g1+mT)/2+4, "text-anchor":"end", "font-size":13, "font-weight":700, style:"fill:var(--ink)"}, tmDyn, `L₀ + ΔL`);
+  el("text",{x:CX-hw(g1)-14, y:(g1+mT)/2+20, "text-anchor":"end", "font-size":12, style:"fill:var(--muted)"}, tmDyn, `${fmt(50*(1+e/100),1)} mm`);
+}
+let mi = 0, tU = 0, tAnim = 0;
+MAT.forEach((m,i) => { const b=document.createElement("button"); b.className="btn small"+(i?"":" on"); b.textContent=m.n; b.onclick=()=>{ tAnim++; if (tU>=1) done.add(mi); mi=i; tU=0; $("ssU").value=0; [...$("matBtns").children].forEach((x,j)=>x.classList.toggle("on",j===i)); drawDone(); renderTest(); }; $("matBtns").appendChild(b); });
+const uToE = (m,u) => m.ef*Math.pow(u,1.5);
+function renderTest(){
+  const m = MAT[mi], u = tU, broken = u>=1, e = broken ? m.ef : uToE(m,u), s = broken ? 0 : sigma(m,e);
+  drawSpec(m, e, broken);
+  ssLive.setAttribute("points", curvePts(m, Math.min(e, m.ef*0.999)));
+  ssLive.style.stroke = css(m.col);
+  const se = broken ? sigma(m,m.ef*0.999) : s;
+  ssDot.setAttribute("cx", SA.X(e)); ssDot.setAttribute("cy", SA.Y(se));
+  ssMarks.replaceChildren();
+  const mk = (x,y,t,dy) => { el("circle",{cx:SA.X(x), cy:SA.Y(y), r:5, style:`fill:var(--panel);stroke:var(${m.col});stroke-width:3`}, ssMarks); el("text",{x:SA.X(x)+8, y:SA.Y(y)+(dy||-8), "font-size":13, "font-weight":700, style:"fill:var(--ink)"}, ssMarks, t); };
+  if (m.k==="s355" && e>0.3) mk(m.ReH/m.E*100, m.ReH, `ReH ≈ ${m.ReH} MPa`, 20);
+  if (m.rp && e>0.6) mk(0.2+m.rp/m.E*100, m.rp, `Rp0,2 ≈ ${m.rp} MPa`, 20);
+  if (m.eu && e>m.eu) mk(m.eu, m.Rm, `Rm ≈ ${m.Rm} MPa`);
+  if (m.k==="gj" && broken) mk(m.ef, m.Rm*0.999, `Rm ≈ ${m.Rm} MPa – brudd`);
+  if (broken && m.k!=="gj") mk(m.ef, sigma(m,m.ef*0.999), `brudd, A ≈ ${m.A} %`, 20);
+  $("rF").textContent = fmt(s*78.54/1000,1) + " kN"; $("rL").textContent = fmt(e/100*50, e<1?3:1) + " mm";
+  $("rS").textContent = fmt(s,0) + " MPa"; $("rE").textContent = fmt(e, e<1?2:1) + " %";
+  let msg;
+  if (broken) msg = [m.k==="gj" ? `Brudd uten forvarsel! A ≈ ${fmtT(m.A,1)} %. Sprøtt – nesten ingen varig forlengelse.` : `5 · Brudd. Bitene settes sammen og måles (del 5): A ≈ ${m.A} %.`, m.k==="gj"?"bad":"ok"];
+  else if (m.k==="gj") msg = ["Gråjern: kurven går nesten rett opp. Grafittflakene (leksjon 2) virker som små sprekker.","warn"];
+  else if (e < (m.ReH||0.7*m.Rp)/m.E*100) msg = ["1 · Elastisk: staven strekker seg som en fjær. Slipper vi, går den tilbake. Linja er så bratt at den ser loddrett ut (se del 3).","info"];
+  else if (m.k==="s355" && e<m.epl) msg = ["2 · Flytegrensen ReH er nådd. Atomlagene begynner å gli (leksjon 1). Staven forlenges uten at kraften øker.","warn"];
+  else if (m.k!=="s355" && e<0.8) msg = ["2 · Ingen tydelig knekk – kurven bøyer mykt over. Derfor bruker vi Rp0,2 (del 4).","warn"];
+  else if (e<m.eu) msg = ["3 · Fastning: jo mer staven strekkes, jo mer kraft trengs. Atomlagene floker seg (kaldherding, leksjon 1). Staven blir jevnt lengre og tynnere.","warn"];
+  else msg = ["4 · Innsnevring: Rm er nådd. Staven blir tynn på ett sted – en hals – og kraften faller.","bad"];
+  setStatus("ssTxt", msg[0], msg[1]);
+}
+$("btnTest").onclick = () => { const id=++tAnim; const m=MAT[mi]; const dur = m.k==="gj" ? 3500 : 9000; if (tU>=1) tU=0;
+  const start = performance.now() - tU*dur;
+  (function step(now){ if (id!==tAnim) return; tU = Math.min(1,(now-start)/dur); $("ssU").value = tU*1000; renderTest(); if (tU<1) requestAnimationFrame(step); else done.add(mi); })(start); };
+$("ssU").addEventListener("input", e => { tAnim++; tU = +e.target.value/1000; renderTest(); });
+renderTest();
+
+/* ---------- Del 3: E-modul ---------- */
+const eg = $("eGraf");
+const EA = axes(eg, {x0:62, y0:300, x1:500, y1:30, xmax:0.8, ymax:800, xt:[0,0.2,0.4,0.6,0.8], yt:[0,200,400,600,800], xl:"tøyning ε (%) →", yl:"↑ σ (MPa)"});
+const ELIN = [{n:"S355",E:210000,lim:355,col:"--steel-dark"},{n:"42CrMo4",E:210000,lim:750,col:"--blue",dash:true},{n:"Titan",E:110000,lim:830,col:"--purple"},{n:"Aluminium",E:70000,lim:260,col:"--green"}];
+ELIN.forEach(l => { const ex = l.lim/l.E*100; el("line",{x1:EA.X(0), y1:EA.Y(0), x2:EA.X(ex), y2:EA.Y(l.lim), style:`stroke:var(${l.col});stroke-width:${l.dash?3:4};${l.dash?"stroke-dasharray:9 6":""}`}, eg);
+  el("circle",{cx:EA.X(ex), cy:EA.Y(l.lim), r:6, style:`fill:var(--panel);stroke:var(${l.col});stroke-width:3`}, eg);
+  el("text",{x:EA.X(ex)+(l.n==="Titan"?-10:9), y:EA.Y(l.lim)+(l.n==="S355"?-6:l.n==="Titan"?18:5), "text-anchor":(l.n==="Titan"?"end":"start"), "font-size":12, "font-weight":700, style:`fill:var(${l.col})`}, eg, `${l.n} (${l.lim})`); });
+el("text",{x:EA.X(0.01), y:EA.Y(720), "font-size":11, style:"fill:var(--muted)"}, eg, "stål: samme helning");
+ el("text",{x:EA.X(0.01), y:EA.Y(680), "font-size":11, style:"fill:var(--muted)"}, eg, "= samme stivhet");
+const eLine = el("line",{x1:EA.X(0), x2:EA.X(0.8), "stroke-dasharray":"5 5", style:"stroke:var(--orange);stroke-width:2"}, eg);
+const eDots = ELIN.map(l => el("circle",{r:5, style:`fill:var(${l.col})`}, eg));
+const eb = $("eBars"); sgrad(eb,"ebg"); arrowDefs(eb,"ebA",css("--red"));
+el("rect",{x:20, y:10, width:16, height:210, style:"fill:var(--steel-soft);stroke:var(--steel-dark)"}, eb);
+for (let y=14;y<220;y+=12) el("line",{x1:20, y1:y+8, x2:36, y2:y, style:"stroke:var(--steel-dark)"}, eb);
+const BARS = [{n:"Stål",E:210000,y:30},{n:"Titan",E:110000,y:100},{n:"Aluminium",E:70000,y:170}];
+const bEls = BARS.map(b => { const r = el("rect",{x:36, y:b.y, width:300, height:24, rx:3, fill:"url(#ebg)", style:"stroke:var(--steel-dark)"}, eb);
+  const ref = el("line",{x1:336, y1:b.y-8, x2:336, y2:b.y+32, "stroke-dasharray":"3 3", style:"stroke:var(--muted)"}, eb);
+  const ext = el("rect",{x:336, y:b.y, width:0, height:24, style:"fill:var(--orange);opacity:.8"}, eb);
+  const ar = el("line",{y1:b.y+12, y2:b.y+12, "marker-end":"url(#ebA)", style:"stroke:var(--red);stroke-width:4"}, eb);
+  el("text",{x:44, y:b.y+17, "font-size":13, "font-weight":700, style:"fill:#222"}, eb, b.n);
+  const t = el("text",{y:b.y+17, "font-size":13, "font-weight":700, style:"fill:var(--orange)"}, eb, "");
+  return {r, ext, ar, t}; });
+el("text",{x:336, y:226, "text-anchor":"middle", "font-size":11, style:"fill:var(--muted)"}, eb, "start (1000 mm)");
+function drawE(){ const s = +$("eS").value; $("eSv").textContent = s + " MPa";
+  eLine.setAttribute("y1", EA.Y(s)); eLine.setAttribute("y2", EA.Y(s));
+  ELIN.forEach((l,i) => { eDots[i].setAttribute("cx", EA.X(s/l.E*100)); eDots[i].setAttribute("cy", EA.Y(s)); eDots[i].style.opacity = s<=l.lim ? 1 : 0; });
+  BARS.forEach((b,i) => { const dl = s/b.E*1000, px = dl*45; const o = bEls[i];
+    o.ext.setAttribute("width", px); o.ar.setAttribute("x1", 340+px); o.ar.setAttribute("x2", 384+px);
+    o.t.setAttribute("x", 392+px); o.t.textContent = `+${fmt(dl,2)} mm`; }); }
+$("eS").addEventListener("input", drawE); drawE();
+
+/* ---------- Del 4: Rp0,2 ---------- */
+const RE = 70000, RP = 260, RN = 18;
+const roE = s => (s/RE + 0.002*Math.pow(s/RP, RN))*100;
+const rg = $("rpGraf");
+const RA = axes(rg, {x0:62, y0:310, x1:520, y1:30, xmax:1.6, ymax:320, xt:[0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6], yt:[0,50,100,150,200,250,300], xl:"tøyning ε (%) →", yl:"↑ σ (MPa)"});
+let pts = []; for (let s=0; s<=290; s+=1){ const e = roE(s); if (e>1.6) break; pts.push(`${RA.X(e).toFixed(1)},${RA.Y(s).toFixed(1)}`); }
+el("polyline",{points:pts.join(" "), fill:"none", style:"stroke:var(--green);stroke-width:4;stroke-linejoin:round"}, rg);
+el("text",{x:RA.X(1.25), y:RA.Y(298), "font-size":13, "font-weight":700, style:"fill:var(--green)"}, rg, "Aluminium 6082");
+const rpLoad = el("polyline",{fill:"none", style:"stroke:var(--orange);stroke-width:6;opacity:.45;stroke-linejoin:round"}, rg);
+const rpUn = el("line",{style:"stroke:var(--blue);stroke-width:3;stroke-dasharray:7 5"}, rg);
+const rpRes = el("g",{}, rg), rpOff = el("g",{}, rg);
+const rpDot = el("circle",{r:7, style:"fill:var(--red);stroke:var(--panel);stroke-width:2"}, rg);
+let rpAnim = 0;
+function drawRp(unloadFrac){
+  const s = +$("rpS").value; $("rpSv").textContent = s + " MPa";
+  const et = roE(s), ee = s/RE*100, ep = et - ee;
+  const p2 = []; for (let x=0; x<=s; x+=2) p2.push(`${RA.X(roE(x)).toFixed(1)},${RA.Y(x).toFixed(1)}`); p2.push(`${RA.X(et)},${RA.Y(s)}`);
+  rpLoad.setAttribute("points", p2.join(" "));
+  rpRes.replaceChildren();
+  const f = unloadFrac||0, sNow = s*(1-f), eNow = et - (s-sNow)/RE*100;
+  rpDot.setAttribute("cx", RA.X(eNow)); rpDot.setAttribute("cy", RA.Y(sNow));
+  if (f>0){ rpUn.setAttribute("x1",RA.X(et)); rpUn.setAttribute("y1",RA.Y(s)); rpUn.setAttribute("x2",RA.X(eNow)); rpUn.setAttribute("y2",RA.Y(sNow)); rpUn.style.opacity=1; }
+  else rpUn.style.opacity = 0;
+  if (f>=1 && ep>0.02){ el("line",{x1:RA.X(0), y1:RA.Y(0)+14, x2:RA.X(ep), y2:RA.Y(0)+14, style:"stroke:var(--red);stroke-width:5"}, rpRes);
+    el("text",{x:RA.X(ep)+6, y:RA.Y(0)-26, "font-size":12, "font-weight":700, style:"fill:var(--red)"}, rpRes, `varig ${fmt(ep,2)} %`); }
+  $("rpT").textContent = fmt(et,2) + " %"; $("rpE").textContent = f>=1 ? fmt(ee,2)+" %" : "–"; $("rpP").textContent = f>=1 ? fmt(ep,2)+" %" : "–";
+  if (f>=1){
+    if (ep < 0.02) setStatus("rpTxt","Nesten alt fjæret tilbake – du var i det elastiske området.","ok");
+    else if (ep < 0.2) setStatus("rpTxt",`Litt varig forlengelse (${fmt(ep,2)} %). Under 0,2 % – vi sier at materialet ikke har «flytt» ennå.`,"warn");
+    else setStatus("rpTxt",`${fmt(ep,2)} % varig forlengelse. Over 0,2 % – du har passert Rp0,2.`,"bad");
+  } else setStatus("rpTxt","Dra i glideren for å laste opp. Trykk så «Slipp».","info");
+}
+$("rpS").addEventListener("input", () => { rpAnim++; drawRp(0); });
+$("btnUnload").onclick = () => { const id=++rpAnim, t0=performance.now(); (function st(now){ if(id!==rpAnim) return; const f=Math.min(1,(now-t0)/1200); drawRp(f); if(f<1) requestAnimationFrame(st); })(t0); };
+$("btnRp").onclick = () => { rpOff.replaceChildren();
+  const ln = el("line",{x1:RA.X(0.2), y1:RA.Y(0), x2:RA.X(0.2+310/RE*100), y2:RA.Y(310), style:"stroke:var(--purple);stroke-width:3"}, rpOff);
+  const L = Math.hypot(RA.X(0.2+310/RE*100)-RA.X(0.2), RA.Y(0)-RA.Y(310)); ln.style.strokeDasharray=L; ln.style.strokeDashoffset=L; ln.getBoundingClientRect(); ln.style.transition="stroke-dashoffset 1.2s"; ln.style.strokeDashoffset=0;
+  el("text",{x:RA.X(0.2)-4, y:RA.Y(0)-8, "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--purple)"}, rpOff, "0,2 %");
+  setTimeout(() => { el("circle",{cx:RA.X(roE(RP)), cy:RA.Y(RP), r:8, style:"fill:var(--purple)"}, rpOff);
+    el("line",{x1:RA.X(0), y1:RA.Y(RP), x2:RA.X(roE(RP)), y2:RA.Y(RP), "stroke-dasharray":"4 4", style:"stroke:var(--purple);stroke-width:1.5"}, rpOff);
+    el("text",{x:RA.X(roE(RP))+12, y:RA.Y(RP)+22, "font-size":15, "font-weight":800, style:"fill:var(--purple)"}, rpOff, `Rp0,2 = ${RP} MPa`);
+    setStatus("rpTxt","Tegn en linje fra 0,2 % parallelt med den elastiske linja. Der den treffer kurven, er Rp0,2 – her 260 MPa.","ok"); }, 1200); };
+$("btnRpR").onclick = () => { rpAnim++; rpOff.replaceChildren(); $("rpS").value = 200; drawRp(0); };
+drawRp(0);
+// kantpresse
+const bd = $("bend"); sgrad(bd,"bdg");
+const BC = {x:260, y:170}, BL = 170;
+el("path",{d:`M${BC.x-130} 290 L${BC.x-130} 200 L${BC.x-45} 200 L${BC.x} 245 L${BC.x+45} 200 L${BC.x+130} 200 L${BC.x+130} 290 Z`, style:"fill:var(--steel-dark)"}, bd);
+el("text",{x:BC.x, y:280, "text-anchor":"middle", "font-size":12, "font-weight":700, style:"fill:#fff"}, bd, "matrise (V-spor)");
+const plate = el("g",{}, bd), punch = el("g",{}, bd);
+el("path",{d:`M${BC.x-20} -60 L${BC.x+20} -60 L${BC.x+20} 0 L${BC.x} 26 L${BC.x-20} 0 Z`, style:"fill:var(--blue)"}, punch);
+el("text",{x:BC.x+28, y:-20, "font-size":12, "font-weight":700, style:"fill:var(--blue)"}, punch, "oververktøy");
+const angTxt = el("text",{x:BC.x, y:132, "text-anchor":"middle", "font-size":22, "font-weight":800, style:"fill:var(--ink)"}, bd, "");
+let bMat = 0, bAnim = 0;
+function drawBend(a, py, yy){ // a = leg angle from horizontal (deg), yy = plate centre
+  plate.replaceChildren();
+  const r = a*Math.PI/180;
+  el("line",{x1:BC.x, y1:yy, x2:BC.x-BL*Math.cos(r), y2:yy-BL*Math.sin(r), style:"stroke:var(--orange);stroke-width:10;stroke-linecap:round"}, plate);
+  el("line",{x1:BC.x, y1:yy, x2:BC.x+BL*Math.cos(r), y2:yy-BL*Math.sin(r), style:"stroke:var(--orange);stroke-width:10;stroke-linecap:round"}, plate);
+  punch.setAttribute("transform", `translate(0,${py})`);
+  angTxt.textContent = fmt(180-2*a,1) + "°";
+}
+function setBM(i){ bMat=i; $("bSt").classList.toggle("on",i===0); $("bAl").classList.toggle("on",i===1); bAnim++; drawBend(0,60,194); setStatus("bTxt","Velg materiale og bøy.","info"); }
+$("bSt").onclick = () => setBM(0); $("bAl").onclick = () => setBM(1);
+$("bGo").onclick = () => { const id=++bAnim, t0=performance.now(), spring = bMat ? 4 : 1.5, vis = spring*3;
+  (function st(now){ if(id!==bAnim) return; const t=(now-t0)/1000; let a, py, yy;
+    if (t<0.5){ a=0; yy=194; py=60+(163-60)*t/0.5; }
+    else if (t<1.8){ const u=(t-0.5)/1.3; a=45*u; yy=194+44*u; py=yy-31; }
+    else if (t<2.3){ a=45; yy=238; py=yy-31; }
+    else if (t<3.4){ const u=(t-2.3)/1.1; yy=238; py=207-(207-40)*u; a=45-(vis/2)*Math.min(1,u*2.5); }
+    else { a=45-vis/2; yy=238; py=40; }
+    drawBend(a, py, yy);
+    if (t>=3.4){ angTxt.textContent = `${fmt(90+spring,1)}°`; el("text",{x:BC.x, y:156, "text-anchor":"middle", "font-size":13, "font-weight":600, style:"fill:var(--muted)"}, plate, "stilt inn: 90°");
+      setStatus("bTxt", bMat ? `Aluminium fjærer ca. ${spring}° tilbake. Lav E-modul og høy Rp0,2 gir stor elastisk del som «spretter» tilbake.` : `Stål fjærer ca. ${spring}° tilbake. Bare den elastiske delen går tilbake – akkurat som avlastingen i diagrammet.`, bMat?"warn":"ok"); return; }
+    requestAnimationFrame(st); })(t0); };
+drawBend(0,60,194);
+
+/* ---------- Del 5: A og Z ---------- */
+const az = $("azSvg"); sgrad(az,"azg");
+let azMi = 0, azAnim = 0;
+MAT.forEach((m,i) => { const b=document.createElement("button"); b.className="btn small"+(i?"":" on"); b.textContent=m.n; b.onclick=()=>{ azMi=i; [...$("azBtns").children].forEach((x,j)=>x.classList.toggle("on",j===i)); azAnim++; drawAZ(0); }; $("azBtns").appendChild(b); });
+function bar(g, x0, x1, y, h, neckAt, neckF, flatEnd){ // horizontal specimen piece
+  const pts = [], pb = [];
+  for (let x=x0; x<=x1+0.01; x+=2){ const n = neckAt!==null ? 1 - neckF*Math.exp(-Math.pow((x-neckAt)/10,2)) : 1; pts.push(`${x.toFixed(1)},${(y-h/2*n).toFixed(1)}`); pb.unshift(`${x.toFixed(1)},${(y+h/2*n).toFixed(1)}`); }
+  el("polygon",{points:pts.concat(pb).join(" "), fill:"url(#azg)", style:"stroke:var(--steel-dark);stroke-width:1.5"}, g);
+}
+function drawAZ(f){
+  const m = MAT[azMi]; az.replaceChildren(); sgrad(az,"azg"); arrowDefs(az,"azA",css("--ink"));
+  const S = 5.5, L0 = 50*S, x0 = 90, h = 26, Lu = 50*(1+m.A/100), LuPx = Lu*S;
+  const zf = 1-Math.sqrt(1-m.Z/100);
+  const dim = (xa, xb, y, t, c) => { el("line",{x1:xa, y1:y, x2:xb, y2:y, "marker-start":"url(#azA)", "marker-end":"url(#azA)", style:`stroke:${c||"var(--ink)"};stroke-width:1.5`}, az); el("text",{x:(xa+xb)/2, y:y-6, "text-anchor":"middle", "font-size":14, "font-weight":700, style:`fill:${c||"var(--ink)"}`}, az, t); };
+  // før
+  el("text",{x:10, y:80, "font-size":14, "font-weight":700, style:"fill:var(--muted)"}, az, "Før");
+  el("rect",{x:x0-46, y:75-20, width:46, height:40, rx:4, fill:"url(#azg)", style:"stroke:var(--steel-dark)"}, az);
+  el("rect",{x:x0+L0, y:75-20, width:46, height:40, rx:4, fill:"url(#azg)", style:"stroke:var(--steel-dark)"}, az);
+  bar(az, x0, x0+L0, 75, h, null, 0);
+  [x0, x0+L0].forEach(x => el("path",{d:`M${x} 58 l-5 -9 h10 z`, style:"fill:var(--red)"}, az));
+  dim(x0, x0+L0, 38, "L₀ = 50 mm");
+  // etter
+  const yA = 200, br = x0 + LuPx*0.55, gap = 60*(1-f) + 3;
+  el("text",{x:10, y:205, "font-size":14, "font-weight":700, style:"fill:var(--muted)"}, az, "Etter");
+  const left = el("g",{}, az), right = el("g",{transform:`translate(${gap},0)`}, az);
+  el("rect",{x:x0-46, y:yA-20, width:46, height:40, rx:4, fill:"url(#azg)", style:"stroke:var(--steel-dark)"}, left);
+  const hu = h/Math.sqrt(1+Math.min(m.A, m.eu||m.A)/100);
+  bar(left, x0, br, yA, hu, br, zf);
+  bar(right, br, x0+LuPx, yA, hu, br, zf);
+  el("rect",{x:x0+LuPx, y:yA-20, width:46, height:40, rx:4, fill:"url(#azg)", style:"stroke:var(--steel-dark)"}, right);
+  el("path",{d:`M${x0} ${yA-17} l-5 -9 h10 z`, style:"fill:var(--red)"}, left);
+  el("path",{d:`M${x0+LuPx} ${yA-17} l-5 -9 h10 z`, style:"fill:var(--red)"}, right);
+  if (f>=1){ dim(x0, x0+LuPx+3, yA+48, `Lu = ${fmt(Lu,1)} mm`, css("--orange")); }
+  // tverrsnitt
+  const cx = 690, R = 36;
+  el("circle",{cx, cy:75, r:R, style:"fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"}, az);
+  el("text",{x:cx, y:75+R+18, "text-anchor":"middle", "font-size":12, style:"fill:var(--ink)"}, az, "A₀ = 78,5 mm²");
+  const Ru = R*Math.sqrt(1-m.Z/100);
+  el("circle",{cx, cy:yA, r:R, "stroke-dasharray":"4 4", style:"fill:none;stroke:var(--muted)"}, az);
+  el("circle",{cx, cy:yA, r:Math.max(Ru,1.5), style:"fill:var(--orange-soft);stroke:var(--orange);stroke-width:2"}, az);
+  const Su = 78.54*(1-m.Z/100);
+  el("text",{x:cx, y:yA+R+18, "text-anchor":"middle", "font-size":12, style:"fill:var(--ink)"}, az, `Su = ${fmt(Su,1)} mm²`);
+  el("text",{x:cx, y:22, "text-anchor":"middle", "font-size":12, "font-weight":700, style:"fill:var(--muted)"}, az, "tverrsnitt i halsen");
+  $("azSteps").innerHTML = f>=1 ? `A = (Lu − L₀) / L₀ · 100 %<br>= (${fmt(Lu,1)} − 50) / 50 · 100 %<br><span class="res">A ≈ ${fmtT(m.A,1)} %</span><br><br>Z = (A₀ − Su) / A₀ · 100 %<br>= (78,5 − ${fmt(Su,1)}) / 78,5 · 100 %<br><span class="res">Z ≈ ${m.Z} %</span>`
+    : "Trykk på knappen for å sette bitene sammen og måle.";
+}
+$("azGo").onclick = () => { const id=++azAnim, t0=performance.now(); (function st(now){ if(id!==azAnim) return; const f=Math.min(1,(now-t0)/1000); drawAZ(f); if(f<1) requestAnimationFrame(st); })(t0); };
+drawAZ(0);
+
+/* ---------- Del 6: hardhet ---------- */
+const HM = [
+  {n:"S235 (mykt stål)", HB:120, HV:125, HRB:70},
+  {n:"C45 normalisert", HB:200, HV:210, HRB:93},
+  {n:"Aluminium 6082", HB:95, HV:100, HRB:58, al:true},
+  {n:"Herdet C45", HV:700, HRC:60}
+];
+const METH = {
+  bri:{n:"Brinell", info:`<h3>Brinell (HBW)</h3><p>En hardmetallkule, <b>D = 10 mm</b>, presses inn med <b>29 420 N</b> (ca. 3 tonn) i 10–15 sekunder. Diameteren <b>d</b> på merket måles med lupe i to retninger.</p><p style="margin:0;color:var(--muted);font-size:.9rem">Skrives f.eks. <b>200 HBW 10/3000</b>: kule 10 mm, kraft 3000 kp (gammel enhet = 29 420 N).</p>`},
+  vic:{n:"Vickers", info:`<h3>Vickers (HV)</h3><p>En <b>diamantpyramide</b> med firkantet bunn presses inn, f.eks. med <b>294,2 N</b> (HV30). Merket blir en firkant. De to <b>diagonalene</b> (hjørne til hjørne) måles i mikroskop.</p><p style="margin:0;color:var(--muted);font-size:.9rem">Diamant er det hardeste vi har, så Vickers kan måle alt – også hardmetall.</p>`},
+  roc:{n:"Rockwell", info:`<h3>Rockwell C (HRC)</h3><p>En <b>diamantkjegle</b> presses inn i tre trinn: 1) <b>forlast</b> 98 N – måleuret nullstilles, 2) <b>hovedlast</b> til 1471 N, 3) tilbake til forlast. Den varige dybden leses rett av som HRC.</p><p style="margin:0;color:var(--muted);font-size:.9rem">Forlasten gjør at riper og skitt på overflaten ikke påvirker resultatet.</p>`}
+};
+let hMeth = "bri", hMat = 1, hAnim = 0;
+Object.keys(METH).forEach(k => { const b=document.createElement("button"); b.className="btn"+(k===hMeth?" on":""); b.textContent=METH[k].n; b.dataset.k=k; b.onclick=()=>{ hMeth=k; [...$("hdTabs").children].forEach(x=>x.classList.toggle("on",x.dataset.k===k)); hdReset(); }; $("hdTabs").appendChild(b); });
+HM.forEach((m,i) => { const b=document.createElement("button"); b.className="btn small"+(i===hMat?" on":""); b.textContent=m.n; b.onclick=()=>{ hMat=i; [...$("hdMats").children].forEach((x,j)=>x.classList.toggle("on",j===i)); hdReset(); }; $("hdMats").appendChild(b); });
+function hdCalc(){
+  const m = HM[hMat];
+  if (hMeth==="bri"){
+    if (!m.HB) return {ok:false, msg:"For hardt for Brinell (over ca. 650 HBW). Kula ville blitt flatet ut. Bruk Rockwell C eller Vickers."};
+    const F = m.al ? 4903 : 29420, D = 10, k = 0.102*2*F/(Math.PI*D*m.HB), d = Math.sqrt(D*D-(D-k)*(D-k)), h = (D-Math.sqrt(D*D-d*d))/2;
+    return {ok:true, F, d, h, val:m.HB, txt:`${m.HB} HBW 10/${m.al?500:3000}`, steps:`F = ${fmtT(F,0)} N, D = 10 mm, målt d = ${fmt(d,2)} mm<br>HB = 0,102 · 2F / (π · D · (D − √(D² − d²)))<br>= 0,102 · ${fmtT(2*F,0)} / (π · 10 · (10 − √(100 − ${fmt(d*d,2)})))<br><span class="res">= ${m.HB} HBW</span>${m.al?"<br><span style='font-size:.8rem'>Aluminium: lavere kraft (500 kp = 4903 N), ellers blir merket for stort.</span>":""}`};
+  }
+  if (hMeth==="vic"){
+    const F = 294.2, d = Math.sqrt(0.1891*F/m.HV), h = d/7;
+    return {ok:true, F, d, h, val:m.HV, txt:`${m.HV} HV30`, steps:`F = 294,2 N (HV30)<br>d₁ ≈ d₂ ≈ ${fmt(d,3)} mm → d = ${fmt(d,3)} mm<br>HV = 0,1891 · F / d²<br>= 0,1891 · 294,2 / ${fmt(d*d,4)}<br><span class="res">= ${m.HV} HV30</span>`};
+  }
+  if (m.HRC){ const h = 0.002*(100-m.HRC); return {ok:true, h, val:m.HRC, rc:true, txt:`${m.HRC} HRC`, steps:`Varig dybde etter hovedlast: e = ${fmt(h,3)} mm<br>HRC = 100 − e / 0,002<br>= 100 − ${fmt(h,3)} / 0,002<br><span class="res">= ${m.HRC} HRC</span><br><span style="font-size:.8rem">Måleuret regner ut dette selv – du leser tallet rett av.</span>`}; }
+  const h = 0.002*(130-m.HRB);
+  return {ok:true, h, val:m.HRB, rc:false, txt:`${m.HRB} HRB`, steps:`For mykt for HRC (under 20). Bytt til <b>HRB</b>: stålkule Ø1,59 mm, hovedlast 980 N.<br>HRB = 130 − e / 0,002<br>= 130 − ${fmt(h,3)} / 0,002<br><span class="res">= ${m.HRB} HRB</span>`};
+}
+const hd = $("hdSvg");
+function hdDraw(p){
+  const r = hdCalc(); hd.replaceChildren(); sgrad(hd,"hdg"); arrowDefs(hd,"hdA",css("--red"));
+  const S0 = 230, cx = 165;
+  // emne
+  let scale, depthPx = 0, halfW = 0;
+  if (r.ok){
+    if (hMeth==="bri"){ scale = 12; depthPx = r.h*scale; halfW = r.d/2*scale; }
+    else if (hMeth==="vic"){ scale = 200; depthPx = r.h*scale; halfW = depthPx*2.475; }
+    else { scale = 300; depthPx = r.h*scale; halfW = r.rc ? depthPx*1.732 : Math.sqrt(Math.max(0, 2*50*depthPx - depthPx*depthPx)); }
+  }
+  // dybdeprogresjon
+  let ind = -150, dep = 0, showF = false, extra = 0;
+  if (p>0){
+    if (p<0.3){ ind = -150 + 150*(p/0.3); }
+    else if (p<0.55){ ind = 0; dep = depthPx*((p-0.3)/0.25); showF = true; if (hMeth==="roc") extra = 10*((p-0.3)/0.25); }
+    else if (p<0.72){ ind = 0; dep = depthPx; showF = true; if (hMeth==="roc") extra = 10; }
+    else if (p<0.86 && hMeth==="roc"){ ind = 0; dep = depthPx; extra = 10*(1-(p-0.72)/0.14); }
+    else { const q = hMeth==="roc" ? Math.max(0,(p-0.86)/0.14) : (p-0.72)/0.28; ind = -150*Math.min(1,q); dep = depthPx; }
+  }
+  const dd = dep + extra*(dep>0?1:0);
+  // material block with indent
+  let surf;
+  if (dep>0 && r.ok){
+    if (hMeth==="bri" || (hMeth==="roc" && !r.rc)){ const R = hMeth==="bri" ? 60 : 50; const hw = Math.sqrt(Math.max(0,2*R*dep-dep*dep));
+      surf = `M15 ${S0} H${cx-hw} A${R} ${R} 0 0 0 ${cx+hw} ${S0} H315`; }
+    else { const hw = hMeth==="vic" ? dep*2.475 : dep*1.732; surf = `M15 ${S0} H${cx-hw} L${cx} ${S0+dep} L${cx+hw} ${S0} H315`; }
+  } else surf = `M15 ${S0} H315`;
+  el("path",{d:surf+` V345 H15 Z`, style:"fill:var(--steel);stroke:var(--steel-dark);stroke-width:1.5"}, hd);
+  el("text",{x:30, y:330, "font-size":12, "font-weight":700, style:"fill:#fff"}, hd, HM[hMat].n);
+  // inntrenger
+  const iy = S0 + ind + (ind>=0 ? dd : 0);
+  const ig = el("g",{}, hd);
+  if (hMeth==="bri"){ el("circle",{cx, cy:iy-60, r:60, style:"fill:#495057;stroke:#212529;stroke-width:2;opacity:.9"}, ig); el("rect",{x:cx-30, y:iy-160, width:60, height:60, style:"fill:var(--steel-dark)"}, ig); }
+  else if (hMeth==="vic"){ el("path",{d:`M${cx} ${iy} L${cx-99} ${iy-40} L${cx-99} ${iy-58} L${cx+99} ${iy-58} L${cx+99} ${iy-40} Z`, style:"fill:#a5d8ff;stroke:#1c7ed6;stroke-width:2;opacity:.9"}, ig); el("rect",{x:cx-30, y:iy-118, width:60, height:60, style:"fill:var(--steel-dark)"}, ig); }
+  else if (r.rc || !r.ok){ el("path",{d:`M${cx} ${iy} L${cx-69} ${iy-40} L${cx-69} ${iy-60} L${cx+69} ${iy-60} L${cx+69} ${iy-40} Z`, style:"fill:#a5d8ff;stroke:#1c7ed6;stroke-width:2;opacity:.9"}, ig); el("rect",{x:cx-30, y:iy-120, width:60, height:60, style:"fill:var(--steel-dark)"}, ig); }
+  else { el("circle",{cx, cy:iy-50, r:50, style:"fill:#495057;stroke:#212529;stroke-width:2;opacity:.9"}, ig); el("rect",{x:cx-26, y:iy-140, width:52, height:60, style:"fill:var(--steel-dark)"}, ig); }
+  if (showF){ el("line",{x1:cx+70, y1:60, x2:cx+70, y2:S0-30, "marker-end":"url(#hdA)", style:"stroke:var(--red);stroke-width:6"}, hd);
+    const ft = hMeth==="bri" ? (HM[hMat].al?"4903 N":"29 420 N") : hMeth==="vic" ? "294,2 N" : (p<0.55 ? "98 N → 1471 N" : "1471 N");
+    el("text",{x:cx+80, y:90, "font-size":14, "font-weight":800, style:"fill:var(--red)"}, hd, "F = " + ft); }
+  el("text",{x:165, y:372, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:var(--ink)"}, hd, "Snitt fra siden (forstørret)");
+  // høyre panel
+  const vx = 495, vy = 190;
+  el("text",{x:vx, y:22, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:var(--ink)"}, hd, hMeth==="roc" ? "Måleur" : "Merket sett ovenfra (mikroskop)");
+  if (hMeth!=="roc"){
+    const cp = el("clipPath",{id:"hdClip"}, el("defs",{},hd)); el("circle",{cx:vx, cy:vy, r:140}, cp);
+    const vg = el("g",{"clip-path":"url(#hdClip)"}, hd);
+    el("rect",{x:vx-140, y:vy-140, width:280, height:280, style:"fill:#cfd5db"}, vg);
+    for (let i=0;i<40;i++) el("line",{x1:vx-140, y1:vy-140+i*7.5, x2:vx+140, y2:vy-150+i*7.5, style:"stroke:#bcc3ca;stroke-width:1"}, vg);
+    if (r.ok && p>0.72){
+      const q = Math.min(1,(p-0.72)/0.2);
+      if (hMeth==="bri"){ const SS = HM[hMat].al ? 50 : 32, R = r.d/2*SS;
+        el("circle",{cx:vx, cy:vy, r:R, style:`fill:#868e96;stroke:#343a40;stroke-width:2;opacity:${q}`}, vg);
+        el("circle",{cx:vx-R*0.3, cy:vy-R*0.3, r:R*0.5, style:`fill:#adb5bd;opacity:${q*0.6}`}, vg);
+        if (q>=1){ el("line",{x1:vx-R, y1:vy, x2:vx+R, y2:vy, style:"stroke:var(--red);stroke-width:2.5"}, vg); el("line",{x1:vx, y1:vy-R, x2:vx, y2:vy+R, style:"stroke:var(--red);stroke-width:2.5"}, vg);
+          el("text",{x:vx+8, y:vy-8, "font-size":15, "font-weight":800, style:"fill:var(--red)"}, vg, `d = ${fmt(r.d,2)} mm`); }
+        el("line",{x1:vx-60, y1:vy+118, x2:vx-60+SS, y2:vy+118, style:"stroke:#111;stroke-width:4"}, vg); el("text",{x:vx-60+SS/2, y:vy+110, "text-anchor":"middle", "font-size":11, style:"fill:#111"}, vg, "1 mm");
+      } else { const SS = 300, a = r.d/2*SS;
+        el("path",{d:`M${vx} ${vy-a} L${vx+a} ${vy} L${vx} ${vy+a} L${vx-a} ${vy} Z`, style:`fill:#868e96;stroke:#343a40;stroke-width:2;opacity:${q}`}, vg);
+        el("path",{d:`M${vx} ${vy-a} L${vx} ${vy+a} M${vx-a} ${vy} L${vx+a} ${vy}`, style:`stroke:#495057;stroke-width:1;opacity:${q}`}, vg);
+        if (q>=1){ el("line",{x1:vx-a, y1:vy+4, x2:vx+a, y2:vy+4, style:"stroke:var(--red);stroke-width:2.5"}, vg); el("line",{x1:vx+4, y1:vy-a, x2:vx+4, y2:vy+a, style:"stroke:var(--blue);stroke-width:2.5"}, vg);
+          el("text",{x:vx+a*0.25, y:vy+22, "font-size":14, "font-weight":800, style:"fill:var(--red)"}, vg, "d₁"); el("text",{x:vx+10, y:vy-a*0.45, "font-size":14, "font-weight":800, style:"fill:var(--blue)"}, vg, "d₂"); }
+        el("line",{x1:vx-75, y1:vy+118, x2:vx-75+SS*0.5, y2:vy+118, style:"stroke:#111;stroke-width:4"}, vg); el("text",{x:vx, y:vy+110, "text-anchor":"middle", "font-size":11, style:"fill:#111"}, vg, "0,5 mm");
+      }
+    }
+    el("circle",{cx:vx, cy:vy, r:140, style:"fill:none;stroke:var(--ink);stroke-width:6"}, hd);
+  } else {
+    el("circle",{cx:vx, cy:vy, r:125, style:"fill:var(--panel);stroke:var(--ink);stroke-width:6"}, hd);
+    for (let i=0;i<100;i++){ const a = -Math.PI/2 + i/100*2*Math.PI, l = i%10===0 ? 16 : 7;
+      el("line",{x1:vx+(115-l)*Math.cos(a), y1:vy+(115-l)*Math.sin(a), x2:vx+115*Math.cos(a), y2:vy+115*Math.sin(a), style:`stroke:var(--ink);stroke-width:${i%10===0?2.5:1}`}, hd);
+      if (i%10===0) el("text",{x:vx+86*Math.cos(a), y:vy+86*Math.sin(a)+5, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:var(--ink)"}, hd, String(i)); }
+    const base = r.rc ? 100 : 130;
+    const depMm = p>=0.3 ? (dep/depthPx)*r.h + extra/10*0.03 : 0;
+    const disp = (((base - depMm/0.002) % 100) + 100) % 100;
+    const ang = -Math.PI/2 + disp/100*2*Math.PI;
+    el("line",{x1:vx, y1:vy, x2:vx+100*Math.cos(ang), y2:vy+100*Math.sin(ang), style:"stroke:var(--red);stroke-width:5;stroke-linecap:round"}, hd);
+    el("circle",{cx:vx, cy:vy, r:9, style:"fill:var(--red)"}, hd);
+    const lab = p<=0 ? "" : p<0.3 ? "1 · forlast: viseren nullstilles" : p<0.72 ? "2 · hovedlast" : p<0.86 ? "3 · tilbake til forlast" : "Les av!";
+    el("text",{x:vx, y:vy+152, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:var(--muted)"}, hd, lab);
+  }
+  if (p>=1 && r.ok){ el("rect",{x:vx-115, y:vy+146, width:230, height:36, rx:8, style:"fill:var(--orange)"}, hd); el("text",{x:vx, y:vy+170, "text-anchor":"middle", "font-size":18, "font-weight":800, style:"fill:#fff"}, hd, r.txt.replace(" 10/"," · 10/")); }
+}
+function hdReset(){ hAnim++; $("hdInfo").innerHTML = METH[hMeth].info; const r = hdCalc(); $("hdSteps").innerHTML = r.ok ? "Trykk «Mål hardheten»." : r.msg;
+  setStatus("hdTxt", r.ok ? "Klar. Trykk på knappen." : r.msg, r.ok ? "info" : "bad"); hdDraw(0); }
+$("hdGo").onclick = () => { const r = hdCalc(); if (!r.ok){ hdDraw(0); return; } const id=++hAnim, t0=performance.now(), dur=5200;
+  setStatus("hdTxt","Inntrengeren presses ned …","warn");
+  (function st(now){ if(id!==hAnim) return; const p=Math.min(1,(now-t0)/dur); hdDraw(p);
+    if (p<1) requestAnimationFrame(st); else { $("hdSteps").innerHTML = r.steps;
+      setStatus("hdTxt", `Resultat: ${r.txt}. ${hMeth==="roc" ? "Grunt merke = hardt." : "Lite merke = hardt materiale."}`, "ok"); } })(t0); };
+hdReset();
+
+/* ---------- Del 7: Charpy ---------- */
+const KM = [
+  {n:"S355JR", lo:8, up:140, T0:0, w:8, req:[20,27], col:"--orange"},
+  {n:"S355J2", lo:8, up:140, T0:-28, w:8, req:[-20,27], col:"--blue"},
+  {n:"316L rustfritt", flat:150, col:"--green"}
+];
+const kv = (m,T) => m.flat ? m.flat : m.lo + (m.up-m.lo)/(1+Math.exp(-(T-m.T0)/m.w));
+let kMi = 1, kAnim = 0;
+KM.forEach((m,i) => { const b=document.createElement("button"); b.className="btn small"+(i===kMi?" on":""); b.textContent=m.n; b.onclick=()=>{ kMi=i; [...$("kMats").children].forEach((x,j)=>x.classList.toggle("on",j===i)); drawKV(); kAnim++; drawPend(151,0,null); }; $("kMats").appendChild(b); });
+const kg = $("kvGraf");
+const KA = axes(kg, {x0:60, y0:280, x1:505, y1:30, xmin:-60, xmax:40, ymax:180, xt:[-60,-40,-20,0,20,40], yt:[0,30,60,90,120,150,180], xl:"temperatur (°C) →", yl:"↑ KV (J)"});
+const kCurves = el("g",{}, kg), kCur = el("g",{}, kg);
+function drawKV(){
+  kCurves.replaceChildren();
+  el("line",{x1:KA.X(-60), y1:KA.Y(27), x2:KA.X(40), y2:KA.Y(27), "stroke-dasharray":"6 4", style:"stroke:var(--red);stroke-width:1.5"}, kCurves);
+  el("text",{x:KA.X(40)-4, y:KA.Y(27)-6, "text-anchor":"end", "font-size":11, "font-weight":700, style:"fill:var(--red)"}, kCurves, "27 J");
+  KM.forEach((m,i) => { const p=[]; for (let T=-60;T<=40;T+=1) p.push(`${KA.X(T)},${KA.Y(kv(m,T))}`);
+    el("polyline",{points:p.join(" "), fill:"none", style:`stroke:var(${m.col});stroke-width:${i===kMi?4:2};opacity:${i===kMi?1:.35}`}, kCurves);
+    el("text",{x:KA.X(m.flat?-58:m.T0)+8, y:KA.Y(kv(m,m.flat?-58:m.T0))+(m.flat?-8:4), "font-size":11, "font-weight":700, style:`fill:var(${m.col});opacity:${i===kMi?1:.5}`}, kCurves, m.n);
+    if (m.req && i===kMi) el("rect",{x:KA.X(m.req[0])-6, y:KA.Y(m.req[1])-6, width:12, height:12, style:`fill:none;stroke:var(--red);stroke-width:2.5`}, kCurves); });
+  if (!KM[kMi].flat){ const T0 = KM[kMi].T0; el("line",{x1:KA.X(T0), y1:KA.Y(0), x2:KA.X(T0), y2:KA.Y(170), "stroke-dasharray":"3 4", style:"stroke:var(--muted)"}, kCurves);
+    el("text",{x:KA.X(T0)+4, y:KA.Y(170)+4, "font-size":11, style:"fill:var(--muted)"}, kCurves, "overgangstemperatur"); }
+  el("text",{x:KA.X(-58), y:KA.Y(8)-6, "font-size":11, style:"fill:var(--muted)"}, kCurves, "sprøtt");
+  el("text",{x:KA.X(26), y:KA.Y(160), "font-size":11, style:"fill:var(--muted)"}, kCurves, "seigt");
+  drawKCur();
+}
+function drawKCur(){ const T = +$("kT").value, m = KM[kMi], v = kv(m,T); kCur.replaceChildren();
+  el("line",{x1:KA.X(T), y1:KA.Y(0), x2:KA.X(T), y2:KA.Y(180), style:"stroke:var(--ink);stroke-width:1.5"}, kCur);
+  el("circle",{cx:KA.X(T), cy:KA.Y(v), r:7, style:`fill:var(${m.col});stroke:var(--panel);stroke-width:2`}, kCur);
+  $("kTv").textContent = (T>0?"+":T<0?"−":"") + Math.abs(T) + " °C"; drawFrac(null); }
+$("kT").addEventListener("input", () => { drawKCur(); kAnim++; drawPend(151,0,null); });
+// bruddflate
+function drawFrac(v){ const fr = $("frac"); fr.replaceChildren();
+  el("text",{x:85, y:16, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:var(--ink)"}, fr, "Bruddflaten");
+  el("rect",{x:15, y:28, width:140, height:140, rx:3, style:"fill:var(--steel-soft);stroke:var(--line)"}, fr);
+  if (v===null){ el("text",{x:85, y:104, "text-anchor":"middle", "font-size":12, style:"fill:var(--muted)"}, fr, "slå først"); return; }
+  const m = KM[kMi], fd = m.flat ? 1 : Math.max(0, Math.min(1,(v-m.lo)/(m.up-m.lo)));
+  el("rect",{x:15, y:28, width:140, height:140, rx:3, style:"fill:#8f969d"}, fr);
+  let s = 3; const r = () => { s=(s*16807)%2147483647; return s/2147483647; };
+  for (let i=0;i<90;i++) el("line",{x1:15+r()*140, y1:28+r()*140, x2:15+r()*140, y2:28+r()*140, style:"stroke:#7c838a;stroke-width:1"}, fr);
+  const b = 8 + fd*58;
+  if (fd < 0.97){ const g = el("g",{}, fr); const x = 15+b, y = 28+b*0.8, w = 140-2*b, h = 140-b*1.6;
+    el("rect",{x, y, width:Math.max(w,4), height:Math.max(h,4), style:"fill:#c9d1d8"}, g);
+    for (let i=0;i<Math.round(60*(1-fd));i++){ const px = x+r()*w, py = y+r()*h, sz = 3+r()*7; el("path",{d:`M${px} ${py} l${sz} ${sz*0.4} l${-sz*0.3} ${sz} z`, style:`fill:${r()>0.5?"#f8f9fa":"#a5adb5"}`}, g); } }
+  el("path",{d:"M70 168 l15 -10 l15 10 z", style:"fill:var(--panel)"}, fr);
+  el("text",{x:85, y:184, "text-anchor":"middle", "font-size":11, style:"fill:var(--muted)"}, fr, fd>0.8 ? "matt og fibrete" : fd>0.3 ? "blandet" : "blank, krystallinsk");
+}
+// pendel
+const pd = $("pend"), PX = 260, PY = 205, PL = 165, MASS = 20, H1 = 1.5, LM = 0.8;
+const angFor = KV => { const h2 = H1 - KV/(MASS*9.81); return Math.acos(Math.max(-1,Math.min(1,1 - h2/LM)))*180/Math.PI; };
+function drawPend(a, ptr, broken){
+  pd.replaceChildren(); sgrad(pd,"pdg");
+  // ramme
+  el("rect",{x:PX-120, y:PY+PL+30, width:240, height:40, rx:4, style:"fill:var(--steel-dark)"}, pd);
+  el("path",{d:`M${PX-40} ${PY+PL+30} L${PX-8} ${PY-20} L${PX+8} ${PY-20} L${PX+40} ${PY+PL+30} Z`, style:"fill:var(--steel-soft);stroke:var(--line)"}, pd);
+  // skala med slepeviser
+  const sR = PL+26; for (let KV=0; KV<=290; KV+=50){
+    const ax = PX - sR*Math.sin(-angFor(KV)*Math.PI/180), ay = PY + sR*Math.cos(angFor(KV)*Math.PI/180);
+    el("line",{x1:ax, y1:ay, x2:PX-(sR+12)*Math.sin(-angFor(KV)*Math.PI/180), y2:PY+(sR+12)*Math.cos(angFor(KV)*Math.PI/180), style:"stroke:var(--ink);stroke-width:2"}, pd);
+    el("text",{x:PX-(sR+22)*Math.sin(-angFor(KV)*Math.PI/180), y:PY+(sR+22)*Math.cos(angFor(KV)*Math.PI/180)+4, "text-anchor":"middle", "font-size":11, style:"fill:var(--muted)"}, pd, KV); }
+  el("text",{x:20, y:300, "font-size":12, "font-weight":700, style:"fill:var(--red)"}, pd, "▲ slepeviser: blir stående");
+  el("text",{x:20, y:316, "font-size":12, style:"fill:var(--muted)"}, pd, "i høyeste punkt og viser KV (J)");
+  // slepeviser
+  const pr = ptr*Math.PI/180;
+  const ptrG = el("g",{transform:`rotate(${ptr} ${PX} ${PY})`}, pd); el("line",{x1:PX, y1:PY+PL+20, x2:PX, y2:PY+sR+2, style:"stroke:var(--red);stroke-width:3"}, ptrG); el("path",{d:`M${PX} ${PY+sR-2} l-7 14 h14 z`, style:"fill:var(--red)"}, ptrG);
+  // høydelinjer
+  const ar = a*Math.PI/180;
+  // prøve
+  const T = +$("kT").value, cold = T<0;
+  const sx = PX+18, sy = PY+PL;
+  if (!broken){ el("rect",{x:sx, y:sy-9, width:18, height:18, style:`fill:${cold?"#a5d8ff":"#adb5bd"};stroke:var(--steel-dark);stroke-width:1.5`}, pd); el("path",{d:`M${sx+18} ${sy-4} l-5 4 l5 4`, style:"fill:var(--panel);stroke:var(--steel-dark)"}, pd); }
+  else { const k = broken.t; el("rect",{x:sx+k*120, y:sy-9-k*60+k*k*90, width:9, height:18, transform:`rotate(${k*200} ${sx+k*120} ${sy-k*60})`, style:`fill:${cold?"#a5d8ff":"#adb5bd"};stroke:var(--steel-dark)`}, pd);
+    el("rect",{x:sx+9+k*170, y:sy-9-k*90+k*k*140, width:9, height:18, transform:`rotate(${-k*260} ${sx+9+k*170} ${sy-k*90})`, style:`fill:${cold?"#a5d8ff":"#adb5bd"};stroke:var(--steel-dark)`}, pd); }
+  el("rect",{x:sx-4, y:sy+9, width:28, height:21, style:"fill:var(--steel-dark)"}, pd);
+  // pendel
+  const g = el("g",{transform:`rotate(${a} ${PX} ${PY})`}, pd);
+  el("line",{x1:PX, y1:PY, x2:PX, y2:PY+PL-24, style:"stroke:var(--steel-dark);stroke-width:7"}, g);
+  el("path",{d:`M${PX-34} ${PY+PL-26} H${PX+10} L${PX+18} ${PY+PL} L${PX+10} ${PY+PL+16} H${PX-34} Z`, fill:"url(#pdg)", style:"stroke:var(--steel-dark);stroke-width:2"}, g);
+  el("circle",{cx:PX, cy:PY, r:9, style:"fill:var(--ink)"}, pd);
+  el("text",{x:PX-110, y:PY+PL+58, "font-size":12, "font-weight":700, style:"fill:#fff"}, pd, cold ? `prøve kjølt til ${T} °C` : `prøve ved ${T>0?"+":""}${T} °C`);
+  // h1 og h2 linjer
+  const yAt = deg => PY + PL*Math.cos(deg*Math.PI/180);
+  el("line",{x1:20, y1:yAt(151), x2:120, y2:yAt(151), "stroke-dasharray":"4 4", style:"stroke:var(--orange);stroke-width:1.5"}, pd);
+  el("text",{x:22, y:yAt(151)-6, "font-size":12, "font-weight":700, style:"fill:var(--orange)"}, pd, "h₁ = 1,5 m");
+  if (ptr<-1){ el("line",{x1:20, y1:yAt(-ptr), x2:120, y2:yAt(-ptr), "stroke-dasharray":"4 4", style:"stroke:var(--blue);stroke-width:1.5"}, pd);
+    el("text",{x:22, y:yAt(-ptr)-6, "text-anchor":"start", "font-size":12, "font-weight":700, style:"fill:var(--blue)"}, pd, `h₂ = ${fmt(LM*(1-Math.cos(-ptr*Math.PI/180)),2)} m`); }
+}
+$("kGo").onclick = () => { const id=++kAnim, m = KM[kMi], T = +$("kT").value, v = kv(m,T), a2 = angFor(v), t0 = performance.now();
+  setStatus("kTxt","Pendelen faller …","warn"); drawFrac(null);
+  (function st(now){ if(id!==kAnim) return; const t=(now-t0)/1000; let a, ptr=0, br=null;
+    if (t<0.9){ a = 151*Math.cos(Math.PI/2*t/0.9); }
+    else if (t<0.9+1.1){ const u=(t-0.9)/1.1; a = -a2*Math.sin(Math.PI/2*u); ptr = a; br={t:u}; }
+    else { a = -a2; ptr = -a2; br={t:1}; }
+    drawPend(a, ptr, br);
+    if (t<2){ requestAnimationFrame(st); return; }
+    drawFrac(v); const ok = m.req ? (T>=m.req[0] ? null : null) : null;
+    const tough = m.flat ? "seigt" : v>90 ? "seigt" : v>30 ? "i overgangsområdet" : "sprøtt";
+    let msg = `KV = ${fmt(v,0)} J ved ${T} °C – ${tough}. `;
+    if (m.n==="S355J2") msg += T===-20 ? `Krav J2: minst 27 J ved −20 °C → ${v>=27?"OK ✔":"ikke OK ✘"}` : "Krav J2 gjelder ved −20 °C.";
+    else if (m.n==="S355JR") msg += T===-20 ? `JR er bare prøvd ved +20 °C. Ved −20 °C er det for sprøtt for bruk ute om vinteren!` : T===20 ? `Krav JR: minst 27 J ved +20 °C → ${v>=27?"OK ✔":"ikke OK ✘"}` : "Krav JR gjelder ved +20 °C.";
+    else msg += "Austenittisk rustfritt har ingen overgangstemperatur.";
+    setStatus("kTxt", msg, v>=27 ? "ok" : "bad"); })(t0); };
+drawKV(); drawPend(151,0,null); setStatus("kTxt","Velg temperatur og stål, og slipp pendelen.","info");
+
+/* ---------- Del 8: sertifikat ---------- */
+const CERTS = [
+  {nr:"A", ch:"48211", C:0.16,Si:0.21,Mn:1.42,P:0.012,S:0.006,Cr:0.03,Mo:0.01,Ni:0.04,Cu:0.05, ReH:386, Rm:541, A:26, KV:[88,102,95]},
+  {nr:"B", ch:"48530", C:0.17,Si:0.24,Mn:1.48,P:0.015,S:0.008,Cr:0.05,Mo:0.02,Ni:0.06,Cu:0.08, ReH:362, Rm:515, A:24, KV:[30,17,25]},
+  {nr:"C", ch:"49017", C:0.19,Si:0.38,Mn:1.55,P:0.018,S:0.009,Cr:0.12,Mo:0.03,Ni:0.10,Cu:0.15, ReH:455, Rm:642, A:21, KV:[45,51,48]}
+];
+let cI = 0;
+const cev = c => c.C + c.Mn/6 + (c.Cr+c.Mo)/5 + (c.Ni+c.Cu)/15;
+CERTS.forEach((c,i) => { const b=document.createElement("button"); b.className="btn small"+(i?"":" on"); b.textContent="Sertifikat "+c.nr; b.onclick=()=>{ cI=i; [...$("certBtns").children].forEach((x,j)=>x.classList.toggle("on",j===i)); drawCert(false); }; $("certBtns").appendChild(b); });
+function drawCert(chk){
+  const c = CERTS[cI], cv = cev(c), avg = (c.KV[0]+c.KV[1]+c.KV[2])/3;
+  const k = (ok) => chk ? (ok?' class="good"':' class="badv"') : "";
+  const f2 = v => fmt(v, v<0.1?3:2);
+  $("cert").innerHTML = `<h4>INSPEKSJONSSERTIFIKAT 3.1 · EN 10204</h4>
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem"><span>Produsent: <b>Eksempel Stålverk</b> (oppdiktet)</span><span>Sertifikat nr: EKS-${c.ch}-${c.nr}</span></div>
+  <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem"><span>Produkt: <b>Plate 12 × 2000 × 6000 mm</b></span><span>Stålsort: <b>S355J2+N</b> · EN 10025-2</span><span>Charge: ${c.ch}</span></div>
+  <table><tr><th colspan="10">Kjemisk analyse (%)</th></tr>
+  <tr><th>C</th><th>Si</th><th>Mn</th><th>P</th><th>S</th><th>Cr</th><th>Mo</th><th>Ni</th><th>Cu</th><th>CEV</th></tr>
+  <tr><td>${f2(c.C)}</td><td>${f2(c.Si)}</td><td>${f2(c.Mn)}</td><td>${f2(c.P)}</td><td>${f2(c.S)}</td><td>${f2(c.Cr)}</td><td>${f2(c.Mo)}</td><td>${f2(c.Ni)}</td><td>${f2(c.Cu)}</td><td${k(cv<=0.45)}>${fmt(cv,2)}</td></tr></table>
+  <table><tr><th colspan="3">Strekkprøve (tverr)</th><th colspan="4">Slagseighet KV (Charpy), −20 °C (J)</th></tr>
+  <tr><th>R<sub>eH</sub> MPa</th><th>R<sub>m</sub> MPa</th><th>A %</th><th>1</th><th>2</th><th>3</th><th>snitt</th></tr>
+  <tr><td${k(c.ReH>=355)}>${c.ReH}</td><td${k(c.Rm>=470&&c.Rm<=630)}>${c.Rm}</td><td${k(c.A>=22)}>${c.A}</td>${c.KV.map(v=>`<td${k(v>=19)}>${v}</td>`).join("")}<td${k(avg>=27)}>${fmt(avg,0)}</td></tr></table>
+  <div style="font-size:.75rem;color:#555">Vi bekrefter at leveransen er i samsvar med ordren. — Kontrollør, stempel</div>`;
+  if (chk){ const fails = []; if (c.ReH<355) fails.push("ReH"); if (c.Rm<470||c.Rm>630) fails.push(`Rm (${c.Rm} > 630)`); if (c.A<22) fails.push(`A (${c.A} % < 22 %)`);
+    if (avg<27) fails.push(`KV-snitt (${fmt(avg,0)} J < 27 J)`); if (Math.min(...c.KV)<19) fails.push(`én KV-verdi under 19 J (${Math.min(...c.KV)} J)`); if (cv>0.45) fails.push(`CEV (${fmt(cv,2)} > 0,45)`);
+    setStatus("certTxt", fails.length ? "✘ Ikke godkjent: " + fails.join(", ") + ". Plata skal ikke brukes – kontakt leverandøren." : "✔ Alle krav er oppfylt. Plata kan brukes som S355J2.", fails.length ? "bad" : "ok"); }
+  else setStatus("certTxt","Sammenlign tallene med kravtabellen. Trykk så «Sjekk».","info");
+}
+$("certChk").onclick = () => drawCert(true);
+drawCert(false);
+
+/* ---------- Oppgave 2: diagram ---------- */
+(function(){
+  const s = $("oppDiag"), X = e => 70 + e/35*520, Y = v => 300 - v/500*270;
+  const T = (x,y,t,o) => { const e = document.createElementNS(NS,"text"); e.setAttribute("x",x); e.setAttribute("y",y); e.setAttribute("font-family","Arial, sans-serif"); e.setAttribute("font-size",(o&&o.fs)||12); e.setAttribute("fill",(o&&o.c)||"#333"); if (o&&o.a) e.setAttribute("text-anchor",o.a); if (o&&o.b) e.setAttribute("font-weight","700"); e.textContent=t; s.appendChild(e); };
+  const L = (x1,y1,x2,y2,c,w) => { const e=document.createElementNS(NS,"line"); [["x1",x1],["y1",y1],["x2",x2],["y2",y2],["stroke",c],["stroke-width",w]].forEach(a=>e.setAttribute(a[0],a[1])); s.appendChild(e); };
+  const r = document.createElementNS(NS,"rect"); r.setAttribute("width",620); r.setAttribute("height",340); r.setAttribute("fill","#fff"); s.appendChild(r);
+  for (let v=0; v<=500; v+=50){ L(X(0),Y(v),X(35),Y(v),v%100?"#eee":"#ccc",1); T(X(0)-8,Y(v)+4,v,{a:"end"}); }
+  for (let e=0; e<=35; e+=5){ L(X(e),Y(0),X(e),Y(500),e%10?"#eee":"#ccc",1); T(X(e),Y(0)+18,e,{a:"middle"}); }
+  for (let e=0; e<=35; e+=1) L(X(e),Y(0),X(e),Y(0)+4,"#999",1);
+  L(X(0),Y(0),X(35),Y(0),"#000",2); L(X(0),Y(0),X(0),Y(500),"#000",2);
+  T(X(35),Y(0)+34,"tøyning ε (%)",{a:"end",b:1,c:"#000"}); T(X(0)+6,Y(500)-10,"spenning σ (MPa)",{b:1,c:"#000"});
+  const f = e => { if (e<0.14) return 300*e/0.14; if (e<0.3) return 300-10*(e-0.14)/0.16; if (e<2.2) return 290+3*Math.sin(e*12); if (e<20){ const t=(e-2.2)/17.8; return 290+160*(1-Math.pow(1-t,2.3)); } const t=(e-20)/12; return 450-90*Math.pow(t,1.8); };
+  const p = []; for (let i=0;i<=400;i++){ const e = 32*Math.pow(i/400,1.5); p.push(`${X(e).toFixed(1)},${Y(f(e)).toFixed(1)}`); }
+  const pl = document.createElementNS(NS,"polyline"); pl.setAttribute("points",p.join(" ")); pl.setAttribute("fill","none"); pl.setAttribute("stroke","#1c6fd1"); pl.setAttribute("stroke-width","3"); s.appendChild(pl);
+  L(X(32),Y(f(31.99)),X(32),Y(f(31.99))+14,"#c92a2a",3); T(X(32)+4,Y(f(31.99))+26,"brudd",{c:"#c92a2a",b:1});
+})();
+
+/* ---------- Oppgaver ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToImg(svg){
+  const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
+  const img = new Image(); await new Promise(r => { img.onload = r; img.onerror = r; img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str); });
+  const c = document.createElement("canvas"); c.width = vb.width*2; c.height = vb.height*2; const x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+  const im = document.createElement("img"); im.src = c.toDataURL("image/png"); im.width = vb.width; im.height = vb.height; return im;
+}
+$("btnCopy").onclick = async () => {
+  const orig = $("oppgavetekst"), clone = orig.cloneNode(true);
+  const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>

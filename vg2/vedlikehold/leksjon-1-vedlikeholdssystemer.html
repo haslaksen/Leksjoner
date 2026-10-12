@@ -1,0 +1,1241 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vedlikehold 1 – Grunnleggende</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#fab005; --yellow-soft:#fff6d6;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --sky1:#d0ebff; --sky2:#f1f8ff; --sea1:#4dabf7; --sea2:#1864ab; --ice:#ffffff; --ice-d:#a5d8ff;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#6b7785; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+  --sky1:#1b2c42; --sky2:#12161b; --sea1:#1c4f80; --sea2:#0b2540; --ice:#dfe9f3; --ice-d:#7aa7cf;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.3rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem; user-select:none}
+.btn:hover{border-color:var(--blue)}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:2.6rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1300px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.15rem; color:var(--muted); max-width:70ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2.wide-left{grid-template-columns:1.6fr 1fr}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.15rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.7rem}
+.slider{display:flex; align-items:center; gap:.6rem; font-size:.85rem}
+.slider label{color:var(--muted)}
+.slider input{width:min(220px,100%); accent-color:var(--orange)}
+.slider b{min-width:4.5rem; font-variant-numeric:tabular-nums}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem; min-height:2.9em}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.7rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+.tip.g{border-color:var(--green); background:var(--green-soft)}
+details.laerer{margin-top:1.1rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.4rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.35rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.35rem .7rem}
+.readout span{display:block; font-size:.72rem; color:var(--muted)}
+.readout b{font-size:1.2rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.chip{font:inherit; font-size:.78rem; font-weight:600; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.35rem .7rem}
+.chip:hover{border-color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--orange); color:#fff; border-color:var(--orange)}
+.mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
+.mini3 .card{padding:.7rem .9rem; font-size:.9rem}
+.mini3 .card h3{font-size:1.05rem}
+.big{font-size:1.6rem; font-weight:800; color:var(--orange)}
+.who{display:inline-block; font-size:.72rem; font-weight:700; padding:.1rem .5rem; border-radius:99px; margin-left:.3rem}
+.who.op{background:var(--green-soft); color:var(--green)}
+.who.fa{background:var(--blue-soft); color:var(--blue)}
+.who.el{background:var(--orange-soft); color:var(--orange)}
+table.sim{border-collapse:collapse; width:100%; font-size:.9rem; margin-top:.6rem; font-variant-numeric:tabular-nums}
+table.sim th, table.sim td{border:1px solid var(--line); padding:.35rem .6rem; text-align:right}
+table.sim th:first-child, table.sim td:first-child{text-align:left}
+table.sim th{background:var(--steel-soft)}
+table.sim tr.best td{background:var(--green-soft); font-weight:700}
+.dotc{display:inline-block; width:.8rem; height:.8rem; border-radius:3px; margin-right:.4rem; vertical-align:-1px}
+.plantab td:nth-child(1){width:2.2rem; text-align:center; font-weight:800}
+.plantab tr.hl td{background:var(--orange-soft)}
+
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); height:2rem}
+.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
+.fasit b{color:var(--green)}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.3rem}
+.ot.c td, .ot.c th{text-align:center}
+.ot.c td:first-child, .ot.c th:first-child{text-align:left}
+.ot td.lbl{font-weight:650; width:30%; background:var(--steel-soft)}
+.ofig{border:1px solid var(--muted); border-radius:8px; padding:.4rem; background:#fff; margin:.5rem 0}
+.ofig svg{display:block; width:100%; height:auto}
+.formelark{display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; font-size:.92rem; border:1px solid var(--muted); border-radius:8px; padding:.5rem .8rem; margin:.5rem 0 1rem}
+.scenario{border:1px dashed var(--muted); border-radius:8px; padding:.6rem .9rem; margin:.5rem 0; font-size:.95rem}
+.steps{display:grid; grid-template-columns:repeat(7,1fr); gap:.5rem}
+.steps div{background:var(--bg); border:2px solid var(--line); border-radius:10px; padding:.5rem; font-size:.85rem; text-align:center; transition:all .3s}
+.steps div.on{border-color:var(--orange); background:var(--orange-soft)}
+.steps .ic{display:block; font-size:1.8rem; line-height:1.2}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+.hot{cursor:pointer}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .mini3{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+  .readout{grid-template-columns:1fr 1fr}
+}
+@media (max-width:900px){ .steps{grid-template-columns:repeat(4,1fr)} }
+@media (max-width:600px){ .steps{grid-template-columns:1fr 1fr} .mini3{grid-template-columns:1fr} .card{overflow-wrap:anywhere} table.t, table.sim{display:block; overflow-x:auto} .oppgave{overflow-x:auto} .ot{font-size:.75rem} }
+.grid2>*,.hero>*{min-width:0}
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999; --steel-soft:#eee}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr, .ofig, .scenario{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Vedlikehold · <span>Leksjon 1</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- START -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Vedlikehold</div>
+      <h1>Leksjon 1<br>Vedlikehold og vedlikeholdssystemer</h1>
+      <p class="lead">Alle maskiner blir slitt. Spørsmålet er bare om vi bytter delen <b>når vi selv vil</b> – eller når maskinen bestemmer det.</p>
+      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <ol class="goals">
+        <li>forklare <b>hvorfor</b> vi vedlikeholder – sikkerhet, drift, økonomi og bærekraft</li>
+        <li>skille mellom <b>korrigerende</b> og <b>forebyggende</b> vedlikehold</li>
+        <li>gjøre <b>daglig ettersyn</b> med sansene og vite når maskinen må <b>stoppes</b></li>
+        <li><b>stramme</b> og <b>rette opp</b> en kilereim</li>
+        <li>sammenligne vedlikeholdsstrategier etter <b>stans og kostnad</b></li>
+        <li>forklare hvordan et <b>vedlikeholdssystem</b> og en <b>arbeidsordre</b> virker</li>
+        <li>lese og lage en enkel <b>vedlikeholdsplan</b></li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Kompetansemål (PIN02-03, vedlikehold)</h3>
+        <p style="margin-bottom:.4rem"><i>«gjennomføre forebyggende vedlikehold og sørge for maskinsikkerhet etter en vedlikeholdsplan»</i></p>
+        <p style="margin-bottom:.4rem"><i>«beskrive og reflektere over hvordan kostnader, drift og vedlikehold henger sammen med bærekraftig utvikling»</i></p>
+        <p style="margin-bottom:0"><i>«bruke og reflektere over helse-, miljø- og sikkerhetskrav i rutiner for vedlikehold»</i></p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1 · Hva er vedlikehold?</th></tr>
+          <tr><td>0–6 min</td><td>Del 1: hvorfor vedlikeholde?</td></tr>
+          <tr><td>6–14 min</td><td>Del 2: vedlikeholdsformer</td></tr>
+          <tr><td>14–22 min</td><td>Del 3: daglig ettersyn – finn feilene</td></tr>
+          <tr><td>22–31 min</td><td>Del 4: kilereim</td></tr>
+          <tr><td>31–45 min</td><td>Oppgave 1–3</td></tr>
+          <tr><th colspan="2">Time 2 · Strategi og system</th></tr>
+          <tr><td>0–8 min</td><td>Del 5: tre strategier – ett år</td></tr>
+          <tr><td>8–16 min</td><td>Del 6: vedlikeholdssystemet</td></tr>
+          <tr><td>16–22 min</td><td>Del 7: vedlikeholdsplanen</td></tr>
+          <tr><td>22–43 min</td><td>Oppgave 4–6</td></tr>
+          <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+      </div>
+      <div class="tip" style="margin-bottom:0"><b>Du kjenner allerede:</b> motorvernet som beskytter motoren og feilsøking med multimeter (Elektro 3), og slitasje og utmatting (Materiallære 3). Nå handler det om å <b>hindre</b> at feilen skjer.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 1 -->
+<section class="slide" id="hvorfor" data-nav="1 Hvorfor">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 6 min</div>
+    <h2>Hva koster et havari?</h2>
+    <p class="lead">Et lager ryker i en CNC-dreiebenk. Delen koster lite. Men det meste av kostnaden ligger <b>under vann</b>.</p>
+    <div class="fig">
+      <svg id="d1Svg" viewBox="0 0 1000 470" role="img" aria-label="Isfjell: synlige kostnader over vann, skjulte kostnader under vann"></svg>
+      <div class="controls">
+        <button class="btn primary" id="d1Next">▼ Vis neste skjulte kostnad</button>
+        <button class="btn" id="d1All">Vis alle</button>
+        <button class="btn" id="d1Reset">↺ Nullstill</button>
+      </div>
+      <div class="status info" id="d1Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>🛡 Sikkerhet</h3>En maskin i god stand er en trygg maskin. Vern, nødstopp og bremser må virke.</div>
+      <div class="card"><h3>⚙ Drift og kvalitet</h3>Færre stopp, jevn kvalitet og levering til avtalt tid.</div>
+      <div class="card"><h3>♻ Økonomi og bærekraft</h3>Lengre levetid = mindre stål, energi og avfall. Ingen oljesøl.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Tallene er et realistisk eksempel, ikke fasit. Spør først: «Hva koster det når lageret ryker?» – elevene svarer som regel bare lageret. Klikk så fram én og én skjult kostnad. Poeng: tapt produksjon er nesten alltid den største posten. Bærekraft (kompetansemål): en maskin som varer 25 år i stedet for 15, sparer en hel ny maskin – stål, transport og energi. Vedlikehold er også miljøvern: lekkasjer av olje og kjølevæske stoppes tidlig.</details>
+  </div>
+</section>
+
+<!-- DEL 2 -->
+<section class="slide" id="former" data-nav="2 Former">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 8 min</div>
+    <h2>Vedlikeholdsformer</h2>
+    <p class="lead">Hovedskillet: gjør vi noe <b>etter</b> at feilen har skjedd – eller <b>før</b>? Klikk på boksene.</p>
+    <div class="fig">
+      <svg id="d2Tree" viewBox="0 0 1000 410" role="img" aria-label="Tre over vedlikeholdsformer"></svg>
+    </div>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="fig"><svg id="d2Scene" viewBox="0 0 460 260" role="img" aria-label="Animert eksempel"></svg></div>
+      <div class="card" id="d2Card"></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Begrepene følger NS-EN 13306 (vedlikeholdsterminologi). <b>Korrigerende</b> = etter at feilen er oppdaget. <b>Forebyggende</b> = for å redusere sannsynligheten for feil. Prediktivt vedlikehold er en type tilstandsbasert vedlikehold der vi bruker trender og beregninger for å si <i>når</i> grensen nås. «Kjør til havari» kan være et bevisst valg for billige, ufarlige deler (en lyspære) – da er korrigerende vedlikehold riktig strategi.</details>
+  </div>
+</section>
+
+<!-- DEL 3 -->
+<section class="slide" id="ettersyn" data-nav="3 Ettersyn">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 8 min</div>
+    <h2>Daglig ettersyn – finn feilene</h2>
+    <p class="lead">Pumpeaggregatet går. Bruk <b>øyne, ører, hender og nese</b>. Det er <b>8 feil</b> – klikk der du finner en.</p>
+    <div class="fig">
+      <svg id="d3Svg" viewBox="0 0 1000 520" role="img" aria-label="Pumpeaggregat med åtte feil som skal finnes"></svg>
+      <div class="controls">
+        <button class="btn" id="d3Show">👁 Vis alle feil</button>
+        <button class="btn" id="d3Reset">↺ Start på nytt</button>
+        <span class="chips"><span>👁 se</span><span>👂 lytte</span><span>✋ kjenne</span><span>👃 lukte</span></span>
+      </div>
+      <div class="readout" style="grid-template-columns:repeat(3,1fr)">
+        <div><span>Funnet</span><b id="d3Found">0 / 8</b></div>
+        <div><span>Bom</span><b id="d3Miss">0</b></div>
+        <div><span>Tid</span><b id="d3Time">0 s</b></div>
+      </div>
+      <div class="status info" id="d3Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>✋ Kjenne – trygt</h3>Kjenn med <b>baksiden av hånden</b>, aldri på roterende deler. Hold avstand til reimer og aksler.</div>
+      <div class="card"><h3>Stopp eller meld?</h3>Fare for folk (vern, kabel) → <b>stopp og lås</b>. Ellers → <b>meld</b> og lag arbeidsordre.</div>
+      <div class="card"><h3>Rydd og rengjør</h3>En ren maskin viser lekkasjer og sprekker. Skitt skjuler feil.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>La elevene komme opp og klikke, eller kjør det som konkurranse i par (tid og antall bom står i telleren). Varme og ulyd vises med symboler: bølger = lyd, krøllete streker = varme. Diskuter for hver feil: kan maskinen gå videre, eller må den stoppes? Kabelskade og manglende vern: stopp og lås, ingen diskusjon. Løs fundamentbolt gir vibrasjon som ødelegger lagre og rør. Lavt oljenivå: finn lekkasjen først, ikke bare fyll på. Kjøleribber med spon: motoren blir varm – derfor henger feil 6 og 8 sammen. Elevene skal ikke kjenne på maskiner i drift uten opplæring – her handler det om å vite hva man ser etter.</details>
+  </div>
+</section>
+
+<!-- DEL 4 -->
+<section class="slide" id="reim" data-nav="4 Kilereim">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 9 min</div>
+    <h2>Kilereim – stramme og rette opp</h2>
+    <p class="lead">Den vanligste vedlikeholdsjobben på mange maskiner. For slakk eller for stram – begge deler ødelegger.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="d4Svg" viewBox="0 0 1000 380" role="img" aria-label="Reimdrift sett fra siden med måling av nedbøyning"></svg>
+        <div class="controls">
+          <div class="slider"><label for="d4S">Stramming</label><input type="range" id="d4S" min="0" max="100" step="1" value="15"><b id="d4Sv">slakk</b></div>
+        </div>
+        <div class="readout" style="grid-template-columns:repeat(3,1fr)">
+          <div><span>Nedbøyning</span><b id="d4D">– mm</b></div>
+          <div><span>Mål</span><b>ca. 10 mm</b></div>
+          <div><span>Reimskive bak</span><b id="d4N">–</b></div>
+        </div>
+        <div class="status info" id="d4Msg"></div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Tommelfingerregel</h3>
+          <p style="margin:0;font-size:1.1rem">Trykk midt på spennet:<br>nedbøyning ≈ <b style="color:var(--orange);font-size:1.4rem">16 mm per meter</b> akselavstand.<br>600 mm → ca. <b>10 mm</b>.</p>
+        </div>
+        <div class="fig" style="margin-top:.8rem">
+          <svg id="d4Top" viewBox="0 0 520 220" role="img" aria-label="Reimskiver sett ovenfra med linjal"></svg>
+          <div class="controls" style="margin-top:.3rem"><span class="chips" id="d4A"></span></div>
+          <div class="status info" id="d4AMsg" style="font-size:.9rem"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1rem">
+      <h3>Slik bytter du kilereim</h3>
+      <div class="steps" id="d4Steps"></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>16 mm per meter er en vanlig tommelfingerregel. Riktig prøvekraft og nedbøyning står i produsentens tabell, og mange bruker reimspenningsmåler. Ny reim strammes litt mer og etterstrammes etter noen timers drift (den setter seg). Bytt alltid alle reimene i et sett – en ny og en gammel reim er aldri like lange. Aldri lirk en reim over skivekanten med skrutrekker: kordene inni ryker. Oppretting: linjal eller snor over begge skivenes flater; den skal ligge an i fire punkter.</details>
+  </div>
+</section>
+
+<!-- DEL 5 -->
+<section class="slide" id="strategi" data-nav="5 Strategier">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 8 min</div>
+    <h2>Tre strategier – samme maskin, ett år</h2>
+    <p class="lead">Tre like maskiner får nøyaktig like lagre. Det eneste som er forskjellig, er <b>hvordan vi vedlikeholder</b>. Hvem kommer billigst ut?</p>
+    <div class="fig">
+      <svg id="d5Svg" viewBox="0 0 1000 360" role="img" aria-label="Tidslinje for 52 uker med tre vedlikeholdsstrategier"></svg>
+      <div class="controls">
+        <button class="btn primary" id="d5Go">▶ Kjør året</button>
+        <button class="btn" id="d5New">🎲 Nytt år</button>
+        <span class="caption" style="margin:0">✕ havari · ↻ planlagt bytte · ▾ inspeksjon</span>
+      </div>
+      <table class="sim">
+        <tr><th>Strategi</th><th>Havari</th><th>Planlagte bytter</th><th>Inspeksjoner</th><th>Uplanlagt stans</th><th>Kostnad</th></tr>
+        <tbody id="d5Tab"></tbody>
+      </table>
+      <div class="status info" id="d5Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3><span class="dotc" style="background:var(--red)"></span>Havari</h3>10 t stans · deler · arbeid<br><span class="big">≈ 52 000 kr</span></div>
+      <div class="card"><h3><span class="dotc" style="background:var(--blue)"></span>Planlagt bytte</h3>1 t i planlagt stopp – ingen tapt produksjon<br><span class="big">≈ 2 150 kr</span></div>
+      <div class="card"><h3><span class="dotc" style="background:var(--green)"></span>Inspeksjon</h3>15 min med lytt og måling mens maskinen går<br><span class="big">≈ 160 kr</span></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Lagerets levetid trekkes tilfeldig rundt 17 uker (± 4,5). Tidsbasert: lageret byttes hver 12. uke – det kaster bort levetid, og et og annet lager ryker likevel før det. Tilstandsbasert: inspeksjon annenhver uke, og slitasjen kan oppdages ca. 4 uker før havari – derfor fanges den alltid i tide. Kjør flere år (🎲): omtrent halvparten av årene vinner tidsbasert – de årene ingen lagre ryker før uke 12. Ett tidlig havari gjør den dyr. Korrigerende taper alltid her. Diskuter: når lønner korrigerende seg? (Billig del, ingen stans, ingen fare – f.eks. en lyspære.) Når er tidsbasert best? (Når tilstanden ikke kan måles, eller lov/produsent krever det – f.eks. sikkerhetsutstyr og løfteutstyr.)</details>
+  </div>
+</section>
+
+<!-- DEL 6 -->
+<section class="slide" id="system" data-nav="6 Systemet">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 8 min</div>
+    <h2>Vedlikeholdssystemet – arbeidsordrens reise</h2>
+    <p class="lead">Et <b>vedlikeholdssystem</b> holder orden på maskiner, planer og jobber. Hver jobb blir en <b>arbeidsordre</b> som går rundt i en sirkel.</p>
+    <div class="fig">
+      <svg id="d6Svg" viewBox="0 0 1000 470" role="img" aria-label="Vedlikeholdssirkelen og en arbeidsordre som fylles ut"></svg>
+      <div class="controls">
+        <button class="btn primary" id="d6Next">▶ Neste steg</button>
+        <button class="btn" id="d6Auto">▶ Automatisk</button>
+        <button class="btn" id="d6Reset">↺ Ny runde</button>
+      </div>
+      <div class="status info" id="d6Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Vedlikeholdssystem</h3>Et dataprogram (<b>CMMS</b> – <i>datastyrt vedlikeholdssystem</i>) eller en perm. Alle maskiner, planer, arbeidsordrer og hva som er gjort.</div>
+      <div class="card"><h3>FDV-dokumentasjon</h3><b>F</b>orvaltning, <b>D</b>rift og <b>V</b>edlikehold: brukerhåndbok, reservedelsliste og intervaller fra produsenten.</div>
+      <div class="card"><h3>Historikk</h3>Det som ikke er dokumentert, har ikke skjedd. Historikken viser hvilke feil som kommer igjen.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Poenget med steg 6: historikken gjør at planen blir bedre. I eksemplet viser funnet at lageret manglet smøring – derfor endres smøreintervallet. Prioritet: mange bedrifter bruker 1 = straks (sikkerhet/stans), 2 = innen en uke, 3 = ved neste planlagte stopp. Sikkerhet ved vedlikehold (SJA, frakobling og låsing) kommer i neste leksjon. Ved arbeid på elektrisk utstyr: bare frakobling etter instruks – selve elektroarbeidet gjøres av elektrofagfolk.</details>
+  </div>
+</section>
+
+<!-- DEL 7 -->
+<section class="slide" id="plan" data-nav="7 Planen">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 6 min</div>
+    <h2>Vedlikeholdsplanen – søylebormaskinen</h2>
+    <p class="lead">Planen sier <b>hva</b>, <b>hvor ofte</b> og <b>hvem</b>. Operatøren gjør det daglige ettersynet. Klikk på tallene.</p>
+    <div class="grid2">
+      <div class="fig">
+        <svg id="d7Svg" viewBox="0 0 700 520" role="img" aria-label="Søylebormaskin med åtte vedlikeholdspunkter"></svg>
+        <div class="controls"><span class="chips" id="d7F"></span></div>
+      </div>
+      <div>
+        <div class="status info" id="d7Msg" style="margin-top:0">Klikk på et tall på maskinen.</div>
+        <table class="t plantab" style="margin-top:.7rem">
+          <thead><tr><th>Nr.</th><th>Hva</th><th>Hvor ofte</th><th>Hvem</th></tr></thead>
+          <tbody id="d7Tab"></tbody>
+        </table>
+        <div class="tip o" style="margin-bottom:0"><b>Før du åpner deksler:</b> stopp, slå av hovedbryteren og lås den. Mer om dette i neste leksjon.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Når operatøren tar daglig ettersyn selv (rengjøre, smøre, se etter lekkasjer, teste nødstopp), kalles det ofte <i>autonomt vedlikehold</i> – en del av TPM (Total Productive Maintenance). Fagarbeideren tar jobber som krever verktøy og åpning av deksler. Elektrisk kontroll gjøres av elektrofagperson. Intervallene her er eksempler; bruk alltid produsentens FDV-dokumentasjon. Skolens egen søylebormaskin kan brukes som ekstra eksempel.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <table class="t" style="font-size:1rem">
+          <tr><th>Form</th><th>Når</th><th>Eksempel</th></tr>
+          <tr><td><b>Korrigerende – akutt</b></td><td>etter feil, straks</td><td>reima ryker</td></tr>
+          <tr><td><b>Korrigerende – utsatt</b></td><td>etter feil, senere</td><td>lyspære gått</td></tr>
+          <tr><td><b>Tidsbasert</b></td><td>fast intervall</td><td>oljeskift hver 2000. time</td></tr>
+          <tr><td><b>Tilstandsbasert</b></td><td>når målingen sier det</td><td>vibrasjon på lager</td></tr>
+          <tr><td><b>Prediktivt</b></td><td>når trenden sier det</td><td>sensor + beregning</td></tr>
+        </table>
+        <div class="tip">Arbeidsordrens reise: <b>melding → arbeidsordre → planlegging → utførelse → dokumentasjon → analyse</b> → bedre plan.</div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>korrigerende</span><span>forebyggende</span><span>tidsbasert</span><span>tilstandsbasert</span><span>prediktivt</span><span>daglig ettersyn</span><span>se · lytt · kjenn · lukt</span><span>stopp og lås</span><span>kilereim</span><span>nedbøyning</span><span>oppretting</span><span>havari</span><span>vedlikeholdssystem / CMMS</span><span>FDV</span><span>arbeidsordre</span><span>historikk</span><span>vedlikeholdsplan</span></div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Neste leksjon</h3>
+          <p style="margin:0"><b>Leksjon 2 – Sikker jobb ved vedlikehold:</b> SJA, frakobling, låsing og merking (LOTO), og arbeidstillatelse.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 38 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Vedlikehold 1 – Grunnleggende · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <div class="formelark"><b>Husk:</b> <span>Korrigerende = etter feil</span><span>Forebyggende = før feil</span><span>Ettersyn: se · lytt · kjenn · lukt</span><span>Kilereim: ca. 16 mm nedbøyning per meter</span><span>Fare for folk → stopp og lås</span></div>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Hvilken vedlikeholdsform? <small>Time 1 · 7 min</small></h3>
+        <p>Sett ett kryss per linje.</p>
+        <table class="ot c">
+          <tr><th>Situasjon</th><th style="width:5.5rem">Korr.<br>akutt</th><th style="width:5.5rem">Korr.<br>utsatt</th><th style="width:5.5rem">Tids-<br>basert</th><th style="width:5.5rem">Tilstands-<br>basert</th><th style="width:5.5rem">Pre-<br>diktivt</th></tr>
+          <tr><td>a) Filteret i kompressoren skiftes hver 3. måned.</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>b) En hydraulikkslange sprekker. Maskinen står.</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>c) Operatøren hører ulyd fra et lager under ukentlig runde. Lageret byttes fredag.</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>d) En sensor måler motortemperaturen hvert minutt. Programmet varsler at grensen nås om 3 uker.</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>e) Lyset i maskinen er gått, men det er nok lys. Det byttes ved neste planlagte stopp.</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>f) Olja i girkassa skiftes etter 2000 driftstimer.</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>g) Vibrasjonen på viftemotoren måles hver måned.</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>h) Reima på båndsaga ryker midt i en ordre.</td><td></td><td></td><td></td><td></td><td></td></tr>
+        </table>
+        <p>i) Nevn én fordel og én ulempe med <b>tidsbasert</b> vedlikehold.</p><div class="svar"></div><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) tidsbasert. b) korrigerende akutt. c) tilstandsbasert (feilen ble oppdaget før havari). d) prediktivt. e) korrigerende utsatt. f) tidsbasert. g) tilstandsbasert. h) korrigerende akutt. i) Fordel: lett å planlegge, deler og folk kan bestilles på forhånd. Ulempe: deler byttes før de er slitt (kastet levetid), og noen deler ryker likevel før intervallet.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Daglig ettersyn <small>Time 1 · 5 min</small></h3>
+        <p>Pumpeaggregatet har <b>8 feil</b>. Bølger = ulyd. Krøllete streker = varme. Ring rundt feilene og fyll ut tabellen for minst seks av dem.</p>
+        <div class="ofig" id="o2fig"></div>
+        <table class="ot">
+          <tr><th style="width:2.5rem">Nr.</th><th>Feil</th><th style="width:7rem">Sans</th><th style="width:8rem">Stopp straks eller meld?</th><th>Tiltak</th></tr>
+          <tr><td>1</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>4</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>5</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>6</td><td class="tom"></td><td></td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> Oljelekkasje ved slangekoblingen (se/lukte, meld, absorbent, stram/bytt pakning). Lavt oljenivå under MIN (se, meld, finn lekkasjen, fyll riktig olje). Løs fundamentbolt (se/kjenne vibrasjon, <b>stopp</b>, trekk til). Reimvern mangler – står på gulvet (se, <b>stopp og lås</b>, monter vern). Skadet kabel med synlig kobber (se, <b>stopp og lås</b>, elektrofagperson). Varmt motorlager (kjenne, meld, sjekk smøring/kjøling). Ulyd fra pumpa (lytte, meld, arbeidsordre). Spon og fille på kjøleribbene (se, stopp og rengjør).</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Kilereim <small>Time 1 · 4 min</small></h3>
+        <p>a) Akselavstanden er 800 mm. Hvor stor skal nedbøyningen være (16 mm per meter)?</p><div class="svar"></div>
+        <p>b) Hva er årsaken?</p>
+        <table class="ot">
+          <tr><th>Symptom</th><th style="width:50%">Årsak</th></tr>
+          <tr><td>Reima hviner når maskinen starter</td><td class="tom"></td></tr>
+          <tr><td>Reima har blanke, glatte flanker</td><td class="tom"></td></tr>
+          <tr><td>Reima er slitt bare på den ene siden</td><td class="tom"></td></tr>
+          <tr><td>Lagrene i motoren blir varme etter reimbytte</td><td class="tom"></td></tr>
+        </table>
+        <p>c) Sett trinnene for reimbytte i riktig rekkefølge (1–8).</p>
+        <table class="ot">
+          <tr><th style="width:4rem">Nr.</th><th>Trinn</th></tr>
+          <tr><td class="tom"></td><td>Legg på ny reim</td></tr>
+          <tr><td class="tom"></td><td>Prøvekjør</td></tr>
+          <tr><td class="tom"></td><td>Stopp, slå av og lås hovedbryteren</td></tr>
+          <tr><td class="tom"></td><td>Stram til riktig nedbøyning</td></tr>
+          <tr><td class="tom"></td><td>Ta av reimvernet</td></tr>
+          <tr><td class="tom"></td><td>Rett opp skivene med linjal</td></tr>
+          <tr><td class="tom"></td><td>Løsne motoren og skyv den inn</td></tr>
+          <tr><td class="tom"></td><td>Sett på vernet og fjern låsen</td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) 16 · 0,8 = 12,8 ≈ <b>13 mm</b>. b) For slakk · reima slurer (for slakk eller slitt) · skivene står ikke på linje · for stram. c) 4, 8, 1, 6, 2, 5, 3, 7 (lås → vern av → løsne motor → ny reim → rett opp → stram → vern på → prøvekjør).</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Hva koster det? <small>Time 2 · 6 min</small></h3>
+        <p>Et lager i en CNC-dreiebenk. Timepris for fagarbeider: <b>650 kr</b>. Tapt produksjon når maskinen står uplanlagt: <b>4 000 kr per time</b>.</p>
+        <table class="ot c">
+          <tr><th></th><th>Deler</th><th>Arbeid</th><th>Tapt produksjon</th><th style="width:9rem">Sum</th></tr>
+          <tr><td><b>Havari</b> (lageret ryker)</td><td>8 000 kr</td><td>6 t</td><td>10 t</td><td class="tom"></td></tr>
+          <tr><td><b>Planlagt bytte</b> (i planlagt stopp)</td><td>1 500 kr</td><td>1 t</td><td>0 t</td><td class="tom"></td></tr>
+        </table>
+        <p>b) Hvor mange planlagte bytter kan du gjøre for prisen av ett havari?</p><div class="svar"></div>
+        <p>c) Nevn to <b>skjulte</b> kostnader ved et havari som ikke står i tabellen.</p><div class="svar"></div>
+        <p>d) Hvorfor er godt vedlikehold også bra for miljøet? Gi to grunner.</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> Havari: 8 000 + 6 · 650 + 10 · 4 000 = 8 000 + 3 900 + 40 000 = <b>51 900 kr</b>. Planlagt: 1 500 + 650 = <b>2 150 kr</b>. b) 51 900 / 2 150 ≈ <b>24</b> bytter. c) F.eks. forsinket levering/misfornøyd kunde, kassasjon av deler i maskinen, følgeskader på aksel, overtid, hastefrakt, risiko for ulykke. d) Maskinen varer lenger (mindre stål og energi til nye maskiner), mindre kassasjon, ingen lekkasjer av olje/kjølevæske, lavere energiforbruk når maskinen går lett.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Fyll ut arbeidsordren <small>Time 2 · 8 min</small></h3>
+        <div class="scenario">Mandag 12. oktober kl. 09.30 merker <b>Sara</b> (operatør) at båndsaga <b>BS-01</b> kutter skjevt og at det lukter brent. Hun stopper maskinen. Verkstedlederen sier at saga må fikses i dag. <b>Kristian</b> (fagarbeider) slår av hovedbryteren og låser den. Han finner at sagbladet er sløvt og at én føringsrulle er slitt. Han bytter blad og føringsrulle (del nr. <b>GR-22</b>). Jobben tar <b>1,5 timer</b>.</div>
+        <table class="ot">
+          <tr><td class="lbl">Maskin</td><td class="tom"></td></tr>
+          <tr><td class="lbl">Meldt av / dato og tid</td><td class="tom"></td></tr>
+          <tr><td class="lbl">Feilbeskrivelse</td><td class="tom"></td></tr>
+          <tr><td class="lbl">Prioritet (1 straks · 2 innen en uke · 3 neste stopp)</td><td class="tom"></td></tr>
+          <tr><td class="lbl">Type vedlikehold</td><td class="tom"></td></tr>
+          <tr><td class="lbl">Sikkerhetstiltak</td><td class="tom"></td></tr>
+          <tr><td class="lbl">Deler brukt</td><td class="tom"></td></tr>
+          <tr><td class="lbl">Utført av / tid brukt</td><td class="tom"></td></tr>
+          <tr><td class="lbl">Funn / årsak</td><td class="tom"></td></tr>
+          <tr><td class="lbl">Forslag: hvordan unngå at det skjer igjen?</td><td class="tom"></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> Maskin: båndsag BS-01. Meldt av: Sara, man. 12.10 kl. 09.30. Feil: kutter skjevt, lukter brent. Prioritet: <b>1</b> (står, må fikses i dag). Type: <b>korrigerende, akutt</b>. Sikkerhet: hovedbryter av og låst (+ skilt). Deler: sagblad, føringsrulle GR-22. Utført: Kristian, 1,5 t. Funn: sløvt blad, slitt føringsrulle. Forslag (eksempler): sjekk føringsruller ved ukentlig ettersyn; bytt blad etter fast antall driftstimer eller ved første tegn på skjevt kutt; lær opp operatører til å melde fra tidlig.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Lag vedlikeholdsplan <small>Time 2 · 6 min</small></h3>
+        <p>Fyll ut planen for søylebormaskinen. Hvor ofte: <b>daglig, ukentlig, månedlig, årlig</b>. Hvem: <b>operatør, fagarbeider, elektrofagperson</b>.</p>
+        <div class="ofig" id="o5fig" style="max-width:520px"></div>
+        <table class="ot">
+          <tr><th style="width:3rem">Nr.</th><th>Hva sjekker eller gjør du?</th><th style="width:8rem">Hvor ofte</th><th style="width:9rem">Hvem</th></tr>
+          <tr><td>1</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>4</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>5</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>6</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>7</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>8</td><td class="tom"></td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit (eksempel):</b> 1 Vern: helt og virker – daglig – operatør. 2 Nødstopp: test – daglig – operatør. 3 Bord og søyle: rengjør spon, smør tynt – daglig – operatør. 4 Kjølevæske: nivå og blanding – ukentlig – operatør. 5 Pinol/spindel: rengjør konus, smør pinol – ukentlig – operatør. 6 Reimer: slitasje og stramming – månedlig – fagarbeider (frakoblet). 7 Motor/lagre: lytt og kjenn etter varme – månedlig – fagarbeider. 8 Kabel og elektrisk: kontroll – årlig – elektrofagperson. Andre fornuftige svar godtas.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 2 min</small></h3>
+        <p>1. Hva er forskjellen på korrigerende og forebyggende vedlikehold?</p><div class="svar"></div>
+        <p>2. Nevn tre ting du sjekker ved daglig ettersyn – og hvilken sans du bruker.</p><div class="svar"></div>
+        <p>3. Hvorfor skal alt vedlikehold dokumenteres?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) Korrigerende gjøres etter at feilen har skjedd. Forebyggende gjøres før, for å hindre feil. 2) F.eks. lekkasjer og oljenivå (se), ulyd (lytte), varme lagre (kjenne med baksiden av hånden), brent lukt (lukte), vern og nødstopp (se/teste). 3) Historikken viser hva som er gjort og hvilke feil som kommer igjen, slik at planen kan forbedres. Det er også krav om dokumentasjon for sikkerhet og kvalitet.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const nf = (x, d=0) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const kr = x => nf(Math.round(x)) + " kr";
+const RM = (()=>{ try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } })();
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
+function rng(seed){ let a = seed>>>0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+/* Felles animasjonsløkke – bare synlige figurer oppdateres */
+const anims = [];
+function addAnim(node, tick){ const a = {tick, vis:false}; anims.push(a); new IntersectionObserver(es => es.forEach(e => a.vis = e.isIntersecting)).observe(node); return a; }
+let last = performance.now(), T = 0;
+function frame(now){ const dt = Math.min(.05, (now-last)/1000); last = now; T += dt; anims.forEach(a => { if (a.vis) a.tick(dt, T); }); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+/* Tegnehjelp */
+const fx = v => +(+v).toFixed(1);
+const ln = (x1,y1,x2,y2,c,w=3,d="") => `<line x1="${fx(x1)}" y1="${fx(y1)}" x2="${fx(x2)}" y2="${fx(y2)}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${d?` stroke-dasharray="${d}"`:""}/>`;
+const TX = (x,y,s,o={}) => `<text x="${fx(x)}" y="${fx(y)}" font-size="${o.size||15}" fill="${o.fill||"var(--ink)"}" text-anchor="${o.anchor||"start"}"${o.weight?` font-weight="${o.weight}"`:""}${o.op!==undefined?` opacity="${o.op}"`:""}>${s}</text>`;
+const RC = (x,y,w,h,f,s="none",sw=2,rx=0,extra="") => `<rect x="${fx(x)}" y="${fx(y)}" width="${fx(w)}" height="${fx(h)}" rx="${rx}" fill="${f}" stroke="${s}" stroke-width="${sw}"${extra}/>`;
+const CI = (x,y,r,f,s="none",sw=2,extra="") => `<circle cx="${fx(x)}" cy="${fx(y)}" r="${fx(r)}" fill="${f}" stroke="${s}" stroke-width="${sw}"${extra}/>`;
+function gear(cx,cy,r,n,ang,fill,stroke){
+  let d=""; const ri=r*.8;
+  for (let i=0;i<n;i++){ const a0=ang+i*2*Math.PI/n, a1=a0+Math.PI/n*.45, a2=a0+Math.PI/n*.55, a3=a0+Math.PI/n;
+    const P=(a,rr)=>fx(cx+rr*Math.cos(a))+" "+fx(cy+rr*Math.sin(a));
+    d += (i?"L":"M")+P(a0,ri)+"L"+P(a1,r)+"L"+P(a2,r)+"L"+P(a3,ri); }
+  return `<path d="${d}Z" fill="${fill}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/>`+CI(cx,cy,r*.28,"var(--panel)",stroke,2);
+}
+const svgOpen = (w,h) => `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" font-family="Segoe UI, Arial, sans-serif"><rect width="${w}" height="${h}" fill="#fff"/>`;
+
+/* Paletter: skjerm og utskrift */
+const PS = {print:false, ink:"var(--ink)", muted:"var(--muted)", sheet:"var(--panel)", line:"var(--line)", blue:"var(--blue)", green:"var(--green)", red:"var(--red)", orange:"var(--orange)", z0:"var(--blue-soft)", z1:"var(--green-soft)", z2:"var(--red-soft)"};
+const PB = {print:true, ink:"#000", muted:"#333", sheet:"#fff", line:"#bbb", blue:"#000", green:"#000", red:"#000", orange:"#000", z0:"#f1f3f5", z1:"#fff", z2:"#e9ecef"};
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) nav.scrollTo({left: act.offsetLeft - nav.clientWidth/2 + act.offsetWidth/2, behavior:"smooth"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName)) return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  slides[Math.max(0, Math.min(slides.length-1, currentIndex()+dir))].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+
+/* =====================================================================
+   DEL 1 – isfjellet
+   ===================================================================== */
+(function(){
+  const VIS = 11900;
+  const ITEMS = [
+    {n:"Tapt produksjon", v:40000, x:500, y:225, t:"Maskinen står i 10 timer. Det som skulle vært produsert, blir ikke laget: ca. 40 000 kr."},
+    {n:"Operatører som venter", v:6000, x:330, y:262, t:"Folk får lønn, men har ingenting å produsere."},
+    {n:"Følgeskader", v:15000, x:670, y:262, t:"Lageret skar seg og ødela akselen også. Én billig del ble til en dyr reparasjon."},
+    {n:"Kassasjon", v:5000, x:420, y:310, t:"Delene som var i maskinen da den havarerte, må kastes."},
+    {n:"Overtid og hastefrakt", v:4000, x:600, y:310, t:"Reservedelen må sendes med ekspress, og noen må jobbe kveld."},
+    {n:"Forsinket levering", v:10000, x:500, y:355, t:"Kunden får varene for sent. Kanskje dagmulkt – og kanskje handler de et annet sted neste gang."},
+    {n:"Ulykke- og miljørisiko", v:0, x:500, y:405, t:"Et havari kan slynge ut deler eller lekke olje. Prisen på en ulykke kan ikke regnes i kroner."}
+  ];
+  let shown = 0;
+  function draw(){
+    let s = "";
+    s += `<defs><linearGradient id="d1sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sky1)"/><stop offset="1" stop-color="var(--sky2)"/></linearGradient>
+      <linearGradient id="d1sea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--sea1)"/><stop offset="1" stop-color="var(--sea2)"/></linearGradient></defs>`;
+    s += RC(0,0,1000,170,"url(#d1sky)")+RC(0,170,1000,300,"url(#d1sea)");
+    // under vann – isfjellet
+    const op = .25 + .75*Math.min(1, shown/ITEMS.length);
+    s += `<path d="M380 170 L230 250 L190 330 L260 420 L420 455 L620 450 L770 405 L820 320 L760 240 L620 170 Z" fill="var(--ice-d)" opacity="${fx(op*.85)}" stroke="#fff" stroke-width="2"/>`;
+    // over vann
+    s += `<path d="M380 172 L430 92 L470 112 L505 58 L548 104 L585 84 L622 172 Z" fill="var(--ice)" stroke="var(--ice-d)" stroke-width="3"/>`;
+    s += TX(500,128,"Synlig",{size:16,weight:800,anchor:"middle",fill:"#1864ab"})+TX(500,150,"deler + arbeid",{size:13,anchor:"middle",fill:"#1864ab"});
+    // bølger
+    let d = "M0 170"; for (let x=0;x<=1000;x+=20) d += ` L${x} ${fx(170+4*Math.sin(x/38+T*2))}`;
+    s += `<path d="${d}" fill="none" stroke="#fff" stroke-width="3" opacity=".8"/>`;
+    // skjulte poster
+    ITEMS.forEach((it,i) => {
+      if (i < shown){
+        const w = it.n.length*9.2+30;
+        s += RC(it.x-w/2,it.y-20,w,32,"rgba(255,255,255,.92)","#1864ab",1.5,8)+TX(it.x,it.y+2,it.n,{size:15,weight:700,anchor:"middle",fill:"#0b2540"});
+        s += TX(it.x,it.y+28,it.v?"≈ "+kr(it.v):"?",{size:13,weight:800,anchor:"middle",fill:"#fff"});
+      } else {
+        s += TX(it.x,it.y+4,"?",{size:22,weight:800,anchor:"middle",fill:"#fff",op:.45});
+      }
+    });
+    // kostnadsstolpe
+    const sum = VIS + ITEMS.slice(0,shown).reduce((a,b)=>a+b.v,0), max = VIS + ITEMS.reduce((a,b)=>a+b.v,0);
+    s += RC(870,30,100,24,"var(--panel)","var(--line)",1,6)+TX(920,47,"Kostnad",{size:13,weight:700,anchor:"middle"});
+    const bh = 360*sum/max;
+    s += RC(895,60,50,360,"rgba(255,255,255,.25)","#fff",1.5,6)+RC(895,420-bh,50,bh,"var(--orange)","none",0,6);
+    s += RC(895,420-360*VIS/max,50,360*VIS/max,"#ffd8a8","none",0,6);
+    s += TX(920,445,kr(sum),{size:16,weight:800,anchor:"middle",fill:"#fff"});
+    s += TX(80,60,"Lageret ryker i dreiebenken",{size:18,weight:800,fill:"#0b2540"});
+    s += TX(80,84,"Synlig: lager 8 000 kr + 6 t arbeid",{size:14,fill:"#1864ab"});
+    $("d1Svg").innerHTML = s;
+  }
+  function say(){
+    const m = $("d1Msg");
+    if (!shown){ m.className="status info"; m.textContent = "Over vann: lageret (8 000 kr) og 6 timer arbeid (3 900 kr). Er det hele regningen?"; }
+    else { const it = ITEMS[shown-1]; m.className = shown===ITEMS.length ? "status bad" : "status warn"; m.textContent = it.n + ": " + it.t + (shown===ITEMS.length ? " Totalt nesten 8 ganger så mye som det synlige." : ""); }
+  }
+  $("d1Next").onclick = () => { if (shown < ITEMS.length) shown++; say(); };
+  $("d1All").onclick = () => { shown = ITEMS.length; say(); };
+  $("d1Reset").onclick = () => { shown = 0; say(); };
+  addAnim($("d1Svg"), draw);
+  say(); draw();
+})();
+
+/* =====================================================================
+   DEL 2 – vedlikeholdsformer (tre + animert scene)
+   ===================================================================== */
+(function(){
+  const N = {
+    root:{x:500,y:42,w:220,t:"Vedlikehold",s:"hold maskinen i orden",p:null,c:"var(--ink)"},
+    korr:{x:250,y:150,w:240,t:"Korrigerende",s:"ETTER at feilen skjer",p:"root",c:"var(--red)"},
+    forb:{x:750,y:150,w:240,t:"Forebyggende",s:"FØR feilen skjer",p:"root",c:"var(--green)"},
+    akutt:{x:125,y:268,w:200,t:"Akutt",s:"reparer straks",p:"korr",c:"var(--red)"},
+    utsatt:{x:375,y:268,w:200,t:"Utsatt",s:"reparer senere",p:"korr",c:"var(--red)"},
+    tid:{x:625,y:268,w:200,t:"Tidsbasert",s:"fast intervall",p:"forb",c:"var(--green)"},
+    tilst:{x:875,y:268,w:200,t:"Tilstandsbasert",s:"måler tilstanden",p:"forb",c:"var(--green)"},
+    pred:{x:875,y:372,w:200,t:"Prediktivt",s:"forutsier når",p:"tilst",c:"var(--purple)"}
+  };
+  const INFO = {
+    root:{h:"Vedlikehold",b:"Alt vi gjør for at en maskin skal virke trygt og riktig – hele levetiden. Klikk på en boks for å se de ulike formene.",pro:"",con:""},
+    korr:{h:"Korrigerende vedlikehold",b:"Vi reparerer <b>etter</b> at feilen har skjedd.",pro:"Ingen planlegging. Riktig for billige, ufarlige deler.",con:"Uplanlagt stans, ofte dyrt og stressende."},
+    forb:{h:"Forebyggende vedlikehold",b:"Vi gjør noe <b>før</b> feilen skjer, for å hindre den.",pro:"Planlagt stopp, færre havari, tryggere.",con:"Koster tid og deler også når maskinen er i orden."},
+    akutt:{h:"Korrigerende – akutt",b:"Reima på båndsaga ryker. Maskinen står – den må repareres <b>nå</b>.",pro:"Feilen blir fikset med en gang.",con:"Dyreste formen: stans, hastefrakt, overtid."},
+    utsatt:{h:"Korrigerende – utsatt",b:"Lyset i maskinen er gått, men det er nok lys. Vi venter til <b>neste planlagte stopp</b>.",pro:"Ingen ekstra stans.",con:"Bare mulig når feilen ikke gir fare eller stans."},
+    tid:{h:"Tidsbasert (periodisk)",b:"Olja i girkassa skiftes hver 2000. driftstime – <b>uansett</b> tilstand.",pro:"Lett å planlegge. Deler kan bestilles i god tid.",con:"Deler byttes før de er slitt. Noen ryker likevel før."},
+    tilst:{h:"Tilstandsbasert",b:"Vi <b>måler</b> tilstanden – vibrasjon, temperatur, lyd – og bytter når målingen sier det.",pro:"Delen brukes nesten helt ut, men byttes før havari.",con:"Krever inspeksjon, måleutstyr og kunnskap."},
+    pred:{h:"Prediktivt",b:"Sensorer sender målinger hele tiden. Systemet ser <b>trenden</b> og regner ut <b>når</b> grensen nås.",pro:"Best tid til å planlegge.",con:"Sensorer og programvare koster. Krever gode data."}
+  };
+  let sel = "root", st = 0;
+  function path(k){ const a=[]; while(k){ a.push(k); k=N[k].p; } return a; }
+  function drawTree(){
+    const on = path(sel);
+    let s = "";
+    Object.entries(N).forEach(([k,n]) => { if (n.p){ const p=N[n.p], lit = on.includes(k);
+      s += `<path d="M${p.x} ${p.y+26} C${p.x} ${(p.y+n.y)/2+10}, ${n.x} ${(p.y+n.y)/2-10}, ${n.x} ${n.y-26}" fill="none" stroke="${lit?n.c:"var(--line)"}" stroke-width="${lit?4:2.5}"/>`; } });
+    s += TX(250,222,"",{});
+    Object.entries(N).forEach(([k,n]) => {
+      const lit = on.includes(k), cur = k===sel;
+      s += `<g class="hot" data-k="${k}">`+RC(n.x-n.w/2,n.y-26,n.w,52,cur?n.c:(lit?"var(--panel)":"var(--panel)"),n.c,cur?3:(lit?3:1.6),12);
+      s += TX(n.x,n.y-2,n.t,{size:17,weight:800,anchor:"middle",fill:cur?"#fff":n.c})+TX(n.x,n.y+17,n.s,{size:12.5,anchor:"middle",fill:cur?"#fff":"var(--muted)"})+`</g>`;
+    });
+    s += TX(250,205,"",{});
+    s += TX(40,100,"«Vente til det ryker»",{size:13,fill:"var(--red)",weight:700})+TX(960,100,"«Hindre at det ryker»",{size:13,fill:"var(--green)",weight:700,anchor:"end"});
+    $("d2Tree").innerHTML = s;
+    const I = INFO[sel];
+    $("d2Card").innerHTML = `<h3 style="color:${N[sel].c}">${I.h}</h3><p style="font-size:1.05rem">${I.b}</p>` + (I.pro?`<p style="margin:.3rem 0"><b style="color:var(--green)">+</b> ${I.pro}</p><p style="margin:0"><b style="color:var(--red)">−</b> ${I.con}</p>`:"");
+  }
+  $("d2Tree").addEventListener("click", e => { const g=e.target.closest("[data-k]"); if(!g) return; sel=g.dataset.k; st=0; drawTree(); });
+
+  function machine(x,y,ang,col){ return RC(x,y,150,100,"var(--steel-soft)","var(--steel-dark)",2,10)+gear(x+52,y+50,30,10,ang,col,"var(--steel-dark)")+gear(x+103,y+50,20,7,-ang*1.5+.2,col,"var(--steel-dark)"); }
+  function scene(){
+    const t = st; let s = "";
+    s += RC(0,0,460,260,"var(--bg)","none",0,10);
+    if (sel==="root"){
+      s += machine(155,60,t*1.2,"#adb5bd");
+      const a = Math.sin(t*3)*.4;
+      s += `<g transform="rotate(${fx(a*57)} 360 150)"><path d="M330 120 l60 60 l-12 12 l-60 -60 a20 20 0 1 1 12 -12z" fill="var(--orange)" stroke="var(--ink)" stroke-width="2"/></g>`;
+      s += TX(230,215,"Hold maskinen trygg og i drift",{size:16,weight:700,anchor:"middle"});
+    }
+    if (sel==="korr" || sel==="akutt"){
+      const cyc = t%4, broke = cyc>2.4;
+      // reimdrift
+      const x1=120,x2=330,cy=110,r1=45,r2=30, off=-(broke?2.4:cyc)*90;
+      s += CI(x1,cy,r1,"#ced4da","#495057",3)+CI(x2,cy,r2,"#ced4da","#495057",3)+CI(x1,cy,6,"#495057")+CI(x2,cy,5,"#495057");
+      if (!broke){
+        s += `<path d="M${x1} ${cy-r1} L${x2} ${cy-r2} A${r2} ${r2} 0 0 1 ${x2} ${cy+r2} L${x1} ${cy+r1} A${r1} ${r1} 0 0 1 ${x1} ${cy-r1}" fill="none" stroke="#212529" stroke-width="8" stroke-dasharray="14 6" stroke-dashoffset="${fx(off)}"/>`;
+      } else {
+        const fl = Math.sin(t*20)*6;
+        s += `<path d="M${x1} ${cy-r1} L${x1+80} ${cy-r1+8+fl}" fill="none" stroke="#212529" stroke-width="8"/><path d="M${x2} ${cy-r2} A${r2} ${r2} 0 0 1 ${x2} ${cy+r2} L${x1} ${cy+r1} A${r1} ${r1} 0 0 1 ${x1-30} ${cy-30}" fill="none" stroke="#212529" stroke-width="8"/><path d="M${x1+100} ${cy-r1+20} l14 -8 l-2 14 l16 -6" fill="none" stroke="var(--red)" stroke-width="3"/>`;
+      }
+      const blink = broke && Math.floor(t*4)%2===0;
+      s += CI(410,60,20,blink?"var(--red)":"var(--steel-soft)","var(--ink)",2)+TX(410,96,"STANS",{size:12,weight:800,anchor:"middle",fill:broke?"var(--red)":"var(--muted)"});
+      s += TX(230,215,broke?"Reima røk – maskinen står!":"Maskinen går …",{size:18,weight:800,anchor:"middle",fill:broke?"var(--red)":"var(--ink)"});
+      s += TX(230,240,broke?"Reparer nå: finn reim, frakoble, bytt, test":"",{size:13,anchor:"middle",fill:"var(--muted)"});
+    }
+    if (sel==="utsatt"){
+      s += RC(40,40,170,150,"#3b4148","#22272c",2,10)+TX(125,62,"MASKINLYS",{size:12,weight:700,anchor:"middle",fill:"#f1f3f5"});
+      s += CI(125,115,32,"#495057","#111",2)+ln(105,95,145,135,"#868e96",3)+ln(105,135,145,95,"#868e96",3);
+      s += TX(125,178,"gått, men nok lys",{size:12,anchor:"middle",fill:"#f1f3f5"});
+      const days = ["Man","Tir","Ons","Tor","Fre"], cur = Math.min(4, Math.floor((t%6)/1.1));
+      days.forEach((dd,i) => { const x=245+i*42, hit=i===4; s += RC(x,70,36,48,i===cur?(hit?"var(--green)":"var(--orange)"):"var(--panel)","var(--line)",1.5,6)+TX(x+18,100,dd,{size:13,weight:700,anchor:"middle",fill:i===cur?"#fff":"var(--ink)"}); });
+      s += TX(329,140,"Planlagt stopp fredag",{size:13,weight:700,anchor:"middle",fill:"var(--green)"});
+      if (cur===4) s += TX(329,170,"✓ Byttes nå – ingen ekstra stans",{size:14,weight:800,anchor:"middle",fill:"var(--green)"});
+      s += TX(230,225,"Feilen er der – men kan vente",{size:17,weight:800,anchor:"middle"});
+    }
+    if (sel==="forb"){
+      s += machine(60,70,t*1.2,"#adb5bd");
+      s += `<path d="M330 50 l70 25 v45 c0 40 -30 60 -70 75 c-40 -15 -70 -35 -70 -75 v-45 z" fill="var(--green-soft)" stroke="var(--green)" stroke-width="3"/>`;
+      s += `<path d="M300 120 l22 22 l40 -45" fill="none" stroke="var(--green)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>`;
+      s += TX(230,235,"Gjør noe før det ryker",{size:17,weight:800,anchor:"middle",fill:"var(--green)"});
+    }
+    if (sel==="tid"){
+      const hrs = Math.floor((t*500)%2400);
+      s += RC(40,40,170,120,"var(--panel)","var(--line)",2,10)+TX(125,70,"Driftstimer",{size:13,weight:700,anchor:"middle",fill:"var(--muted)"});
+      s += TX(125,115,nf(hrs),{size:36,weight:800,anchor:"middle"})+RC(60,130,130,10,"var(--line)","none",0,5)+RC(60,130,130*Math.min(1,hrs/2000),10,hrs>=2000?"var(--green)":"var(--blue)","none",0,5);
+      // girkasse
+      s += RC(270,90,140,90,"#748ffc","#364fc7",2,10)+TX(340,140,"girkasse",{size:13,weight:700,anchor:"middle",fill:"#fff"});
+      if (hrs>=2000){ const k=(hrs-2000)/400;
+        s += `<g transform="translate(${fx(300+10*k)} ${fx(30)}) rotate(35)"><path d="M0 0 h36 v24 h-36 z M36 6 l24 -6 l2 6 l-24 10z" fill="var(--yellow)" stroke="var(--ink)" stroke-width="2"/></g>`;
+        for (let i=0;i<3;i++){ const dy=((t*80+i*20)%50); s += CI(352,62+dy,4,"#c99700"); }
+        s += TX(230,220,"2000 timer → oljeskift ✓",{size:17,weight:800,anchor:"middle",fill:"var(--green)"});
+      } else s += TX(230,220,"Teller timer til neste oljeskift",{size:16,weight:700,anchor:"middle"});
+      s += TX(230,245,"Samme intervall – uansett tilstand",{size:13,anchor:"middle",fill:"var(--muted)"});
+    }
+    if (sel==="tilst"){
+      const cyc = t%7, wear = Math.min(1, cyc/5), amp = 4 + 38*wear*wear;
+      // lager
+      s += CI(110,120,62,"#dee2e6","#495057",3)+CI(110,120,30,"var(--bg)","#495057",3);
+      for (let i=0;i<9;i++){ const a=t*1.6+i*2*Math.PI/9; s += CI(110+46*Math.cos(a),120+46*Math.sin(a),10,"#adb5bd","#495057",1.5); }
+      s += TX(110,205,"kulelager",{size:13,anchor:"middle",fill:"var(--muted)"});
+      // vibrasjonskurve
+      s += RC(205,40,230,150,"var(--panel)","var(--line)",1.5,8)+TX(215,60,"Vibrasjon",{size:12,weight:700,fill:"var(--muted)"});
+      const lim = 80; s += ln(215,lim,425,lim,"var(--red)",2,"6 4")+TX(425,lim-5,"grense",{size:11,anchor:"end",fill:"var(--red)"});
+      let d=""; for (let x=0;x<=200;x+=3){ const a = 4 + 38*Math.min(1,Math.max(0,(cyc-(200-x)/200*5)/5))**2; d += (x?"L":"M")+fx(220+x)+" "+fx(130+a*Math.sin(x*.5+t*12)*.8); }
+      s += `<path d="${d}" fill="none" stroke="var(--blue)" stroke-width="2"/>`;
+      const over = amp*.8 > 130-lim;
+      s += TX(230,235,over?"Over grensen → bytt lageret ved neste stopp":"Mål jevnlig – følg med på tilstanden",{size:15,weight:800,anchor:"middle",fill:over?"var(--orange)":"var(--ink)"});
+    }
+    if (sel==="pred"){
+      const gx=50, gy=40, gw=360, gh=150, n = Math.min(14, Math.floor((t%9)*2.4));
+      s += RC(gx-10,gy-10,gw+30,gh+30,"var(--panel)","var(--line)",1.5,8);
+      s += ln(gx,gy+20,gx+gw,gy+20,"var(--red)",2,"6 4")+TX(gx+gw,gy+14,"grense",{size:11,anchor:"end",fill:"var(--red)"});
+      const val = i => gy+gh-10 - (i*i*.45 + 6*Math.sin(i*1.7));
+      for (let i=0;i<n;i++) s += CI(gx+10+i*15,val(i),4.5,"var(--blue)");
+      if (n>=8){ let d=`M${gx+10} ${fx(gy+gh-10)}`; for (let i=0;i<=22;i++) d += ` L${fx(gx+10+i*15)} ${fx(gy+gh-10-i*i*.45)}`;
+        s += `<path d="${d}" fill="none" stroke="var(--purple)" stroke-width="2.5" stroke-dasharray="7 5"/>`;
+        const ix = Math.sqrt((gh-30)/.45); s += CI(gx+10+ix*15,gy+20,8,"none","var(--purple)",3);
+        s += TX(230,225,`Grensen nås om ca. ${Math.max(1,Math.round(ix-n+1))} uker`,{size:16,weight:800,anchor:"middle",fill:"var(--purple)"}); }
+      else s += TX(230,225,"Sensoren samler målinger …",{size:16,weight:700,anchor:"middle"});
+      s += TX(230,248,"Planlegg byttet i god tid",{size:13,anchor:"middle",fill:"var(--muted)"});
+    }
+    $("d2Scene").innerHTML = s;
+  }
+  addAnim($("d2Scene"), dt => { st += dt; scene(); });
+  drawTree(); scene();
+})();
+
+/* =====================================================================
+   DEL 3 – daglig ettersyn: finn feilene
+   ===================================================================== */
+const FEIL = [
+  {x:905, y:330, r:60, n:"Oljelekkasje", s:"👁 👃", h:"Olje drypper fra slangekoblingen – dam på gulvet.", a:"Meld. Legg ut absorbent. Stram eller bytt kobling/pakning. Spruter det: stopp straks.", stop:false},
+  {x:760, y:355, r:38, n:"Lavt oljenivå", s:"👁", h:"Oljenivået i seglasset er under MIN.", a:"Finn årsaken først (lekkasjen!). Fyll riktig olje etter FDV.", stop:false},
+  {x:620, y:400, r:38, n:"Løs fundamentbolt", s:"👁 ✋", h:"Mutteren i fundamentet er løs – maskinen vibrerer.", a:"Stopp og trekk til med momentnøkkel. Vibrasjon ødelegger lagre og rør.", stop:true},
+  {x:550, y:262, r:80, x2:945, y2:452, r2:50, n:"Reimvern mangler", s:"👁", h:"Reimvernet står på gulvet. Reima går helt åpen.", a:"STOPP og lås. Vernet skal på før maskinen startes igjen.", stop:true},
+  {x:170, y:120, r:38, n:"Skadet kabel", s:"👁", h:"Isolasjonen er skadet – kobberet synes.", a:"STOPP, slå av og lås. Meld til elektrofagperson.", stop:true},
+  {x:395, y:228, r:40, n:"Varmt motorlager", s:"✋", h:"Motorlageret er unormalt varmt.", a:"Meld. Sjekk smøring og kjøling. Mål temperaturen.", stop:false},
+  {x:770, y:158, r:45, n:"Ulyd fra pumpa", s:"👂", h:"Skrapende lyd fra pumpa.", a:"Meld og lag arbeidsordre – ikke vent til den havarerer.", stop:false},
+  {x:255, y:330, r:58, n:"Tette kjøleribber", s:"👁", h:"Spon og en fille dekker kjøleribbene. Motoren får ikke kjølt seg.", a:"Stopp, rengjør og fjern fillen. Henger sammen med det varme lageret!", stop:false}
+];
+function ettersynSVG(P, o={}){
+  const pr = P.print, t = o.t||0;
+  const stl = pr?"#fff":"#adb5bd", stD = pr?"#000":"#495057", mot = pr?"#fff":"#4c6ef5", motD = pr?"#000":"#364fc7", pmp = pr?"#fff":"#2f9e44", pmpD = pr?"#000":"#2b6a30", ink = pr?"#000":"var(--ink)";
+  let s = "";
+  // gulv og vegg
+  s += RC(0,470,1000,50,pr?"#fff":"var(--steel-soft)",pr?"#000":"none",pr?1:0)+ln(0,470,1000,470,ink,2);
+  // kabel med skade
+  s += `<path d="M285 222 V120 H60 V470" fill="none" stroke="${pr?"#000":"#212529"}" stroke-width="8" stroke-linejoin="round"/>`;
+  s += RC(150,113,40,14,pr?"#fff":"#212529","none",0)+ln(152,117,188,117,pr?"#000":"#e8590c",2.5)+ln(152,123,188,121,pr?"#000":"#d9480f",2.5)+`<path d="M150 113 l-4 7 l4 7 M190 113 l4 7 l-4 7" fill="none" stroke="${pr?"#000":"#212529"}" stroke-width="3"/>`;
+  // ramme og bolter
+  s += RC(120,410,760,30,stl,stD,2,3);
+  [170,380,830].forEach(x => s += RC(x-12,400,24,10,pr?"#fff":"#868e96",stD,1.5,2)+ln(x,394,x,400,stD,4));
+  s += ln(620,385,620,410,stD,4)+RC(608,384,24,10,pr?"#fff":"#868e96",stD,1.5,2)+ln(606,404,634,400,stD,2)+TX(642,392,"",{});
+  // motor
+  s += RC(180,395,40,15,mot,motD,2,2)+RC(360,395,40,15,mot,motD,2,2);
+  s += RC(130,265,42,115,pr?"#fff":"#748ffc",motD,2,8);
+  for (let y=275;y<375;y+=10) s += ln(136,y,166,y,motD,1.5);
+  s += RC(170,250,240,145,mot,motD,2.5,14);
+  for (let x=184;x<400;x+=14) s += ln(x,256,x,389,motD,1.6);
+  s += RC(250,222,70,30,pr?"#fff":"#748ffc",motD,2,4)+RC(410,316,32,16,pr?"#fff":"#ced4da",stD,1.5,2);
+  // spon og fille på kjøleribber
+  for (let i=0;i<9;i++){ const x=200+((i*37)%110), y=290+((i*23)%70); s += `<path d="M${x} ${y} q6 -8 12 0 q6 8 12 0" fill="none" stroke="${pr?"#000":"#868e96"}" stroke-width="2.5"/>`; }
+  s += `<path d="M215 300 q20 -12 45 0 l18 50 q-30 10 -60 0 z" fill="${pr?"#fff":"#e9ecef"}" stroke="${pr?"#000":"#868e96"}" stroke-width="2"/>`+ln(225,315,265,312,pr?"#000":"#adb5bd",1.5)+ln(228,330,270,328,pr?"#000":"#adb5bd",1.5);
+  // varme fra lageret
+  for (let i=0;i<3;i++){ const x=378+i*14, ph=pr?0:(t*40+i*12)%30; let d=`M${x} ${245-ph}`; for (let k=1;k<=4;k++) d += ` q${k%2?6:-6} -6 0 -12`; s += `<path d="${d}" fill="none" stroke="${pr?"#000":"#e03131"}" stroke-width="2.4" opacity="${pr?1:fx(1-ph/30)}"/>`; }
+  // reim (vernet mangler)
+  const A=[455,324,28], B=[640,236,46];
+  const belt = `M${A[0]} ${A[1]-A[2]} L${B[0]} ${B[1]-B[2]} A${B[2]} ${B[2]} 0 0 1 ${B[0]} ${B[1]+B[2]} L${A[0]} ${A[1]+A[2]} A${A[2]} ${A[2]} 0 0 1 ${A[0]} ${A[1]-A[2]}`;
+  s += CI(A[0],A[1],A[2],pr?"#fff":"#ced4da",stD,2)+CI(B[0],B[1],B[2],pr?"#fff":"#ced4da",stD,2);
+  s += `<path d="${belt}" fill="none" stroke="${pr?"#000":"#212529"}" stroke-width="9"/>`;
+  if (!pr) s += `<path d="${belt}" fill="none" stroke="#868e96" stroke-width="3" stroke-dasharray="10 14" stroke-dashoffset="${fx(-t*160)}"/>`;
+  [A,B].forEach((p,i) => { const a = pr?0:t*(i?3.5:5.8); for (let k=0;k<3;k++){ const aa=a+k*2.094; s += ln(p[0],p[1],p[0]+p[2]*.7*Math.cos(aa),p[1]+p[2]*.7*Math.sin(aa),stD,3); } s += CI(p[0],p[1],6,stD); });
+  // pumpe
+  s += RC(720,290,100,120,pmp,pmpD,2,4)+ln(686,236,720,236,stD,8);
+  s += CI(770,240,55,pmp,pmpD,2.5)+CI(770,240,20,pr?"#fff":"#51cf66",pmpD,2);
+  s += RC(745,318,30,72,pr?"#fff":"#f8f9fa",stD,2,4)+RC(748,374,24,13,pr?"#000":"#f08c00","none",0,2);
+  s += ln(740,340,780,340,ink,1.5)+TX(785,344,"MAX",{size:11,fill:ink})+ln(740,362,780,362,ink,1.5)+TX(785,366,"MIN",{size:11,fill:ink});
+  // slange og kobling
+  s += `<path d="M825 240 H895 M905 230 V40" fill="none" stroke="${pr?"#000":"#212529"}" stroke-width="12" stroke-linecap="round"/>`;
+  s += RC(888,228,26,26,pr?"#fff":"#fab005",stD,2,3);
+  // dråper og dam
+  const drops = pr ? [300,380] : [0,1,2].map(i => 258 + ((t*170 + i*70) % 210));
+  drops.forEach(y => s += `<path d="M905 ${fx(y)} q-6 10 0 14 q6 -4 0 -14z" fill="${pr?"#000":"#5c3d0e"}"/>`);
+  s += `<ellipse cx="905" cy="476" rx="${pr?40:fx(38+3*Math.sin(t*2))}" ry="6" fill="${pr?"#fff":"#5c3d0e"}" stroke="${pr?"#000":"none"}" opacity="${pr?1:.75}"/>`;
+  // ulyd
+  for (let i=0;i<3;i++){ const r = pr ? 22+i*16 : 20 + ((t*45 + i*18) % 54), op = pr?1:Math.max(0,1-(r-20)/54);
+    s += `<path d="M${fx(770-r)} ${fx(178-r*.3)} A${fx(r)} ${fx(r)} 0 0 1 ${fx(770+r)} ${fx(178-r*.3)}" fill="none" stroke="${pr?"#000":"var(--purple)"}" stroke-width="3" opacity="${fx(op)}"/>`; }
+  // vernet på gulvet
+  s += `<path d="M905 468 L920 400 L990 405 L985 468 Z" fill="${pr?"#fff":"#fab005"}" stroke="${stD}" stroke-width="2"/>`;
+  for (let k=0;k<5;k++) s += ln(918+k*13,408,912+k*13,464,pr?"#000":"#e67700",2);
+  // markeringer
+  if (!pr){
+    FEIL.forEach((f,i) => { const got = o.found && o.found.has(i);
+      if (got) s += CI(f.x,f.y,f.r,"rgba(43,138,62,.12)","var(--green)",4)+CI(f.x+f.r*.7,f.y-f.r*.7,15,"var(--green)","#fff",2)+TX(f.x+f.r*.7,f.y-f.r*.7+6,i+1,{size:15,weight:800,anchor:"middle",fill:"#fff"});
+      else if (o.all) s += CI(f.x,f.y,f.r,"none","var(--orange)",3.5,` stroke-dasharray="8 6"`)+TX(f.x,f.y-f.r-6,f.n,{size:13,weight:800,anchor:"middle",fill:"var(--orange)"}); });
+    (o.misses||[]).forEach(m => s += TX(m[0],m[1]+6,"✕",{size:20,weight:800,anchor:"middle",fill:"var(--red)",op:fx(Math.max(0,1-(t-m[2])/1.5))}));
+  }
+  return s;
+}
+(function(){
+  const svg = $("d3Svg");
+  const st = {found:new Set(), misses:[], miss:0, all:false, t0:null, tEnd:null};
+  function msg(m, c="info"){ $("d3Msg").className="status "+c; $("d3Msg").innerHTML=m; }
+  function counts(){ $("d3Found").textContent = st.found.size+" / 8"; $("d3Miss").textContent = st.miss; }
+  svg.addEventListener("pointerdown", e => {
+    const p = svg.createSVGPoint(); p.x=e.clientX; p.y=e.clientY; const q = p.matrixTransform(svg.getScreenCTM().inverse());
+    if (st.t0===null) st.t0 = T;
+    const i = FEIL.findIndex(f => Math.hypot(q.x-f.x,q.y-f.y)<=f.r || (f.x2 && Math.hypot(q.x-f.x2,q.y-f.y2)<=f.r2));
+    if (i<0){ st.miss++; st.misses.push([q.x,q.y,T]); counts(); msg("Her ser alt greit ut. Let videre!","warn"); return; }
+    const f = FEIL[i], ny = !st.found.has(i); st.found.add(i); counts();
+    msg(`<b>${i+1}. ${f.n}</b> ${f.s} – ${f.h} <br>${f.stop?"🛑 ":"📝 "}${f.a}`, f.stop?"bad":"ok");
+    if (ny && st.found.size===8){ st.tEnd = T; setTimeout(()=>msg(`Alle 8 feil funnet på ${Math.round(st.tEnd-st.t0)} s med ${st.miss} bom! Tre av dem krever at maskinen stoppes: vern, kabel og fundamentbolt.`,"ok"), 2500); }
+  });
+  $("d3Show").onclick = () => { st.all = !st.all; $("d3Show").textContent = st.all ? "🙈 Skjul" : "👁 Vis alle feil"; };
+  $("d3Reset").onclick = () => { st.found.clear(); st.misses=[]; st.miss=0; st.all=false; st.t0=null; st.tEnd=null; $("d3Show").textContent="👁 Vis alle feil"; counts(); msg("Klikk der du ser, hører, kjenner eller lukter noe som er galt."); };
+  addAnim(svg, () => {
+    st.misses = st.misses.filter(m => T-m[2] < 1.5);
+    svg.innerHTML = ettersynSVG(PS,{t:T, found:st.found, all:st.all, misses:st.misses});
+    $("d3Time").textContent = st.t0===null ? "0 s" : Math.round((st.tEnd??T)-st.t0)+" s";
+  });
+  svg.innerHTML = ettersynSVG(PS,{});
+  msg("Klikk der du ser, hører, kjenner eller lukter noe som er galt.");
+})();
+
+/* =====================================================================
+   DEL 4 – kilereim: stramming og oppretting
+   ===================================================================== */
+(function(){
+  let s = 15, aA = 0, aB = 0;
+  const A=[190,215,72], B=[770,205,128];
+  const defOf = v => 28 - .22*v;
+  function draw(){
+    const def = defOf(s), sag = def*2.6, slack = def>13, tight = def<7.5, ok = !slack && !tight;
+    const slip = slack ? .55 + .08*Math.sin(T*9) : 1;
+    let g = "";
+    // referanselinje
+    g += ln(A[0],A[1]-A[2],B[0],B[1]-B[2],"var(--muted)",1.5,"6 5");
+    const mx=(A[0]+B[0])/2, my=(A[1]-A[2]+B[1]-B[2])/2;
+    const belt = `M${A[0]} ${A[1]-A[2]} Q${mx} ${fx(my+2*sag)} ${B[0]} ${B[1]-B[2]} A${B[2]} ${B[2]} 0 0 1 ${B[0]} ${B[1]+B[2]} L${A[0]} ${A[1]+A[2]} A${A[2]} ${A[2]} 0 0 1 ${A[0]} ${A[1]-A[2]}`;
+    [A,B].forEach((p,i) => { g += CI(p[0],p[1],p[2],"#ced4da","#495057",3)+CI(p[0],p[1],p[2]*.78,"none","#868e96",2);
+      const a = i?aB:aA; for (let k=0;k<5;k++){ const aa=a+k*1.2566; g += ln(p[0]+12*Math.cos(aa),p[1]+12*Math.sin(aa),p[0]+p[2]*.74*Math.cos(aa),p[1]+p[2]*.74*Math.sin(aa),"#495057",5); }
+      g += CI(p[0],p[1],12,"#495057");
+      if (tight) g += CI(p[0],p[1],22+4*Math.sin(T*6),"rgba(224,49,49,.35)","var(--red)",2); });
+    g += `<path d="${belt}" fill="none" stroke="${slack?"#7a2e0e":"#212529"}" stroke-width="12" stroke-linejoin="round"/>`;
+    g += `<path d="${belt}" fill="none" stroke="#868e96" stroke-width="3" stroke-dasharray="12 16" stroke-dashoffset="${fx(-T*220)}"/>`;
+    if (slack) g += `<path d="${belt}" fill="none" stroke="rgba(232,89,12,${fx(.25+.2*Math.sin(T*8))})" stroke-width="22"/>`;
+    // måling
+    const by = my + sag;
+    g += `<path d="M${mx} ${fx(by-70)} v52" stroke="var(--orange)" stroke-width="5" marker-end="url(#d4arr)"/>`+TX(mx-14,by-60,"trykk",{size:18,anchor:"end",weight:700,fill:"var(--orange)"});
+    g += RC(mx+40,my-6,30,Math.max(70,sag+34),"#fff3bf","#e67700",1.5,3);
+    for (let k=0;k<=Math.max(20,def+6);k+=2){ const y=my+k*2.6; if (y>my+Math.max(70,sag+34)-6) break; g += ln(mx+40,y,mx+(k%10===0?62:52),y,"#5c4a00",1.4); if (k%10===0) g += TX(mx+76,y+5,k,{size:14,fill:"var(--muted)"}); }
+    g += ln(mx-10,by,mx+72,by,ok?"var(--green)":"var(--red)",3)+TX(mx+55,my+Math.max(70,sag+34)+26,nf(def,0)+" mm",{size:22,weight:800,anchor:"middle",fill:ok?"var(--green)":"var(--red)"});
+    g += ln(A[0],355,B[0],355,"var(--ink)",1.5)+`<path d="M${A[0]} 355 l9 -5 v10z M${B[0]} 355 l-9 -5 v10z" fill="var(--ink)"/>`+TX(mx,346,"akselavstand 600 mm",{size:18,weight:700,anchor:"middle"});
+    g += TX(A[0],A[1]+A[2]+26,"motor",{size:16,anchor:"middle",fill:"var(--muted)"})+TX(B[0]+B[2]+12,B[1]+6,"maskin",{size:16,fill:"var(--muted)"});
+    if (slack) g += TX(B[0],38,"hviiiin! 🔊",{size:26,weight:800,anchor:"middle",fill:"var(--orange)",op:fx(.6+.4*Math.sin(T*10))});
+    if (tight) g += TX(mx,38,"lagrene overbelastes!",{size:24,weight:800,anchor:"middle",fill:"var(--red)"});
+    $("d4Svg").innerHTML = `<defs><marker id="d4arr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="var(--orange)"/></marker></defs>` + g;
+    $("d4D").textContent = nf(def,0)+" mm";
+    $("d4N").textContent = slack ? "slurer!" : Math.round(1450*72/128*slip)+" o/min";
+    $("d4Sv").textContent = slack ? "slakk" : tight ? "for stram" : "riktig";
+    const m = $("d4Msg");
+    if (slack){ m.className="status warn"; m.textContent="For slakk: reima slurer, hviner og blir varm. Flankene blir blanke, og maskinen mister kraft."; }
+    else if (tight){ m.className="status bad"; m.textContent="For stram: lagrene i motor og maskin overbelastes og blir varme. Reima slites fort."; }
+    else { m.className="status ok"; m.textContent="Riktig: ca. 10 mm nedbøyning på 600 mm. Ingen sluring, normal last på lagrene."; }
+    return slip;
+  }
+  $("d4S").oninput = e => { s = +e.target.value; };
+  addAnim($("d4Svg"), dt => { const slip = draw(); aA += dt*6; aB += dt*6*72/128*slip; });
+  draw();
+
+  /* oppretting sett ovenfra */
+  let mode = "ok";
+  const MODES = [["ok","På linje"],["vinkel","Vinkelfeil"],["par","Forskjøvet"]];
+  $("d4A").innerHTML = MODES.map(m=>`<button class="chip" data-m="${m[0]}" aria-pressed="${m[0]===mode}">${m[1]}</button>`).join("");
+  $("d4A").onclick = e => { const b=e.target.closest("[data-m]"); if(!b) return; mode=b.dataset.m; $("d4A").querySelectorAll("[data-m]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); top(); };
+  function top(){
+    const dy = mode==="par" ? 14 : 0, rot = mode==="vinkel" ? 6 : 0;
+    let g = TX(20,24,"Sett ovenfra",{size:16,weight:700,fill:"var(--muted)"});
+    g += ln(110,104,110,200,"#495057",10)+ln(380,104+dy,380,200,"#495057",10);
+    g += RC(40,80,140,24,"#ced4da","#495057",2,3);
+    g += `<g transform="rotate(${rot} 380 ${92+dy})">`+RC(260,80+dy,240,24,"#ced4da","#495057",2,3)+ln(180,92,260,92+dy,"#212529",8)+`</g>`;
+    g += ln(20,78,510,78,"var(--orange)",4)+TX(510,68,"linjal",{size:16,weight:700,anchor:"end",fill:"var(--orange)"});
+    if (mode!=="ok"){ const gx = mode==="par" ? 380 : 495; g += CI(gx,86,18,"none","var(--red)",3)+TX(gx,128+dy,"glipe",{size:16,weight:800,anchor:"middle",fill:"var(--red)"}); }
+    else g += TX(245,170,"✓ ligger an i fire punkter",{size:15,weight:800,anchor:"middle",fill:"var(--green)"});
+    g += TX(110,216,"motor",{size:15,anchor:"middle",fill:"var(--muted)"})+TX(380,216,"maskin",{size:15,anchor:"middle",fill:"var(--muted)"});
+    $("d4Top").innerHTML = g;
+    const m=$("d4AMsg");
+    if (mode==="ok"){ m.className="status ok"; m.textContent="Skivene står på linje. Reima går rett inn i sporene."; }
+    else if (mode==="vinkel"){ m.className="status bad"; m.textContent="Vinkelfeil: akslene er ikke parallelle. Reima slites på én side og kan hoppe av."; }
+    else { m.className="status bad"; m.textContent="Forskjøvet: skivene står ikke i samme plan. Reima vris og slites på flankene."; }
+  }
+  top();
+
+  /* trinn for reimbytte */
+  const STEPS = [["🔒","Stopp, slå av og lås"],["🛡","Ta av reimvernet"],["🔧","Løsne motoren, skyv inn"],["➰","Legg på ny reim – ikke lirk"],["📏","Rett opp skivene"],["📐","Stram: ca. 16 mm/m"],["▶","Vern på, fjern lås, prøvekjør"]];
+  $("d4Steps").innerHTML = STEPS.map((x,i)=>`<div data-i="${i}"><span class="ic">${x[0]}</span><b>${i+1}</b> ${x[1]}</div>`).join("");
+  let si = 0, sa = 0;
+  addAnim($("d4Steps"), dt => { sa += dt; if (sa>1.8){ sa=0; si=(si+1)%STEPS.length; $("d4Steps").querySelectorAll("[data-i]").forEach(d=>d.classList.toggle("on", +d.dataset.i===si)); } });
+})();
+
+/* =====================================================================
+   DEL 5 – tre strategier
+   ===================================================================== */
+(function(){
+  const C = {hav:51900, plan:2150, insp:160};
+  const L = [
+    {k:"korr", n:"Korrigerende", sub:"vent til det ryker", c:"var(--red)"},
+    {k:"tid", n:"Tidsbasert", sub:"bytt hver 12. uke", c:"var(--blue)"},
+    {k:"tilst", n:"Tilstandsbasert", sub:"inspiser annenhver uke", c:"var(--green)"}
+  ];
+  let seed = 4, ev = {}, w = 0, run = false;
+  function sim(){
+    const r = rng(seed), lives = [];
+    for (let i=0;i<30;i++){ const u1=r()||1e-9, u2=r(); lives.push(Math.max(6, 17 + 4.5*Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2))); }
+    ev = {korr:[], tid:[], tilst:[]};
+    let t=0, i=0;
+    while (true){ const f=t+lives[i++]; if (f>52) break; ev.korr.push({w:f,y:"hav"}); t=f; }
+    t=0; i=0;
+    while (true){ const f=t+lives[i++], p=t+12; const nx=Math.min(f,p); if (nx>52) break; ev.tid.push({w:nx,y:f<p?"hav":"plan"}); t=nx; }
+    t=0; i=0; let life=lives[i++];
+    for (let k=2;k<=52;k+=2){ ev.tilst.push({w:k,y:"insp"}); if (k >= t+life-4){ ev.tilst.push({w:k+.01,y:"plan"}); t=k; life=lives[i++]; } }
+  }
+  const x0=210, x1=960, X = wk => x0 + wk/52*(x1-x0), LY=[80,180,280];
+  function totals(k, upto){ const a = {hav:0,plan:0,insp:0}; ev[k].forEach(e => { if (e.w<=upto) a[e.y]++; }); a.stans = a.hav*10; a.cost = a.hav*C.hav + a.plan*C.plan + a.insp*C.insp; return a; }
+  function draw(){
+    let s = "";
+    s += TX(x0-14,30,"Uke",{size:13,weight:700,fill:"var(--muted)",anchor:"end"});
+    for (let k=0;k<=52;k+=4) s += ln(X(k),36,X(k),320,"var(--line)",1)+TX(X(k),30,k,{size:12,anchor:"middle",fill:"var(--muted)"});
+    L.forEach((l,i) => {
+      const y = LY[i];
+      s += TX(20,y-6,l.n,{size:17,weight:800,fill:l.c})+TX(20,y+16,l.sub,{size:12.5,fill:"var(--muted)"});
+      s += RC(x0,y-22,x1-x0,44,"var(--bg)","var(--line)",1.5,8);
+      s += RC(x0,y-22,Math.max(0,X(w)-x0),44,"rgba(127,127,127,.08)","none",0,8);
+      ev[l.k].forEach(e => { if (e.w>w) return; const x=X(e.w);
+        if (e.y==="hav"){ s += RC(x-2,y-22,X(e.w+10/168)-x+6,44,"var(--red)","none",0,2)+TX(x+3,y+8,"✕",{size:20,weight:800,anchor:"middle",fill:"#fff"})+TX(x+3,y-28,"havari",{size:11,weight:700,anchor:"middle",fill:"var(--red)"}); }
+        if (e.y==="plan"){ s += TX(x,y+7,"↻",{size:22,weight:800,anchor:"middle",fill:"var(--blue)"}); }
+        if (e.y==="insp"){ s += TX(x,y+20,"▾",{size:12,anchor:"middle",fill:"var(--green)"}); }
+      });
+      const a = totals(l.k,w); s += TX(x1,y+40,kr(a.cost),{size:14,weight:800,anchor:"end",fill:l.c});
+    });
+    s += ln(X(w),36,X(w),330,"var(--orange)",2.5)+CI(X(w),36,6,"var(--orange)");
+    $("d5Svg").innerHTML = s;
+    const T3 = L.map(l => totals(l.k,w)), best = w>=52 ? T3.reduce((b,a,i)=>a.cost<T3[b].cost?i:b,0) : -1;
+    $("d5Tab").innerHTML = L.map((l,i) => { const a=T3[i]; return `<tr class="${i===best?"best":""}"><td><span class="dotc" style="background:${l.c}"></span>${l.n}</td><td>${a.hav}</td><td>${a.plan}</td><td>${a.insp}</td><td>${a.stans} t</td><td>${kr(a.cost)}</td></tr>`; }).join("");
+    const m = $("d5Msg");
+    if (w>=52){ const k=T3[0].cost; m.className="status ok"; m.textContent = `Året er ferdig. Billigst: ${L[best].n}. Korrigerende kostet ${kr(k)} – ${nf(k/Math.max(1,T3[best].cost),1)} ganger så mye.`; }
+    else if (w>0){ m.className="status info"; m.textContent = `Uke ${Math.floor(w)} av 52.`; }
+    else { m.className="status info"; m.textContent = "Trykk «Kjør året». Følg med på havari (✕) og planlagte bytter (↻)."; }
+  }
+  $("d5Go").onclick = () => { if (w>=52) w=0; run=!run; $("d5Go").textContent = run ? "❚❚ Pause" : "▶ Kjør året"; };
+  $("d5New").onclick = () => { seed = Math.floor(Math.random()*1e9); sim(); w=0; run=true; $("d5Go").textContent="❚❚ Pause"; draw(); };
+  addAnim($("d5Svg"), dt => { if (run){ w = Math.min(52, w + dt*5.5); if (w>=52){ run=false; $("d5Go").textContent="▶ Kjør på nytt"; } draw(); } });
+  sim(); draw();
+})();
+
+/* =====================================================================
+   DEL 6 – vedlikeholdssirkelen + arbeidsordre
+   ===================================================================== */
+(function(){
+  const STEPS = [
+    {n:"Melding", i:"📣", t:"Operatøren melder feil: «Ulyd fra spindelen ved høyt turtall.» Behovet kan også komme fra planen (forebyggende)."},
+    {n:"Arbeidsordre", i:"📄", t:"Det lages en arbeidsordre (AO) i systemet: nummer, prioritet og type vedlikehold."},
+    {n:"Planlegging", i:"🗓", t:"Når? Hvem? Hvilke deler og verktøy? Hvilke farer – SJA og frakobling? Delene bestilles."},
+    {n:"Utførelse", i:"🔧", t:"Maskinen frakobles og låses. Lagrene byttes etter FDV-dokumentasjonen. Prøvekjøring."},
+    {n:"Dokumentasjon", i:"✍", t:"Tid brukt, deler brukt og hva som ble funnet, skrives inn. Arbeidsordren lukkes."},
+    {n:"Analyse", i:"📊", t:"Historikken viser at lageret manglet smøring. Planen endres: smøring hver uke. Neste runde blir bedre."}
+  ];
+  const F = [
+    [0,"Maskin","Dreiebenk DB-03"],[0,"Meldt av","Operatør Lise · tir 06.10"],[0,"Feil","Ulyd fra spindel ved høyt turtall"],
+    [1,"AO-nr.","2026-0147"],[1,"Prioritet","2 – innen en uke"],[1,"Type","Korrigerende, utsatt"],
+    [2,"Planlagt","Tor 08.10 kl. 07–10"],[2,"Deler","Spindellager 7014 × 2"],[2,"Sikkerhet","SJA · hovedbryter låst"],
+    [3,"Utført av","Ola N."],
+    [4,"Tid brukt","2,5 t"],[4,"Funn","Lager slitt – manglet smøring"],
+    [5,"Tiltak","Smøring endret til hver uke"]
+  ];
+  let step = -1, pos = 0, auto = false, at = 0;
+  const cx=255, cy=240, R=165, ang = i => -Math.PI/2 + i*Math.PI/3;
+  function draw(){
+    let s = "";
+    s += CI(cx,cy,R,"none","var(--line)",14);
+    // piler mellom steg
+    for (let i=0;i<6;i++){ const a0=ang(i)+.32, a1=ang(i+1)-.32, done = step>=0 && i<step;
+      s += `<path d="M${fx(cx+R*Math.cos(a0))} ${fx(cy+R*Math.sin(a0))} A${R} ${R} 0 0 1 ${fx(cx+R*Math.cos(a1))} ${fx(cy+R*Math.sin(a1))}" fill="none" stroke="${done?"var(--orange)":"var(--steel)"}" stroke-width="4"/>`;
+      const ex=cx+R*Math.cos(a1), ey=cy+R*Math.sin(a1), tx=-Math.sin(a1), ty=Math.cos(a1);
+      s += `<path d="M${fx(ex+tx*10)} ${fx(ey+ty*10)} L${fx(ex-ty*7)} ${fx(ey+tx*7)} L${fx(ex+ty*7)} ${fx(ey-tx*7)} Z" fill="${done?"var(--orange)":"var(--steel)"}"/>`; }
+    STEPS.forEach((S,i) => { const x=cx+R*Math.cos(ang(i)), y=cy+R*Math.sin(ang(i)), cur=i===step, done=step>i;
+      s += `<g class="hot" data-i="${i}">`+CI(x,y,44,cur?"var(--orange)":done?"var(--orange-soft)":"var(--panel)",cur||done?"var(--orange)":"var(--steel-dark)",3);
+      s += TX(x,y+2,S.i,{size:24,anchor:"middle"})+TX(x,y+24,i+1,{size:12,weight:800,anchor:"middle",fill:cur?"#fff":"var(--muted)"})+`</g>`;
+      s += TX(x,i===0?y-54:i===3?y-56:y+66,S.n,{size:15,weight:800,anchor:"middle",fill:cur?"var(--orange)":"var(--ink)"}); });
+    s += TX(cx,cy-6,"Vedlikeholds-",{size:16,weight:800,anchor:"middle",fill:"var(--muted)"})+TX(cx,cy+16,"systemet",{size:16,weight:800,anchor:"middle",fill:"var(--muted)"});
+    // reisende dokument
+    if (step>=0){ const a = ang(pos), x=cx+R*Math.cos(a), y=cy+R*Math.sin(a)-58;
+      s += `<g transform="translate(${fx(x-13)} ${fx(y-16)})"><path d="M0 0 h18 l8 8 v24 h-26 z" fill="#fff" stroke="var(--ink)" stroke-width="2"/>${ln(5,12,20,12,"var(--ink)",1.5)+ln(5,18,20,18,"var(--ink)",1.5)+ln(5,24,16,24,"var(--ink)",1.5)}</g>`; }
+    // arbeidsordre-kort
+    const X0=540, Y0=18, W=440, H=440;
+    s += RC(X0,Y0,W,H,"var(--panel)","var(--ink)",2,10)+RC(X0,Y0,W,42,"var(--blue)","none",0,10)+RC(X0,Y0+30,W,12,"var(--blue)","none",0);
+    s += TX(X0+16,Y0+28,"ARBEIDSORDRE",{size:18,weight:800,fill:"#fff"});
+    const status = step<0?"–":step<3?"Åpen":step===3?"Pågår":step===4?"Utført":"Lukket ✓";
+    s += TX(X0+W-16,Y0+28,"Status: "+status,{size:14,weight:700,fill:"#fff",anchor:"end"});
+    F.forEach((f,i) => { const y=Y0+70+i*28, vis = step>=f[0], fresh = step===f[0];
+      s += TX(X0+16,y,f[1],{size:14,weight:700,fill:"var(--muted)"})+ln(X0+130,y+6,X0+W-16,y+6,"var(--line)",1);
+      if (vis) s += (fresh?RC(X0+126,y-17,W-140,24,"var(--orange-soft)","none",0,4):"")+TX(X0+134,y,f[2],{size:14.5,weight:fresh?750:500,fill:fresh?"var(--orange)":"var(--ink)"}); });
+    $("d6Svg").innerHTML = s;
+    const m=$("d6Msg");
+    if (step<0){ m.className="status info"; m.textContent="Trykk «Neste steg» og følg arbeidsordren rundt."; }
+    else { m.className = step===5?"status ok":"status info"; m.textContent = `${step+1}. ${STEPS[step].n}: ${STEPS[step].t}`; }
+  }
+  function next(){ step = step>=5 ? 0 : step+1; }
+  $("d6Next").onclick = () => { auto=false; $("d6Auto").textContent="▶ Automatisk"; next(); };
+  $("d6Auto").onclick = () => { auto=!auto; at=0; $("d6Auto").textContent = auto ? "❚❚ Stopp" : "▶ Automatisk"; if (auto && step<0) next(); };
+  $("d6Reset").onclick = () => { step=-1; pos=0; auto=false; $("d6Auto").textContent="▶ Automatisk"; draw(); };
+  $("d6Svg").addEventListener("pointerdown", e => { const g=e.target.closest("[data-i]"); if(!g) return; step=+g.dataset.i; });
+  addAnim($("d6Svg"), dt => {
+    if (auto){ at += dt; if (at>3.2){ at=0; next(); } }
+    if (step>=0){ let d = step - pos; if (d < -3) d += 6; if (RM) pos = step; else if (Math.abs(d)>.005) pos += Math.sign(d)*Math.min(Math.abs(d), dt*2.5); if (pos>=6) pos-=6; if (pos<0) pos+=6; }
+    draw();
+  });
+  draw();
+})();
+
+/* =====================================================================
+   DEL 7 – søylebormaskin og plan
+   ===================================================================== */
+const DRILL = [
+  {n:1, x:352, y:296, h:"Vern rundt chucken", t:"Sjekk at vernet er helt, sitter fast og at vernbryteren stopper maskinen.", f:"Daglig", w:"op"},
+  {n:2, x:226, y:132, h:"Nødstopp", t:"Trykk inn: maskinen skal stoppe. Tilbakestill og test start.", f:"Daglig", w:"op"},
+  {n:3, x:178, y:330, h:"Bord og søyle", t:"Fjern spon med kost (ikke trykkluft). Tørk og smør tynt med olje.", f:"Daglig", w:"op"},
+  {n:4, x:304, y:480, h:"Kjølevæske", t:"Sjekk nivå, lukt og blanding. Etterfyll ved behov.", f:"Ukentlig", w:"op"},
+  {n:5, x:322, y:222, h:"Pinol og spindel", t:"Rengjør konusen i spindelen. Smør pinolen.", f:"Ukentlig", w:"op"},
+  {n:6, x:300, y:66, h:"Reimer", t:"Frakoblet og låst: sjekk slitasje, sprekker og stramming.", f:"Månedlig", w:"fa"},
+  {n:7, x:470, y:36, h:"Motor og lagre", t:"Lytt etter ulyd og kjenn etter unormal varme under drift.", f:"Månedlig", w:"fa"},
+  {n:8, x:604, y:300, h:"Kabel og elektrisk", t:"Kontroll av kabel, jording, brytere og nødstoppkrets.", f:"Årlig", w:"el"}
+];
+const WHO = {op:"Operatør", fa:"Fagarbeider", el:"Elektrofagperson"};
+function drillSVG(P, o={}){
+  const pr = P.print, body = pr?"#fff":"#5c7cfa", bodyD = pr?"#000":"#364fc7", metal = pr?"#fff":"#ced4da", metalD = pr?"#000":"#495057", st = pr?"#000":"#343a40";
+  const a = o.a||0;
+  let s = "";
+  // kabel
+  s += `<path d="M500 40 C 560 40, 600 60, 604 110 L604 500" fill="none" stroke="${pr?"#000":"#212529"}" stroke-width="5"/>`+RC(590,490,28,20,pr?"#fff":"#868e96",st,2,3);
+  // motor
+  s += RC(420,14,110,52,pr?"#fff":"#748ffc",bodyD,2,10);
+  for (let i=0;i<6;i++) s += ln(432+i*16,20,432+i*16,60,bodyD,1.5);
+  // fot
+  s += RC(160,462,380,36,body,bodyD,2,6);
+  s += RC(190,470,96,22,pr?"#fff":"#a5d8ff",st,1.5,4)+TX(238,486,"kjølevæske",{size:11,anchor:"middle",fill:pr?"#000":"#0b2540"});
+  // søyle
+  s += RC(330,110,40,354,metal,metalD,2,3)+(pr?"":RC(336,112,8,350,"rgba(255,255,255,.6)","none",0,2));
+  // bordarm og bord
+  s += RC(312,336,76,34,body,bodyD,2,6)+RC(180,322,240,16,metal,metalD,2,3);
+  for (let x=200;x<410;x+=40) s += ln(x,325,x,335,metalD,1.5);
+  s += RC(266,298,70,24,pr?"#fff":"#f08c00",st,1.5,3);
+  // kjølevæskeslange
+  s += `<path d="M262 470 C 262 420, 395 430, 395 380 C 395 320, 360 300, 338 286" fill="none" stroke="${pr?"#000":"#1c7ed6"}" stroke-width="4"/>`;
+  // topphus og reimdeksel
+  s += RC(230,82,250,140,body,bodyD,2,12)+RC(224,46,262,40,pr?"#fff":"#4263eb",bodyD,2,10);
+  if (!pr){ const off = -a*60; s += `<path d="M262 56 H448 A10 10 0 0 1 448 76 H262 A10 10 0 0 1 262 56" fill="none" stroke="#212529" stroke-width="3" stroke-dasharray="10 6" stroke-dashoffset="${fx(off)}" opacity=".45"/>`; }
+  // nødstopp og knapper
+  s += RC(244,112,40,40,pr?"#fff":"#fab005",st,1.5,4)+CI(264,132,13,pr?"#fff":"#e03131",st,2);
+  s += CI(256,172,7,pr?"#fff":"#2f9e44",st,1.5)+CI(274,172,7,pr?"#fff":"#c92a2a",st,1.5);
+  // matehjul
+  s += CI(490,170,10,metal,metalD,2);
+  [0,2.094,4.189].forEach(k => { const x=490+52*Math.cos(k+.4), y=170+52*Math.sin(k+.4); s += ln(490,170,x,y,metalD,4)+CI(x,y,8,pr?"#fff":"#212529",st,1.5); });
+  // pinol, chuck, bor
+  s += RC(288,222,24,36,metal,metalD,2,2)+RC(282,258,36,28,pr?"#fff":"#868e96",metalD,2,4);
+  s += RC(296,286,8,30,pr?"#fff":"#adb5bd",metalD,1.5,1);
+  if (!pr) for (let i=0;i<5;i++){ const y = 288 + ((i*7 + a*40) % 30); s += ln(296,y,304,y+4,"#495057",1.5); }
+  // vern
+  s += `<path d="M262 236 h76 v62 a38 14 0 0 1 -76 0 z" fill="${pr?"none":"rgba(116,192,252,.25)"}" stroke="${pr?"#000":"#1c7ed6"}" stroke-width="2"/>`;
+  // nummer
+  DRILL.forEach(d => { const on = o.hl ? o.hl.includes(d.n) : true, cur = o.sel===d.n;
+    s += `<g class="${pr?"":"hot"}" data-n="${d.n}" opacity="${on?1:.3}">`+CI(d.x,d.y,cur?19:16,pr?"#fff":(cur?"var(--orange)":"var(--ink)"),pr?"#000":"var(--panel)",3)+TX(d.x,d.y+6,d.n,{size:16,weight:800,anchor:"middle",fill:pr?"#000":(cur?"#fff":"var(--panel)")})+`</g>`; });
+  return s;
+}
+(function(){
+  let filt = "Alle", sel = 0, a = 0;
+  const FL = ["Alle","Daglig","Ukentlig","Månedlig","Årlig"];
+  $("d7F").innerHTML = FL.map(f=>`<button class="chip" data-f="${f}" aria-pressed="${f===filt}">${f}</button>`).join("");
+  $("d7F").onclick = e => { const b=e.target.closest("[data-f]"); if(!b) return; filt=b.dataset.f; $("d7F").querySelectorAll("[data-f]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); tab(); };
+  function tab(){
+    $("d7Tab").innerHTML = DRILL.filter(d=>filt==="Alle"||d.f===filt).map(d=>`<tr class="${d.n===sel?"hl":""}"><td>${d.n}</td><td>${d.h}</td><td>${d.f}</td><td><span class="who ${d.w}">${WHO[d.w]}</span></td></tr>`).join("");
+  }
+  $("d7Svg").addEventListener("pointerdown", e => { const g=e.target.closest("[data-n]"); if(!g) return; sel=+g.dataset.n; const d=DRILL[sel-1];
+    $("d7Msg").className="status ok"; $("d7Msg").innerHTML=`<b>${d.n}. ${d.h}</b> – ${d.f.toLowerCase()} – ${WHO[d.w].toLowerCase()}: ${d.t}`; tab(); });
+  addAnim($("d7Svg"), dt => { a += dt; $("d7Svg").innerHTML = drillSVG(PS,{a, sel, hl: filt==="Alle"?null:DRILL.filter(d=>d.f===filt).map(d=>d.n)}); });
+  $("d7Svg").innerHTML = drillSVG(PS,{});
+  tab();
+})();
+
+/* =====================================================================
+   OPPGAVEFIGURER (svart-hvitt)
+   ===================================================================== */
+(function(){
+  $("o2fig").innerHTML = svgOpen(1000,520) + ettersynSVG(PB,{}) + "</svg>";
+  $("o5fig").innerHTML = svgOpen(700,520) + drillSVG(PB,{}) + "</svg>";
+  document.querySelectorAll("#oppgavetekst .ofig svg").forEach(s => { s.removeAttribute("width"); s.removeAttribute("height"); });
+})();
+
+/* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToPng(svg){
+  const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
+  const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0,0,w,h); cx.drawImage(img,0,0,w,h);
+  return [cv.toDataURL("image/png"), vb.width];
+}
+$("btnCopy").onclick = async () => {
+  const src = $("oppgavetekst"), clone = src.cloneNode(true);
+  const svgs = [...src.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<svgs.length;i++){
+    try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.min(640, Math.round(w*.7)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
+  }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".scenario").forEach(s => { s.style.border="1px dashed #777"; s.style.padding="6px 10px"; });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>

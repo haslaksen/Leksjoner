@@ -1,0 +1,1198 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HMS 1 – Grunnleggende HMS</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#fab005; --yellow-soft:#fff6d6;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#6b7785; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.3rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem; user-select:none}
+.btn:hover{border-color:var(--blue)}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:2.6rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1300px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.15rem; color:var(--muted); max-width:70ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2.wide-left{grid-template-columns:1.6fr 1fr}
+.grid2.wide-right{grid-template-columns:1fr 1.3fr}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.15rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg{display:block; width:100%; height:auto}
+.fig svg.fit{max-height:60vh}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.7rem}
+.slider{display:flex; align-items:center; gap:.6rem; font-size:.85rem; flex-wrap:wrap}
+.slider input{width:min(240px,100%); accent-color:var(--orange)}
+.slider b{min-width:4.5rem; font-variant-numeric:tabular-nums}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem; min-height:2.9em}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.7rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+.tip.r{border-color:var(--red); background:var(--red-soft)}
+.tip.g{border-color:var(--green); background:var(--green-soft)}
+details.laerer{margin-top:1.1rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.4rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.35rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.chip{font:inherit; font-size:.78rem; font-weight:600; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.35rem .7rem}
+.chip:hover{border-color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--orange); color:#fff; border-color:var(--orange)}
+.chip.ok{background:var(--green-soft); border-color:var(--green); color:var(--green)}
+.mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
+.mini3 .card{padding:.7rem .9rem; font-size:.9rem}
+.mini3 .card h3{font-size:1.05rem}
+.big{font-size:2.2rem; font-weight:800; font-variant-numeric:tabular-nums; line-height:1}
+.found{display:flex; flex-wrap:wrap; gap:.35rem; min-height:2rem; margin-top:.5rem}
+.found span{background:var(--green-soft); color:var(--green); border-radius:8px; padding:.2rem .55rem; font-size:.8rem; font-weight:650}
+.bar{height:22px; background:var(--steel-soft); border-radius:99px; overflow:hidden; border:1px solid var(--line)}
+.bar i{display:block; height:100%; width:50%; background:var(--red); border-radius:99px; transition:width .4s, background .4s}
+.rolecard h3{display:flex; align-items:center; gap:.5rem}
+.rolecard ul{margin:.3rem 0 0; padding-left:1.2rem}
+.rolecard li{margin:.25rem 0}
+.law{font-size:.78rem; color:var(--muted); margin-top:.5rem}
+
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); height:2rem}
+.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
+.fasit b{color:var(--green)}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.3rem}
+.ot.c td, .ot.c th{text-align:center}
+.ot.c td:first-child, .ot.c th:first-child{text-align:left}
+.ofig{border:1px solid var(--muted); border-radius:8px; padding:.4rem; background:#fff; margin:.5rem 0}
+.ofig svg{display:block; width:100%; height:auto}
+.minis{display:grid; grid-template-columns:repeat(6,1fr); gap:.6rem; margin:.6rem 0}
+.minis figure{margin:0; border:1px solid var(--muted); border-radius:8px; padding:.3rem; background:#fff}
+.minis figcaption{font-weight:700; font-size:.9rem; color:#000}
+.minis svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.grid2.wide-right,.hero{grid-template-columns:1fr}
+  .mini3{grid-template-columns:1fr 1fr}
+  .minis{grid-template-columns:repeat(3,1fr)}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .mini3{grid-template-columns:1fr} .card{overflow-wrap:anywhere} table.t{display:block; overflow-x:auto} .oppgave{overflow-x:auto} .ot{font-size:.75rem} }
+.grid2>*,.hero>*{min-width:0}
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr, .minis, .ofig{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+  .minis{grid-template-columns:repeat(6,1fr)!important}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">HMS · <span>Leksjon 1</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- START -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · HMS</div>
+      <h1>Leksjon 1<br>Grunnleggende HMS</h1>
+      <p class="lead">Målet er enkelt: du skal gå hjem fra verkstedet like frisk som du kom. Her lærer du å se farene, vurdere dem og velge tiltak som virker.</p>
+      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <ol class="goals">
+        <li>forklare hva <b>helse</b>, <b>miljø</b> og <b>sikkerhet</b> betyr i verkstedet</li>
+        <li>forklare <b>ulykkespyramiden</b> og hvorfor vi melder <b>nestenulykker</b></li>
+        <li><b>finne farer</b> i et verksted og foreslå tiltak</li>
+        <li>beskrive <b>plikter og rettigheter</b> for arbeidsgiver, arbeidstaker og verneombud</li>
+        <li>vurdere <b>risiko = sannsynlighet × konsekvens</b></li>
+        <li>velge tiltak etter <b>tiltakshierarkiet</b> og riktig <b>verneutstyr</b></li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p style="margin-bottom:.4rem"><b>Teknologi:</b> <i>«bruke maskiner og utstyr … i tråd med gjeldende helse-, miljø- og sikkerhetsrutiner og sørge for orden og renhold på arbeidsplassen»</i></p>
+        <p style="margin-bottom:.4rem"><b>Teknologi:</b> <i>«… beskrive hvilke plikter og rettigheter arbeidsgiver og arbeidstaker har i arbeidslivet»</i></p>
+        <p style="margin-bottom:.4rem"><b>Vedlikehold:</b> <i>«bruke og reflektere over helse-, miljø- og sikkerhetskrav i rutiner for vedlikehold»</i></p>
+        <p style="margin-bottom:0"><b>Vedlikehold:</b> <i>«utarbeide og følge sikker jobb-analyser …»</i> (grunnlaget legges her, SJA kommer i leksjon 2)</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1 · Hva er HMS – og hvor er farene?</th></tr>
+          <tr><td>0–5 min</td><td>Del 1: H, M og S</td></tr>
+          <tr><td>5–12 min</td><td>Del 2: ulykkespyramiden</td></tr>
+          <tr><td>12–27 min</td><td>Del 3: finn farene i verkstedet</td></tr>
+          <tr><td>27–45 min</td><td>Oppgave 1–3</td></tr>
+          <tr><th colspan="2">Time 2 · Ansvar, risiko og tiltak</th></tr>
+          <tr><td>0–7 min</td><td>Del 4: hvem har ansvaret?</td></tr>
+          <tr><td>7–15 min</td><td>Del 5: risiko</td></tr>
+          <tr><td>15–23 min</td><td>Del 6: tiltakshierarkiet</td></tr>
+          <tr><td>23–29 min</td><td>Del 7: verneutstyr</td></tr>
+          <tr><td>29–43 min</td><td>Oppgave 4–7</td></tr>
+          <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 1 -->
+<section class="slide" id="hms" data-nav="1 H · M · S">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 5 min</div>
+    <h2>HMS = Helse, Miljø og Sikkerhet</h2>
+    <p class="lead">Tre ord – tre ting vi skal beskytte: <b>kroppen din</b>, <b>naturen rundt oss</b> og <b>deg mot ulykker</b>.</p>
+    <div class="fig">
+      <svg id="d1Svg" viewBox="0 0 1000 400" role="img" aria-label="Tre paneler: Helse med hjerterytme, Miljø med jordklode og oljedråpe, Sikkerhet med hjelm og varseltrekant"></svg>
+      <div class="controls"><span class="chips" id="d1Sel"></span></div>
+      <div class="status info" id="d1Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Helse</h3>Skader som kommer <b>sakte</b>: støy, støv, røyk, tunge løft. Du merker dem ofte først etter mange år.</div>
+      <div class="card"><h3>Miljø</h3>Det vi slipper ut: olje, kjølevæske, kjemikalier, avfall og energi.</div>
+      <div class="card"><h3>Sikkerhet</h3>Skader som skjer <b>plutselig</b>: kutt, klem, fall, brann og strøm.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Spør klassen før du trykker: «Hva kan skade deg i verkstedet i dag – og hva kan skade deg om 20 år?» Skill mellom akutte skader (sikkerhet) og langvarige skader (helse). Mange eksempler hører hjemme i flere bokstaver: sveiserøyk er helse for sveiseren og miljø for omgivelsene. Det er helt i orden.</details>
+  </div>
+</section>
+
+<!-- DEL 2 -->
+<section class="slide" id="pyramide" data-nav="2 Ulykkespyramiden">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 7 min</div>
+    <h2>Ulykkespyramiden – de store ulykkene har små forvarsler</h2>
+    <p class="lead">Under hver alvorlige ulykke ligger mange små hendelser med <b>samme årsak</b>. Fjerner vi bunnen, krymper toppen.</p>
+    <div class="fig">
+      <svg id="d2Svg" class="fit" viewBox="0 0 1000 420" role="img" aria-label="Ulykkespyramide med fem nivåer: alvorlig skade, mindre skader, materielle skader, nestenulykker og farlige forhold"></svg>
+      <div class="controls">
+        <button class="btn primary" id="d2Build">▶ Bygg pyramiden</button>
+        <div class="slider"><label for="d2F">Farer som meldes og rettes</label><input type="range" id="d2F" min="0" max="90" step="5" value="0"><b id="d2Fv">0 %</b></div>
+      </div>
+      <div class="status info" id="d2Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Nestenulykke</h3>Noe gikk galt, men <b>ingen ble skadet</b> – denne gangen.</div>
+      <div class="card"><h3>RUH / avviksmelding</h3><b>Rapport om uønsket hendelse</b>: et skjema der du skriver hva som skjedde, slik at det kan rettes.</div>
+      <div class="card"><h3>Ikke sladring</h3>Vi melder for å finne <b>årsaken</b>, ikke for å finne en syndebukk.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Tallene 1 – 10 – 30 – 600 er fra Frank Bird (1969), som studerte ca. 1,7 millioner hendelser. Forholdstallene er ikke en naturlov, og de varierer mellom bransjer. Poenget er at alvorlige ulykker og små hendelser ofte har de samme årsakene. Får vi mange meldinger om nestenulykker, er det et tegn på god HMS-kultur – ikke på at verkstedet er farlig. Spør: «Hva er den siste nestenulykken du har sett?»</details>
+  </div>
+</section>
+
+<!-- DEL 3 -->
+<section class="slide" id="finn" data-nav="3 Finn farene">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 15 min</div>
+    <h2>Finn farene i verkstedet</h2>
+    <p class="lead">Det er <b>8 farer</b> i bildet. Klikk på dem. Hva kan skje – og hva er tiltaket?</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="d3Svg" viewBox="0 0 1000 560" role="img" aria-label="Tegning av et verksted med nødutgang, reol, dreiebenk, arbeidsbenk med slipemaskin og gassflasker. Det er åtte farer i bildet." style="cursor:crosshair"></svg>
+        <div class="controls">
+          <button class="btn" id="d3All">Vis alle</button>
+          <button class="btn" id="d3Reset">↺ Start på nytt</button>
+          <b id="d3Count" style="margin-left:.5rem">Funnet: 0 av 8</b>
+        </div>
+      </div>
+      <div>
+        <div class="card" id="d3Card">
+          <h3 id="d3T">Klikk på en fare</h3>
+          <p id="d3Fare" style="margin-bottom:.4rem">Tips: Se på gulvet, hendene, øynene, reolen og veggene.</p>
+          <p id="d3Tiltak" style="margin-bottom:0"></p>
+        </div>
+        <div class="found" id="d3List"></div>
+        <div class="tip o"><b>Orden og ryddighet</b> er HMS: et ryddig verksted har færre snublefarer, færre branner og gjør det lettere å se farer.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>La elevene jobbe i par på skjermen eller på fremviseren: én peker, én forklarer. Diskuter etter hver fare: «Hvem sitt ansvar er dette?» – det fører rett over til del 4. Farene: sperret nødutgang, tung kasse med overheng i reolen, chucknøkkel i chucken, hansker ved dreiebenk, oljesøl, skadet ledning over gangveien, sliping uten vernebriller og usikrede gassflasker. Samme tegning (uten markering) er med i oppgave 3.</details>
+  </div>
+</section>
+
+<!-- DEL 4 -->
+<section class="slide" id="roller" data-nav="4 Ansvar">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 7 min</div>
+    <h2>Hvem har ansvaret?</h2>
+    <p class="lead"><b>Arbeidsgiveren</b> har hovedansvaret. Men <b>du</b> har plikt til å være med. Klikk på rollene.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="d4Svg" viewBox="0 0 640 440" role="img" aria-label="Roller i HMS-arbeidet: Arbeidstilsynet utenfor bedriften, og arbeidsgiver, verneombud, AMU, bedriftshelsetjeneste og arbeidstaker inne i bedriften"></svg>
+      </div>
+      <div>
+        <div class="card rolecard" id="d4Card"></div>
+        <div class="tip r" style="margin-bottom:0"><b>Du har rett og plikt til å stoppe</b> arbeidet hvis du mener det er fare for liv eller helse. Si fra med én gang.</div>
+      </div>
+    </div>
+    <div class="fig" style="margin-top:1rem">
+      <svg id="d4Flow" viewBox="0 0 1000 130" role="img" aria-label="Fire steg når du ser en fare: sikre, si fra, meld, følg opp"></svg>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Arbeidsmiljøloven: § 2-1 (arbeidsgivers ansvar), § 2-3 (arbeidstakers medvirkningsplikt, bl.a. bruke verneutstyr, si fra om feil og avbryte arbeid ved fare), § 3-1 (systematisk HMS-arbeid), § 6-1 (verneombud ved minst 10 arbeidstakere), § 6-3 (verneombud kan stanse arbeid ved umiddelbar fare), § 7-1 (AMU ved minst 50 arbeidstakere, og ved 20–50 når en av partene krever det). Elever er ikke arbeidstakere etter loven på skolen, men skolen har samme ansvar for et trygt læringsmiljø, og som lærling gjelder loven fullt ut. Kobling til kompetansemålet om plikter og rettigheter.</details>
+  </div>
+</section>
+
+<!-- DEL 5 -->
+<section class="slide" id="risiko" data-nav="5 Risiko">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 8 min</div>
+    <h2>Risiko = sannsynlighet × konsekvens</h2>
+    <p class="lead"><b>Sannsynlighet:</b> hvor ofte kan det skje? <b>Konsekvens:</b> hvor ille blir det? Velg en fare – og legg til et tiltak.</p>
+    <div class="grid2 wide-right">
+      <div class="fig">
+        <svg id="d5Svg" viewBox="0 0 560 480" role="img" aria-label="Risikomatrise fem ganger fem med grønne, gule og røde felt"></svg>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Velg en fare</h3>
+          <div class="chips" id="d5Sc"></div>
+          <div class="slider" style="margin-top:.9rem"><label for="d5S" style="min-width:7.5rem">Sannsynlighet</label><input type="range" id="d5S" min="1" max="5" step="1" value="3"><b id="d5Sv"></b></div>
+          <div class="slider"><label for="d5K" style="min-width:7.5rem">Konsekvens</label><input type="range" id="d5K" min="1" max="5" step="1" value="3"><b id="d5Kv"></b></div>
+          <div style="display:flex; align-items:center; gap:1rem; margin-top:.8rem">
+            <div><span style="font-size:.8rem;color:var(--muted)">Risiko</span><div class="big" id="d5R">9</div></div>
+            <div class="status info" id="d5Msg" style="flex:1; margin-top:0"></div>
+          </div>
+          <div class="controls"><button class="btn primary" id="d5Tiltak">🛡 Legg til tiltak</button></div>
+          <p id="d5TT" style="margin:.6rem 0 0; font-size:.9rem; color:var(--muted)"></p>
+        </div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Skalaen og fargegrensene varierer mellom bedrifter (3×3, 4×4 eller 5×5). Her: 1–4 grønn, 5–10 gul, 12–25 rød. Vis «Hansker i dreiebenken»: tiltaket senker sannsynligheten, men konsekvensen er like alvorlig. Mange bedrifter krever derfor tiltak for alle hendelser med konsekvens 5, uansett farge. Matrisen brukes i risikovurdering og SJA – leksjon 2.</details>
+  </div>
+</section>
+
+<!-- DEL 6 -->
+<section class="slide" id="tiltak" data-nav="6 Tiltak">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 8 min</div>
+    <h2>Tiltakshierarkiet – best tiltak først</h2>
+    <p class="lead">Slipestøv er farlig å puste inn. Slå på tiltakene ett og ett. Se hvor mye støv som når lungene.</p>
+    <div class="fig">
+      <svg id="d6Svg" class="fit" viewBox="0 0 1000 430" role="img" aria-label="Omvendt pyramide med fem nivåer av tiltak, og en animasjon av støv fra sliping som når en arbeider"></svg>
+      <div class="controls" id="d6Ctl"></div>
+      <div style="display:flex; align-items:center; gap:1rem; margin-top:.7rem">
+        <span style="font-size:.85rem; min-width:9rem">Støv inn i lungene:</span>
+        <div class="bar" style="flex:1"><i id="d6Bar"></i></div>
+        <b id="d6Pct" style="min-width:4rem; font-variant-numeric:tabular-nums">100 %</b>
+      </div>
+      <div class="status info" id="d6Msg"></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Prosentene er forenklede eksempler for å vise prinsippet, ikke måleverdier. Poenget: tiltak høyt oppe virker for alle og hele tiden. Verneutstyr virker bare for den som bruker det, bare når det sitter riktig og bare når det faktisk er på. Andre eksempler: støy (kjøp stillere maskin → lydkapsling → kortere tid → hørselvern), løsemiddel (vannbasert avfetting → avtrekk → kortere tid → hansker og maske). Hierarkiet står i internkontrollforskriften og arbeidsplassforskriften som prinsippet om å fjerne risiko ved kilden.</details>
+  </div>
+</section>
+
+<!-- DEL 7 -->
+<section class="slide" id="pvu" data-nav="7 Verneutstyr">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 6 min</div>
+    <h2>Personlig verneutstyr (PVU)</h2>
+    <p class="lead">Velg en jobb. Kle på arbeideren. Trykk <b>Sjekk</b>.</p>
+    <div class="grid2 wide-right">
+      <div class="fig">
+        <svg id="d7Svg" class="fit" viewBox="0 0 420 560" role="img" aria-label="Arbeider som kan kles med verneutstyr, og påbudsskilt for valgt utstyr"></svg>
+      </div>
+      <div>
+        <div class="card">
+          <h3>1 · Jobb</h3>
+          <div class="chips" id="d7Job"></div>
+          <h3 style="margin-top:1rem">2 · Verneutstyr</h3>
+          <div class="chips" id="d7It"></div>
+          <div class="controls"><button class="btn primary" id="d7Chk">✔ Sjekk</button><button class="btn" id="d7Clr">↺ Tøm</button></div>
+          <div class="status info" id="d7Msg">Velg jobb og verneutstyr.</div>
+        </div>
+        <div class="tip o" style="margin-bottom:0"><b>Påbudsskilt</b> er blå og runde. De forteller hvilket verneutstyr som <b>må</b> brukes der skiltet henger.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Arbeidsgiver skal gi verneutstyr gratis (forskrift om utførelse av arbeid, kap. 15). Viktig misforståelse: hansker ved roterende maskiner (dreiebenk, boremaskin, fres) kan trekkes inn og ta med seg hånden. Arbeidshansker av tekstil suger opp kjemikalier og holder dem mot huden – bruk kjemikaliehansker etter sikkerhetsdatabladet. Støy: hørselvern skal stilles til rådighet fra 80 dB(A) og brukes fra 85 dB(A).</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <div class="fig"><svg id="sumSvg" viewBox="0 0 600 330" role="img" aria-label="Fem steg i HMS-arbeidet: se faren, vurder risikoen, velg tiltak, bruk verneutstyr, meld fra"></svg></div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>helse</span><span>miljø</span><span>sikkerhet</span><span>nestenulykke</span><span>RUH / avvik</span><span>ulykkespyramiden</span><span>arbeidsgiver</span><span>arbeidstaker</span><span>verneombud</span><span>AMU</span><span>sannsynlighet</span><span>konsekvens</span><span>risikomatrise</span><span>tiltakshierarki</span><span>PVU</span><span>påbudsskilt</span></div>
+        </div>
+        <div class="tip">Risiko = <b>sannsynlighet × konsekvens</b>. Tiltak: <b>fjerne → erstatte → teknisk → organisatorisk → verneutstyr</b>.</div>
+        <div class="card">
+          <h3>Neste leksjon</h3>
+          <p style="margin:0"><b>HMS 2 – Risikovurdering og sikker jobbanalyse (SJA):</b> bruk risikomatrisen og tiltakshierarkiet på en ekte vedlikeholdsjobb, steg for steg.</p>
+        </div>
+        <p class="caption">Mer: <a href="https://www.arbeidstilsynet.no" target="_blank" rel="noopener">Arbeidstilsynet</a> · <a href="https://lovdata.no/lov/2005-06-17-62" target="_blank" rel="noopener">Arbeidsmiljøloven</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 33 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>HMS 1 – Grunnleggende HMS · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – H, M eller S? <small>Time 1 · 5 min</small></h3>
+        <p>Sett kryss. Noen passer i flere – velg det viktigste.</p>
+        <table class="ot c">
+          <tr><th>Hendelse</th><th style="width:5.5rem">Helse</th><th style="width:5.5rem">Miljø</th><th style="width:5.5rem">Sikkerhet</th></tr>
+          <tr><td>1. Du får spon i øyet.</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>2. Du står ved en støyende maskin hele dagen.</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>3. Spillolje helles i sluket.</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>4. Du løfter tunge emner med krum rygg.</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>5. En gassflaske velter.</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>6. Metallspon kastes i restavfallet.</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>7. Du puster inn sveiserøyk hver dag.</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>8. Nødutgangen er sperret.</td><td class="tom"></td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> 1 S · 2 H · 3 M · 4 H · 5 S · 6 M · 7 H (også M for omgivelsene) · 8 S. Godta andre svar med god begrunnelse.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Ulykkespyramiden <small>Time 1 · 6 min</small></h3>
+        <p>a) Skriv tallet og navnet på hvert nivå.</p>
+        <div class="ofig" id="o2fig" style="max-width:640px"></div>
+        <p>b) Hva slags hendelse er det? Skriv <b>N</b> (nestenulykke), <b>MS</b> (materiell skade) eller <b>PS</b> (personskade).</p>
+        <table class="ot">
+          <tr><th>Hendelse</th><th style="width:7rem">N / MS / PS</th></tr>
+          <tr><td>En kollega snubler i en ledning, men tar seg for.</td><td class="tom"></td></tr>
+          <tr><td>Et bor knekker fordi turtallet var feil.</td><td class="tom"></td></tr>
+          <tr><td>Du kutter deg på en skarp grader og trenger plaster.</td><td class="tom"></td></tr>
+          <tr><td>En kasse faller ned fra reolen og lander rett ved siden av en elev.</td><td class="tom"></td></tr>
+        </table>
+        <p>c) Hvorfor er det lurt å melde nestenulykker?</p><div class="svar"></div><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) Fra toppen: 1 alvorlig skade/død – 10 mindre skader – 30 materielle skader – 600 nestenulykker – (mange) farlige forhold og handlinger. b) N – MS – PS – N. c) Nestenulykker har de samme årsakene som alvorlige ulykker. Når vi melder og retter dem, fjerner vi årsaken før noen blir skadet.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Finn farene <small>Time 1 · 8 min</small></h3>
+        <p>Finn 8 farer i tegningen. Fyll ut tabellen.</p>
+        <div class="ofig" id="o3fig"></div>
+        <table class="ot">
+          <tr><th style="width:2.5rem">Nr.</th><th>Fare – hva ser du?</th><th>Hva kan skje?</th><th>Tiltak</th></tr>
+          <tr><td>1</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>4</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>5</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>6</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>7</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>8</td><td class="tom"></td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden id="o3fasit"></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Hvem har ansvaret? <small>Time 2 · 4 min</small></h3>
+        <p>a) Sett kryss for hvem det gjelder.</p>
+        <table class="ot c">
+          <tr><th>Utsagn</th><th style="width:6.5rem">Arbeids­giver</th><th style="width:6.5rem">Arbeids­taker</th><th style="width:6.5rem">Verne­ombud</th><th style="width:5rem">AMU</th></tr>
+          <tr><td>1. Skal kartlegge farer og sørge for at arbeidsplassen er trygg.</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>2. Skal bruke verneutstyret han eller hun får.</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>3. Er valgt av de ansatte og kan stanse farlig arbeid.</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>4. Skal gi verneutstyr gratis og gi opplæring.</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>5. Skal si fra om feil og farer han eller hun oppdager.</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>6. Ledere, ansatte og bedriftshelsetjenesten møtes og behandler HMS-saker.</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>7. Skal avbryte arbeidet hvis det er fare for liv eller helse.</td><td class="tom"></td><td></td><td></td><td></td></tr>
+        </table>
+        <p>b) En bedrift har 25 ansatte. Må den ha verneombud? Må den ha AMU?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 1 Arbeidsgiver · 2 Arbeidstaker · 3 Verneombud · 4 Arbeidsgiver · 5 Arbeidstaker (verneombudet også) · 6 AMU · 7 Arbeidstaker. b) <b>Verneombud: ja</b> (krav fra 10 ansatte). <b>AMU: ikke automatisk</b> – krav fra 50 ansatte. Med 20–50 ansatte skal det opprettes AMU hvis arbeidsgiver eller de ansatte krever det.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Risikomatrise <small>Time 2 · 5 min</small></h3>
+        <div class="ofig" id="o5fig" style="max-width:520px"></div>
+        <p>a) Regn ut risikoen R = S × K og skriv fargen (grønn 1–4, gul 5–10, rød 12–25).</p>
+        <table class="ot c">
+          <tr><th>Hendelse</th><th style="width:3.5rem">S</th><th style="width:3.5rem">K</th><th style="width:5rem">R = S × K</th><th style="width:6rem">Farge</th></tr>
+          <tr><td>A. Spon i øyet ved fresing uten vernebriller</td><td>4</td><td>3</td><td class="tom"></td><td></td></tr>
+          <tr><td>B. Kutt på skarpe grader</td><td>4</td><td>2</td><td class="tom"></td><td></td></tr>
+          <tr><td>C. Usikret gassflaske velter</td><td>3</td><td>4</td><td class="tom"></td><td></td></tr>
+          <tr><td>D. Hanske trekkes inn i dreiebenken</td><td>2</td><td>5</td><td class="tom"></td><td></td></tr>
+          <tr><td>E. Velg selv: ______________________</td><td class="tom"></td><td></td><td></td><td></td></tr>
+        </table>
+        <p>b) D blir bare gul, selv om konsekvensen kan være å miste en hånd. Bør vi godta den? Begrunn.</p><div class="svar"></div><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) A 12 rød · B 8 gul · C 12 rød · D 10 gul. b) Nei. Når konsekvensen er så alvorlig, skal vi gjøre alt vi kan: forby hansker ved roterende maskiner, gi opplæring og ha nødstopp i nærheten. Mange bedrifter krever tiltak for alle hendelser med konsekvens 5.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Tiltakshierarkiet <small>Time 2 · 4 min</small></h3>
+        <p><b>Problem:</b> Kappsagen bråker. Operatøren får 95 dB(A). Skriv bokstaven på riktig nivå.</p>
+        <table class="ot">
+          <tr><td style="width:2.5rem"><b>A</b></td><td>Bruke hørselvern</td></tr>
+          <tr><td><b>B</b></td><td>Bytte til en ny og stillere sag</td></tr>
+          <tr><td><b>C</b></td><td>Bygge en lydkapsling rundt sagen</td></tr>
+          <tr><td><b>D</b></td><td>Kjøpe ferdig kappede emner – ingen saging i verkstedet</td></tr>
+          <tr><td><b>E</b></td><td>Bytte på hvem som sager, og henge opp skilt «Hørselvern påbudt»</td></tr>
+        </table>
+        <div class="ofig" id="o6fig" style="max-width:560px"></div>
+        <p>b) Hvorfor står personlig verneutstyr nederst?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 1 Fjerne: <b>D</b> · 2 Erstatte: <b>B</b> · 3 Teknisk: <b>C</b> · 4 Organisatorisk: <b>E</b> · 5 PVU: <b>A</b>. b) Verneutstyr fjerner ikke faren. Det beskytter bare den som bruker det, bare når det sitter riktig og bare når det er på.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 7 – Verneutstyr <small>Time 2 · 5 min</small></h3>
+        <p>a) Hva betyr påbudsskiltene?</p>
+        <div class="minis" id="o7minis"></div>
+        <table class="ot c">
+          <tr><th style="width:3rem">Nr.</th><th>Betyr</th><th style="width:3rem">Nr.</th><th>Betyr</th></tr>
+          <tr><td>1</td><td class="tom"></td><td>4</td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td>5</td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td>6</td><td></td></tr>
+        </table>
+        <p>b) Hvilket verneutstyr skal brukes?</p>
+        <table class="ot">
+          <tr><th style="width:12rem">Jobb</th><th>Verneutstyr</th></tr>
+          <tr><td>Dreiing i dreiebenk</td><td class="tom"></td></tr>
+          <tr><td>Sliping med vinkelsliper</td><td class="tom"></td></tr>
+          <tr><td>MIG-sveising</td><td class="tom"></td></tr>
+          <tr><td>Avfetting med løsemiddel</td><td class="tom"></td></tr>
+        </table>
+        <p>c) Hvorfor skal du ikke bruke hansker ved dreiebenken?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 1 Vernebriller · 2 Hørselvern · 3 Vernesko · 4 Vernehansker · 5 Åndedrettsvern · 6 Sveisehjelm. b) Dreiing: vernesko, vernebriller, tettsittende klær, <b>ingen hansker</b>. Sliping: vernesko, vernebriller (gjerne ansiktsskjerm), hørselvern, hansker (gjerne støvmaske). MIG: vernesko, sveisehjelm, sveisehansker, flammehemmende klær (gjerne åndedrettsvern/avsug). Avfetting: vernebriller, kjemikaliehansker etter sikkerhetsdatabladet, god ventilasjon. c) Hansken kan bli fanget av chucken eller emnet og trekke hånden inn.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 2 min</small></h3>
+        <p>1. Hva betyr H, M og S?</p><div class="svar"></div>
+        <p>2. Hva gjør du hvis du ser en fare i verkstedet?</p><div class="svar"></div>
+        <p>3. Hva er best: vernebriller eller en verneskjerm på maskinen? Hvorfor?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) Helse, miljø og sikkerhet. 2) Sikre (stopp om nødvendig), si fra til lærer/leder, skriv avviksmelding (RUH), følg opp. 3) Verneskjermen på maskinen er et teknisk tiltak og står høyere i tiltakshierarkiet: den virker alltid og for alle. Vernebriller brukes i tillegg.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const fx = v => +(+v).toFixed(1);
+const nf = (x, d=0) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const RM = (()=>{ try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } })();
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
+
+/* Felles animasjonsløkke – bare synlige figurer oppdateres */
+const anims = [];
+function addAnim(node, tick){ const a = {tick, vis:false}; anims.push(a); new IntersectionObserver(es => es.forEach(e => a.vis = e.isIntersecting)).observe(node); return a; }
+let last = performance.now(), T = 0;
+function frame(now){ const dt = Math.min(.05, (now-last)/1000); last = now; T += RM ? 0 : dt; anims.forEach(a => { if (a.vis) a.tick(dt, T); }); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+/* Tegnehjelp */
+const ln = (x1,y1,x2,y2,c,w=3,d="") => `<line x1="${fx(x1)}" y1="${fx(y1)}" x2="${fx(x2)}" y2="${fx(y2)}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${d?` stroke-dasharray="${d}"`:""}/>`;
+const TX = (x,y,s,o={}) => `<text x="${fx(x)}" y="${fx(y)}" font-size="${o.size||15}" fill="${o.fill||"var(--ink)"}" text-anchor="${o.anchor||"start"}"${o.weight?` font-weight="${o.weight}"`:""}${o.op!==undefined?` opacity="${o.op}"`:""}>${s}</text>`;
+const svgOpen = (w,h) => `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" font-family="Segoe UI, Arial, sans-serif"><rect width="${w}" height="${h}" fill="#fff"/>`;
+function chipsInto(el, list, sel, attr="k"){ el.innerHTML = list.map(v=>`<button class="chip" data-${attr}="${v[0]}" aria-pressed="${v[0]===sel}">${v[1]}</button>`).join(""); }
+function pressOnly(el, btn, attr="k"){ el.querySelectorAll(`[data-${attr}]`).forEach(x=>x.setAttribute("aria-pressed", String(x===btn))); }
+
+/* Påbudsskilt (forenklede piktogrammer) */
+function sign(k, cx, cy, r, mono){
+  const W = "#fff", B = mono ? "#000" : "#1c5fb8";
+  let d = `<circle r="40" fill="${B}"/><circle r="36" fill="none" stroke="${W}" stroke-width="2"/>`;
+  if (k==="briller") d += `<circle cx="-13" cy="0" r="10" fill="none" stroke="${W}" stroke-width="5"/><circle cx="13" cy="0" r="10" fill="none" stroke="${W}" stroke-width="5"/><path d="M-4 -3 Q0 -8 4 -3" stroke="${W}" stroke-width="4" fill="none"/><path d="M-23 -3 L-30 -8 M23 -3 L30 -8" stroke="${W}" stroke-width="4" stroke-linecap="round"/>`;
+  if (k==="horsel") d += `<path d="M-19 6 V-4 A19 21 0 0 1 19 -4 V6" fill="none" stroke="${W}" stroke-width="5"/><rect x="-27" y="0" width="15" height="24" rx="6" fill="${W}"/><rect x="12" y="0" width="15" height="24" rx="6" fill="${W}"/>`;
+  if (k==="sko") d += `<path d="M-20 -24 h17 v19 c6 6 14 6 22 9 c6 3 6 8 6 12 v8 h-45 z" fill="${W}"/>`;
+  if (k==="hansker") d += `<rect x="-14" y="-4" width="28" height="28" rx="5" fill="${W}"/>`+[-14,-7,0,7].map(x=>`<rect x="${x}" y="-25" width="6" height="26" rx="3" fill="${W}"/>`).join("")+`<rect x="-27" y="-6" width="8" height="20" rx="4" fill="${W}" transform="rotate(-35 -23 4)"/>`;
+  if (k==="maske") d += `<path d="M-15 -14 Q0 -26 15 -14 L12 10 Q0 20 -12 10 Z" fill="${W}"/><circle cx="-17" cy="8" r="8" fill="${B}" stroke="${W}" stroke-width="4"/><circle cx="17" cy="8" r="8" fill="${B}" stroke="${W}" stroke-width="4"/>`;
+  if (k==="sveis") d += `<path d="M-20 -22 Q0 -34 20 -22 L22 18 Q0 28 -22 18 Z" fill="${W}"/><rect x="-13" y="-9" width="26" height="11" rx="2" fill="${B}"/>`;
+  return `<g transform="translate(${fx(cx)} ${fx(cy)}) scale(${fx(r/40*100)/100})">${d}</g>`;
+}
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) nav.scrollTo({left: act.offsetLeft - nav.clientWidth/2 + act.offsetWidth/2, behavior:"smooth"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName)) return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  slides[Math.max(0, Math.min(slides.length-1, currentIndex()+dir))].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+
+/* =====================================================================
+   DEL 1 – H, M, S
+   ===================================================================== */
+(function(){
+  let sel = "all";
+  const P = [
+    {k:"H", n:"Helse", col:"#e03131", soft:"rgba(224,49,49,.10)", ex:["Støy → hørselskade","Støv og sveiserøyk → lungene","Tunge løft → ryggen"],
+      msg:"Helse: skader som kommer sakte. Hørselen kommer aldri tilbake – derfor hørselvern lenge før det gjør vondt."},
+    {k:"M", n:"Miljø", col:"#2f9e44", soft:"rgba(47,158,68,.10)", ex:["Spillolje og kjølevæske","Metallspon → gjenvinning","Strøm og trykkluft som lekker"],
+      msg:"Miljø: det vi slipper ut. Spillolje og kjølevæske er farlig avfall – aldri i sluket. Metallspon sorteres og blir nytt metall."},
+    {k:"S", n:"Sikkerhet", col:"#f08c00", soft:"rgba(240,140,0,.12)", ex:["Klem og kutt i maskiner","Brann og gass","Strøm"],
+      msg:"Sikkerhet: skader som skjer på et sekund. Vern på maskinen, ryddige gangveier og riktig verneutstyr hindrer dem."}
+  ];
+  chipsInto($("d1Sel"), [["all","Alle"],["H","H – Helse"],["M","M – Miljø"],["S","S – Sikkerhet"]], sel);
+  $("d1Sel").onclick = e => { const b=e.target.closest("[data-k]"); if(!b) return; sel=b.dataset.k; pressOnly($("d1Sel"), b); msg(); };
+  function msg(){ const p = P.find(q=>q.k===sel); $("d1Msg").textContent = p ? p.msg : "HMS handler om å beskytte mennesker, natur og verdier. Velg en bokstav."; }
+  function icon(k, cx, cy, t, col){
+    let s = "";
+    if (k==="H"){
+      // person + hjerte + EKG
+      s += `<circle cx="${cx}" cy="${cy-46}" r="20" fill="#f1c27d" stroke="#8a5a2b" stroke-width="2"/><path d="M${cx-34} ${cy+34} Q${cx-34} ${cy-20} ${cx} ${cy-20} Q${cx+34} ${cy-20} ${cx+34} ${cy+34} Z" fill="#1c4f8a"/>`;
+      const b = 1 + .12*Math.max(0, Math.sin(t*7.5))**8;
+      s += `<path transform="translate(${cx} ${cy+2}) scale(${fx(b*100)/100})" d="M0 8 C-14 -4 -14 -16 -6 -16 C-2 -16 0 -12 0 -10 C0 -12 2 -16 6 -16 C14 -16 14 -4 0 8 Z" fill="${col}"/>`;
+      let d = ""; const x0 = cx-110, w = 220, y0 = cy+62;
+      for (let i=0;i<=110;i++){ const x = x0 + i*2; const ph = ((i/110) - (t*.6)%1 + 1) % 1; let y = 0; const q = (ph*4)%1; if (q>.42 && q<.46) y=-6; else if (q>.46 && q<.5) y=26; else if (q>.5 && q<.55) y=-30; else if (q>.55 && q<.6) y=10; d += (i?"L":"M")+fx(x)+" "+fx(y0+y*.6); }
+      s += `<path d="${d}" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round"/>`;
+    }
+    if (k==="M"){
+      s += `<circle cx="${cx}" cy="${cy-8}" r="52" fill="#74c0fc"/><path d="M${cx-40} ${cy-36} q14 -10 26 0 q8 10 22 2 q10 14 -4 26 q-18 4 -22 18 q-20 2 -22 -14 q-12 -10 0 -32 Z" fill="#69db7c"/><path d="M${cx+14} ${cy+8} q12 -6 24 4 q-2 18 -18 24 q-12 -8 -6 -28 Z" fill="#69db7c"/>`;
+      s += `<circle cx="${cx}" cy="${cy-8}" r="52" fill="none" stroke="#1c7ed6" stroke-width="3"/>`;
+      const a = t*1.2;
+      for (let i=0;i<3;i++){ const aa = a + i*2.094, R=70; const x=cx+R*Math.cos(aa), y=cy-8+R*Math.sin(aa); s += `<path transform="translate(${fx(x)} ${fx(y)}) rotate(${fx(aa*57.3+90)})" d="M-9 0 L9 0 L0 -12 Z" fill="${col}"/>`; }
+      const dy = (t*40)%60;
+      s += `<path transform="translate(${cx+92} ${fx(cy-60+dy)})" d="M0 -10 C6 0 8 4 8 8 A8 8 0 0 1 -8 8 C-8 4 -6 0 0 -10 Z" fill="#212529" opacity="${fx(1-dy/60)}"/>`;
+    }
+    if (k==="S"){
+      // hjelm
+      s += `<path d="M${cx-58} ${cy+10} Q${cx-56} ${cy-62} ${cx} ${cy-64} Q${cx+56} ${cy-62} ${cx+58} ${cy+10} Z" fill="#fab005" stroke="#c77700" stroke-width="3"/><rect x="${cx-72}" y="${cy+6}" width="144" height="14" rx="7" fill="#f59f00" stroke="#c77700" stroke-width="3"/><path d="M${cx-8} ${cy-62} h16 v70 h-16 z" fill="#ffd43b" stroke="#c77700" stroke-width="2"/>`;
+      const p = .5 + .5*Math.sin(t*4);
+      s += `<g transform="translate(${cx+70} ${cy+52})"><path d="M0 -26 L26 20 L-26 20 Z" fill="#ffd43b" stroke="#212529" stroke-width="3" stroke-linejoin="round"/><text y="14" font-size="26" font-weight="900" text-anchor="middle" fill="#212529">!</text><circle r="${fx(30+p*10)}" cy="4" fill="none" stroke="${col}" stroke-width="3" opacity="${fx(1-p)}"/></g>`;
+    }
+    return s;
+  }
+  function draw(t){
+    let s = "";
+    P.forEach((p,i) => {
+      const x = 20 + i*330, on = sel==="all" || sel===p.k, op = on ? 1 : .22;
+      s += `<g opacity="${op}">`;
+      s += `<rect x="${x}" y="10" width="300" height="380" rx="18" fill="${p.soft}" stroke="${p.col}" stroke-width="${sel===p.k?4:2}"/>`;
+      s += `<circle cx="${x+50}" cy="56" r="30" fill="${p.col}"/>`+TX(x+50,68,p.k,{size:34,weight:900,anchor:"middle",fill:"#fff"})+TX(x+92,66,p.n,{size:28,weight:800,fill:p.col});
+      s += icon(p.k, x+150, 180, t, p.col);
+      p.ex.forEach((e,j) => { s += `<circle cx="${x+30}" cy="${308+j*28}" r="5" fill="${p.col}"/>`+TX(x+44,314+j*28,e,{size:16}); });
+      s += `</g>`;
+    });
+    $("d1Svg").innerHTML = s;
+  }
+  addAnim($("d1Svg"), (dt,t) => draw(t));
+  draw(0); msg();
+})();
+
+/* =====================================================================
+   DEL 2 – ulykkespyramiden
+   ===================================================================== */
+function pyramidSVG(o){
+  const blank = !!o.blank, f = o.f||0, build = o.build===undefined ? 5 : o.build;
+  const L = [
+    {n:1, t:"Alvorlig skade eller død", ex:"Mister en finger i dreiebenken", col:"#c92a2a"},
+    {n:10, t:"Mindre skader", ex:"Kutt som trenger plaster", col:"#e8590c"},
+    {n:30, t:"Materielle skader", ex:"Et bor knekker, en maskin blir skadet", col:"#f59f00"},
+    {n:600, t:"Nestenulykker", ex:"En skiftenøkkel faller – rett ved foten", col:"#fab005"},
+    {n:null, t:"Farlige forhold og handlinger", ex:"Oljesøl, manglende vern, hansker ved dreiebenken", col:"#adb5bd"}
+  ];
+  const cx = 290, top = 30, H = 360, base = 520, lh = H/5;
+  const wAt = y => (y-top)/H*base;
+  let s = "";
+  L.forEach((l,i) => {
+    const y0 = top+i*lh, y1 = y0+lh, w0 = wAt(y0), w1 = wAt(y1);
+    const vis = blank || build > 4-i - 0.001;
+    const sc = blank ? 1 : Math.sqrt(1 - f*(i<4?1:.9));
+    const g = Math.min(1, Math.max(0, build - (4-i)));
+    s += `<path d="M${fx(cx-w0/2)} ${fx(y0)} L${fx(cx+w0/2)} ${fx(y0)} L${fx(cx+w1/2)} ${fx(y1)} L${fx(cx-w1/2)} ${fx(y1)} Z" fill="none" stroke="${blank?"#000":"var(--steel)"}" stroke-width="2" ${blank?"":"stroke-dasharray=\"6 5\""}/>`;
+    if (!blank && vis){
+      const a0 = w0*sc, a1 = w1*sc, yy0 = y1 - lh*g;
+      const wy = wAt(yy0)*sc;
+      s += `<path d="M${fx(cx-wy/2)} ${fx(yy0)} L${fx(cx+wy/2)} ${fx(yy0)} L${fx(cx+a1/2)} ${fx(y1)} L${fx(cx-a1/2)} ${fx(y1)} Z" fill="${l.col}" stroke="#fff" stroke-width="2"/>`;
+      const val = l.n===null ? "mange" : (l.n*(1-f) < 10 && l.n*(1-f) % 1 ? nf(l.n*(1-f),1) : nf(Math.round(l.n*(1-f))));
+      const shown = l.n===null ? val : (g<1 ? nf(Math.round(l.n*(1-f)*g)) : val);
+      if (i===0) s += TX(cx, y1-12, shown, {size:22, weight:900, anchor:"middle", fill:"#fff"});
+      else s += TX(cx, y0+lh/2+9, shown, {size:26, weight:900, anchor:"middle", fill:i===4?"#212529":"#fff"});
+      const lx = 620, ly = y0+lh/2;
+      s += ln(cx+w1/2+8, ly, lx-12, ly, "var(--line)", 2, "3 4");
+      s += TX(lx, ly-4, l.t, {size:18, weight:750, op:g});
+      s += TX(lx, ly+18, l.ex, {size:14, fill:"var(--muted)", op:g});
+    }
+    if (blank){
+      const bw = Math.min(76, w1*.5);
+      s += `<rect x="${fx(cx-bw/2)}" y="${fx(y0+lh/2-(i?14:4))}" width="${fx(bw)}" height="${i?28:22}" rx="4" fill="#fff" stroke="#000" stroke-width="1.5"/>`;
+      s += ln(cx+w1/2+8, y0+lh/2, 600, y0+lh/2, "#000", 1.2, "3 4") + ln(612, y0+lh/2+12, 960, y0+lh/2+12, "#000", 1.2);
+    }
+  });
+  if (!blank) s += TX(30, 412, "Bird (1969). Forholdstallene er omtrentlige.", {size:12, fill:"var(--muted)"});
+  return s;
+}
+(function(){
+  const st = {build:5, f:0, playing:false};
+  function draw(){ $("d2Svg").innerHTML = pyramidSVG(st); }
+  function msg(){
+    const f = st.f;
+    $("d2Msg").textContent = f===0 ? "For hver alvorlige skade: ca. 10 mindre skader, 30 materielle skader og 600 nestenulykker. Dra i glidebryteren."
+      : f < .5 ? `Når ${Math.round(f*100)} % av farene meldes og rettes, blir det færre hendelser på alle nivåer – også på toppen.`
+      : `${Math.round(f*100)} % meldes og rettes: nå skjer en alvorlig skade bare ${nf(1-f,1)} gang i samme periode. Bunnen styrer toppen.`;
+    $("d2Msg").className = "status " + (f===0 ? "info" : "ok");
+  }
+  $("d2Build").onclick = () => { st.build = 0; st.playing = true; };
+  $("d2F").oninput = e => { st.f = +e.target.value/100; $("d2Fv").textContent = e.target.value+" %"; msg(); draw(); };
+  addAnim($("d2Svg"), dt => { if (st.playing){ st.build += dt*1.4; if (st.build>=5){ st.build=5; st.playing=false; } draw(); } });
+  draw(); msg();
+})();
+
+/* =====================================================================
+   DEL 3 – finn farene (verkstedtegning)
+   ===================================================================== */
+const HAZ = [
+  {x:86,  y:330, r:72, n:"Nødutgangen er sperret", fare:"Paller og esker står foran nødutgangen. Ved brann kommer ingen seg ut.", tiltak:"Hold rømningsveier og nødutganger helt fri. Rydd med én gang."},
+  {x:308, y:150, r:52, n:"Tung kasse stikker ut over reolen", fare:"60 kg øverst og med overheng. Kassa kan falle ned på noen.", tiltak:"Tungt nederst, ingenting stikker ut. Følg maks last på reolen."},
+  {x:500, y:212, r:32, n:"Chucknøkkelen står i chucken", fare:"Starter maskinen, slynges nøkkelen ut i stor fart.", tiltak:"Ta alltid ut nøkkelen. Slipp den aldri mens den står i chucken."},
+  {x:548, y:288, r:34, n:"Hansker ved dreiebenken", fare:"Hansken kan bli fanget av chucken og trekke hånden inn.", tiltak:"Ingen hansker ved roterende maskiner. Tettsittende klær, langt hår satt opp."},
+  {x:470, y:438, r:56, n:"Oljesøl på gulvet", fare:"Du kan skli og falle – rett ved en maskin.", tiltak:"Tørk opp straks med absorbent. Finn lekkasjen. Oljefillene er farlig avfall."},
+  {x:640, y:512, r:38, n:"Skadet ledning over gangveien", fare:"Snublefare, og kobberet er synlig: fare for strømstøt.", tiltak:"Ta ledningen ut av bruk og merk den «defekt». Legg ledninger utenfor gangvei."},
+  {x:780, y:164, r:36, n:"Sliping uten vernebriller", fare:"Gnister og slipestøv kan treffe øynene.", tiltak:"Vernebriller, gjerne ansiktsskjerm. Bruk skjermen på slipemaskinen."},
+  {x:916, y:300, r:58, n:"Gassflaskene er ikke sikret", fare:"Flaskene kan velte. Brekker ventilen, kan flaska fly som en rakett.", tiltak:"Lenke eller kjetting rundt flaskene. Stå oppreist, beskyttelseshette på."}
+];
+function sceneSVG(o={}){
+  const t = o.t||0;
+  let s = "";
+  s += `<rect width="1000" height="560" fill="#dde3e9"/>`;
+  for (let i=0;i<5;i++) s += `<rect x="${180+i*160}" y="24" width="120" height="58" rx="4" fill="#cfe3f5" stroke="#9aa5b1" stroke-width="3"/>`+ln(240+i*160,24,240+i*160,82,"#9aa5b1",3);
+  s += `<rect x="0" y="400" width="1000" height="160" fill="#b4bac2"/>`+ln(0,400,1000,400,"#8a929c",3);
+  s += `<rect x="0" y="474" width="1000" height="8" fill="#f5c400"/><rect x="0" y="548" width="1000" height="8" fill="#f5c400"/>`;
+  s += TX(80,524,"GANGVEI",{size:22,weight:800,fill:"rgba(0,0,0,.16)"})+TX(820,524,"GANGVEI",{size:22,weight:800,fill:"rgba(0,0,0,.16)"});
+  // nødutgang
+  s += `<rect x="34" y="186" width="104" height="214" fill="#7f97ab" stroke="#4f6475" stroke-width="3"/><rect x="118" y="286" width="10" height="28" rx="3" fill="#343a40"/>`;
+  s += `<rect x="40" y="144" width="94" height="34" rx="3" fill="#2b8a3e"/><circle cx="58" cy="152" r="4" fill="#fff"/><path d="M58 157 L54 167 L48 172 M54 167 L60 172 M57 160 L64 164 M56 160 L50 163" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/>`+TX(100,166,"UTGANG",{size:12,weight:800,fill:"#fff",anchor:"middle"});
+  for (let k=0;k<3;k++){ const y = 400 - k*18; s += `<rect x="22" y="${y-4}" width="136" height="4" fill="#9c6b30"/>`+[26,84,142].map(x=>`<rect x="${x}" y="${y-12}" width="12" height="8" fill="#b07a3c"/>`).join("")+`<rect x="22" y="${y-18}" width="136" height="6" fill="#c08a4c" stroke="#8a5a20" stroke-width="1"/>`; }
+  s += `<rect x="30" y="296" width="62" height="50" fill="#c8a26a" stroke="#8a6a3a" stroke-width="2"/><rect x="94" y="310" width="54" height="36" fill="#d2ad76" stroke="#8a6a3a" stroke-width="2"/>`+ln(61,296,61,346,"#e9d3a8",4)+ln(121,310,121,346,"#e9d3a8",4);
+  // reol
+  s += `<rect x="170" y="108" width="8" height="292" fill="#e8590c"/><rect x="322" y="108" width="8" height="292" fill="#e8590c"/>`;
+  [180,270,360].forEach(y => s += `<rect x="170" y="${y}" width="160" height="8" fill="#1c6fd1"/>`);
+  s += `<rect x="184" y="232" width="50" height="38" fill="#c8a26a" stroke="#8a6a3a" stroke-width="2"/><rect x="242" y="242" width="70" height="28" fill="#adb5bd" stroke="#495057" stroke-width="2"/>`;
+  s += `<rect x="184" y="318" width="62" height="42" fill="#d2ad76" stroke="#8a6a3a" stroke-width="2"/><rect x="252" y="330" width="60" height="30" fill="#c8a26a" stroke="#8a6a3a" stroke-width="2"/>`;
+  s += `<rect x="184" y="152" width="46" height="28" fill="#d2ad76" stroke="#8a6a3a" stroke-width="2"/>`;
+  s += `<g transform="rotate(5 300 180)"><rect x="258" y="126" width="98" height="54" fill="#b98d52" stroke="#6e4f22" stroke-width="2.5"/>`+TX(307,159,"60 kg",{size:15,weight:800,anchor:"middle",fill:"#3d2a10"})+`</g>`;
+  s += `<rect x="186" y="100" width="128" height="0"/>`;
+  // stikkontakt
+  s += `<rect x="338" y="370" width="18" height="22" rx="2" fill="#f1f3f5" stroke="#495057" stroke-width="2"/>`;
+  // operatør (bak dreiebenken)
+  s += `<rect x="548" y="172" width="54" height="134" rx="12" fill="#1c4f8a"/><circle cx="575" cy="148" r="22" fill="#f1c27d" stroke="#a87a45" stroke-width="1.5"/><path d="M553 144 Q556 122 576 124 Q596 124 597 144 Q590 132 575 134 Q560 134 553 144 Z" fill="#5c3b1e"/>`;
+  s += `<rect x="560" y="141" width="30" height="9" rx="3" fill="rgba(140,200,240,.7)" stroke="#343a40" stroke-width="1.5"/>`;
+  // dreiebenk
+  s += `<rect x="380" y="328" width="290" height="72" fill="#4f6b7d" stroke="#2f3e48" stroke-width="2"/><rect x="392" y="320" width="266" height="9" fill="#3b4f5c"/>`;
+  s += `<rect x="396" y="298" width="258" height="24" fill="#6d8799" stroke="#3b4f5c" stroke-width="2"/>`;
+  s += `<rect x="372" y="214" width="112" height="114" rx="6" fill="#6d8799" stroke="#3b4f5c" stroke-width="2"/><rect x="388" y="230" width="46" height="36" rx="3" fill="#2f3e48"/><circle cx="400" cy="248" r="6" fill="#2f9e44"/><circle cx="422" cy="248" r="6" fill="#e03131"/>`;
+  s += `<rect x="484" y="242" width="32" height="66" rx="4" fill="#adb5bd" stroke="#495057" stroke-width="2"/><rect x="486" y="250" width="28" height="8" fill="#6c757d"/><rect x="486" y="292" width="28" height="8" fill="#6c757d"/>`;
+  s += `<rect x="516" y="264" width="86" height="22" fill="#ced4da" stroke="#868e96" stroke-width="2"/>`;
+  s += `<rect x="604" y="252" width="48" height="48" rx="3" fill="#6d8799" stroke="#3b4f5c" stroke-width="2"/><rect x="594" y="268" width="12" height="12" fill="#adb5bd"/>`;
+  s += `<rect x="546" y="288" width="58" height="12" fill="#5c7383"/><rect x="566" y="276" width="18" height="14" fill="#343a40"/><circle cx="566" cy="352" r="12" fill="none" stroke="#2f3e48" stroke-width="4"/>`;
+  // chucknøkkel
+  s += ln(500,244,500,200,"#212529",6)+ln(484,200,516,200,"#212529",7);
+  // armer + hansker
+  s += `<path d="M556 186 Q530 220 530 280" fill="none" stroke="#1c4f8a" stroke-width="13" stroke-linecap="round"/><path d="M596 186 Q600 240 570 290" fill="none" stroke="#1c4f8a" stroke-width="13" stroke-linecap="round"/>`;
+  s += `<circle cx="530" cy="284" r="11" fill="#f08c00" stroke="#a35400" stroke-width="2"/><circle cx="568" cy="292" r="11" fill="#f08c00" stroke="#a35400" stroke-width="2"/>`;
+  // oljesøl + drypp
+  s += `<ellipse cx="470" cy="438" rx="66" ry="13" fill="#1f2328" opacity=".78"/><ellipse cx="452" cy="434" rx="22" ry="3" fill="#fff" opacity=".25"/>`;
+  const dy = (t*55)%34; s += `<circle cx="450" cy="${fx(402+dy)}" r="3.5" fill="#1f2328" opacity="${fx(1-dy/40)}"/>`;
+  // arbeider 2 (bak arbeidsbenken)
+  s += `<rect x="752" y="184" width="56" height="140" rx="12" fill="#495f8a"/><circle cx="780" cy="160" r="22" fill="#e0ac69" stroke="#a87a45" stroke-width="1.5"/><path d="M758 156 Q760 134 780 136 Q800 136 802 156 Q796 142 780 145 Q764 145 758 156 Z" fill="#1f1f1f"/>`;
+  s += `<circle cx="772" cy="158" r="2.6" fill="#111"/><circle cx="788" cy="158" r="2.6" fill="#111"/><path d="M773 170 Q780 174 787 170" stroke="#7a4a20" stroke-width="2" fill="none"/>`;
+  s += `<path d="M760 196 Q740 250 790 296" fill="none" stroke="#495f8a" stroke-width="12" stroke-linecap="round"/><path d="M800 196 Q820 250 812 296" fill="none" stroke="#495f8a" stroke-width="12" stroke-linecap="round"/>`;
+  // arbeidsbenk + slipemaskin
+  s += `<rect x="690" y="318" width="200" height="14" fill="#a1785a" stroke="#6e4f36" stroke-width="2"/><rect x="700" y="332" width="12" height="68" fill="#6e4f36"/><rect x="868" y="332" width="12" height="68" fill="#6e4f36"/>`;
+  s += `<rect x="806" y="300" width="56" height="18" rx="3" fill="#2b8a3e"/><rect x="816" y="262" width="40" height="40" rx="8" fill="#2f9e44" stroke="#1b5e2a" stroke-width="2"/>`;
+  s += `<circle cx="802" cy="282" r="22" fill="#ced4da" stroke="#495057" stroke-width="3"/><circle cx="870" cy="282" r="22" fill="#ced4da" stroke="#495057" stroke-width="3"/><circle cx="802" cy="282" r="5" fill="#495057"/><circle cx="870" cy="282" r="5" fill="#495057"/>`;
+  s += `<circle cx="792" cy="298" r="9" fill="#e0ac69"/><circle cx="812" cy="300" r="9" fill="#e0ac69"/><rect x="782" y="292" width="20" height="8" fill="#868e96"/>`;
+  // gnister
+  for (let i=0;i<18;i++){
+    const ph = ((t*1.8) + i*0.0617*Math.PI) % 1;
+    const up = i%3===0;
+    const a = up ? (-Math.PI/2 - .35 - (i%5)*.06) : (Math.PI*.55 + (i%6)*.12);
+    const d0 = 10 + ph*(up?95:110), x = 796 + Math.cos(a)*d0, y = 298 + Math.sin(a)*d0 + (up?ph*ph*30:ph*ph*50);
+    const x2 = x - Math.cos(a)*10, y2 = y - Math.sin(a)*10;
+    s += ln(x2,y2,x,y,"#ffd43b",2.4).replace("/>",` opacity="${fx(1-ph)}"/>`);
+  }
+  // ledning over gulvet
+  s += `<path d="M347 392 C350 470 520 522 640 512 S 846 470 874 400 L874 332" fill="none" stroke="#212529" stroke-width="5"/>`;
+  s += ln(628,513,652,511,"#e8a33d",6)+ln(628,509,652,507,"#c0703a",2)+ln(630,517,650,515,"#c0703a",2);
+  if ((t%1.3) < .2) s += `<path d="M640 496 l4 8 l8 -2 l-6 6 l5 7 l-8 -4 l-5 7 l0 -9 l-8 -3 l9 -2 z" fill="#ffd43b" stroke="#e67700" stroke-width="1"/>`;
+  // gassflasker
+  s += `<g transform="translate(-36 0)">`;
+  s += `<rect x="904" y="246" width="90" height="8" fill="#868e96"/><path d="M910 254 Q912 290 922 300" fill="none" stroke="#495057" stroke-width="3" stroke-dasharray="4 3"/>`;
+  s += `<rect x="914" y="226" width="34" height="174" rx="14" fill="#3a3f45"/><path d="M914 244 Q914 226 931 226 Q948 226 948 244 L948 252 L914 252 Z" fill="#f8f9fa"/><rect x="925" y="206" width="12" height="22" fill="#adb5bd" stroke="#495057"/>`;
+  s += `<g transform="rotate(9 973 400)"><rect x="956" y="230" width="34" height="170" rx="14" fill="#3a3f45"/><path d="M956 248 Q956 230 973 230 Q990 230 990 248 L990 256 L956 256 Z" fill="#7a1f2b"/><rect x="967" y="210" width="12" height="22" fill="#adb5bd" stroke="#495057"/></g></g>`;
+  // markeringer
+  if (o.found){
+    HAZ.forEach((h,i) => { if (!o.found.has(i)) return;
+      s += `<circle cx="${h.x}" cy="${h.y}" r="${h.r}" fill="rgba(232,89,12,.12)" stroke="#e8590c" stroke-width="4" stroke-dasharray="9 6"/>`;
+      const bx = h.x + h.r*.72, by = h.y - h.r*.72;
+      s += `<circle cx="${fx(bx)}" cy="${fx(by)}" r="15" fill="#e8590c" stroke="#fff" stroke-width="3"/>`+TX(bx,by+6,i+1,{size:16,weight:900,anchor:"middle",fill:"#fff"});
+    });
+  }
+  return s;
+}
+(function(){
+  const found = new Set(), svg = $("d3Svg");
+  function draw(t){ svg.innerHTML = sceneSVG({t, found}); }
+  function show(i){
+    const h = HAZ[i];
+    $("d3T").textContent = (i+1)+". "+h.n;
+    $("d3Fare").innerHTML = "<b>Hva kan skje:</b> "+h.fare;
+    $("d3Tiltak").innerHTML = "<b>Tiltak:</b> "+h.tiltak;
+    $("d3Count").textContent = `Funnet: ${found.size} av 8`;
+    $("d3List").innerHTML = [...found].sort((a,b)=>a-b).map(k=>`<span>${k+1}. ${HAZ[k].n}</span>`).join("");
+    if (found.size===8) toast("Alle 8 farene er funnet! 👏");
+  }
+  svg.addEventListener("click", e => {
+    const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    let best = -1, bd = Infinity;
+    HAZ.forEach((h,i) => { const d = Math.hypot(p.x-h.x, p.y-h.y); if (d < h.r && d < bd){ bd = d; best = i; } });
+    if (best < 0){ toast("Ingen fare akkurat der – let videre."); return; }
+    found.add(best); show(best);
+  });
+  $("d3All").onclick = () => { HAZ.forEach((h,i)=>found.add(i)); show(7); $("d3T").textContent = "Alle 8 farene"; $("d3Fare").textContent = "Klikk på et nummer i bildet for å lese om faren."; $("d3Tiltak").textContent = ""; };
+  $("d3Reset").onclick = () => { found.clear(); $("d3T").textContent = "Klikk på en fare"; $("d3Fare").textContent = "Tips: Se på gulvet, hendene, øynene, reolen og veggene."; $("d3Tiltak").textContent = ""; $("d3Count").textContent = "Funnet: 0 av 8"; $("d3List").innerHTML = ""; };
+  addAnim(svg, (dt,t) => draw(t));
+  draw(0);
+})();
+
+/* =====================================================================
+   DEL 4 – roller
+   ===================================================================== */
+(function(){
+  const R = {
+    at:{x:320,y:52,  n:["Arbeids-","tilsynet"], col:"#495057", t:"Arbeidstilsynet", ico:"🏛",
+      d:["Statens tilsyn med arbeidsmiljøet","Kommer på tilsyn – også uanmeldt","Kan gi pålegg, bøter og stanse farlig arbeid"], law:"Arbeidsmiljøloven kap. 18"},
+    ag:{x:170,y:180, n:["Arbeids-","giver"], col:"#1c6fd1", t:"Arbeidsgiver (leder)", ico:"👔",
+      d:["Har hovedansvaret for HMS","Kartlegger farer og gjør risikovurdering","Gir opplæring og verneutstyr – gratis"], law:"aml. § 2-1 og § 3-1"},
+    vo:{x:470,y:180, n:["Verne-","ombud"], col:"#2b8a3e", t:"Verneombud", ico:"🦺",
+      d:["Valgt av de ansatte","Passer på at arbeidsmiljøet er trygt","Kan stanse arbeid ved umiddelbar fare","Krav fra 10 ansatte"], law:"aml. § 6-1 og § 6-3"},
+    amu:{x:540,y:330, n:["AMU"], col:"#7048e8", t:"AMU – arbeidsmiljøutvalg", ico:"🤝",
+      d:["Ledere, ansatte, verneombud og BHT sammen","Behandler ulykker, avvik og HMS-planer","Krav fra 50 ansatte"], law:"aml. § 7-1"},
+    bht:{x:100,y:330, n:["BHT"], col:"#0c8599", t:"Bedriftshelsetjeneste", ico:"🩺",
+      d:["Leger, fysioterapeuter og yrkeshygienikere","Måler støy og støv, gir råd","Påbudt blant annet i industrien"], law:"aml. § 3-3"},
+    du:{x:320,y:360, n:["Du –","arbeidstaker"], col:"#e8590c", t:"Du – arbeidstaker / lærling", ico:"🧑‍🏭",
+      d:["Følger rutiner og instrukser","Bruker verneutstyret","Sier fra om feil og farer","Avbryter arbeidet ved fare for liv og helse"], law:"aml. § 2-3"}
+  };
+  const E = [["at","ag"],["ag","du"],["du","vo"],["vo","ag"],["ag","amu"],["vo","amu"],["bht","amu"],["bht","du"],["bht","ag"]];
+  let sel = "du";
+  const svg = $("d4Svg");
+  function draw(t){
+    let s = `<rect x="20" y="110" width="600" height="320" rx="22" fill="var(--steel-soft)" stroke="var(--steel)" stroke-width="2" stroke-dasharray="10 7"/>`+TX(40,138,"BEDRIFTEN",{size:14,weight:800,fill:"var(--muted)"});
+    E.forEach(([a,b],k) => {
+      const A=R[a], B=R[b], act = sel===a || sel===b;
+      s += ln(A.x,A.y,B.x,B.y, act?R[sel].col:"var(--line)", act?4:3);
+      if (act){ for (let j=0;j<3;j++){ const q = ((t*.35 + j/3 + k*.13) % 1); s += `<circle cx="${fx(A.x+(B.x-A.x)*q)}" cy="${fx(A.y+(B.y-A.y)*q)}" r="5" fill="${R[sel].col}"/>`; } }
+    });
+    Object.entries(R).forEach(([k,r]) => {
+      const on = k===sel, rr = on ? 50 : 44;
+      if (on) s += `<circle cx="${r.x}" cy="${r.y}" r="${fx(rr+8+3*Math.sin(t*3))}" fill="${r.col}" opacity=".18"/>`;
+      s += `<g data-r="${k}" style="cursor:pointer"><circle cx="${r.x}" cy="${r.y}" r="${rr}" fill="${on?r.col:"var(--panel)"}" stroke="${r.col}" stroke-width="4"/>`;
+      s += TX(r.x, r.y-(r.n.length>1?14:6), r.ico, {size:22, anchor:"middle"});
+      r.n.forEach((w,j) => s += TX(r.x, r.y+(r.n.length>1?10:18)+j*16, w, {size:14, weight:750, anchor:"middle", fill:on?"#fff":"var(--ink)"}));
+      s += `</g>`;
+    });
+    svg.innerHTML = s;
+  }
+  function card(){
+    const r = R[sel];
+    $("d4Card").innerHTML = `<h3><span style="display:inline-block;width:14px;height:14px;border-radius:50%;background:${r.col}"></span>${r.t}</h3><ul>${r.d.map(x=>`<li>${x}</li>`).join("")}</ul><div class="law">${r.law}</div>`;
+  }
+  svg.style.cursor = "pointer";
+  svg.addEventListener("click", e => {
+    const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    const p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    const hit = Object.entries(R).find(([k,r]) => Math.hypot(p.x-r.x, p.y-r.y) < 54);
+    if (hit){ sel = hit[0]; card(); }
+  });
+  addAnim(svg, (dt,t) => draw(t));
+  draw(0); card();
+
+  /* Ser du en fare? */
+  const S = [["1","Sikre","Stopp maskinen eller sperr av hvis det haster.","#c92a2a"],["2","Si fra","Til læreren, lederen eller verneombudet – med én gang.","#e8590c"],["3","Meld","Skriv avviksmelding (RUH) – også for nestenulykker.","#1c6fd1"],["4","Følg opp","Tiltak settes inn. Sjekk at faren er borte.","#2b8a3e"]];
+  const fl = $("d4Flow");
+  addAnim(fl, (dt,t) => {
+    let s = "";
+    const act = Math.floor((t*.5)%4);
+    S.forEach((q,i) => {
+      const x = 10 + i*248, on = i===act;
+      s += `<rect x="${x}" y="12" width="228" height="106" rx="14" fill="${on?q[3]:"var(--panel)"}" stroke="${q[3]}" stroke-width="3"/>`;
+      s += `<circle cx="${x+30}" cy="44" r="18" fill="${on?"#fff":q[3]}"/>`+TX(x+30,51,q[0],{size:20,weight:900,anchor:"middle",fill:on?q[3]:"#fff"});
+      s += TX(x+58,52,q[1],{size:22,weight:800,fill:on?"#fff":"var(--ink)"});
+      const words = q[2].split(" "); let line = "", ly = 80, out = "";
+      words.forEach(w => { if ((line+" "+w).length > 30){ out += TX(x+16,ly,line.trim(),{size:13.5,fill:on?"#fff":"var(--muted)"}); line = w; ly += 18; } else line += " "+w; });
+      out += TX(x+16,ly,line.trim(),{size:13.5,fill:on?"#fff":"var(--muted)"});
+      s += out;
+      if (i<3) s += `<path d="M${x+232} 65 l12 0 l-5 -6 m5 6 l-5 6" stroke="var(--muted)" stroke-width="2.5" fill="none"/>`;
+    });
+    fl.innerHTML = s;
+  });
+})();
+
+/* =====================================================================
+   DEL 5 – risikomatrise
+   ===================================================================== */
+const SW = ["","Svært lite sannsynlig","Lite sannsynlig","Mulig","Sannsynlig","Svært sannsynlig"];
+const KW = ["","Ubetydelig","Liten (plaster)","Middels (lege, fravær)","Alvorlig (varig skade)","Svært alvorlig (død)"];
+const zone = r => r<=4 ? ["Grønn – akseptabel. Følg med.","ok","#51cf66"] : r<=10 ? ["Gul – tiltak bør vurderes.","warn","#fcc419"] : ["Rød – ikke akseptabel. Tiltak før arbeidet starter!","bad","#ff6b6b"];
+function matrixSVG(o){
+  const mono = !!o.mono, x0 = 120, y0 = 20, c = 80;
+  let s = "";
+  for (let r=0;r<5;r++) for (let k=0;k<5;k++){
+    const S = 5-r, K = k+1, R = S*K, z = zone(R);
+    const fill = mono ? (R<=4?"#fff":R<=10?"#e6e6e6":"#bdbdbd") : z[2];
+    s += `<rect x="${x0+k*c}" y="${y0+r*c}" width="${c}" height="${c}" fill="${fill}" stroke="${mono?"#000":"#fff"}" stroke-width="${mono?1.5:3}"${mono?"":` opacity=".85"`}/>`;
+    s += TX(x0+k*c+c/2, y0+r*c+c/2+8, R, {size:22, weight:800, anchor:"middle", fill:mono?"#000":"rgba(0,0,0,.55)"});
+  }
+  for (let i=1;i<=5;i++){
+    s += TX(x0-12, y0+(5-i)*c+c/2+6, i, {size:18, weight:800, anchor:"end", fill:mono?"#000":"var(--ink)"});
+    s += TX(x0+(i-1)*c+c/2, y0+5*c+24, i, {size:18, weight:800, anchor:"middle", fill:mono?"#000":"var(--ink)"});
+  }
+  s += `<text x="40" y="${y0+2.5*c}" font-size="17" font-weight="800" fill="${mono?"#000":"var(--ink)"}" text-anchor="middle" transform="rotate(-90 40 ${y0+2.5*c})">Sannsynlighet (S) ↑</text>`;
+  s += TX(x0+2.5*c, y0+5*c+50, "Konsekvens (K) →", {size:17, weight:800, anchor:"middle", fill:mono?"#000":"var(--ink)"});
+  return s;
+}
+(function(){
+  const SC = [
+    {k:"oye", n:"Spon i øyet ved fresing", s:4, k_:3, s2:1, k2:3, tt:"Tiltak: vernebriller og skjerm på fresen → sannsynligheten faller fra 4 til 1."},
+    {k:"grader", n:"Kutt på grader", s:4, k_:2, s2:2, k2:1, tt:"Tiltak: avgrade delene med én gang og bruk hansker → mindre sannsynlig og mindre alvorlig."},
+    {k:"gass", n:"Gassflaske velter", s:3, k_:4, s2:1, k2:4, tt:"Tiltak: kjetting rundt flaskene → nesten umulig at de velter."},
+    {k:"hanske", n:"Hanske i dreiebenken", s:2, k_:5, s2:1, k2:5, tt:"Tiltak: forbud mot hansker og opplæring. Sannsynligheten går ned – men konsekvensen er fortsatt død eller varig skade. Fortsatt gul!"},
+    {k:"loft", n:"Tungt løft av skrustikke", s:3, k_:3, s2:2, k2:2, tt:"Tiltak: løft med kran eller to personer → både sannsynlighet og konsekvens går ned."}
+  ];
+  const st = {S:3, K:3, px:3, py:3, trail:null, sc:null, after:false};
+  chipsInto($("d5Sc"), SC.map(c=>[c.k,c.n]), null);
+  $("d5Sc").onclick = e => { const b=e.target.closest("[data-k]"); if(!b) return; pressOnly($("d5Sc"), b); const c = SC.find(q=>q.k===b.dataset.k); st.sc=c; st.after=false; st.trail=null; set(c.s,c.k_); $("d5TT").textContent=""; };
+  $("d5S").oninput = e => { st.sc=null; st.trail=null; pressOnly($("d5Sc"), null); set(+e.target.value, st.K); };
+  $("d5K").oninput = e => { st.sc=null; st.trail=null; pressOnly($("d5Sc"), null); set(st.S, +e.target.value); };
+  $("d5Tiltak").onclick = () => {
+    if (!st.sc){ toast("Velg en av farene først."); return; }
+    if (st.after) return;
+    st.trail = [st.S, st.K]; st.after = true; set(st.sc.s2, st.sc.k2); $("d5TT").textContent = st.sc.tt;
+  };
+  function set(S,K){ st.S=S; st.K=K; $("d5S").value=S; $("d5K").value=K; $("d5Sv").textContent = S+" – "+SW[S]; $("d5Kv").textContent = K+" – "+KW[K];
+    const R=S*K, z=zone(R); $("d5R").textContent=R; $("d5R").style.color = z[1]==="ok"?"var(--green)":z[1]==="warn"?"var(--orange)":"var(--red)"; $("d5Msg").textContent=z[0]; $("d5Msg").className="status "+z[1]; }
+  const cxOf = K => 120+(K-1)*80+40, cyOf = S => 20+(5-S)*80+40;
+  addAnim($("d5Svg"), dt => {
+    st.px += (st.K-st.px)*Math.min(1,dt*6); st.py += (st.S-st.py)*Math.min(1,dt*6);
+    let s = matrixSVG({});
+    if (st.trail){ const ax=cxOf(st.trail[1]), ay=cyOf(st.trail[0]); s += `<circle cx="${ax}" cy="${ay}" r="18" fill="none" stroke="var(--ink)" stroke-width="3" stroke-dasharray="5 4"/>`+ln(ax,ay,cxOf(st.px),cyOf(st.py),"var(--ink)",3,"6 5")+TX(ax,ay-26,"før",{size:13,weight:800,anchor:"middle"}); }
+    const x = cxOf(st.px), y = cyOf(st.py);
+    s += `<circle cx="${fx(x)}" cy="${fx(y)}" r="26" fill="none" stroke="var(--ink)" stroke-width="2" opacity=".4"/><circle cx="${fx(x)}" cy="${fx(y)}" r="17" fill="var(--blue)" stroke="#fff" stroke-width="4"/>`;
+    if (st.after) s += TX(x,y-30,"etter",{size:13,weight:800,anchor:"middle",fill:"var(--blue)"});
+    $("d5Svg").innerHTML = s;
+  });
+  set(3,3);
+})();
+
+/* =====================================================================
+   DEL 6 – tiltakshierarkiet med støvanimasjon
+   ===================================================================== */
+const LEV = [
+  {n:"1 Fjerne faren", ex:"Lag delen med en metode som gir ferdig kant – ingen sliping", f:0, col:"#2b8a3e"},
+  {n:"2 Erstatte", ex:"Våtsliping eller skive som gir mindre støv", f:.3, col:"#5c940d"},
+  {n:"3 Tekniske tiltak", ex:"Punktavsug ved slipestedet", f:.15, col:"#e67700"},
+  {n:"4 Organisatoriske", ex:"Bytte på – halv tid ved slipingen", f:.5, col:"#d9480f"},
+  {n:"5 Verneutstyr (PVU)", ex:"Støvmaske P3 – bare når den sitter tett", f:.1, col:"#c92a2a"}
+];
+function hierSVG(o){
+  const mono = !!o.mono, on = o.on || [], cx = 220, top = 30, H = 370, Wt = 400;
+  let s = "";
+  LEV.forEach((l,i) => {
+    const y0 = top+i*H/5, y1 = y0+H/5, w0 = Wt*(1-i/5*0.82), w1 = Wt*(1-(i+1)/5*0.82);
+    s += `<path d="M${fx(cx-w0/2)} ${fx(y0)} L${fx(cx+w0/2)} ${fx(y0)} L${fx(cx+w1/2)} ${fx(y1)} L${fx(cx-w1/2)} ${fx(y1)} Z" fill="${mono?"#fff":(on[i]?l.col:"var(--steel-soft)")}" stroke="${mono?"#000":"var(--panel)"}" stroke-width="${mono?1.5:3}"/>`;
+    s += TX(cx, y0+H/10+(mono?-4:6), i===4?"5 PVU":l.n, {size:i<4?17:16, weight:800, anchor:"middle", fill:mono?"#000":(on[i]?"#fff":"var(--ink)")});
+    if (mono) s += `<rect x="${cx-22}" y="${fx(y0+H/10+4)}" width="44" height="24" rx="3" fill="#fff" stroke="#000" stroke-width="1.5"/>`;
+  });
+  s += `<path d="M14 ${top+H} L14 ${top+6}" stroke="${mono?"#000":"var(--green)"}" stroke-width="4"/><path d="M4 ${top+18} L14 ${top} L24 ${top+18}" fill="none" stroke="${mono?"#000":"var(--green)"}" stroke-width="4"/>`;
+  s += `<text x="0" y="0" transform="translate(36 ${top+H/2}) rotate(-90)" font-size="13" font-weight="700" fill="${mono?"#000":"var(--muted)"}" text-anchor="middle">mest effektiv ↑</text>`;
+  return s;
+}
+(function(){
+  const on = [false,false,false,false,false];
+  const ctl = $("d6Ctl");
+  ctl.innerHTML = LEV.map((l,i)=>`<button class="chip" data-i="${i}" aria-pressed="false">${l.n}</button>`).join("")+`<button class="btn small" id="d6Clr">↺ Ingen tiltak</button>`;
+  ctl.onclick = e => {
+    if (e.target.id==="d6Clr"){ on.fill(false); upd(); return; }
+    const b = e.target.closest("[data-i]"); if (!b) return; const i = +b.dataset.i; on[i] = !on[i]; upd(i);
+  };
+  function expo(){ if (on[0]) return 0; let e = 1; for (let i=1;i<5;i++) if (on[i]) e *= LEV[i].f; return e; }
+  function upd(last){
+    ctl.querySelectorAll("[data-i]").forEach(b => b.setAttribute("aria-pressed", String(on[+b.dataset.i])));
+    const e = expo(), pct = e*100;
+    $("d6Bar").style.width = Math.max(pct, .5)+"%";
+    $("d6Bar").style.background = pct>50 ? "var(--red)" : pct>10 ? "var(--orange)" : "var(--green)";
+    $("d6Pct").textContent = (pct<1 && pct>0 ? nf(pct,1) : nf(Math.round(pct)))+" %";
+    let m, c;
+    if (last!==undefined && on[last]) { m = LEV[last].ex+"."; c = "ok"; }
+    else { m = "Ingen tiltak: alt støvet går rett mot ansiktet. Velg et tiltak."; c = "bad"; }
+    if (on[0]) { m = "Faren er fjernet: ingen sliping – ingen støv. Det beste tiltaket virker for alle, hele tiden."; c = "ok"; }
+    else if (on[4] && on.filter(Boolean).length===1) { m = "Bare maske: virker bare for den som bruker den – og bare når den sitter tett. Kolleger i nærheten får fortsatt støv."; c = "warn"; }
+    $("d6Msg").textContent = m; $("d6Msg").className = "status "+c;
+  }
+  const P = []; let acc = 0;
+  const SRC = [600,300], FACE = [868,196], HOOD = [626,236];
+  addAnim($("d6Svg"), (dt,t) => {
+    const rate = on[0] ? 0 : 40*(on[1]?.3:1)*(on[3]?.5:1);
+    acc += rate*dt;
+    while (acc >= 1){ acc -= 1; P.push({x:SRC[0]+Math.random()*10, y:SRC[1]-Math.random()*6, vx:0, vy:0, cap: on[2] && Math.random()<.85, mask: on[4] && Math.random()<.9, life:0, ph:Math.random()*6}); }
+    for (let i=P.length-1;i>=0;i--){
+      const p = P[i]; p.life += dt;
+      const tg = p.cap ? HOOD : FACE;
+      const dx = tg[0]-p.x, dy = tg[1]-p.y, d = Math.hypot(dx,dy)||1;
+      const sp = p.cap ? 160 : 95;
+      p.x += (dx/d*sp + Math.sin(p.life*6+p.ph)*30)*dt; p.y += (dy/d*sp + Math.cos(p.life*5+p.ph)*24)*dt;
+      if (d < (p.cap?14:16) || (p.mask && !p.cap && p.x > FACE[0]-34) || p.life > 6) P.splice(i,1);
+    }
+    let s = hierSVG({on});
+    // scene
+    s += `<rect x="470" y="40" width="520" height="370" rx="16" fill="var(--steel-soft)"/>`;
+    s += `<rect x="490" y="330" width="250" height="14" fill="#a1785a" stroke="#6e4f36" stroke-width="2"/><rect x="500" y="344" width="12" height="60" fill="#6e4f36"/><rect x="718" y="344" width="12" height="60" fill="#6e4f36"/>`;
+    s += `<rect x="540" y="306" width="140" height="24" fill="#adb5bd" stroke="#495057" stroke-width="2"/>`;
+    if (!on[0]){
+      s += `<g transform="rotate(-18 610 298)"><rect x="600" y="270" width="110" height="28" rx="12" fill="${on[1]?"#1c7ed6":"#e8590c"}" stroke="#333" stroke-width="2"/><circle cx="598" cy="300" r="20" fill="#495057"/><circle cx="598" cy="300" r="20" fill="none" stroke="#adb5bd" stroke-width="3" stroke-dasharray="6 5" stroke-dashoffset="${fx(-t*80)}"/></g>`;
+      if (on[1]) s += TX(650,262,"våtsliping",{size:13,weight:700,anchor:"middle",fill:"#1c7ed6"});
+    } else s += TX(610,296,"✔ ferdig kant",{size:16,weight:800,anchor:"middle",fill:"var(--green)"});
+    if (on[2]) s += `<path d="M596 232 L656 232 L646 252 L606 252 Z" fill="#868e96" stroke="#495057" stroke-width="2"/><rect x="616" y="60" width="20" height="172" fill="#868e96" stroke="#495057" stroke-width="2"/>`+TX(646,90,"avsug",{size:13,weight:700,fill:"var(--muted)"});
+    // arbeider
+    s += `<rect x="842" y="230" width="64" height="150" rx="14" fill="#1c4f8a"/><circle cx="878" cy="196" r="28" fill="#f1c27d" stroke="#a87a45" stroke-width="1.5"/><path d="M852 190 Q854 164 878 166 Q902 166 904 190 Q896 176 878 178 Q860 178 852 190 Z" fill="#5c3b1e"/>`;
+    s += `<circle cx="868" cy="192" r="2.8" fill="#111"/><path d="M846 244 Q800 280 730 300" fill="none" stroke="#1c4f8a" stroke-width="13" stroke-linecap="round"/>`;
+    if (on[4]) s += `<path d="M852 200 Q850 222 868 226 Q880 222 882 202 Z" fill="#f8f9fa" stroke="#868e96" stroke-width="2"/><circle cx="852" cy="214" r="6" fill="#f783ac" stroke="#868e96"/>`;
+    if (on[3]) { const a = (t*.8)%(Math.PI*2); s += `<circle cx="950" cy="90" r="26" fill="#fff" stroke="var(--ink)" stroke-width="3"/><path d="M950 90 L950 70 M950 90 L${fx(950+16*Math.cos(a))} ${fx(90+16*Math.sin(a))}" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><path d="M950 90 L950 64 A26 26 0 0 1 950 116 Z" fill="rgba(232,89,12,.3)"/>`+TX(950,134,"4 t i stedet for 8 t",{size:12,weight:700,anchor:"middle",fill:"var(--muted)"}); }
+    // lunger-indikator
+    const e = expo(), lc = e>.5 ? "#c92a2a" : e>.1 ? "#e67700" : "#2b8a3e";
+    s += `<path d="M862 262 q-14 4 -14 28 q0 22 12 24 q8 0 8 -14 v-36 z M894 262 q14 4 14 28 q0 22 -12 24 q-8 0 -8 -14 v-36 z" fill="${lc}" opacity=".85"/>`;
+    // partikler
+    P.forEach(p => s += `<circle cx="${fx(p.x)}" cy="${fx(p.y)}" r="3" fill="#6c5c4c" opacity=".8"/>`);
+    $("d6Svg").innerHTML = s;
+  });
+  upd();
+})();
+
+/* =====================================================================
+   DEL 7 – personlig verneutstyr
+   ===================================================================== */
+const ITEMS = [["sko","Vernesko"],["briller","Vernebriller"],["horsel","Hørselvern"],["arbh","Arbeidshansker"],["kjemh","Kjemikaliehansker"],["sveish","Sveisehansker"],["jakke","Sveisejakke"],["hjelm","Sveisehjelm"],["maske","Åndedrettsvern"]];
+const JOBS = {
+  dreie:{n:"Dreiebenk", req:["sko","briller"], opt:["horsel"], bad:{arbh:"Hansker kan bli fanget av chucken og trekke hånden inn!", kjemh:"Ingen hansker ved roterende maskiner!", sveish:"Ingen hansker ved roterende maskiner!"}},
+  slipe:{n:"Vinkelsliper", req:["sko","briller","horsel","arbh"], opt:["maske"], bad:{kjemh:"Tynne kjemikaliehansker tåler ikke gnister og skarpe kanter."}},
+  sveise:{n:"MIG-sveising", req:["sko","hjelm","sveish","jakke"], opt:["horsel","maske","briller"], bad:{kjemh:"Kjemikaliehansker smelter av sveisesprut.", arbh:"Vanlige arbeidshansker beskytter ikke mot sprut og varme."}},
+  kjemi:{n:"Avfetting med løsemiddel", req:["sko","briller","kjemh"], opt:["maske"], bad:{arbh:"Arbeidshansker av tekstil suger opp løsemiddelet og holder det mot huden!"}}
+};
+const SIGN_OF = {sko:"sko", briller:"briller", horsel:"horsel", arbh:"hansker", kjemh:"hansker", sveish:"hansker", maske:"maske", hjelm:"sveis"};
+function workerSVG(it){
+  const skin = "#f1c27d", suit = "#1c4f8a", jak = it.has("jakke");
+  let s = "";
+  s += `<ellipse cx="210" cy="476" rx="96" ry="10" fill="rgba(0,0,0,.12)"/>`;
+  s += `<rect x="170" y="300" width="34" height="160" rx="8" fill="#34495e"/><rect x="216" y="300" width="34" height="160" rx="8" fill="#34495e"/>`;
+  if (it.has("sko")) s += `<path d="M160 456 h46 v22 h-58 q0 -14 12 -22 z" fill="#212529"/><path d="M148 478 q0 -14 12 -22 h12 v22 z" fill="#fab005"/><path d="M214 456 h46 q12 8 12 22 h-58 z" fill="#212529"/><path d="M272 478 q0 -14 -12 -22 h-12 v22 z" fill="#fab005"/>`;
+  else s += `<path d="M162 458 h44 v18 h-54 q0 -12 10 -18 z" fill="#f8f9fa" stroke="#adb5bd" stroke-width="2"/><path d="M214 458 h44 q10 6 10 18 h-54 z" fill="#f8f9fa" stroke="#adb5bd" stroke-width="2"/>`;
+  s += `<rect x="160" y="150" width="100" height="164" rx="22" fill="${jak?"#8b5a2b":suit}"/>`;
+  if (jak) s += `<path d="M190 150 L210 190 L230 150" fill="none" stroke="#5e3b17" stroke-width="4"/>`+ln(210,190,210,312,"#5e3b17",3);
+  else s += `<rect x="186" y="200" width="48" height="36" rx="4" fill="#174273"/>`+ln(160,250,260,250,"#fab005",8)+ln(160,268,260,268,"#d0d4d8",6);
+  s += `<rect x="126" y="158" width="32" height="140" rx="15" fill="${jak?"#8b5a2b":suit}"/><rect x="262" y="158" width="32" height="140" rx="15" fill="${jak?"#8b5a2b":suit}"/>`;
+  const hand = (x) => {
+    if (it.has("sveish")) return `<rect x="${x-19}" y="250" width="38" height="74" rx="12" fill="#a0522d" stroke="#6b3518" stroke-width="2"/>`;
+    if (it.has("kjemh")) return `<rect x="${x-17}" y="262" width="34" height="62" rx="12" fill="#3bc9db" stroke="#0c8599" stroke-width="2"/>`;
+    if (it.has("arbh")) return `<rect x="${x-17}" y="290" width="34" height="34" rx="12" fill="#d9b26f" stroke="#9c7a2a" stroke-width="2"/>`;
+    return `<circle cx="${x}" cy="306" r="15" fill="${skin}"/>`;
+  };
+  s += hand(142) + hand(278);
+  s += `<rect x="196" y="128" width="28" height="26" fill="${skin}"/><circle cx="210" cy="96" r="44" fill="${skin}" stroke="#a87a45" stroke-width="1.5"/>`;
+  s += `<path d="M166 92 Q168 46 210 48 Q252 48 254 92 Q244 66 210 70 Q176 70 166 92 Z" fill="#5c3b1e"/>`;
+  s += `<circle cx="194" cy="96" r="4" fill="#111"/><circle cx="226" cy="96" r="4" fill="#111"/><path d="M196 120 Q210 128 224 120" stroke="#7a4a20" stroke-width="3" fill="none"/>`;
+  if (it.has("briller")) s += `<rect x="176" y="84" width="68" height="24" rx="8" fill="rgba(140,200,240,.55)" stroke="#343a40" stroke-width="3"/>`+ln(166,92,176,94,"#343a40",3)+ln(244,94,254,92,"#343a40",3);
+  if (it.has("maske")) s += `<path d="M186 104 Q184 134 210 140 Q236 134 234 104 Q210 96 186 104 Z" fill="#f1f3f5" stroke="#868e96" stroke-width="2.5"/><circle cx="186" cy="124" r="10" fill="#f783ac" stroke="#868e96" stroke-width="2"/><circle cx="234" cy="124" r="10" fill="#f783ac" stroke="#868e96" stroke-width="2"/>`;
+  if (it.has("horsel")) s += `<path d="M166 98 Q166 34 210 34 Q254 34 254 98" fill="none" stroke="#212529" stroke-width="7"/><rect x="152" y="80" width="22" height="38" rx="9" fill="#e03131" stroke="#8a1c1c" stroke-width="2"/><rect x="246" y="80" width="22" height="38" rx="9" fill="#e03131" stroke="#8a1c1c" stroke-width="2"/>`;
+  if (it.has("hjelm")) s += `<path d="M160 70 Q164 36 210 34 Q256 36 260 70 L262 132 Q210 152 158 132 Z" fill="#343a40" stroke="#111" stroke-width="2"/><rect x="180" y="82" width="60" height="22" rx="3" fill="#2b5d34" stroke="#111" stroke-width="2"/>`;
+  return s;
+}
+(function(){
+  let job = "dreie"; const it = new Set();
+  chipsInto($("d7Job"), Object.entries(JOBS).map(([k,v])=>[k,v.n]), job);
+  $("d7It").innerHTML = ITEMS.map(v=>`<button class="chip" data-i="${v[0]}" aria-pressed="false">${v[1]}</button>`).join("");
+  $("d7Job").onclick = e => { const b=e.target.closest("[data-k]"); if(!b) return; job=b.dataset.k; pressOnly($("d7Job"), b); $("d7Msg").textContent = "Velg verneutstyr for: "+JOBS[job].n+"."; $("d7Msg").className="status info"; };
+  $("d7It").onclick = e => { const b=e.target.closest("[data-i]"); if(!b) return; const k=b.dataset.i; if (it.has(k)) it.delete(k); else { if (["arbh","kjemh","sveish"].includes(k)) ["arbh","kjemh","sveish"].forEach(q=>it.delete(q)); it.add(k); } sync(); };
+  $("d7Clr").onclick = () => { it.clear(); sync(); $("d7Msg").textContent="Velg verneutstyr."; $("d7Msg").className="status info"; };
+  $("d7Chk").onclick = () => {
+    const J = JOBS[job], miss = J.req.filter(k=>!it.has(k)), bad = [...it].filter(k=>J.bad[k]);
+    const extra = [...it].filter(k=>!J.req.includes(k) && !J.opt.includes(k) && !J.bad[k]);
+    const name = k => ITEMS.find(q=>q[0]===k)[1].toLowerCase();
+    let m, c;
+    if (bad.length){ m = "Farlig valg: "+J.bad[bad[0]]; c = "bad"; }
+    else if (miss.length){ m = "Mangler: "+miss.map(name).join(", ")+"."; c = "warn"; }
+    else { m = "Riktig for "+J.n.toLowerCase()+"! 👍"+(extra.length?" ("+extra.map(name).join(", ")+" trengs egentlig ikke her.)":"")+(J.opt.filter(k=>!it.has(k)).length?" Kan også brukes: "+J.opt.filter(k=>!it.has(k)).map(name).join(", ")+".":""); c = "ok"; }
+    $("d7Msg").textContent = m; $("d7Msg").className = "status "+c;
+  };
+  function sync(){
+    $("d7It").querySelectorAll("[data-i]").forEach(b=>b.setAttribute("aria-pressed", String(it.has(b.dataset.i))));
+    let s = workerSVG(it);
+    const sg = [...new Set([...it].map(k=>SIGN_OF[k]).filter(Boolean))];
+    s += ln(20,498,400,498,"var(--line)",2);
+    sg.forEach((k,i) => s += sign(k, 46+i*64, 530, 26));
+    if (!sg.length) s += TX(210,536,"Påbudsskilt vises her",{size:14,anchor:"middle",fill:"var(--muted)"});
+    $("d7Svg").innerHTML = s;
+  }
+  sync();
+})();
+
+/* =====================================================================
+   OPPSUMMERING
+   ===================================================================== */
+(function(){
+  const S = [["👀","Se faren","#1c6fd1"],["⚖","Vurder risikoen","#7048e8"],["🛠","Velg tiltak – best først","#2b8a3e"],["🦺","Bruk verneutstyr","#e8590c"],["📣","Meld fra","#c92a2a"]];
+  addAnim($("sumSvg"), (dt,t) => {
+    let s = ""; const act = Math.floor((t*.6)%5);
+    S.forEach((q,i) => {
+      const y = 12 + i*62, on = i===act;
+      s += `<rect x="20" y="${y}" width="560" height="52" rx="12" fill="${on?q[2]:"var(--panel)"}" stroke="${q[2]}" stroke-width="3"/>`;
+      s += TX(54,y+36,q[0],{size:24,anchor:"middle"})+TX(84,y+35,(i+1)+". "+q[1],{size:21,weight:800,fill:on?"#fff":"var(--ink)"});
+    });
+    $("sumSvg").innerHTML = s;
+  });
+})();
+
+/* =====================================================================
+   OPPGAVEFIGURER (utskrift)
+   ===================================================================== */
+(function(){
+  $("o2fig").innerHTML = svgOpen(980,400)+pyramidSVG({blank:true})+"</svg>";
+  $("o3fig").innerHTML = svgOpen(1000,560)+sceneSVG({t:.37})+"</svg>";
+  $("o5fig").innerHTML = svgOpen(560,480)+matrixSVG({mono:true})+"</svg>";
+  $("o6fig").innerHTML = svgOpen(440,410)+hierSVG({mono:true})+"</svg>";
+  const ks = ["briller","horsel","sko","hansker","maske","sveis"];
+  $("o7minis").innerHTML = ks.map((k,i)=>`<figure><figcaption>${i+1}</figcaption>${svgOpen(100,100)}${sign(k,50,50,42,false)}</svg></figure>`).join("");
+  $("o3fasit").innerHTML = "<b>Fasit:</b> "+HAZ.map((h,i)=>`${i+1}) <b>${h.n}</b> – ${h.fare} Tiltak: ${h.tiltak}`).join(" ");
+  document.querySelectorAll("#oppgavetekst .ofig svg, #oppgavetekst .minis svg").forEach(s => { s.removeAttribute("width"); s.removeAttribute("height"); });
+})();
+
+/* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToPng(svg){
+  const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
+  const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0,0,w,h); cx.drawImage(img,0,0,w,h);
+  return [cv.toDataURL("image/png"), vb.width];
+}
+$("btnCopy").onclick = async () => {
+  const src = $("oppgavetekst"), clone = src.cloneNode(true);
+  const svgs = [...src.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<svgs.length;i++){
+    try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = svgs[i].closest(".minis") ? 90 : Math.min(640, Math.round(w*.75)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
+  }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".minis").forEach(m => { const t = document.createElement("table"); const tr = t.insertRow(); m.querySelectorAll("figure").forEach(f => { const td = tr.insertCell(); td.innerHTML = f.innerHTML; td.style.padding = "4px"; }); m.replaceWith(t); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>

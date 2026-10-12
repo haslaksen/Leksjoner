@@ -1,0 +1,1430 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elektro 3 – Motorstyring</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#fab005; --yellow-soft:#fff6d6;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --copper:#c0703a; --lead:#495057;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#6b7785; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+  --copper:#e0915a; --lead:#868e96;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.3rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem; user-select:none}
+.btn:hover{border-color:var(--blue)}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.go{background:var(--green-soft); color:var(--green); border-color:var(--green); font-weight:700}
+.btn.stop{background:var(--red-soft); color:var(--red); border-color:var(--red); font-weight:700}
+.btn.estop{background:var(--yellow); color:#7a1010; border-color:#c92a2a; font-weight:800}
+.btn.estop.on{background:#c92a2a; color:#fff}
+.btn[hidden]{display:none}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:2.6rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1300px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.15rem; color:var(--muted); max-width:70ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2.wide-left{grid-template-columns:1.6fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.15rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.7rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+.slider{display:flex; align-items:center; gap:.6rem; font-size:.85rem}
+.slider input{width:min(220px,100%); accent-color:var(--orange)}
+.slider b{min-width:4.5rem; font-variant-numeric:tabular-nums}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem; min-height:2.9em}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.7rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+.tip.r{border-color:var(--red); background:var(--red-soft)}
+.tip.g{border-color:var(--green); background:var(--green-soft)}
+details.laerer{margin-top:1.1rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.4rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.35rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.35rem .7rem}
+.readout span{display:block; font-size:.72rem; color:var(--muted)}
+.readout b{font-size:1.2rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.chip{font:inherit; font-size:.78rem; font-weight:600; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.35rem .7rem}
+.chip:hover{border-color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--orange); color:#fff; border-color:var(--orange)}
+.legend{display:flex; flex-wrap:wrap; gap:.4rem 1.2rem; font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.legend i{display:inline-block; width:1.8rem; height:.35rem; border-radius:3px; vertical-align:middle; margin-right:.4rem}
+.log{display:flex; flex-wrap:wrap; gap:.35rem; min-height:2rem; margin-top:.5rem}
+.log span{background:var(--steel-soft); border-radius:8px; padding:.2rem .55rem; font-size:.8rem; font-weight:650; font-variant-numeric:tabular-nums}
+.log span.hi{background:var(--orange-soft); color:var(--orange)}
+.log span.lo{background:var(--blue-soft); color:var(--blue)}
+.mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
+.mini3 .card{padding:.7rem .9rem; font-size:.9rem}
+.mini3 .card h3{font-size:1.05rem}
+.big{font-size:1.6rem; font-weight:800; color:var(--orange)}
+
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); height:2rem}
+.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
+.fasit b{color:var(--green)}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.3rem}
+.ot.c td, .ot.c th{text-align:center}
+.ot.c td:first-child, .ot.c th:first-child{text-align:left}
+.ofig{border:1px solid var(--muted); border-radius:8px; padding:.4rem; background:#fff; margin:.5rem 0}
+.ofig svg{display:block; width:100%; height:auto}
+.minis{display:grid; grid-template-columns:repeat(4,1fr); gap:.6rem; margin:.6rem 0}
+.minis figure{margin:0; border:1px solid var(--muted); border-radius:8px; padding:.3rem; background:#fff}
+.minis figcaption{font-weight:700; font-size:.9rem; color:#000}
+.minis svg{display:block; width:100%; height:auto}
+.formelark{display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; font-size:.92rem; border:1px solid var(--muted); border-radius:8px; padding:.5rem .8rem; margin:.5rem 0 1rem}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid4,.grid3,.mini3{grid-template-columns:1fr 1fr}
+  .minis{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+  .readout{grid-template-columns:1fr 1fr}
+}
+@media (max-width:600px){ .grid4,.grid3,.mini3{grid-template-columns:1fr} .card{overflow-wrap:anywhere} table.t{display:block; overflow-x:auto} .oppgave{overflow-x:auto} .ot{font-size:.75rem} }
+.grid2>*,.grid3>*,.hero>*{min-width:0}
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr, .minis, .ofig{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+  .minis{grid-template-columns:repeat(4,1fr)!important}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Elektro · <span>Leksjon 3</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- START -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Elektro</div>
+      <h1>Leksjon 3<br>Motorstyring</h1>
+      <p class="lead">Et lite trykk på en knapp – og en motor på flere kilowatt starter. Slik styrer en svak 24 V-krets en kraftig 400 V-krets, og slik beskyttes både motoren og deg.</p>
+      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <ol class="goals">
+        <li>forklare forskjellen på <b>hovedstrøm</b> og <b>styrestrøm</b></li>
+        <li>forklare hvordan en <b>kontaktor</b> virker</li>
+        <li>lese et skjema for <b>direktestart med selvhold</b> og nødstopp</li>
+        <li>forklare hva <b>motorvernet</b> gjør, og stille det inn etter merkeskiltet</li>
+        <li>forklare hvordan en motor <b>snus</b>, og hvorfor kontaktorene må <b>forrigles</b></li>
+        <li>sammenligne <b>startmetoder</b> og <b>feilsøke</b> i en styrekrets</li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p style="margin-bottom:.4rem"><b>Teknologi:</b> <i>«montere, sette i drift og feilsøke maskiner og utstyr i en produksjonsprosess»</i></p>
+        <p style="margin-bottom:.4rem"><b>Vedlikehold:</b> <i>«arbeide på elektriske og automatiserte systemer ved reparasjons- og vedlikeholdsarbeid etter instrukser»</i></p>
+        <p style="margin-bottom:.4rem"><b>Vedlikehold:</b> <i>«bruke og reflektere over helse-, miljø- og sikkerhetskrav i rutiner for vedlikehold»</i></p>
+        <p style="margin-bottom:0"><b>Teknologi:</b> <i>«bruke og velge målemetode og måleutstyr …»</i></p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1 · Kontaktor og direktestart</th></tr>
+          <tr><td>0–5 min</td><td>Del 1: to kretser – hovedstrøm og styrestrøm</td></tr>
+          <tr><td>5–13 min</td><td>Del 2: kontaktoren</td></tr>
+          <tr><td>13–28 min</td><td>Del 3: direktestart med selvhold</td></tr>
+          <tr><td>28–45 min</td><td>Oppgave 1 og 2</td></tr>
+          <tr><th colspan="2">Time 2 · Vern, retning, start og feilsøking</th></tr>
+          <tr><td>0–6 min</td><td>Del 4: motorvernet</td></tr>
+          <tr><td>6–15 min</td><td>Del 5: snu motoren – forrigling</td></tr>
+          <tr><td>15–21 min</td><td>Del 6: startmetoder</td></tr>
+          <tr><td>21–27 min</td><td>Del 7: feilsøking i styrekretsen</td></tr>
+          <tr><td>27–43 min</td><td>Oppgave 3–6</td></tr>
+          <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+      </div>
+      <div class="tip" style="margin-bottom:0"><b>Fra leksjon 1 og 2:</b> 24 V DC i styringen · 400 V mellom to faser i TN-nett · motoren har tre like viklinger · strøm måles med tang · feilsøking: følg spenningen, mål i midten.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 1 -->
+<section class="slide" id="tokretser" data-nav="1 To kretser">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 5 min</div>
+    <h2>To kretser: hovedstrøm og styrestrøm</h2>
+    <p class="lead">Knappene på panelet kobler <b>ikke</b> motoren. De styrer en <b>kontaktor</b> i elskapet – og kontaktoren kobler motoren.</p>
+    <div class="fig">
+      <svg id="d1Svg" viewBox="0 0 1000 430" role="img" aria-label="Betjeningspanel, elskap med kontaktor og motor som driver et transportbånd"></svg>
+      <div class="controls">
+        <button class="btn go" id="d1Start">▶ START</button>
+        <button class="btn stop" id="d1Stop">■ STOPP</button>
+        <span style="width:1rem"></span>
+        <span class="chips" id="d1View"></span>
+      </div>
+      <div class="legend"><span><i style="background:var(--red)"></i>Hovedstrøm 400 V – stor strøm til motoren</span><span><i style="background:var(--orange)"></i>Styrestrøm +24 V – liten strøm til knapper og spole</span><span><i style="background:var(--blue)"></i>0 V</span></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Hovedstrøm</h3>400 V · 8 A for en 4 kW motor. Farlig – kun elektrofagfolk.</div>
+      <div class="card"><h3>Styrestrøm</h3>24 V DC · ca. 0,1 A. Ufarlig spenning ved knappene.</div>
+      <div class="card"><h3>Kontaktoren</h3>Bindeleddet: liten strøm i spolen → kraftige kontakter lukker.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Spør først: «Hvorfor går ikke 400 V rett gjennom startknappen?» Svar: tykke kabler og store kontakter til panelet, farlig spenning ved operatøren og lysbue i knappen. Med styrestrøm kan knappene sitte langt unna, og PLS (leksjon senere) kan styre de samme spolene.</details>
+  </div>
+</section>
+
+<!-- DEL 2 -->
+<section class="slide" id="kontaktor" data-nav="2 Kontaktoren">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 8 min</div>
+    <h2>Kontaktoren – en bryter som styres av en magnet</h2>
+    <p class="lead">Gi spolen 24 V. Se ankeret bli trukket ned – og alle kontaktene flytte seg samtidig.</p>
+    <div class="fig">
+      <svg id="d2Svg" viewBox="0 0 1000 470" role="img" aria-label="Snitt av en kontaktor med spole, jernkjerne, anker, fjær og kontakter, og tilhørende symboler"></svg>
+      <div class="controls">
+        <button class="btn primary" id="d2Btn">⚡ Gi spolen 24 V</button>
+        <button class="btn small" id="d2Auto">▶ Automatisk</button>
+      </div>
+      <div class="status info" id="d2Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Spole (A1–A2)</h3><b>Spole</b> = kobbertråd viklet rundt en jernkjerne. Strøm i tråden gjør jernet til en <b>elektromagnet</b>.</div>
+      <div class="card"><h3>Sluttekontakt NO</h3><b>NO</b> = normalt åpen (<i>normally open</i>). Lukker når spolen trekker. Hovedkontakter 1–6 og hjelpekontakt 13–14.</div>
+      <div class="card"><h3>Brytekontakt NC</h3><b>NC</b> = normalt lukket (<i>normally closed</i>). Åpner når spolen trekker. Hjelpekontakt 21–22.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Andre siffer forteller funksjonen: x3–x4 = NO, x1–x2 = NC. Første siffer er løpenummer (1 = første hjelpekontakt, 2 = andre …). Fjæra er viktig: uten spenning trykker fjæra kontaktoren tilbake. Derfor faller kontaktoren ut ved strømbrudd, og maskinen stopper av seg selv. Betegnelse: nyere norm (IEC 81346-2) bruker Q for kontaktor, eldre tegninger bruker K. Verkstedhåndboka bruker Q1.</details>
+  </div>
+</section>
+
+<!-- DEL 3 -->
+<section class="slide" id="selvhold" data-nav="3 Direktestart">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 15 min</div>
+    <h2>Direktestart med selvhold</h2>
+    <p class="lead">Trykk START og slipp. Hvorfor fortsetter motoren å gå? Prøv også STOPP, nødstopp, overlast og strømbrudd.</p>
+    <div class="fig">
+      <svg id="d3Svg" viewBox="0 0 1000 560" role="img" aria-label="Fullt skjema: hovedstrøm med sikring, kontaktor, motorvern og motor, og styrestrøm med nødstopp, stopp, start, selvhold, motorvern og spole"></svg>
+      <div class="controls">
+        <button class="btn go" id="d3S1">▶ START (S1)</button>
+        <button class="btn stop" id="d3S0">■ STOPP (S0)</button>
+        <button class="btn estop" id="d3ES">⏻ NØDSTOPP (S00)</button>
+        <button class="btn" id="d3Over">Overbelast motoren</button>
+        <button class="btn" id="d3Reset" hidden>↺ Tilbakestill F2</button>
+        <button class="btn" id="d3Power">⚡ Strømbrudd (2 s)</button>
+      </div>
+      <div class="readout">
+        <div><span>Spole Q1</span><b id="d3rQ">0 V</b></div>
+        <div><span>Motor</span><b id="d3rM">står</b></div>
+        <div><span>Strømtang på L1</span><b id="d3rI">0,0 A</b></div>
+        <div><span>Motorvern F2</span><b id="d3rF">OK</b></div>
+      </div>
+      <div class="status info" id="d3Msg"></div>
+      <div class="legend"><span><i style="background:var(--red)"></i>400 V</span><span><i style="background:var(--orange)"></i>+24 V</span><span><i style="background:var(--blue)"></i>0 V</span><span><i style="background:var(--steel)"></i>ingen spenning</span><span>● prikker = strøm går</span></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Selvhold</h3>Q1 13–14 ligger <b>parallelt</b> med START. Når Q1 trekker, «holder den seg selv» inne.</div>
+      <div class="card"><h3>Stopp = brytekontakt</h3>STOPP og nødstopp er <b>NC i serie</b>. Ryker en ledning, stopper maskinen. Det er sikkert.</div>
+      <div class="card"><h3>Ingen automatisk start</h3>Etter strømbrudd eller nødstopp må du trykke START igjen. Selvholdet sørger for det.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kjør i denne rekkefølgen: Start → slipp (selvhold) → Stopp → Start → Nødstopp (vis at Start ikke virker) → tilbakestill → Strømbrudd (motoren starter ikke igjen av seg selv: krav i maskinforskriften / NEK EN 60204-1). Overbelast: strømtanga viser at strømmen øker fra 8 A, F2 løser ut, 95–96 åpner og P2 lyser via 97–98. Legg merke til startstrømmen på tanga: ca. 6–7 ganger merkestrømmen i et kort øyeblikk. Skjemaet er prinsipielt; i ekte anlegg skal nødstopp ofte gå via sikkerhetsrelé.</details>
+  </div>
+</section>
+
+<!-- DEL 4 -->
+<section class="slide" id="motorvern" data-nav="4 Motorvern">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 6 min</div>
+    <h2>Motorvernet F2 – passer på at motoren ikke blir for varm</h2>
+    <p class="lead">Motorstrømmen varmer opp tre <b>bimetall</b>. Blir strømmen for stor for lenge, bøyer de seg så mye at vernet løser ut.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="d4Svg" viewBox="0 0 760 400" role="img" aria-label="Termisk motorvern med tre bimetall, utløserstang, innstillingsratt og kontakter 95–96 og 97–98"></svg>
+        <div class="controls">
+          <div class="slider"><label for="d4I">Motorstrøm</label><input type="range" id="d4I" min="0" max="20" step="0.5" value="8"><b id="d4Iv">8,0 A</b></div>
+          <div class="slider"><label for="d4R">Innstilling</label><input type="range" id="d4R" min="5.5" max="12" step="0.5" value="8"><b id="d4Rv">8,0 A</b></div>
+          <button class="btn" id="d4Reset">↺ Tilbakestill</button>
+        </div>
+        <div class="status info" id="d4Msg"></div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Merkeskiltet bestemmer</h3>
+          <svg id="d4Plate" viewBox="0 0 380 170" style="display:block;width:100%;height:auto" aria-label="Merkeskilt 4 kW motor"></svg>
+          <p style="margin:.5rem 0 0">Motoren går i <b>stjerne (Y)</b> på 400 V. Still F2 på merkestrømmen: <span class="big">8,0 A</span></p>
+        </div>
+        <div class="grid2" style="gap:.8rem; margin-top:.8rem">
+          <div class="card"><h3>F1 sikring</h3>Kortslutning: <b>enorm strøm</b> – bryter på millisekunder. Beskytter kabelen.</div>
+          <div class="card"><h3>F2 motorvern</h3>Overlast: <b>litt for stor strøm</b> over tid. Beskytter motoren.</div>
+        </div>
+        <div class="tip o" style="margin-bottom:0"><b>Bimetall</b> = to metaller valset sammen. Det ene utvider seg mer enn det andre når det blir varmt, så stripa bøyer seg.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Prøv: (1) 8 A / 8 A = normal drift, bimetallet blir varmt, men løser ikke ut. (2) 12 A / 8 A = løser ut etter en stund. (3) Still F2 til 12 A og la motoren gå på 11 A: vernet løser ikke ut, men viklingen blir for varm – feil innstilling ødelegger motoren. Tiden er kraftig forkortet: i virkeligheten tar det minutter ved liten overlast (utløseklasse 10: under 10 s ved 7,2 × innstilt strøm). Motorvernbryter (Q1 i mange anlegg) har både termisk og magnetisk utløser og kan erstatte F1 + F2. Etter utløsning: finn årsaken (fastkjørt last, manglende fase, feil innstilling) og la motoren kjøle seg ned.</details>
+  </div>
+</section>
+
+<!-- DEL 5 -->
+<section class="slide" id="revers" data-nav="5 Snu motoren">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 9 min</div>
+    <h2>Snu motoren – og forrigling</h2>
+    <p class="lead">Bytt to faser, og dreiefeltet roterer motsatt vei. Q2 bytter <b>L1 og L3</b>. Q1 og Q2 må aldri være inne samtidig.</p>
+    <div class="fig">
+      <svg id="d5Svg" viewBox="0 0 1000 600" role="img" aria-label="Fullt skjema for dreieretningsvending med to kontaktorer og elektrisk forrigling"></svg>
+      <div class="controls">
+        <button class="btn go" id="d5F">▶ FRAM (S1)</button>
+        <button class="btn stop" id="d5S">■ STOPP (S0)</button>
+        <button class="btn go" id="d5B">◀ BAK (S2)</button>
+        <label style="display:flex;gap:.4rem;align-items:center;color:var(--ink);font-weight:600;margin-left:.6rem"><input type="checkbox" id="d5Lock" checked> Forrigling koblet inn</label>
+        <button class="btn" id="d5Reset" hidden>↺ Tilbakestill F1</button>
+      </div>
+      <div class="status info" id="d5Msg"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>Forrigling</h3>Q2 21–22 (NC) står i Q1 sin spolekrets, og Q1 21–22 i Q2 sin. Er den ene inne, kan den andre ikke trekke.</div>
+      <div class="card"><h3>Uten forrigling</h3>Q1 + Q2 inne = <b>kortslutning mellom L1 og L3</b>. Lysbue, sveisede kontakter, F1 løser ut.</div>
+      <div class="card"><h3>Stopp før bytte</h3>Med forrigling må du trykke STOPP før du kan kjøre motsatt vei.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kjør Fram → prøv Bak (ingenting skjer) → Stopp → Bak. Slå så av forriglingen og gjør det samme: kortslutning. Mange kontaktorer har i tillegg mekanisk forrigling (en vippe mellom Q1 og Q2). Motoren bremses kraftig hvis den reverseres i full fart (motstrømsbremsing) – derfor stopp først. Dreiefeltet: se Verkstedhåndboka 9.12 for animasjon av statorfeltet.</details>
+  </div>
+</section>
+
+<!-- DEL 6 -->
+<section class="slide" id="start-metoder" data-nav="6 Startmetoder">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 6 min</div>
+    <h2>Startmetoder – hvor stor blir startstrømmen?</h2>
+    <p class="lead">Direktestart trekker <b>6–8 ganger</b> merkestrømmen (I<sub>n</sub>). Store motorer startes derfor mykere.</p>
+    <div class="fig">
+      <svg id="d6Svg" viewBox="0 0 1000 380" role="img" aria-label="Startstrøm og turtall over tid for fire startmetoder"></svg>
+      <div class="controls"><span class="chips" id="d6M"></span><button class="btn primary" id="d6Go">▶ Start motoren</button></div>
+      <div class="status info" id="d6Msg"></div>
+    </div>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="fig">
+        <svg id="d6Kb" viewBox="0 0 620 250" role="img" aria-label="Klemmebrett med lasker i stjerne eller trekant"></svg>
+        <div class="controls"><span class="chips" id="d6Kk"></span><span class="chips" id="d6Km"></span></div>
+        <div class="status info" id="d6KMsg"></div>
+      </div>
+      <table class="t">
+        <tr><th>Metode</th><th>Startstrøm</th><th>Startmoment</th><th>Brukes til</th></tr>
+        <tr><td><b>Direktestart</b></td><td>6–8 × I<sub>n</sub></td><td>stort</td><td>små motorer, enkle maskiner</td></tr>
+        <tr><td><b>Stjerne-trekant</b></td><td>ca. 2–3 × I<sub>n</sub></td><td>1/3</td><td>vifter, pumper som starter lett</td></tr>
+        <tr><td><b>Mykstarter</b></td><td>ca. 3–4 × I<sub>n</sub></td><td>justerbart</td><td>pumper (unngå trykkstøt), bånd</td></tr>
+        <tr><td><b>Frekvensomformer</b></td><td>ca. 1–1,5 × I<sub>n</sub></td><td>fullt</td><td>varierende turtall: vifter, bånd, spindler</td></tr>
+      </table>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Stjerne-trekant: hver vikling får 230 V i stjerne i stedet for 400 V. Strømmen og momentet blir 1/3 (spenning / √3 og kobling / √3). Derfor kan ikke motoren starte under full last i stjerne. Krav: motoren må gå i trekant på nettet, altså 400/690 V Δ/Y på 400 V-nett. En motor merket 230/400 V Δ/Y skal gå i stjerne på 400 V og kan ikke stjerne-trekant-startes der. Mykstarter senker spenningen med tyristorer (elektroniske brytere) og øker den langsomt. Frekvensomformer endrer både spenning og frekvens – kommer i egen leksjon.</details>
+  </div>
+</section>
+
+<!-- DEL 7 -->
+<section class="slide" id="feilsok" data-nav="7 Feilsøking">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 6 min</div>
+    <h2>Feilsøking: motoren starter ikke</h2>
+    <p class="lead">Q1 trekker ikke når START trykkes. En medelev <b>holder START inne</b>. Svart probe står på <b>0 V</b>. Trykk på målepunktene.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="fsSvg" viewBox="0 0 960 420" role="img" aria-label="Styrekrets med 24 V-forsyning, sikring, nødstopp, stopp, start, selvhold, motorvern og spole, med målepunkter"></svg>
+        <div style="font-weight:650;margin-top:.3rem">Målinger:</div>
+        <div class="log" id="fsLog"></div>
+      </div>
+      <div>
+        <div class="tip g" style="margin-top:0">Feilen sitter mellom siste punkt med <b>24 V</b> og første punkt med <b>0 V</b>. Start i <b>midten</b> (TP4).</div>
+        <div class="card">
+          <h3>Hvor er feilen?</h3>
+          <div class="controls" id="fsGuess" style="margin-top:.2rem"></div>
+          <div class="status info" id="fsTxt">Mål først, gjett etterpå.</div>
+          <div class="controls no-print">
+            <button class="btn primary" id="fsNew">🎲 Ny feil</button>
+            <button class="btn" id="fsShow">Vis svaret</button>
+          </div>
+        </div>
+        <div class="tip o" style="margin-bottom:0"><b>Se før du måler:</b> Lyser P2 (motorvern utløst)? Er nødstoppen inne? Lyset på 24 V-forsyningen?</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Samme metode som leksjon 2, nå i en ekte styrekrets. Spesialtilfeller: 24 V på TP6 og 0 V på TP7, men Q1 trekker ikke → spolen er defekt (full spenning over den). 24 V også på TP7 → brudd i 0 V-lederen. Feil i S1 finnes bare mens S1 holdes inne. Måling i styrekretsen på 24 V kan gjøres av elevene; i elskapet finnes det også 400 V – det er elektrofagarbeid, og anlegget skal være låst og merket ved arbeid.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <table class="t" style="font-size:1rem">
+          <tr><th>Kode</th><th>Komponent</th><th>Klemmer</th><th>Oppgave</th></tr>
+          <tr><td><b>F1</b></td><td>Sikring</td><td>–</td><td>kortslutning</td></tr>
+          <tr><td><b>Q1</b></td><td>Kontaktor</td><td>A1–A2, 1–6</td><td>kobler motoren</td></tr>
+          <tr><td><b>F2</b></td><td>Motorvern</td><td>95–96, 97–98</td><td>overlast</td></tr>
+          <tr><td><b>S00</b></td><td>Nødstopp (NC, låser)</td><td>11–12</td><td>stopper alt</td></tr>
+          <tr><td><b>S0</b></td><td>Stopp (NC)</td><td>11–12</td><td>stopper</td></tr>
+          <tr><td><b>S1</b></td><td>Start (NO)</td><td>13–14</td><td>starter</td></tr>
+          <tr><td><b>Q1 13–14</b></td><td>Hjelpekontakt (NO)</td><td>13–14</td><td>selvhold</td></tr>
+          <tr><td><b>M1</b></td><td>Motor</td><td>U, V, W</td><td>–</td></tr>
+        </table>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>hovedstrøm</span><span>styrestrøm</span><span>kontaktor</span><span>spole A1–A2</span><span>NO / NC</span><span>selvhold</span><span>nødstopp</span><span>motorvern</span><span>bimetall</span><span>merkestrøm I<sub>n</sub></span><span>forrigling</span><span>dreiefelt</span><span>startstrøm</span><span>stjerne-trekant</span><span>mykstarter</span><span>frekvensomformer</span></div>
+        </div>
+        <div class="tip">Stopp og nødstopp er <b>NC i serie</b>. Start og selvhold er <b>NO i parallell</b>. Forrigling er <b>NC fra den andre kontaktoren</b>.</div>
+        <div class="card">
+          <h3>Neste leksjon</h3>
+          <p style="margin:0"><b>Leksjon 4 – Serie og parallell:</b> hvorfor stoppknappene står i serie og startknappene i parallell – regnet og målt.</p>
+        </div>
+        <p class="caption">Mer: <a href="https://verkstedhandboka.vercel.app/#motorstyring" target="_blank" rel="noopener">Verkstedhåndboka 9.12 Motorstyring</a> · <a href="https://verkstedhandboka.vercel.app/#el9-stjerne" target="_blank" rel="noopener">9.11 Stjerne og trekant</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 33 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Elektro 3 – Motorstyring · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <div class="formelark"><b>Husk:</b> <span>NO = normalt åpen (x3–x4)</span><span>NC = normalt lukket (x1–x2)</span><span>Spole A1–A2</span><span>Stopp: NC i serie</span><span>Start + selvhold: NO i parallell</span><span>F2 = merkestrøm</span><span>Direktestart ≈ 7 × I<sub>n</sub></span></div>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Symboler <small>Time 1 · 6 min</small></h3>
+        <p>Skriv navnet på symbolet og bokstavkoden. Velg blant: <b>start, stopp, nødstopp, kontaktorspole, hovedkontakter, motorvern (95–96), sikring, motor</b>.</p>
+        <div class="minis" id="o1minis"></div>
+        <table class="ot">
+          <tr><th style="width:3rem">Nr.</th><th>Navn</th><th style="width:9rem">Kode (f.eks. S1)</th><th style="width:9rem">NO / NC / –</th></tr>
+          <tr><td>1</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>4</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>5</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>6</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>7</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>8</td><td class="tom"></td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> 1 Start – S1 – NO. 2 Stopp – S0 – NC. 3 Nødstopp – S00 – NC. 4 Kontaktorspole – Q1 – (A1–A2). 5 Hovedkontakter – Q1 – NO. 6 Motorvern – F2 – NC (95–96). 7 Sikring – F1 – –. 8 Motor – M1 – –.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Selvhold <small>Time 1 · 10 min</small></h3>
+        <p>Bruk skjemaet. Fyll ut tabellen hendelse for hendelse.</p>
+        <div class="ofig" id="o2fig"></div>
+        <table class="ot c">
+          <tr><th>Hendelse</th><th style="width:7rem">Q1 spole<br>(på/av)</th><th style="width:7rem">Motor<br>(går/står)</th><th style="width:7rem">P1 drift<br>(lyser?)</th><th style="width:7rem">P2 feil<br>(lyser?)</th></tr>
+          <tr><td>1. Trykk S1</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>2. Slipp S1</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>3. Trykk S0, slipp</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>4. Trykk S1, slipp. Motoren blir overbelastet til F2 løser ut</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>5. Trykk S1 (F2 er ikke tilbakestilt)</td><td class="tom"></td><td></td><td></td><td></td></tr>
+        </table>
+        <p>b) Hva er oppgaven til Q1 13–14?</p><div class="svar"></div>
+        <p>c) Ledningen til Q1 13–14 løsner. Hva skjer når du trykker og slipper S1?</p><div class="svar"></div>
+        <p>d) Hvorfor er stoppknappen en brytekontakt (NC) og ikke en sluttekontakt (NO)?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) på – går – lyser – nei. 2) på – går – lyser – nei (selvhold). 3) av – står – nei – nei. 4) av – står – nei – <b>lyser</b> (97–98 lukker). 5) av – står – nei – lyser: 95–96 er åpen, spolen kan ikke få spenning. b) Holder spolen inne etter at S1 slippes (selvhold). c) Motoren går bare så lenge S1 holdes inne («tipp-drift»). d) Et kabelbrudd eller en dårlig kobling stopper maskinen. Med NO ville et brudd gjort at maskinen ikke kunne stoppes.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Motorvern <small>Time 2 · 4 min</small></h3>
+        <div class="ofig" style="max-width:420px" id="o3fig"></div>
+        <p>a) Nettet er TN 400 V. Hvilken kobling skal motoren ha, og hva stiller du F2 på?</p><div class="svar"></div>
+        <p>b) En kollega stiller F2 på 12 A «så den ikke løser ut så ofte». Hva kan skje?</p><div class="svar"></div>
+        <p>c) Sett kryss: hvem beskytter mot hva?</p>
+        <table class="ot c" style="width:auto; min-width:60%">
+          <tr><th>Feil</th><th style="width:7rem">F1 sikring</th><th style="width:7rem">F2 motorvern</th></tr>
+          <tr><td>Kortslutning i motorkabelen</td><td class="tom"></td><td></td></tr>
+          <tr><td>Transportbåndet kjører seg fast, strømmen blir 11 A</td><td class="tom"></td><td></td></tr>
+          <tr><td>En fase faller ut, strømmen i de to andre øker</td><td class="tom"></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) <b>Stjerne (Y)</b> – viklingene er laget for 230 V. F2 = <b>8,0 A</b>. b) F2 løser ikke ut ved moderat overlast (f.eks. 11 A). Viklingen blir for varm, isolasjonen ødelegges og motoren kan brenne. c) Kortslutning: F1. Fastkjørt bånd: F2. Fasebrudd: F2 (strømmen i de andre fasene øker; mange motorvern har egen fasebruddsvakt).</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Snu motoren <small>Time 2 · 4 min</small></h3>
+        <div class="ofig" id="o4fig"></div>
+        <p>a) Hvilke to faser bytter Q2?</p><div class="svar"></div>
+        <p>b) Fyll ut:</p>
+        <table class="ot c">
+          <tr><th>Q1</th><th>Q2</th><th style="width:55%">Hva skjer med motoren?</th></tr>
+          <tr><td>ute</td><td>ute</td><td class="tom"></td></tr>
+          <tr><td>inne</td><td>ute</td><td class="tom"></td></tr>
+          <tr><td>ute</td><td>inne</td><td class="tom"></td></tr>
+          <tr><td>inne</td><td>inne</td><td class="tom"></td></tr>
+        </table>
+        <p>c) Hvilke kontakter sørger for forriglingen i skjemaet?</p><div class="svar"></div>
+        <p>d) Motoren går fram. Operatøren trykker BAK. Hva skjer?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) <b>L1 og L3</b>. b) Står – går fram – går bak – <b>kortslutning mellom L1 og L3</b>, F1 løser ut. c) <b>Q2 21–22</b> i spolekretsen til Q1 og <b>Q1 21–22</b> i spolekretsen til Q2. d) Ingenting: Q1 21–22 er åpen, så Q2 kan ikke trekke. Motoren går fram til STOPP trykkes.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Startmetoder <small>Time 2 · 4 min</small></h3>
+        <p>a) En 15 kW motor har merkestrøm I<sub>n</sub> = 28 A. Regn ut omtrentlig startstrøm:</p>
+        <table class="ot c" style="width:auto; min-width:60%">
+          <tr><th>Startmetode</th><th style="width:8rem">Startstrøm</th></tr>
+          <tr><td>Direktestart (7 × I<sub>n</sub>)</td><td class="tom"></td></tr>
+          <tr><td>Stjerne-trekant (1/3 av direktestart)</td><td class="tom"></td></tr>
+          <tr><td>Frekvensomformer (1,2 × I<sub>n</sub>)</td><td class="tom"></td></tr>
+        </table>
+        <p>b) Velg startmetode: <b>direktestart, stjerne-trekant, mykstarter, frekvensomformer</b>.</p>
+        <table class="ot">
+          <tr><th>Maskin</th><th style="width:12rem">Startmetode</th></tr>
+          <tr><td>Lite transportbånd, 0,75 kW</td><td class="tom"></td></tr>
+          <tr><td>Avsugsvifte der turtallet skal styres etter behov</td><td class="tom"></td></tr>
+          <tr><td>Vannpumpe 30 kW – unngå trykkstøt i rørene</td><td class="tom"></td></tr>
+          <tr><td>Stor vifte 22 kW, motor 400/690 V Δ/Y, starter uten last</td><td class="tom"></td></tr>
+        </table>
+        <p>c) Kan motoren i oppgave 3 (230/400 V Δ/Y) stjerne-trekant-startes på 400 V? Hvorfor?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 7 · 28 = <b>196 A</b>. 196 / 3 ≈ <b>65 A</b>. 1,2 · 28 ≈ <b>34 A</b>. b) Direktestart – frekvensomformer – mykstarter (frekvensomformer også riktig) – stjerne-trekant. c) <b>Nei.</b> Den skal gå i stjerne på 400 V. I trekant ville hver vikling fått 400 V i stedet for 230 V og brent.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Feilsøking <small>Time 2 · 4 min</small></h3>
+        <p>Q1 trekker ikke. S1 holdes inne. Svart probe på 0 V. Hvor er feilen?</p>
+        <div class="ofig" id="o6fig"></div>
+        <table class="ot c">
+          <tr><th>Tilfelle</th><th>TP1</th><th>TP2</th><th>TP3</th><th>TP4</th><th>TP5</th><th>TP6</th><th>TP7</th><th style="width:30%">Feilen er …</th></tr>
+          <tr><td>A</td><td>24</td><td>24</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"></td></tr>
+          <tr><td>B</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td>0</td><td class="tom"></td></tr>
+          <tr><td>C</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td class="tom"></td></tr>
+          <tr><td>D</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"></td></tr>
+        </table>
+        <p>b) I tilfelle B lyser P2. Hva gjør du før du tilbakestiller?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> A) <b>S0 stopp</b> (24 V før, 0 V etter). B) <b>F2 95–96</b> – motorvernet har løst ut. C) <b>Spolen Q1</b> er defekt: 24 V over den, men den trekker ikke. D) <b>F3</b> er gått. b) Finn årsaken til overlasten (fastkjørt last, feil innstilling, fasebrudd) og la motoren kjøle seg ned.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 2 min</small></h3>
+        <p>1. Hva er forskjellen på hovedstrøm og styrestrøm?</p><div class="svar"></div>
+        <p>2. Hva gjør selvholdet?</p><div class="svar"></div>
+        <p>3. Hvordan snur du en trefasemotor – og hva må du passe på?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) Hovedstrømmen (400 V, stor strøm) går til motoren. Styrestrømmen (24 V, liten strøm) går gjennom knapper og kontaktorspole. 2) Q1 13–14 holder spolen inne etter at START er sluppet. 3) Bytt to faser. Kontaktorene for fram og bak må forrigles, ellers blir det kortslutning.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const nf = (x, d=1) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const RM = (()=>{ try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } })();
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
+
+/* Felles animasjonsløkke – bare synlige figurer oppdateres */
+const anims = [];
+function addAnim(node, tick){ const a = {tick, vis:false}; anims.push(a); new IntersectionObserver(es => es.forEach(e => a.vis = e.isIntersecting)).observe(node); return a; }
+let last = performance.now(), T = 0;
+function frame(now){ const dt = Math.min(.05, (now-last)/1000); last = now; T += dt; anims.forEach(a => { if (a.vis) a.tick(dt, T); }); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+/* ---------- Tegnesett (fargepalett som parameter: skjerm eller utskrift) ---------- */
+const PS = {ink:"var(--ink)", hv:"var(--red)", lv:"var(--orange)", zero:"var(--blue)", dead:"var(--steel)", sheet:"var(--panel)", muted:"var(--muted)", acc:"var(--orange)", accSoft:"var(--orange-soft)", stop:"#e03131", green:"#2f9e44", yellow:"#fab005", dot:"var(--yellow)", hot:"220,60,30", w:3};
+const PB = {ink:"#000", hv:"#000", lv:"#000", zero:"#000", dead:"#000", sheet:"#fff", muted:"#333", acc:"#000", accSoft:"#fff", stop:"#fff", green:"#fff", yellow:"#fff", dot:"#000", hot:"0,0,0", w:2.4, print:true};
+const fx = v => +(+v).toFixed(1);
+function kit(p){
+  const W = p.w;
+  const ln = (x1,y1,x2,y2,c,w=W,d="") => `<line x1="${fx(x1)}" y1="${fx(y1)}" x2="${fx(x2)}" y2="${fx(y2)}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${d?` stroke-dasharray="${d}"`:""}/>`;
+  const pl = (pts,c,w=W,d="") => `<polyline points="${pts.map(q=>fx(q[0])+","+fx(q[1])).join(" ")}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linejoin="round" stroke-linecap="round"${d?` stroke-dasharray="${d}"`:""}/>`;
+  const TX = (x,y,s,o={}) => `<text x="${fx(x)}" y="${fx(y)}" font-size="${o.size||15}" fill="${o.fill||p.ink}" text-anchor="${o.anchor||"start"}"${o.weight?` font-weight="${o.weight}"`:""}${o.mono?` font-family="Consolas,'Cascadia Mono',monospace"`:""}>${s}</text>`;
+  const dot = (x,y,c=p.ink,r=5) => `<circle cx="${fx(x)}" cy="${fx(y)}" r="${r}" fill="${c}"/>`;
+  function contact(x,y,L,type,closed,ct,cb,o={}){
+    const k=L/60, a=y+L*.3, b=y+L*.7;
+    let s = ln(x,y,x,a,ct) + ln(x,b,x,y+L,cb);
+    if (type==="NC") s += ln(x,a,x-12*k,a,ct,W*.85);
+    const tip = closed ? (type==="NC"?[x-12*k,a]:[x,a]) : (type==="NC"?[x+10*k,a+3*k]:[x-16*k,a+2*k]);
+    s += ln(x,b,tip[0],tip[1], closed?ct:cb, W);
+    const mx=(x+tip[0])/2, my=(b+tip[1])/2;
+    if (o.act==="push"){ const ax=x-32*k+(o.pressed?7*k:0); s += ln(mx,my,ax,my,p.ink,1.6,"4 3")+ln(ax,my-9*k,ax,my+9*k,p.ink,W*.8)+ln(ax,my-9*k,ax-6*k,my-9*k,p.ink,W*.8)+ln(ax,my+9*k,ax-6*k,my+9*k,p.ink,W*.8); }
+    if (o.act==="estop"){ const ax=x-30*k+(o.pressed?6*k:0); s += ln(mx,my,ax,my,p.ink,1.6,"4 3")+`<path d="M${fx(ax)} ${fx(my-12*k)} A${fx(12*k)} ${fx(12*k)} 0 0 0 ${fx(ax)} ${fx(my+12*k)} Z" fill="${p.stop}" stroke="${p.ink}" stroke-width="1.6"/>`; }
+    if (o.act==="therm"){ const ax=x-26*k; s += ln(mx,my,ax,my,p.ink,1.6,"4 3")+`<path d="M${fx(ax-18*k)} ${fx(my+5*k)} h${fx(6*k)} v${fx(-10*k)} h${fx(6*k)} v${fx(10*k)} h${fx(6*k)}" fill="none" stroke="${p.ink}" stroke-width="1.8"/>`; }
+    if (o.act==="rel"){ s += ln(mx,my,x-26*k,my,p.ink,1.6,"4 3"); }
+    if (o.t1) s += TX(x+7,y+14,o.t1,{size:12,fill:p.muted,mono:1});
+    if (o.t2) s += TX(x+7,y+L-3,o.t2,{size:12,fill:p.muted,mono:1});
+    if (o.lbl) s += TX(x+(o.lx||32),y+L/2+6,o.lbl,{size:16,weight:700});
+    return s;
+  }
+  function coil(x,y,L,on,ct,cb,lbl,o={}){
+    const by=y+L/2-14;
+    let s = ln(x,y,x,by,ct)+`<rect x="${x-26}" y="${fx(by)}" width="52" height="28" rx="2" fill="${on?p.accSoft:p.sheet}" stroke="${on?p.acc:p.ink}" stroke-width="${on?W+.6:W}"/>`+ln(x,by+28,x,y+L,cb);
+    s += TX(x+32,by+4,"A1",{size:12,fill:p.muted,mono:1})+TX(x+32,by+38,"A2",{size:12,fill:p.muted,mono:1});
+    if (lbl) s += TX(x-34,by+20,lbl,{size:16,weight:700,anchor:"end"});
+    return s;
+  }
+  function fuse(x,y,L,blown,ct,cb,lbl){
+    const bh=L*.56, by=y+(L-bh)/2;
+    let s = ln(x,y,x,by,ct)+`<rect x="${x-8}" y="${fx(by)}" width="16" height="${fx(bh)}" fill="${p.sheet}" stroke="${p.ink}" stroke-width="2"/>`;
+    s += blown ? ln(x,by+2,x,by+bh*.35,ct,2)+ln(x,by+bh*.65,x,by+bh-2,cb,2)+`<path d="M${x-6} ${fx(by+bh*.42)} l5 4 l-4 3 l7 3" fill="none" stroke="${p.hv}" stroke-width="1.8"/>` : ln(x,by,x,by+bh,ct,2);
+    s += ln(x,by+bh,x,y+L,cb);
+    if (lbl) s += TX(x+14,y+L/2+6,lbl,{size:16,weight:700});
+    return s;
+  }
+  function lamp(x,y,L,on,col,ct,cb,lbl,sub){
+    const r=17, cy=y+L/2;
+    let s = ln(x,y,x,cy-r,ct)+(on&&!p.print?`<circle cx="${x}" cy="${fx(cy)}" r="${r+12}" fill="${col}" opacity=".28"/>`:"");
+    s += `<circle cx="${x}" cy="${fx(cy)}" r="${r}" fill="${on?col:p.sheet}" stroke="${p.ink}" stroke-width="2.2"/>`+ln(x-12,cy-12,x+12,cy+12,p.ink,1.8)+ln(x-12,cy+12,x+12,cy-12,p.ink,1.8)+ln(x,cy+r,x,y+L,cb);
+    if (lbl) s += TX(x+24,cy+2,lbl,{size:16,weight:700})+(sub?TX(x+24,cy+20,sub,{size:12,fill:p.muted}):"");
+    return s;
+  }
+  function heater(x,y,L,heat,ct,cb,lbl){
+    const bh=L*.6, by=y+(L-bh)/2;
+    let s = ln(x,y,x,by,ct)+`<rect x="${x-11}" y="${fx(by)}" width="22" height="${fx(bh)}" fill="${heat>0.02?`rgba(${p.hot},${(Math.min(1,heat)*.6).toFixed(2)})`:p.sheet}" stroke="${p.ink}" stroke-width="2"/>`;
+    s += `<path d="M${x} ${fx(by)} v${fx(bh*.25)} h-6 v${fx(bh*.5)} h6 v${fx(bh*.25)}" fill="none" stroke="${ct}" stroke-width="2"/>`+ln(x,by+bh,x,y+L,cb);
+    if (lbl) s += TX(x+18,y+L/2+6,lbl,{size:16,weight:700});
+    return s;
+  }
+  function motor(x,y,r,ang,spd,lbl){
+    let s = `<circle cx="${x}" cy="${y}" r="${r}" fill="${spd>.05?p.accSoft:p.sheet}" stroke="${p.ink}" stroke-width="2.6"/>`+TX(x,y+2,"M",{size:r*.62,anchor:"middle",weight:700})+TX(x,y+r*.55,"3~",{size:r*.36,anchor:"middle"});
+    if (Math.abs(spd)>.05){ const R=r*.82, a1=ang, a2=ang+(spd>0?1.3:-1.3), sw=spd>0?1:0;
+      const ex=x+R*Math.cos(a2), ey=y+R*Math.sin(a2), tx=Math.cos(a2+(spd>0?Math.PI/2:-Math.PI/2)), ty=Math.sin(a2+(spd>0?Math.PI/2:-Math.PI/2));
+      s += `<path d="M${fx(x+R*Math.cos(a1))} ${fx(y+R*Math.sin(a1))} A${R} ${R} 0 0 ${sw} ${fx(ex)} ${fx(ey)}" fill="none" stroke="${p.acc}" stroke-width="4"/>`;
+      s += `<path d="M${fx(ex+tx*9)} ${fx(ey+ty*9)} L${fx(ex-ty*7)} ${fx(ey+tx*7)} L${fx(ex+ty*7)} ${fx(ey-tx*7)} Z" fill="${p.acc}"/>`; }
+    if (lbl) s += TX(x+r+10,y+6,lbl,{size:16,weight:700});
+    return s;
+  }
+  const earth = (x,y) => ln(x,y,x,y+10,p.ink,2)+ln(x-12,y+10,x+12,y+10,p.ink,2)+ln(x-8,y+15,x+8,y+15,p.ink,2)+ln(x-4,y+20,x+4,y+20,p.ink,2);
+  function flow(pts,off,col=p.dot,r=3.6,gap=20){
+    const L=[0]; for (let i=1;i<pts.length;i++) L.push(L[i-1]+Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]));
+    const tot=L[L.length-1]; let s="";
+    for (let d=((off%gap)+gap)%gap; d<tot; d+=gap){ let i=1; while(i<L.length-1&&L[i]<d) i++; const q=(d-L[i-1])/(L[i]-L[i-1]||1);
+      s += `<circle cx="${fx(pts[i-1][0]+(pts[i][0]-pts[i-1][0])*q)}" cy="${fx(pts[i-1][1]+(pts[i][1]-pts[i-1][1])*q)}" r="${r}" fill="${col}" stroke="var(--ink)" stroke-width=".8"/>`; }
+    return s;
+  }
+  return {p,ln,pl,TX,dot,contact,coil,fuse,lamp,heater,motor,earth,flow};
+}
+const KS = kit(PS), KB = kit(PB);
+const svgOpen = (w,h) => `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" font-family="Segoe UI, Arial, sans-serif"><rect width="${w}" height="${h}" fill="#fff"/>`;
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) nav.scrollTo({left: act.offsetLeft - nav.clientWidth/2 + act.offsetWidth/2, behavior:"smooth"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName)) return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  slides[Math.max(0, Math.min(slides.length-1, currentIndex()+dir))].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+
+/* =====================================================================
+   DEL 1 – to kretser (bildefremstilling)
+   ===================================================================== */
+(function(){
+  const {ln,pl,TX,flow} = KS;
+  const st = {q:false, pend:0, view:"both", spd:0, belt:0, ang:0};
+  const views = [["both","Begge"],["main","Bare hovedstrøm"],["ctrl","Bare styrestrøm"]];
+  $("d1View").innerHTML = views.map(v=>`<button class="chip" data-v="${v[0]}" aria-pressed="${v[0]==="both"}">${v[1]}</button>`).join("");
+  $("d1View").onclick = e => { const b=e.target.closest("[data-v]"); if(!b) return; st.view=b.dataset.v; $("d1View").querySelectorAll("[data-v]").forEach(x=>x.setAttribute("aria-pressed", String(x===b))); };
+  $("d1Start").onclick = () => { if (!st.q) st.pend = .7; };
+  $("d1Stop").onclick = () => { st.q=false; st.pend=0; };
+  function draw(){
+    const q=st.q, cOn = q || st.pend>0;
+    const om = st.view==="ctrl" ? .12 : 1, oc = st.view==="main" ? .12 : 1;
+    const GR="var(--steel)";
+    let s = "";
+    s += `<rect x="330" y="46" width="370" height="360" rx="12" fill="var(--steel-soft)" stroke="var(--steel-dark)" stroke-width="2"/>`+TX(346,70,"ELSKAP",{size:14,weight:700,fill:"var(--muted)"});
+    s += `<rect x="40" y="96" width="220" height="270" rx="14" fill="#3b4148" stroke="#22272c" stroke-width="2"/>`+TX(150,124,"BETJENINGSPANEL",{size:13,weight:700,fill:"#f1f3f5",anchor:"middle"});
+    // motor + bånd
+    const mx=740, my=300;
+    s += `<rect x="${mx}" y="${my}" width="150" height="96" rx="16" fill="#5c7cfa" stroke="#364fc7" stroke-width="2"/>`;
+    for (let i=0;i<8;i++) s += ln(mx+18+i*16,my+8,mx+18+i*16,my+88,"#364fc7",2);
+    s += `<rect x="${mx-26}" y="${my+10}" width="30" height="76" rx="8" fill="#748ffc" stroke="#364fc7" stroke-width="2"/>`;
+    s += `<rect x="${mx+150}" y="${my+42}" width="34" height="12" fill="#adb5bd" stroke="#495057"/>`;
+    s += `<rect x="${mx+30}" y="${my-24}" width="56" height="26" rx="4" fill="#4263eb" stroke="#364fc7"/>`+TX(mx+58,my-6,"M1",{size:13,weight:700,fill:"#fff",anchor:"middle"});
+    const px=mx+196, py=my+48;
+    const roll=(x,y,r,a)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#ced4da" stroke="#495057" stroke-width="2"/>`+ln(x,y,fx(x+r*.8*Math.cos(a)),fx(y+r*.8*Math.sin(a)),"#495057",3);
+    s += ln(px-14,py,946,196,"#343a40",3)+ln(px+14,py,966,200,"#343a40",3);
+    s += ln(730,178,956,178,"#343a40",5)+ln(730,214,956,214,"#343a40",5);
+    s += roll(px,py,16,st.ang)+roll(956,196,18,st.ang*.9)+roll(730,196,18,st.ang*.9);
+    for (let i=0;i<3;i++){ const bx = 730 + ((st.belt + i*90) % 270) - 10; if (bx>720 && bx<940) s += `<rect x="${fx(bx)}" y="150" width="38" height="26" rx="3" fill="#e8a33d" stroke="#9c5d10" stroke-width="2"/>`; }
+    s += TX(843,138,"Transportbånd",{size:13,fill:"var(--muted)",anchor:"middle"});
+    // hovedstrøm
+    const HX=[540,570,600];
+    let h = TX(570,20,"400 V fra fordelingen",{size:13,fill:"var(--red)",anchor:"middle",weight:700});
+    HX.forEach(x => { h += ln(x,26,x,90,"var(--red)",5) + ln(x,130,x,180,"var(--red)",5) + ln(x,250,x,268, q?"var(--red)":GR,5); });
+    HX.forEach((x,i) => { h += pl([[x,302],[x,330+i*10],[mx-26,330+i*10]], q?"var(--red)":GR,5); });
+    h += `<rect x="510" y="88" width="120" height="44" rx="5" fill="#f8f9fa" stroke="#495057" stroke-width="2"/>`;
+    HX.forEach(x=> h += `<rect x="${x-7}" y="98" width="14" height="22" rx="2" fill="#495057"/>`);
+    h += TX(638,108,"F1",{size:14,weight:800})+TX(638,124,"sikring",{size:11,fill:"var(--muted)"});
+    h += `<rect x="510" y="178" width="120" height="74" rx="6" fill="#dee2e6" stroke="#495057" stroke-width="2"/>`+`<rect x="552" y="200" width="36" height="24" rx="3" fill="${q?"var(--green)":"#868e96"}"/>`+TX(570,217,q?"I":"O",{size:14,weight:800,fill:"#fff",anchor:"middle"});
+    h += TX(638,210,"Q1",{size:14,weight:800})+TX(638,226,"kontaktor",{size:11,fill:"var(--muted)"});
+    h += `<rect x="510" y="266" width="120" height="38" rx="5" fill="#f8f9fa" stroke="#495057" stroke-width="2"/><circle cx="612" cy="285" r="9" fill="#e03131"/>`;
+    h += TX(638,284,"F2",{size:14,weight:800})+TX(638,300,"motorvern",{size:11,fill:"var(--muted)"});
+    if (q){ HX.forEach((x,i)=> h += flow([[x,26],[x,302],[x,330+i*10],[mx-26,330+i*10]], T*60+i*7, "var(--yellow)", 4, 22)); }
+    h += TX(660,388,q?"8 A":"0 A",{size:15,weight:800,fill:q?"var(--red)":"var(--muted)",anchor:"middle"});
+    s += `<g opacity="${om}">${h}</g>`;
+    // styrestrøm
+    let c = "";
+    const wA = cOn ? "var(--orange)" : GR;
+    c += pl([[350,330],[260,330]], "var(--orange)", 3);
+    c += pl([[260,200],[510,200]], wA, 3);
+    c += pl([[510,236],[470,236],[470,330],[440,330]], "var(--blue)", 3);
+    c += `<rect x="350" y="300" width="90" height="60" rx="6" fill="#e7f5ff" stroke="#1c7ed6" stroke-width="2"/>`+TX(395,324,"G1",{size:15,weight:800,anchor:"middle"})+TX(395,344,"24 V DC",{size:12,anchor:"middle"});
+    c += TX(356,318,"+",{size:13,weight:800,fill:"var(--orange)"})+TX(434,318,"−",{size:13,weight:800,fill:"var(--blue)",anchor:"end"});
+    c += TX(500,194,"A1",{size:11,fill:"var(--muted)",anchor:"end"})+TX(500,252,"A2",{size:11,fill:"var(--muted)",anchor:"end"});
+    const btn=(y,col,txt,pressed)=>`<circle cx="150" cy="${y}" r="${pressed?24:27}" fill="${col}" stroke="#111" stroke-width="3"/>`+TX(150,y+44,txt,{size:12,weight:700,fill:"#f1f3f5",anchor:"middle"});
+    c += `<rect x="90" y="300" width="120" height="50" rx="6" fill="#fab005"/>`;
+    c += btn(180,"#2f9e44","START (S1)",st.pend>0)+btn(250,"#e03131","STOPP (S0)",false);
+    c += `<path d="M126 325 A24 24 0 0 1 174 325 Z" fill="#e03131" stroke="#111" stroke-width="2"/>`+TX(150,344,"NØDSTOPP",{size:11,weight:800,fill:"#111",anchor:"middle"});
+    c += (q?`<circle cx="226" cy="150" r="17" fill="#51cf66" opacity=".35"/>`:"")+`<circle cx="226" cy="150" r="10" fill="${q?"#51cf66":"#2b8a3e"}" stroke="#111" stroke-width="2"/>`+TX(226,176,"drift",{size:10,fill:"#f1f3f5",anchor:"middle"});
+    if (cOn){ c += flow([[350,330],[260,330]], T*40, "var(--yellow)", 3.4, 22)+flow([[260,200],[510,200]], T*40, "var(--yellow)", 3.4, 22)+flow([[510,236],[470,236],[470,330],[440,330]], T*40, "var(--yellow)", 3.4, 22); }
+    c += TX(296,252,"styrekabel",{size:12,fill:"var(--orange)",anchor:"middle",weight:700})+TX(296,268,"24 V · 0,1 A",{size:12,fill:"var(--orange)",anchor:"middle"});
+    s += `<g opacity="${oc}">${c}</g>`;
+    $("d1Svg").innerHTML = s;
+  }
+  addAnim($("d1Svg"), dt => {
+    if (st.pend>0){ st.pend -= dt; if (st.pend<=0) st.q = true; }
+    st.spd += ((st.q?1:0)-st.spd)*Math.min(1,dt*1.6);
+    st.ang += st.spd*dt*9; st.belt += st.spd*dt*60;
+    draw();
+  });
+  draw();
+})();
+
+/* =====================================================================
+   DEL 2 – kontaktoren i snitt
+   ===================================================================== */
+(function(){
+  const {ln,pl,TX} = KS;
+  const st = {on:false, d:0, auto:false, at:0, ph:0};
+  const POLES = [{x:92,t:["1","2"],n:"L1",nc:false},{x:178,t:["3","4"],n:"L2",nc:false},{x:264,t:["5","6"],n:"L3",nc:false},{x:362,t:["13","14"],n:"NO",nc:false},{x:458,t:["21","22"],n:"NC",nc:true}];
+  const D = 24;
+  function spring(x,y1,y2){ let d=`M${x} ${y1}`; const n=7, h=(y2-y1)/n; for(let i=0;i<n;i++) d+=` l${i%2?-9:9} ${fx(h/2)} l${i%2?9:-9} ${fx(h/2)}`; return `<path d="${d}" fill="none" stroke="var(--steel-dark)" stroke-width="2.4"/>`; }
+  function draw(){
+    const d = st.d, on = st.d > D*.9;
+    let s = "";
+    s += `<rect x="34" y="26" width="482" height="420" rx="16" fill="var(--steel-soft)" stroke="var(--steel-dark)" stroke-width="2"/>`;
+    s += TX(275,48,"Kontaktor Q1 – sett i snitt",{size:15,weight:700,anchor:"middle",fill:"var(--muted)"});
+    // faste kontakter + broer
+    POLES.forEach(P => {
+      const x=P.x, FY=124;
+      const closed = P.nc ? d < 2 : d > D-2;
+      const fc = closed ? "var(--green)" : "var(--steel-dark)";
+      s += `<rect x="${x-34}" y="${FY}" width="22" height="10" fill="var(--copper)" stroke="#7a3d12"/>`+`<rect x="${x+12}" y="${FY}" width="22" height="10" fill="var(--copper)" stroke="#7a3d12"/>`;
+      s += `<circle cx="${x-34}" cy="${FY+5}" r="6" fill="#adb5bd" stroke="#495057"/><circle cx="${x+34}" cy="${FY+5}" r="6" fill="#adb5bd" stroke="#495057"/>`;
+      s += TX(x-36,FY-6,P.t[0],{size:12,weight:700,anchor:"middle",mono:1})+TX(x+36,FY-6,P.t[1],{size:12,weight:700,anchor:"middle",mono:1});
+      s += TX(x,FY+38+(P.nc?14:0),"",{});
+      s += TX(x,78,P.n,{size:13,anchor:"middle",fill:P.nc?"var(--blue)":(x>300?"var(--purple)":"var(--red)"),weight:700});
+      const by = P.nc ? 134+d : 92+d;
+      s += `<rect x="${x-26}" y="${fx(by)}" width="52" height="8" rx="2" fill="${closed?"var(--copper)":"#d9a273"}" stroke="#7a3d12"/>`;
+      s += ln(x, by+8, x, 150+d, "#c9a227", 5);
+      if (closed) s += `<circle cx="${x-14}" cy="${fx(P.nc?134:124)}" r="4" fill="var(--yellow)"/><circle cx="${x+14}" cy="${fx(P.nc?134:124)}" r="4" fill="var(--yellow)"/>`;
+      s += TX(x,P.nc?172+d+28:172+d+28,"",{});
+      s += `<rect x="${x-20}" y="58" width="40" height="0" fill="${fc}"/>`;
+    });
+    // bærer
+    s += `<rect x="52" y="${150+d}" width="446" height="16" rx="4" fill="#f1d9a6" stroke="#9c7a2a" stroke-width="1.5"/>`;
+    s += TX(492,163+d,"",{});
+    // anker
+    s += `<rect x="150" y="${166+d}" width="240" height="34" rx="3" fill="#868e96" stroke="#495057" stroke-width="2"/>`+TX(270,188+d,"anker (jern)",{size:13,fill:"#fff",anchor:"middle",weight:700});
+    // fjærer
+    s += spring(100,166+d,224)+spring(450,166+d,224);
+    s += `<rect x="70" y="224" width="60" height="10" fill="var(--steel-dark)"/><rect x="420" y="224" width="60" height="10" fill="var(--steel-dark)"/>`;
+    // kjerne (E)
+    s += `<path d="M150 224 h240 v110 h-240 Z M188 238 v80 h52 v-80 Z M300 238 v80 h52 v-80 Z" fill="#868e96" fill-rule="evenodd" stroke="#495057" stroke-width="2"/>`;
+    // spole
+    [[188,240],[300,352]].forEach(([a,b]) => { s += `<rect x="${a+2}" y="240" width="${b-a-4}" height="76" fill="var(--copper)" stroke="#7a3d12"/>`; for(let y=246;y<314;y+=7) s += ln(a+3,y,b-3,y,"#7a3d12",1.2); });
+    s += TX(270,352,"jernkjerne",{size:13,anchor:"middle",fill:"var(--muted)",weight:700});
+    // magnetfelt
+    if (on || d > 1){ const off = -st.ph*40;
+      s += `<path d="M270 330 V178 H166 V324 H270" fill="none" stroke="var(--purple)" stroke-width="3" stroke-dasharray="10 8" stroke-dashoffset="${fx(off)}" opacity="${fx(Math.min(1,d/D))}"/>`;
+      s += `<path d="M270 330 V178 H374 V324 H270" fill="none" stroke="var(--purple)" stroke-width="3" stroke-dasharray="10 8" stroke-dashoffset="${fx(off)}" opacity="${fx(Math.min(1,d/D))}"/>`; }
+    // A1 / A2
+    const cc = st.on ? "var(--orange)" : "var(--steel)";
+    s += pl([[214,316],[214,400],[150,400]], cc, 3)+pl([[326,316],[326,400],[390,400]], st.on?"var(--blue)":"var(--steel)", 3);
+    s += `<circle cx="140" cy="400" r="10" fill="#adb5bd" stroke="#495057"/><circle cx="400" cy="400" r="10" fill="#adb5bd" stroke="#495057"/>`+TX(140,430,"A1",{size:15,weight:800,anchor:"middle",mono:1})+TX(400,430,"A2",{size:15,weight:800,anchor:"middle",mono:1});
+    s += TX(270,384,st.on?"24 V på spolen":"spolen uten spenning",{size:14,weight:700,anchor:"middle",fill:st.on?"var(--orange)":"var(--muted)"});
+    // etiketter
+    s += TX(24,104,"",{});
+    s += TX(70,210,"fjær",{size:13,fill:"var(--muted)",anchor:"middle",weight:700});
+    s += TX(270,294,"spole",{size:14,fill:"#fff",anchor:"middle",weight:800});
+    // ---- symboler til høyre ----
+    const K = KS, X0 = 560;
+    s += TX(760,48,"Det samme i skjemaet",{size:15,weight:700,anchor:"middle",fill:"var(--muted)"});
+    const live = st.on ? "var(--orange)" : "var(--steel)";
+    s += K.coil(600,120,110,on,live,st.on?"var(--blue)":"var(--steel)","Q1");
+    const sx=[690,750,810,880,950];
+    sx.forEach((x,i) => {
+      const nc = i===4, closed = nc ? !on : on, col = closed ? "var(--green)" : "var(--ink)";
+      s += K.contact(x,130,90,nc?"NC":"NO",closed,col,col,{t1:["1","3","5","13","21"][i],t2:["2","4","6","14","22"][i],act:i===0?"rel":""});
+      s += TX(x,250,closed?"lukket":"åpen",{size:13,anchor:"middle",weight:700,fill:closed?"var(--green)":"var(--muted)"});
+    });
+    s += ln(626,175,950,175,"var(--ink)",1.6,"6 5");
+    s += TX(750,284,"hovedkontakter",{size:13,anchor:"middle",fill:"var(--red)",weight:700})+TX(915,284,"hjelpekontakter",{size:13,anchor:"middle",fill:"var(--purple)",weight:700});
+    s += `<rect x="560" y="320" width="420" height="120" rx="12" fill="var(--bg)" stroke="var(--line)"/>`;
+    s += TX(580,352,"Spole:",{size:15,weight:700})+TX(700,352,"24 V · ca. 0,1 A",{size:15,fill:"var(--orange)",weight:700});
+    s += TX(580,384,"Hovedkontakter:",{size:15,weight:700})+TX(740,384,"400 V · opptil 25 A",{size:15,fill:"var(--red)",weight:700});
+    s += TX(580,418,"Liten strøm styrer stor strøm.",{size:15,fill:"var(--muted)"});
+    $("d2Svg").innerHTML = s;
+    $("d2Msg").textContent = !st.on && d<1 ? "Uten spenning: fjærene holder ankeret oppe. NO-kontaktene er åpne, NC-kontakten er lukket."
+      : st.on && on ? "Spolen er en elektromagnet. Ankeret er trukket ned: 1–2, 3–4, 5–6 og 13–14 er lukket. 21–22 er åpen."
+      : st.on ? "Strøm i spolen → magnetfelt i jernkjernen → ankeret trekkes ned …"
+      : "Spenningen er borte → magnetfeltet forsvinner → fjærene skyver ankeret opp igjen.";
+    $("d2Btn").textContent = st.on ? "⏻ Ta bort spenningen" : "⚡ Gi spolen 24 V";
+  }
+  $("d2Btn").onclick = () => { st.on = !st.on; st.auto=false; $("d2Auto").textContent="▶ Automatisk"; };
+  $("d2Auto").onclick = () => { st.auto = !st.auto; st.at=0; $("d2Auto").textContent = st.auto ? "❚❚ Stopp automatikk" : "▶ Automatisk"; };
+  addAnim($("d2Svg"), dt => {
+    if (st.auto){ st.at += dt; if (st.at > 2.6){ st.at=0; st.on=!st.on; } }
+    const target = st.on ? D : 0;
+    st.d += Math.sign(target-st.d)*Math.min(Math.abs(target-st.d), dt*(st.on?140:110));
+    if (RM) st.d = target;
+    st.ph += dt;
+    draw();
+  });
+  draw();
+})();
+
+/* =====================================================================
+   DEL 3 – direktestart med selvhold (fullt skjema)
+   ===================================================================== */
+function selvholdSVG(K, st){
+  const {p,ln,pl,TX,dot,contact,coil,fuse,lamp,heater,motor,earth,flow} = K;
+  const pw = st.pw!==false, q=!!st.q, trip=!!st.trip, es=!!st.es, s0=!!st.s0, s1=!!st.s1;
+  const HV = b => b ? p.hv : p.dead, LV = b => b ? p.lv : p.dead;
+  const nRail = pw, nES = nRail && !es, nS0 = nES && !s0, nBr = nS0 && (s1 || q), n96 = nBr && !trip;
+  let s = "";
+  // ---------- hovedstrøm ----------
+  const X = [120,180,240];
+  s += TX(20,26,"HOVEDSTRØM 400 V",{size:14,weight:700,fill:p.muted});
+  X.forEach((x,i) => {
+    s += TX(x,52,"L"+(i+1),{size:15,weight:700,anchor:"middle"});
+    s += ln(x,60,x,96,HV(pw));
+    s += fuse(x,96,60,false,HV(pw),HV(pw),i===2?"F1":"");
+    s += ln(x,156,x,184,HV(pw));
+    s += contact(x,184,80,"NO",q,HV(pw),HV(pw&&q),{lbl:i===2?"Q1":"",t1:["1","3","5"][i],t2:["2","4","6"][i]});
+    s += ln(x,264,x,290,HV(pw&&q));
+    s += heater(x,290,56,st.heat||0,HV(pw&&q),HV(pw&&q),i===2?"F2":"");
+  });
+  s += ln(84,208,250,208,p.ink,1.4,"5 4");
+  s += pl([[120,346],[120,374],[158,402]], HV(pw&&q))+ln(180,346,180,394,HV(pw&&q))+pl([[240,346],[240,374],[202,402]], HV(pw&&q));
+  s += TX(132,398,"U",{size:12,fill:p.muted})+TX(186,388,"V",{size:12,fill:p.muted})+TX(216,398,"W",{size:12,fill:p.muted});
+  s += motor(180,440,46,st.ang||0,st.spd||0,"M1");
+  s += pl([[213,473],[300,473],[300,486]], p.ink, 2, "6 4")+earth(300,486)+TX(310,480,"PE",{size:13,fill:p.muted});
+  if (!p.print){
+    // strømtang på L1
+    s += `<ellipse cx="120" cy="80" rx="20" ry="9" fill="none" stroke="#f0c419" stroke-width="6"/>`+ln(100,80,62,80,"#f0c419",5);
+    s += `<rect x="12" y="62" width="56" height="40" rx="6" fill="#f0c419" stroke="#5c4a00"/><rect x="17" y="67" width="46" height="20" rx="2" fill="#c9d6b8"/>`;
+    s += TX(60,83,nf(st.I||0,1),{size:13,weight:800,anchor:"end",fill:"#111",mono:1})+TX(40,98,"A~",{size:10,anchor:"middle",fill:"#111",weight:700});
+  }
+  // ---------- styrestrøm ----------
+  const R0=50, RN=520, XA=540, XB=640, XP1=780, XP2=900;
+  s += TX(430,26,"STYRESTRØM 24 V DC",{size:14,weight:700,fill:p.muted});
+  s += ln(452,R0,980,R0,LV(nRail),W3())+ln(452,RN,980,RN,p.zero,W3());
+  s += TX(980,R0-10,"+24 V",{size:13,weight:700,anchor:"end",fill:p.print?p.ink:"var(--orange)"});
+  s += TX(980,RN-10,"0 V",{size:13,weight:700,anchor:"end",fill:p.print?p.ink:"var(--blue)"});
+  // G1
+  s += ln(452,R0,452,250,LV(nRail))+`<rect x="424" y="250" width="56" height="70" rx="6" fill="${p.sheet}" stroke="${p.ink}" stroke-width="2"/>`+TX(452,281,"G1",{size:15,weight:700,anchor:"middle"})+TX(452,300,"24 V",{size:12,anchor:"middle",fill:p.muted})+ln(452,320,452,RN,p.zero);
+  // gren A
+  s += fuse(XA,R0,62,false,LV(nRail),LV(nRail),"F3");
+  s += ln(XA,112,XA,128,LV(nRail));
+  s += contact(XA,128,60,"NC",!es,LV(nRail),LV(nES),{act:"estop",pressed:es,lbl:"S00",t1:"11",t2:"12"});
+  s += ln(XA,188,XA,200,LV(nES));
+  s += contact(XA,200,60,"NC",!s0,LV(nES),LV(nS0),{act:"push",pressed:s0,lbl:"S0",t1:"11",t2:"12"});
+  s += ln(XA,260,XA,276,LV(nS0))+ln(XA,276,XB,276,LV(nS0))+dot(XA,276,p.ink,4.5)+dot(XB-0,276,p.ink,0);
+  s += contact(XA,276,60,"NO",s1,LV(nS0),LV(nBr),{act:"push",pressed:s1,lbl:"S1",t1:"13",t2:"14"});
+  s += contact(XB,276,60,"NO",q,LV(nS0),LV(nBr),{act:"rel",lbl:"Q1",t1:"13",t2:"14"});
+  s += ln(XA,336,XA,352,LV(nBr))+ln(XB,336,XB,352,LV(nBr))+ln(XA,352,XB,352,LV(nBr))+dot(XA,352,p.ink,4.5);
+  s += contact(XA,364,60,"NC",!trip,LV(nBr),LV(n96),{act:"therm",lbl:"F2",t1:"95",t2:"96"});
+  s += ln(XA,352,XA,364,LV(nBr));
+  s += coil(XA,424,96,n96,LV(n96),p.zero,"Q1");
+  s += dot(XA,RN,p.ink,4.5);
+  s += TX(XA+60,478,"Q1: 1–6 · 13–14 · 23–24",{size:12,fill:p.muted});
+  // gren B – driftslampe
+  s += ln(XP1,R0,XP1,128,LV(nRail))+dot(XP1,R0,p.ink,4.5);
+  s += contact(XP1,128,60,"NO",q,LV(nRail),LV(nRail&&q),{act:"rel",lbl:"Q1",t1:"23",t2:"24"});
+  s += ln(XP1,188,XP1,370,LV(nRail&&q));
+  s += lamp(XP1,370,80,nRail&&q,p.green,LV(nRail&&q),p.zero,"P1","drift");
+  s += ln(XP1,450,XP1,RN,p.zero)+dot(XP1,RN,p.ink,4.5);
+  // gren C – feillampe
+  s += ln(XP2,R0,XP2,128,LV(nRail))+dot(XP2,R0,p.ink,4.5);
+  s += contact(XP2,128,60,"NO",trip,LV(nRail),LV(nRail&&trip),{act:"therm",lbl:"F2",t1:"97",t2:"98"});
+  s += ln(XP2,188,XP2,370,LV(nRail&&trip));
+  s += lamp(XP2,370,80,nRail&&trip,p.yellow,LV(nRail&&trip),p.zero,"P2","feil");
+  s += ln(XP2,450,XP2,RN,p.zero)+dot(XP2,RN,p.ink,4.5);
+  // strømprikker
+  if (st.t !== undefined){
+    if (q && pw){ X.forEach((x,i)=> s += flow([[x,60],[x,374],[x===180?180:(x<180?158:202),402]], st.t*55+i*6)); }
+    if (n96){ const via = s1 ? [[XA,276],[XA,352]] : [[XA,276],[XB,276],[XB,352],[XA,352]]; s += flow([[XA,R0],...via,[XA,RN]], st.t*40); }
+    if (nRail && q) s += flow([[XP1,R0],[XP1,RN]], st.t*40);
+    if (nRail && trip) s += flow([[XP2,R0],[XP2,RN]], st.t*40);
+  }
+  return s;
+  function W3(){ return p.print ? 2.6 : 4; }
+}
+(function(){
+  const st = {pw:true, q:false, trip:false, es:false, s0:false, s1:false, s0t:0, s1t:0, heat:0, over:false, spd:0, ang:0, I:0, t0:0, pwt:0, msg:"Motoren står. Trykk START (S1).", cls:"info"};
+  const In = 8.0;
+  function say(m, c="info"){ st.msg=m; st.cls=c; }
+  $("d3S1").onclick = () => { st.s1t = .8; };
+  $("d3S0").onclick = () => { st.s0t = .8; };
+  $("d3ES").onclick = () => { st.es = !st.es; $("d3ES").classList.toggle("on", st.es); $("d3ES").textContent = st.es ? "↺ Tilbakestill nødstopp" : "⏻ NØDSTOPP (S00)";
+    if (st.es) say("Nødstopp S00 er trykket og låst. Kretsen er brutt – START virker ikke.", "bad"); else say("Nødstoppen er tilbakestilt. Motoren starter ikke av seg selv – trykk START.", "warn"); };
+  $("d3Over").onclick = () => { st.over = !st.over; $("d3Over").classList.toggle("on", st.over); if (st.over && st.q) say("Motoren er overbelastet. Strømmen øker, og bimetallet i F2 varmes opp …", "warn"); };
+  $("d3Reset").onclick = () => { st.trip=false; st.heat=0; st.over=false; $("d3Over").classList.remove("on"); say("F2 er tilbakestilt. Motoren starter ikke av seg selv – trykk START.", "warn"); };
+  $("d3Power").onclick = () => { st.pwt = 2; };
+  function tick(dt, t){
+    if (st.s1t>0) st.s1t -= dt; if (st.s0t>0) st.s0t -= dt; if (st.pwt>0) st.pwt -= dt;
+    st.s1 = st.s1t>0; st.s0 = st.s0t>0; const wasPw = st.pw; st.pw = !(st.pwt>0);
+    if (st.over && st.q){ st.heat = Math.min(1, st.heat + dt*.3); if (st.heat>=1 && !st.trip){ st.trip = true; say("F2 har løst ut: 95–96 åpner → spolen mister spenning → motoren stopper. 97–98 lukker → P2 lyser.", "bad"); } }
+    else st.heat = Math.max(0, st.heat - dt*.12);
+    const was = st.q;
+    const coilOn = st.pw && !st.es && !st.s0 && (st.s1 || st.q) && !st.trip;
+    st.q = coilOn;
+    if (!was && st.q){ st.t0 = t; say("S1 lukker → spolen Q1 får 24 V → hovedkontaktene lukker og motoren starter. Samtidig lukker Q1 13–14.", "ok"); }
+    if (was && st.q && !st.s1 && /^S1 lukker/.test(st.msg)) say("S1 er sluppet – men Q1 13–14 holder spolen inne. Dette er SELVHOLD.", "ok");
+    if (was && !st.q){
+      if (!st.pw) say("Strømbrudd! Spolen mister spenning og Q1 faller ut. Selvholdet er brutt.", "bad");
+      else if (st.s0) say("S0 åpner → spolen mister spenning → Q1 faller ut og motoren stopper. Selvholdet er brutt.", "info");
+      else if (st.es) say("Nødstopp: kretsen brytes, motoren stopper.", "bad"); }
+    if (!wasPw && st.pw) say("Strømmen er tilbake – men motoren står! Q1 13–14 er åpen, så spolen får ikke spenning før noen trykker START.", "warn");
+    if (st.s1 && !st.q && st.trip) say("F2 er utløst: 95–96 er åpen. START virker ikke før F2 er tilbakestilt.", "bad");
+    if (st.s1 && !st.q && st.es) say("Nødstoppen er inne: START virker ikke.", "bad");
+    st.spd += ((st.q?1:0)-st.spd)*Math.min(1,dt*1.8); st.ang += st.spd*dt*7;
+    const target = st.q ? In*(st.over?1.45:1)*(1+5.6*Math.exp(-(t-st.t0)*2.4)) : 0;
+    st.I += (target-st.I)*Math.min(1,dt*12);
+    draw(t);
+  }
+  function draw(t){
+    $("d3Svg").innerHTML = selvholdSVG(KS, {...st, t});
+    $("d3rQ").textContent = st.q ? "24 V" : "0 V";
+    $("d3rM").textContent = st.spd>.95 ? "går" : st.spd>.05 ? (st.q?"starter …":"stopper …") : "står";
+    $("d3rI").textContent = nf(st.I,1)+" A";
+    $("d3rF").textContent = st.trip ? "UTLØST" : st.heat>.05 ? Math.round(st.heat*100)+" % varm" : "OK";
+    $("d3rF").style.color = st.trip ? "var(--red)" : "";
+    $("d3Msg").textContent = st.msg; $("d3Msg").className = "status "+st.cls;
+    $("d3Reset").hidden = !st.trip;
+  }
+  addAnim($("d3Svg"), tick);
+  draw(0);
+})();
+
+/* =====================================================================
+   DEL 4 – motorvern
+   ===================================================================== */
+(function(){
+  const {ln,pl,TX,contact} = KS;
+  const In = 8.0;
+  const st = {I:8, Ir:8, h:0, m:0, trip:false};
+  function strip(x, bend, col1, col2, hot){
+    const y1=70, y2=240;
+    const path = o => `M${x+o} ${y1} Q${x+o} ${fx(y1+120)} ${fx(x+o+bend)} ${y2}`;
+    let s = `<path d="${path(-4)}" fill="none" stroke="${col1}" stroke-width="7" stroke-linecap="round"/><path d="${path(4)}" fill="none" stroke="${col2}" stroke-width="7" stroke-linecap="round"/>`;
+    // varmevikling
+    let d = `M${x-14} 90`; for (let y=90; y<170; y+=12) d += ` L${x+14} ${y+6} L${x-14} ${y+12}`;
+    s += `<path d="${d}" fill="none" stroke="${hot>0.05?`rgba(220,60,30,${Math.min(1,.35+hot*.5).toFixed(2)})`:"var(--copper)"}" stroke-width="3"/>`;
+    return s;
+  }
+  function draw(){
+    const bend = Math.min(80, 40*st.h*st.h);
+    let s = "";
+    s += `<rect x="30" y="30" width="470" height="300" rx="14" fill="var(--steel-soft)" stroke="var(--steel-dark)" stroke-width="2"/>`+TX(46,54,"Motorvern F2 – sett i snitt",{size:14,weight:700,fill:"var(--muted)"});
+    s += `<rect x="80" y="62" width="300" height="12" fill="var(--steel-dark)"/>`;
+    [130,220,310].forEach((x,i) => { s += strip(x, bend, "#b8860b", "#adb5bd", st.h) + TX(x,300,"L"+(i+1),{size:14,weight:700,anchor:"middle"}); });
+    // utløserstang
+    const bx = bend;
+    s += `<rect x="${fx(110+bx)}" y="246" width="250" height="14" rx="4" fill="#f1d9a6" stroke="#9c7a2a" stroke-width="1.5"/>`;
+    [130,220,310].forEach(x => s += `<rect x="${fx(x+bx-4)}" y="236" width="8" height="12" fill="#9c7a2a"/>`);
+    // terskel (avhenger av innstilling)
+    const thrX = 360 + 40*1.69;
+    s += ln(thrX, 210, thrX, 290, "var(--red)", 2, "5 4") + TX(thrX, 204, "løser ut", {size:12, fill:"var(--red)", anchor:"middle", weight:700});
+    // sperre / kontakt
+    s += `<rect x="${fx(360+bx)}" y="246" width="0" height="14"/>`;
+    const tripped = st.trip;
+    s += `<path d="M${fx(thrX+6)} 226 L${fx(tripped?thrX+34:thrX+8)} ${tripped?278:290}" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><circle cx="${fx(thrX+6)}" cy="226" r="4" fill="var(--ink)"/>`;
+    // innstillingsratt
+    const dx=440, dy=120, a = -140 + (st.Ir-5.5)/(12-5.5)*280;
+    s += `<circle cx="${dx}" cy="${dy}" r="38" fill="#fff" stroke="var(--ink)" stroke-width="2"/>`;
+    for (let v=6; v<=12; v+=2){ const aa=(-140+(v-5.5)/6.5*280-90)*Math.PI/180; s += TX(dx+29*Math.cos(aa), dy+29*Math.sin(aa)+4, v, {size:11, anchor:"middle", fill:"#333"}); }
+    const ar=(a-90)*Math.PI/180; s += ln(dx,dy,dx+20*Math.cos(ar),dy+20*Math.sin(ar),"#e03131",4)+`<circle cx="${dx}" cy="${dy}" r="5" fill="#333"/>`;
+    s += TX(dx,dy+56,"Innstilling "+nf(st.Ir,1)+" A",{size:13,weight:700,anchor:"middle"});
+    // trip-flagg
+    s += `<rect x="408" y="${tripped?24:44}" width="64" height="24" rx="4" fill="${tripped?"var(--red)":"var(--green)"}"/>`+TX(440,tripped?41:61,tripped?"UTLØST":"OK",{size:13,weight:800,fill:"#fff",anchor:"middle"});
+    // kontakter 95-96 / 97-98
+    s += TX(550,54,"Kontakter",{size:14,weight:700,fill:"var(--muted)"});
+    s += contact(570,80,80,"NC",!tripped,"var(--orange)",!tripped?"var(--orange)":"var(--steel)",{act:"therm",t1:"95",t2:"96"});
+    s += contact(680,80,80,"NO",tripped,"var(--orange)",tripped?"var(--orange)":"var(--steel)",{act:"therm",t1:"97",t2:"98"});
+    s += TX(570,186,tripped?"åpen":"lukket",{size:13,anchor:"middle",weight:700,fill:tripped?"var(--red)":"var(--green)"})+TX(570,204,"→ spole Q1",{size:12,anchor:"middle",fill:"var(--muted)"});
+    s += TX(680,186,tripped?"lukket":"åpen",{size:13,anchor:"middle",weight:700,fill:tripped?"var(--yellow)":"var(--muted)"})+TX(680,204,"→ lampe P2",{size:12,anchor:"middle",fill:"var(--muted)"});
+    // temperaturstolper
+    const bar = (x, v, lim, title, col) => {
+      const h = 120, y0 = 380, vv = Math.min(2.2, v), hh = vv/2.2*h;
+      let r = `<rect x="${x}" y="${y0-h}" width="34" height="${h}" rx="4" fill="var(--bg)" stroke="var(--line)"/><rect x="${x}" y="${fx(y0-hh)}" width="34" height="${fx(hh)}" rx="4" fill="${col}"/>`;
+      const ly = y0 - lim/2.2*h; r += ln(x-6, ly, x+40, ly, "var(--red)", 2, "4 3");
+      r += TX(x+17, y0+16, title, {size:12, anchor:"middle", weight:700});
+      return r; };
+    s += TX(560,236,"Hvor varmt?",{size:14,weight:700,fill:"var(--muted)"});
+    s += bar(570, st.h, 1.3, "bimetall", "#f59f00") + bar(670, st.m, 1.45, "vikling", st.m>1.45?"var(--red)":"#e8590c");
+    s += TX(620,300,"",{});
+    $("d4Svg").innerHTML = s;
+    let msg, cls;
+    if (st.trip){ msg = "F2 har løst ut. Motoren er stoppet og kjøles ned. Finn årsaken før du tilbakestiller."; cls="bad"; }
+    else if (st.m > 1.45){ msg = "Viklingen er for varm! Isolasjonen tar skade – men F2 løser ikke ut fordi innstillingen er for høy."; cls="bad"; }
+    else if (st.Ir > In + .25 && st.I > In*1.1){ msg = "Innstillingen er høyere enn merkestrømmen (8,0 A). Motoren blir varmere enn den tåler før F2 reagerer."; cls="warn"; }
+    else if (st.I > st.Ir*1.05){ msg = `Overlast: ${nf(st.I,1)} A mot innstilt ${nf(st.Ir,1)} A. Bimetallet varmes opp og bøyer seg …`; cls="warn"; }
+    else if (st.I < .1){ msg = "Motoren står. Ingen strøm, ingen varme."; cls="info"; }
+    else { msg = `Normal drift: ${nf(st.I,1)} A. Bimetallet blir varmt, men når ikke utløsergrensen.`; cls="ok"; }
+    $("d4Msg").textContent = msg; $("d4Msg").className = "status "+cls;
+  }
+  function upd(){ st.I = +$("d4I").value; st.Ir = +$("d4R").value; $("d4Iv").textContent = nf(st.I,1)+" A"; $("d4Rv").textContent = nf(st.Ir,1)+" A"; }
+  $("d4I").oninput = upd; $("d4R").oninput = upd;
+  $("d4Reset").onclick = () => { if (st.h > 1.05){ toast("Bimetallet er fortsatt for varmt – vent litt."); return; } st.trip = false; };
+  addAnim($("d4Svg"), dt => {
+    const I = st.trip ? 0 : st.I;
+    const tH = (I/st.Ir)**2, tM = (I/In)**2;
+    st.h += (tH - st.h)*Math.min(1, dt*.35);
+    st.m += (tM - st.m)*Math.min(1, dt*.22);
+    if (!st.trip && st.h >= 1.3) st.trip = true;
+    draw();
+  });
+  // merkeskilt
+  const pt = (x,y,s,o) => KS.TX(x,y,s,o);
+  $("d4Plate").innerHTML = `<rect x="4" y="4" width="372" height="162" rx="10" fill="#dee2e6" stroke="#495057" stroke-width="2"/>`
+    + pt(16,28,"3~ Motor  ·  IEC 60034",{size:13,weight:700,fill:"#212529"})
+    + pt(16,58,"4,0 kW",{size:20,weight:800,fill:"#212529"})+pt(130,58,"1445 o/min",{size:15,fill:"#212529"})+pt(260,58,"50 Hz",{size:15,fill:"#212529"})
+    + `<rect x="12" y="72" width="356" height="56" rx="6" fill="#fff3bf" stroke="#e67700"/>`
+    + pt(22,96,"Δ / Y",{size:15,weight:700,fill:"#212529"})+pt(110,96,"230 / 400 V",{size:15,weight:700,fill:"#212529"})+pt(250,96,"13,9 / 8,0 A",{size:15,weight:700,fill:"#212529"})
+    + pt(22,118,"kobling",{size:11,fill:"#495057"})+pt(110,118,"spenning",{size:11,fill:"#495057"})+pt(250,118,"merkestrøm",{size:11,fill:"#495057"})
+    + pt(16,152,"cos φ 0,82  ·  IP55  ·  Isol. kl. F",{size:13,fill:"#212529"});
+  upd(); draw();
+})();
+
+/* =====================================================================
+   DEL 5 – dreieretningsvending med forrigling (fullt skjema)
+   ===================================================================== */
+function reversSVG(K, st){
+  const {p,ln,pl,TX,dot,contact,coil,fuse,heater,motor,earth,flow} = K;
+  const lock = st.lock!==false, q1=!!st.q1, q2=!!st.q2, f1=!st.f1trip, s0=!!st.s0, s1=!!st.s1, s2=!!st.s2;
+  const HV = b => b ? p.hv : p.dead, LV = b => b ? p.lv : p.dead;
+  let s = "";
+  // ---------- hovedstrøm ----------
+  s += TX(20,22,"HOVEDSTRØM 400 V",{size:14,weight:700,fill:p.muted});
+  const Y = [50,76,102];
+  Y.forEach((y,i) => {
+    s += TX(22,y+5,"L"+(i+1),{size:15,weight:700});
+    s += ln(48,y,62,y,HV(true));
+    s += `<g transform="rotate(-90 62 ${y})">${fuse(62,y,48,!f1,HV(true),HV(f1),"")}</g>`;
+    s += ln(110,y,390,y,HV(f1));
+  });
+  s += TX(86,Y[2]+26,"F1",{size:16,weight:700,anchor:"middle"});
+  const A = [150,190,230], B = [290,330,370];
+  const out = f1 && (q1||q2);
+  A.forEach((x,i) => { s += dot(x,Y[i],p.ink,4.5)+ln(x,Y[i],x,130,HV(f1)); s += contact(x,130,72,"NO",q1,HV(f1),HV(out),{t1:i===0?"1":"",t2:i===0?"2":""}); });
+  B.forEach((x,i) => { s += dot(x,Y[i],p.ink,4.5)+ln(x,Y[i],x,130,HV(f1)); s += contact(x,130,72,"NO",q2,HV(f1),HV(out),{}); });
+  s += ln(118,152,236,152,p.ink,1.4,"5 4")+TX(114,150,"Q1",{size:16,weight:700,anchor:"end"})+TX(114,168,"fram",{size:12,anchor:"end",fill:p.muted})+ln(270,152,376,152,p.ink,1.4,"5 4")+TX(382,150,"Q2",{size:16,weight:700})+TX(382,168,"bak",{size:12,fill:p.muted});
+  // utganger – Q2 bytter L1 og L3
+  A.forEach(x => s += ln(x,202,x,300,HV(out)));
+  s += pl([[370,202],[370,246],[150,246]],HV(out))+dot(150,246,p.ink,4.5);
+  s += pl([[330,202],[330,262],[190,262]],HV(out))+dot(190,262,p.ink,4.5);
+  s += pl([[290,202],[290,278],[230,278]],HV(out))+dot(230,278,p.ink,4.5);
+  s += TX(380,250,"L3 → U",{size:12,fill:p.muted})+TX(300,296,"L1 → W",{size:12,fill:p.muted});
+  A.forEach((x,i) => s += heater(x,300,50,0,HV(out),HV(out),i===2?"F2":""));
+  s += pl([[150,350],[150,372],[172,396]],HV(out))+ln(190,350,190,388,HV(out))+pl([[230,350],[230,372],[208,396]],HV(out));
+  s += TX(140,394,"U",{size:12,fill:p.muted})+TX(196,384,"V",{size:12,fill:p.muted})+TX(232,394,"W",{size:12,fill:p.muted});
+  s += motor(190,432,44,st.ang||0,st.spd||0,"M1");
+  s += pl([[221,463],[290,463],[290,476]],p.ink,2,"6 4")+earth(290,476);
+  if (st.short && !p.print){ s += `<circle cx="300" cy="190" r="${fx(30+st.short*40)}" fill="var(--yellow)" opacity="${fx(st.short*.7)}"/>`+TX(300,196,"KORTSLUTNING L1–L3!",{size:18,weight:800,fill:"var(--red)",anchor:"middle"}); }
+  // fasefølge
+  if (!p.print){ const dir = st.spd>.05 ? "fram" : st.spd<-.05 ? "bak" : "";
+    s += `<rect x="24" y="500" width="380" height="74" rx="10" fill="${p.sheet}" stroke="var(--line)"/>`;
+    s += TX(40,526,"Fasefølge til motoren:",{size:13,weight:700,fill:p.muted});
+    s += TX(40,556, q1&&!q2&&f1 ? "L1→U · L2→V · L3→W" : q2&&!q1&&f1 ? "L3→U · L2→V · L1→W" : "–", {size:18,weight:800,mono:1,fill:q2&&!q1?"var(--purple)":"var(--ink)"});
+    if (dir) s += TX(390,556, dir==="fram"?"↻ fram":"↺ bak", {size:18,weight:800,anchor:"end",fill:"var(--orange)"}); }
+  // ---------- styrestrøm ----------
+  const R0=40, RN=570, XC=540, XF=540, XF2=620, XR=780, XR2=860;
+  s += TX(430,22,"STYRESTRØM 24 V DC",{size:14,weight:700,fill:p.muted});
+  const pw = true, nES = pw && !st.es, nS0 = nES && !s0;
+  const nF = nS0 && (s1 || q1), nFc = nF && (!lock || !q2);
+  const nR = nS0 && (s2 || q2), nRc = nR && (!lock || !q1);
+  const W3 = p.print ? 2.6 : 4;
+  s += ln(452,R0,980,R0,LV(pw),W3)+ln(452,RN,980,RN,p.zero,W3);
+  s += TX(980,R0-10,"+24 V",{size:13,weight:700,anchor:"end",fill:p.print?p.ink:"var(--orange)"})+TX(986,RN-8,"0 V",{size:13,weight:700,anchor:"end",fill:p.print?p.ink:"var(--blue)"});
+  s += ln(452,R0,452,280,LV(pw))+`<rect x="424" y="280" width="56" height="70" rx="6" fill="${p.sheet}" stroke="${p.ink}" stroke-width="2"/>`+TX(452,311,"G1",{size:15,weight:700,anchor:"middle"})+TX(452,330,"24 V",{size:12,anchor:"middle",fill:p.muted})+ln(452,350,452,RN,p.zero);
+  s += fuse(XC,R0,56,false,LV(pw),LV(pw),"F3");
+  s += ln(XC,96,XC,106,LV(pw));
+  s += contact(XC,106,56,"NC",!st.es,LV(pw),LV(nES),{act:"estop",pressed:!!st.es,lbl:"S00",t1:"11",t2:"12"});
+  s += ln(XC,162,XC,172,LV(nES));
+  s += contact(XC,172,56,"NC",!s0,LV(nES),LV(nS0),{act:"push",pressed:s0,lbl:"S0",t1:"11",t2:"12"});
+  s += ln(XC,228,XC,238,LV(nS0));
+  s += contact(XC,238,56,"NC",true,LV(nS0),LV(nS0),{act:"therm",lbl:"F2",t1:"95",t2:"96"});
+  s += ln(XC,294,XC,310,LV(nS0))+ln(XC,310,XR2,310,LV(nS0))+dot(XC,310,p.ink,4.5)+dot(XF2,310,p.ink,4.5)+dot(XR,310,p.ink,4.5);
+  // fram
+  s += contact(XF,310,56,"NO",s1,LV(nS0),LV(nF),{act:"push",pressed:s1,lbl:"S1",t1:"13",t2:"14",lx:22});
+  s += contact(XF2,310,56,"NO",q1,LV(nS0),LV(nF),{act:"rel",lbl:"Q1",t1:"13",t2:"14",lx:22});
+  s += ln(XF,366,XF,380,LV(nF))+ln(XF2,366,XF2,380,LV(nF))+ln(XF,380,XF2,380,LV(nF))+dot(XF,380,p.ink,4.5);
+  if (lock) s += contact(XF,392,56,"NC",!q2,LV(nF),LV(nFc),{act:"rel",lbl:"Q2",t1:"21",t2:"22",lx:22});
+  else s += ln(XF,392,XF,448,LV(nF))+(p.print?"":TX(XF+12,424,"forbikoblet!",{size:13,weight:800,fill:"var(--red)"}));
+  s += ln(XF,380,XF,392,LV(nF));
+  s += coil(XF,448,122,q1,LV(nFc),p.zero,"Q1")+dot(XF,RN,p.ink,4.5);
+  // bak
+  s += contact(XR,310,56,"NO",s2,LV(nS0),LV(nR),{act:"push",pressed:s2,lbl:"S2",t1:"13",t2:"14",lx:22});
+  s += contact(XR2,310,56,"NO",q2,LV(nS0),LV(nR),{act:"rel",lbl:"Q2",t1:"13",t2:"14",lx:22});
+  s += ln(XR,366,XR,380,LV(nR))+ln(XR2,366,XR2,380,LV(nR))+ln(XR,380,XR2,380,LV(nR))+dot(XR,380,p.ink,4.5);
+  if (lock) s += contact(XR,392,56,"NC",!q1,LV(nR),LV(nRc),{act:"rel",lbl:"Q1",t1:"21",t2:"22",lx:22});
+  else s += ln(XR,392,XR,448,LV(nR))+(p.print?"":TX(XR+12,424,"forbikoblet!",{size:13,weight:800,fill:"var(--red)"}));
+  s += ln(XR,380,XR,392,LV(nR));
+  s += coil(XR,448,122,q2,LV(nRc),p.zero,"Q2")+dot(XR,RN,p.ink,4.5);
+  if (lock && !p.print){ s += `<rect x="${XF-46}" y="388" width="92" height="64" rx="8" fill="none" stroke="var(--purple)" stroke-width="2" stroke-dasharray="5 4"/><rect x="${XR-46}" y="388" width="92" height="64" rx="8" fill="none" stroke="var(--purple)" stroke-width="2" stroke-dasharray="5 4"/>`+TX(660,470,"forrigling",{size:13,weight:700,fill:"var(--purple)",anchor:"middle"}); }
+  if (st.t !== undefined){
+    if (f1 && (q1^q2)){ const src = q1 ? A : B; const dst = q1 ? A : [230,190,150];
+      src.forEach((x,i)=>{ const pts = q1 ? [[x,Y[i]],[x,350]] : [[x,Y[i]],[x,246+16*(2-i)],[dst[i],246+16*(2-i)],[dst[i],350]]; s += flow([[110,Y[i]],...pts], st.t*55+i*6); }); }
+    const path = (xa,xb,on,useS) => on ? flow([[XC,R0],[XC,310],...(xa===XC?[]:[[xa,310]]),...(useS?[[xa,380]]:[[xb,310],[xb,380],[xa,380]]),[xa,RN]], st.t*40) : "";
+    s += path(XF,XF2,q1&&nFc,s1) + path(XR,XR2,q2&&nRc,s2);
+  }
+  return s;
+}
+(function(){
+  const st = {q1:false,q2:false,lock:true,f1trip:false,s0:false,s1:false,s2:false,t0:0,t1:0,t2:0,spd:0,ang:0,short:0,es:false,msg:"Stopp. Trykk FRAM eller BAK.",cls:"info"};
+  const say = (m,c="info") => { st.msg=m; st.cls=c; };
+  $("d5F").onclick = () => { st.t1 = .7; };
+  $("d5B").onclick = () => { st.t2 = .7; };
+  $("d5S").onclick = () => { st.t0 = .7; };
+  $("d5Lock").onchange = e => { st.lock = e.target.checked; say(st.lock ? "Forriglingen er koblet inn igjen." : "Forriglingen er forbikoblet. Prøv FRAM og så BAK – uten å stoppe.", st.lock?"info":"warn"); };
+  $("d5Reset").onclick = () => { if (st.q1 && st.q2){ say("Begge kontaktorene er fortsatt inne. Trykk STOPP før du tilbakestiller F1.", "bad"); return; } st.f1trip = false; say("F1 er tilbakestilt.", "info"); };
+  addAnim($("d5Svg"), (dt,t) => {
+    ["t0","t1","t2"].forEach(k => { if (st[k]>0) st[k]-=dt; });
+    st.s0 = st.t0>0; st.s1 = st.t1>0; st.s2 = st.t2>0;
+    const was1=st.q1, was2=st.q2;
+    const com = !st.es && !st.s0;
+    const n1 = com && (st.s1||st.q1) && (!st.lock || !was2);
+    const n2 = com && (st.s2||st.q2) && (!st.lock || !was1);
+    st.q1 = n1; st.q2 = n2;
+    if (st.s2 && was1 && !st.q2 && st.lock) say("Forriglingen: Q1 21–22 er åpen, så Q2 kan ikke trekke. Trykk STOPP først.", "warn");
+    if (st.s1 && was2 && !st.q1 && st.lock) say("Forriglingen: Q2 21–22 er åpen, så Q1 kan ikke trekke. Trykk STOPP først.", "warn");
+    if (st.q1 && st.q2 && !st.f1trip){ st.f1trip = true; st.short = 1; say("KORTSLUTNING: Q1 og Q2 er inne samtidig. L1 og L3 kobles sammen – lysbue, og F1 løser ut!", "bad"); }
+    if (!was1 && st.q1 && !st.q2) say("Q1 trekker: L1→U, L2→V, L3→W. Motoren går FRAM. Q1 21–22 åpner og sperrer Q2.", "ok");
+    if (!was2 && st.q2 && !st.q1) say("Q2 trekker: L3→U, L1→W. To faser er byttet – motoren går BAK. Q2 21–22 sperrer Q1.", "ok");
+    if ((was1||was2) && !st.q1 && !st.q2 && st.s0) say("Stopp. Begge kontaktorene er ute.", "info");
+    if (st.short>0) st.short = Math.max(0, st.short - dt*.8);
+    const dir = st.f1trip ? 0 : (st.q1 && !st.q2 ? 1 : st.q2 && !st.q1 ? -1 : 0);
+    st.spd += (dir - st.spd)*Math.min(1, dt*1.5); st.ang += st.spd*dt*7;
+    $("d5Svg").innerHTML = reversSVG(KS, {...st, t});
+    $("d5Msg").textContent = st.msg; $("d5Msg").className = "status "+st.cls;
+    $("d5Reset").hidden = !st.f1trip;
+  });
+  $("d5Svg").innerHTML = reversSVG(KS, st);
+})();
+
+/* =====================================================================
+   DEL 6 – startmetoder + klemmebrett
+   ===================================================================== */
+(function(){
+  const {ln,pl,TX} = KS;
+  const M = {
+    dol:{n:"Direktestart", col:"#e03131", I:t=> t<.04?7*t/.04 : t<1.1?7-.8*(t/1.1)**2 : t<1.7?6.2-5.2*((t-1.1)/.6) : 1, n_:t=>Math.min(1,(t/1.5)**1.4), u:t=>"400 V"},
+    yd:{n:"Stjerne-trekant", col:"#1c7ed6", I:t=> t<.04?2.4*t/.04 : t<3?2.4-1.4*(t/3)**1.5 : t<3.12?1+2.6*((t-3)/.12) : t<3.7?3.6-2.6*((t-3.12)/.58) : 1, n_:t=> t<3? .8*Math.min(1,(t/2.6)**1.2) : Math.min(1,.8+.2*(t-3)/.6), u:t=> t<3?"230 V (Y)":"400 V (Δ)"},
+    soft:{n:"Mykstarter", col:"#f08c00", I:t=> t<.8?3.6*t/.8 : t<3.6?3.6 : t<4.4?3.6-2.6*(t-3.6)/.8 : 1, n_:t=>Math.min(1,Math.max(0,(t-.4)/4)), u:t=> Math.round(Math.min(400,160+240*t/4))+" V"},
+    vfd:{n:"Frekvensomformer", col:"#2f9e44", I:t=> t<.2?1.4*t/.2 : t<5?1.4 : t<5.3?1.4-.4*(t-5)/.3 : 1, n_:t=>Math.min(1,t/5), u:t=> Math.round(Math.min(50,t*10))+" Hz"}
+  };
+  let sel = "dol", t = -1;
+  $("d6M").innerHTML = Object.entries(M).map(([k,v])=>`<button class="chip" data-k="${k}" aria-pressed="${k===sel}">${v.n}</button>`).join("");
+  $("d6M").onclick = e => { const b=e.target.closest("[data-k]"); if(!b) return; sel=b.dataset.k; t=-1; $("d6M").querySelectorAll("[data-k]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); draw(); };
+  $("d6Go").onclick = () => { t = 0; };
+  const gx=70, gw=520, gy=40, gh=280, X=v=>gx+v/8*gw, Yv=v=>gy+gh-v/8*gh;
+  function draw(){
+    let s = "";
+    s += ln(gx,gy+gh,gx+gw,gy+gh,"var(--ink)",2)+ln(gx,gy,gx,gy+gh,"var(--ink)",2);
+    for (let v=1; v<=7; v++) s += `<line x1="${gx}" y1="${Yv(v)}" x2="${gx+gw}" y2="${Yv(v)}" stroke="var(--line)"/>`+TX(gx-8,Yv(v)+5,v+"×",{size:13,anchor:"end",fill:"var(--muted)"});
+    for (let v=0; v<=8; v+=2) s += TX(X(v),gy+gh+20,v+" s",{size:13,anchor:"middle",fill:"var(--muted)"});
+    s += TX(gx,gy-14,"Strøm i forhold til merkestrøm Iₙ",{size:14,weight:700});
+    s += `<line x1="${gx}" y1="${Yv(1)}" x2="${gx+gw}" y2="${Yv(1)}" stroke="var(--ink)" stroke-dasharray="6 4"/>`+TX(gx+gw,Yv(1)-6,"merkestrøm",{size:12,anchor:"end",fill:"var(--muted)"});
+    Object.entries(M).forEach(([k,m]) => {
+      let d = ""; const tm = k===sel && t>=0 ? Math.min(8,t) : 8;
+      for (let i=0; i<=320; i++){ const tt=i/40; if (k===sel && t>=0 && tt>tm) break; d += (i?"L":"M")+fx(X(tt))+" "+fx(Yv(m.I(tt))); }
+      s += `<path d="${d}" fill="none" stroke="${m.col}" stroke-width="${k===sel?4.5:2}" opacity="${k===sel?1:.3}" stroke-linejoin="round"/>`;
+    });
+    const m = M[sel], tt = t<0 ? 0 : Math.min(8,t);
+    if (t>=0){ s += ln(X(tt),gy,X(tt),gy+gh,"var(--ink)",1.5,"3 3")+`<circle cx="${X(tt)}" cy="${Yv(m.I(tt))}" r="7" fill="${m.col}" stroke="#fff" stroke-width="2"/>`; }
+    // motor og turtallsmåler
+    const cx=790, cy=170, r=110, nn = t<0?0:m.n_(tt), I = t<0?0:m.I(tt);
+    s += `<path d="M${cx-r} ${cy} A${r} ${r} 0 0 1 ${cx+r} ${cy}" fill="none" stroke="var(--line)" stroke-width="18"/>`;
+    const a = Math.PI*(1-nn); s += `<path d="M${cx-r} ${cy} A${r} ${r} 0 0 1 ${fx(cx+r*Math.cos(a))} ${fx(cy-r*Math.sin(a))}" fill="none" stroke="${m.col}" stroke-width="18"/>`;
+    s += TX(cx,cy-20,Math.round(nn*1445)+" o/min",{size:24,weight:800,anchor:"middle"})+TX(cx,cy+6,"turtall",{size:13,anchor:"middle",fill:"var(--muted)"});
+    s += `<rect x="${cx-150}" y="${cy+40}" width="300" height="120" rx="12" fill="var(--bg)" stroke="var(--line)"/>`;
+    s += TX(cx-130,cy+72,"Strøm nå:",{size:15,fill:"var(--muted)"})+TX(cx+130,cy+72,nf(I*28,0)+" A",{size:20,weight:800,anchor:"end",fill:m.col});
+    s += TX(cx-130,cy+102,"(motor 15 kW, Iₙ = 28 A)",{size:13,fill:"var(--muted)"});
+    s += TX(cx-130,cy+136,"Til viklingen:",{size:15,fill:"var(--muted)"})+TX(cx+130,cy+136,t<0?"–":m.u(tt),{size:18,weight:800,anchor:"end"});
+    $("d6Svg").innerHTML = s;
+    const txt = {dol:"Direktestart: full spenning med én gang. Enkel og billig, men strømmen blir ca. 7 × I_n. Det gir spenningsfall og tunge sikringer.",
+      yd:"Stjerne-trekant: starter i stjerne (230 V per vikling), kobler om til trekant etter noen sekunder. Strøm og moment ca. 1/3. Kort topp ved omkoblingen.",
+      soft:"Mykstarter: elektronikk øker spenningen langsomt. Mykere start og stopp – fint for pumper og bånd.",
+      vfd:"Frekvensomformer: øker frekvensen og spenningen sammen fra 0. Lavest startstrøm, fullt moment, og turtallet kan styres."}[sel];
+    $("d6Msg").textContent = txt.replace("I_n","Iₙ");
+  }
+  addAnim($("d6Svg"), dt => { if (t>=0 && t<8.5) t += dt; draw(); });
+  draw();
+
+  /* klemmebrett */
+  let kob = "Y", mot = "230";
+  $("d6Kk").innerHTML = [["Y","Stjerne (Y)"],["D","Trekant (Δ)"]].map(v=>`<button class="chip" data-k="${v[0]}" aria-pressed="${v[0]===kob}">${v[1]}</button>`).join("");
+  $("d6Km").innerHTML = [["230","Motor 230/400 V"],["400","Motor 400/690 V"]].map(v=>`<button class="chip" data-m="${v[0]}" aria-pressed="${v[0]===mot}">${v[1]}</button>`).join("");
+  $("d6Kk").onclick = e => { const b=e.target.closest("[data-k]"); if(!b) return; kob=b.dataset.k; $("d6Kk").querySelectorAll("[data-k]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); kb(); };
+  $("d6Km").onclick = e => { const b=e.target.closest("[data-m]"); if(!b) return; mot=b.dataset.m; $("d6Km").querySelectorAll("[data-m]").forEach(x=>x.setAttribute("aria-pressed",String(x===b))); kb(); };
+  function kb(){
+    const P = {U1:[80,90],V1:[170,90],W1:[260,90],W2:[80,180],U2:[170,180],V2:[260,180]};
+    let s = `<rect x="30" y="50" width="280" height="170" rx="10" fill="var(--steel-soft)" stroke="var(--steel-dark)" stroke-width="2"/>`+TX(170,242,"Klemmebrettet",{size:14,weight:700,anchor:"middle",fill:"var(--muted)"});
+    [["U1","U2"],["V1","V2"],["W1","W2"]].forEach(([a,b]) => s += `<path d="M${P[a][0]} ${P[a][1]} C${P[a][0]+30} ${P[a][1]+50} ${P[b][0]-30} ${P[b][1]-50} ${P[b][0]} ${P[b][1]}" fill="none" stroke="var(--copper)" stroke-width="2.5" stroke-dasharray="6 4"/>`);
+    ["U1","V1","W1"].forEach((k,i) => s += ln(P[k][0],10,P[k][0],P[k][1],"var(--red)",4)+TX(P[k][0]+8,24,"L"+(i+1),{size:13,weight:700}));
+    const lask = (a,b) => `<rect x="${Math.min(P[a][0],P[b][0])-10}" y="${Math.min(P[a][1],P[b][1])-10}" width="${Math.abs(P[a][0]-P[b][0])+20}" height="${Math.abs(P[a][1]-P[b][1])+20}" rx="8" fill="#c9a227" stroke="#7a5c00" stroke-width="2" opacity=".9"/>`;
+    if (kob==="Y") s += lask("W2","U2")+lask("U2","V2"); else s += lask("U1","W2")+lask("V1","U2")+lask("W1","V2");
+    Object.entries(P).forEach(([k,[x,y]]) => s += `<circle cx="${x}" cy="${y}" r="13" fill="#adb5bd" stroke="#495057" stroke-width="2"/><circle cx="${x}" cy="${y}" r="5" fill="#495057"/>`+TX(x,y+(y<120?-18:34),k,{size:13,weight:700,anchor:"middle",mono:1}));
+    // skjema til høyre
+    const cx=470, cy=130, R=70, Uv = kob==="Y" ? 230 : 400, rated = mot==="230" ? 230 : 400, ok = Uv===rated;
+    const wind = (x1,y1,x2,y2) => { const dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy), ux=dx/L, uy=dy/L, nx=-uy, ny=ux; let d=`M${x1} ${y1}L${fx(x1+ux*L*.2)} ${fx(y1+uy*L*.2)}`; for (let k=0;k<6;k++){ const pp=.2+k*.1, qq=pp+.05; d+=`L${fx(x1+ux*L*qq+nx*8)} ${fx(y1+uy*L*qq+ny*8)}L${fx(x1+ux*L*(pp+.1))} ${fx(y1+uy*L*(pp+.1))}`; } d+=`L${x2} ${y2}`; return `<path d="${d}" fill="none" stroke="${ok?"var(--orange)":"var(--red)"}" stroke-width="2.6" stroke-linejoin="round"/>`; };
+    const pts=[0,1,2].map(k=>[cx+R*Math.cos(-Math.PI/2+k*2.094), cy+R*Math.sin(-Math.PI/2+k*2.094)]);
+    if (kob==="Y") pts.forEach(q => s += wind(q[0],q[1],cx,cy)); else for (let k=0;k<3;k++){ const a=pts[k], b=pts[(k+1)%3]; s += wind(a[0],a[1],b[0],b[1]); }
+    pts.forEach((q,k) => s += `<circle cx="${fx(q[0])}" cy="${fx(q[1])}" r="5" fill="var(--ink)"/>`+TX(q[0]+(k===2?-10:10),q[1]+(k===0?-8:18),"L"+(k+1),{size:13,weight:700,anchor:k===2?"end":"start"}));
+    s += TX(cx,236,Uv+" V over hver vikling",{size:15,weight:800,anchor:"middle",fill:ok?"var(--green)":"var(--red)"});
+    $("d6Kb").innerHTML = s;
+    const m = $("d6KMsg");
+    if (ok){ m.className="status ok"; m.textContent = `Riktig: viklingene er laget for ${rated} V og får ${Uv} V. ${mot==="400"?"Denne motoren kan stjerne-trekant-startes på 400 V.":"Denne motoren kan IKKE stjerne-trekant-startes på 400 V – den skal gå i stjerne."}`; }
+    else if (Uv>rated){ m.className="status bad"; m.textContent = `Feil! Viklingene tåler ${rated} V, men får ${Uv} V. Motoren blir overbelastet og brenner.`; }
+    else { m.className="status warn"; m.textContent = `For lav spenning: ${Uv} V i stedet for ${rated} V. Motoren gir bare 1/3 av momentet – greit under start, ikke i drift.`; }
+  }
+  kb();
+})();
+
+/* =====================================================================
+   DEL 7 – feilsøking i styrekretsen
+   ===================================================================== */
+function fsSVG(K, o={}){
+  const {p,ln,pl,TX,dot,contact,coil,fuse} = K;
+  const c = p.print ? p.ink : "var(--ink)";
+  let s = "";
+  s += `<rect x="270" y="40" width="340" height="110" rx="10" fill="none" stroke="${p.print?"#777":"var(--steel)"}" stroke-width="2" stroke-dasharray="8 6"/>`+TX(282,60,"BETJENINGSPANEL",{size:13,weight:700,fill:p.muted});
+  s += TX(20,30,"ELSKAP",{size:13,weight:700,fill:p.muted});
+  // G1
+  s += `<rect x="24" y="76" width="86" height="210" rx="8" fill="${p.sheet}" stroke="${c}" stroke-width="2"/>`+TX(67,170,"G1",{size:16,weight:700,anchor:"middle"})+TX(67,192,"24 V DC",{size:13,anchor:"middle",fill:p.muted});
+  s += TX(104,96,"+",{size:16,weight:800,anchor:"end"})+TX(104,272,"−",{size:16,weight:800,anchor:"end"});
+  const Y=100, YB=260;
+  s += ln(110,Y,170,Y,c);
+  s += `<g transform="rotate(-90 170 ${Y})">${fuse(170,Y,60,false,c,c,"")}</g>`+TX(200,Y-18,"F3",{size:15,weight:700,anchor:"middle"});
+  s += ln(230,Y,300,Y,c);
+  s += `<g transform="rotate(-90 300 ${Y})">${contact(300,Y,60,"NC",true,c,c,{act:"estop"})}</g>`+TX(330,Y-18,"S00",{size:15,weight:700,anchor:"middle"});
+  s += ln(360,Y,410,Y,c);
+  s += `<g transform="rotate(-90 410 ${Y})">${contact(410,Y,60,"NC",true,c,c,{act:"push"})}</g>`+TX(440,Y-18,"S0",{size:15,weight:700,anchor:"middle"});
+  s += ln(470,Y,520,Y,c);
+  s += `<g transform="rotate(-90 520 ${Y})">${contact(520,Y,60,"NO",true,c,c,{act:"push",pressed:true})}</g>`+TX(550,Y-18,"S1",{size:15,weight:700,anchor:"middle"})+TX(550,Y-36,"holdes inne",{size:11,anchor:"middle",fill:p.muted});
+  s += pl([[505,Y],[505,190],[520,190]],c)+dot(505,Y,c,4.5)+`<g transform="rotate(-90 520 190)">${contact(520,190,60,"NO",false,c,c,{act:"rel"})}</g>`+pl([[580,190],[595,190],[595,Y]],c)+dot(595,Y,c,4.5)+TX(550,226,"Q1 13–14",{size:13,weight:700,anchor:"middle"});
+  s += ln(580,Y,650,Y,c);
+  s += `<g transform="rotate(-90 650 ${Y})">${contact(650,Y,60,"NC",true,c,c,{act:"therm"})}</g>`+TX(680,Y-18,"F2 95–96",{size:15,weight:700,anchor:"middle"});
+  s += pl([[710,Y],[820,Y],[820,140]],c);
+  s += coil(820,140,80,!!o.coilOn,c,c,"Q1");
+  s += (o.coilState?TX(786,214,o.coilState,{size:12,weight:700,anchor:"end",fill:p.print?p.ink:"var(--red)"}):"");
+  s += pl([[820,220],[820,YB],[110,YB]],c);
+  s += TX(250,YB-8,"0 V",{size:13,weight:700,fill:p.print?p.ink:"var(--blue)",anchor:"middle"});
+  return s;
+}
+(function(){
+  const {ln,TX,dot} = KS;
+  const TP = [[140,100],[255,100],[385,100],[495,100],[620,100],[760,100],[820,240]];
+  const FAULTS = [
+    {n:"F3 sikring", idx:1, pos:[200,100], ex:"24 V på TP1, 0 V på TP2: sikringen F3 er gått. Finn årsaken (kortslutning i styrekretsen?) før du bytter."},
+    {n:"S00 nødstopp", idx:2, pos:[330,100], ex:"24 V før S00, 0 V etter. Nødstoppen er trykket inn – eller kontakten er defekt."},
+    {n:"S0 stopp", idx:3, pos:[440,100], ex:"24 V før S0, 0 V etter. Stoppknappen leder ikke – kontakten er brent eller ledningen løs."},
+    {n:"S1 start", idx:4, pos:[550,100], ex:"24 V før S1, 0 V etter – selv om S1 holdes inne. Startknappen lukker ikke."},
+    {n:"F2 motorvern", idx:5, pos:[680,100], ex:"24 V før F2, 0 V etter: motorvernet har løst ut (sjekk P2). Finn årsaken til overlasten før du tilbakestiller."},
+    {n:"Spolen Q1", idx:6, pos:[820,180], ex:"24 V på TP6 og 0 V på TP7: spolen har full spenning over seg, men trekker ikke. Spolen er defekt."},
+    {n:"0 V-leder", idx:7, pos:[460,260], ex:"24 V også på TP7 – etter spolen! Da er det brudd i 0 V-lederen tilbake til G1."}
+  ];
+  const fs = {f:null, log:[]};
+  const svg = $("fsSvg");
+  let probe = null, mark = null;
+  function draw(v){
+    let s = fsSVG(KS, {coilState:"trekker ikke"});
+    // måler
+    s += `<rect x="330" y="300" width="160" height="104" rx="14" fill="#fab005" stroke="#e67700" stroke-width="3"/><rect x="342" y="310" width="136" height="50" rx="6" fill="#d8f5a2"/>`;
+    s += TX(350,326,"V⎓",{size:12,weight:800,fill:"#2b3a12"})+TX(470,350,v===undefined?"----":v,{size:28,weight:800,anchor:"end",fill:"#1d2610",mono:1});
+    s += TX(370,394,"COM",{size:12,weight:700,anchor:"middle",fill:"#212529"})+TX(450,394,"VΩ",{size:12,weight:700,anchor:"middle",fill:"#212529"});
+    s += `<path d="M370 300 C 370 280, 160 290, 142 266" fill="none" stroke="var(--lead)" stroke-width="6" stroke-linecap="round"/>`+`<circle cx="140" cy="260" r="8" fill="var(--lead)" stroke="var(--panel)" stroke-width="2"/>`;
+    s += TX(150,300,"svart probe på 0 V",{size:12,fill:"var(--muted)"});
+    if (probe){ const [tx,ty]=probe; s += `<path d="M450 300 C 450 ${ty>200?300:220}, ${tx} ${ty+(ty>200?40:120)}, ${tx} ${ty+16}" fill="none" stroke="#e03131" stroke-width="6" stroke-linecap="round"/>`+`<circle cx="${tx}" cy="${ty}" r="19" fill="none" stroke="#e03131" stroke-width="4"/>`; }
+    if (mark) s += `<circle cx="${mark[0]}" cy="${mark[1]}" r="28" fill="none" stroke="var(--red)" stroke-width="5"/>`;
+    TP.forEach((pt,i) => s += `<g class="tp" data-i="${i}" style="cursor:pointer"><circle cx="${pt[0]}" cy="${pt[1]}" r="14" fill="var(--orange)" stroke="var(--panel)" stroke-width="3"/>${TX(pt[0],pt[1]+5,i+1,{size:14,weight:800,anchor:"middle",fill:"#fff"})}</g>`);
+    svg.innerHTML = s;
+  }
+  svg.addEventListener("click", e => { const g = e.target.closest(".tp"); if (!g) return; measure(+g.dataset.i); });
+  FAULTS.forEach(F => { const b=document.createElement("button"); b.className="btn small"; b.textContent=F.n; b.onclick=()=>guess(F); $("fsGuess").appendChild(b); });
+  function newFault(){ let f; do { f = FAULTS[Math.floor(Math.random()*FAULTS.length)]; } while (fs.f && f===fs.f); fs.f=f; fs.log=[]; probe=null; mark=null; $("fsLog").innerHTML=""; $("fsTxt").textContent="Mål først, gjett etterpå."; $("fsTxt").className="status info"; draw(); }
+  function measure(i){
+    const v = (i+1) <= fs.f.idx ? 24 : 0;
+    probe = TP[i]; fs.log.push(i+1);
+    draw(v ? (23.9+Math.random()*.2).toFixed(1) : "0.00");
+    const s=document.createElement("span"); s.className = v?"hi":"lo"; s.textContent=`TP${i+1}: ${v?"24 V":"0 V"}`; $("fsLog").appendChild(s);
+  }
+  function guess(F){
+    if (!fs.log.length){ toast("Mål minst ett punkt først!"); return; }
+    if (F===fs.f){ mark=F.pos; draw(); $("fsTxt").textContent=`Riktig etter ${fs.log.length} måling${fs.log.length>1?"er":""}! ${F.ex}`; $("fsTxt").className="status ok"; }
+    else { $("fsTxt").textContent="Ikke helt. Hvor forsvinner de 24 voltene? Mål flere punkter."; $("fsTxt").className="status warn"; }
+  }
+  $("fsNew").onclick = newFault;
+  $("fsShow").onclick = () => { mark=fs.f.pos; draw(); $("fsTxt").textContent="Svar: "+fs.f.n+". "+fs.f.ex; $("fsTxt").className="status info"; };
+  newFault();
+})();
+
+/* =====================================================================
+   OPPGAVEFIGURER (svart-hvitt)
+   ===================================================================== */
+(function(){
+  const K = KB, {ln,TX} = K;
+  const mini = (inner, w=120, h=110) => svgOpen(w,h)+inner+"</svg>";
+  const syms = [
+    K.contact(60,20,70,"NO",false,"#000","#000",{act:"push"}),
+    K.contact(60,20,70,"NC",true,"#000","#000",{act:"push"}),
+    K.contact(60,20,70,"NC",true,"#000","#000",{act:"estop"}),
+    K.coil(60,14,82,false,"#000","#000",""),
+    [40,62,84].map(x=>K.contact(x,20,70,"NO",false,"#000","#000",{})).join("")+ln(20,51,92,51,"#000",1.2,"4 3"),
+    K.contact(70,20,70,"NC",true,"#000","#000",{act:"therm"}),
+    K.fuse(60,14,82,false,"#000","#000",""),
+    K.motor(60,55,36,0,0,"")
+  ];
+  $("o1minis").innerHTML = syms.map((s,i)=>`<figure><figcaption>${i+1}</figcaption>${mini(s)}</figure>`).join("");
+  $("o2fig").innerHTML = svgOpen(1000,560)+selvholdSVG(KB,{q:false})+"</svg>";
+  $("o4fig").innerHTML = svgOpen(1000,600)+reversSVG(KB,{q1:false,q2:false,lock:true})+"</svg>";
+  $("o6fig").innerHTML = svgOpen(960,290)+fsSVG(KB,{})+[[140,100],[255,100],[385,100],[495,100],[620,100],[760,100],[820,240]].map((pt,i)=>`<circle cx="${pt[0]}" cy="${pt[1]}" r="13" fill="#fff" stroke="#000" stroke-width="2"/>`+TX(pt[0],pt[1]+5,i+1,{size:13,weight:800,anchor:"middle"})).join("")+TX(150,286,"Svart probe på 0 V. Tallene 1–7 er målepunktene TP1–TP7.",{size:13,fill:"#333"})+"</svg>";
+  $("o3fig").innerHTML = svgOpen(380,170)+`<rect x="4" y="4" width="372" height="162" rx="10" fill="#fff" stroke="#000" stroke-width="2"/>`
+    + TX(16,28,"3~ Motor  ·  IEC 60034",{size:13,weight:700})+TX(16,58,"4,0 kW",{size:20,weight:800})+TX(130,58,"1445 o/min",{size:15})+TX(260,58,"50 Hz",{size:15})
+    + `<rect x="12" y="72" width="356" height="56" rx="6" fill="#fff" stroke="#000"/>`
+    + TX(22,96,"Δ / Y",{size:15,weight:700})+TX(110,96,"230 / 400 V",{size:15,weight:700})+TX(250,96,"13,9 / 8,0 A",{size:15,weight:700})
+    + TX(22,118,"kobling",{size:11})+TX(110,118,"spenning",{size:11})+TX(250,118,"merkestrøm",{size:11})
+    + TX(16,152,"cos φ 0,82  ·  IP55  ·  Isol. kl. F",{size:13})+"</svg>";
+  document.querySelectorAll("#oppgavetekst .ofig svg, #oppgavetekst .minis svg").forEach(s => { s.removeAttribute("width"); s.removeAttribute("height"); });
+})();
+
+/* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToPng(svg){
+  const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
+  const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0,0,w,h); cx.drawImage(img,0,0,w,h);
+  return [cv.toDataURL("image/png"), vb.width];
+}
+$("btnCopy").onclick = async () => {
+  const src = $("oppgavetekst"), clone = src.cloneNode(true);
+  const svgs = [...src.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<svgs.length;i++){
+    try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = svgs[i].closest(".minis") ? 110 : Math.min(640, Math.round(w*.75)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
+  }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".minis").forEach(m => { const t = document.createElement("table"); const tr = t.insertRow(); m.querySelectorAll("figure").forEach(f => { const td = tr.insertCell(); td.innerHTML = f.innerHTML; td.style.padding = "4px"; }); m.replaceWith(t); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1329 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Materiallære 4 – Varmebehandling</title>
+<style>
+/* Serie-mal fra leksjon 1–3: sticky navigasjon, én seksjon per lysbilde, stålgrå + oransje glød */
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#e0a800; --yellow-soft:#fff8db;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em; text-wrap:balance}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn:focus-visible{outline:3px solid var(--blue); outline-offset:2px}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:66ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2 > *{min-width:0}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg, .fig canvas{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.8rem; font-weight:600}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.hero > *{min-width:0}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.75rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.legend{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin:.2rem 0 .3rem}
+.legend i{display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:.4rem}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem; line-height:1.7}
+.tabs{display:flex; gap:.4rem; flex-wrap:wrap}
+.tabs .btn{font-size:.9rem; padding:.5rem 1rem}
+.phase3{display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem; margin-top:.8rem}
+.phase3 div{border-radius:10px; padding:.55rem .8rem; font-size:.9rem; background:var(--bg); border:1px solid var(--line)}
+.phase3 b{display:block; font-size:1.05rem}
+
+/* mikroskop */
+.micro{position:relative; width:min(270px,100%); margin:0 auto}
+.micro canvas{width:100%; aspect-ratio:1; border-radius:50%; border:7px solid var(--ink); background:#ccc; display:block}
+.micro .tag{position:absolute; left:50%; bottom:-.6rem; transform:translateX(-50%); background:var(--ink); color:var(--bg); font-size:.72rem; font-weight:700; padding:.15rem .6rem; border-radius:99px; white-space:nowrap}
+.mlegend{display:flex; flex-wrap:wrap; gap:.4rem .9rem; justify-content:center; font-size:.78rem; color:var(--muted); margin-top:1.1rem}
+.mlegend i{display:inline-block; width:14px; height:14px; border-radius:3px; vertical-align:-2px; margin-right:.3rem; border:1px solid var(--line)}
+.ba{display:grid; grid-template-columns:1fr auto 1fr; gap:.6rem; align-items:center}
+.ba .arrow{font-size:2rem; color:var(--orange); font-weight:800}
+
+/* Repetisjon */
+.flip{cursor:pointer; text-align:left; font:inherit; color:inherit; width:100%; min-height:9rem; display:flex; flex-direction:column; justify-content:space-between}
+.flip .q{font-weight:650; font-size:1.05rem}
+.flip .a{display:none; color:var(--green); font-weight:600; margin-top:.6rem}
+.flip.show .a{display:block}
+.flip .hint{font-size:.75rem; color:var(--muted); margin-top:.6rem}
+.flip.show .hint{display:none}
+
+/* Quiz */
+.quiz{display:grid; grid-template-columns:repeat(2,1fr); gap:.8rem}
+.qcard{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:.9rem 1rem}
+.qcard .qq{font-weight:650; margin-bottom:.5rem}
+.qcard .opts{display:flex; flex-wrap:wrap; gap:.3rem}
+.qcard .fb{font-size:.85rem; margin-top:.5rem; font-weight:600}
+.qcard.right{border-color:var(--green); background:var(--green-soft)}
+.qcard.wrong{border-color:var(--red)}
+
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); height:2rem}
+.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
+.fasit b{color:var(--green)}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.oppfig{max-width:680px; margin:.4rem 0; background:#fff; border:1px solid #999; border-radius:6px}
+.oppfig svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr 1fr}
+  .readout{grid-template-columns:1fr 1fr}
+  .quiz{grid-template-columns:1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4,.phase3{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .ba{grid-template-columns:1fr} .ba .arrow{transform:rotate(90deg); text-align:center} }
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Materiallære · <span>Leksjon 4</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- FORSIDE -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Materiallære</div>
+      <h1>Leksjon 4<br>Varmebehandling</h1>
+      <p class="lead">Samme stang C45 kan bli myk nok til å dreie, hard nok til å skjære i annet stål – eller seig nok til å bli en bolt. Forskjellen er bare temperatur og tid.</p>
+      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <ol class="goals">
+        <li>forklare de tre trinnene i all varmebehandling: <b>oppvarming, holding og avkjøling</b></li>
+        <li>bruke et forenklet <b>jern-karbon-diagram</b> til å finne riktig temperatur</li>
+        <li>forklare <b>herding</b> og hvorfor stålet trenger nok karbon</li>
+        <li>forklare hvorfor herdet stål må <b>anløpes</b>, og lese <b>anløpsfarger</b></li>
+        <li>forklare <b>seigherding</b> og hva +QT og boltklasse 10.9 betyr</li>
+        <li>velge mellom <b>normalisering, bløtgløding, spenningsfriglødning og rekrystallisering</b></li>
+        <li>forklare <b>settherding</b> og regne ut omtrentlig herdedybde</li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Kompetansemål (PIN02-03, Teknologi)</h3>
+        <p><i>«vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer»</i></p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Støtter også valg av bearbeidingsmetode ut fra materiale. Bygger på leksjon 2 (austenitt, martensitt, herdesimulatoren) og leksjon 3 (hardhetsmåling, Charpy, sertifikat).</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1</th></tr>
+          <tr><td>0–5 min</td><td>Repetisjon fra leksjon 2 og 3</td></tr>
+          <tr><td>5–18 min</td><td>Del 1–2: tre trinn, inne i stålet</td></tr>
+          <tr><td>18–30 min</td><td>Oppgave 1 og 2</td></tr>
+          <tr><td>30–45 min</td><td>Del 3: herding</td></tr>
+          <tr><th colspan="2">Time 2</th></tr>
+          <tr><td>0–12 min</td><td>Del 4–5: anløping, seigherding</td></tr>
+          <tr><td>12–20 min</td><td>Oppgave 3</td></tr>
+          <tr><td>20–32 min</td><td>Del 6–7: gløding, settherding</td></tr>
+          <tr><td>32–36 min</td><td>Del 8: velg riktig behandling (i plenum)</td></tr>
+          <tr><td>36–42 min</td><td>Oppgave 4 (oppgave 5 og 6 er ekstra)</td></tr>
+          <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+      </div>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REPETISJON -->
+<section class="slide" id="rep" data-nav="Repetisjon">
+  <div class="wrap">
+    <div class="kicker">Repetisjon · ca. 5 min</div>
+    <h2>Husker du?</h2>
+    <p class="lead">Svar muntlig med sidemannen. Klikk på kortet for å se svaret.</p>
+    <div class="grid4" style="margin-top:1.2rem">
+      <button class="card flip"><span class="q">Hva er austenitt?</span><span class="a">Stålets struktur når det er glødende varmt. Karbonet er løst opp i jernet (leksjon 2).</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva er martensitt?</span><span class="a">Svært hard og sprø struktur. Oppstår når austenitt kjøles så raskt at karbonet blir låst i gitteret.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvilken hardhetsmåling brukes på herdet stål på verkstedet?</span><span class="a">Rockwell C (HRC) – tallet leses rett av (leksjon 3).</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Blir herdet stål stivere (høyere E-modul)?</span><span class="a">Nei. Det blir sterkere og hardere, men like stivt: ca. 210 GPa (leksjon 3).</span><span class="hint">Klikk for svar</span></button>
+    </div>
+    <div class="tip o"><b>I dag:</b> Vi styrer strukturen i stålet med temperatur og tid – og måler resultatet med hardhetsmålingen fra leksjon 3.</div>
+  </div>
+</section>
+
+<!-- DEL 1 TRE TRINN -->
+<section class="slide" id="trinn" data-nav="1 Tre trinn">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 6 min</div>
+    <h2>All varmebehandling har tre trinn</h2>
+    <p class="lead"><b>Varmebehandling</b> = å varme opp og kjøle ned metall på en bestemt måte for å endre egenskapene. Formen er den samme etterpå – det er innsiden som endres.</p>
+    <div class="grid2">
+      <div class="fig">
+        <svg id="ovnSvg" viewBox="0 0 520 330" role="img" aria-label="Ovn og herdekar"></svg>
+        <div class="controls no-print" id="medBtns" style="margin-top:.4rem"></div>
+        <div class="controls no-print"><button class="btn orange" id="ovnGo">▶ Start varmebehandlingen</button></div>
+      </div>
+      <div class="fig">
+        <svg id="ttSvg" viewBox="0 0 520 330" role="img" aria-label="Temperatur-tid-diagram"></svg>
+        <div class="status info" id="ovnTxt">Velg avkjøling og trykk Start.</div>
+      </div>
+    </div>
+    <div class="phase3">
+      <div style="border-top:5px solid var(--red)"><b>1 · Oppvarming</b>Til riktig temperatur. Jevnt og ikke for fort, ellers kan tykke deler sprekke.</div>
+      <div style="border-top:5px solid var(--orange)"><b>2 · Holding</b><b style="display:inline;font-size:.9rem">Holdetid</b> = tiden delen står på temperaturen, så den blir like varm helt inn i kjernen. Tommelfinger: ca. 1 min per mm tykkelse, minst 20 min.</div>
+      <div style="border-top:5px solid var(--blue)"><b>3 · Avkjøling</b>Farten avgjør resultatet. <b style="display:inline;font-size:.9rem">Bråkjøling</b> = svært rask avkjøling i vann eller olje. Væsken kalles <b style="display:inline;font-size:.9rem">herdemiddel</b>.</div>
+    </div>
+    <div class="fig" style="margin-top:1rem">
+      <div style="font-weight:650">Glødefarger: slik ser smeden temperaturen</div>
+      <svg id="glowScale" viewBox="0 0 900 96" role="img" aria-label="Glødefarger fra 500 til 1200 grader"></svg>
+      <p class="caption" style="margin:0">Fargene ses best i halvmørke. I dagslys ser stålet kaldere ut enn det er. I ovner måles temperaturen med en temperaturføler – det er mer nøyaktig.</p>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 2 INNE I STÅLET -->
+<section class="slide" id="inni" data-nav="2 Inne i stålet">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 7 min</div>
+    <h2>Hva skjer inne i stålet?</h2>
+    <p class="lead"><b>Jern-karbon-diagrammet</b> er et kart: det viser hvilken struktur stålet har ved hver temperatur og hvert karboninnhold. Vi bruker bare «stålhjørnet» av kartet.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div class="controls no-print" id="fcSteel" style="margin-top:0"></div>
+        <svg id="fcSvg" viewBox="0 0 580 420" role="img" aria-label="Forenklet jern-karbon-diagram" style="margin-top:.4rem"></svg>
+        <div class="controls">
+          <label for="fcT">Temperatur:</label><input type="range" id="fcT" min="20" max="1100" step="5" value="20">
+          <span class="pill" id="fcTv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">20 °C</span>
+        </div>
+        <div class="controls no-print" id="fcBands"><label>Vis temperatur for:</label></div>
+      </div>
+      <div>
+        <div class="fig">
+          <div class="micro"><canvas id="fcMicro" width="220" height="220"></canvas><span class="tag" id="fcTag">mikroskop ×500</span></div>
+          <div class="mlegend"><span><i style="background:#e9ecef"></i>ferritt</span><span><i style="background:repeating-linear-gradient(45deg,#495057 0 3px,#ced4da 3px 6px)"></i>perlitt</span><span><i style="background:#ffc58a"></i>austenitt</span><span><i style="background:repeating-linear-gradient(60deg,#5a626a 0 2px,#adb5bd 2px 7px)"></i>martensitt</span></div>
+          <div class="controls no-print" style="justify-content:center"><span style="font-size:.85rem;color:var(--muted)">Avkjøl:</span>
+            <button class="btn small" data-cool="ovn">🔥 i ovnen (sakte)</button><button class="btn small" data-cool="luft">💨 i luft</button><button class="btn small" data-cool="vann">💧 i vann</button></div>
+          <div class="status info" id="fcTxt"></div>
+        </div>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card"><b>A1 = 727 °C</b><br>Over denne linja blir perlitten til austenitt. Gjelder alt stål.</div>
+      <div class="card"><b>A3-linja</b><br>Over denne er <i>alt</i> blitt austenitt. Jo mer karbon (opp til 0,8 %), jo lavere ligger den. C45: ca. 775 °C.</div>
+      <div class="card"><b>Overoppheting</b><br>For høy temperatur eller for lang tid gjør at austenittkornene vokser. Grove korn gir sprøtt stål.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 3 HERDING -->
+<section class="slide" id="herding" data-nav="3 Herding">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 15 min</div>
+    <h2>Herding: et kappløp mot klokka</h2>
+    <p class="lead"><b>Herding</b> = varme til austenitt og bråkjøle. Stålet må forbi «nesa» før perlitt rekker å dannes. Da blir karbonet låst og vi får martensitt. Under <b>M<sub>s</sub></b> (martensitt-start) begynner martensitten å dannes.</p>
+    <div class="grid2">
+      <div class="fig">
+        <div class="controls no-print" id="hSteel" style="margin-top:0"></div>
+        <div class="controls no-print" id="hMed" style="margin-top:.4rem"></div>
+        <svg id="hChart" viewBox="0 0 560 390" role="img" aria-label="Forenklet avkjølingsdiagram" style="margin-top:.4rem"></svg>
+        <div class="legend"><span><i style="border-color:var(--red)"></i>overflaten</span><span><i style="border-color:var(--blue);border-top-style:dashed"></i>kjernen (midten)</span><span><i style="border-color:var(--orange);border-top-width:8px;opacity:.5"></i>perlitt dannes (mykt)</span></div>
+      </div>
+      <div class="fig">
+        <div style="font-weight:650">Rundstang Ø30 mm, kappet på tvers etter herding</div>
+        <div class="grid2" style="grid-template-columns:auto 1fr; gap:1rem; align-items:center; margin-top:.5rem">
+          <canvas id="hCross" width="240" height="240" style="width:min(220px,40vw); border-radius:50%"></canvas>
+          <svg id="hScale" viewBox="0 -6 120 260" style="width:90px" role="img" aria-label="Fargeskala hardhet"></svg>
+        </div>
+        <div class="controls no-print"><button class="btn orange" id="hGo">▶ Bråkjøl!</button></div>
+        <div class="readout">
+          <div><span>Overflate</span><b id="hS">–</b></div>
+          <div><span>Kjerne</span><b id="hC">–</b></div>
+          <div><span>Herdet dybde</span><b id="hD">–</b></div>
+          <div><span>Sprekkfare</span><b id="hR">–</b></div>
+        </div>
+        <div class="status info" id="hTxt">Velg stål og herdemiddel og trykk Bråkjøl.</div>
+      </div>
+    </div>
+    <div class="grid4" style="margin-top:1rem">
+      <div class="card"><b>Nok karbon</b><br>Under ca. 0,3 % C blir stålet nesten ikke hardere. S235 og S355 er ikke laget for herding.</div>
+      <div class="card"><b>Herdbarhet</b><br>Hvor dypt stålet kan herdes. Legeringselementer (Cr, Mo, Mn) flytter nesa til høyre og gir mer tid.</div>
+      <div class="card"><b>Mildt middel er best</b><br>Vann er raskest, men gir store indre spenninger. Bruk det mildeste midlet som rekker forbi nesa.</div>
+      <div class="card"><b>Sprekker og kast</b><br>Overflaten krymper før kjernen. Delen kan sprekke eller <b>kaste seg</b> (bli skjev). Skarpe hjørner og hull øker faren.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 4 ANLØPING -->
+<section class="slide" id="anlop" data-nav="4 Anløping">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 7 min</div>
+    <h2>Anløping: litt mindre hardt, mye mindre sprøtt</h2>
+    <p class="lead">Rett etter herding er stålet hardt som glass – og nesten like sprøtt. <b>Anløping</b> = varme det herdede stålet opp igjen til 150–650 °C. Noe av karbonet slipper fri, og stålet blir seigere. Jo varmere, jo mykere og seigere.</p>
+    <div class="grid2">
+      <div class="fig">
+        <svg id="anChart" viewBox="0 0 560 360" role="img" aria-label="Hardhet og slagseighet mot anløpstemperatur"></svg>
+        <div class="controls">
+          <label for="anT">Anløpstemperatur:</label><input type="range" id="anT" min="20" max="650" step="10" value="200">
+          <span class="pill" id="anTv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">200 °C</span>
+        </div>
+        <div class="readout" style="grid-template-columns:repeat(3,1fr)">
+          <div><span>Hardhet</span><b id="anH">–</b></div>
+          <div><span>Slagseighet KV</span><b id="anK">–</b></div>
+          <div><span>Passer til</span><b id="anU" style="font-size:.9rem">–</b></div>
+        </div>
+        <p class="caption">C45 vannherdet, typiske forenklede verdier. Holdetid ca. 1–2 timer i ovn.</p>
+      </div>
+      <div class="fig">
+        <div style="font-weight:650">Anløpe en meisel med farger</div>
+        <svg id="chisel" viewBox="0 0 560 210" role="img" aria-label="Meisel som anløpes"></svg>
+        <div class="controls">
+          <label for="chT">Ønsket farge på eggen:</label><input type="range" id="chT" min="200" max="320" step="5" value="270">
+          <span class="pill" id="chTv" style="font-size:1rem">270 °C</span>
+        </div>
+        <div class="controls no-print"><button class="btn orange" id="chGo">🔥 Varm opp bak eggen</button></div>
+        <div class="status info" id="chTxt">Herdet meisel, eggen er blankslipt. Varm opp bak eggen og se fargene vandre fram.</div>
+        <table class="t" id="anTab" style="font-size:.82rem; margin-top:.6rem"></table>
+        <p class="caption">Fargene er et tynt lag oksid (rust-hinne) som vokser med temperaturen. Bare på blank overflate. Typiske verdier.</p>
+      </div>
+    </div>
+    <div class="tip o"><b>Anløp med en gang!</b> Herdet stål er fullt av <b>restspenninger</b> – spenninger som blir igjen inne i delen uten ytre last. Venter du flere timer, kan delen sprekke av seg selv.</div>
+  </div>
+</section>
+
+<!-- DEL 5 SEIGHERDING -->
+<section class="slide" id="seig" data-nav="5 Seigherding">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 5 min</div>
+    <h2>Seigherding = herding + høy anløping</h2>
+    <p class="lead">Herd først, og anløp så ved 500–680 °C – alltid under A1. Resultatet er sterkt <i>og</i> seigt – det beste av begge. Brukes til aksler, bolter, tannhjul og maskindeler med store laster og støt.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div class="controls no-print" id="qtBtns" style="margin-top:0"></div>
+        <svg id="qtBars" viewBox="0 0 640 300" role="img" aria-label="Egenskaper for 42CrMo4 i tre tilstander" style="margin-top:.4rem"></svg>
+        <div class="status info" id="qtTxt"></div>
+        <p class="caption">42CrMo4, typiske verdier. KV ved +20 °C.</p>
+      </div>
+      <div>
+        <div class="fig">
+          <div style="font-weight:650">Seigherding av 42CrMo4</div>
+          <svg id="qtCurve" viewBox="0 0 460 210" role="img" aria-label="Temperaturforløp seigherding"></svg>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Leveringstilstand på sertifikatet</h3>
+          <table class="t" style="font-size:.88rem">
+            <tr><td><b>+N</b></td><td>normalisert (del 6) – f.eks. S355J2+N</td></tr>
+            <tr><td><b>+A</b></td><td>bløtglødet, mykt for maskinering (del 6)</td></tr>
+            <tr><td><b>+QT</b></td><td>seigherdet (Q = quenched, bråkjølt · T = tempered, anløpt)</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card"><b>Bolt 8.8</b><br>8 × 100 = <b>R<sub>m</sub> 800 MPa</b><br>0,8 × 800 = <b>R<sub>e</sub> 640 MPa</b></div>
+      <div class="card"><b>Bolt 10.9</b><br>10 × 100 = <b>R<sub>m</sub> 1000 MPa</b><br>0,9 × 1000 = <b>R<sub>e</sub> 900 MPa</b></div>
+      <div class="card"><b>Bolt 12.9</b><br>12 × 100 = <b>R<sub>m</sub> 1200 MPa</b><br>0,9 × 1200 = <b>R<sub>e</sub> 1080 MPa</b></div>
+    </div>
+    <p class="caption">Alle disse boltene er seigherdet. Første tall × 100 = strekkfasthet. Andre tall = flytegrensen i tideler av strekkfastheten.</p>
+  </div>
+</section>
+
+<!-- DEL 6 GLØDING -->
+<section class="slide" id="gloding" data-nav="6 Gløding">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 7 min</div>
+    <h2>Gløding og normalisering</h2>
+    <p class="lead"><b>Gløding</b> = varme opp, holde og kjøle <i>sakte</i>. Målet er ikke hardhet, men å gjøre stålet mykere, jevnere eller fritt for spenninger. Velg en behandling:</p>
+    <div class="tabs no-print" id="glTabs"></div>
+    <div class="grid2" style="margin-top:.8rem">
+      <div>
+        <div class="fig">
+          <svg id="glCurve" viewBox="0 0 540 280" role="img" aria-label="Temperaturforløp"></svg>
+        </div>
+        <div class="card" id="glInfo" style="margin-top:1rem"></div>
+      </div>
+      <div class="fig">
+        <div id="glMicroBox">
+          <div class="ba">
+            <div><div class="micro"><canvas id="glA" width="200" height="200"></canvas><span class="tag">før</span></div></div>
+            <div class="arrow">→</div>
+            <div><div class="micro"><canvas id="glB" width="200" height="200"></canvas><span class="tag">etter</span></div></div>
+          </div>
+        </div>
+        <svg id="glStress" viewBox="0 0 560 300" role="img" aria-label="Sveiset del med restspenninger" hidden></svg>
+        <div class="controls no-print" style="justify-content:center"><button class="btn orange" id="glGo">▶ Kjør behandlingen</button></div>
+        <div class="status info" id="glTxt"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 7 SETTHERDING -->
+<section class="slide" id="sett" data-nav="7 Settherding">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 6 min</div>
+    <h2>Settherding: hard overflate, seig kjerne</h2>
+    <p class="lead">Et tannhjul må tåle slitasje på overflaten og støt i kjernen. Løsning: start med et seigt lavkarbonstål (f.eks. <b>16MnCr5</b>), og la karbon vandre inn i overflaten i en ovn med karbonrik gass ved ca. 930 °C. Dette kalles <b>innsetting</b>. Etterpå herdes og lavanløpes delen (ca. 180 °C).</p>
+    <div class="grid2">
+      <div class="fig">
+        <svg id="stDots" viewBox="0 0 560 230" role="img" aria-label="Karbon vandrer inn i overflaten"></svg>
+        <div class="controls">
+          <label for="stT">Tid i ovnen:</label><input type="range" id="stT" min="0" max="10" step="0.5" value="4">
+          <span class="pill" id="stTv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">4 h</span>
+          <button class="btn orange small no-print" id="stGo">▶ Kjør tiden</button>
+        </div>
+        <svg id="stGear" viewBox="0 0 560 220" role="img" aria-label="Tannhjul med herdet sjikt" style="margin-top:.6rem"></svg>
+      </div>
+      <div class="fig">
+        <svg id="stChart" viewBox="0 0 560 360" role="img" aria-label="Hardhet mot dybde"></svg>
+        <div class="readout" style="grid-template-columns:repeat(3,1fr)">
+          <div><span>Herdedybde (550 HV)</span><b id="stD">–</b></div>
+          <div><span>Overflate</span><b id="stS">–</b></div>
+          <div><span>Kjerne</span><b id="stC">–</b></div>
+        </div>
+        <div class="steps" id="stSteps"></div>
+        <p class="caption"><b>Herdedybde</b> = dybden der hardheten har falt til 550 HV (målt med Vickers, leksjon 3). Tommelfingerregel ved ca. 930 °C: <b>dybde ≈ 0,5 · √t</b> (mm, t i timer). Forenklet.</p>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card"><b>Induksjonsherding</b>
+        <svg id="indSvg" viewBox="0 0 300 110" role="img" aria-label="Induksjonsherding av aksel" style="width:100%;margin:.3rem 0"></svg>
+        <span style="font-size:.9rem">En strømspole varmer bare overflaten på sekunder, og vann spyler rett etter. For C45 og 42CrMo4: aksler, lagerbaner.</span></div>
+      <div class="card"><b>Flammeherding</b><br><span style="font-size:.9rem">Som induksjon, men med gassflamme. Enkelt utstyr – brukes på store deler som skinner og store tannhjul.</span></div>
+      <div class="card"><b>Nitrering</b><br><span style="font-size:.9rem">Nitrogen vandrer inn ved ca. 500–570 °C. Lav temperatur gir nesten ingen kast. Tynt, svært hardt lag (0,1–0,6 mm).</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 8 VELG -->
+<section class="slide" id="velg" data-nav="8 Velg">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 4 min · i plenum</div>
+    <h2>Velg riktig varmebehandling</h2>
+    <p class="lead">Klikk på svaret ditt. Diskuter med sidemannen først!</p>
+    <div class="quiz" id="quiz"></div>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="status info" id="quizScore" style="margin:0">0 av 7 riktige</div>
+      <div class="tip" style="margin:0"><b>Uønsket herding:</b> Ved sveising varmes stålet ved sveisen over A1 og kjøles raskt av resten av plata. Med høy CEV (leksjon 2) blir det martensitt og sprekker i varmepåvirket sone. Derfor <b>forvarmer</b> vi – det gir langsommere avkjøling.</div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <ol style="font-size:1.05rem">
+          <li>Tre trinn: <b>oppvarming → holding → avkjøling</b>. Farten på avkjølingen avgjør resultatet.</li>
+          <li>Over <b>A1 = 727 °C</b> begynner stålet å bli austenitt. Over <b>A3</b> er alt austenitt. For varmt gir grove korn.</li>
+          <li><b>Herding</b>: austenitt + bråkjøling → martensitt. Trenger over ca. 0,3 % C. Legert stål kan herdes i olje eller luft.</li>
+          <li><b>Anløping</b> 150–650 °C rett etter herding: mindre sprøtt. Anløpsfarger: gul → brun → purpur → blå.</li>
+          <li><b>Seigherding</b> (+QT) = herding + anløping 500–680 °C: sterkt og seigt. Bolter 8.8–12.9.</li>
+          <li><b>Normalisering</b> (+N): fine, jevne korn. <b>Bløtgløding</b> (+A): mykest, for maskinering. <b>Spenningsfriglødning</b>: fjerner restspenninger. <b>Rekrystallisering</b>: myker opp kaldformet stål.</li>
+          <li><b>Settherding</b>: karbon inn i overflaten, så herding. Hard overflate, seig kjerne. Dybde ≈ 0,5 · √t.</li>
+        </ol>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>varmebehandling</span><span>holdetid</span><span>bråkjøling</span><span>herdemiddel</span><span>glødefarger</span><span>jern-karbon-diagram</span><span>A1 og A3</span><span>overoppheting</span><span>herding</span><span>Ms</span><span>herdbarhet</span><span>kast</span><span>anløping</span><span>anløpsfarger</span><span>restspenninger</span><span>seigherding +QT</span><span>normalisering +N</span><span>bløtgløding +A</span><span>spenningsfriglødning</span><span>rekrystallisering</span><span>settherding</span><span>herdedybde</span><span>induksjonsherding</span><span>nitrering</span></div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Neste leksjon</h3>
+          <p style="margin:0"><b>Leksjon 5 – Aluminium og andre ikke-jernmetaller:</b> Al-legeringer, kobber, messing, bronse og titan. Aluminium kan også herdes – men på en helt annen måte enn stål.</p>
+        </div>
+        <p class="caption">Slå opp mer i <a href="https://verkstedhandboka.vercel.app/#materialer" target="_blank" rel="noopener">Verkstedhåndboka, emne 7 Materialer</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 45 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Materiallære 4 – Varmebehandling · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <p style="font-size:.9rem">Du trenger bare penn og kalkulator (mobil/PC er greit).</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Les varmebehandlingskurvene <small>Time 1 · 6 min</small></h3>
+        <p>Figuren viser tre varmebehandlinger av C45. Tiden står i minutter.</p>
+        <div class="oppfig"><svg id="oppTT" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <table class="ot">
+          <tr><th style="width:16%">Kurve</th><th>Høyeste temperatur</th><th>Holdetid</th><th>Avkjøling (rask / middels / langsom)</th><th>Navn på behandlingen</th></tr>
+          <tr><td>A</td><td class="tom"></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr>
+          <tr><td>B</td><td class="tom"></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr>
+          <tr><td>C</td><td class="tom"></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> A: 850 °C, 20 min, rask (bråkjølt), deretter anløpt ved 600 °C i 60 min → <b>seigherding</b> (herding + høy anløping). B: 870 °C, 20 min, middels (luft) → <b>normalisering</b>. C: 700 °C, 180 min (3 h), langsom i ovnen → <b>bløtgløding</b> (under A1).</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Hva skjer inne i C45? <small>Time 1 · 6 min</small></h3>
+        <p>a) Fyll ut strukturen i C45 (0,45 % C) ved de ulike temperaturene. Bruk: ferritt, perlitt, austenitt.</p>
+        <table class="ot">
+          <tr><th style="width:30%">Temperatur</th><th>Struktur</th></tr>
+          <tr><td>20 °C (romtemperatur)</td><td class="tom"></td></tr>
+          <tr><td>750 °C</td><td class="tom"></td></tr>
+          <tr><td>850 °C</td><td class="tom"></td></tr>
+        </table>
+        <p>b) C45 varmes til 850 °C og avkjøles på tre måter. Fyll ut.</p>
+        <table class="ot">
+          <tr><th style="width:30%">Avkjøling</th><th>Struktur</th><th>Hard eller myk?</th></tr>
+          <tr><td>I vann</td><td class="tom"></td><td class="tom"></td></tr>
+          <tr><td>I luft</td><td class="tom"></td><td class="tom"></td></tr>
+          <tr><td>Sakte i ovnen</td><td class="tom"></td><td class="tom"></td></tr>
+        </table>
+        <p>c) En elev varmer C45 til 1050 °C «for å være sikker». Hva er problemet?</p>
+        <div class="svar"></div>
+        <p>d) Hvorfor blir ikke S235 hardt når det bråkjøles?</p>
+        <div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 20 °C: ferritt + perlitt. 750 °C: ferritt + austenitt (mellom A1 og A3). 850 °C: bare austenitt. b) Vann: martensitt, hard (ca. 58 HRC). Luft: fin ferritt + perlitt, ganske myk (ca. 200 HB). Ovn: grov ferritt + perlitt, mykest (ca. 180 HB). c) Overoppheting: austenittkornene vokser og blir grove. Stålet blir sprøtt og kan sprekke. d) For lite karbon (ca. 0,17 %). Det trengs over ca. 0,3 % C for å få hard martensitt.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Herding og anløping <small>Time 2 · 8 min</small></h3>
+        <p>Kurven viser hardheten til vannherdet C45 etter anløping.</p>
+        <div class="oppfig"><svg id="oppAn" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <p>a) Hvor hardt er stålet etter anløping ved 300 °C?</p><div class="svar"></div>
+        <p>b) Hvilken anløpstemperatur gir 35 HRC?</p><div class="svar"></div>
+        <p>c) Stålet anløpes ved 600 °C. Les av HRC. Bruk tabellen (24 HRC ≈ 250 HB) og R<sub>m</sub> ≈ 3,3 · HB til å anslå strekkfastheten.</p><div class="svar"></div><div class="svar"></div>
+        <p>d) Du anløper en blankslipt meisel og ser at eggen er blitt <b>mørkeblå</b>. Ca. hvilken temperatur? Er meiselen nå for hard eller for myk?</p><div class="svar"></div>
+        <p>e) Hvorfor skal stålet anløpes med en gang etter herding?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) ca. 50 HRC. b) ca. 500 °C. c) ca. 24 HRC ≈ 250 HB → R<sub>m</sub> ≈ 3,3 · 250 ≈ <b>825 MPa</b>. d) ca. 295–300 °C. For myk for en meisel (blått passer til fjærer). Den må herdes på nytt. e) Herdet stål har store restspenninger og er sprøtt. Det kan sprekke av seg selv hvis det blir liggende.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Settherding <small>Time 2 · 6 min</small></h3>
+        <p>Diagrammet viser hardheten under overflaten på to tannhjul av 16MnCr5 etter settherding. Herdedybden er der kurven krysser 550 HV.</p>
+        <div class="oppfig"><svg id="oppSt" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <table class="ot">
+          <tr><th style="width:55%">Spørsmål</th><th>Svar</th></tr>
+          <tr><td>a) Les av herdedybden for kurve A og kurve B</td><td class="tom"></td></tr>
+          <tr><td>b) Hvor hard er overflaten (HV)? Og kjernen?</td><td class="tom"></td></tr>
+          <tr><td>c) Bruk dybde ≈ 0,5 · √t. Hvor mange timer sto tannhjul A og B i ovnen?</td><td class="tom"></td></tr>
+          <tr><td>d) Tegningen krever 1,2 mm herdedybde. Hvor lang tid trengs? (t = (dybde / 0,5)²)</td><td class="tom"></td></tr>
+          <tr><td>e) Hvorfor brukes 16MnCr5 og ikke C45 som er herdet helt gjennom?</td><td class="tom"></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) A ≈ 0,7 mm, B ≈ 1,4 mm. b) Overflate ca. 700 HV (≈ 60 HRC). Kjerne ca. 350 HV. c) A: (0,7/0,5)² ≈ 2 h. B: (1,4/0,5)² ≈ 8 h. d) (1,2/0,5)² = 2,4² = <b>5,8 h</b> (ca. 5 h 45 min). e) Et gjennomherdet tannhjul blir sprøtt og kan knekke tenner ved støt. 16MnCr5 gir hard overflate mot slitasje og seig kjerne.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Velg varmebehandling <small>Ekstra · 5 min</small></h3>
+        <p>Velg blant: herding + lav anløping · seigherding · normalisering · bløtgløding · spenningsfriglødning · rekrystallisasjonsgløding · settherding</p>
+        <table class="ot">
+          <tr><th style="width:62%">Situasjon</th><th>Varmebehandling</th></tr>
+          <tr><td>1. Et sveist stativ skal fres nøyaktig etterpå, og må ikke slå seg</td><td class="tom"></td></tr>
+          <tr><td>2. En aksel i 42CrMo4 skal tåle store laster og støt</td><td class="tom"></td></tr>
+          <tr><td>3. En stanse skal være så hard som mulig, men ikke knekke</td><td class="tom"></td></tr>
+          <tr><td>4. Et smidd emne har grove, ujevne korn</td><td class="tom"></td></tr>
+          <tr><td>5. Rundstål av C60 er for hardt å dreie</td><td class="tom"></td></tr>
+          <tr><td>6. En kaldbøyd plate har blitt hard og sprekker ved neste bøying</td><td class="tom"></td></tr>
+          <tr><td>7. Et kjedehjul trenger slitesterk overflate og seig kjerne</td><td class="tom"></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> 1 spenningsfriglødning · 2 seigherding · 3 herding + lav anløping · 4 normalisering · 5 bløtgløding · 6 rekrystallisasjonsgløding · 7 settherding (eller induksjonsherding).</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Boltklasser <small>Ekstra · 5 min</small></h3>
+        <p>a) Regn ut R<sub>m</sub> og R<sub>e</sub> for en bolt i klasse 8.8 og en i klasse 12.9.</p>
+        <div class="svar"></div><div class="svar"></div>
+        <p>b) En M12-bolt har <b>spenningsareal</b> 84,3 mm² (det effektive tverrsnittet i gjengene). Hvor stor kraft tåler en 10.9-bolt før den begynner å flyte? (F = R<sub>e</sub> · A, leksjon 3)</p>
+        <div class="svar"></div><div class="svar"></div>
+        <p>c) Hvorfor er boltene seigherdet og ikke bare herdet?</p>
+        <div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 8.8: R<sub>m</sub> = 800 MPa, R<sub>e</sub> = 640 MPa. 12.9: R<sub>m</sub> = 1200 MPa, R<sub>e</sub> = 1080 MPa. b) R<sub>e</sub> = 900 MPa. F = 900 · 84,3 = 75 870 N ≈ <b>76 kN</b>. c) Bare herdet stål er sprøtt. En bolt får støt og bøying og må kunne strekke seg litt uten å knekke.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 3 min</small></h3>
+        <p>1. Hvilke tre trinn har all varmebehandling?</p><div class="svar"></div>
+        <p>2. Hvorfor må herdet stål anløpes?</p><div class="svar"></div>
+        <p>3. Hva er forskjellen på herding og settherding?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) Oppvarming, holding, avkjøling. 2) Herdet stål er sprøtt og har restspenninger. Anløping gjør det seigere. 3) Herding gjør stålet hardt med karbonet det allerede har. Settherding tilfører karbon i overflaten først, så bare overflaten blir hard og kjernen forblir seig.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const fmtT = (x, d=2) => x.toLocaleString("nb-NO", {maximumFractionDigits:d});
+const clamp = (x,a,b) => Math.max(a, Math.min(b, x));
+const RM = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+function el(tag, attrs, parent, text){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function setStatus(id, txt, cls){ const s=$(id); s.textContent=txt; s.className="status "+cls; }
+function arrowDefs(svg, id, color){ const d = el("defs",{},svg); const m = el("marker",{id, viewBox:"0 0 10 10", refX:"8", refY:"5", markerWidth:"5", markerHeight:"5", orient:"auto-start-reverse"}, d); el("path",{d:"M0 0 L10 5 L0 10 z", style:`fill:${color}`}, m); }
+function interp(pts, x){ if (x<=pts[0][0]) return pts[0][1]; for (let i=1;i<pts.length;i++){ if (x<=pts[i][0]){ const [x0,y0]=pts[i-1],[x1,y1]=pts[i]; return y0+(y1-y0)*(x-x0)/(x1-x0); } } return pts[pts.length-1][1]; }
+function axes(svg, o){
+  const xmin = o.xmin||0, ymin = o.ymin||0, X = v => o.x0 + (v-xmin)/(o.xmax-xmin)*(o.x1-o.x0), Y = v => o.y0 - (v-ymin)/(o.ymax-ymin)*(o.y0-o.y1);
+  const g = el("g",{},svg);
+  o.yt.forEach(v => { el("line",{x1:o.x0,y1:Y(v),x2:o.x1,y2:Y(v),style:"stroke:var(--line)"},g); el("text",{x:o.x0-7,y:Y(v)+4,"text-anchor":"end","font-size":12,style:"fill:var(--muted)"},g,fmtT(v,2)); });
+  o.xt.forEach(v => { el("line",{x1:X(v),y1:o.y0,x2:X(v),y2:o.y0+5,style:"stroke:var(--ink)"},g); el("text",{x:X(v),y:o.y0+19,"text-anchor":"middle","font-size":12,style:"fill:var(--muted)"},g,o.xf?o.xf(v):fmtT(v,2)); });
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x1,y2:o.y0,style:"stroke:var(--ink);stroke-width:2"},g);
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x0,y2:o.y1-8,style:"stroke:var(--ink);stroke-width:2"},g);
+  el("text",{x:o.x1,y:o.y0+36,"text-anchor":"end","font-size":13,"font-weight":600,style:"fill:var(--ink)"},g,o.xl);
+  el("text",{x:o.x0+4,y:o.y1-14,"font-size":13,"font-weight":600,style:"fill:var(--ink)"},g,o.yl);
+  return {X, Y};
+}
+function hex2rgb(h){ h=h.replace("#",""); return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)]; }
+function rgbStr(c){ return `rgb(${c.map(v=>Math.round(v)).join(",")})`; }
+function colorScale(stops, x){ if (x<=stops[0][0]) return rgbStr(hex2rgb(stops[0][1])); for (let i=1;i<stops.length;i++){ if (x<=stops[i][0]){ const a=hex2rgb(stops[i-1][1]), b=hex2rgb(stops[i][1]), t=(x-stops[i-1][0])/(stops[i][0]-stops[i-1][0]); return rgbStr(a.map((v,k)=>v+(b[k]-v)*t)); } } return rgbStr(hex2rgb(stops[stops.length-1][1])); }
+const GLOW = [[450,"#8a939c"],[550,"#5a2a22"],[630,"#7a1f14"],[700,"#a3220f"],[780,"#c9300f"],[850,"#e2470f"],[900,"#f26a12"],[1000,"#f99a2a"],[1100,"#fcc85a"],[1200,"#fff1b0"]];
+const glow = T => colorScale(GLOW, T);
+const TEMPER = [[190,"#c9cdd2"],[205,"#ece2b5"],[220,"#f0dc82"],[230,"#e8c55a"],[240,"#d6a33a"],[255,"#b7792b"],[265,"#9c4a2a"],[275,"#7b2d5b"],[285,"#5a2d82"],[295,"#2b3f8f"],[310,"#3d6fb5"],[330,"#7e9bb5"],[360,"#8e969c"]];
+function steelColor(T){ if (T<190) return "#c9cdd2"; if (T<=360) return colorScale(TEMPER,T); if (T<480) return "#7d858c"; return glow(T); }
+const HARD = [[130,"#74c0fc"],[300,"#ffd43b"],[500,"#ff922b"],[700,"#e03131"],[800,"#a61e4d"]];
+const hvColor = hv => colorScale(HARD, hv);
+const HV_HRC = [[250,23],[265,24],[315,32],[420,43],[515,50],[600,55],[650,58],[700,60],[760,62],[865,66]];
+function hvTxt(hv){ return hv>=250 ? `${Math.round(interp(HV_HRC,hv))} HRC` : `${Math.round(hv*0.95)} HB`; }
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName) && e.target.type!=="range") return;
+  if (e.target.type==="range" && ["ArrowUp","ArrowDown"].includes(e.key)) return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  const i = clamp(currentIndex()+dir, 0, slides.length-1);
+  slides[i].scrollIntoView({behavior: RM ? "auto" : "smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+const redrawers = [];
+$("btnTheme").onclick = () => { const r=document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : (window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches); r.dataset.theme = dark ? "light" : "dark"; redrawers.forEach(f=>f()); };
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.classList.toggle("show"));
+function makeBtns(container, items, cur, onPick, cls){ const box=$(container); items.forEach((it,i)=>{ const b=document.createElement("button"); b.className="btn "+(cls||"small")+(i===cur?" on":""); b.innerHTML=it; b.onclick=()=>{ [...box.querySelectorAll("button")].forEach((x,j)=>x.classList.toggle("on",j===i)); onPick(i); }; box.appendChild(b); }); }
+
+/* ---------- Mikrostruktur-motor ---------- */
+function rng(seed){ let s=(seed>>>0)||1; return ()=>{ s=(Math.imul(s,1664525)+1013904223)>>>0; return s/4294967296; }; }
+const mapCache = {};
+function grainMap(N, seed, sx, W){
+  const key = [N,seed,sx,W].join("_"); if (mapCache[key]) return mapCache[key];
+  const r = rng(seed*7919+N), px=[], py=[], ang=[], rank=[], tint=[];
+  for (let i=0;i<N;i++){ px.push(r()*W); py.push(r()*W); ang.push(r()*Math.PI); rank.push(r()); tint.push(r()*2-1); }
+  const ids = new Int16Array(W*W);
+  for (let y=0;y<W;y++) for (let x=0;x<W;x++){ let b=0, bd=1e9; for (let i=0;i<N;i++){ const dx=(x-px[i])*sx, dy=y-py[i], d=dx*dx+dy*dy; if (d<bd){bd=d;b=i;} } ids[y*W+x]=b; }
+  return mapCache[key] = {ids, ang, rank, tint, N, W};
+}
+function hash2(a,b){ let h = Math.imul(a,374761393) ^ Math.imul(b,668265263); h = Math.imul(h ^ (h>>>13), 1274126177); return ((h ^ (h>>>16))>>>0)/4294967296; }
+// type: F ferritt, P perlitt, Pf fin perlitt, A austenitt, M martensitt, T anløpt martensitt, S sfæroidisert
+function pix(type, x, y, g, m){
+  const a = m.ang[g], t = m.tint[g]*8, ca=Math.cos(a), sa=Math.sin(a);
+  if (type==="F") return [233+t, 236+t, 239+t];
+  if (type==="A") return [255, 197+t*1.5, 138+t*2];
+  if (type==="P" || type==="Pf"){ const u = x*ca + y*sa; const f = type==="P" ? 1.1 : 1.9; return Math.sin(u*f) > 0.15 ? [73,80,87] : [206+t,212+t,218+t]; }
+  if (type==="M" || type==="T"){
+    const u = x*ca + y*sa, w = -x*sa + y*ca;
+    const k1 = Math.floor(u/6), f1 = (u/6 - k1) < 0.24 && Math.sin(w*0.16 + k1*1.7) > -0.25;
+    const a2 = a+1.05, u2 = x*Math.cos(a2)+y*Math.sin(a2), w2 = -x*Math.sin(a2)+y*Math.cos(a2), k2 = Math.floor(u2/9), f2 = (u2/9-k2) < 0.18 && Math.sin(w2*0.12 + k2*2.3) > 0.1;
+    if (type==="M") return f1 ? [84,92,100] : f2 ? [118,126,134] : [178+t,185+t,192+t];
+    const sp = hash2(x,y) < 0.12;
+    return sp ? [70,76,82] : f1 ? [120,126,132] : f2 ? [138,144,150] : [160+t,166+t,172+t];
+  }
+  if (type==="S"){ const cx = Math.floor(x/7), cy = Math.floor(y/7), ox = cx*7+1.5+hash2(cx,cy)*4, oy = cy*7+1.5+hash2(cy,cx+99)*4; const d = (x-ox)*(x-ox)+(y-oy)*(y-oy); return d < 2.6 ? [60,66,72] : [231+t,234+t,237+t]; }
+  return [200,200,200];
+}
+// spec: {N, seed, sx, types: function(rank, i) -> type, cb: cementite boundaries}
+function drawMicro(canvas, A, B, p){
+  const W = canvas.width, ctx = canvas.getContext("2d"), img = ctx.createImageData(W,W), d = img.data;
+  const mA = grainMap(A.N, A.seed, A.sx||1, W), mB = B ? grainMap(B.N, B.seed, B.sx||1, W) : null;
+  const tA = mA.rank.map((r,i)=>A.types(r,i)), tB = mB ? mB.rank.map((r,i)=>B.types(r,i)) : null;
+  for (let y=0;y<W;y++) for (let x=0;x<W;x++){
+    const k = y*W+x; let m = mA, spec = A, types = tA;
+    if (mB && mB.rank[mB.ids[k]] < p){ m = mB; spec = B; types = tB; }
+    const g = m.ids[k];
+    let c;
+    const edge = (x<W-1 && m.ids[k+1]!==g) || (y<W-1 && m.ids[k+W]!==g);
+    if (edge) c = spec.cb ? [250,250,250] : [52,58,64];
+    else c = pix(types[g], x, y, g, m);
+    d[k*4]=c[0]; d[k*4+1]=c[1]; d[k*4+2]=c[2]; d[k*4+3]=255;
+  }
+  ctx.putImageData(img,0,0);
+}
+function animate(dur, fn, idRef){ const t0 = performance.now(); const myId = ++idRef.v; (function st(now){ if (myId!==idRef.v) return; const p = RM ? 1 : clamp((now-t0)/dur,0,1); fn(p); if (p<1) requestAnimationFrame(st); })(t0); }
+
+/* ---------- Del 1: tre trinn ---------- */
+const MED = [
+  {k:"vann", n:"💧 Vann", tau:0.4, txt:"Vann: bråkjøling. Fra 850 °C til under 100 °C på under ett minutt. Gir martensitt – hardt."},
+  {k:"olje", n:"🛢 Olje", tau:2, txt:"Olje: litt mildere bråkjøling. Mindre fare for sprekker. Brukes for legert stål."},
+  {k:"luft", n:"💨 Luft", tau:12, txt:"Luft: middels rask. Gir fine korn (normalisering, del 6)."},
+  {k:"ovn", n:"🔥 I ovnen", tau:150, txt:"I ovnen: ovnen slås av og kjøles sakte over mange timer. Gir mykest stål (gløding, del 6)."}
+];
+let medI = 0;
+makeBtns("medBtns", MED.map(m=>m.n), 0, i => { medI = i; ovnId.v++; ovnRender(0); });
+const ovn = $("ovnSvg"), tt = $("ttSvg");
+const TA = axes(tt, {x0:56, y0:290, x1:505, y1:30, xmax:120, ymax:1000, xt:[0,20,40,60,80,100,120], yt:[0,200,400,600,800,1000], xl:"tid (min) →", yl:"↑ temperatur (°C)"});
+const ttBands = el("g",{}, tt);
+[[0,40,"1 Oppvarming","--red"],[40,60,"2 Holding","--orange"],[60,120,"3 Avkjøling","--blue"]].forEach(([a,b,t,c]) => {
+  el("rect",{x:TA.X(a), y:TA.Y(1000), width:TA.X(b)-TA.X(a), height:TA.Y(0)-TA.Y(1000), style:`fill:var(${c});opacity:.07`}, ttBands);
+  el("text",{x:(TA.X(a)+TA.X(b))/2, y:TA.Y(960), "text-anchor":"middle", "font-size":12, "font-weight":700, style:`fill:var(${c})`}, ttBands, t); });
+const ttLine = el("polyline",{fill:"none", style:"stroke:var(--red);stroke-width:3.5;stroke-linejoin:round"}, tt);
+const ttDot = el("circle",{r:6, style:"fill:var(--red);stroke:var(--panel);stroke-width:2"}, tt);
+const heatT = t => t<=40 ? 20 + 830*(1-Math.exp(-t/12))/(1-Math.exp(-40/12)) : 850;
+const simT = t => t<=60 ? heatT(t) : 20 + 830*Math.exp(-(t-60)/MED[medI].tau);
+let ovnId = {v:0};
+function ovnRender(ms){
+  // timeline: 0–3500 heat, 3500–5000 hold, 5000–5800 move, 5800–10000 cool
+  let t, move = 0;
+  if (ms<3500) t = 40*ms/3500; else if (ms<5000) t = 40+20*(ms-3500)/1500; else if (ms<5800){ t = 60; move = (ms-5000)/800; } else { t = 60 + 60*(ms-5800)/4200; move = 1; }
+  t = Math.min(t,120);
+  const T = simT(t), m = MED[medI];
+  const pts = []; for (let x=0; x<=t; x+= x<60 ? 0.5 : (m.tau<1 ? 0.05 : 0.4)) pts.push(`${TA.X(x).toFixed(1)},${TA.Y(simT(x)).toFixed(1)}`); pts.push(`${TA.X(t)},${TA.Y(T)}`);
+  ttLine.setAttribute("points", pts.join(" ")); ttDot.setAttribute("cx", TA.X(t)); ttDot.setAttribute("cy", TA.Y(T));
+  // scene
+  ovn.replaceChildren();
+  const inOvn = m.k==="ovn";
+  el("rect",{x:20, y:50, width:210, height:210, rx:10, style:"fill:var(--steel-dark)"}, ovn);
+  el("rect",{x:40, y:80, width:170, height:150, rx:4, style:`fill:#2b1a12`}, ovn);
+  const ovT = inOvn ? T : (t<60 ? T : 850);
+  if (ovT>450 && !(t>=60 && !inOvn && false)) el("rect",{x:40, y:80, width:170, height:150, rx:4, style:`fill:${glow(ovT)};opacity:.45`}, ovn);
+  el("text",{x:125, y:250, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:#fff"}, ovn, "OVN");
+  // herdekar / luft
+  const kx = 300, ky = 175;
+  if (m.k==="vann" || m.k==="olje"){
+    el("path",{d:`M${kx} ${ky} L${kx+20} ${ky+120} H${kx+170} L${kx+190} ${ky} Z`, style:"fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"}, ovn);
+    el("path",{d:`M${kx+5} ${ky+25} L${kx+20} ${ky+117} H${kx+170} L${kx+185} ${ky+25} Z`, style:`fill:${m.k==="vann"?"#4dabf7":"#c49a3a"};opacity:.7`}, ovn);
+    el("text",{x:kx+95, y:ky+80, "text-anchor":"middle", "font-size":14, "font-weight":700, style:"fill:#fff"}, ovn, m.k==="vann" ? "VANN" : "OLJE");
+  } else if (m.k==="luft"){
+    el("rect",{x:kx+10, y:ky+90, width:170, height:10, style:"fill:var(--steel-dark)"}, ovn);
+    [kx+25, kx+165].forEach(x => el("rect",{x, y:ky+100, width:8, height:30, style:"fill:var(--steel-dark)"}, ovn));
+    for (let i=0;i<4;i++) el("path",{d:`M${kx-10+((ms/20+i*40)%60)} ${ky+20+i*16} q 20 -8 40 0 t 40 0`, style:"fill:none;stroke:var(--blue);stroke-width:2;opacity:.6"}, ovn);
+    el("text",{x:kx+95, y:ky+150, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:var(--blue)"}, ovn, "stille luft");
+  } else {
+    el("text",{x:kx+95, y:ky+40, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:var(--muted)"}, ovn, "Ovnen slås av.");
+    el("text",{x:kx+95, y:ky+60, "text-anchor":"middle", "font-size":13, style:"fill:var(--muted)"}, ovn, "Delen blir stående inne.");
+  }
+  // delen
+  let px = 90, py = 150;
+  if (!inOvn && move>0){ const tx = m.k==="luft" ? kx+60 : kx+60, ty = m.k==="luft" ? ky+66 : ky+60; const e = move<1 ? move : 1; px = 90 + (tx-90)*e; py = 150 + (ty-150)*e - Math.sin(e*Math.PI)*70; }
+  el("rect",{x:px, y:py, width:72, height:24, rx:4, style:`fill:${glow(T)};stroke:#333;stroke-width:1.5`}, ovn);
+  if (move>=1 && T>110 && (m.k==="vann"||m.k==="olje")){
+    for (let i=0;i<9;i++){ const ph = ((ms/400)+i*0.37)%1; el("circle",{cx:px+8+i*7, cy:py-ph*45, r:2+ph*3, style:`fill:none;stroke:${m.k==="vann"?"#fff":"#6b5a2a"};stroke-width:1.5;opacity:${1-ph}`}, ovn); }
+    if (m.k==="vann") el("text",{x:px+36, y:py-50, "text-anchor":"middle", "font-size":12, "font-weight":700, style:"fill:var(--muted)"}, ovn, "fres! damp");
+  }
+  // termometer
+  el("text",{x:125, y:36, "text-anchor":"middle", "font-size":24, "font-weight":800, style:`fill:${T>500?glow(Math.max(T,700)):"var(--ink)"}`}, ovn, `${Math.round(T)} °C`);
+  el("text",{x:400, y:36, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:var(--muted)"}, ovn, ms<3500 ? "1 · Oppvarming" : ms<5000 ? "2 · Holding" : ms>0 ? "3 · Avkjøling" : "");
+  if (ms===0) setStatus("ovnTxt","Velg avkjøling og trykk Start.","info");
+  else if (ms<3500) setStatus("ovnTxt","1 · Oppvarming: delen varmes til 850 °C. Se glødefargen endre seg.","warn");
+  else if (ms<5000) setStatus("ovnTxt","2 · Holding: 20 minutter på 850 °C, så kjernen blir like varm som overflaten.","warn");
+  else setStatus("ovnTxt","3 · " + m.txt, m.k==="vann" ? "bad" : m.k==="ovn" ? "ok" : "info");
+}
+$("ovnGo").onclick = () => { const dur = 10000; animate(dur, p => ovnRender(p*dur), ovnId); };
+ovnRender(0);
+// glødefargeskala
+(function(){
+  const s = $("glowScale"), X = T => 30 + (T-500)/700*840;
+  const defs = el("defs",{},s), g = el("linearGradient",{id:"glg", x1:"0", x2:"1", y1:"0", y2:"0"}, defs);
+  for (let T=500; T<=1200; T+=25) el("stop",{offset:(T-500)/700, "stop-color":glow(T)}, g);
+  el("rect",{x:30, y:12, width:840, height:34, rx:6, fill:"url(#glg)"}, s);
+  [[550,"svak rød"],[650,"mørk rød"],[750,"kirsebærrød"],[850,"lys rød"],[950,"oransje"],[1050,"gul"],[1150,"lys gul"]].forEach(([T,n]) => {
+    el("line",{x1:X(T), y1:46, x2:X(T), y2:54, style:"stroke:var(--ink);stroke-width:1.5"}, s);
+    el("text",{x:X(T), y:70, "text-anchor":"middle", "font-size":13, "font-weight":700, style:"fill:var(--ink)"}, s, `${T} °C`);
+    el("text",{x:X(T), y:88, "text-anchor":"middle", "font-size":12, style:"fill:var(--muted)"}, s, n); });
+  el("line",{x1:X(850), y1:4, x2:X(850), y2:54, style:"stroke:var(--ink);stroke-width:2;stroke-dasharray:3 3"}, s);
+  el("text",{x:X(850)+6, y:9, "font-size":11, "font-weight":700, style:"fill:var(--ink)"}, s, "herding av C45");
+})();
+
+/* ---------- Del 2: jern-karbon ---------- */
+const A3P = [[0,912],[0.2,850],[0.4,790],[0.45,775],[0.6,750],[0.77,727]];
+const ACMP = [[0.77,727],[0.9,770],[1.0,800],[1.2,860]];
+const upperT = C => C<=0.77 ? interp(A3P,C) : interp(ACMP,C);
+function cGamma(T){ // karbon i austenitt ved T (på A3-linja)
+  if (T>=912) return 0; for (let i=1;i<A3P.length;i++){ const [c0,t0]=A3P[i-1],[c1,t1]=A3P[i]; if (T<=t0 && T>=t1) return c0+(c1-c0)*(t0-T)/(t0-t1); } return 0.77; }
+const FC_STEEL = [{n:"S235", C:0.17, H:{vann:"ca. 30 HRC – bare litt hardere", luft:"ca. 130 HB", ovn:"ca. 120 HB"}},
+                  {n:"C45", C:0.45, H:{vann:"ca. 58 HRC – hardt", luft:"ca. 200 HB", ovn:"ca. 180 HB"}},
+                  {n:"C100", C:1.0, H:{vann:"ca. 64 HRC – svært hardt", luft:"ca. 280 HB", ovn:"ca. 230 HB"}}];
+let fcI = 1, fcBand = -1, fcRes = null;
+const fc = $("fcSvg");
+const FA = axes(fc, {x0:62, y0:380, x1:560, y1:30, xmax:1.2, ymin:400, ymax:1100, xt:[0,0.2,0.4,0.6,0.8,1,1.2], yt:[400,500,600,700,800,900,1000,1100], xl:"karbon (%) →", yl:"↑ temperatur (°C)"});
+const fcBandG = el("g",{}, fc), fcLines = el("g",{}, fc), fcCur = el("g",{}, fc);
+(function(){
+  const reg = (pts, col, op) => el("polygon",{points:pts.map(([c,T])=>`${FA.X(c)},${FA.Y(T)}`).join(" "), style:`fill:var(${col});opacity:${op}`}, fcLines);
+  const a3 = [], acm = []; for (let c=0;c<=0.77;c+=0.01) a3.push([c, interp(A3P,c)]); for (let c=0.77;c<=1.2;c+=0.01) acm.push([c, interp(ACMP,c)]);
+  reg([[0,1100],...a3,...acm,[1.2,1100]], "--orange", .12);
+  reg([...a3,[0.02,727],[0,727]].filter(p=>p[1]>=727), "--yellow", .15);
+  reg([[0,400],[0,727],[1.2,727],[1.2,400]], "--steel", .12);
+  const line = (pts, col, w, dash) => el("polyline",{points:pts.map(([c,T])=>`${FA.X(c)},${FA.Y(T)}`).join(" "), fill:"none", style:`stroke:var(${col});stroke-width:${w};${dash?"stroke-dasharray:6 4":""}`}, fcLines);
+  line(a3, "--red", 3); line(acm, "--red", 3); line([[0,727],[1.2,727]], "--red", 3);
+  el("text",{x:FA.X(1.18), y:FA.Y(727)+18, "text-anchor":"end", "font-size":13, "font-weight":800, style:"fill:var(--red)"}, fcLines, "A1 = 727 °C");
+  el("text",{x:FA.X(0.13), y:FA.Y(870)-4, "font-size":13, "font-weight":800, style:"fill:var(--red)"}, fcLines, "A3");
+  el("text",{x:FA.X(0.75), y:FA.Y(1040), "text-anchor":"middle", "font-size":16, "font-weight":800, style:"fill:var(--orange)"}, fcLines, "AUSTENITT");
+  el("text",{x:FA.X(0.06), y:FA.Y(770), "font-size":11, "font-weight":700, style:"fill:var(--ink)"}, fcLines, "ferritt +");
+  el("text",{x:FA.X(0.06), y:FA.Y(752), "font-size":11, "font-weight":700, style:"fill:var(--ink)"}, fcLines, "austenitt");
+  el("text",{x:FA.X(0.98), y:FA.Y(745), "text-anchor":"middle", "font-size":11, "font-weight":700, style:"fill:var(--ink)"}, fcLines, "austenitt + sementitt");
+  el("text",{x:FA.X(0.22), y:FA.Y(600), "text-anchor":"middle", "font-size":14, "font-weight":800, style:"fill:var(--steel-dark)"}, fcLines, "FERRITT + PERLITT");
+  el("text",{x:FA.X(0.99), y:FA.Y(640), "text-anchor":"middle", "font-size":12, "font-weight":800, style:"fill:var(--steel-dark)"}, fcLines, "PERLITT + SEMENTITT");
+  el("line",{x1:FA.X(0.77), y1:FA.Y(727), x2:FA.X(0.77), y2:FA.Y(400), style:"stroke:var(--steel-dark);stroke-dasharray:3 4"}, fcLines);
+  el("text",{x:FA.X(0.77)+4, y:FA.Y(410), "font-size":11, style:"fill:var(--muted)"}, fcLines, "0,77 % = bare perlitt");
+})();
+const BANDS = [
+  {n:"Herding", col:"--red", f:C => C<=0.77 ? [interp(A3P,C)+30, interp(A3P,C)+60] : [757,787]},
+  {n:"Normalisering", col:"--blue", f:C => C<=0.77 ? [interp(A3P,C)+40, interp(A3P,C)+80] : [interp(ACMP,C)+40, interp(ACMP,C)+80]},
+  {n:"Bløtgløding", col:"--green", f:() => [680,720]},
+  {n:"Spenningsfriglødning", col:"--purple", f:() => [550,650]},
+  {n:"Settherding", col:"--yellow", f:() => [900,940], cmax:0.3}
+];
+BANDS.forEach((b,i) => { const bt=document.createElement("button"); bt.className="btn small"; bt.textContent=b.n; bt.onclick=()=>{ fcBand = fcBand===i ? -1 : i; [...$("fcBands").querySelectorAll("button")].forEach((x,j)=>x.classList.toggle("on", j===fcBand)); drawBand(); }; $("fcBands").appendChild(bt); });
+function drawBand(){ fcBandG.replaceChildren(); if (fcBand<0) return; const b = BANDS[fcBand], top=[], bot=[], cm = b.cmax||1.2;
+  for (let c=0; c<=cm+1e-9; c+=0.01){ const [lo,hi] = b.f(c); top.push(`${FA.X(c)},${FA.Y(hi)}`); bot.unshift(`${FA.X(c)},${FA.Y(lo)}`); }
+  el("polygon",{points:top.concat(bot).join(" "), style:`fill:var(${b.col});opacity:.45`}, fcBandG);
+  const [lo,hi] = b.f(Math.min(0.45,cm)); el("text",{x:FA.X(Math.min(0.45,cm)/2)+30, y:FA.Y(hi)-6, "font-size":12, "font-weight":800, style:`fill:var(${b.col})`}, fcBandG, `${b.n}${cm>=0.45?` – C45: ${Math.round(lo)}–${Math.round(hi)} °C`:` ${Math.round(lo)}–${Math.round(hi)} °C`}`); }
+makeBtns("fcSteel", FC_STEEL.map(s=>`${s.n} (${fmtT(s.C,2)} % C)`), 1, i => { fcI = i; fcRes = null; fcState(); });
+function fcSpec(C, T){
+  const fP = clamp((C-0.02)/0.75, 0, 1), up = upperT(C);
+  if (T < 727){ if (C>0.77) return {spec:{N:40, seed:11, types:()=> "P", cb:true}, txt:"Perlitt med tynne hvite skall av sementitt (jernkarbid) langs korngrensene. Hardt og slitesterkt."};
+    return {spec:{N:40, seed:11, types:r => r<fP ? "P" : "F"}, txt:`Ferritt (myk, lys) + perlitt (stripete lag av ferritt og sementitt). Ca. ${Math.round(fP*100)} % perlitt.`}; }
+  if (T < up){
+    if (C>0.77) return {spec:{N:40, seed:11, types:()=> "A", cb:true}, txt:"Over A1: perlitten er blitt austenitt. Litt sementitt ligger igjen langs korngrensene."};
+    const fA = clamp((C-0.02)/(cGamma(T)-0.02), 0, 1);
+    return {spec:{N:40, seed:11, types:r => r<fA ? "A" : "F"}, txt:`Mellom A1 og A3: perlitten er blitt austenitt, og ferritten løses gradvis opp. Ca. ${Math.round(fA*100)} % austenitt.`, part:fA};
+  }
+  const over = T - up, N = over<=70 ? 64 : Math.max(8, Math.round((64 - (over-70)*0.27)/4)*4);
+  return {spec:{N, seed:23, types:()=> "A"}, txt: over>170 ? `OVEROPPHETET! ${Math.round(over)} °C over linja. Austenittkornene vokser seg store. Grove korn gir sprøtt stål.` : over<20 ? "Akkurat over linja – alt er austenitt. Legg på 30–50 °C for å være sikker." : "Bare austenitt. Karbonet er løst opp i jernet. Klar for herding eller normalisering.", full:true, N};
+}
+function fcState(){
+  const s = FC_STEEL[fcI], T = +$("fcT").value; $("fcTv").textContent = T + " °C";
+  fcCur.replaceChildren();
+  el("line",{x1:FA.X(s.C), y1:FA.Y(400), x2:FA.X(s.C), y2:FA.Y(1100), style:"stroke:var(--ink);stroke-width:2;stroke-dasharray:5 4"}, fcCur);
+  el("text",{x:FA.X(s.C)+5, y:FA.Y(1085), "font-size":13, "font-weight":800, style:"fill:var(--ink)"}, fcCur, s.n);
+  const y = FA.Y(Math.max(T,400));
+  el("circle",{cx:FA.X(s.C), cy:y, r:9, style:`fill:${T>500?glow(T):"var(--steel-dark)"};stroke:var(--ink);stroke-width:2.5`}, fcCur);
+  if (T<400) el("text",{x:FA.X(s.C)+12, y:y-6, "font-size":12, "font-weight":700, style:"fill:var(--ink)"}, fcCur, `↓ ${T} °C`);
+  const st = fcSpec(s.C, T);
+  if (fcRes) return;
+  drawMicro($("fcMicro"), st.spec, null, 0);
+  $("fcTag").textContent = T>500 ? `${T} °C – modell` : "mikroskop ×500";
+  setStatus("fcTxt", st.txt, st.full ? (st.N<30 ? "bad" : "warn") : T>=727 ? "warn" : "info");
+  document.querySelectorAll("[data-cool]").forEach(b => b.disabled = T<727);
+}
+let fcId = {v:0};
+document.querySelectorAll("[data-cool]").forEach(b => b.onclick = () => {
+  const s = FC_STEEL[fcI], T = +$("fcT").value, st = fcSpec(s.C, T), how = b.dataset.cool, fP = clamp((s.C-0.02)/0.75,0,1);
+  let B, txt, cls;
+  if (how==="vann"){
+    if (st.full){ B = {N:st.spec.N, seed:st.spec.seed, types:()=> "M"}; txt = `Vann: martensitt. ${s.n}: ${s.H.vann}.`; cls = s.C<0.3 ? "warn" : "bad";
+      if (s.C<0.3) txt += " For lite karbon til at martensitten blir hard."; if (s.C>0.77) txt += " Stor sprekkfare."; if (st.N<30) txt += " Grove korn → sprø martensitt med sprekkfare!"; }
+    else if (st.part!==undefined){ B = {N:40, seed:11, types:r => r<st.part ? "M" : "F"}; txt = `Bare austenitten ble martensitt. Myke flekker av ferritt ble igjen – ujevn herding. Varm over A3 neste gang!`; cls = "bad"; }
+    else { B = {N:40, seed:11, types:()=> "M", cb:true}; txt = `Martensitt med sementitt i korngrensene. ${s.H.vann}. Slik herdes verktøystål.`; cls = "warn"; }
+  } else if (how==="luft"){ B = {N:84, seed:5, types:r => (s.C>0.77 || r<fP) ? "Pf" : "F"}; txt = `Luft: fine korn av ferritt + perlitt. ${s.H.luft}. Dette er normalisering.`; cls = "ok"; }
+  else { const N = st.full ? Math.max(12, Math.round(st.N*0.45/4)*4) : 28; B = {N, seed:7, types:r => (s.C>0.77 || r<fP) ? "P" : "F"}; txt = `Sakte i ovnen: grove korn av ferritt + perlitt. ${s.H.ovn}. Mykest.`; cls = "ok"; }
+  fcRes = true; setStatus("fcTxt", "Avkjøler …", "warn"); $("fcTag").textContent = "etter avkjøling";
+  animate(1600, p => { drawMicro($("fcMicro"), st.spec, B, p*1.02); if (p>=1) setStatus("fcTxt", txt, cls); }, fcId);
+});
+$("fcT").addEventListener("input", () => { fcId.v++; fcRes = null; fcState(); });
+fcState();
+
+/* ---------- Del 3: herding ---------- */
+const HS = [
+  {n:"S235", nose:0.4, Ms:450, Hm:380, base:135, Th:900, risk:0.3},
+  {n:"C45", nose:1.5, Ms:330, Hm:650, base:220, Th:840, risk:1},
+  {n:"42CrMo4", nose:30, Ms:320, Hm:600, base:290, Th:850, risk:1.3},
+  {n:"X153CrMoV12", nose:1500, Ms:200, Hm:760, base:400, Th:1030, risk:2}
+];
+const HMED = [{n:"💧 Vann", ts:0.8, tc:8, f:3},{n:"🛢 Olje", ts:4, tc:25, f:1.5},{n:"💨 Luft", ts:120, tc:200, f:0.35}];
+let hsI = 1, hmI = 0, hId = {v:0};
+makeBtns("hSteel", HS.map(s=>s.n), 1, i => { hsI=i; hId.v++; hDraw(-1); });
+makeBtns("hMed", HMED.map(m=>m.n), 0, i => { hmI=i; hId.v++; hDraw(-1); });
+const hc = $("hChart");
+const HX = t => 62 + (Math.log10(t)+1)/5*(540-62), HY = T => 340 - T/1100*(340-30);
+const tAt = (s, ts, tc) => ts*Math.pow(tc/ts, Math.pow(s,0.8));
+const fmAt = (t, nose) => 1/(1+Math.pow(t/nose,3));
+const coolT = (t, t550, Th) => { const tau = t550/Math.log((Th-20)/530); return 20 + (Th-20)*Math.exp(-t/tau); };
+function hDraw(u){ // u in [0,1] animation, -1 = reset
+  const s = HS[hsI], m = HMED[hmI];
+  hc.replaceChildren();
+  [0,200,400,600,800,1000].forEach(T => { el("line",{x1:62, y1:HY(T), x2:540, y2:HY(T), style:"stroke:var(--line)"}, hc); el("text",{x:55, y:HY(T)+4, "text-anchor":"end", "font-size":12, style:"fill:var(--muted)"}, hc, T); });
+  [0.1,1,10,100,1000,10000].forEach(t => { el("line",{x1:HX(t), y1:340, x2:HX(t), y2:345, style:"stroke:var(--ink)"}, hc); el("text",{x:HX(t), y:359, "text-anchor":t===10000?"end":"middle", "font-size":12, style:"fill:var(--muted)"}, hc, fmtT(t,1)+" s"); });
+  el("line",{x1:62, y1:340, x2:540, y2:340, style:"stroke:var(--ink);stroke-width:2"}, hc); el("line",{x1:62, y1:340, x2:62, y2:22, style:"stroke:var(--ink);stroke-width:2"}, hc);
+  el("text",{x:540, y:380, "text-anchor":"end", "font-size":13, "font-weight":600, style:"fill:var(--ink)"}, hc, "tid etter bråkjøling (logaritmisk) →");
+  el("text",{x:66, y:16, "font-size":13, "font-weight":600, style:"fill:var(--ink)"}, hc, "↑ temperatur (°C)");
+  // nese
+  const L=[], R=[];
+  for (let T=s.Ms+20; T<=720; T+=5){ const w = T>=550 ? 170 : (550-s.Ms-20); const t = Math.min(10000, s.nose*Math.exp(2.0*Math.pow((T-550)/w,2))); L.push(`${HX(Math.max(0.1,t)).toFixed(1)},${HY(T).toFixed(1)}`); }
+  el("polygon",{points:L.concat([`${HX(10000)},${HY(720)}`,`${HX(10000)},${HY(s.Ms+20)}`]).join(" "), style:"fill:var(--orange);opacity:.22"}, hc);
+  el("polyline",{points:L.join(" "), fill:"none", style:"stroke:var(--orange);stroke-width:3"}, hc);
+  el("text",{x:Math.min(HX(s.nose)+12, 440), y:HY(550)+4, "font-size":12, "font-weight":800, style:"fill:var(--orange)"}, hc, "◀ «nesa»");
+  el("line",{x1:62, y1:HY(s.Ms), x2:540, y2:HY(s.Ms), style:"stroke:var(--purple);stroke-width:2;stroke-dasharray:6 4"}, hc);
+  el("text",{x:536, y:HY(s.Ms)-6, "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--purple)"}, hc, `Ms ≈ ${s.Ms} °C: martensitt dannes`);
+  el("line",{x1:62, y1:HY(s.Th), x2:540, y2:HY(s.Th), style:"stroke:var(--red);stroke-width:1;stroke-dasharray:2 4"}, hc);
+  el("text",{x:536, y:HY(s.Th)-6, "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--red)"}, hc, `herdetemperatur ${s.Th} °C`);
+  const tNow = u<0 ? 0 : Math.pow(10, -1 + 5*u);
+  const curve = (t550, dash, col) => { const p=[]; for (let lt=-1; lt<=Math.log10(Math.max(tNow,0.1))+1e-9; lt+=0.02){ const t = Math.pow(10,lt); p.push(`${HX(t).toFixed(1)},${HY(coolT(t,t550,s.Th)).toFixed(1)}`); } if (p.length>1) el("polyline",{points:p.join(" "), fill:"none", style:`stroke:var(${col});stroke-width:3.5;${dash?"stroke-dasharray:8 5":""}`}, hc); };
+  if (u>0){ curve(m.ts, false, "--red"); curve(m.tc, true, "--blue"); }
+  // tverrsnitt
+  const cv = $("hCross"), ctx = cv.getContext("2d"), W = cv.width, Rr = W/2-4;
+  ctx.clearRect(0,0,W,W);
+  for (let i=0;i<=60;i++){ const sd = i/60, r = Rr*(1-sd*0.999), tr = tAt(sd, m.ts, m.tc);
+    let col;
+    if (u<0) col = glow(s.Th); else if (tNow < tr*2.5) col = glow(coolT(tNow, tr, s.Th));
+    else col = hvColor(s.base + (s.Hm-s.base)*fmAt(tr, s.nose));
+    ctx.beginPath(); ctx.arc(W/2, W/2, r, 0, 2*Math.PI); ctx.fillStyle = col; ctx.fill(); }
+  ctx.beginPath(); ctx.arc(W/2, W/2, Rr, 0, 2*Math.PI); ctx.lineWidth=3; ctx.strokeStyle="#333"; ctx.stroke();
+  if (u>=1){
+    const hS = s.base + (s.Hm-s.base)*fmAt(m.ts, s.nose), hC = s.base + (s.Hm-s.base)*fmAt(m.tc, s.nose);
+    let dep = 0; for (let i=0;i<=100;i++){ if (fmAt(tAt(i/100, m.ts, m.tc), s.nose) >= 0.5) dep = i/100*15; }
+    const risk = s.risk*m.f, rl = risk<1.1 ? ["lav","ok"] : risk<2.5 ? ["middels","warn"] : risk<4.5 ? ["høy","bad"] : ["svært høy","bad"];
+    $("hS").textContent = hvTxt(hS); $("hC").textContent = hvTxt(hC);
+    $("hD").textContent = dep>=15 ? "hele" : dep<0.3 ? "0 mm" : `ca. ${fmt(dep,0)} mm`; $("hR").textContent = rl[0]; $("hR").style.color = `var(--${rl[1]==="ok"?"green":rl[1]==="warn"?"orange":"red"})`;
+    let msg;
+    if (s.n==="S235") msg = "Nesa ligger så langt til venstre at selv vann ikke rekker forbi. For lite karbon også. S235 kan ikke herdes.";
+    else if (fmAt(m.ts, s.nose) < 0.5) msg = `For langsomt! Overflaten traff nesa – det ble perlitt, ikke martensitt. ${s.n} trenger et raskere herdemiddel.`;
+    else if (dep>=15) msg = risk>=2.5 ? `Gjennomherdet – men ${m.n.slice(2)} er unødvendig hardt for ${s.n}. Stor fare for sprekker og kast. Velg et mildere middel.` : `Gjennomherdet! ${s.n} rekker forbi nesa også i kjernen. Godt valg av herdemiddel.`;
+    else msg = `Overflaten ble martensitt, men kjernen traff nesa og ble mykere. ${s.n} herdes bare ca. ${fmt(dep,0)} mm inn med ${m.n.slice(2).toLowerCase()}.`;
+    setStatus("hTxt", msg, s.n==="S235"||fmAt(m.ts,s.nose)<0.5 ? "bad" : risk>=2.5 ? "warn" : "ok");
+  } else if (u<0){ ["hS","hC","hD","hR"].forEach(i=>$(i).textContent="–"); $("hR").style.color=""; setStatus("hTxt",`${s.n} er varmet til ${s.Th} °C og er austenitt. Trykk Bråkjøl.`,"info"); }
+}
+$("hGo").onclick = () => { setStatus("hTxt","Avkjøler … overflaten først, kjernen etterpå.","warn"); animate(4500, p => hDraw(p), hId); };
+// fargeskala
+(function(){ const s = $("hScale"); const defs = el("defs",{},s), g = el("linearGradient",{id:"hvg", x1:"0", x2:"0", y1:"1", y2:"0"}, defs);
+  for (let hv=130; hv<=800; hv+=30) el("stop",{offset:(hv-130)/670, "stop-color":hvColor(hv)}, g);
+  el("rect",{x:8, y:10, width:24, height:220, rx:4, fill:"url(#hvg)"}, s);
+  [[130,"130 HB"],[300,"30 HRC"],[515,"50 HRC"],[700,"60 HRC"]].forEach(([hv,t]) => { const y = 230 - (hv-130)/670*220; el("line",{x1:32, y1:y, x2:40, y2:y, style:"stroke:var(--ink)"}, s); el("text",{x:44, y:y+4, "font-size":13, style:"fill:var(--ink)"}, s, t); });
+  el("text",{x:8, y:8, "font-size":12, "font-weight":700, style:"fill:var(--muted)"}, s, "hardt"); el("text",{x:8, y:248, "font-size":12, "font-weight":700, style:"fill:var(--muted)"}, s, "mykt");
+})();
+hDraw(-1);
+redrawers.push(() => hDraw(-1));
+
+/* ---------- Del 4: anløping ---------- */
+const AN_H = [[20,58],[100,58],[200,55],[300,50],[400,44],[500,35],[600,24],[650,21]];
+const AN_K = [[20,5],[200,10],[300,12],[400,25],[500,45],[600,70],[650,85]];
+const USE = [[150,"–"],[190,"skjæreverktøy, skraper"],[235,"bor, stanser"],[260,"hammerbaner, stempler"],[280,"meisler, dorer"],[300,"skrutrekkere, fjærer"],[400,"fjærer"],[500,"aksler, bolter (seigherding)"],[650,"seige maskindeler"]];
+function useFor(T){ let u = "ikke anløpt – for sprøtt"; USE.forEach(([t,n]) => { if (T>=t) u = n; }); return T<150 ? "ikke anløpt – for sprøtt" : u; }
+const an = $("anChart");
+const AX = T => 62 + (T-0)/650*(500-62), AYH = h => 310 - (h-15)/50*270, AYK = k => 310 - k/100*270;
+function anDraw(){
+  const T = +$("anT").value; $("anTv").textContent = T + " °C"; an.replaceChildren();
+  [20,30,40,50,60].forEach(h => { el("line",{x1:62, y1:AYH(h), x2:500, y2:AYH(h), style:"stroke:var(--line)"}, an); el("text",{x:56, y:AYH(h)+4, "text-anchor":"end", "font-size":12, style:"fill:var(--red)"}, an, h); });
+  [0,25,50,75,100].forEach(k => el("text",{x:506, y:AYK(k)+4, "font-size":12, style:"fill:var(--blue)"}, an, k));
+  [0,100,200,300,400,500,600].forEach(t => { el("line",{x1:AX(t), y1:310, x2:AX(t), y2:315, style:"stroke:var(--ink)"}, an); el("text",{x:AX(t), y:329, "text-anchor":"middle", "font-size":12, style:"fill:var(--muted)"}, an, t); });
+  el("line",{x1:62, y1:310, x2:500, y2:310, style:"stroke:var(--ink);stroke-width:2"}, an);
+  el("text",{x:500, y:350, "text-anchor":"end", "font-size":13, "font-weight":600, style:"fill:var(--ink)"}, an, "anløpstemperatur (°C) →");
+  el("text",{x:62, y:24, "font-size":13, "font-weight":700, style:"fill:var(--red)"}, an, "↑ hardhet (HRC)");
+  el("text",{x:540, y:24, "text-anchor":"end", "font-size":13, "font-weight":700, style:"fill:var(--blue)"}, an, "KV (J) ↑");
+  // anløpsfarge-bånd
+  for (let t=200;t<=340;t+=5) el("rect",{x:AX(t), y:AYH(65), width:AX(5)-AX(0)+0.5, height:12, style:`fill:${steelColor(t)}`}, an);
+  el("text",{x:AX(270), y:AYH(65)+26, "text-anchor":"middle", "font-size":11, style:"fill:var(--muted)"}, an, "anløpsfarger");
+  const ph = [], pk = []; for (let t=20;t<=650;t+=5){ ph.push(`${AX(t)},${AYH(interp(AN_H,t))}`); pk.push(`${AX(t)},${AYK(interp(AN_K,t))}`); }
+  el("polyline",{points:ph.join(" "), fill:"none", style:"stroke:var(--red);stroke-width:4"}, an);
+  el("polyline",{points:pk.join(" "), fill:"none", style:"stroke:var(--blue);stroke-width:4;stroke-dasharray:9 5"}, an);
+  el("text",{x:AX(80), y:AYH(58)-8, "font-size":12, "font-weight":700, style:"fill:var(--red)"}, an, "hardhet");
+  el("text",{x:AX(560), y:AYK(62)-10, "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--blue)"}, an, "slagseighet");
+  const h = interp(AN_H,T), k = interp(AN_K,T);
+  el("line",{x1:AX(T), y1:40, x2:AX(T), y2:310, style:"stroke:var(--ink);stroke-width:1.5"}, an);
+  el("circle",{cx:AX(T), cy:AYH(h), r:7, style:"fill:var(--red);stroke:var(--panel);stroke-width:2"}, an);
+  el("circle",{cx:AX(T), cy:AYK(k), r:7, style:"fill:var(--blue);stroke:var(--panel);stroke-width:2"}, an);
+  $("anH").textContent = `${Math.round(h)} HRC`; $("anK").textContent = `${Math.round(k)} J`; $("anU").textContent = useFor(T);
+}
+$("anT").addEventListener("input", anDraw); anDraw(); redrawers.push(anDraw);
+// meisel
+const ch = $("chisel"); let chId = {v:0}, chEdge = 20;
+const CH_X0 = 40, CH_X1 = 520;
+function chDraw(Tp, flame){
+  ch.replaceChildren();
+  const defs = el("defs",{},ch), g = el("linearGradient",{id:"chg", x1:"0", x2:"1", y1:"0", y2:"0"}, defs);
+  const Tl = x => 20 + (Tp-20)*Math.exp(-Math.max(0,x-130)/420);
+  for (let x=CH_X0; x<=CH_X1; x+=6) el("stop",{offset:(x-CH_X0)/(CH_X1-CH_X0), "stop-color":steelColor(Tl(x))}, g);
+  el("path",{d:`M${CH_X0} 70 H400 L${CH_X1} 98 V104 L400 132 H${CH_X0} Z`, fill:"url(#chg)", style:"stroke:#333;stroke-width:2"}, ch);
+  el("path",{d:`M${CH_X0} 76 H398`, style:"stroke:#fff;stroke-width:2;opacity:.35"}, ch);
+  if (flame){ for (let i=0;i<5;i++){ const ph = (performance.now()/180 + i)%3; el("path",{d:`M${105+i*12} 175 q -8 -${22+ph*6} 0 -${38+ph*5} q 8 ${16+ph*4} 0 ${38+ph*5}`, style:`fill:${i%2?"#ff922b":"#fcc419"};opacity:.85`}, ch); }
+    el("text",{x:130, y:200, "text-anchor":"middle", "font-size":12, "font-weight":700, style:"fill:var(--orange)"}, ch, "brenner"); }
+  chEdge = Tl(CH_X1);
+  el("text",{x:CH_X1, y:58, "text-anchor":"end", "font-size":14, "font-weight":800, style:"fill:var(--ink)"}, ch, `egg: ${Math.round(chEdge)} °C`);
+  el("line",{x1:CH_X1-4, y1:62, x2:CH_X1-4, y2:94, style:"stroke:var(--ink);stroke-width:1.5"}, ch);
+  el("text",{x:CH_X0, y:58, "font-size":12, "font-weight":700, style:"fill:var(--muted)"}, ch, "nakke (slås på)");
+}
+const AN_TAB = [[220,"lys strågul","skraper, dreiestål"],[240,"mørk strågul","bor, stanser"],[255,"brun","hammerbaner"],[270,"purpur","meisler"],[285,"fiolett","skrutrekkere"],[300,"blå","fjærer"]];
+(function(){ const t=$("anTab"); t.innerHTML = `<tr><th>°C</th><th>Farge</th><th>Typisk bruk</th></tr>` + AN_TAB.map(([T,n,u]) => `<tr data-t="${T}" style="cursor:pointer"><td>${T}</td><td><span style="display:inline-block;width:1.1em;height:1.1em;border-radius:3px;vertical-align:-3px;margin-right:.4rem;background:${steelColor(T)};border:1px solid #888"></span>${n}</td><td>${u}</td></tr>`).join("");
+  t.querySelectorAll("tr[data-t]").forEach(r => r.onclick = () => { $("chT").value = r.dataset.t; chTarget(); }); })();
+function chTarget(){ const T = +$("chT").value; $("chTv").textContent = T + " °C"; $("chTv").style.background = steelColor(T); $("chTv").style.color = T>=265 ? "#fff" : "#222"; chId.v++; chDraw(20,false); setStatus("chTxt","Herdet meisel, eggen er blankslipt. Varm opp bak eggen og se fargene vandre fram.","info"); }
+$("chT").addEventListener("input", chTarget);
+$("chGo").onclick = () => { const target = +$("chT").value, TpEnd = 20 + (target-20)/Math.exp(-(CH_X1-130)/420); const id = ++chId.v, t0 = performance.now();
+  setStatus("chTxt","Varmer … følg med på fargene som vandrer mot eggen.","warn");
+  (function st(now){ if (id!==chId.v) return; const p = RM ? 1 : clamp((now-t0)/7000,0,1); chDraw(20 + (TpEnd-20)*Math.pow(p,0.8), p<1);
+    if (p<1) requestAnimationFrame(st); else { const row = AN_TAB.reduce((a,b)=>Math.abs(b[0]-target)<Math.abs(a[0]-target)?b:a); setStatus("chTxt",`Eggen er ${row[1]} (ca. ${target} °C). Dypp i vann NÅ, så fargene stopper. Passer til: ${row[2]}.`,"ok"); } })(t0); };
+chTarget();
+
+/* ---------- Del 5: seigherding ---------- */
+const QT = [{n:"+A bløtglødet", Rm:750, Re:450, A:20, KV:50, col:"--green"},{n:"herdet, ikke anløpt", Rm:1950, Re:1500, A:4, KV:8, col:"--red"},{n:"+QT seigherdet", Rm:1000, Re:800, A:14, KV:70, col:"--blue"}];
+const QM = [{k:"Rm", n:"Rm (MPa)", max:2000},{k:"Re", n:"Re (MPa)", max:2000},{k:"A", n:"A (%)", max:25},{k:"KV", n:"KV (J)", max:80}];
+let qtSel = 2;
+function qtDraw(){
+  const s = $("qtBars"); s.replaceChildren();
+  QM.forEach((m,j) => { const x0 = 20 + j*155, w = 130;
+    el("text",{x:x0+w/2, y:20, "text-anchor":"middle", "font-size":14, "font-weight":800, style:"fill:var(--ink)"}, s, m.n);
+    el("line",{x1:x0, y1:250, x2:x0+w, y2:250, style:"stroke:var(--ink);stroke-width:2"}, s);
+    QT.forEach((q,i) => { const h = q[m.k]/m.max*210, bx = x0+6+i*42;
+      el("rect",{x:bx, y:250-h, width:34, height:h, rx:3, style:`fill:var(${q.col});opacity:${i===qtSel?1:.3}`}, s);
+      el("text",{x:bx+17, y:244-h, "text-anchor":"middle", "font-size":12, "font-weight":700, style:`fill:var(--ink);opacity:${i===qtSel?1:.55}`}, s, q[m.k]); }); });
+  QT.forEach((q,i) => { el("rect",{x:20+i*205, y:270, width:14, height:14, rx:3, style:`fill:var(${q.col})`}, s); el("text",{x:40+i*205, y:282, "font-size":13, "font-weight":i===qtSel?800:500, style:"fill:var(--ink)"}, s, q.n); });
+  const msg = ["Bløtglødet: mykt og seigt, lett å maskinere – men lav styrke.","Bare herdet: enorm styrke, men A = 4 % og KV = 8 J. Knekker ved støt!","Seigherdet: nesten dobbel styrke av bløtglødet, og like seigt. Derfor brukes +QT til aksler og bolter."][qtSel];
+  setStatus("qtTxt", msg, ["ok","bad","ok"][qtSel]);
+}
+makeBtns("qtBtns", QT.map(q=>q.n), 2, i => { qtSel = i; qtDraw(); });
+qtDraw(); redrawers.push(qtDraw);
+(function(){ const s = $("qtCurve"), X = t => 50 + t/6*390, Y = T => 180 - T/1000*160;
+  [0,250,500,750,1000].forEach(T => { el("line",{x1:50, y1:Y(T), x2:440, y2:Y(T), style:"stroke:var(--line)"}, s); el("text",{x:44, y:Y(T)+4, "text-anchor":"end", "font-size":11, style:"fill:var(--muted)"}, s, T); });
+  el("line",{x1:50, y1:180, x2:440, y2:180, style:"stroke:var(--ink);stroke-width:2"}, s);
+  el("text",{x:440, y:200, "text-anchor":"end", "font-size":12, style:"fill:var(--muted)"}, s, "tid (timer) →");
+  const p = [[0,20],[0.8,850],[1.4,850],[1.45,60],[2.2,60],[2.8,600],[4.6,600],[5.6,40]];
+  el("polyline",{points:p.map(([t,T])=>`${X(t)},${Y(T)}`).join(" "), fill:"none", style:"stroke:var(--red);stroke-width:3.5;stroke-linejoin:round"}, s);
+  el("text",{x:X(1.1), y:Y(850)-8, "text-anchor":"middle", "font-size":12, "font-weight":700, style:"fill:var(--red)"}, s, "herding 850 °C");
+  el("text",{x:X(1.5)+4, y:Y(300), "font-size":12, "font-weight":700, style:"fill:var(--blue)"}, s, "← olje");
+  el("text",{x:X(3.7), y:Y(600)-8, "text-anchor":"middle", "font-size":12, "font-weight":700, style:"fill:var(--orange)"}, s, "anløping 600 °C");
+  el("line",{x1:50, y1:Y(727), x2:440, y2:Y(727), style:"stroke:var(--muted);stroke-dasharray:4 4"}, s);
+  el("text",{x:54, y:Y(727)-4, "font-size":11, style:"fill:var(--muted)"}, s, "A1 727 °C");
+})();
+
+/* ---------- Del 6: gløding ---------- */
+const GL = [
+  {n:"Normalisering", code:"+N", T:"30–50 °C over A3 (C45: ca. 850 °C)", hold:"ca. 1 min per mm", cool:"i stille luft", when:"etter smiing, sveising eller varmvalsing. Gir fine, jevne korn og jevne egenskaper.", res:"Jevnt og seigere. C45: ca. 200 HB.",
+   curve:[[0,20],[1,860],[1.6,860],[2.6,150],[3.5,40]], band:[840,880], A:{N:12, seed:31, types:r=>r<0.58?"P":"F"}, B:{N:84, seed:5, types:r=>r<0.58?"Pf":"F"}, txt:"Grove korn fra smiingen blir austenitt, og nye, fine korn vokser fram under avkjølingen."},
+  {n:"Bløtgløding", code:"+A", T:"rett under A1: 680–720 °C", hold:"2–6 timer", cool:"svært sakte i ovnen", when:"før mye maskinering eller kaldforming. Det mykeste stålet kan bli.", res:"Mykest. C45: ca. 170 HB. Lett å dreie, gir korte spon.",
+   curve:[[0,20],[1.2,700],[5.5,700],[9,450],[10,300]], band:[680,720], A:{N:36, seed:11, types:r=>r<0.58?"P":"F"}, B:{N:36, seed:11, types:()=>"S"}, txt:"Lamellene i perlitten trekker seg sammen til små kuler av sementitt. Kulene er lettere å skjære gjennom."},
+  {n:"Spenningsfriglødning", code:"", T:"550–650 °C (under A1)", hold:"1–2 timer", cool:"sakte i ovnen", when:"etter sveising, og før nøyaktig maskinering av sveiste deler.", res:"Strukturen endres ikke. Restspenningene forsvinner, og delen slår seg ikke ved fresing.",
+   curve:[[0,20],[1.5,600],[3,600],[6.5,250],[7.5,100]], band:[550,650], stress:true, txt:"Varmen gjør stålet litt mykere, så de indre spenningene «slipper taket». Ingen ny struktur."},
+  {n:"Rekrystallisering", code:"", T:"550–700 °C", hold:"ca. 1 time", cool:"i luft", when:"etter kaldforming: kaldvalsing, kaldtrekking, mye bøying. Stålet er kaldherdet (leksjon 1).", res:"Mykt og formbart igjen. Kan bøyes videre uten å sprekke.",
+   curve:[[0,20],[1.2,650],[2.2,650],[3.2,100],[3.6,40]], band:[550,700], A:{N:40, seed:41, sx:0.32, types:r=>r<0.25?"P":"F"}, B:{N:60, seed:43, types:r=>r<0.25?"P":"F"}, txt:"De flate, utstrakte kornene fra kaldformingen byttes ut med nye, runde korn."}
+];
+let glI = 0, glId = {v:0};
+makeBtns("glTabs", GL.map(g=>g.n), 0, i => { glI = i; glShow(); }, "");
+function glCurveDraw(){
+  const g = GL[glI], s = $("glCurve"); s.replaceChildren();
+  const A = axes(s, {x0:56, y0:240, x1:525, y1:30, xmax:10, ymax:1000, xt:[0,2,4,6,8,10], yt:[0,200,400,600,800,1000], xl:"tid (timer) →", yl:"↑ °C"});
+  el("rect",{x:56, y:A.Y(g.band[1]), width:469, height:A.Y(g.band[0])-A.Y(g.band[1]), style:"fill:var(--orange);opacity:.15"}, s);
+  el("line",{x1:56, y1:A.Y(727), x2:525, y2:A.Y(727), style:"stroke:var(--red);stroke-dasharray:5 4;stroke-width:1.5"}, s);
+  el("text",{x:521, y:A.Y(727)-5, "text-anchor":"end", "font-size":11, "font-weight":700, style:"fill:var(--red)"}, s, "A1 727 °C");
+  el("polyline",{points:g.curve.map(([t,T])=>`${A.X(t)},${A.Y(T)}`).join(" "), fill:"none", style:"stroke:var(--blue);stroke-width:4;stroke-linejoin:round"}, s);
+  const top = g.curve.reduce((a,b)=>b[1]>a[1]?b:a); el("text",{x:A.X(top[0])+6, y:A.Y(top[1])-8, "font-size":13, "font-weight":800, style:"fill:var(--blue)"}, s, `${g.n} ${g.code}`);
+}
+function stressDraw(p){
+  const s = $("glStress"); s.replaceChildren(); arrowDefs(s,"stA",css("--red"));
+  // før: sveiset del med spenninger
+  el("text",{x:140, y:24, "text-anchor":"middle", "font-size":14, "font-weight":800, style:"fill:var(--red)"}, s, "Uten gløding");
+  el("text",{x:420, y:24, "text-anchor":"middle", "font-size":14, "font-weight":800, style:"fill:var(--green)"}, s, "Spenningsfriglødet");
+  [[140,"--red",false],[420,"--green",true]].forEach(([cx,col,ok]) => {
+    const prog = ok ? p : 0;
+    el("rect",{x:cx-110, y:60, width:220, height:30, style:"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"}, s);
+    el("rect",{x:cx-15, y:90, width:30, height:60, style:"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"}, s);
+    el("path",{d:`M${cx-15} 90 l-8 8 h8 z M${cx+15} 90 l8 8 h-8 z`, style:"fill:var(--orange)"}, s);
+    el("text",{x:cx, y:170, "text-anchor":"middle", "font-size":11, style:"fill:var(--muted)"}, s, "sveis");
+    const op = ok ? 1-prog : 1;
+    if (op>0.02) [[cx-90,75,cx-40,75],[cx+90,75,cx+40,75]].forEach(([x1,y1,x2,y2]) => el("line",{x1,y1,x2,y2,"marker-end":"url(#stA)", style:`stroke:var(--red);stroke-width:4;opacity:${op}`}, s));
+    // etter fresing
+    const bend = ok ? 0 : 1, y0 = 230;
+    el("text",{x:cx, y:200, "text-anchor":"middle", "font-size":12, "font-weight":700, style:"fill:var(--ink)"}, s, "etter fresing av toppen:");
+    el("path",{d:`M${cx-110} ${y0} Q ${cx} ${y0+bend*28} ${cx+110} ${y0} L${cx+110} ${y0+18} Q ${cx} ${y0+18+bend*28} ${cx-110} ${y0+18} Z`, style:`fill:var(--steel-soft);stroke:var(${col});stroke-width:2.5`}, s);
+    el("line",{x1:cx-120, y1:y0, x2:cx+120, y2:y0, style:"stroke:var(--muted);stroke-dasharray:3 4"}, s);
+    el("text",{x:cx, y:y0+68, "text-anchor":"middle", "font-size":12, "font-weight":700, style:`fill:var(${col})`}, s, ok ? "holder seg rett ✔" : "slår seg (kaster seg) ✘"); });
+  if (p>0 && p<1) el("text",{x:420, y:46, "text-anchor":"middle", "font-size":12, "font-weight":700, style:"fill:var(--orange)"}, s, "600 °C …");
+}
+function glShow(){
+  glId.v++; const g = GL[glI]; glCurveDraw();
+  $("glInfo").innerHTML = `<h3>${g.n} ${g.code?`<span class="pill" style="background:var(--blue-soft);color:var(--blue)">${g.code}</span>`:""}</h3>
+    <table class="t" style="font-size:.88rem"><tr><td><b>Temperatur</b></td><td>${g.T}</td></tr><tr><td><b>Holdetid</b></td><td>${g.hold}</td></tr><tr><td><b>Avkjøling</b></td><td>${g.cool}</td></tr><tr><td><b>Brukes</b></td><td>${g.when}</td></tr><tr><td><b>Resultat</b></td><td>${g.res}</td></tr></table>`;
+  $("glMicroBox").hidden = !!g.stress; $("glStress").hidden = !g.stress;
+  if (g.stress) stressDraw(0); else { drawMicro($("glA"), g.A, null, 0); drawMicro($("glB"), g.A, null, 0); }
+  setStatus("glTxt","Trykk «Kjør behandlingen».","info");
+}
+$("glGo").onclick = () => { const g = GL[glI]; setStatus("glTxt","Behandler …","warn");
+  animate(2200, p => { if (g.stress) stressDraw(p); else drawMicro($("glB"), g.A, g.B, p*1.02); if (p>=1) setStatus("glTxt", g.txt, "ok"); }, glId); };
+glShow(); redrawers.push(() => { glCurveDraw(); if (GL[glI].stress) stressDraw(0); });
+
+/* ---------- Del 7: settherding ---------- */
+function erfc(x){ const z=Math.abs(x), t=1/(1+0.5*z); const y = t*Math.exp(-z*z-1.26551223+t*(1.00002368+t*(0.37409196+t*(0.09678418+t*(-0.18628806+t*(0.27886807+t*(-1.13520398+t*(1.48851587+t*(-0.82215223+t*0.17087277))))))))); return x>=0 ? y : 2-y; }
+const C0 = 0.16, CS = 0.8, LK = 0.676;
+const carbon = (x, t) => t<=0 ? C0 : C0 + (CS-C0)*erfc(x/(LK*Math.sqrt(t)));
+const hvOf = C => 350 + 380*(1-Math.exp(-(Math.max(C,C0)-C0)/0.255));
+const stDots = (function(){ const r = rng(77), a=[]; for (let i=0;i<900;i++) a.push([r()*2.5, r(), r()]); return a; })();
+const gearPath = (cx, cy, R, n) => { let d = ""; for (let i=0;i<n;i++){ const a0 = i/n*2*Math.PI; const pts = [[a0, R-14],[a0+0.18/n*2*Math.PI*1.5, R-14],[a0+0.35/n*2*Math.PI, R],[a0+0.62/n*2*Math.PI, R],[a0+0.8/n*2*Math.PI, R-14]]; pts.forEach(([a,r],k) => { d += (i===0&&k===0?"M":"L") + (cx+r*Math.cos(a)).toFixed(1) + " " + (cy+r*Math.sin(a)).toFixed(1) + " "; }); } return d + "Z"; };
+function stDraw(t){
+  $("stTv").textContent = fmtT(t,1) + " h";
+  // prikker
+  const s = $("stDots"); s.replaceChildren();
+  const X = x => 130 + x/2.5*410;
+  el("rect",{x:10, y:20, width:120, height:170, style:"fill:var(--yellow-soft)"}, s);
+  el("text",{x:70, y:212, "text-anchor":"middle", "font-size":12, "font-weight":700, style:"fill:var(--muted)"}, s, "karbonrik gass");
+  el("rect",{x:130, y:20, width:410, height:170, style:"fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"}, s);
+  el("line",{x1:130, y1:20, x2:130, y2:190, style:"stroke:var(--ink);stroke-width:3"}, s);
+  el("text",{x:134, y:212, "font-size":12, "font-weight":700, style:"fill:var(--ink)"}, s, "overflate");
+  el("text",{x:540, y:212, "text-anchor":"end", "font-size":12, style:"fill:var(--muted)"}, s, "2,5 mm inn i stålet →");
+  const r2 = rng(5); for (let i=0;i<70;i++) el("circle",{cx:16+r2()*108, cy:26+r2()*158, r:3, style:"fill:var(--ink)"}, s);
+  stDots.forEach(([x,y,th]) => { if (th < carbon(x,t)/0.9) el("circle",{cx:X(x), cy:26+y*158, r:2.6, style:"fill:var(--ink)"}, s); });
+  const d = 0.5*Math.sqrt(t);
+  if (t>0){ el("line",{x1:X(d), y1:16, x2:X(d), y2:194, style:"stroke:var(--red);stroke-width:2.5;stroke-dasharray:6 4"}, s);
+    el("text",{x:X(d)+5, y:14, "font-size":12, "font-weight":800, style:"fill:var(--red)"}, s, `herdedybde ${fmt(d,2)} mm`); }
+  el("text",{x:335, y:14, "text-anchor":"middle", "font-size":11, style:"fill:var(--muted)"}, s, t>0 ? "" : "• = karbonatom (forenklet)");
+  // tannhjul
+  const gs = $("stGear"); gs.replaceChildren();
+  const cx = 130, cy = 110, R = 95, gp = gearPath(cx, cy, R, 14);
+  const cp = el("clipPath",{id:"gClip"}, el("defs",{},gs)); el("path",{d:gp}, cp);
+  el("path",{d:gp, style:"fill:var(--blue-soft);stroke:none"}, gs);
+  el("path",{d:gp, "clip-path":"url(#gClip)", style:`fill:none;stroke:#e03131;stroke-width:${Math.max(0, d*2*9)}`}, gs);
+  el("path",{d:gp, style:"fill:none;stroke:var(--ink);stroke-width:2"}, gs);
+  el("circle",{cx, cy, r:18, style:"fill:var(--panel);stroke:var(--ink);stroke-width:2"}, gs);
+  el("text",{x:260, y:70, "font-size":14, "font-weight":800, style:"fill:#e03131"}, gs, "■ hard overflate ca. 60 HRC");
+  el("text",{x:260, y:96, "font-size":14, "font-weight":800, style:"fill:var(--blue)"}, gs, "■ seig kjerne ca. 35 HRC");
+  el("text",{x:260, y:130, "font-size":12, style:"fill:var(--muted)"}, gs, "Laget er tegnet tykkere enn i");
+  el("text",{x:260, y:147, "font-size":12, style:"fill:var(--muted)"}, gs, "virkeligheten, så det synes.");
+  // graf
+  const c = $("stChart"); c.replaceChildren();
+  const A = axes(c, {x0:62, y0:310, x1:505, y1:40, xmax:2.5, ymin:300, ymax:800, xt:[0,0.5,1,1.5,2,2.5], yt:[300,400,500,600,700,800], xl:"dybde under overflaten (mm) →", yl:"↑ hardhet (HV)"});
+  const YC = C => 310 - C/1.0*270;
+  [0,0.2,0.4,0.6,0.8,1].forEach(C => el("text",{x:511, y:YC(C)+4, "font-size":11, style:"fill:var(--orange)"}, c, fmtT(C,1)));
+  el("text",{x:550, y:28, "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--orange)"}, c, "C % ↑");
+  el("line",{x1:62, y1:A.Y(550), x2:505, y2:A.Y(550), style:"stroke:var(--red);stroke-width:1.5;stroke-dasharray:6 4"}, c);
+  el("text",{x:66, y:A.Y(550)-6, "font-size":12, "font-weight":700, style:"fill:var(--red)"}, c, "550 HV");
+  const ph=[], pc=[]; for (let x=0;x<=2.5;x+=0.02){ ph.push(`${A.X(x)},${A.Y(hvOf(carbon(x,t)))}`); pc.push(`${A.X(x)},${YC(carbon(x,t))}`); }
+  el("polyline",{points:pc.join(" "), fill:"none", style:"stroke:var(--orange);stroke-width:2.5;stroke-dasharray:7 5"}, c);
+  el("polyline",{points:ph.join(" "), fill:"none", style:"stroke:var(--purple);stroke-width:4"}, c);
+  el("text",{x:A.X(2.45), y:A.Y(470), "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--purple)"}, c, "hardhet etter herding");
+  if (t>0){ el("line",{x1:A.X(d), y1:A.Y(550), x2:A.X(d), y2:310, style:"stroke:var(--red);stroke-width:2"}, c); el("circle",{cx:A.X(d), cy:A.Y(550), r:6, style:"fill:var(--red)"}, c); }
+  $("stD").textContent = t>0 ? `${fmt(d,2)} mm` : "0 mm"; $("stS").textContent = hvTxt(hvOf(carbon(0,t))); $("stC").textContent = hvTxt(350);
+  $("stSteps").innerHTML = t>0 ? `dybde ≈ 0,5 · √t = 0,5 · √${fmtT(t,1)}<br>= 0,5 · ${fmt(Math.sqrt(t),2)} = <b style="color:var(--orange)">${fmt(d,2)} mm</b>` : "Ingen tid i ovnen = ingen karbon inn.";
+}
+let stId = {v:0};
+$("stT").addEventListener("input", () => { stId.v++; stDraw(+$("stT").value); });
+$("stGo").onclick = () => { const end = +$("stT").value || 10; if (!+$("stT").value) $("stT").value = 10; animate(4000, p => { const t = Math.round(end*p*10)/10; stDraw(t); }, stId); };
+stDraw(4); redrawers.push(() => stDraw(+$("stT").value));
+// induksjon
+(function(){ const s = $("indSvg"); let x = 40;
+  function frame(){ s.replaceChildren();
+    el("rect",{x:10, y:42, width:280, height:26, rx:4, style:"fill:var(--steel)"}, s);
+    el("rect",{x:10, y:42, width:Math.max(0,x-30), height:5, style:"fill:#e03131"}, s); el("rect",{x:10, y:63, width:Math.max(0,x-30), height:5, style:"fill:#e03131"}, s);
+    el("rect",{x:x-6, y:42, width:28, height:26, style:`fill:${glow(900)};opacity:.85`}, s);
+    for (let i=0;i<4;i++) el("ellipse",{cx:x+i*5, cy:55, rx:4, ry:24, style:"fill:none;stroke:#c77d20;stroke-width:3"}, s);
+    for (let i=0;i<6;i++){ const dx = x-14-i*5; el("line",{x1:dx, y1:18, x2:dx-4, y2:38, style:"stroke:#4dabf7;stroke-width:2"}, s); el("line",{x1:dx, y1:92, x2:dx-4, y2:72, style:"stroke:#4dabf7;stroke-width:2"}, s); }
+    el("text",{x:x+10, y:12, "text-anchor":"middle", "font-size":10, "font-weight":700, style:"fill:var(--muted)"}, s, "spole");
+    el("text",{x:20, y:105, "font-size":10, "font-weight":700, style:"fill:#e03131"}, s, "herdet overflate");
+  }
+  if (RM){ x = 200; frame(); return; }
+  let last = 0; (function loop(now){ if (now-last > 40){ x += 1.5; if (x>270) x = 40; frame(); last = now; } requestAnimationFrame(loop); })(0);
+})();
+
+/* ---------- Del 8: quiz ---------- */
+const QOPT = ["Herding + lav anløping","Seigherding","Normalisering","Bløtgløding","Spenningsfriglødning","Rekrystallisering","Settherding"];
+const QZ = [
+  ["Et sveist stativ skal fres nøyaktig og må ikke slå seg.", 4, "Restspenninger fra sveisingen må fjernes før fresing."],
+  ["En aksel i 42CrMo4 skal tåle store laster og støt.", 1, "Herding + høy anløping gir sterkt og seigt stål."],
+  ["En stanse skal være så hard som mulig uten å knekke.", 0, "Hardhet fra herding, litt seighet fra lav anløping (ca. 200–250 °C)."],
+  ["Et smidd emne har grove, ujevne korn.", 2, "Normalisering gir nye, fine korn."],
+  ["Rundstål av C60 er for hardt å dreie.", 3, "Bløtgløding gjør stålet så mykt som mulig."],
+  ["En kaldbøyd plate har blitt hard og sprekker ved neste bøying.", 5, "Kaldherdingen fjernes – nye, myke korn."],
+  ["Et kjedehjul trenger slitesterk overflate og seig kjerne.", 6, "Karbon i overflaten, så herding. Induksjonsherding er også et godt svar."]
+];
+const qAns = new Array(QZ.length).fill(null);
+QZ.forEach(([q, a, why], i) => { const c = document.createElement("div"); c.className = "qcard"; c.innerHTML = `<div class="qq">${i+1}. ${q}</div><div class="opts"></div><div class="fb"></div>`;
+  QOPT.forEach((o,j) => { const b = document.createElement("button"); b.className = "btn small"; b.textContent = o; b.onclick = () => {
+    qAns[i] = j===a; c.classList.toggle("right", j===a); c.classList.toggle("wrong", j!==a);
+    [...c.querySelectorAll(".opts button")].forEach((x,k)=>x.classList.toggle("on",k===j));
+    c.querySelector(".fb").textContent = j===a ? "✔ Riktig! " + why : "✘ Ikke helt. Prøv igjen.";
+    c.querySelector(".fb").style.color = j===a ? "var(--green)" : "var(--red)";
+    const n = qAns.filter(x=>x).length; setStatus("quizScore", `${n} av ${QZ.length} riktige`, n===QZ.length ? "ok" : "info"); };
+    c.querySelector(".opts").appendChild(b); });
+  $("quiz").appendChild(c); });
+
+/* ---------- Oppgavefigurer (faste farger for utskrift) ---------- */
+function plain(svg){ const T = (x,y,t,o) => { const e = document.createElementNS(NS,"text"); e.setAttribute("x",x); e.setAttribute("y",y); e.setAttribute("font-family","Arial, sans-serif"); e.setAttribute("font-size",(o&&o.fs)||12); e.setAttribute("fill",(o&&o.c)||"#333"); if (o&&o.a) e.setAttribute("text-anchor",o.a); if (o&&o.b) e.setAttribute("font-weight","700"); e.textContent=t; svg.appendChild(e); };
+  const L = (x1,y1,x2,y2,c,w,dash) => { const e=document.createElementNS(NS,"line"); [["x1",x1],["y1",y1],["x2",x2],["y2",y2],["stroke",c],["stroke-width",w]].forEach(a=>e.setAttribute(a[0],a[1])); if (dash) e.setAttribute("stroke-dasharray",dash); svg.appendChild(e); };
+  const P = (pts,c,w,dash) => { const e=document.createElementNS(NS,"polyline"); e.setAttribute("points",pts.join(" ")); e.setAttribute("fill","none"); e.setAttribute("stroke",c); e.setAttribute("stroke-width",w); e.setAttribute("stroke-linejoin","round"); if (dash) e.setAttribute("stroke-dasharray",dash); svg.appendChild(e); };
+  const r = document.createElementNS(NS,"rect"); r.setAttribute("width","100%"); r.setAttribute("height","100%"); r.setAttribute("fill","#fff"); svg.appendChild(r);
+  return {T, L, P}; }
+(function(){ // oppgave 1
+  const s = $("oppTT"), {T, L, P} = plain(s);
+  const curves = [["A",[[0,20],[40,850],[60,850],[61,40],[80,40],[110,600],[170,600],[230,40]]],["B",[[0,20],[40,870],[60,870],[70,600],[90,300],[120,120],[150,40]]],["C",[[0,20],[50,700],[230,700],[300,420]]]];
+  curves.forEach(([n, pts], i) => { const ox = 50 + i*215, X = t => ox + t/300*180, Y = v => 220 - v/1000*190;
+    for (let v=0; v<=1000; v+=100){ L(ox,Y(v),ox+180,Y(v),v%500?"#eee":"#ccc",1); if (i===0) T(ox-6,Y(v)+4,v,{a:"end",fs:10}); else if (v%200===0) T(ox-4,Y(v)+4,v,{a:"end",fs:9,c:"#888"}); }
+    for (let t=0; t<=300; t+=30){ L(X(t),Y(0),X(t),Y(1000),t%60?"#f3f3f3":"#ddd",1); if (t%60===0) T(X(t),Y(0)+14,t,{a:"middle",fs:10}); }
+    L(ox,Y(0),ox+180,Y(0),"#000",1.5); L(ox,Y(0),ox,Y(1000),"#000",1.5);
+    L(ox,Y(727),ox+180,Y(727),"#c92a2a",1,"4 3");
+    P(pts.map(([t,v])=>`${X(t).toFixed(1)},${Y(v).toFixed(1)}`),"#1c6fd1",3);
+    T(ox+90, 20, "Kurve " + n, {a:"middle", b:1, fs:14, c:"#000"}); });
+  T(50, 252, "°C (loddrett) · tid i minutter (vannrett) · stiplet rød linje = A1 727 °C", {fs:11, c:"#555"});
+})();
+(function(){ // oppgave 3
+  const s = $("oppAn"), {T, L, P} = plain(s), X = t => 70 + t/700*520, Y = h => 250 - (h-15)/50*220;
+  for (let h=15; h<=65; h+=5){ L(X(0),Y(h),X(700),Y(h),h%10?"#eee":"#ccc",1); T(X(0)-8,Y(h)+4,h,{a:"end"}); }
+  for (let t=0; t<=700; t+=50){ L(X(t),Y(15),X(t),Y(65),t%100?"#f1f1f1":"#ccc",1); if (t%100===0) T(X(t),Y(15)+18,t,{a:"middle"}); }
+  L(X(0),Y(15),X(700),Y(15),"#000",2); L(X(0),Y(15),X(0),Y(65),"#000",2);
+  T(X(700),Y(15)+36,"anløpstemperatur (°C)",{a:"end",b:1,c:"#000"}); T(X(0)+6,Y(65)-8,"hardhet (HRC)",{b:1,c:"#000"});
+  const p = []; for (let t=20; t<=650; t+=5) p.push(`${X(t).toFixed(1)},${Y(interp(AN_H,t)).toFixed(1)}`); P(p,"#c92a2a",3);
+  T(X(30),Y(58)-10,"C45 vannherdet",{c:"#c92a2a",b:1});
+})();
+(function(){ // oppgave 4
+  const s = $("oppSt"), {T, L, P} = plain(s), X = x => 70 + x/2.5*520, Y = v => 250 - (v-300)/500*220;
+  for (let v=300; v<=800; v+=50){ L(X(0),Y(v),X(2.5),Y(v),v%100?"#eee":"#ccc",1); if (v%100===0) T(X(0)-8,Y(v)+4,v,{a:"end"}); }
+  for (let x=0; x<=2.5001; x+=0.1){ L(X(x),Y(300),X(x),Y(800),Math.round(x*10)%5?"#f1f1f1":"#ccc",1); if (Math.round(x*10)%5===0) T(X(x),Y(300)+18,fmtT(x,1),{a:"middle"}); }
+  L(X(0),Y(300),X(2.5),Y(300),"#000",2); L(X(0),Y(300),X(0),Y(800),"#000",2);
+  L(X(0),Y(550),X(2.5),Y(550),"#c92a2a",1.5,"6 4"); T(X(2.5)-4,Y(550)-6,"550 HV",{a:"end",c:"#c92a2a",b:1});
+  T(X(2.5),Y(300)+36,"dybde under overflaten (mm)",{a:"end",b:1,c:"#000"}); T(X(0)+6,Y(800)-8,"hardhet (HV)",{b:1,c:"#000"});
+  [[2,"#1c6fd1","A",""],[8,"#7048e8","B","8 4"]].forEach(([t,c,n,dash]) => { const p=[]; for (let x=0;x<=2.5;x+=0.02) p.push(`${X(x).toFixed(1)},${Y(hvOf(carbon(x,t))).toFixed(1)}`); P(p,c,3,dash);
+    const xl = t===2 ? 0.3 : 1.15; T(X(xl)+6, Y(hvOf(carbon(xl,t)))-8, "Kurve "+n, {c, b:1}); });
+})();
+
+/* ---------- Oppgaver ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToImg(svg){
+  const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
+  const img = new Image(); await new Promise(r => { img.onload = r; img.onerror = r; img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str); });
+  const c = document.createElement("canvas"); c.width = vb.width*2; c.height = vb.height*2; const x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+  const im = document.createElement("img"); im.src = c.toDataURL("image/png"); im.width = vb.width; im.height = vb.height; return im;
+}
+$("btnCopy").onclick = async () => {
+  const orig = $("oppgavetekst"), clone = orig.cloneNode(true);
+  const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>

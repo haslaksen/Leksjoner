@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vedlikehold 3 – Smøring</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#fab005; --yellow-soft:#fff6d6;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#6b7785; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.3rem}
+p{margin:0 0 .8em}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem; user-select:none}
+.btn:hover{border-color:var(--blue)}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:2.6rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1300px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.15rem; color:var(--muted); max-width:72ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2.wide-left{grid-template-columns:1.7fr 1fr}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.15rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg{display:block; width:100%; height:auto; max-height:64vh}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.7rem}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem; min-height:2.9em}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.7rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+details.laerer{margin-top:1.1rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.4rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.35rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.readout{display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.35rem .7rem}
+.readout span{display:block; font-size:.72rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.readout b.ok{color:var(--green)} .readout b.bad{color:var(--red)} .readout b.warn{color:var(--orange)}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.chip{font:inherit; font-size:.8rem; font-weight:600; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.4rem .75rem}
+.chip:hover{border-color:var(--blue)}
+.chip[aria-pressed="true"]{background:var(--orange); color:#fff; border-color:var(--orange)}
+.mini3,.mini4{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
+.mini4{grid-template-columns:repeat(4,1fr)}
+.mini3 .card,.mini4 .card{padding:.7rem .9rem; font-size:.9rem}
+.mini3 .card h3,.mini4 .card h3{font-size:1.05rem}
+.pcard h3{font-size:1.5rem}
+.pcard .row{display:grid; grid-template-columns:2.2rem 1fr; gap:.4rem; margin:.5rem 0; font-size:1rem}
+.pcard .row b{font-size:1.3rem}
+.steps{display:grid; grid-template-columns:repeat(5,1fr); gap:.5rem}
+.steps.s8{grid-template-columns:repeat(8,1fr)}
+.steps div{background:var(--bg); border:2px solid var(--line); border-radius:10px; padding:.5rem; font-size:.85rem; text-align:center; transition:all .3s; cursor:pointer}
+.steps div.on{border-color:var(--orange); background:var(--orange-soft)}
+.steps div.done{border-color:var(--green)}
+.steps .ic{display:block; font-size:1.8rem; line-height:1.2}
+.range{display:flex; align-items:center; gap:.8rem; margin-top:.7rem; font-weight:650}
+.range input{flex:1; accent-color:var(--orange); height:2rem}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+.r5{display:grid; grid-template-columns:repeat(5,1fr); gap:.6rem}
+.r5 div{background:var(--panel); border:2px solid var(--orange); border-radius:12px; padding:.7rem; text-align:center}
+.r5 .ic{font-size:2.2rem; display:block}
+.r5 b{display:block; font-size:1.05rem}
+.r5 small{color:var(--muted); font-size:.82rem}
+
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); height:2rem}
+.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
+.fasit b{color:var(--green)}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.3rem}
+.ot.c td, .ot.c th{text-align:center}
+.ot.c td:first-child, .ot.c th:first-child{text-align:left}
+.ofig{border:1px solid var(--muted); border-radius:8px; padding:.4rem; background:#fff; margin:.5rem 0}
+.ofig svg{display:block; width:100%; height:auto}
+.formelark{display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; font-size:.92rem; border:1px solid var(--muted); border-radius:8px; padding:.5rem .8rem; margin:.5rem 0 1rem}
+.scenario{border:1px dashed var(--muted); border-radius:8px; padding:.6rem .9rem; margin:.5rem 0; font-size:.95rem}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .mini3,.mini4{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+  .steps,.steps.s8{grid-template-columns:repeat(4,1fr)}
+  .r5{grid-template-columns:1fr 1fr 1fr}
+}
+@media (max-width:600px){ .steps,.steps.s8{grid-template-columns:1fr 1fr} .mini3,.mini4{grid-template-columns:1fr} .readout{grid-template-columns:1fr 1fr} .r5{grid-template-columns:1fr 1fr} .card{overflow-wrap:anywhere} table.t{display:block; overflow-x:auto} .oppgave{overflow-x:auto} .ot{font-size:.75rem} }
+.grid2>*,.hero>*{min-width:0}
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999; --steel-soft:#eee}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr, .ofig, .scenario{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Vedlikehold · <span>Leksjon 3</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- START -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Vedlikehold</div>
+      <h1>Leksjon 3<br>Smøring</h1>
+      <p class="lead">Den vanligste og billigste vedlikeholdsjobben – og den som oftest gjøres feil. Riktig smøremiddel, riktig mengde, på riktig sted og til riktig tid.</p>
+      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <ol class="goals">
+        <li>forklare <b>hva smøring gjør</b> i en maskin</li>
+        <li>velge mellom <b>olje og fett</b> og forklare <b>viskositet</b></li>
+        <li>smøre et lager med <b>fettpresse</b> – med riktig mengde</li>
+        <li>sjekke <b>oljenivå</b> og gjøre et <b>oljeskift</b> på en girkasse</li>
+        <li>lese og følge en <b>smøreplan</b> og et smørekart</li>
+      </ol>
+    </div>
+    <div>
+      <div class="card">
+        <h3>Kompetansemål (PIN02-03, vedlikehold)</h3>
+        <p style="margin-bottom:.4rem"><i>«gjennomføre forebyggende vedlikehold og sørge for maskinsikkerhet etter en vedlikeholdsplan»</i></p>
+        <p style="margin-bottom:0"><i>«bruke og reflektere over helse-, miljø- og sikkerhetskrav i rutiner for vedlikehold»</i></p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1 · Hvorfor og hvordan</th></tr>
+          <tr><td>0–6 min</td><td>Del 1: hva smøring gjør</td></tr>
+          <tr><td>6–14 min</td><td>Del 2: olje eller fett</td></tr>
+          <tr><td>14–20 min</td><td>Del 3: fettpresse og smørenippel</td></tr>
+          <tr><td>20–26 min</td><td>Del 4: riktig mengde</td></tr>
+          <tr><td>26–45 min</td><td>Oppgave 1–3</td></tr>
+          <tr><th colspan="2">Time 2 · Gjør jobben</th></tr>
+          <tr><td>0–8 min</td><td>Del 5: oljeskift i girkasse</td></tr>
+          <tr><td>8–15 min</td><td>Del 6: smøreplan på dreiebenken</td></tr>
+          <tr><td>15–43 min</td><td>Oppgave 4–6</td></tr>
+          <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+      </div>
+      <div class="tip" style="margin-bottom:0"><b>Du kjenner allerede:</b> vedlikeholdsplan og arbeidsordre (Vedlikehold 1) og lås og merk (Vedlikehold 2). Må vernet av for å smøre: <b>lås og merk først</b>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 1 -->
+<section class="slide" id="hvorfor" data-nav="1 Hvorfor smøre">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 6 min</div>
+    <h2>Hva smøring gjør</h2>
+    <p class="lead">Selv blankpolert stål er ruglete når du ser det under mikroskop. Bytt mellom uten og med smøring.</p>
+    <div class="fig">
+      <svg id="d1Svg" viewBox="0 0 1000 380" role="img" aria-label="To stålflater forstørret, med og uten oljefilm"></svg>
+      <div class="controls">
+        <button class="btn primary" id="d1Dry">🔥 Uten smøring</button>
+        <button class="btn" id="d1Oil">💧 Med smøring</button>
+        <button class="btn" id="d1Reset">↺ Nullstill slitasje</button>
+      </div>
+      <div class="status" id="d1Msg"></div>
+    </div>
+    <div class="mini4">
+      <div class="card"><h3>↔ Mindre friksjon</h3>Flatene glir lett. Mindre energi går tapt.</div>
+      <div class="card"><h3>🌡 Kjøler</h3>Olja tar med seg varme bort fra gir og lager.</div>
+      <div class="card"><h3>🛡 Mot rust</h3>Et tynt lag holder fukt og luft borte fra stålet.</div>
+      <div class="card"><h3>🧹 Holder ute skitt</h3>Fett tetter mot støv og vann. Olje skyller bort slitepartikler.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary><b>Friksjon</b> = motstanden når to flater glir mot hverandre. Toppene på overflaten kalles ruhetstopper (jf. Ra i Verkstedhåndboka, emne 3). Uten smøring sveises toppene sammen et øyeblikk og rives løs – det gir rykk («stick-slip»), varme og slitasje. Med oljefilm er det full separasjon (hydrodynamisk smøring). Godt spørsmål til klassen: «Hvor i verkstedet har vi metall mot metall som beveger seg?» – sleidebaner, ledeskrue, lagre, gir, kjeder, styreskinner.</details>
+  </div>
+</section>
+
+<!-- DEL 2 -->
+<section class="slide" id="olje-fett" data-nav="2 Olje eller fett">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 8 min</div>
+    <h2>Olje eller fett?</h2>
+    <p class="lead"><b>Viskositet</b> = hvor tyktflytende olja er. Start løpet – prøv både kald og varm olje.</p>
+    <div class="fig">
+      <svg id="d2Svg" viewBox="0 0 1000 380" role="img" aria-label="Tre oljer renner nedover en skråning, og olje og fett på en loddrett plate"></svg>
+      <div class="controls">
+        <button class="btn primary" id="d2Run">▶ Start løpet</button>
+        <span class="chips" id="d2Temp"></span>
+      </div>
+      <div class="status info" id="d2Msg">Tre oljer med ulik viskositet. Hvilken kommer først ned?</div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>💧 Olje – når</h3>Girkasser, hydraulikk, sleidebaner. Der det går fort, og der varmen må føres bort.</div>
+      <div class="card"><h3>🟢 Fett – når</h3>Lager med smørenippel og åpne steder. Der olje ville rent bort, og der det må tettes mot skitt.</div>
+      <div class="card"><h3>🔢 Tallene på kanna</h3><b>ISO VG 68</b> = viskositeten til olja (ved 40 °C). Høyt tall = tykk olje.<br><b>NLGI 2</b> = hvor stivt fettet er. 2 er vanligst.</div>
+    </div>
+    <div class="tip o"><b>Bland aldri</b> ulike oljer eller fett uten å sjekke. De kan ødelegge hverandre. Bruk det som står i smøreplanen.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>ISO VG (Viscosity Grade) er viskositeten i mm²/s (centistoke) ved 40 °C: VG 32 er typisk hydraulikkolje, VG 68 sleidebane- og lett girolje, VG 220 girolje for tunge girkasser. Viskositeten faller kraftig når olja blir varm – derfor kan for tynn olje gi metall mot metall i en varm maskin, og for tykk olje gi treg start og varmgang når den er kald. Fett = baseolje (ca. 80–90 %) + <b>fortykningsmiddel</b> (f.eks. litiumsåpe) som holder på olja som en svamp, og som slipper litt olje ut der det smører. NLGI-skalaen går fra 000 (nesten flytende) til 6 (hardt som ost). Ulike fortykningsmidler kan være uforenlige: blandingen blir bløt og renner ut av lageret.</details>
+  </div>
+</section>
+
+<!-- DEL 3 -->
+<section class="slide" id="fettpresse" data-nav="3 Fettpresse">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 6 min</div>
+    <h2>Fettpresse og smørenippel</h2>
+    <p class="lead">Smøreplanen sier <b>4 slag</b>. Pump ett slag om gangen og følg med på lagerhuset.</p>
+    <div class="fig">
+      <svg id="d3Svg" viewBox="0 0 1000 420" role="img" aria-label="Fettpresse koblet til smørenippel på et lagerhus, i snitt"></svg>
+      <div class="controls">
+        <button class="btn primary" id="d3Pump">⬇ Pump ett slag</button>
+        <button class="btn" id="d3Block">🚫 Tett nippel</button>
+        <button class="btn" id="d3Reset">↺ Start på nytt</button>
+      </div>
+      <div class="status info" id="d3Msg"></div>
+    </div>
+    <div class="steps" id="d3Steps" style="margin-top:.8rem"></div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>En <b>smørenippel</b> er en liten tilbakeslagsventil: en kule holdes mot setet av en fjær. Fettpressa presser kula ned, og fettet går inn. Når trykket er borte, lukker kula – skitt kommer ikke inn og fett kommer ikke ut. Munnstykket skal klikke rett på nippelhodet. Mengde per slag varierer med fettpressa (ofte ca. 1–1,5 g) – smøreplanen eller produsenten sier antall slag eller gram. Tørk alltid av nippelen før og etter: skitt på nippelen blir presset rett inn i lageret.</details>
+  </div>
+</section>
+
+<!-- DEL 4 -->
+<section class="slide" id="mengde" data-nav="4 Riktig mengde">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 6 min</div>
+    <h2>Riktig mengde – mer er ikke bedre</h2>
+    <p class="lead">Dra i glideren og se hva som skjer med temperaturen i lageret.</p>
+    <div class="fig">
+      <svg id="d4Svg" viewBox="0 0 1000 380" role="img" aria-label="Kulelager i lagerhus med fett, og graf for temperatur mot fyllingsgrad"></svg>
+      <div class="range"><span>Fett i lagerhuset</span><input type="range" id="d4Fill" min="0" max="100" step="5" value="10" aria-label="Fyllingsgrad i prosent"><span id="d4Pct" style="min-width:3.5em">10 %</span></div>
+      <div class="readout">
+        <div><span>Fylling</span><b id="r4Fill">10 %</b></div>
+        <div><span>Lagertemperatur</span><b id="r4Temp">–</b></div>
+        <div><span>Vurdering</span><b id="r4Eval">–</b></div>
+      </div>
+      <div class="status info" id="d4Msg"></div>
+    </div>
+    <div class="tip o"><b>For mye fett = varmt lager.</b> Kulene må <b>elte</b> fettet (kna det, som deig) hver runde. Det gir varme, fettet brytes ned, og tetningene presses ut.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Lagerhus fylles vanligvis ca. ⅓–½ av det frie rommet – høyt turtall mot ⅓, lavt turtall mot ½. Lageret selv fylles helt ved montering. Kurven er en forenkling for å vise prinsippet. Et overfylt lager blir varmt i timer–dager, fettet oksiderer og blir hardt, og kan til slutt gi havari. Tilstandsbasert smøring: noen bedrifter måler lyd (ultralyd) mens de smører – lyden faller når lageret har nok fett.</details>
+  </div>
+</section>
+
+<!-- DEL 5 -->
+<section class="slide" id="oljeskift" data-nav="5 Oljeskift">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 8 min</div>
+    <h2>Oljeskift i girkasse</h2>
+    <p class="lead">Åtte trinn. Klikk deg gjennom – eller kjør automatisk.</p>
+    <div class="fig">
+      <svg id="d5Svg" viewBox="0 0 1000 480" role="img" aria-label="Girkasse i snitt med seglass, påfyllingsplugg, magnetisk tappeplugg og oppsamlingskar"></svg>
+      <div class="controls">
+        <button class="btn primary" id="d5Next">▶ Neste trinn</button>
+        <button class="btn" id="d5Auto">▶ Automatisk</button>
+        <button class="btn" id="d5Reset">↺ Fra start</button>
+      </div>
+      <div class="status info" id="d5Msg"></div>
+    </div>
+    <div class="steps s8" id="d5Steps" style="margin-top:.8rem"></div>
+    <h3 style="margin-top:1.4rem">Se på olja – den forteller hvordan maskinen har det</h3>
+    <div class="fig"><svg id="d5Jars" viewBox="0 0 1000 205" role="img" aria-label="Fem oljeprøver: klar, melkehvit, svart, glitrende og skummende"></svg></div>
+    <details class="laerer no-print"><summary>Lærernotat</summary><b>Seglass</b> (nivåglass) = vindu i huset som viser oljenivået. Les av når maskinen har stått litt, slik at olja har rent ned. <b>Magnetisk tappeplugg</b> samler opp jernpartikler: fint grått slam er normal innkjøring/slitasje, flak og biter tyder på skade i gir eller lager – meld det i arbeidsordren. Påfyllingspluggen har ofte <b>lufting</b> (et lite hull med filter) så det ikke bygges opp trykk når olja blir varm. Melkehvit olje = vann (kondens, vasking, lekk kjøler). Spillolje er farlig avfall og skal leveres i merket fat – aldri i sluk. Spill tørkes opp med absorbent. Tiltrekkingsmoment på pluggen kommer i leksjon 5.</details>
+  </div>
+</section>
+
+<!-- DEL 6 -->
+<section class="slide" id="smoreplan" data-nav="6 Smøreplan">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 7 min</div>
+    <h2>Smørekart for dreiebenken DB-02</h2>
+    <p class="lead">Formen viser <b>hva</b> (● olje, ▲ fett). Fargen viser <b>hvor ofte</b>. Klikk på et punkt.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="d6Svg" viewBox="70 6 850 412" role="img" aria-label="Dreiebenk med seks smørepunkter"></svg>
+        <div class="controls"><span class="chips" id="d6Chips"></span></div>
+      </div>
+      <div class="card pcard" id="d6Card"></div>
+    </div>
+    <div class="mini3">
+      <div class="card"><h3>🗺 Smørekart</h3>Tegning av maskinen med alle smørepunktene. Henger på maskinen.</div>
+      <div class="card"><h3>📋 Smøreplan</h3>Liste: hvilket punkt, hvilket smøremiddel, hvor mye og hvor ofte.</div>
+      <div class="card"><h3>✍ Smørelogg</h3>Hvem smurte hva, og når. Blir historikk i vedlikeholdssystemet.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Symbolene er et eksempel – mange produsenter bruker egne symboler, men prinsippet «form = smøremiddel/metode, farge = intervall» er vanlig. Ord: <b>spindelkasse</b> = huset med gir som driver chucken; <b>sleide</b> = vognen som bærer verktøyet; <b>bakdokke</b> = den flyttbare enheten til høyre; <b>pinoll</b> = røret som skyves ut av bakdokka; <b>matekasse</b> = girkassen som velger mating og stigning. Daglige punkter tar operatøren (autonomt vedlikehold, jf. leksjon 1), oljeskift tar fagarbeideren etter vedlikeholdsplanen. Spør: «Hva skjer hvis sleidebanene ikke smøres og spon blir liggende?» – riper, slitasje, tap av nøyaktighet.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>De fem R-ene i smøring</h2>
+    <div class="r5">
+      <div><span class="ic">🛢</span><b>Riktig smøremiddel</b><small>det som står i planen – ikke bland</small></div>
+      <div><span class="ic">⚖</span><b>Riktig mengde</b><small>antall slag / midt i seglasset</small></div>
+      <div><span class="ic">📍</span><b>Riktig sted</b><small>alle punkter på smørekartet</small></div>
+      <div><span class="ic">📅</span><b>Riktig tid</b><small>daglig, ukentlig, månedlig …</small></div>
+      <div><span class="ic">🧽</span><b>Riktig metode</b><small>rent, låst og merket, logget</small></div>
+    </div>
+    <div class="grid2" style="margin-top:1.4rem">
+      <div class="card">
+        <h3>Nøkkelord</h3>
+        <div class="chips"><span>friksjon</span><span>oljefilm</span><span>viskositet</span><span>ISO VG</span><span>fett</span><span>fortykningsmiddel</span><span>NLGI</span><span>fettpresse</span><span>smørenippel</span><span>elting</span><span>seglass</span><span>tappeplugg</span><span>magnetplugg</span><span>spillolje</span><span>smørekart</span><span>smøreplan</span><span>smørelogg</span></div>
+      </div>
+      <div class="card">
+        <h3>Neste leksjon</h3>
+        <p style="margin:0"><b>Leksjon 4 – Lagre:</b> lagertyper, demontering og montering med avtrekker og oppvarming, og hvordan du ser på et ødelagt lager hva som gikk galt – ofte nettopp smøringen.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 47 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Vedlikehold 3 – Smøring · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <div class="formelark"><b>Husk:</b> <span>Smøring: mindre friksjon · kjøler · mot rust · holder ute skitt</span><span>Høyt VG-tall = tykk olje</span><span>Lagerhus: fyll ca. ⅓–½</span><span>Oljenivå: midt i seglasset, maskinen stoppet</span><span>Spillolje = farlig avfall</span></div>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Hva smøring gjør <small>Time 1 · 6 min</small></h3>
+        <p>To stålflater, forstørret.</p>
+        <div class="ofig" id="o1fig" style="max-width:720px"></div>
+        <p>a) Hvilken figur viser smurte flater? Hva skjer med flatene i den andre figuren?</p><div class="svar"></div><div class="svar"></div>
+        <p>b) Skriv fire ting smøring gjør i en maskin.</p><div class="svar"></div><div class="svar"></div>
+        <p>c) Sant eller usant? Sett kryss.</p>
+        <table class="ot c">
+          <tr><th>Påstand</th><th style="width:5rem">Sant</th><th style="width:5rem">Usant</th></tr>
+          <tr><td>1. En blankpolert stålflate er helt glatt.</td><td></td><td></td></tr>
+          <tr><td>2. Olje kan kjøle en girkasse.</td><td></td><td></td></tr>
+          <tr><td>3. Alle typer fett kan blandes fritt.</td><td></td><td></td></tr>
+          <tr><td>4. Et tynt lag olje beskytter stål mot rust.</td><td></td><td></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) B har oljefilm. I A slår toppene i stålet mot hverandre: rykk, varme, gnister og slitasje (metallspon). b) Mindre friksjon, kjøler, beskytter mot rust, holder ute skitt / skyller bort slitepartikler. c) 1 U (den er ruglete under mikroskop) · 2 S · 3 U · 4 S.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Olje eller fett <small>Time 1 · 7 min</small></h3>
+        <p>a) Sett kryss for olje eller fett, og skriv en kort grunn.</p>
+        <table class="ot">
+          <tr><th>Hvor?</th><th style="width:4rem">Olje</th><th style="width:4rem">Fett</th><th>Hvorfor?</th></tr>
+          <tr><td>Girkassen på dreiebenken</td><td></td><td></td><td class="tom"></td></tr>
+          <tr><td>Lager med smørenippel</td><td></td><td></td><td class="tom"></td></tr>
+          <tr><td>Sleidebanene på dreiebenken</td><td></td><td></td><td class="tom"></td></tr>
+          <tr><td>Hydraulikkpressa HP-01 (leksjon 2)</td><td></td><td></td><td class="tom"></td></tr>
+          <tr><td>Lager på en vifte som står ute i regn og støv</td><td></td><td></td><td class="tom"></td></tr>
+          <tr><td>Ledeskrua på dreiebenken</td><td></td><td></td><td class="tom"></td></tr>
+        </table>
+        <p>b) Sett disse oljene i rekkefølge fra <b>tynnest</b> til <b>tykkest</b>: &nbsp; ISO VG 220 &nbsp;·&nbsp; ISO VG 32 &nbsp;·&nbsp; ISO VG 68</p><div class="svar"></div>
+        <p>c) Hva skjer med viskositeten når olja blir varm?</p><div class="svar"></div>
+        <p>d) Forklar med egne ord: hva er fett laget av?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) Girkasse – olje (kjøler, når alle gir). Lager med nippel – fett (blir sittende). Sleidebaner – olje (tynt lag, skyller bort skitt). Hydraulikkpresse – olje (hydraulikkolje overfører kraft). Vifte ute – fett (tetter mot vann og støv). Ledeskrue – olje (tynt lag, spon børstes bort). b) VG 32 – VG 68 – VG 220. c) Den synker – olja blir tynnere. d) Olje + fortykningsmiddel som holder på olja som en svamp.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Fettpresse og fettmengde <small>Time 1 · 6 min</small></h3>
+        <p>a) Skriv riktig nummer (1–5).</p>
+        <table class="ot">
+          <tr><th style="width:4rem">Nr.</th><th>Trinn</th></tr>
+          <tr><td class="tom"></td><td>Pump antall slag som står i smøreplanen</td></tr>
+          <tr><td class="tom"></td><td>Tørk av nippelen</td></tr>
+          <tr><td class="tom"></td><td>Lås og merk hvis vernet må av</td></tr>
+          <tr><td class="tom"></td><td>Ta av munnstykket og tørk av – skriv i smøreloggen</td></tr>
+          <tr><td class="tom"></td><td>Sett munnstykket rett på nippelen</td></tr>
+        </table>
+        <p>b) Tre lagerhus. Hvilket har riktig mengde fett? Hva skjer med de to andre?</p>
+        <div class="ofig" id="o3fig" style="max-width:700px"></div>
+        <div class="svar"></div><div class="svar"></div>
+        <p>c) Du pumper, men fettet kommer ut ved siden av nippelen. Hva er galt, og hva gjør du?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 5, 2, 1, 4, 3 (lås og merk – tørk av – munnstykket på – pump – ta av og logg). b) C (ca. ⅓–½). A er overfylt: kulene elter fettet, lageret blir varmt og fettet presses ut forbi tetningen. B har for lite: metall mot metall og slitasje. c) Munnstykket sitter skjevt, eller nippelen er tett. Sett munnstykket rett på og prøv igjen – hjelper ikke det: bytt nippelen.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Oljenivå og oljeskift <small>Time 2 · 8 min</small></h3>
+        <p>a) Tre seglass. Skriv <b>OK</b>, <b>Fyll på</b> eller <b>For mye</b> under hvert.</p>
+        <div class="ofig" id="o4fig" style="max-width:560px"></div>
+        <table class="ot c"><tr><th>A</th><th>B</th><th>C</th></tr><tr><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr></table>
+        <p>b) Oljeskift: skriv riktig nummer (1–8).</p>
+        <table class="ot">
+          <tr><th style="width:4rem">Nr.</th><th>Trinn</th></tr>
+          <tr><td class="tom"></td><td>Fyll ny olje til midt i seglasset</td></tr>
+          <tr><td class="tom"></td><td>Lås og merk</td></tr>
+          <tr><td class="tom"></td><td>Skru ut tappepluggen og tapp i kar</td></tr>
+          <tr><td class="tom"></td><td>Sjekk magnetpluggen</td></tr>
+          <tr><td class="tom"></td><td>Rengjør rundt pluggene</td></tr>
+          <tr><td class="tom"></td><td>Spillolje i fat, skriv i arbeidsordren</td></tr>
+          <tr><td class="tom"></td><td>Åpne påfyllingspluggen</td></tr>
+          <tr><td class="tom"></td><td>Ny pakning – skru inn tappepluggen</td></tr>
+        </table>
+        <p>c) Hva kan det bety – og hva gjør du?</p>
+        <table class="ot">
+          <tr><th style="width:38%">Du ser …</th><th>Det betyr / jeg gjør</th></tr>
+          <tr><td>Melkehvit olje</td><td class="tom"></td></tr>
+          <tr><td>Metallflak på magnetpluggen</td><td class="tom"></td></tr>
+          <tr><td>Svart, tykk olje som lukter brent</td><td class="tom"></td></tr>
+        </table>
+        <p>d) Hvorfor skal spillolja ikke helles i sluket?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) A For mye · B Fyll på · C OK. b) 7, 1, 4, 5, 2, 8, 3, 6 (lås og merk – rengjør – åpne topp – tapp ut – sjekk magnet – ny pakning – fyll – rydd og skriv). c) Melkehvit: vann i olja – skift olje og finn hvor vannet kommer fra. Metallflak: skade på gir eller lager – skriv i arbeidsordren, si fra til leder. Svart og brent: gammel eller overopphetet olje – skift olje, sjekk nivå, temperatur og om det er riktig olje. d) Spillolje er farlig avfall. Den forurenser vann og jord. Leveres i merket fat.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Lag smøreplan for dreiebenken <small>Time 2 · 12 min</small></h3>
+        <div class="scenario"><b>Fra produsentens manual – dreiebenk DB-02:</b> Spindelkassa fylles med girolje ISO VG 68. Nivået kontrolleres i seglasset hver dag før start. Sleidebanene tørkes rene for spon og smøres med et tynt lag sleidebaneolje VG 68 hver dag. Sleiden har to smørenipler: gi 2 slag fett NLGI 2 i hver, én gang i uka. Ledeskrua og trekkstanga børstes rene og oljes med VG 68 hver uke. Pinollen i bakdokka får 2–3 dråper olje VG 68 i oljekoppen hver uke. Matekassa har eget seglass: kontroller nivået én gang i måneden og fyll på girolje VG 68 ved behov.</div>
+        <div class="ofig" id="o5fig"></div>
+        <p>a) Bruk manualen og figuren. Fyll ut smøreplanen. (Ord: spindelkasse, sleidebaner, sleide, ledeskrue, pinoll, matekasse.)</p>
+        <table class="ot">
+          <tr><th style="width:2.5rem">Nr.</th><th style="width:20%">Smørepunkt</th><th style="width:20%">Smøremiddel</th><th>Hvor mye / hvordan</th><th style="width:15%">Hvor ofte</th></tr>
+          <tr><td>1</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>2</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>3</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>4</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>5</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>6</td><td class="tom"></td><td></td><td></td><td></td></tr>
+        </table>
+        <p>b) På smørekartet er ● olje og ▲ fett. Rød = daglig, blå = ukentlig, grønn = månedlig. Hvilken form og farge får punkt 3 og punkt 6?</p><div class="svar"></div>
+        <p>c) Hvilke punkter kan operatøren ta selv hver dag? Hvorfor er det lurt?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) 1 Spindelkasse – girolje VG 68 – sjekk nivå i seglasset – daglig. 2 Sleidebaner – sleidebaneolje VG 68 – tørk bort spon, tynt lag – daglig. 3 Sleide (smørenipler) – fett NLGI 2 – 2 slag per nippel – ukentlig. 4 Ledeskrue og trekkstang – olje VG 68 – børst rent, tynt lag – ukentlig. 5 Pinoll – olje VG 68 – 2–3 dråper i oljekoppen – ukentlig. 6 Matekasse – girolje VG 68 – sjekk nivå, fyll ved behov – månedlig. b) Punkt 3: blå trekant. Punkt 6: grønn sirkel. c) Punkt 1 og 2. Operatøren bruker maskinen hver dag og ser fort om noe er galt – og fagarbeideren får tid til de større jobbene (autonomt vedlikehold, leksjon 1).</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Det varme lageret <small>Time 2 · 8 min</small></h3>
+        <div class="scenario">Viftemotoren <b>VM-03</b> ble smurt forrige uke. Ola ga lageret <b>20 slag</b> «for sikkerhets skyld». Smøreplanen sier <b>3 slag</b>. Nå er lagerhuset <b>85 °C</b>, og det ligger fett på gulvet under tetningen.</div>
+        <p>a) Hva er den mest sannsynlige årsaken til at lageret er varmt?</p><div class="svar"></div>
+        <p>b) Hva må du gjøre før du åpner lagerhuset? (Tenk leksjon 2.)</p><div class="svar"></div>
+        <p>c) Fyll ut arbeidsordren.</p>
+        <table class="ot">
+          <tr><th style="width:28%">Maskin</th><td class="tom"></td></tr>
+          <tr><th>Funn</th><td class="tom"></td></tr>
+          <tr><th>Tiltak</th><td class="tom"></td></tr>
+          <tr><th>Slik unngår vi det neste gang</th><td class="tom"></td></tr>
+        </table>
+        <div class="fasit" hidden><b>Fasit:</b> a) For mye fett: kulene elter fettet, det blir varmt, og fettet presses ut forbi tetningen. b) Lås og merk (hovedbryter / arbeidsbryter), prøvestart, vent til viftehjulet står stille og huset er kaldt nok. c) Maskin: VM-03, viftemotor. Funn: lagerhus 85 °C, fett lekker ved tetningen – overfylt (20 slag mot 3 i planen). Tiltak: åpne lagerhuset, fjern overskuddsfett til ca. ⅓–½, sjekk tetning og lager, prøvekjør og mål temperaturen. Unngå: følg smøreplanen, merk antall slag ved nippelen, opplæring – «mer er ikke bedre».</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 2 min</small></h3>
+        <p>1. Nevn tre ting smøring gjør.</p><div class="svar"></div>
+        <p>2. Hvorfor blir et lager varmt av for mye fett?</p><div class="svar"></div>
+        <p>3. Hvor skal oljenivået stå i seglasset – og når leser du det av?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> 1) Mindre friksjon, kjøler, mot rust, holder ute skitt. 2) Kulene må elte fettet hver runde – det gir varme. 3) Midt i seglasset (mellom min og maks), med maskinen stoppet slik at olja har rent ned.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const nf = (x, d=0) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const RM = (()=>{ try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } })();
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
+
+/* Felles animasjonsløkke – bare synlige figurer oppdateres */
+const anims = [];
+function addAnim(node, tick){ const a = {tick, vis:false}; anims.push(a); new IntersectionObserver(es => es.forEach(e => a.vis = e.isIntersecting)).observe(node); return a; }
+let last = performance.now(), T = 0;
+function frame(now){ const dt = Math.min(.05, (now-last)/1000); last = now; T += RM ? dt*.4 : dt; anims.forEach(a => { if (a.vis) a.tick(RM ? dt*.4 : dt, T); }); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+/* Tegnehjelp */
+const fx = v => +(+v).toFixed(1);
+const ln = (x1,y1,x2,y2,c,w=3,d="") => `<line x1="${fx(x1)}" y1="${fx(y1)}" x2="${fx(x2)}" y2="${fx(y2)}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"${d?` stroke-dasharray="${d}"`:""}/>`;
+const TX = (x,y,s,o={}) => `<text x="${fx(x)}" y="${fx(y)}" font-size="${o.size||15}" fill="${o.fill||"var(--ink)"}" text-anchor="${o.anchor||"start"}"${o.weight?` font-weight="${o.weight}"`:""}${o.op!==undefined?` opacity="${o.op}"`:""}${o.tr?` transform="${o.tr}"`:""}>${s}</text>`;
+const RC = (x,y,w,h,f,s="none",sw=2,rx=0,extra="") => `<rect x="${fx(x)}" y="${fx(y)}" width="${fx(Math.max(0,w))}" height="${fx(Math.max(0,h))}" rx="${rx}" fill="${f}" stroke="${s}" stroke-width="${sw}"${extra}/>`;
+const CI = (x,y,r,f,s="none",sw=2,extra="") => `<circle cx="${fx(x)}" cy="${fx(y)}" r="${fx(Math.max(0,r))}" fill="${f}" stroke="${s}" stroke-width="${sw}"${extra}/>`;
+const PA = (d,f,s="none",sw=2,extra="") => `<path d="${d}" fill="${f}" stroke="${s}" stroke-width="${sw}" stroke-linejoin="round" stroke-linecap="round"${extra}/>`;
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+function rng(seed){ return () => (seed = (seed*16807) % 2147483647) / 2147483647; }
+function gear(cx,cy,r,n,ang,fill,stroke){
+  let d=""; const ri=r*.86;
+  for (let i=0;i<n;i++){ const a0=ang+i*2*Math.PI/n, a1=a0+Math.PI/n*.4, a2=a0+Math.PI/n*.6, a3=a0+Math.PI/n;
+    const P=(a,rr)=>fx(cx+rr*Math.cos(a))+" "+fx(cy+rr*Math.sin(a));
+    d += (i?"L":"M")+P(a0,ri)+"L"+P(a1,r)+"L"+P(a2,r)+"L"+P(a3,ri); }
+  return `<path d="${d}Z" fill="${fill}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/>`+CI(cx,cy,r*.22,"#e9ecef",stroke,2)+ln(cx,cy,cx+r*.6*Math.cos(ang),cy+r*.6*Math.sin(ang),stroke,2);
+}
+function padlock(x,y,col,pr,sc=1){
+  const w=26*sc, h=22*sc;
+  return `<path d="M${fx(x-7*sc)} ${fx(y+10*sc)} v${fx(-4*sc)} a${fx(7*sc)} ${fx(7*sc)} 0 0 1 ${fx(14*sc)} 0 v${fx(4*sc)}" fill="none" stroke="${pr?"#000":"#868e96"}" stroke-width="${fx(3.5*sc)}"/>`
+   + RC(x-w/2,y+9*sc,w,h,pr?"#fff":col,pr?"#000":"#212529",1.5,4*sc) + CI(x,y+18*sc,2.6*sc,pr?"#000":"#212529");
+}
+const svgOpen = (w,h) => `<svg xmlns="${NS}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" font-family="Segoe UI, Arial, sans-serif"><rect width="${w}" height="${h}" fill="#fff"/>`;
+const OIL = "rgba(240,140,0,.55)", OLD = "#5c3a10", NEWF = "#94d82d", NEWFD = "#5c940d", OLDF = "#6b4423";
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) nav.scrollTo({left: act.offsetLeft - nav.clientWidth/2 + act.offsetWidth/2, behavior:"smooth"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName)) return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  slides[Math.max(0, Math.min(slides.length-1, currentIndex()+dir))].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+
+/* =====================================================================
+   DEL 1 – hva smøring gjør (forstørrede flater)
+   ===================================================================== */
+const HB = [2,10,5,14,7,12,3,11,6,13,4,9];
+const HT = [8,3,12,6,14,4,10,2,13,5,11,7];
+function surfaces(o){ // o: {x0,y0,w,h,yB,yT,shift,oil,pr,id}
+  const {x0,y0,w,h,yB,yT,shift=0,pr=false} = o;
+  const steel1 = pr?"#fff":"#adb5bd", steel2 = pr?"#fff":"#dee2e6", sk = pr?"#000":"#495057";
+  let s = `<defs><clipPath id="${o.id}"><rect x="${x0}" y="${y0}" width="${w}" height="${h}" rx="12"/></clipPath></defs>`;
+  s += RC(x0,y0,w,h,pr?"#fff":"var(--bg)",pr?"#000":"var(--line)",1.5,12);
+  s += `<g clip-path="url(#${o.id})">`;
+  if (o.oil) s += RC(x0,yT,w,yB-yT+6,pr?"#d9d9d9":OIL);
+  const n = Math.ceil(w/10)+26, k0 = Math.floor(x0/10)-13;
+  const pB=[], pT=[];
+  for (let k=k0;k<k0+n;k++){ pB.push(fx(k*10)+" "+fx(yB-HB[((k%12)+12)%12])); pT.push(fx(k*10+shift)+" "+fx(yT+HT[((k%12)+12)%12])); }
+  s += PA(`M${pB.join(" L")} L${fx((k0+n)*10)} ${y0+h+20} L${k0*10} ${y0+h+20} Z`, steel1, sk, 2);
+  s += PA(`M${fx(k0*10+shift)} ${y0-20} L${pT.join(" L")} L${fx((k0+n-1)*10+shift)} ${y0-20} Z`, steel2, sk, 2);
+  if (pr) for (let x=x0+20;x<x0+w;x+=26){ s += ln(x,yB+22,x+16,yB+6+20,"#000",1); s += ln(x,yT-30,x+16,yT-46,"#000",1); }
+  s += o.extra||"";
+  s += `</g>`;
+  return s;
+}
+(function(){
+  const svg = $("d1Svg"), yB = 228;
+  let mode = "dry", pos = 0, temp = 22, wear = 0, fric = .5, yT = yB-28, sparks = [], debris = [];
+  const R = rng(11);
+  const mol = Array.from({length:50}, () => ({x:R()*600, f:.08+R()*.84}));
+  function setMode(m){ mode = m; $("d1Dry").classList.toggle("primary", m==="dry"); $("d1Oil").classList.toggle("primary", m==="oil");
+    const s=$("d1Msg");
+    if (m==="dry"){ s.className="status bad"; s.innerHTML="<b>Uten smøring:</b> toppene i stålet hekter seg i hverandre. Det blir rykk, varme, gnister – og slitasje."; }
+    else { s.className="status ok"; s.innerHTML="<b>Med smøring:</b> en tynn oljefilm holder flatene fra hverandre. Metall møter ikke metall, og olja tar med seg slitepartiklene."; } }
+  $("d1Dry").onclick = () => setMode("dry");
+  $("d1Oil").onclick = () => setMode("oil");
+  $("d1Reset").onclick = () => { wear = 0; debris = []; temp = 22; };
+  function draw(t, yt){
+    const oil = yB - yt > 40;
+    let ex = "";
+    if (oil) mol.forEach(m => { const x = 20 + ((m.x + pos*m.f) % 600); const y = yB - 12 - m.f*(yB-yt-26); ex += CI(x,y,3,"rgba(255,244,220,.95)"); });
+    debris.forEach(d => ex += RC(d.x,d.y,5,4,"#343a40"));
+    sparks.forEach(p => ex += CI(p.x,p.y,2+p.life*5,"#ff922b","none",0,` opacity="${fx(clamp(p.life*2.5,0,1))}"`));
+    let s = surfaces({x0:20,y0:20,w:600,h:340,yB,yT:yt,shift:pos%120,oil,id:"d1c",extra:ex});
+    s += RC(30,30,190,28,"rgba(255,255,255,.8)","none",0,8)+TX(42,50,"🔬 Forstørret ca. 1000 ×",{size:14,weight:700,fill:"#343a40"});
+    s += TX(320,110,"stål – glir  →",{size:18,weight:700,anchor:"middle",fill:"#212529"});
+    s += TX(320,320,"stål – står stille",{size:18,weight:700,anchor:"middle",fill:"#212529"});
+    if (oil) s += RC(470,(yt+yB)/2-14,138,26,"rgba(255,255,255,.85)","none",0,8)+TX(539,(yt+yB)/2+5,"oljefilm",{size:15,weight:800,anchor:"middle",fill:"#a14b00"});
+    // høyre side: friksjon, temperatur, slitasje
+    const X = 665;
+    s += TX(X,46,"Friksjon",{size:16,weight:700});
+    s += RC(X,58,310,26,"var(--steel-soft)","var(--line)",1.5,13)+RC(X,58,310*fric,26,fric>.4?"#e03131":"#2f9e44","none",0,13);
+    s += TX(X,128,"Temperatur",{size:16,weight:700});
+    const tf = clamp((temp-15)/130,0,1), tc = temp>80?"#e03131":temp>50?"#f08c00":"#2f9e44";
+    s += RC(X+20,145,26,170,"var(--panel)","var(--steel-dark)",2,13)+RC(X+26,151+158*(1-tf),14,158*tf+6,tc,"none",0,7)+CI(X+33,330,22,tc,"var(--steel-dark)",2);
+    for (let i=0;i<=4;i++) s += ln(X+50,309-i*39,X+58,309-i*39,"var(--steel-dark)",2);
+    s += TX(X+70,250,Math.round(temp)+" °C",{size:30,weight:800,fill:tc});
+    s += TX(X+175,128,"Slitasje",{size:16,weight:700});
+    const R2 = rng(5), nChips = Math.round(wear*.6);
+    s += ln(X+165,350,X+320,350,"var(--steel-dark)",2);
+    for (let i=0;i<nChips;i++){ const row = Math.floor(Math.sqrt(i*1.6)), cx = X+243 + (R2()-.5)*(150-row*16), cy = 342 - row*7 - R2()*4; s += RC(cx,cy,7,5,"#868e96","#495057",1,1); }
+    s += TX(X+243,180,Math.round(wear)+" %",{size:26,weight:800,anchor:"middle",fill:wear>40?"#e03131":"var(--muted)"});
+    s += TX(X+243,204,"metallspon",{size:13,anchor:"middle",fill:"var(--muted)"});
+    svg.innerHTML = s;
+  }
+  addAnim(svg,(dt,t)=>{
+    const dry = mode==="dry";
+    const v = dry ? 70*(.3+.7*Math.abs(Math.sin(t*5))) : 120;
+    pos += v*dt;
+    yT += ((dry ? yB-28 : yB-64) - yT)*Math.min(1, dt*4);
+    const vib = dry ? 2.2*Math.sin(t*53)+1.4*Math.sin(t*37) : 0;
+    temp += ((dry?135:42) - temp)*dt*.35;
+    fric += ((dry?.88:.1) - fric)*dt*2.5;
+    if (dry) wear = Math.min(100, wear + dt*4);
+    if (dry && Math.random()<dt*16) sparks.push({x:30+Math.random()*580, y:yB-14, vx:(Math.random()-.3)*140, vy:-60-Math.random()*100, life:.5});
+    if (dry && Math.random()<dt*4 && debris.length<40) debris.push({x:30+Math.random()*580, y:yB-12+Math.random()*6});
+    sparks.forEach(p=>{p.x+=p.vx*dt; p.y+=p.vy*dt; p.vy+=320*dt; p.life-=dt;}); sparks = sparks.filter(p=>p.life>0);
+    if (!dry){ debris.forEach(d => { d.x += 70*dt; d.y = clamp(d.y-6*dt, yB-40, yB); }); debris = debris.filter(d => d.x < 620); }
+    draw(t, yT+vib);
+  });
+  setMode("dry"); draw(0,yT);
+})();
+
+/* =====================================================================
+   DEL 2 – viskositet, olje og fett
+   ===================================================================== */
+(function(){
+  const svg = $("d2Svg");
+  const L = [
+    {vg:32, n:"VG 32 · tynn", ex:"hydraulikk", c:"#ffd8a8", w:5},
+    {vg:68, n:"VG 68 · middels", ex:"sleidebane", c:"#ffa94d", w:7},
+    {vg:220, n:"VG 220 · tykk", ex:"girkasse", c:"#d9480f", w:10}
+  ];
+  let warm = false, run = false, p = [0,0,0], tm = [null,null,null], tt = 0;
+  $("d2Temp").innerHTML = `<button class="chip" data-w="0" aria-pressed="true">❄ Kald olje 20 °C</button><button class="chip" data-w="1" aria-pressed="false">🔥 Varm olje 60 °C</button>`;
+  $("d2Temp").onclick = e => { const b = e.target.closest("[data-w]"); if (!b) return; warm = b.dataset.w==="1"; $("d2Temp").querySelectorAll("[data-w]").forEach(x => x.setAttribute("aria-pressed", String(x===b))); reset(); };
+  function reset(){ run=false; p=[0,0,0]; tm=[null,null,null]; tt=0; $("d2Msg").className="status info"; $("d2Msg").innerHTML = warm ? "Samme tre oljer – nå varme (60 °C). Start løpet igjen." : "Tre oljer med ulik viskositet. Hvilken kommer først ned?"; }
+  $("d2Run").onclick = () => { reset(); run = true; };
+  const speed = i => 3/Math.sqrt(L[i].vg*(warm?.45:3));
+  const fib = (()=>{ const R=rng(3), a=[]; for (let i=0;i<26;i++){ const x=R()*110-55, y=R()*110-55, an=R()*Math.PI, l=20+R()*30; a.push([x,y,x+l*Math.cos(an),y+l*Math.sin(an)]); } return a; })();
+  const dots = (()=>{ const R=rng(9), a=[]; for (let i=0;i<34;i++) a.push([R()*100-50, R()*100-50, R()]); return a; })();
+  function draw(t){
+    let s = "";
+    // løypene
+    s += TX(40,30,warm?"🔥 Varm olje (60 °C)":"❄ Kald olje (20 °C)",{size:17,weight:800,fill:warm?"var(--red)":"var(--blue)"});
+    L.forEach((l,i) => {
+      const x1=70, y1=78+i*98, x2=520, y2=148+i*98;
+      s += ln(x1,y1+12,x2,y2+12,"var(--steel)",8);
+      s += TX(x1-10,y1-14,l.n,{size:15,weight:800})+TX(x1+120,y1-14,"("+l.ex+")",{size:13,fill:"var(--muted)"});
+      s += RC(x1-40,y1-8,30,26,"var(--panel)","var(--steel-dark)",2,4)+RC(x1-37,y1+2,24,13,l.c,"none",0,2);
+      s += ln(x2+10,y2-30,x2+10,y2+16,"var(--steel-dark)",3)+PA(`M${x2+10} ${y2-30} l24 6 l-24 6 Z`,"#2f9e44");
+      const q = p[i], x = x1+(x2-x1)*q, y = y1+(y2-y1)*q;
+      if (q>0) s += ln(x1,y1+4,x,y+4,l.c,l.w);
+      s += `<ellipse cx="${fx(x+4)}" cy="${fx(y+2)}" rx="${fx(8+l.w*.6)}" ry="${fx(6+l.w*.3)}" fill="${l.c}" stroke="#a14b00" stroke-width="1.5"/>`;
+      if (tm[i]!==null) s += TX(x2-24,y2-18,"🏁 "+nf(tm[i],1)+" s",{size:15,weight:800,anchor:"end",fill:"var(--green)"});
+    });
+    // olje og fett på loddrett plate
+    s += ln(580,20,580,360,"var(--line)",2);
+    s += ln(600,270,990,270,"var(--steel-dark)",3);
+    s += RC(648,40,16,226,"var(--steel)","var(--steel-dark)",2,3)+RC(818,40,16,226,"var(--steel)","var(--steel-dark)",2,3);
+    s += `<ellipse cx="640" cy="60" rx="10" ry="14" fill="${OIL}" stroke="#a14b00" stroke-width="1.5"/>`;
+    for (let i=0;i<3;i++){ const ph = (t*.35 + i/3) % 1;
+      if (ph<.75){ const y = 66 + ph/.75*190; s += ln(641,66,641,y,"rgba(240,140,0,.6)",5)+CI(641,y,6,"#f08c00"); }
+      else { const y = 256 + (ph-.75)/.25*10; s += CI(636,y,5,"#f08c00"); } }
+    s += `<ellipse cx="632" cy="268" rx="34" ry="5" fill="#f08c00" opacity=".8"/>`;
+    const br = 1 + .03*Math.sin(t*2);
+    s += `<g transform="translate(818 80) scale(${fx(br)}) translate(-818 -80)">`+PA("M818 52 C786 50 784 74 796 82 C780 92 790 114 818 112 Z",NEWF,NEWFD,2)+`<ellipse cx="801" cy="70" rx="5" ry="9" fill="rgba(255,255,255,.5)"/></g>`;
+    s += TX(656,300,"Olje renner av",{size:15,weight:800,anchor:"middle"});
+    s += TX(826,300,"Fett blir sittende",{size:15,weight:800,anchor:"middle"});
+    // zoom fett
+    const zx=925, zy=150, zr=56;
+    s += ln(812,84,zx-zr+4,zy-10,"var(--steel-dark)",1.5,"4 4");
+    s += `<defs><clipPath id="d2z"><circle cx="${zx}" cy="${zy}" r="${zr}"/></clipPath></defs>`;
+    s += CI(zx,zy,zr,"#ebfbdc","none",0)+`<g clip-path="url(#d2z)">`;
+    fib.forEach(f => s += ln(zx+f[0],zy+f[1],zx+f[2],zy+f[3],"#5c940d",3));
+    dots.forEach(d => { const k = 1 + .12*((t*.3+d[2])%1); s += CI(zx+d[0]*k,zy+d[1]*k,3.2,"#f08c00"); });
+    s += `</g>`+CI(zx,zy,zr,"none","var(--steel-dark)",3);
+    s += TX(zx,zy+zr+20,"fibre holder på olja",{size:13,weight:700,anchor:"middle"})+TX(zx,zy+zr+38,"– som en svamp",{size:13,anchor:"middle",fill:"var(--muted)"});
+    s += TX(zx,24,"Fett i lupe",{size:14,weight:700,anchor:"middle",fill:"var(--muted)"});
+    s += TX(785,345,"Fett = olje + fortykningsmiddel",{size:16,weight:800,anchor:"middle",fill:"#5c940d"});
+    svg.innerHTML = s;
+  }
+  addAnim(svg,(dt,t)=>{
+    if (run){ tt += dt; L.forEach((l,i) => { if (p[i]<1){ p[i] = Math.min(1, p[i]+speed(i)*dt); if (p[i]>=1) tm[i] = tt; } });
+      if (p.every(q=>q>=1)){ run=false; $("d2Msg").className="status ok"; $("d2Msg").innerHTML = warm ? "Varm olje er mye tynnere – alle renner fortere. Derfor skal en maskin ha olja som står i planen: for tynn olje i en varm maskin = metall mot metall." : "Den tynne (VG 32) vant. <b>Høyt VG-tall = tykk olje.</b> Prøv nå med varm olje."; } }
+    draw(t);
+  });
+  draw(0);
+})();
+
+/* =====================================================================
+   DEL 3 – fettpresse og smørenippel
+   ===================================================================== */
+(function(){
+  const svg = $("d3Svg"), PLAN = 4, CAP = 8, OLD0 = 3;
+  let n = 0, amt = 0, pump = 0, blocked = false, squirt = [], rot = 0, gun = 1;
+  function msg(m,c){ $("d3Msg").className="status "+c; $("d3Msg").innerHTML=m; }
+  function reset(){ n=0; amt=0; pump=0; squirt=[]; gun=1; blocked=false; $("d3Block").classList.remove("primary"); msg("Lageret har litt gammelt, mørkt fett. Planen sier 4 slag. Trykk «Pump ett slag».","info"); }
+  $("d3Reset").onclick = reset;
+  $("d3Block").onclick = () => { blocked = !blocked; $("d3Block").classList.toggle("primary", blocked); msg(blocked ? "Nippelen er tett. Prøv å pumpe." : "Ny, ren nippel er skrudd i.","info"); };
+  $("d3Pump").onclick = () => {
+    if (pump>0) return;
+    pump = .7; gun = Math.max(.08, gun-.05);
+    if (blocked){ msg("Fettet kommer ut ved siden av munnstykket – ikke inn i lageret. Nippelen er tett eller munnstykket sitter skjevt. Sett det rett på – hjelper ikke det: <b>bytt nippel</b>.","bad"); return; }
+    n++;
+    if (n<PLAN) msg(`Slag ${n}: nytt fett (grønt) presses inn og skyver det gamle foran seg.`,"info");
+    else if (n===PLAN) msg("✓ 4 slag – som planen sier. Ta av munnstykket, tørk av nippelen og skriv det i smøreloggen.","ok");
+    else if (n<=6) msg(`Slag ${n}: mer enn planen. Huset er nesten fullt, og fettet presser på tetningen.`,"warn");
+    else msg(`Slag ${n}: FOR MYE! Fettet presses ut forbi tetningen, og lageret blir varmt. Se del 4.`,"bad");
+  };
+  const STEPS = [["🔒","Lås og merk hvis vernet må av"],["🧽","Tørk av nippelen"],["🎯","Munnstykket rett på"],["⬇","Pump antall slag i planen"],["✍","Tørk av og logg"]];
+  $("d3Steps").innerHTML = STEPS.map((x,i)=>`<div data-i="${i}"><span class="ic">${x[0]}</span><b>${i+1}</b> ${x[1]}</div>`).join("");
+  let si = 0, sa = 0;
+  function draw(t){
+    const pk = pump>0 ? Math.sin(Math.PI*(1-pump/.7)) : 0;
+    let s = "";
+    // fettpresse
+    s += RC(90,70,290,52,"#e9ecef","#495057",2,24)+RC(100,78,270*gun,36,NEWF,"none",0,16);
+    s += RC(36,92,56,8,"#868e96","#495057",1.5,3)+RC(30,78,10,36,"#495057","none",0,3);
+    s += RC(380,58,64,76,"#adb5bd","#495057",2,8);
+    const ang = -14 + pk*22;
+    s += `<g transform="rotate(${fx(ang)} 440 64)">`+RC(440,57,200,14,"#e03131","#8a1c1c",2,7)+`</g>`+CI(440,64,8,"#495057");
+    s += TX(235,58,"fettpresse",{size:15,weight:700,anchor:"middle",fill:"var(--muted)"});
+    // rør til munnstykket
+    s += PA("M444 100 H560 V116","none","#495057",7);
+    if (pump>0) s += PA("M444 100 H560 V116","none",NEWF,3,` stroke-dasharray="8 8" stroke-dashoffset="${fx(-t*80)}"`);
+    // lagerhus
+    s += RC(400,200,320,180,"#ced4da","#495057",2.5,12);
+    for (let x=410;x<700;x+=18) s += ln(x,378,x+16,364,"#adb5bd",1.5);
+    s += RC(432,226,256,128,"#f8f9fa","#868e96",1.5,6);
+    const total = OLD0 + amt, inside = Math.min(total, CAP), purged = Math.max(0, total-CAP);
+    const oldIn = Math.max(0, OLD0 - purged), newIn = inside - oldIn;
+    const hNew = newIn/CAP*128, hOld = oldIn/CAP*128;
+    if (hOld>0) s += PA(`M432 ${fx(354-hOld)} q32 -6 64 0 t64 0 t64 0 t64 0 V354 H432 Z`,OLDF);
+    if (hNew>0) s += PA(`M432 226 H688 V${fx(226+hNew)} q-32 6 -64 0 t-64 0 t-64 0 t-64 0 Z`,NEWF);
+    // aksel og lager
+    s += RC(300,272,490,36,"#adb5bd","#495057",2,4)+ln(300,280,790,280,"rgba(255,255,255,.5)",3);
+    s += RC(518,228,84,12,"#868e96","#343a40",1.5,2)+RC(518,340,84,12,"#868e96","#343a40",1.5,2);
+    s += RC(520,262,80,10,"#868e96","#343a40",1.5,2)+RC(520,308,80,10,"#868e96","#343a40",1.5,2);
+    [[560,251],[560,329]].forEach(([x,y],k) => { s += CI(x,y,11,"#dee2e6","#343a40",1.5)+ln(x,y,x+9*Math.cos(rot+k),y+9*Math.sin(rot+k),"#495057",2); });
+    // tetninger
+    [[404,264],[404,308],[692,264],[692,308]].forEach(([x,y]) => s += RC(x,y,24,8,"#212529","none",0,2));
+    // gammelt/nytt fett ut ved tetningen
+    if (purged>0){ const l1 = Math.min(purged, OLD0)*16, l2 = Math.max(0, purged-OLD0)*16;
+      s += PA(`M720 266 h${fx(Math.min(l1,90))}`,"none",OLDF,10);
+      if (l2>0) s += PA(`M${fx(720+Math.min(l1,90))} 266 h${fx(Math.min(l2,60))}`,"none",NEWF,10);
+      if (n>6) s += TX(770,248,"⚠ fett presses ut",{size:14,weight:800,anchor:"middle",fill:"var(--red)"}); }
+    // kanal + nippel
+    s += RC(554,198,12,30,newIn>0||pump>0&&!blocked?NEWF:"#f8f9fa","#868e96",1);
+    s += RC(536,184,48,16,"#adb5bd","#495057",1.5,3)+RC(548,158,24,28,"#ced4da","#495057",1.5,3)+CI(560,150,13,"#ced4da","#495057",1.5);
+    s += RC(556,146,8,40,"#fff","none",0)+CI(560,152+(blocked?0:pk*5),4.5,"#495057");
+    // munnstykke
+    s += RC(542,114,36,30,"#495057","#212529",1.5,5)+RC(546,138,6,12,"#495057")+RC(568,138,6,12,"#495057");
+    // sprut ved tett nippel
+    squirt.forEach(q => s += CI(q.x,q.y,q.r,NEWF,NEWFD,1));
+    // lupe på nippelen
+    const zx=900, zy=140;
+    s += ln(575,158,zx-60,zy,"var(--steel-dark)",1.5,"4 4");
+    s += CI(zx,zy,66,"var(--panel)","var(--steel-dark)",3);
+    s += RC(zx-22,zy-50,44,100,"#ced4da","#495057",2,6)+RC(zx-8,zy-56,16,112,pump>0&&!blocked?NEWF:"#fff","none",0);
+    const by = blocked ? 0 : pk*14;
+    s += CI(zx,zy-30+by,12,"#495057","#212529",1.5);
+    let sp = `M${zx} ${fx(zy-18+by)}`; const sl = 58-by; for (let k=1;k<=6;k++) sp += ` L${zx+(k%2?8:-8)} ${fx(zy-18+by+sl*k/6)}`;
+    s += PA(sp,"none","#e03131",2.5);
+    s += TX(zx,zy+90,"kule + fjær",{size:14,weight:800,anchor:"middle"})+TX(zx,zy+106,"slipper fett inn – ikke ut",{size:13,anchor:"middle",fill:"var(--muted)"});
+    // etiketter
+    s += TX(596,198,"smørenippel",{size:14,weight:700,fill:"var(--muted)"});
+    s += TX(310,262,"aksel",{size:14,weight:700,fill:"var(--muted)"});
+    s += TX(560,404,"lagerhus med kulelager",{size:14,weight:700,anchor:"middle",fill:"var(--muted)"});
+    s += RC(40,300,22,16,NEWF,NEWFD,1.5,3)+TX(70,313,"nytt fett",{size:14,weight:700});
+    s += RC(40,326,22,16,OLDF,"none",0,3)+TX(70,339,"gammelt fett",{size:14,weight:700});
+    s += TX(40,380,"Slag: "+n,{size:26,weight:800,fill:n>6?"var(--red)":n===PLAN?"var(--green)":"var(--ink)"})+TX(170,380,"plan: 4",{size:16,weight:700,fill:"var(--muted)"});
+    svg.innerHTML = s;
+  }
+  addAnim(svg,(dt,t)=>{
+    if (pump>0){ pump = Math.max(0, pump-dt); if (!blocked) amt = Math.min(n, amt + dt/.7);
+      else if (Math.random()<dt*30) squirt.push({x:560+(Math.random()-.5)*44, y:146, vx:(Math.random()-.5)*120, vy:-40-Math.random()*40, r:3+Math.random()*3}); }
+    squirt.forEach(q => { if (q.y<196){ q.x+=q.vx*dt; q.y+=q.vy*dt; q.vy+=400*dt; } else q.y = 196; });
+    if (squirt.length>60) squirt.splice(0, squirt.length-60);
+    rot += dt*4;
+    sa += dt; if (sa>1.8){ sa=0; si=(si+1)%STEPS.length; $("d3Steps").querySelectorAll("[data-i]").forEach(d=>d.classList.toggle("on", +d.dataset.i===si)); }
+    draw(t);
+  });
+  reset(); draw(0);
+})();
+
+/* =====================================================================
+   DEL 4 – riktig mengde
+   ===================================================================== */
+const tempOf = f => clamp(40 + 55*Math.exp(-f/.07) + (f>.5 ? 200*Math.pow(f-.5,1.5) : 0), 20, 118);
+function housing(cx,cy,f,o={}){ // fett-fylling sett forfra
+  const pr = o.pr, t = o.t||0, a = o.a||0, R = 140;
+  const id = o.id||"hc";
+  let s = RC(cx-170,cy-165,340,330,pr?"#fff":"#ced4da",pr?"#000":"#495057",2.5,16);
+  [[-145,-140],[145,-140],[-145,140],[145,140]].forEach(([dx,dy]) => s += CI(cx+dx,cy+dy,9,pr?"#fff":"#868e96",pr?"#000":"#495057",1.5));
+  s += `<defs><clipPath id="${id}"><circle cx="${cx}" cy="${cy}" r="${R}"/></clipPath></defs>`;
+  s += CI(cx,cy,R,pr?"#fff":"#f8f9fa",pr?"#000":"#868e96",2);
+  const ly = cy + R - f*2*R;
+  if (f>0){ const wv = pr?0:4*Math.sin(t*2);
+    s += `<g clip-path="url(#${id})">`+PA(`M${cx-R} ${fx(ly)} q${R/2} ${fx(-8+wv)} ${R} 0 t${R} 0 V${cy+R} H${cx-R} Z`,pr?"#bbb":NEWF,pr?"#000":NEWFD,1.5)+`</g>`; }
+  s += CI(cx,cy,110,"none",pr?"#000":"#868e96",20)+CI(cx,cy,110,"none",pr?"#000":"#495057",1)+CI(cx,cy,120,"none",pr?"#000":"#495057",1.2)+CI(cx,cy,100,"none",pr?"#000":"#495057",1.2);
+  s += CI(cx,cy,55,"none",pr?"#000":"#868e96",14)+CI(cx,cy,62,"none",pr?"#000":"#495057",1.2)+CI(cx,cy,48,"none",pr?"#000":"#495057",1.2);
+  s += CI(cx,cy,40,pr?"#fff":"#adb5bd",pr?"#000":"#495057",2)+CI(cx,cy,8,pr?"#000":"#495057");
+  for (let i=0;i<9;i++){ const b = a + i*2*Math.PI/9, bx = cx+81*Math.cos(b), by = cy+81*Math.sin(b);
+    if (!pr && f>.6 && by>ly) s += PA(`M${fx(bx-14*Math.sin(b))} ${fx(by+14*Math.cos(b))} q-6 -8 0 -16`,"none","#2b8a3e",2.5);
+    s += CI(bx,by,16,pr?"#fff":"#dee2e6",pr?"#000":"#343a40",1.5)+(pr?"":CI(bx-5,by-5,4,"rgba(255,255,255,.8)")); }
+  return s;
+}
+(function(){
+  const svg = $("d4Svg");
+  let f = .1, tmp = tempOf(.1), a = 0, sparks = [], drips = [];
+  const X0 = 480, W = 470, Y0 = 330, H = 270;
+  const px = v => X0 + v*W, py = T => Y0 - (T-20)/100*H;
+  function upd(){ f = $("d4Fill").value/100; $("d4Pct").textContent = Math.round(f*100)+" %"; $("r4Fill").textContent = Math.round(f*100)+" %";
+    let m, c, ev;
+    if (f<.15){ m="For lite fett: kulene går nesten tørt. Metall mot metall gir slitasje og varme."; c="bad"; ev="for lite"; }
+    else if (f<.25){ m="Litt lite. Øk mot ⅓."; c="warn"; ev="litt lite"; }
+    else if (f<=.55){ m="✓ Riktig: lagerhuset er ca. ⅓–½ fullt. Kulene får fett, og det er plass til å bevege seg."; c="ok"; ev="riktig"; }
+    else if (f<=.7){ m="Litt mye – temperaturen begynner å stige."; c="warn"; ev="litt mye"; }
+    else { m="For mye! Kulene må elte fettet hver runde. Lageret blir varmt, fettet brytes ned og presses ut forbi tetningen."; c="bad"; ev="for mye"; }
+    $("d4Msg").className = "status "+c; $("d4Msg").innerHTML = m; $("r4Eval").textContent = ev; $("r4Eval").className = c==="info"?"":c; }
+  $("d4Fill").addEventListener("input", upd);
+  function draw(t){
+    let s = housing(220,190,f,{t,a,id:"d4c"});
+    if (tmp>58){ const op = clamp((tmp-58)/40,0,1); s += RC(50,25,340,330,"rgba(224,49,49,"+fx(op*.25)+")","none",0,16);
+      for (let i=0;i<4;i++){ const x = 120+i*65, ph = (t*30+i*9)%30; let d=`M${x} ${fx(48-ph*.6)}`; for (let k=1;k<=3;k++) d += ` q${k%2?6:-6} -5 0 -10`; s += PA(d,"none","#e03131",2.5,` opacity="${fx(op*(1-ph/30))}"`); } }
+    sparks.forEach(p => s += CI(p.x,p.y,2.5,"#ff922b","none",0,` opacity="${fx(clamp(p.life*3,0,1))}"`));
+    drips.forEach(d => s += `<ellipse cx="${fx(d.x)}" cy="${fx(d.y)}" rx="5" ry="7" fill="${NEWF}" stroke="${NEWFD}" stroke-width="1"/>`);
+    // graf
+    s += RC(px(.3),py(118),px(.55)-px(.3),Y0-py(118),"rgba(43,138,62,.12)");
+    s += TX((px(.3)+px(.55))/2,py(118)+18,"riktig",{size:14,weight:800,anchor:"middle",fill:"var(--green)"});
+    s += TX(px(.06),py(118)+18,"for lite",{size:14,weight:800,anchor:"middle",fill:"var(--red)"});
+    s += TX(px(.88),py(118)+18,"for mye",{size:14,weight:800,anchor:"middle",fill:"var(--red)"});
+    s += ln(X0,py(70),X0+W,py(70),"var(--red)",1.5,"6 6")+TX(X0+W,py(70)-6,"for varmt",{size:12,anchor:"end",fill:"var(--red)"});
+    s += ln(X0,Y0,X0+W,Y0,"var(--ink)",2)+ln(X0,Y0,X0,py(120),"var(--ink)",2);
+    [0,.25,.5,.75,1].forEach(v => s += ln(px(v),Y0,px(v),Y0+6,"var(--ink)",2)+TX(px(v),Y0+24,Math.round(v*100)+" %",{size:13,anchor:"middle",fill:"var(--muted)"}));
+    [20,40,60,80,100,120].forEach(v => s += ln(X0-6,py(v),X0,py(v),"var(--ink)",2)+TX(X0-10,py(v)+5,v,{size:13,anchor:"end",fill:"var(--muted)"}));
+    s += TX(X0+W/2,Y0+46,"fett i lagerhuset",{size:14,weight:700,anchor:"middle"});
+    s += TX(X0-44,py(70),"temperatur °C",{size:14,weight:700,anchor:"middle",tr:`rotate(-90 ${X0-44} ${fx(py(70))})`});
+    let d = ""; for (let v=0; v<=1.0001; v+=.01) d += (v?" L":"M")+fx(px(v))+" "+fx(py(tempOf(v)));
+    s += PA(d,"none","var(--orange)",3.5);
+    const cx = px(f), cy = py(tmp);
+    s += ln(cx,cy,cx,Y0,"var(--muted)",1.5,"4 4")+CI(cx,cy,10,tmp>70||f<.15?"#e03131":tmp>55?"#f08c00":"#2f9e44","#fff",3);
+    svg.innerHTML = s;
+  }
+  addAnim(svg,(dt,t)=>{
+    tmp += (tempOf(f)-tmp)*dt*1.5; a += dt*1.3;
+    $("r4Temp").textContent = Math.round(tmp)+" °C"; $("r4Temp").className = tmp>70?"bad":tmp>55?"warn":"ok";
+    if (f<.15 && Math.random()<dt*10){ const b = Math.random()*Math.PI*2; sparks.push({x:220+100*Math.cos(b), y:190+100*Math.sin(b), life:.35}); }
+    sparks.forEach(p => p.life -= dt); sparks = sparks.filter(p => p.life>0);
+    if (f>.7 && Math.random()<dt*(f-.6)*6) drips.push({x:110+Math.random()*220, y:356});
+    drips.forEach(d => d.y += 50*dt); drips = drips.filter(d => d.y<380);
+    draw(t);
+  });
+  upd(); draw(0);
+})();
+
+/* =====================================================================
+   DEL 5 – oljeskift i girkasse
+   ===================================================================== */
+(function(){
+  const svg = $("d5Svg");
+  const STEPS = [
+    {i:"🔒", n:"Lås og merk", t:"Stopp girkassa. Lås og merk arbeidsbryteren – akkurat som i leksjon 2."},
+    {i:"🧽", n:"Rengjør", t:"Tørk rundt pluggene, så skitt ikke faller inn i girkassa."},
+    {i:"⬆", n:"Åpne toppen", t:"Åpne påfyllingspluggen. Da kommer det luft inn, og olja renner jevnt ut."},
+    {i:"⬇", n:"Tapp ut", t:"Skru ut tappepluggen. Olja renner i karet. Lunken olje renner best – varm olje gir brannskader."},
+    {i:"🧲", n:"Sjekk magneten", t:"Tappepluggen er magnetisk. Fint grått slam = normalt. Flak eller biter = skade – skriv det i arbeidsordren og si fra."},
+    {i:"🔩", n:"Ny pakning", t:"Ny pakning på tappepluggen. Skru den inn med riktig moment (leksjon 5)."},
+    {i:"🛢", n:"Fyll ny olje", t:"Riktig olje fra smøreplanen (her VG 220). Fyll sakte til midt i seglasset. Vent litt og les av igjen – maskinen stoppet."},
+    {i:"📝", n:"Rydd og skriv", t:"Spillolje i merket fat – det er farlig avfall. Skriv oljeskiftet i arbeidsordren. Lås av, prøvekjør og se etter lekkasje."}
+  ];
+  let step = 0, lt = 0, auto = false, at = 0, ga = 0;
+  $("d5Steps").innerHTML = STEPS.map((x,i)=>`<div data-i="${i}"><span class="ic">${x.i}</span><b>${i+1}</b> ${x.n}</div>`).join("");
+  $("d5Steps").onclick = e => { const d = e.target.closest("[data-i]"); if (!d) return; go(+d.dataset.i); };
+  function go(i){ step = i; lt = 0; ui(); }
+  function ui(){
+    $("d5Steps").querySelectorAll("[data-i]").forEach(d => { const i=+d.dataset.i; d.classList.toggle("on", i===step); d.classList.toggle("done", i<step); });
+    $("d5Msg").className = step===4 ? "status warn" : step===7 ? "status ok" : "status info";
+    $("d5Msg").innerHTML = `<b>${step+1}. ${STEPS[step].n}:</b> ${STEPS[step].t}`;
+  }
+  function draw(t){
+    const S = step, k = (a,b) => clamp((lt-a)/(b-a),0,1);
+        const NORM = 316, EMPTY = 372;
+    const oilY = S<3 ? NORM : S===3 ? NORM+(EMPTY-NORM)*k(.6,3.4) : S<6 ? EMPTY : S===6 ? EMPTY-(EMPTY-NORM)*k(.8,3.8) : NORM;
+    const oilC = S>=6 ? "rgba(245,159,0,.75)" : "rgba(92,58,16,.85)";
+    const tray = S<3 ? 0 : S===3 ? k(.6,3.4) : S<7 ? 1 : 1-k(.3,1.5);
+    const fillerOpen = S>=2 && S<=6;
+    const plugOut = S===3 ? lt>.4 : S===4 || (S===5 && lt<.6);
+    let s = "";
+    // gulv
+    s += ln(0,466,1000,466,"var(--steel-dark)",2);
+    // arbeidsbryter
+    s += RC(70,30,76,84,"#fab005","#495057",2,8)+TX(108,24,"arbeidsbryter",{size:12,anchor:"middle",fill:"var(--muted)"});
+    const swA = S===0 ? 90*k(1,1.6) : 90;
+    s += `<g transform="rotate(${fx(swA)} 108 70)">`+RC(101,40,14,60,"#e03131","#8a1c1c",1.5,6)+`</g>`+CI(108,70,8,"#c92a2a");
+    if (S>0 || lt>1.7) s += padlock(108,108,"#e03131",false,.9);
+    s += PA("M108 140 V176 H130","none","#212529",5);
+    // motor
+    s += RC(40,180,170,100,"#748ffc","#364fc7",2,10); for (let x=54;x<200;x+=13) s += ln(x,188,x,272,"#364fc7",1.4);
+    s += TX(125,300,"motor",{size:13,anchor:"middle",fill:"var(--muted)"});
+    s += RC(210,222,60,16,"#adb5bd","#495057",1.5,2)+RC(232,214,16,32,"#868e96","#495057",1.5,3);
+    // girkasse
+    s += RC(260,80,440,310,"#adb5bd","#495057",3,18);
+    s += `<defs><clipPath id="d5c"><rect x="276" y="96" width="408" height="278" rx="12"/></clipPath><clipPath id="d5g"><rect x="688" y="270" width="22" height="80" rx="5"/></clipPath></defs>`;
+    s += RC(276,96,408,278,"#f1f3f5","none",0,12);
+    s += `<g clip-path="url(#d5c)">`+RC(276,oilY,408,380-oilY,oilC)+`</g>`;
+    s += gear(420,230,95,24,ga,"#ced4da","#495057")+gear(568,190,58,15,-ga*24/15+.1,"#dee2e6","#495057");
+    s += `<g clip-path="url(#d5c)">`+RC(276,oilY,408,380-oilY,oilC.replace(/[\d.]+\)$/,".35)"))+`</g>`;
+    s += RC(700,184,80,12,"#adb5bd","#495057",1.5,2);
+    s += TX(480,120,"girkasse",{size:14,weight:700,anchor:"middle",fill:"#343a40"});
+    // seglass
+    s += RC(688,270,22,80,"rgba(255,255,255,.7)","#495057",2,5);
+    s += `<g clip-path="url(#d5g)">`+RC(688,oilY,22,80,oilC)+`</g>`;
+    s += ln(706,296,722,296,"#495057",2)+ln(706,336,722,336,"#495057",2);
+    s += TX(728,301,"maks",{size:13,weight:700})+TX(728,341,"min",{size:13,weight:700})+TX(728,262,"seglass",{size:13,fill:"var(--muted)"});
+    // påfyllingsplugg
+    if (fillerOpen){ s += RC(588,74,24,10,"#212529","none",0,2); s += `<g transform="rotate(-25 650 50)">`+RC(636,40,30,20,"#495057","#212529",1.5,3)+RC(642,30,18,10,"#868e96","#212529",1,2)+`</g>`;
+      if (S===2) for (let i=0;i<3;i++){ const ph=(t*1.2+i/3)%1; s += PA(`M${592+i*8} ${fx(40+ph*30)} v10 m-4 -4 l4 4 l4 -4`,"none","#1c7ed6",2.5,` opacity="${fx(1-ph)}"`); } }
+    else s += RC(585,62,30,20,"#495057","#212529",1.5,3)+RC(591,52,18,10,"#868e96","#212529",1,2);
+    s += TX(578,72,"påfylling + lufting",{size:12,anchor:"end",fill:"var(--muted)"});
+    // tappeplugg
+    if (!plugOut){ s += RC(346,390,28,16,"#495057","#212529",1.5,3); if (S===5) s += RC(342,386,36,6,"#e8590c","none",0,2)+TX(390,404,"ny pakning",{size:13,weight:800,fill:"var(--orange)"}); }
+    else { s += RC(350,388,20,6,"#212529","none",0,2); s += RC(476,440,28,16,"#495057","#212529",1.5,3)+TX(490,476,"magnetplugg",{size:12,anchor:"middle",fill:"var(--muted)"}); }
+    if (S===3 && oilY<EMPTY-1 && lt>.5) s += PA(`M360 394 C360 410 362 420 362 ${fx(448-tray*12)}`,"none","#5c3a10",8)+PA(`M360 394 C360 410 362 420 362 ${fx(448-tray*12)}`,"none","rgba(255,200,120,.6)",2,` stroke-dasharray="6 8" stroke-dashoffset="${fx(-t*60)}"`);
+    // kar
+    s += PA("M290 428 L300 462 H450 L460 428","rgba(134,142,150,.25)","#495057",2.5);
+    if (tray>0) s += `<defs><clipPath id="d5t"><path d="M290 428 L300 462 H450 L460 428 Z"/></clipPath></defs><g clip-path="url(#d5t)">`+RC(286,462-28*tray,180,30,"#5c3a10")+`</g>`;
+    s += TX(284,452,"oppsamlingskar",{size:12,anchor:"end",fill:"var(--muted)"});
+    // rengjøring
+    if (S===1){ const R=rng(4); for (let i=0;i<14;i++){ const x = i<7 ? 572+R()*56 : 336+R()*48, y = i<7 ? 82+R()*8 : 380+R()*30; if (lt < 1+i*.12) s += CI(x,y,2.5,"#5c3a10"); }
+      const rx = lt<1.2 ? 600+20*Math.sin(lt*12) : 360+20*Math.sin(lt*12), ry = lt<1.2 ? 66 : 396; s += RC(rx-20,ry-12,40,24,"#4dabf7","#1864ab",1.5,6); }
+    // magnetplugg i lupe
+    if (S===4){ const zx=860, zy=360, op = k(.2,.8);
+      s += `<g opacity="${fx(op)}">`+ln(504,448,zx-90,zy+20,"var(--steel-dark)",1.5,"4 4")+CI(zx,zy,92,"var(--panel)","var(--steel-dark)",3);
+      s += RC(zx-70,zy-22,60,44,"#495057","#212529",2,4); for (let x=zx-10;x<zx+40;x+=8) s += ln(x,zy-18,x+4,zy+18,"#868e96",3);
+      s += RC(zx-10,zy-18,50,36,"none","#212529",1.5,2)+RC(zx+40,zy-12,18,24,"#343a40","#212529",1.5,3);
+      const R=rng(8); for (let i=0;i<40;i++){ const a = R()*Math.PI-Math.PI/2, l=4+R()*10; s += ln(zx+58,zy+(R()-.5)*22,zx+58+l*Math.cos(a),zy+(R()-.5)*22+l*Math.sin(a),"#868e96",1.6); }
+      s += PA(`M${zx+64} ${zy-24} l14 -6 l6 10 l-12 8 Z`,"#e9ecef","#212529",1.5)+CI(zx+72,zy-24,16,"none","var(--orange)",2.5);
+      s += TX(zx,zy+62,"slam = normalt",{size:13,weight:700,anchor:"middle",fill:"var(--muted)"})+TX(zx+72,zy-48,"flak = skade!",{size:13,weight:800,anchor:"middle",fill:"var(--orange)"})+`</g>`; }
+    // fylling
+    if (S===6){ const pour = lt>.8 && lt<3.8;
+      s += `<g transform="rotate(${fx(pour?-35:0)} 640 26)">`+RC(616,8,50,40,"#e8590c","#a14b00",2,6)+RC(600,16,20,8,"#a14b00","none",0,2)+TX(641,34,"VG 220",{size:11,weight:800,anchor:"middle",fill:"#fff"})+`</g>`;
+      if (pour) s += PA("M604 40 V80","none","#f59f00",5); }
+    // fat for spillolje
+    if (S===7){ const bx = 850, op = k(.2,.8);
+      s += `<g opacity="${fx(op)}">`+RC(bx-55,330,110,130,"#343a40","#212529",2,8)+ln(bx-55,370,bx+55,370,"#868e96",3)+ln(bx-55,420,bx+55,420,"#868e96",3);
+      s += PA(`M${bx} 378 l22 22 l-22 22 l-22 -22 Z`,"#fff","#e03131",3)+TX(bx,406,"!",{size:22,weight:900,anchor:"middle",fill:"#e03131"});
+      s += TX(bx,320,"Spillolje",{size:15,weight:800,anchor:"middle"})+TX(bx,302,"farlig avfall",{size:13,weight:700,anchor:"middle",fill:"var(--red)"});
+      s += RC(bx-60,170,120,100,"var(--panel)","var(--steel-dark)",2,8)+TX(bx,194,"Arbeidsordre",{size:13,weight:800,anchor:"middle"});
+      ["Oljeskift ✓","VG 220 · 4 l","Magnet: OK"].forEach((r,i) => s += TX(bx-48,218+i*18,r,{size:12,fill:"var(--green)",weight:700}));
+      s += `</g>`; }
+    // varme i trinn 3
+    if (S===3) s += TX(560,450,"🌡 lunken – ikke varm",{size:13,weight:700,anchor:"middle",fill:"var(--orange)"});
+    svg.innerHTML = s;
+  }
+  $("d5Next").onclick = () => { auto=false; $("d5Auto").textContent="▶ Automatisk"; go(step>=7?0:step+1); };
+  $("d5Auto").onclick = () => { auto=!auto; at=0; $("d5Auto").textContent = auto ? "❚❚ Stopp" : "▶ Automatisk"; };
+  $("d5Reset").onclick = () => { auto=false; $("d5Auto").textContent="▶ Automatisk"; go(0); };
+  addAnim(svg,(dt,t)=>{ lt += dt; if (step===0 && lt<1) ga += dt*1.6; if (auto){ at += dt; if (at>4.4){ at=0; go(step>=7?0:step+1); } } draw(t); });
+  ui(); draw(0);
+
+  // oljeprøver
+  const J = [
+    {n:"Klar og gul", m:"OK", c:"rgba(250,176,5,.6)"},
+    {n:"Melkehvit", m:"vann i olja", c:"#efe4cc"},
+    {n:"Svart og tykk", m:"gammel / for varm", c:"#2b1d0e"},
+    {n:"Glitrer", m:"metall – slitasje", c:"rgba(240,140,0,.6)"},
+    {n:"Skum", m:"luft / feil olje", c:"rgba(240,140,0,.6)"}
+  ];
+  const jsvg = $("d5Jars");
+  const glit = (()=>{ const R=rng(21), a=[]; for (let i=0;i<14;i++) a.push([R()*70-35, R()*60, R()]); return a; })();
+  function jars(t){
+    let s = "";
+    J.forEach((j,i) => { const cx = 100+i*200;
+      s += RC(cx-40,18,80,14,"#495057","none",0,4)+RC(cx-46,30,92,108,"rgba(255,255,255,.35)","var(--steel-dark)",2.5,12);
+      s += RC(cx-42,58,84,76,j.c,"none",0,9);
+      if (i===3) glit.forEach(g => { const op = .3+.7*Math.abs(Math.sin(t*3+g[2]*9)); s += PA(`M${fx(cx+g[0])} ${fx(64+g[1])} l3 3 l-3 3 l-3 -3 Z`,"#f8f9fa","none",0,` opacity="${fx(op)}"`); });
+      if (i===4){ s += RC(cx-42,52,84,20,"rgba(255,255,255,.85)","none",0,6); for (let b=0;b<8;b++){ const ph = (t*.6+b/8)%1; s += CI(cx-34+b*9.5,128-ph*60,3+b%3,"none","rgba(255,255,255,.9)",1.5,` opacity="${fx(1-ph)}"`); } }
+      s += TX(cx,165,j.n,{size:16,weight:800,anchor:"middle"});
+      s += TX(cx,188,j.m,{size:14,weight:650,anchor:"middle",fill:i===0?"var(--green)":"var(--red)"});
+    });
+    jsvg.innerHTML = s;
+  }
+  addAnim(jsvg,(dt,t)=>jars(t)); jars(0);
+})();
+
+/* =====================================================================
+   DEL 6 – smørekart for dreiebenken
+   ===================================================================== */
+const PTS = [
+  {n:1, x:150, y:192, typ:"olje", iv:"daglig", navn:"Spindelkasse", hva:"Huset med gir som driver chucken.", mid:"Girolje ISO VG 68", hvor:"Sjekk nivået i seglasset før start. Skift olje hvert år."},
+  {n:2, x:390, y:222, typ:"olje", iv:"daglig", navn:"Sleidebaner", hva:"Skinnene som sleiden glir på.", mid:"Sleidebaneolje VG 68", hvor:"Tørk bort spon. Smør et tynt lag."},
+  {n:3, x:556, y:206, typ:"fett", iv:"ukentlig", navn:"Sleide – smørenipler", hva:"Vognen som bærer verktøyet langs arbeidsstykket.", mid:"Fett NLGI 2", hvor:"2 slag med fettpresse i hver nippel."},
+  {n:4, x:780, y:286, typ:"olje", iv:"ukentlig", navn:"Ledeskrue og trekkstang", hva:"Lange skruer og stenger som driver sleiden ved gjenging og mating.", mid:"Olje VG 68", hvor:"Børst bort spon. Tynt lag med pensel."},
+  {n:5, x:736, y:110, typ:"olje", iv:"ukentlig", navn:"Pinoll i bakdokka", hva:"Bakdokka holder arbeidsstykket i høyre ende. Pinollen er røret som skyves ut.", mid:"Olje VG 68", hvor:"2–3 dråper i oljekoppen."},
+  {n:6, x:150, y:270, typ:"olje", iv:"månedlig", navn:"Matekasse", hva:"Girkassen som velger matehastighet og stigning.", mid:"Girolje VG 68", hvor:"Sjekk nivået i seglasset. Fyll på ved behov."}
+];
+const IVC = {daglig:"#e03131", ukentlig:"#1c7ed6", "månedlig":"#2b8a3e"};
+function latheSVG(o={}){
+  const pr = o.pr, t = o.t||0, ink = pr?"#000":"#495057";
+  const F = pr?"#fff":"#5c7cfa", FD = pr?"#000":"#364fc7", S = pr?"#fff":"#ced4da", S2 = pr?"#fff":"#adb5bd";
+  let s = "";
+  s += ln(40,410,960,410,pr?"#000":"var(--steel-dark)",2);
+  s += RC(130,300,140,110,pr?"#fff":"#dee2e6",ink,2,6)+RC(700,300,140,110,pr?"#fff":"#dee2e6",ink,2,6);
+  s += RC(118,296,744,12,S2,ink,1.5,3);
+  s += RC(110,232,760,64,S2,ink,2,4);
+  s += RC(110,222,760,10,S,ink,1.5,2)+ln(110,227,870,227,pr?"#000":"#fff",1);
+  // ledeskrue og trekkstang
+  s += ln(290,282,866,282,ink,5)+ln(290,282,866,282,pr?"#fff":"#dee2e6",2,"3 4")+ln(290,292,866,292,ink,3);
+  // spindelkasse
+  s += RC(110,86,200,136,F,FD,2,8);
+  s += CI(150,192,11,pr?"#fff":"#fff3bf",ink,2)+(pr?"":RC(140,192,20,10,"rgba(240,140,0,.6)","none",0,2));
+  [[200,120],[240,120],[270,150]].forEach(([x,y]) => s += ln(x,y,x+12,y-24,ink,4)+CI(x+12,y-24,6,pr?"#fff":"#212529"));
+  // chuck + arbeidsstykke
+  const rot = pr?0:t*8;
+  s += RC(310,118,26,100,S2,ink,2,4);
+  [0,1,2].forEach(i => { const yy = 168 + 40*Math.sin(rot+i*2.094); s += RC(312,yy-6,22,12,pr?"#fff":"#495057",ink,1,2); });
+  s += RC(336,160,232,18,S,ink,1.5,2);
+  // bakdokke
+  s += RC(690,120,120,102,F,FD,2,8)+RC(610,160,80,18,S,ink,1.5,2)+PA("M610 160 L596 169 L610 178 Z",S,ink,1.5);
+  s += CI(830,170,24,"none",ink,3)+ln(810,170,850,170,ink,2)+ln(830,150,830,190,ink,2)+ln(810,170,830,170,ink,4);
+  s += RC(726,104,20,16,pr?"#fff":"#fab005",ink,1.5,3);
+  // sleide
+  s += RC(420,204,160,18,F,FD,2,3)+RC(450,188,100,16,S,ink,1.5,2)+RC(484,168,32,20,pr?"#fff":"#495057",ink,1.5,2)+RC(498,174,22,5,pr?"#fff":"#868e96",ink,1,1);
+  s += RC(430,232,140,70,F,FD,2,6)+CI(468,266,18,"none",ink,3)+ln(468,248,468,284,ink,2)+ln(450,266,486,266,ink,2)+ln(530,250,548,240,ink,4);
+  // matekasse
+  s += RC(110,236,180,64,F,FD,2,6)+CI(150,270,9,pr?"#fff":"#fff3bf",ink,2);
+  [[200,262],[230,262],[260,262]].forEach(([x,y]) => s += ln(x,y,x,y+22,ink,4)+CI(x,y,5,pr?"#fff":"#212529"));
+  if (!pr) s += TX(210,112,"DB-02",{size:15,weight:800,anchor:"middle",fill:"#fff"});
+  // smørepunkter
+  PTS.forEach(p => {
+    const sel = o.sel===p.n, dim = o.filter && o.filter!=="alle" && o.filter!==p.iv;
+    const c = pr ? "#fff" : IVC[p.iv], st = pr ? "#000" : "#fff";
+    let g = "";
+    if (sel && !pr){ g += CI(p.x,p.y,24+4*Math.sin(t*5),"none","var(--orange)",3.5,` stroke-dasharray="8 6"`);
+      const ph = (t*1.2)%1; if (p.typ==="olje") g += PA(`M${p.x} ${fx(p.y-58+ph*26)} q-6 9 0 13 q6 -4 0 -13 Z`,"#f08c00","#a14b00",1.2,` opacity="${fx(1-ph)}"`);
+      else g += CI(p.x,p.y-38,5+4*ph,NEWF,NEWFD,1.2,` opacity="${fx(1-ph*.6)}"`); }
+    if (p.typ==="fett") g += PA(`M${p.x} ${p.y-22} L${p.x+21} ${p.y+15} L${p.x-21} ${p.y+15} Z`,c,st,pr?2:2.5);
+    else g += CI(p.x,p.y,17,c,st,pr?2:2.5);
+    g += TX(p.x,p.y+(p.typ==="fett"?10:6),p.n,{size:18,weight:800,anchor:"middle",fill:pr?"#000":"#fff"});
+    s += `<g data-p="${p.n}" style="cursor:pointer" opacity="${dim?.22:1}">${g}</g>`;
+  });
+  if (!pr){
+    s += CI(100,34,10,"var(--muted)")+TX(116,40,"olje",{size:17})+PA("M180 23 L191 44 L169 44 Z","var(--muted)")+TX(200,40,"fett",{size:17});
+    [["daglig",290],["ukentlig",400],["månedlig",530]].forEach(([k,x]) => s += RC(x,25,18,18,IVC[k],"none",0,4)+TX(x+25,40,k,{size:17}));
+  }
+  return s;
+}
+(function(){
+  const svg = $("d6Svg");
+  let sel = 1, filter = "alle";
+  $("d6Chips").innerHTML = [["alle","Alle"],["daglig","🔴 Daglig"],["ukentlig","🔵 Ukentlig"],["månedlig","🟢 Månedlig"]].map(([k,n]) => `<button class="chip" data-f="${k}" aria-pressed="${k===filter}">${n}</button>`).join("");
+  $("d6Chips").onclick = e => { const b = e.target.closest("[data-f]"); if (!b) return; filter = b.dataset.f; $("d6Chips").querySelectorAll("[data-f]").forEach(x => x.setAttribute("aria-pressed", String(x===b)));
+    const first = PTS.find(p => filter==="alle" || p.iv===filter); if (first){ sel = first.n; card(); } };
+  svg.addEventListener("pointerdown", e => { const pt = svg.createSVGPoint(); pt.x=e.clientX; pt.y=e.clientY; const q = pt.matrixTransform(svg.getScreenCTM().inverse());
+    let best = null, bd = 34; PTS.forEach(p => { const d = Math.hypot(q.x-p.x, q.y-p.y); if (d<bd){ bd=d; best=p; } }); if (best){ sel = best.n; card(); } });
+  function card(){ const p = PTS.find(x => x.n===sel);
+    $("d6Card").innerHTML = `<div class="kicker">Punkt ${p.n} av 6</div><h3>${p.typ==="fett"?"▲":"●"} ${p.navn}</h3>
+      <p style="color:var(--muted); font-size:.92rem">${p.hva}</p>
+      <div class="row"><b>🛢</b><span><b>${p.mid}</b> (${p.typ})</span></div>
+      <div class="row"><b>✋</b><span>${p.hvor}</span></div>
+      <div class="row"><b>📅</b><span style="color:${IVC[p.iv]}; font-weight:700">${p.iv[0].toUpperCase()+p.iv.slice(1)}</span></div>`; }
+  addAnim(svg,(dt,t)=>{ svg.innerHTML = latheSVG({t, sel, filter}); });
+  svg.innerHTML = latheSVG({sel, filter}); card();
+})();
+
+/* =====================================================================
+   OPPGAVEFIGURER (svart-hvitt)
+   ===================================================================== */
+(function(){
+  // O1 – flatene A (tørr) og B (smurt)
+  let s = svgOpen(760,230);
+  s += surfaces({x0:10,y0:30,w:360,h:190,yB:130,yT:102,pr:true,id:"o1a"});
+  s += surfaces({x0:390,y0:30,w:360,h:190,yB:150,yT:88,oil:true,pr:true,id:"o1b"});
+  [[60,117],[150,116],[240,117],[320,116]].forEach(([x,y]) => s += PA(`M${x} ${y-9} l3 6 l7 0 l-6 4 l3 7 l-7 -4 l-7 4 l3 -7 l-6 -4 l7 0 Z`,"#fff","#000",1.5));
+  s += TX(20,22,"A",{size:20,weight:800,fill:"#000"})+TX(400,22,"B",{size:20,weight:800,fill:"#000"});
+  $("o1fig").innerHTML = s+"</svg>";
+  // O3 – tre lagerhus
+  s = svgOpen(760,270);
+  [[1,"A"],[.08,"B"],[.4,"C"]].forEach(([f,l],i) => { s += `<g transform="translate(${10+i*255} 18) scale(.7)">`+housing(170,170,f,{pr:true,id:"o3h"+i})+`</g>`; s += TX(18+i*255,22,l,{size:20,weight:800,fill:"#000"}); });
+  $("o3fig").innerHTML = s+"</svg>";
+  // O4 – seglass
+  s = svgOpen(560,220);
+  [[.08,"A"],[.88,"B"],[.5,"C"]].forEach(([lv,l],i) => { const x = 50+i*180, y0 = 40, h = 150;
+    s += RC(x-30,y0-16,140,h+32,"#fff","#000",2,12);
+    s += RC(x+20,y0,40,h,"#fff","#000",2.5,8);
+    const oy = y0 + lv*h; s += RC(x+22,oy,36,y0+h-2-oy,"#bbb","none",0,4)+ln(x+22,oy,x+58,oy,"#000",2);
+    s += ln(x+60,y0+45,x+80,y0+45,"#000",2)+TX(x+84,y0+50,"maks",{size:13,fill:"#000"});
+    s += ln(x+60,y0+105,x+80,y0+105,"#000",2)+TX(x+84,y0+110,"min",{size:13,fill:"#000"});
+    s += TX(x-22,y0+4,l,{size:20,weight:800,fill:"#000"}); });
+  $("o4fig").innerHTML = s+"</svg>";
+  // O5 – dreiebenk
+  $("o5fig").innerHTML = svgOpen(1000,430).replace('viewBox="0 0 1000 430"','viewBox="70 50 850 368"')+latheSVG({pr:true})+"</svg>";
+  document.querySelectorAll("#oppgavetekst .ofig svg").forEach(x => { x.removeAttribute("width"); x.removeAttribute("height"); });
+})();
+
+/* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToPng(svg){
+  const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
+  const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0,0,w,h); cx.drawImage(img,0,0,w,h);
+  return [cv.toDataURL("image/png"), vb.width];
+}
+$("btnCopy").onclick = async () => {
+  const src = $("oppgavetekst"), clone = src.cloneNode(true);
+  const svgs = [...src.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<svgs.length;i++){
+    try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.min(640, Math.round(w*.7)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
+  }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".scenario").forEach(s => { s.style.border="1px dashed #777"; s.style.padding="6px 10px"; });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>
