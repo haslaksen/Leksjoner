@@ -29,6 +29,15 @@ vg2/<emne>/leksjon-N-<navn>.html
 - Leksjonene lenker til Verkstedhåndboka (`https://verkstedhandboka.vercel.app/#<emne>`). Håndboka lenker **ikke** tilbake til leksjonene.
 - Oversiktssiden lenker til simulatorene. Adressen står i konstanten `SIMULATORER` nederst i `index.html`.
 
+## Elevversjon og lærerversjon
+
+Lærerne vedlikeholder bare filene i `vg1/` og `vg2/`. Ved hver publisering lager `bygg.js` to versjoner i mappen `public/`:
+
+- **Elevversjon** på hovedadressen (`https://leksjoner.vercel.app/`). Fasit, «Vis fasit»-knappen og lærernotater (`<details class="laerer">`) er fjernet fra filene, ikke bare skjult. Lenker til enkeltleksjoner herfra kan deles med elevene.
+- **Lærerversjon** med fasit under en skjult adresse: `https://leksjoner.vercel.app/laerer-k7q4mz/`. Ikke del den med elever.
+
+Ny fasit må stå i `<span class="fasit" hidden>…</span>` (eller `class="fasit-svg"` i SVG-figurer), og lærernotater i `<details class="laerer">`, ellers kommer de med i elevversjonen. Bygget stopper med feil hvis noe fasit-merket blir igjen.
+
 ## Deploy
 
-Vercel publiserer fra grenen `main`. Oppsett: importer repoet, velg Framework Preset **Other**, la Build Command og Output Directory stå tomme.
+Vercel publiserer fra grenen `main`. Byggkommando og mappe står i `vercel.json`, så ingenting må stilles inn i Vercel. Prøv bygget lokalt med `node bygg.js`.
