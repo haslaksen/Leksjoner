@@ -112,6 +112,8 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
 .flip.show .hint{display:none}
 
 /* Meter */
+.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
 .meter{position:relative; height:1.6rem; background:var(--steel-soft); border-radius:8px; margin:1.4rem 0 .4rem}
 .meter .fill{height:100%; width:0; border-radius:8px; transition:width .3s, background .3s}
 .meter .mark{position:absolute; top:-1.2rem; bottom:-.2rem; border-left:2px dashed var(--ink); font-size:.7rem; color:var(--muted); padding-left:.2rem; white-space:nowrap}
@@ -196,12 +198,12 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
       <h1>Leksjon 3<br>Mekanisk prøving</h1>
       <p class="lead">Hvordan vet vi at S355 tåler 355 MPa?</p>
       <ol class="goals">
-        <li><b>Spenning</b>: σ = F / A₀</li>
-        <li><b>Strekkprøven</b> – fra elastisk til brudd</li>
-        <li><b>E-modul</b>, <b>R<sub>p0,2</sub></b> og <b>bruddforlengelse A</b></li>
+        <li><b>Spenning</b>: tynn stang tåler mindre</li>
+        <li><b>Strekkprøven</b>: strekker seg, flyter, sterkest, ryker</li>
+        <li><b>Stiv</b> eller <b>sterk</b>?</li>
+        <li><b>Seigt</b>: hvor mye strekker staven seg?</li>
         <li><b>Hardhet</b>: Brinell, Vickers, Rockwell</li>
-        <li><b>Charpy</b> – stål blir sprøtt i kulde</li>
-        <li>Sjekk <b>materialsertifikatet</b></li>
+        <li><b>Charpy</b> og <b>materialsertifikatet</b></li>
       </ol>
     </div>
     <div>
@@ -253,7 +255,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <h3>Kompetansemål (PIN02-03, Teknologi)</h3>
         <p><i>«vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer»</i></p>
         <p style="font-size:.85rem; color:var(--muted); margin:0">Støtter også kvalitetskontroll og dokumentasjon. Bygger på leksjon 1 (flytekurve, hard/seig/sprø, Charpy) og leksjon 2 (S355J2, herding, 3.1-sertifikat).</p>
-        <p style="font-size:.85rem; color:var(--muted); margin:.4rem 0 0">Fulle læringsmål: regne σ = F / A₀ · forklare strekkprøven fra elastisk til brudd · skille stivhet (E-modul) og styrke · forklare R<sub>p0,2</sub> og tilbakefjæring · regne bruddforlengelse A · velge Brinell, Vickers eller Rockwell · forklare Charpy og sprøhet i kulde · sjekke et materialsertifikat mot kravene.</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:.4rem 0 0">Fulle læringsmål: forklare at spenning er kraft per mm² · kjenne igjen flyt, strekkfasthet og brudd på strekkdiagrammet · skille stiv og sterk · forklare tilbakefjæring · vite at lang forlengelse før brudd betyr seigt · velge Brinell, Vickers eller Rockwell · forklare Charpy og sprøhet i kulde · sjekke et materialsertifikat mot kravene. Leksjonen har nesten ingen regning. Formlene ligger i «Ekstra»-boksene og i ekstraoppgaven.</p>
       </div>
       <div class="card" style="margin-top:1rem">
         <h3>Plan for to skoletimer</h3>
@@ -261,14 +263,14 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <tr><th colspan="2">Time 1</th></tr>
           <tr><td>0–5 min</td><td>Repetisjon fra leksjon 1 og 2</td></tr>
           <tr><td>5–20 min</td><td>Del 1–2: spenning, strekkprøven</td></tr>
-          <tr><td>20–32 min</td><td>Oppgave 1 og 2</td></tr>
-          <tr><td>32–45 min</td><td>Del 3–5: E-modul, R<sub>p0,2</sub>, bruddforlengelse</td></tr>
+          <tr><td>20–30 min</td><td>Oppgave 1 og 2</td></tr>
+          <tr><td>30–45 min</td><td>Del 3–4: stiv eller sterk, kantpressa, seighet</td></tr>
           <tr><th colspan="2">Time 2</th></tr>
-          <tr><td>0–10 min</td><td>Oppgave 3</td></tr>
-          <tr><td>10–22 min</td><td>Del 6: hardhet</td></tr>
-          <tr><td>22–29 min</td><td>Oppgave 4</td></tr>
-          <tr><td>29–37 min</td><td>Del 7–8: Charpy, sertifikat</td></tr>
-          <tr><td>37–42 min</td><td>Oppgave 5 (oppgave 6 er ekstra)</td></tr>
+          <tr><td>0–8 min</td><td>Oppgave 3</td></tr>
+          <tr><td>8–18 min</td><td>Del 5: hardhet</td></tr>
+          <tr><td>18–24 min</td><td>Oppgave 4</td></tr>
+          <tr><td>24–32 min</td><td>Del 6: Charpy og sertifikat</td></tr>
+          <tr><td>32–42 min</td><td>Oppgave 5 og 6 (oppgave 7 er ekstra, med regning)</td></tr>
           <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
@@ -288,7 +290,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
       <button class="card flip"><span class="q">Hva skjer med atomlagene når metall bøyes varig?</span><span class="a">De glir forbi hverandre (leksjon 1).</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Hva betyr 355 i S355?</span><span class="a">Minste flytegrense: 355 MPa.</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Hva betyr J2 i S355J2?</span><span class="a">Minst 27 J slagseighet ved −20 °C (Charpy).</span><span class="hint">Klikk for svar</span></button>
-      <button class="card flip"><span class="q">Hvorfor blir C45 hardt når det bråkjøles?</span><span class="a">Karbonet låses inne i gitteret (martensitt), så lagene ikke kan gli.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvorfor blir C45 hardt når det bråkjøles?</span><span class="a">Karbonet låses inne i gitteret, så lagene ikke kan gli.</span><span class="hint">Klikk for svar</span></button>
     </div>
     <div class="tip o"><b>I dag:</b> Hvordan <b>måler</b> vi styrke, hardhet og seighet?</div>
   </div>
@@ -316,15 +318,15 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <div class="status info" id="spTxt"></div>
       </div>
       <div>
-        <div class="formula">σ = F / A₀</div>
-        <div class="card" style="margin-bottom:.7rem">
-          <b>σ</b> = spenning (MPa)<br>
-          <b>F</b> = kraft (N)<br>
-          <b>A₀</b> = tverrsnitt (mm²)
-        </div>
-        <div class="steps" id="spSteps"></div>
-        <div class="tip"><b>1 MPa = 1 N/mm²</b></div>
-        <p class="caption">Rund A = π·d²/4 · flatstål A = b·t · rør A = π·(D² − d²)/4</p>
+        <div class="card" style="margin-bottom:.8rem;border-left:6px solid var(--orange)"><b>Samme kraft</b> på en <b>tynnere</b> stang gir mer kraft på hver mm². Da blir <b>spenningen</b> høyere.</div>
+        <div class="card" style="margin-bottom:.8rem">Prøv: dra i <b>diameter</b>. Se prikkene bli tettere eller glissere.</div>
+        <div class="tip">Spenning måles i <b>MPa</b>. S355 tåler <b>355 MPa</b> før det bøyer seg varig.</div>
+        <details class="ekstra"><summary>Ekstra: slik regner du spenning</summary>
+          <div class="formula">σ = F / A₀</div>
+          <p style="margin:.3rem 0">σ = spenning (MPa) · F = kraft (N) · A₀ = tverrsnitt (mm²) · 1 MPa = 1 N/mm²</p>
+          <div class="steps" id="spSteps"></div>
+          <p class="caption">Rund A = π·d²/4 · flatstål A = b·t · rør A = π·(D² − d²)/4</p>
+        </details>
       </div>
     </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>En tynn stang ryker før en tykk med samme kraft. Det som teller, er hvor mye kraft hver mm² må bære. σ (sigma) = spenning i MPa. F = kraft i newton; 1 kN = 1000 N ≈ vekten av 100 kg. A₀ = tverrsnitt: arealet du ser hvis du kapper stangen på tvers. S355 tåler 355 N på hver eneste mm² før det begynner å flyte. Flatstål: b·t = bredde · tykkelse.</details>
@@ -371,15 +373,17 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         </svg>
         <h3>Prøvestaven</h3><p class="short">To merker gir målelengden L₀.</p></div>
       <div class="card">
-        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Stav som forlenges, tøyning er forlengelse delt på startlengde">
-          <rect x="20" y="36" width="140" height="20" rx="3" style="fill:var(--steel)"/>
-          <rect x="160" y="36" width="0" height="20" style="fill:var(--orange)"><animate attributeName="width" values="0;14;14;0" keyTimes="0;.45;.85;1" dur="3s" repeatCount="indefinite"/></rect>
-          <path d="M20 68 H160 M20 63 v10 M160 63 v10" style="stroke:var(--ink);stroke-width:1.5"/>
-          <text x="90" y="84" text-anchor="middle" font-size="12" style="fill:var(--muted)">L₀ = 50 mm</text>
-          <text x="167" y="30" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--orange)">ΔL</text>
-          <text x="100" y="110" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--ink)">ε = 5 / 50 = 10 %</text>
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Strekkurve med fire steder: strekker seg, flyter, sterkest og ryker">
+          <path d="M20 104 H190 M20 104 V8" style="stroke:var(--ink);stroke-width:1.5"/>
+          <path d="M20 104 L30 46 L44 50 C80 22 110 18 132 20 C156 22 170 34 180 52" style="fill:none;stroke:var(--orange);stroke-width:3.5;stroke-linejoin:round"/>
+          <g style="font-size:12px;font-weight:800;text-anchor:middle;fill:#fff">
+            <circle cx="25" cy="76" r="9" style="fill:var(--blue)"/><text x="25" y="80">1</text>
+            <circle cx="40" cy="49" r="9" style="fill:var(--blue)"/><text x="40" y="53">2</text>
+            <circle cx="132" cy="20" r="9" style="fill:var(--blue)"/><text x="132" y="24">3</text>
+            <circle cx="180" cy="52" r="9" style="fill:var(--red)"/><text x="180" y="56">4</text>
+          </g>
         </svg>
-        <h3>Tøyning ε</h3><p class="short"><b>ε = ΔL / L₀</b>, oppgis i %.</p></div>
+        <h3>Fire steder på kurven</h3><p class="short">1 strekker seg · 2 flyter · 3 sterkest (R<sub>m</sub>) · 4 ryker</p></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Kraftmåler over staven og ekstensometer klemt på staven">
           <rect x="70" y="4" width="60" height="22" rx="4" style="fill:var(--blue)"/>
@@ -403,17 +407,12 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
 </section>
 
 <!-- DEL 3 E-MODUL -->
-<section class="slide" id="emodul" data-nav="3 E-modul">
+<section class="slide" id="emodul" data-nav="3 Stiv/sterk">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 4 min</div>
-    <h2>Stivhet: E-modul</h2>
-    <p class="lead">Jo brattere linja, jo <b>stivere</b> materiale – det er <b>E-modulen</b>.</p>
+    <div class="kicker">Del 3 · Stiv eller sterk? · ca. 8 min</div>
+    <h2>Stiv eller sterk?</h2>
+    <p class="lead"><b>Stiv</b> = gir lite etter. <b>Sterk</b> = tåler mye før det bøyer seg varig.</p>
     <div class="grid2">
-      <div class="fig">
-        <div class="legend"><span><i style="border-color:var(--steel-dark)"></i>S355</span><span><i style="border-color:var(--blue);border-top-style:dashed"></i>42CrMo4 seigherdet</span><span><i style="border-color:var(--purple)"></i>Titan</span><span><i style="border-color:var(--green)"></i>Aluminium</span></div>
-        <svg id="eGraf" viewBox="0 0 520 350" role="img" aria-label="Elastisk del av strekkdiagrammet"></svg>
-        <p class="caption">Bare den elastiske delen. Prikken = varig deformasjon begynner.</p>
-      </div>
       <div class="fig">
         <div style="font-weight:650">Tre stenger, 1 meter lange, med samme spenning</div>
         <svg id="eBars" viewBox="0 0 560 230" role="img" aria-label="Forlengelse av tre stenger"></svg>
@@ -421,11 +420,14 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <label for="eS">Spenning:</label><input type="range" id="eS" min="0" max="250" step="5" value="100">
           <span class="pill" id="eSv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">100 MPa</span>
         </div>
-        <div class="formula" style="font-size:1.2rem">E = σ / ε &nbsp;→&nbsp; ΔL = σ · L₀ / E</div>
-        <table class="t" style="font-size:.85rem"><tr><th>Materiale</th><th>E-modul</th><th>Stivhet</th></tr>
-          <tr><td>Stål (alle typer)</td><td>ca. 210 000 MPa (210 GPa)</td><td>3 × aluminium</td></tr>
-          <tr><td>Titan</td><td>ca. 110 000 MPa</td><td>halvparten av stål</td></tr>
-          <tr><td>Aluminium</td><td>ca. 70 000 MPa</td><td>1/3 av stål</td></tr></table>
+      </div>
+      <div class="card">
+        <h3>Hvem bøyer seg mest?</h3>
+        <table class="t" style="font-size:.95rem"><tr><th>Materiale</th><th>Stivhet</th></tr>
+          <tr><td>Stål (alle typer)</td><td>stivest</td></tr>
+          <tr><td>Titan</td><td>halvparten av stål</td></tr>
+          <tr><td>Aluminium</td><td>1/3 av stål – gir 3 ganger så mye etter</td></tr></table>
+        <details class="ekstra"><summary>Ekstra: E-modul</summary>Stivheten kalles <b>E-modul</b>. Stål ca. 210 000 MPa, titan ca. 110 000 MPa, aluminium ca. 70 000 MPa.<br><b>E = σ / ε</b> → forlengelse ΔL = σ · L₀ / E</details>
       </div>
     </div>
     <div class="tip o"><b>Stiv ≠ sterk.</b> Herdet og mykt stål er like stive.</div>
@@ -434,33 +436,14 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
 </section>
 
 <!-- DEL 4 RP0,2 -->
-<section class="slide" id="rp" data-nav="4 Rp0,2">
+<section class="slide" id="rp" data-nav="3 Kantpressa">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 4 min</div>
-    <h2>R<sub>p0,2</sub> – når det ikke finnes en tydelig flytegrense</h2>
-    <p class="lead">Ingen knekk? Da er grensen <b>0,2 % varig forlengelse</b>.</p>
-    <div class="grid2">
+    <div class="kicker">Del 3 · Stiv eller sterk?</div>
+    <h2>Tilbakefjæring i kantpressa</h2>
+    <p class="lead">Den elastiske delen <b>spretter tilbake</b> når du slipper. Derfor bøyer operatøren litt for langt.</p>
+    <div class="grid2" style="grid-template-columns:1.3fr 1fr">
       <div class="fig">
-        <svg id="rpGraf" viewBox="0 0 540 360" role="img" aria-label="Pålasting og avlasting av aluminium"></svg>
-        <div class="controls">
-          <label for="rpS">Last opp til:</label><input type="range" id="rpS" min="0" max="286" step="1" value="200">
-          <span class="pill" id="rpSv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">200 MPa</span>
-        </div>
-        <div class="controls no-print">
-          <button class="btn orange" id="btnUnload">⬇ Slipp (avlast)</button>
-          <button class="btn primary" id="btnRp">Finn R<sub>p0,2</sub></button>
-          <button class="btn" id="btnRpR">↻</button>
-        </div>
-        <div class="readout" style="grid-template-columns:repeat(3,1fr)">
-          <div><span>Tøyning under last</span><b id="rpT">–</b></div>
-          <div><span>Fjærer tilbake (elastisk)</span><b id="rpE">–</b></div>
-          <div><span>Blir igjen (varig)</span><b id="rpP">–</b></div>
-        </div>
-        <div class="status info" id="rpTxt"></div>
-        <p class="caption">Aluminium 6082, typiske verdier.</p>
-      </div>
-      <div class="fig">
-        <div style="font-weight:650">Samme fysikk i kantpressa: tilbakefjæring</div>
+        <div style="font-weight:650">Bøy en plate til 90°</div>
         <svg id="bend" viewBox="0 0 520 300" role="img" aria-label="Bøying i kantpresse med tilbakefjæring"></svg>
         <div class="controls no-print">
           <button class="btn small on" id="bSt">Stål S355</button>
@@ -470,57 +453,51 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <div class="status info" id="bTxt">Velg materiale og bøy.</div>
         <p class="caption">Forstørret 3×. Stål 1–2°, aluminium 3–5°.</p>
       </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem"><b>Stål</b> fjærer ca. 1–2° tilbake.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>Aluminium</b> fjærer ca. 3–5° tilbake. Det er mindre stivt.</div>
+        <div class="tip o" style="margin:0">Bøy litt <b>forbi</b> 90°, så ender du på 90°.</div>
+      </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Aluminium og rustfritt bøyer kurven mykt, uten knekk. Da avtaler vi en grense: spenningen som gir 0,2 % varig forlengelse (R<sub>p0,2</sub>). La elevene laste opp og slippe – se hva som blir igjen. Avlastingslinja er parallell med den elastiske linja. Kantpressa: vinkelendringen er forstørret 3× i figuren; typisk tilbakefjæring stål 1–2°, aluminium 3–5°. Derfor «overbøyer» operatøren litt.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Ved bøying blir en del av deformasjonen varig, mens den elastiske delen går tilbake når lasten slippes. R<sub>p0,2</sub> (spenningen som gir 0,2 % varig forlengelse, brukt for aluminium og rustfritt uten tydelig flytegrense) er tatt ut av elevstoffet. Kantpressa: vinkelendringen er forstørret 3× i figuren; typisk tilbakefjæring stål 1–2°, aluminium 3–5°. Derfor «overbøyer» operatøren litt.</details>
   </div>
 </section>
 
 <!-- DEL 5 BRUDDFORLENGELSE -->
-<section class="slide" id="bruddA" data-nav="5 Forlengelse">
+<section class="slide" id="bruddA" data-nav="4 Seighet">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 4 min</div>
-    <h2>Bruddforlengelse A og innsnevring Z</h2>
-    <p class="lead">Lang forlengelse før brudd = <b>seigt</b> materiale.</p>
+    <div class="kicker">Del 4 · ca. 4 min</div>
+    <h2>Seigt: hvor mye strekker staven seg?</h2>
+    <p class="lead">Strekker staven seg mye før den ryker, er materialet <b>seigt</b>.</p>
     <div class="fig">
       <div class="controls no-print" id="azBtns" style="margin-top:0"></div>
       <svg id="azSvg" viewBox="0 0 780 300" role="img" aria-label="Prøvestav før og etter brudd" style="margin-top:.5rem"></svg>
       <div class="controls no-print"><button class="btn orange" id="azGo">🧩 Sett bitene sammen og mål</button></div>
     </div>
     <div class="grid2" style="margin-top:1rem">
-      <div class="steps" id="azSteps" style="margin-top:0"></div>
-      <div>
-        <div class="grid2" style="gap:.8rem">
-          <div class="card">
-            <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Bitene settes sammen og lengden Lu måles">
-              <g><animateTransform attributeName="transform" type="translate" values="-14 0;0 0;0 0;-14 0" keyTimes="0;.35;.85;1" dur="4s" repeatCount="indefinite"/>
-                <path d="M10 40 H40 L46 48 H98 L102 52 L98 60 H46 L40 68 H10 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:1.5"/></g>
-              <g><animateTransform attributeName="transform" type="translate" values="14 0;0 0;0 0;14 0" keyTimes="0;.35;.85;1" dur="4s" repeatCount="indefinite"/>
-                <path d="M190 40 H160 L154 48 H106 L102 52 L106 60 H154 L160 68 H190 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:1.5"/></g>
-              <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.35;.45;.85;1" dur="4s" repeatCount="indefinite"/>
-                <path d="M52 84 H152 M52 78 v12 M152 78 v12" style="stroke:var(--orange);stroke-width:2.5"/>
-                <text x="102" y="108" text-anchor="middle" font-size="14" font-weight="800" style="fill:var(--orange)">L<tspan font-size="10" dy="3">u</tspan></text></g>
-            </svg>
-            <p class="short"><b>L<sub>u</sub></b> = lengde etter brudd.</p></div>
-          <div class="card">
-            <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Staven snevres inn til en hals">
-              <path style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:1.5">
-                <animate attributeName="d" dur="3s" repeatCount="indefinite" values="M20 40 H180 V72 H20 Z;M20 40 H90 Q100 54 110 40 H180 V72 H110 Q100 58 90 72 H20 Z;M20 40 H180 V72 H20 Z" keyTimes="0;.6;1" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1"/>
-              </path>
-              <path d="M100 22 V36 M100 90 V76" style="stroke:var(--red);stroke-width:2.5"/>
-              <text x="100" y="112" text-anchor="middle" font-size="14" font-weight="800" style="fill:var(--red)">S<tspan font-size="10" dy="3">u</tspan></text>
-            </svg>
-            <p class="short">Stor <b>Z</b> (tynn hals) = seigt.</p></div>
-        </div>
-      </div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Bitene settes sammen og lengden etter brudd måles">
+          <g><animateTransform attributeName="transform" type="translate" values="-14 0;0 0;0 0;-14 0" keyTimes="0;.35;.85;1" dur="4s" repeatCount="indefinite"/>
+            <path d="M10 40 H40 L46 48 H98 L102 52 L98 60 H46 L40 68 H10 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:1.5"/></g>
+          <g><animateTransform attributeName="transform" type="translate" values="14 0;0 0;0 0;14 0" keyTimes="0;.35;.85;1" dur="4s" repeatCount="indefinite"/>
+            <path d="M190 40 H160 L154 48 H106 L102 52 L106 60 H154 L160 68 H190 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:1.5"/></g>
+          <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.35;.45;.85;1" dur="4s" repeatCount="indefinite"/>
+            <path d="M52 84 H152 M52 78 v12 M152 78 v12" style="stroke:var(--orange);stroke-width:2.5"/>
+            <text x="102" y="108" text-anchor="middle" font-size="14" font-weight="800" style="fill:var(--orange)">mål lengden</text></g>
+        </svg>
+        <p class="short">S355 blir ca. 28 % lengre. <b>Gråjern</b> nesten ikke – det er <b>sprøtt</b>.</p></div>
+      <details class="ekstra" style="margin-top:0"><summary>Ekstra: regn ut bruddforlengelsen A</summary>
+        <div class="steps" id="azSteps"></div>
+      </details>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Etter bruddet settes bitene sammen og målelengden måles igjen. Jo mer staven ble forlenget, jo seigere er materialet – og jo bedre tåler det bøying og forming. L<sub>u</sub> = målelengden etter brudd (u = «ultimate», til slutt). S<sub>u</sub> = minste tverrsnitt i halsen. Innsnevring Z viser hvor mye halsen trakk seg sammen; stor Z = seigt. Gråjern får nesten ingen hals – det er sprøtt.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Etter bruddet settes bitene sammen og målelengden måles igjen. Jo mer staven ble forlenget, jo seigere er materialet – og jo bedre tåler det bøying og forming. Tallet kalles bruddforlengelse A og står på sertifikatet. Figuren viser også halsen (innsnevring Z), men den er tatt ut av elevstoffet. Gråjern får nesten ingen hals – det er sprøtt.</details>
   </div>
 </section>
 
 <!-- DEL 6 HARDHET -->
-<section class="slide" id="hardhet" data-nav="6 Hardhet">
+<section class="slide" id="hardhet" data-nav="5 Hardhet">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 12 min</div>
+    <div class="kicker">Del 5 · ca. 10 min</div>
     <h2>Hardhetsmåling</h2>
     <p class="lead">Press en hard spiss inn: lite <b>inntrykk</b> = hardt materiale.</p>
     <div class="tabs no-print" id="hdTabs"></div>
@@ -533,7 +510,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
       </div>
       <div>
         <div class="card" id="hdInfo"></div>
-        <div class="steps" id="hdSteps"></div>
+        <details class="ekstra"><summary>Ekstra: slik regnes hardheten ut</summary><div class="steps" id="hdSteps"></div></details>
       </div>
     </div>
     <div class="grid3" style="margin-top:1rem">
@@ -576,7 +553,9 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         </svg>
         <h3>Rockwell (HRC)</h3><p class="short">Måler dybden. Raskt – herdet stål.</p></div>
     </div>
-    <h3 style="margin-top:1.6rem">Omtrentlig sammenheng for stål</h3>
+    <div class="tip o">Mykt og grovt (støpejern, aluminium): <b>Brinell</b>. Tynne lag: <b>Vickers</b>. Herdet stål, raskt: <b>Rockwell C</b>.</div>
+    <details class="ekstra"><summary>Ekstra: omregning mellom hardhetsskalaene</summary>
+    <p style="margin:.5rem 0">Omtrentlig sammenheng for stål:</p>
     <div style="overflow-x:auto">
     <table class="t" style="font-size:.88rem">
       <tr><th>HB</th><td>120</td><td>160</td><td>200</td><td>250</td><td>300</td><td>400</td><td>–</td><td>–</td><td>–</td></tr>
@@ -587,6 +566,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
     </table>
     </div>
     <p class="caption">Bare for stål. Tommelfingerregel: <b>R<sub>m</sub> ≈ 3,3 · HB</b>.</p>
+    </details>
     <details class="laerer no-print"><summary>Lærernotat</summary>Hardhet = motstand mot inntrykk (leksjon 1). Vi presser en hard spiss inn med kjent kraft og måler hvor stort merket blir.
       <ul><li><b>Brinell (HB)</b>: stor kule, stort merke. Bra for mykt og grovt materiale: støpejern, aluminium, ikke-herdet stål. Merket dekker mange korn og gir et godt gjennomsnitt. Ikke for herdet stål.</li>
       <li><b>Vickers (HV)</b>: diamantpyramide. Én skala for alt fra mykt til svært hardt. Med liten kraft kan den måle tynne herdede lag. Brukes mest i laboratorium – merket må måles i mikroskop.</li>
@@ -596,9 +576,9 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
 </section>
 
 <!-- DEL 7 CHARPY -->
-<section class="slide" id="charpy" data-nav="7 Charpy">
+<section class="slide" id="charpy" data-nav="6 Charpy">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 5 min</div>
+    <div class="kicker">Del 6 · Charpy og sertifikat · ca. 8 min</div>
     <h2>Charpy: seig eller sprø i kulde?</h2>
     <p class="lead">Pendelen knuser prøven – energien i joule er <b>slagseigheten KV</b>.</p>
     <div class="grid2">
@@ -617,7 +597,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <svg id="frac" viewBox="0 0 170 190" style="width:150px" role="img" aria-label="Bruddflate"></svg>
           <div class="status info" id="kTxt" style="margin:0"></div>
         </div>
-        <p class="caption"><b>KV = m · g · (h₁ − h₂)</b>. Forenklede kurver.</p>
+        <p class="caption">Forenklede kurver. Under 27 J (rød linje) er stålet for sprøtt.</p>
       </div>
     </div>
     <div class="grid3" style="margin-top:1rem">
@@ -668,9 +648,9 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
 </section>
 
 <!-- DEL 8 SERTIFIKAT -->
-<section class="slide" id="sert" data-nav="8 Sertifikat">
+<section class="slide" id="sert" data-nav="6 Sertifikat">
   <div class="wrap">
-    <div class="kicker">Del 8 · ca. 3 min</div>
+    <div class="kicker">Del 6 · Charpy og sertifikat</div>
     <h2>Les materialsertifikatet</h2>
     <p class="lead">Sjekk tallene på <b>3.1-sertifikatet</b> mot kravene før bruk.</p>
     <div class="grid2 wide-left">
@@ -705,20 +685,19 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
     <div class="grid2">
       <div>
         <ol style="font-size:1.08rem">
-          <li><b>Spenning σ = F / A₀</b> i MPa (= N/mm²). Det er spenningen, ikke kraften, som avgjør om delen tåler lasten.</li>
-          <li>Strekkprøven: <b>elastisk → flyt (R<sub>eH</sub>) → fastning → R<sub>m</sub> → innsnevring → brudd</b>.</li>
-          <li><b>Tøyning ε = ΔL / L₀</b>. <b>E-modul</b> = stivhet. Stål ca. 210 GPa, aluminium ca. 70 GPa. Herding endrer ikke E.</li>
-          <li><b>R<sub>p0,2</sub></b> = spenningen som gir 0,2 % varig forlengelse. Brukes når kurven ikke har tydelig knekk.</li>
-          <li><b>A = (L<sub>u</sub> − L₀) / L₀ · 100 %</b>. Stor A = seigt.</li>
-          <li><b>Brinell</b>: mykt og grovt. <b>Vickers</b>: alt, tynne lag. <b>Rockwell C</b>: herdet stål, raskt. R<sub>m</sub> ≈ 3,3 · HB.</li>
-          <li><b>Charpy KV</b> = energi i joule. Vanlig stål blir sprøtt under overgangstemperaturen. J2 = 27 J ved −20 °C.</li>
+          <li><b>Spenning</b> = kraft per mm², målt i MPa. Tynn stang tåler mindre enn tykk.</li>
+          <li>Strekkprøven: <b>strekker seg → flyter → sterkest (R<sub>m</sub>) → ryker</b>.</li>
+          <li><b>Stiv</b> er ikke det samme som <b>sterk</b>. Aluminium er mindre stivt enn stål og fjærer mer tilbake i kantpressa.</li>
+          <li>Strekker staven seg mye før den ryker, er materialet <b>seigt</b>.</li>
+          <li><b>Brinell</b>: mykt og grovt. <b>Vickers</b>: tynne lag. <b>Rockwell C</b>: herdet stål, raskt.</li>
+          <li><b>Charpy</b>: vanlig stål blir sprøtt i kulde. J2 = seigt ned til −20 °C.</li>
           <li>Sjekk <b>3.1-sertifikatet</b> mot kravene før bruk.</li>
         </ol>
       </div>
       <div>
         <div class="card">
           <h3>Nøkkelord</h3>
-          <div class="chips"><span>spenning σ</span><span>tverrsnitt A₀</span><span>MPa = N/mm²</span><span>strekkprøve</span><span>målelengde L₀</span><span>tøyning ε</span><span>elastisk</span><span>plastisk</span><span>fastning</span><span>innsnevring</span><span>E-modul</span><span>stivhet</span><span>R<sub>p0,2</sub></span><span>tilbakefjæring</span><span>bruddforlengelse A</span><span>Brinell</span><span>Vickers</span><span>Rockwell</span><span>inntrykk</span><span>slagseighet KV</span><span>overgangstemperatur</span><span>3.1-sertifikat</span></div>
+          <div class="chips"><span>spenning</span><span>MPa</span><span>strekkprøve</span><span>flytegrense</span><span>strekkfasthet</span><span>stiv og sterk</span><span>tilbakefjæring</span><span>seig og sprø</span><span>Brinell</span><span>Vickers</span><span>Rockwell</span><span>Charpy</span><span>3.1-sertifikat</span></div>
         </div>
         <div class="card" style="margin-top:1rem">
           <h3>Neste leksjon</h3>
@@ -743,52 +722,56 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
     <div id="oppgavetekst">
       <h2>Materiallære 3 – Mekanisk prøving · Oppgaver</h2>
       <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
-      <p style="font-size:.9rem">Penn og kalkulator. Formler: σ = F / A₀ · A₀ = π·d²/4 · ε = ΔL / L₀ · E = σ / ε · A = (L<sub>u</sub> − L₀) / L₀ · 100 %</p>
+      <p style="font-size:.9rem">Du trenger bare penn. Kalkulator trengs bare til ekstraoppgaven.</p>
 
       <div class="oppgave">
-        <h3>Oppgave 1 – Spenning <small>Time 1 · 7 min</small></h3>
-        <p>a) En rundstang Ø12 mm i S355 trekkes med F = 30 kN. Regn ut A₀ og σ. Begynner stangen å flyte? (R<sub>eH</sub> = 355 MPa)</p>
-        <div class="svar"><span class="fasit" hidden>A₀ = π · 12² / 4 = 113,1 mm². σ = 30 000 N / 113,1 mm² = <b>265 MPa</b></span></div><div class="svar"><span class="fasit" hidden>Under 355 → flyter ikke.</span></div>
-        <p>b) Et flatstål 40 × 8 mm trekkes med 100 kN. Regn ut σ. Flyter det?</p>
-        <div class="svar"><span class="fasit" hidden>A₀ = 40 · 8 = 320 mm². σ = 100 000 / 320 = <b>312,5 MPa</b></span></div><div class="svar"><span class="fasit" hidden>Flyter ikke, men nær.</span></div>
-        <p>c) En stang skal tåle 50 kN med høyst 200 MPa. Hvilket tverrsnitt og hvilken diameter (hele mm) trengs?</p>
-        <div class="svar"><span class="fasit" hidden>A₀ = 50 000 / 200 = 250 mm²</span></div><div class="svar"><span class="fasit" hidden>d = √(4 · 250 / π) = 17,8 mm → <b>18 mm</b></span></div>
+        <h3>Oppgave 1 – Spenning <small>Time 1 · 4 min</small></h3>
+        <p>a) Tre stenger i S355 holder hvert sitt like tunge lodd. Hvilken ryker først, og hvorfor?</p>
+        <div class="oppfig" style="max-width:360px"><svg viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tre stenger, Ø6, Ø12 og Ø20 mm, med like lodd">
+          <rect width="320" height="120" fill="#fff"/>
+          <line x1="0" y1="8" x2="320" y2="8" stroke="#333" stroke-width="3"/>
+          <rect x="52" y="8" width="6" height="64" fill="#8a96a6"/><rect x="40" y="72" width="30" height="24" rx="3" fill="#e8590c"/>
+          <rect x="154" y="8" width="12" height="64" fill="#8a96a6"/><rect x="145" y="72" width="30" height="24" rx="3" fill="#e8590c"/>
+          <rect x="255" y="8" width="20" height="64" fill="#8a96a6"/><rect x="250" y="72" width="30" height="24" rx="3" fill="#e8590c"/>
+          <g font-family="Arial, sans-serif" font-size="13" fill="#000" text-anchor="middle"><text x="55" y="114">Ø6</text><text x="160" y="114">Ø12</text><text x="265" y="114">Ø20</text></g>
+        </svg></div>
+        <div class="svar"><span class="fasit" hidden>Ø6. Den har minst stål å fordele kraften på, så spenningen blir høyest.</span></div>
+        <p>b) Bruk glideren i del 1. Hva skjer med spenningen når du gjør stangen tykkere?</p>
+        <div class="svar"><span class="fasit" hidden>Spenningen blir lavere. Kraften fordeles på flere mm².</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 2 – Les strekkdiagrammet <small>Time 1 · 5 min</small></h3>
-        <p>Diagrammet viser en strekkprøve av et stål. Prøvestaven var Ø10 mm (A₀ = 78,5 mm²).</p>
+        <p>Diagrammet viser en strekkprøve av et stål.</p>
         <div class="oppfig"><svg id="oppDiag" viewBox="0 0 620 340" xmlns="http://www.w3.org/2000/svg"></svg></div>
         <table class="ot">
           <tr><th style="width:62%">Spørsmål</th><th>Svar</th></tr>
-          <tr><td>a) Øvre flytegrense R<sub>eH</sub></td><td class="tom"><span class="fasit" hidden>ca. 300 MPa</span></td></tr>
-          <tr><td>b) Strekkfasthet R<sub>m</sub></td><td class="tom"><span class="fasit" hidden>ca. 450 MPa</span></td></tr>
-          <tr><td>c) Forlengelse ved brudd (ca. %)</td><td class="tom"><span class="fasit" hidden>ca. 32 %</span></td></tr>
-          <tr><td>d) Ved hvilken tøyning starter innsnevringen?</td><td class="tom"><span class="fasit" hidden>ca. 20 % (der kurven er høyest, ved R<sub>m</sub>)</span></td></tr>
-          <tr><td>e) Hvor i diagrammet er det elastiske området? Skraver det.</td><td class="tom"><span class="fasit" hidden>Den nesten loddrette linja helt til venstre, fra 0 opp til ca. 300 MPa</span></td></tr>
-          <tr><td>f) Hvor stor var kraften ved R<sub>m</sub>? (F = σ · A₀)</td><td class="tom"><span class="fasit" hidden>450 · 78,5 = 35 300 N ≈ <b>35 kN</b></span></td></tr>
+          <tr><td>a) Hvor begynner staven å flyte? (ca. MPa)</td><td class="tom"><span class="fasit" hidden>ca. 300 MPa</span></td></tr>
+          <tr><td>b) Hvor er staven sterkest, R<sub>m</sub>? (ca. MPa)</td><td class="tom"><span class="fasit" hidden>ca. 450 MPa</span></td></tr>
+          <tr><td>c) Hvor mye har staven strukket seg når den ryker? (ca. %)</td><td class="tom"><span class="fasit" hidden>ca. 32 %</span></td></tr>
+          <tr><td>d) Hvor strekker staven seg som en fjær (elastisk)? Skraver det.</td><td class="tom"><span class="fasit" hidden>Den nesten loddrette linja helt til venstre, fra 0 opp til ca. 300 MPa</span></td></tr>
         </table>
-        <p>g) Kjør en prøve i <a data-sim="strekkprove">Strekkprøve-simulatoren</a>. Hvor på kurven finner du R<sub>eH</sub> og R<sub>m</sub>?</p>
-        <div class="svar"><span class="fasit" hidden>R<sub>eH</sub>: der kurven slutter å stige rett opp og flater ut (flyt). R<sub>m</sub>: på toppen av kurven, rett før innsnevringen.</span></div>
+        <p>e) Kjør en prøve i <a data-sim="strekkprove">Strekkprøve-simulatoren</a>. Hvor på kurven flyter staven, og hvor er den sterkest?</p>
+        <div class="svar"><span class="fasit" hidden>Flyter: der kurven slutter å stige rett opp og flater ut. Sterkest: på toppen av kurven, rett før staven får en hals.</span></div>
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 3 – Regn ut en strekkprøve <small>Time 2 · 10 min</small></h3>
-        <p>Prøvestav fra S355J2-plate: d₀ = 10 mm, L₀ = 50 mm. Flytegrense ved 29,5 kN, største kraft 44,0 kN. Etter brudd: L<sub>u</sub> = 61,0 mm, halsen Ø6,0 mm.</p>
+        <h3>Oppgave 3 – Seigt eller sprøtt, stiv eller sterk <small>Time 2 · 8 min</small></h3>
+        <p>a) Kjør strekkprøven i del 2 for hvert materiale. Fyll ut.</p>
         <table class="ot">
-          <tr><th style="width:52%">Regn ut</th><th>Utregning og svar</th></tr>
-          <tr><td>a) A₀</td><td class="tom"><span class="fasit" hidden>π · 10² / 4 = <b>78,5 mm²</b></span></td></tr>
-          <tr><td>b) R<sub>eH</sub></td><td class="tom"><span class="fasit" hidden>29 500 / 78,5 = <b>376 MPa</b></span></td></tr>
-          <tr><td>c) R<sub>m</sub></td><td class="tom"><span class="fasit" hidden>44 000 / 78,5 = <b>560 MPa</b></span></td></tr>
-          <tr><td>d) Bruddforlengelse A</td><td class="tom"><span class="fasit" hidden>(61 − 50) / 50 · 100 = <b>22 %</b></span></td></tr>
-          <tr><td>e) Innsnevring Z = (A₀ − S<sub>u</sub>) / A₀ · 100 %</td><td class="tom"><span class="fasit" hidden>S<sub>u</sub> = π · 6² / 4 = 28,3 mm². Z = (78,5 − 28,3) / 78,5 · 100 = <b>64 %</b></span></td></tr>
-          <tr><td>f) Er kravene til S355J2 oppfylt? (R<sub>eH</sub> ≥ 355, R<sub>m</sub> 470–630, A ≥ 22 %)</td><td class="tom"><span class="fasit" hidden>Ja – A er akkurat på grensen.</span></td></tr>
-          <tr><td>g) Ved F = 10 kN var ΔL = 0,030 mm. Regn ut σ, ε og E. Stemmer det med stål?</td><td class="tom"><span class="fasit" hidden>σ = 10 000 / 78,5 = 127 MPa. ε = 0,030 / 50 = 0,0006. E = 127 / 0,0006 ≈ 212 000 MPa ≈ <b>210 GPa</b> → stål.</span></td></tr>
+          <tr><th style="width:34%">Materiale</th><th>Strekker seg mye eller lite før brudd?</th><th>Seigt eller sprøtt?</th></tr>
+          <tr><td>S355</td><td class="tom"><span class="fasit" hidden>mye (ca. 28 %)</span></td><td><span class="fasit" hidden>seigt</span></td></tr>
+          <tr><td>Rustfritt 316L</td><td class="tom"><span class="fasit" hidden>mest (ca. 52 %)</span></td><td><span class="fasit" hidden>svært seigt</span></td></tr>
+          <tr><td>Gråjern</td><td class="tom"><span class="fasit" hidden>nesten ingenting</span></td><td><span class="fasit" hidden>sprøtt</span></td></tr>
         </table>
+        <p>b) Se på de tre stengene i del 3. Hvilken strekker seg mest med samme belastning?</p>
+        <div class="svar"><span class="fasit" hidden>Aluminium. Det er bare 1/3 så stivt som stål.</span></div>
+        <p>c) Hvorfor bøyer operatøren i kantpressa litt forbi 90°?</p>
+        <div class="svar"><span class="fasit" hidden>Plata fjærer litt tilbake når presset slipper (den elastiske delen). Da ender den på 90°.</span></div>
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 4 – Hardhet <small>Time 2 · 7 min</small></h3>
+        <h3>Oppgave 4 – Hardhet <small>Time 2 · 6 min</small></h3>
         <p>a) Hvilken metode passer best? Skriv Brinell, Vickers eller Rockwell C.</p>
         <table class="ot">
           <tr><th style="width:62%">Situasjon</th><th>Metode</th></tr>
@@ -797,13 +780,9 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <tr><td>3. Et settherdet lag som er bare 0,3 mm tykt</td><td class="tom"><span class="fasit" hidden>Vickers (liten kraft)</span></td></tr>
           <tr><td>4. Mange herdede stanser skal kontrolleres raskt</td><td class="tom"><span class="fasit" hidden>Rockwell C</span></td></tr>
         </table>
-        <p>b) Vickers HV30 (F = 294,2 N). Diagonalene måles til 0,41 mm og 0,39 mm. Regn ut HV = 0,1891 · F / d², der d er snittet av diagonalene.</p>
-        <div class="svar"><span class="fasit" hidden>d = (0,41 + 0,39) / 2 = 0,40 mm</span></div><div class="svar"><span class="fasit" hidden>HV = 0,1891 · 294,2 / 0,16 = <b>348 HV30</b></span></div>
-        <p>c) Rockwell C: inntrykket ble 0,080 mm dypere enn ved forlasten. HRC = 100 − dybde / 0,002. Regn ut HRC. Kan du bore i delen med et vanlig HSS-bor?</p>
-        <div class="svar"><span class="fasit" hidden>HRC = 100 − 0,080 / 0,002 = 100 − 40 = <b>60 HRC</b></span></div><div class="svar"><span class="fasit" hidden>Nei – like hardt som et HSS-bor. Bruk hardmetall, eller gløde delen først.</span></div>
-        <p>d) Et stål måles til 180 HB. Anslå strekkfastheten.</p>
-        <div class="svar"><span class="fasit" hidden>R<sub>m</sub> ≈ 3,3 · 180 ≈ <b>590 MPa</b></span></div>
-        <p>e) Hvilken spiss hører til hvilken metode?</p>
+        <p>b) En aksel måles til 60 HRC. Kan du bore i den med et vanlig HSS-bor?</p>
+        <div class="svar"><span class="fasit" hidden>Nei – den er like hard som boret. Bruk hardmetall, eller gløde delen først.</span></div>
+        <p>c) Hvilken spiss hører til hvilken metode?</p>
         <div class="oppfig" style="max-width:420px"><svg viewBox="0 0 420 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Tre spisser: kule, pyramide og kjegle">
           <rect width="420" height="130" fill="#fff"/>
           <g fill="#5f6b78"><rect x="62" y="10" width="16" height="40"/><rect x="202" y="10" width="16" height="40"/><rect x="342" y="10" width="16" height="40"/></g>
@@ -822,29 +801,43 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
 
       <div class="oppgave">
         <h3>Oppgave 5 – Charpy <small>Time 2 · 5 min</small></h3>
-        <p>Pendelen har m = 20 kg og starter i h₁ = 1,5 m. KV = m · g · (h₁ − h₂), g = 9,81 m/s². Fyll ut.</p>
+        <p>Velg S355J2 i del 6 (eller i <a data-sim="charpy">Charpy-simulatoren</a>) og slipp pendelen ved hver temperatur. Fyll ut.</p>
         <table class="ot">
-          <tr><th>Temperatur</th><th>h₂ (m)</th><th>KV (J)</th><th>Seigt eller sprøtt?</th></tr>
-          <tr><td>+20 °C</td><td>0,95</td><td class="tom"><span class="fasit" hidden>20 · 9,81 · 0,55 = <b>108 J</b></span></td><td><span class="fasit" hidden>seigt</span></td></tr>
-          <tr><td>−20 °C</td><td>1,32</td><td class="tom"><span class="fasit" hidden>20 · 9,81 · 0,18 = <b>35 J</b></span></td><td><span class="fasit" hidden>mellomting</span></td></tr>
-          <tr><td>−40 °C</td><td>1,44</td><td class="tom"><span class="fasit" hidden>20 · 9,81 · 0,06 = <b>12 J</b></span></td><td><span class="fasit" hidden>sprøtt</span></td></tr>
+          <tr><th>Temperatur</th><th>KV (ca. J)</th><th>Seigt eller sprøtt?</th></tr>
+          <tr><td>+20 °C</td><td class="tom"><span class="fasit" hidden>ca. 140 J</span></td><td><span class="fasit" hidden>seigt</span></td></tr>
+          <tr><td>−20 °C</td><td class="tom"><span class="fasit" hidden>ca. 105 J</span></td><td><span class="fasit" hidden>seigt</span></td></tr>
+          <tr><td>−50 °C</td><td class="tom"><span class="fasit" hidden>ca. 15 J</span></td><td><span class="fasit" hidden>sprøtt</span></td></tr>
         </table>
-        <p>Holder stålet kravet til J2 (27 J ved −20 °C)? Kan det brukes i en konstruksjon ute ved −40 °C?</p>
-        <div class="svar"><span class="fasit" hidden>J2 er oppfylt (35 ≥ 27 J ved −20 °C).</span></div><div class="svar"><span class="fasit" hidden>Ikke ved −40 °C – der er stålet sprøtt. Velg f.eks. S355NL (prøvd ved −50 °C).</span></div>
-        <p>Test i <a data-sim="charpy">Charpy-simulatoren</a>: Hva skjer med KV og bruddflaten når du kjøler prøven ned?</p>
-        <div class="svar"><span class="fasit" hidden>Under overgangstemperaturen faller KV kraftig, og bruddflaten blir blank (sprøtt brudd).</span></div>
+        <p>a) Holder stålet kravet til J2 (minst 27 J ved −20 °C)? Kan det brukes ute ved −50 °C?</p>
+        <div class="svar"><span class="fasit" hidden>J2 er oppfylt ved −20 °C.</span></div><div class="svar"><span class="fasit" hidden>Ikke ved −50 °C – der er stålet sprøtt. Velg f.eks. S355NL (prøvd ved −50 °C).</span></div>
+        <p>b) Hvordan ser bruddflaten ut når prøven er sprø?</p>
+        <div class="svar"><span class="fasit" hidden>Blank og glitrende. Seigt brudd er matt og grått.</span></div>
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 6 – Sjekk sertifikatet <small>Ekstra · 5 min</small></h3>
-        <p>3.1-sertifikat, S355J2, 12 mm plate: R<sub>eH</sub> = 371 MPa, R<sub>m</sub> = 528 MPa, A = 24 %, KV ved −20 °C: 41, 17 og 35 J, CEV = 0,41. Bruk kravtabellen i del 8. Kan plata brukes?</p>
-        <div class="svar"><span class="fasit" hidden>R<sub>eH</sub>, R<sub>m</sub>, A og CEV er OK.</span></div><div class="svar"><span class="fasit" hidden>Snittet av KV er (41 + 17 + 35) / 3 = 31 J, som er over 27 J. Men én verdi (17 J) er under 19 J (70 % av 27 J).</span></div><div class="svar"><span class="fasit" hidden><b>Ikke godkjent</b> – kontakt leverandøren.</span></div>
+        <h3>Oppgave 6 – Sjekk sertifikatet <small>Time 2 · 4 min</small></h3>
+        <p>Velg sertifikat B i del 6 og trykk «Sjekk mot kravene». Hvorfor kan plata ikke brukes?</p>
+        <div class="svar"><span class="fasit" hidden>Slagseigheten er for lav: snittet er 24 J (krav 27 J), og én prøve er bare 17 J (under 19 J).</span></div>
+        <div class="svar"><span class="fasit" hidden>Plata er <b>ikke godkjent</b> – kontakt leverandøren.</span></div>
+      </div>
+
+      <div class="oppgave" style="border-style:dashed">
+        <h3>Oppgave 7 – Ekstra: regn selv <small>Ekstra / hjemme · 15 min</small></h3>
+        <p>For deg som vil regne. Formler: σ = F / A₀ · A₀ = π·d²/4 · A = (L<sub>u</sub> − L₀) / L₀ · 100 % · KV = m · g · (h₁ − h₂)</p>
+        <p>a) En rundstang Ø12 mm i S355 trekkes med 30 kN. Regn ut A₀ og σ. Begynner stangen å flyte (355 MPa)?</p>
+        <div class="svar"><span class="fasit" hidden>A₀ = π · 12² / 4 = 113,1 mm². σ = 30 000 / 113,1 = <b>265 MPa</b> → flyter ikke.</span></div>
+        <p>b) Prøvestav: d₀ = 10 mm, L₀ = 50 mm. Flyt ved 29,5 kN, største kraft 44,0 kN, L<sub>u</sub> = 61,0 mm. Regn ut A₀, flytegrense, R<sub>m</sub> og A.</p>
+        <div class="svar"><span class="fasit" hidden>A₀ = 78,5 mm². Flyt: 29 500 / 78,5 = <b>376 MPa</b>. R<sub>m</sub> = 44 000 / 78,5 = <b>560 MPa</b>.</span></div><div class="svar"><span class="fasit" hidden>A = (61 − 50) / 50 · 100 = <b>22 %</b></span></div>
+        <p>c) Vickers HV30 (F = 294,2 N), diagonalene 0,41 og 0,39 mm. HV = 0,1891 · F / d², d = snittet.</p>
+        <div class="svar"><span class="fasit" hidden>d = 0,40 mm. HV = 0,1891 · 294,2 / 0,16 = <b>348 HV30</b></span></div>
+        <p>d) Charpy: m = 20 kg, h₁ = 1,5 m, h₂ = 1,32 m, g = 9,81 m/s². Regn ut KV.</p>
+        <div class="svar"><span class="fasit" hidden>KV = 20 · 9,81 · 0,18 = <b>35 J</b></span></div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 3 min</small></h3>
-        <p>1. Hva er forskjellen på kraft og spenning?</p><div class="svar"><span class="fasit" hidden>Kraft er i N. Spenning er kraft per areal (N/mm² = MPa).</span></div>
-        <p>2. Hva betyr R<sub>p0,2</sub>?</p><div class="svar"><span class="fasit" hidden>Spenningen som gir 0,2 % varig forlengelse.</span></div>
+        <p>1. Hva er forskjellen på kraft og spenning?</p><div class="svar"><span class="fasit" hidden>Kraft er i N. Spenning er kraft per mm² (MPa).</span></div>
+        <p>2. Hva er forskjellen på stiv og sterk?</p><div class="svar"><span class="fasit" hidden>Stiv = gir lite etter. Sterk = tåler mye før det bøyer seg varig. Herdet og mykt stål er like stive.</span></div>
         <p>3. Hvilken hardhetsmåling er raskest for herdet stål, og hvorfor?</p><div class="svar"><span class="fasit" hidden>Rockwell C – tallet leses rett av, ingen måling i mikroskop.</span></div>
       </div>
     </div>
@@ -954,8 +947,8 @@ function drawSp(){
   $("spBar").style.width = Math.min(100, s/700*100) + "%"; $("spBar").style.background = col;
   const m = {ok:[`${fmt(s,0)} MPa: godt under flytegrensen. Stangen strekker seg litt, men går tilbake (elastisk).`,"ok"],
     hoy:[`${fmt(s,0)} MPa: fortsatt elastisk, men over 60 % av flytegrensen. Lite sikkerhetsmargin.`,"warn"],
-    flyt:[`${fmt(s,0)} MPa: over R_eH = 355 MPa. Atomlagene glir – stangen blir varig forlenget.`,"warn"],
-    brudd:[`${fmt(s,0)} MPa: over strekkfastheten R_m ≈ 510 MPa. Stangen ryker!`,"bad"]}[st];
+    flyt:[`${fmt(s,0)} MPa: over flytegrensen 355 MPa. Atomlagene glir – stangen blir varig lengre.`,"warn"],
+    brudd:[`${fmt(s,0)} MPa: over strekkfastheten ca. 510 MPa. Stangen ryker!`,"bad"]}[st];
   setStatus("spTxt", m[0].replace("R_eH","ReH").replace("R_m","Rm"), m[1]);
 }
 $("spF").addEventListener("input", drawSp); $("spD").addEventListener("input", drawSp); drawSp();
@@ -1054,21 +1047,21 @@ function renderTest(){
   ssDot.setAttribute("cx", SA.X(e)); ssDot.setAttribute("cy", SA.Y(se));
   ssMarks.replaceChildren();
   const mk = (x,y,t,dy) => { el("circle",{cx:SA.X(x), cy:SA.Y(y), r:5, style:`fill:var(--panel);stroke:var(${m.col});stroke-width:3`}, ssMarks); el("text",{x:SA.X(x)+8, y:SA.Y(y)+(dy||-8), "font-size":13, "font-weight":700, style:"fill:var(--ink)"}, ssMarks, t); };
-  if (m.k==="s355" && e>0.3) mk(m.ReH/m.E*100, m.ReH, `ReH ≈ ${m.ReH} MPa`, 20);
-  if (m.rp && e>0.6) mk(0.2+m.rp/m.E*100, m.rp, `Rp0,2 ≈ ${m.rp} MPa`, 20);
-  if (m.eu && e>m.eu) mk(m.eu, m.Rm, `Rm ≈ ${m.Rm} MPa`);
+  if (m.k==="s355" && e>0.3) mk(m.ReH/m.E*100, m.ReH, `flyter ≈ ${m.ReH} MPa`, 20);
+  if (m.rp && e>0.6) mk(0.2+m.rp/m.E*100, m.rp, `flyter ≈ ${m.rp} MPa`, 20);
+  if (m.eu && e>m.eu) mk(m.eu, m.Rm, `sterkest ≈ ${m.Rm} MPa`);
   if (m.k==="gj" && broken) mk(m.ef, m.Rm*0.999, `Rm ≈ ${m.Rm} MPa – brudd`);
   if (broken && m.k!=="gj") mk(m.ef, sigma(m,m.ef*0.999), `brudd, A ≈ ${m.A} %`, 20);
   $("rF").textContent = fmt(s*78.54/1000,1) + " kN"; $("rL").textContent = fmt(e/100*50, e<1?3:1) + " mm";
   $("rS").textContent = fmt(s,0) + " MPa"; $("rE").textContent = fmt(e, e<1?2:1) + " %";
   let msg;
-  if (broken) msg = [m.k==="gj" ? `Brudd uten forvarsel! A ≈ ${fmtT(m.A,1)} %. Sprøtt – nesten ingen varig forlengelse.` : `5 · Brudd. Bitene settes sammen og måles (del 5): A ≈ ${m.A} %.`, m.k==="gj"?"bad":"ok"];
+  if (broken) msg = [m.k==="gj" ? `Brudd uten forvarsel! A ≈ ${fmtT(m.A,1)} %. Sprøtt – nesten ingen varig forlengelse.` : `4 · Brudd. Bitene settes sammen og måles (del 4): staven ble ca. ${m.A} % lengre.`, m.k==="gj"?"bad":"ok"];
   else if (m.k==="gj") msg = ["Gråjern: kurven går nesten rett opp. Grafittflakene (leksjon 2) virker som små sprekker.","warn"];
-  else if (e < (m.ReH||0.7*m.Rp)/m.E*100) msg = ["1 · Elastisk: staven strekker seg som en fjær. Slipper vi, går den tilbake. Linja er så bratt at den ser loddrett ut (se del 3).","info"];
-  else if (m.k==="s355" && e<m.epl) msg = ["2 · Flytegrensen ReH er nådd. Atomlagene begynner å gli (leksjon 1). Staven forlenges uten at kraften øker.","warn"];
-  else if (m.k!=="s355" && e<0.8) msg = ["2 · Ingen tydelig knekk – kurven bøyer mykt over. Derfor bruker vi Rp0,2 (del 4).","warn"];
-  else if (e<m.eu) msg = ["3 · Fastning: jo mer staven strekkes, jo mer kraft trengs. Atomlagene floker seg (kaldherding, leksjon 1). Staven blir jevnt lengre og tynnere.","warn"];
-  else msg = ["4 · Innsnevring: Rm er nådd. Staven blir tynn på ett sted – en hals – og kraften faller.","bad"];
+  else if (e < (m.ReH||0.7*m.Rp)/m.E*100) msg = ["1 · Strekker seg som en fjær (elastisk). Slipper vi, går den tilbake.","info"];
+  else if (m.k==="s355" && e<m.epl) msg = ["2 · Flyter: atomlagene begynner å gli (leksjon 1). Staven blir varig lengre.","warn"];
+  else if (m.k!=="s355" && e<0.8) msg = ["2 · Ingen tydelig knekk – kurven bøyer mykt over. Stålet begynner å flyte litt etter litt.","warn"];
+  else if (e<m.eu) msg = ["2 · Flyter videre: jo mer staven strekkes, jo mer kraft trengs. Staven blir jevnt lengre og tynnere.","warn"];
+  else msg = ["3 · Sterkest (Rm) er passert. Staven blir tynn på ett sted – en hals – og kraften faller.","bad"];
   setStatus("ssTxt", msg[0], msg[1]);
 }
 $("btnTest").onclick = () => { const id=++tAnim; const m=MAT[mi]; const dur = m.k==="gj" ? 3500 : 9000; if (tU>=1) tU=0;
@@ -1078,16 +1071,6 @@ $("ssU").addEventListener("input", e => { tAnim++; tU = +e.target.value/1000; re
 renderTest();
 
 /* ---------- Del 3: E-modul ---------- */
-const eg = $("eGraf");
-const EA = axes(eg, {x0:62, y0:300, x1:500, y1:30, xmax:0.8, ymax:800, xt:[0,0.2,0.4,0.6,0.8], yt:[0,200,400,600,800], xl:"tøyning ε (%) →", yl:"↑ σ (MPa)"});
-const ELIN = [{n:"S355",E:210000,lim:355,col:"--steel-dark"},{n:"42CrMo4",E:210000,lim:750,col:"--blue",dash:true},{n:"Titan",E:110000,lim:830,col:"--purple"},{n:"Aluminium",E:70000,lim:260,col:"--green"}];
-ELIN.forEach(l => { const ex = l.lim/l.E*100; el("line",{x1:EA.X(0), y1:EA.Y(0), x2:EA.X(ex), y2:EA.Y(l.lim), style:`stroke:var(${l.col});stroke-width:${l.dash?3:4};${l.dash?"stroke-dasharray:9 6":""}`}, eg);
-  el("circle",{cx:EA.X(ex), cy:EA.Y(l.lim), r:6, style:`fill:var(--panel);stroke:var(${l.col});stroke-width:3`}, eg);
-  el("text",{x:EA.X(ex)+(l.n==="Titan"?-10:9), y:EA.Y(l.lim)+(l.n==="S355"?-6:l.n==="Titan"?18:5), "text-anchor":(l.n==="Titan"?"end":"start"), "font-size":12, "font-weight":700, style:`fill:var(${l.col})`}, eg, `${l.n} (${l.lim})`); });
-el("text",{x:EA.X(0.01), y:EA.Y(720), "font-size":11, style:"fill:var(--muted)"}, eg, "stål: samme helning");
- el("text",{x:EA.X(0.01), y:EA.Y(680), "font-size":11, style:"fill:var(--muted)"}, eg, "= samme stivhet");
-const eLine = el("line",{x1:EA.X(0), x2:EA.X(0.8), "stroke-dasharray":"5 5", style:"stroke:var(--orange);stroke-width:2"}, eg);
-const eDots = ELIN.map(l => el("circle",{r:5, style:`fill:var(${l.col})`}, eg));
 const eb = $("eBars"); sgrad(eb,"ebg"); arrowDefs(eb,"ebA",css("--red"));
 el("rect",{x:20, y:10, width:16, height:210, style:"fill:var(--steel-soft);stroke:var(--steel-dark)"}, eb);
 for (let y=14;y<220;y+=12) el("line",{x1:20, y1:y+8, x2:36, y2:y, style:"stroke:var(--steel-dark)"}, eb);
@@ -1101,57 +1084,11 @@ const bEls = BARS.map(b => { const r = el("rect",{x:36, y:b.y, width:300, height
   return {r, ext, ar, t}; });
 el("text",{x:336, y:226, "text-anchor":"middle", "font-size":11, style:"fill:var(--muted)"}, eb, "start (1000 mm)");
 function drawE(){ const s = +$("eS").value; $("eSv").textContent = s + " MPa";
-  eLine.setAttribute("y1", EA.Y(s)); eLine.setAttribute("y2", EA.Y(s));
-  ELIN.forEach((l,i) => { eDots[i].setAttribute("cx", EA.X(s/l.E*100)); eDots[i].setAttribute("cy", EA.Y(s)); eDots[i].style.opacity = s<=l.lim ? 1 : 0; });
   BARS.forEach((b,i) => { const dl = s/b.E*1000, px = dl*45; const o = bEls[i];
     o.ext.setAttribute("width", px); o.ar.setAttribute("x1", 340+px); o.ar.setAttribute("x2", 384+px);
     o.t.setAttribute("x", 392+px); o.t.textContent = `+${fmt(dl,2)} mm`; }); }
 $("eS").addEventListener("input", drawE); drawE();
 
-/* ---------- Del 4: Rp0,2 ---------- */
-const RE = 70000, RP = 260, RN = 18;
-const roE = s => (s/RE + 0.002*Math.pow(s/RP, RN))*100;
-const rg = $("rpGraf");
-const RA = axes(rg, {x0:62, y0:310, x1:520, y1:30, xmax:1.6, ymax:320, xt:[0,0.2,0.4,0.6,0.8,1,1.2,1.4,1.6], yt:[0,50,100,150,200,250,300], xl:"tøyning ε (%) →", yl:"↑ σ (MPa)"});
-let pts = []; for (let s=0; s<=290; s+=1){ const e = roE(s); if (e>1.6) break; pts.push(`${RA.X(e).toFixed(1)},${RA.Y(s).toFixed(1)}`); }
-el("polyline",{points:pts.join(" "), fill:"none", style:"stroke:var(--green);stroke-width:4;stroke-linejoin:round"}, rg);
-el("text",{x:RA.X(1.25), y:RA.Y(298), "font-size":13, "font-weight":700, style:"fill:var(--green)"}, rg, "Aluminium 6082");
-const rpLoad = el("polyline",{fill:"none", style:"stroke:var(--orange);stroke-width:6;opacity:.45;stroke-linejoin:round"}, rg);
-const rpUn = el("line",{style:"stroke:var(--blue);stroke-width:3;stroke-dasharray:7 5"}, rg);
-const rpRes = el("g",{}, rg), rpOff = el("g",{}, rg);
-const rpDot = el("circle",{r:7, style:"fill:var(--red);stroke:var(--panel);stroke-width:2"}, rg);
-let rpAnim = 0;
-function drawRp(unloadFrac){
-  const s = +$("rpS").value; $("rpSv").textContent = s + " MPa";
-  const et = roE(s), ee = s/RE*100, ep = et - ee;
-  const p2 = []; for (let x=0; x<=s; x+=2) p2.push(`${RA.X(roE(x)).toFixed(1)},${RA.Y(x).toFixed(1)}`); p2.push(`${RA.X(et)},${RA.Y(s)}`);
-  rpLoad.setAttribute("points", p2.join(" "));
-  rpRes.replaceChildren();
-  const f = unloadFrac||0, sNow = s*(1-f), eNow = et - (s-sNow)/RE*100;
-  rpDot.setAttribute("cx", RA.X(eNow)); rpDot.setAttribute("cy", RA.Y(sNow));
-  if (f>0){ rpUn.setAttribute("x1",RA.X(et)); rpUn.setAttribute("y1",RA.Y(s)); rpUn.setAttribute("x2",RA.X(eNow)); rpUn.setAttribute("y2",RA.Y(sNow)); rpUn.style.opacity=1; }
-  else rpUn.style.opacity = 0;
-  if (f>=1 && ep>0.02){ el("line",{x1:RA.X(0), y1:RA.Y(0)+14, x2:RA.X(ep), y2:RA.Y(0)+14, style:"stroke:var(--red);stroke-width:5"}, rpRes);
-    el("text",{x:RA.X(ep)+6, y:RA.Y(0)-26, "font-size":12, "font-weight":700, style:"fill:var(--red)"}, rpRes, `varig ${fmt(ep,2)} %`); }
-  $("rpT").textContent = fmt(et,2) + " %"; $("rpE").textContent = f>=1 ? fmt(ee,2)+" %" : "–"; $("rpP").textContent = f>=1 ? fmt(ep,2)+" %" : "–";
-  if (f>=1){
-    if (ep < 0.02) setStatus("rpTxt","Nesten alt fjæret tilbake – du var i det elastiske området.","ok");
-    else if (ep < 0.2) setStatus("rpTxt",`Litt varig forlengelse (${fmt(ep,2)} %). Under 0,2 % – vi sier at materialet ikke har «flytt» ennå.`,"warn");
-    else setStatus("rpTxt",`${fmt(ep,2)} % varig forlengelse. Over 0,2 % – du har passert Rp0,2.`,"bad");
-  } else setStatus("rpTxt","Dra i glideren for å laste opp. Trykk så «Slipp».","info");
-}
-$("rpS").addEventListener("input", () => { rpAnim++; drawRp(0); });
-$("btnUnload").onclick = () => { const id=++rpAnim, t0=performance.now(); (function st(now){ if(id!==rpAnim) return; const f=Math.min(1,(now-t0)/1200); drawRp(f); if(f<1) requestAnimationFrame(st); })(t0); };
-$("btnRp").onclick = () => { rpOff.replaceChildren();
-  const ln = el("line",{x1:RA.X(0.2), y1:RA.Y(0), x2:RA.X(0.2+310/RE*100), y2:RA.Y(310), style:"stroke:var(--purple);stroke-width:3"}, rpOff);
-  const L = Math.hypot(RA.X(0.2+310/RE*100)-RA.X(0.2), RA.Y(0)-RA.Y(310)); ln.style.strokeDasharray=L; ln.style.strokeDashoffset=L; ln.getBoundingClientRect(); ln.style.transition="stroke-dashoffset 1.2s"; ln.style.strokeDashoffset=0;
-  el("text",{x:RA.X(0.2)-4, y:RA.Y(0)-8, "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--purple)"}, rpOff, "0,2 %");
-  setTimeout(() => { el("circle",{cx:RA.X(roE(RP)), cy:RA.Y(RP), r:8, style:"fill:var(--purple)"}, rpOff);
-    el("line",{x1:RA.X(0), y1:RA.Y(RP), x2:RA.X(roE(RP)), y2:RA.Y(RP), "stroke-dasharray":"4 4", style:"stroke:var(--purple);stroke-width:1.5"}, rpOff);
-    el("text",{x:RA.X(roE(RP))+12, y:RA.Y(RP)+22, "font-size":15, "font-weight":800, style:"fill:var(--purple)"}, rpOff, `Rp0,2 = ${RP} MPa`);
-    setStatus("rpTxt","Tegn en linje fra 0,2 % parallelt med den elastiske linja. Der den treffer kurven, er Rp0,2 – her 260 MPa.","ok"); }, 1200); };
-$("btnRpR").onclick = () => { rpAnim++; rpOff.replaceChildren(); $("rpS").value = 200; drawRp(0); };
-drawRp(0);
 // kantpresse
 const bd = $("bend"); sgrad(bd,"bdg");
 const BC = {x:260, y:170}, BL = 170;
@@ -1181,7 +1118,7 @@ $("bGo").onclick = () => { const id=++bAnim, t0=performance.now(), spring = bMat
     else { a=45-vis/2; yy=238; py=40; }
     drawBend(a, py, yy);
     if (t>=3.4){ angTxt.textContent = `${fmt(90+spring,1)}°`; el("text",{x:BC.x, y:156, "text-anchor":"middle", "font-size":13, "font-weight":600, style:"fill:var(--muted)"}, plate, "stilt inn: 90°");
-      setStatus("bTxt", bMat ? `Aluminium fjærer ca. ${spring}° tilbake. Lav E-modul og høy Rp0,2 gir stor elastisk del som «spretter» tilbake.` : `Stål fjærer ca. ${spring}° tilbake. Bare den elastiske delen går tilbake – akkurat som avlastingen i diagrammet.`, bMat?"warn":"ok"); return; }
+      setStatus("bTxt", bMat ? `Aluminium fjærer ca. ${spring}° tilbake. Det er mindre stivt, så en større elastisk del «spretter» tilbake.` : `Stål fjærer ca. ${spring}° tilbake. Bare den elastiske delen går tilbake.`, bMat?"warn":"ok"); return; }
     requestAnimationFrame(st); })(t0); };
 drawBend(0,60,194);
 
@@ -1228,7 +1165,7 @@ function drawAZ(f){
   const Su = 78.54*(1-m.Z/100);
   el("text",{x:cx, y:yA+R+18, "text-anchor":"middle", "font-size":12, style:"fill:var(--ink)"}, az, `Su = ${fmt(Su,1)} mm²`);
   el("text",{x:cx, y:22, "text-anchor":"middle", "font-size":12, "font-weight":700, style:"fill:var(--muted)"}, az, "tverrsnitt i halsen");
-  $("azSteps").innerHTML = f>=1 ? `A = (Lu − L₀) / L₀ · 100 %<br>= (${fmt(Lu,1)} − 50) / 50 · 100 %<br><span class="res">A ≈ ${fmtT(m.A,1)} %</span><br><br>Z = (A₀ − Su) / A₀ · 100 %<br>= (78,5 − ${fmt(Su,1)}) / 78,5 · 100 %<br><span class="res">Z ≈ ${m.Z} %</span>`
+  $("azSteps").innerHTML = f>=1 ? `A = (Lu − L₀) / L₀ · 100 %<br>= (${fmt(Lu,1)} − 50) / 50 · 100 %<br><span class="res">A ≈ ${fmtT(m.A,1)} %</span>`
     : "Trykk på knappen for å sette bitene sammen og måle.";
 }
 $("azGo").onclick = () => { const id=++azAnim, t0=performance.now(); (function st(now){ if(id!==azAnim) return; const f=Math.min(1,(now-t0)/1000); drawAZ(f); if(f<1) requestAnimationFrame(st); })(t0); };
