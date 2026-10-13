@@ -1,6 +1,6 @@
 # Leksjoner
 
-Interaktive HTML-leksjoner for Industriteknologi (Vg1 og Vg2). Hver leksjon er én frittstående HTML-fil for to skoletimer.
+Interaktive HTML-leksjoner for Teknologi- og industrifag: Vg1 TIF og Vg2 Industriteknologi. Hver leksjon er én frittstående HTML-fil for to skoletimer.
 
 ## Struktur
 
