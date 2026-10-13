@@ -123,9 +123,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -637,22 +640,21 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         <div class="minis" id="minis"></div>
         <table class="ot">
           <tr><th style="width:3rem"></th><th style="width:7rem">Riktig/feil</th><th>Hvorfor?</th></tr>
-          <tr><td>a)</td><td class="tom"></td><td></td></tr>
-          <tr><td>b)</td><td class="tom"></td><td></td></tr>
-          <tr><td>c)</td><td class="tom"></td><td></td></tr>
-          <tr><td>d)</td><td class="tom"></td><td></td></tr>
+          <tr><td>a)</td><td class="tom"><span class="fasit" hidden><b>Riktig</b></span></td><td><span class="fasit" hidden>Voltmeter parallelt over lampa.</span></td></tr>
+          <tr><td>b)</td><td class="tom"><span class="fasit" hidden><b>Feil</b></span></td><td><span class="fasit" hidden>Amperemeter parallelt over lampa kortslutter; sikringen i måleren ryker.</span></td></tr>
+          <tr><td>c)</td><td class="tom"><span class="fasit" hidden><b>Feil</b></span></td><td><span class="fasit" hidden>Motstand skal måles spenningsløst og frakoblet; her er bryteren på.</span></td></tr>
+          <tr><td>d)</td><td class="tom"><span class="fasit" hidden><b>Riktig</b></span></td><td><span class="fasit" hidden>Kretsen er brutt og amperemeteret står i serie.</span></td></tr>
         </table>
         <p>b) Fyll ut. Innstillinger: <b>V⎓ &nbsp; V~ &nbsp; Ω &nbsp; •))) &nbsp; mA &nbsp; A⎓ &nbsp; tang A~</b>. Kontakter: <b>VΩ &nbsp; mA &nbsp; 10A</b>.</p>
         <table class="ot">
           <tr><th>Du skal måle …</th><th style="width:7rem">Innstilling</th><th style="width:7rem">Rød ledning i</th><th style="width:9rem">Parallelt / i serie / spenningsløst / tang</th></tr>
-          <tr><td>1. Spenningen på et drillbatteri (18 V)</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>2. Strømmen til en 24 V-sensor (ca. 10 mA)</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>3. Om en sikring er hel</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>4. Spenningen i en stikkontakt (fagperson måler)</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>5. Strømmen til en 400 V-motor</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>1. Spenningen på et drillbatteri (18 V)</td><td class="tom"><span class="fasit" hidden>V⎓</span></td><td><span class="fasit" hidden>VΩ</span></td><td><span class="fasit" hidden>parallelt</span></td></tr>
+          <tr><td>2. Strømmen til en 24 V-sensor (ca. 10 mA)</td><td class="tom"><span class="fasit" hidden>mA</span></td><td><span class="fasit" hidden>mA</span></td><td><span class="fasit" hidden>i serie</span></td></tr>
+          <tr><td>3. Om en sikring er hel</td><td class="tom"><span class="fasit" hidden>•))) eller Ω</span></td><td><span class="fasit" hidden>VΩ</span></td><td><span class="fasit" hidden>spenningsløst</span></td></tr>
+          <tr><td>4. Spenningen i en stikkontakt (fagperson måler)</td><td class="tom"><span class="fasit" hidden>V~</span></td><td><span class="fasit" hidden>VΩ</span></td><td><span class="fasit" hidden>parallelt</span></td></tr>
+          <tr><td>5. Strømmen til en 400 V-motor</td><td class="tom"><span class="fasit" hidden>tang A~</span></td><td><span class="fasit" hidden>(ingen)</span></td><td><span class="fasit" hidden>tang rundt én fase</span></td></tr>
         </table>
-        <p>c) Du måler over en sikring på Ω, og displayet viser <b>OL</b>. Hva betyr det?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) <b>a) Riktig</b> – voltmeter parallelt over lampa. <b>b) Feil</b> – amperemeter parallelt over lampa kortslutter; sikringen i måleren ryker. <b>c) Feil</b> – motstand skal måles spenningsløst og frakoblet; her er bryteren på. <b>d) Riktig</b> – kretsen er brutt og amperemeteret står i serie. b) 1: V⎓ – VΩ – parallelt. 2: mA – mA – i serie. 3: •))) eller Ω – VΩ – spenningsløst. 4: V~ – VΩ – parallelt. 5: tang A~ – (ingen) – tang rundt én fase. c) Uendelig stor motstand = <b>brudd</b>. Sikringen er gått.</div>
+        <p>c) Du måler over en sikring på Ω, og displayet viser <b>OL</b>. Hva betyr det?</p><div class="svar"><span class="fasit" hidden>Uendelig stor motstand = <b>brudd</b>. Sikringen er gått.</span></div>
       </div>
 
       <div class="oppgave">
@@ -661,15 +663,14 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         <div class="ofig" style="max-width:620px" id="fig5"></div>
         <table class="ot c">
           <tr><th>Tilfelle</th><th>TP1</th><th>TP2</th><th>TP3</th><th>TP4</th><th>TP5</th><th>TP6</th><th style="width:34%">Feilen er …</th></tr>
-          <tr><td>A</td><td>24 V</td><td>24 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td class="tom"></td></tr>
-          <tr><td>B</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>0 V</td><td>0 V</td><td class="tom"></td></tr>
-          <tr><td>C</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>0 V</td><td class="tom"></td></tr>
-          <tr><td>D</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td class="tom"></td></tr>
-          <tr><td>E</td><td>24 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td class="tom"></td></tr>
+          <tr><td>A</td><td>24 V</td><td>24 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td class="tom"><span class="fasit" hidden><b>S1</b> – 24 V før bryteren, 0 V etter</span></td></tr>
+          <tr><td>B</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>0 V</td><td>0 V</td><td class="tom"><span class="fasit" hidden><b>Kabel W1</b> mellom X1 og lampa</span></td></tr>
+          <tr><td>C</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>0 V</td><td class="tom"><span class="fasit" hidden><b>Lampa H1</b> er defekt – den har 24 V over seg, men lyser ikke</span></td></tr>
+          <tr><td>D</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td class="tom"><span class="fasit" hidden><b>Brudd i 0 V-lederen</b> fra lampa (TP6 – 0 V)</span></td></tr>
+          <tr><td>E</td><td>24 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td class="tom"><span class="fasit" hidden><b>Sikringen F1</b> er gått</span></td></tr>
         </table>
-        <p>b) Hvilket punkt måler du først med halveringsmetoden? Hvorfor?</p><div class="svar"></div>
-        <p>c) I tilfelle E: Hvorfor skal du finne årsaken før du bytter sikringen?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> A) <b>S1</b> – 24 V før bryteren, 0 V etter. B) <b>Kabel W1</b> mellom X1 og lampa. C) <b>Lampa H1</b> er defekt – den har 24 V over seg, men lyser ikke. D) <b>Brudd i 0 V-lederen</b> fra lampa (TP6 – 0 V). E) <b>Sikringen F1</b> er gått. b) <b>TP3 eller TP4</b> – i midten. Én måling forteller hvilken halvdel feilen er i. c) Sikringen gikk fordi strømmen ble for stor (f.eks. kortslutning). Byttes den uten å fjerne feilen, går den igjen – eller det oppstår varme og brann.</div>
+        <p>b) Hvilket punkt måler du først med halveringsmetoden? Hvorfor?</p><div class="svar"><span class="fasit" hidden><b>TP3 eller TP4</b> – i midten. Én måling forteller hvilken halvdel feilen er i.</span></div>
+        <p>c) I tilfelle E: Hvorfor skal du finne årsaken før du bytter sikringen?</p><div class="svar"><span class="fasit" hidden>Sikringen gikk fordi strømmen ble for stor (f.eks. kortslutning). Byttes den uten å fjerne feilen, går den igjen – eller det oppstår varme og brann.</span></div>
       </div>
 
       <div class="oppgave">
@@ -677,15 +678,14 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         <p>a) Hvilken verdi forventer du? Skriv «–» hvis målingen ikke finnes.</p>
         <table class="ot c">
           <tr><th>Måling</th><th>3-fas TN 230/400 V</th><th>2-fas IT 230 V</th></tr>
-          <tr><td>L1–L2</td><td class="tom"></td><td></td></tr>
-          <tr><td>L1–N</td><td class="tom"></td><td></td></tr>
-          <tr><td>L1–PE</td><td class="tom"></td><td></td></tr>
-          <tr><td>N–PE</td><td class="tom"></td><td></td></tr>
+          <tr><td>L1–L2</td><td class="tom"><span class="fasit" hidden>400 V</span></td><td><span class="fasit" hidden>230 V</span></td></tr>
+          <tr><td>L1–N</td><td class="tom"><span class="fasit" hidden>230 V</span></td><td><span class="fasit" hidden>– (ingen N)</span></td></tr>
+          <tr><td>L1–PE</td><td class="tom"><span class="fasit" hidden>230 V</span></td><td><span class="fasit" hidden>ca. 133 V (flytende)</span></td></tr>
+          <tr><td>N–PE</td><td class="tom"><span class="fasit" hidden>0–2 V</span></td><td><span class="fasit" hidden>– (ingen N)</span></td></tr>
         </table>
-        <p>b) Hvorfor blir det 400 V og ikke 460 V mellom to faser i TN-nett?</p><div class="svar"></div>
-        <p>c) Multimeteret står på <b>V⎓</b> når det måles i en stikkontakt. Hva viser det?</p><div class="svar"></div>
-        <p>d) Hvorfor har en kraftlinje tre ledere? Hvor kommer de tre fasene fra?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) TN: 400 V – 230 V – 230 V – 0–2 V. IT: 230 V – (ingen N) – ca. 133 V (flytende) – (ingen N). b) Fasene ligger 120° fra hverandre. Forskjellen er √3 · 230 ≈ 400 V. c) Ca. 0 V eller tall som hopper – feil innstilling. d) Én leder per fase. Generatoren i kraftverket har tre spoler rundt en roterende magnet. Når magneten passerer en spole, blir det spenning i den – spolene sitter 120° fra hverandre, så fasene kommer etter hverandre.</div>
+        <p>b) Hvorfor blir det 400 V og ikke 460 V mellom to faser i TN-nett?</p><div class="svar"><span class="fasit" hidden>Fasene ligger 120° fra hverandre. Forskjellen er √3 · 230 ≈ 400 V.</span></div>
+        <p>c) Multimeteret står på <b>V⎓</b> når det måles i en stikkontakt. Hva viser det?</p><div class="svar"><span class="fasit" hidden>Ca. 0 V eller tall som hopper – feil innstilling.</span></div>
+        <p>d) Hvorfor har en kraftlinje tre ledere? Hvor kommer de tre fasene fra?</p><div class="svar"><span class="fasit" hidden>Én leder per fase. Generatoren i kraftverket har tre spoler rundt en roterende magnet. Når magneten passerer en spole, blir det spenning i den – spolene sitter 120° fra hverandre, så fasene kommer etter hverandre.</span></div>
       </div>
 
       <div class="oppgave">
@@ -694,11 +694,10 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         <div class="ofig" style="max-width:560px" id="figTang"></div>
         <table class="ot c">
           <tr><th>Tang</th><th>a) rundt L1</th><th>b) rundt L1, L2 og L3</th><th>c) rundt hele kabelen</th></tr>
-          <tr><td>Viser</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>Viser</td><td class="tom"><span class="fasit" hidden><b>10 A</b></span></td><td><span class="fasit" hidden><b>0 A</b> – strømmene er forskjøvet 120° og opphever hverandre</span></td><td><span class="fasit" hidden><b>0 A</b></span></td></tr>
         </table>
-        <p>d) Hvorfor måler vi ikke strømmen på 400 V med multimeteret i serie?</p><div class="svar"></div>
-        <p>e) På en 1-fas varmeovn viser tanga rundt L + N <b>0,5 A</b>. Hva betyr det? Ville en jordfeilbryter på 30 mA løst ut?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) <b>10 A</b>. b) <b>0 A</b> – strømmene er forskjøvet 120° og opphever hverandre. c) <b>0 A</b>. d) Kretsen må brytes under spenning, det kan gi lysbue, og måleren kan kortslutte fasene. Tanga måler uten å bryte. e) 0,5 A lekker til jord (jordfeil). 0,5 A = 500 mA &gt; 30 mA, så <b>ja</b>, jordfeilbryteren løser ut.</div>
+        <p>d) Hvorfor måler vi ikke strømmen på 400 V med multimeteret i serie?</p><div class="svar"><span class="fasit" hidden>Kretsen må brytes under spenning, det kan gi lysbue, og måleren kan kortslutte fasene. Tanga måler uten å bryte.</span></div>
+        <p>e) På en 1-fas varmeovn viser tanga rundt L + N <b>0,5 A</b>. Hva betyr det? Ville en jordfeilbryter på 30 mA løst ut?</p><div class="svar"><span class="fasit" hidden>0,5 A lekker til jord (jordfeil). 0,5 A = 500 mA &gt; 30 mA, så <b>ja</b>, jordfeilbryteren løser ut.</span></div>
       </div>
 
       <div class="oppgave">
@@ -708,23 +707,21 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <tr><th>U1–U2</th><th>V1–V2</th><th>W1–W2</th><th>U1–V1</th><th>U1–PE</th></tr>
           <tr><td>2,40 Ω</td><td>1,62 Ω</td><td>2,39 Ω</td><td>OL</td><td>OL</td></tr>
         </table>
-        <p>Er motoren i orden? Hvilken vikling er det eventuelt feil på?</p><div class="svar"></div>
+        <p>Er motoren i orden? Hvilken vikling er det eventuelt feil på?</p><div class="svar"><span class="fasit" hidden><b>Ikke i orden.</b> V-viklingen (V1–V2) har 1,62 Ω mot ca. 2,40 Ω på de andre – kortslutning mellom vindinger. OL mellom U1–V1 og mot PE er riktig (ingen forbindelse).</span></div>
         <p>b) Sett stegene for kontroll av spenningsløshet i riktig rekkefølge (1–4):</p>
         <table class="ot" style="width:auto">
-          <tr><td style="width:3rem"></td><td>Mål mellom alle faser og mellom hver fase og jord</td></tr>
-          <tr><td></td><td>Test prøveren på en kjent spenningskilde</td></tr>
-          <tr><td></td><td>Koble fra, lås og merk</td></tr>
-          <tr><td></td><td>Test prøveren på kjent kilde igjen</td></tr>
+          <tr><td style="width:3rem"><span class="fasit" hidden><b>3</b></span></td><td>Mål mellom alle faser og mellom hver fase og jord</td></tr>
+          <tr><td><span class="fasit" hidden><b>2</b></span></td><td>Test prøveren på en kjent spenningskilde</td></tr>
+          <tr><td><span class="fasit" hidden><b>1</b></span></td><td>Koble fra, lås og merk</td></tr>
+          <tr><td><span class="fasit" hidden><b>4</b></span></td><td>Test prøveren på kjent kilde igjen</td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) <b>Ikke i orden.</b> V-viklingen (V1–V2) har 1,62 Ω mot ca. 2,40 Ω på de andre – kortslutning mellom vindinger. OL mellom U1–V1 og mot PE er riktig (ingen forbindelse). b) Koble fra, lås og merk = <b>1</b>, test prøveren = <b>2</b>, mål alle faser og mot jord = <b>3</b>, test prøveren igjen = <b>4</b>.</div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 2 min</small></h3>
-        <p>1. Spenning måles ____________. Strøm på lav spenning måles ____________. Motstand måles ____________.</p>
-        <p>2. Hva er spenningen mellom to faser i TN-nett 230/400 V?</p><div class="svar"></div>
-        <p>3. Hvorfor viser tanga 0 A rundt hele kabelen?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) parallelt – i serie – spenningsløst. 2) 400 V. 3) Strømmen som går ut, kommer tilbake i samme kabel, så summen blir 0.</div>
+        <p>1. Spenning måles <span class="luke"><span class="fasit" hidden>parallelt</span></span>. Strøm på lav spenning måles <span class="luke"><span class="fasit" hidden>i serie</span></span>. Motstand måles <span class="luke"><span class="fasit" hidden>spenningsløst</span></span>.</p>
+        <p>2. Hva er spenningen mellom to faser i TN-nett 230/400 V?</p><div class="svar"><span class="fasit" hidden><b>400 V</b></span></div>
+        <p>3. Hvorfor viser tanga 0 A rundt hele kabelen?</p><div class="svar"><span class="fasit" hidden>Strømmen som går ut, kommer tilbake i samme kabel, så summen blir 0.</span></div>
       </div>
     </div>
   </div>
@@ -1016,11 +1013,12 @@ $("figTang").innerHTML = svgOpen(320,150)
 
 /* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToPng(svg){
   const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
   const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  c.querySelectorAll(".fasit-svg").forEach(t => { if (!fasitOn) t.remove(); else { t.setAttribute("display","inline"); if (!t.getAttribute("fill") || t.getAttribute("fill").startsWith("var(")) t.setAttribute("fill","#2b8a3e"); } });
   const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
   await img.decode();
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
@@ -1034,9 +1032,10 @@ $("btnCopy").onclick = async () => {
     try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.round(w*(svgs[i].closest(".minis") ? .85 : 1.3)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "___"; });
   clone.querySelectorAll(".minis").forEach(m => { const t = document.createElement("table"); const tr = t.insertRow(); m.querySelectorAll("figure").forEach(f => { const td = tr.insertCell(); td.innerHTML = f.innerHTML; td.style.padding = "4px"; }); m.replaceWith(t); });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom") && !c.textContent.trim()) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
   const html = clone.innerHTML, text = clone.innerText;

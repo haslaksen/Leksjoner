@@ -116,9 +116,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -493,16 +496,15 @@ table.t th{background:var(--steel-soft)}
         <div class="minis" id="o1minis"></div>
         <table class="ot">
           <tr><th style="width:3rem">Nr.</th><th>Navn</th><th style="width:9rem">Kode (f.eks. S1)</th><th style="width:9rem">NO / NC / –</th></tr>
-          <tr><td>1</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>2</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>3</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>4</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>5</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>6</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>7</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>8</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>1</td><td class="tom"><span class="fasit" hidden>Start</span></td><td><span class="fasit" hidden>S1</span></td><td><span class="fasit" hidden>NO</span></td></tr>
+          <tr><td>2</td><td class="tom"><span class="fasit" hidden>Stopp</span></td><td><span class="fasit" hidden>S0</span></td><td><span class="fasit" hidden>NC</span></td></tr>
+          <tr><td>3</td><td class="tom"><span class="fasit" hidden>Nødstopp</span></td><td><span class="fasit" hidden>S00</span></td><td><span class="fasit" hidden>NC</span></td></tr>
+          <tr><td>4</td><td class="tom"><span class="fasit" hidden>Kontaktorspole</span></td><td><span class="fasit" hidden>Q1</span></td><td><span class="fasit" hidden>(A1–A2)</span></td></tr>
+          <tr><td>5</td><td class="tom"><span class="fasit" hidden>Hovedkontakter</span></td><td><span class="fasit" hidden>Q1</span></td><td><span class="fasit" hidden>NO</span></td></tr>
+          <tr><td>6</td><td class="tom"><span class="fasit" hidden>Motorvern</span></td><td><span class="fasit" hidden>F2</span></td><td><span class="fasit" hidden>NC (95–96)</span></td></tr>
+          <tr><td>7</td><td class="tom"><span class="fasit" hidden>Sikring</span></td><td><span class="fasit" hidden>F1</span></td><td><span class="fasit" hidden>–</span></td></tr>
+          <tr><td>8</td><td class="tom"><span class="fasit" hidden>Motor</span></td><td><span class="fasit" hidden>M1</span></td><td><span class="fasit" hidden>–</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> 1 Start – S1 – NO. 2 Stopp – S0 – NC. 3 Nødstopp – S00 – NC. 4 Kontaktorspole – Q1 – (A1–A2). 5 Hovedkontakter – Q1 – NO. 6 Motorvern – F2 – NC (95–96). 7 Sikring – F1 – –. 8 Motor – M1 – –.</div>
       </div>
 
       <div class="oppgave">
@@ -511,48 +513,45 @@ table.t th{background:var(--steel-soft)}
         <div class="ofig" id="o2fig"></div>
         <table class="ot c">
           <tr><th>Hendelse</th><th style="width:7rem">Q1 spole<br>(på/av)</th><th style="width:7rem">Motor<br>(går/står)</th><th style="width:7rem">P1 drift<br>(lyser?)</th><th style="width:7rem">P2 feil<br>(lyser?)</th></tr>
-          <tr><td>1. Trykk S1</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>2. Slipp S1</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>3. Trykk S0, slipp</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>4. Trykk S1, slipp. Motoren blir overbelastet til F2 løser ut</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>5. Trykk S1 (F2 er ikke tilbakestilt)</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>1. Trykk S1</td><td class="tom"><span class="fasit" hidden>på</span></td><td><span class="fasit" hidden>går</span></td><td><span class="fasit" hidden>lyser</span></td><td><span class="fasit" hidden>nei</span></td></tr>
+          <tr><td>2. Slipp S1</td><td class="tom"><span class="fasit" hidden>på</span></td><td><span class="fasit" hidden>går</span></td><td><span class="fasit" hidden>lyser</span></td><td><span class="fasit" hidden>nei (selvhold)</span></td></tr>
+          <tr><td>3. Trykk S0, slipp</td><td class="tom"><span class="fasit" hidden>av</span></td><td><span class="fasit" hidden>står</span></td><td><span class="fasit" hidden>nei</span></td><td><span class="fasit" hidden>nei</span></td></tr>
+          <tr><td>4. Trykk S1, slipp. Motoren blir overbelastet til F2 løser ut</td><td class="tom"><span class="fasit" hidden>av</span></td><td><span class="fasit" hidden>står</span></td><td><span class="fasit" hidden>nei</span></td><td><span class="fasit" hidden><b>lyser</b> (97–98 lukker)</span></td></tr>
+          <tr><td>5. Trykk S1 (F2 er ikke tilbakestilt)</td><td class="tom"><span class="fasit" hidden>av</span></td><td><span class="fasit" hidden>står</span></td><td><span class="fasit" hidden>nei</span></td><td><span class="fasit" hidden>lyser: 95–96 er åpen, spolen kan ikke få spenning</span></td></tr>
         </table>
-        <p>b) Hva er oppgaven til Q1 13–14?</p><div class="svar"></div>
-        <p>c) Ledningen til Q1 13–14 løsner. Hva skjer når du trykker og slipper S1?</p><div class="svar"></div>
-        <p>d) Hvorfor er stoppknappen en brytekontakt (NC) og ikke en sluttekontakt (NO)?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) på – går – lyser – nei. 2) på – går – lyser – nei (selvhold). 3) av – står – nei – nei. 4) av – står – nei – <b>lyser</b> (97–98 lukker). 5) av – står – nei – lyser: 95–96 er åpen, spolen kan ikke få spenning. b) Holder spolen inne etter at S1 slippes (selvhold). c) Motoren går bare så lenge S1 holdes inne («tipp-drift»). d) Et kabelbrudd eller en dårlig kobling stopper maskinen. Med NO ville et brudd gjort at maskinen ikke kunne stoppes.</div>
+        <p>b) Hva er oppgaven til Q1 13–14?</p><div class="svar"><span class="fasit" hidden>Holder spolen inne etter at S1 slippes (selvhold).</span></div>
+        <p>c) Ledningen til Q1 13–14 løsner. Hva skjer når du trykker og slipper S1?</p><div class="svar"><span class="fasit" hidden>Motoren går bare så lenge S1 holdes inne («tipp-drift»).</span></div>
+        <p>d) Hvorfor er stoppknappen en brytekontakt (NC) og ikke en sluttekontakt (NO)?</p><div class="svar"><span class="fasit" hidden>Et kabelbrudd eller en dårlig kobling stopper maskinen. Med NO ville et brudd gjort at maskinen ikke kunne stoppes.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Motorvern <small>Time 2 · 4 min</small></h3>
         <div class="ofig" style="max-width:420px" id="o3fig"></div>
-        <p>a) Nettet er TN 400 V. Hvilken kobling skal motoren ha, og hva stiller du F2 på?</p><div class="svar"></div>
-        <p>b) En kollega stiller F2 på 12 A «så den ikke løser ut så ofte». Hva kan skje?</p><div class="svar"></div>
+        <p>a) Nettet er TN 400 V. Hvilken kobling skal motoren ha, og hva stiller du F2 på?</p><div class="svar"><span class="fasit" hidden><b>Stjerne (Y)</b> – viklingene er laget for 230 V. F2 = <b>8,0 A</b>.</span></div>
+        <p>b) En kollega stiller F2 på 12 A «så den ikke løser ut så ofte». Hva kan skje?</p><div class="svar"><span class="fasit" hidden>F2 løser ikke ut ved moderat overlast (f.eks. 11 A). Viklingen blir for varm, isolasjonen ødelegges og motoren kan brenne.</span></div>
         <p>c) Sett kryss: hvem beskytter mot hva?</p>
         <table class="ot c" style="width:auto; min-width:60%">
           <tr><th>Feil</th><th style="width:7rem">F1 sikring</th><th style="width:7rem">F2 motorvern</th></tr>
-          <tr><td>Kortslutning i motorkabelen</td><td class="tom"></td><td></td></tr>
-          <tr><td>Transportbåndet kjører seg fast, strømmen blir 11 A</td><td class="tom"></td><td></td></tr>
-          <tr><td>En fase faller ut, strømmen i de to andre øker</td><td class="tom"></td><td></td></tr>
+          <tr><td>Kortslutning i motorkabelen</td><td class="tom"><span class="fasit" hidden><b>✗</b></span></td><td></td></tr>
+          <tr><td>Transportbåndet kjører seg fast, strømmen blir 11 A</td><td class="tom"></td><td><span class="fasit" hidden><b>✗</b></span></td></tr>
+          <tr><td>En fase faller ut, strømmen i de to andre øker</td><td class="tom"></td><td><span class="fasit" hidden><b>✗</b> (mange motorvern har egen fasebruddsvakt)</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) <b>Stjerne (Y)</b> – viklingene er laget for 230 V. F2 = <b>8,0 A</b>. b) F2 løser ikke ut ved moderat overlast (f.eks. 11 A). Viklingen blir for varm, isolasjonen ødelegges og motoren kan brenne. c) Kortslutning: F1. Fastkjørt bånd: F2. Fasebrudd: F2 (strømmen i de andre fasene øker; mange motorvern har egen fasebruddsvakt).</div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 4 – Snu motoren <small>Time 2 · 4 min</small></h3>
         <div class="ofig" id="o4fig"></div>
-        <p>a) Hvilke to faser bytter Q2?</p><div class="svar"></div>
+        <p>a) Hvilke to faser bytter Q2?</p><div class="svar"><span class="fasit" hidden><b>L1 og L3</b></span></div>
         <p>b) Fyll ut:</p>
         <table class="ot c">
           <tr><th>Q1</th><th>Q2</th><th style="width:55%">Hva skjer med motoren?</th></tr>
-          <tr><td>ute</td><td>ute</td><td class="tom"></td></tr>
-          <tr><td>inne</td><td>ute</td><td class="tom"></td></tr>
-          <tr><td>ute</td><td>inne</td><td class="tom"></td></tr>
-          <tr><td>inne</td><td>inne</td><td class="tom"></td></tr>
+          <tr><td>ute</td><td>ute</td><td class="tom"><span class="fasit" hidden>Står</span></td></tr>
+          <tr><td>inne</td><td>ute</td><td class="tom"><span class="fasit" hidden>Går fram</span></td></tr>
+          <tr><td>ute</td><td>inne</td><td class="tom"><span class="fasit" hidden>Går bak</span></td></tr>
+          <tr><td>inne</td><td>inne</td><td class="tom"><span class="fasit" hidden><b>Kortslutning mellom L1 og L3</b>, F1 løser ut</span></td></tr>
         </table>
-        <p>c) Hvilke kontakter sørger for forriglingen i skjemaet?</p><div class="svar"></div>
-        <p>d) Motoren går fram. Operatøren trykker BAK. Hva skjer?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) <b>L1 og L3</b>. b) Står – går fram – går bak – <b>kortslutning mellom L1 og L3</b>, F1 løser ut. c) <b>Q2 21–22</b> i spolekretsen til Q1 og <b>Q1 21–22</b> i spolekretsen til Q2. d) Ingenting: Q1 21–22 er åpen, så Q2 kan ikke trekke. Motoren går fram til STOPP trykkes.</div>
+        <p>c) Hvilke kontakter sørger for forriglingen i skjemaet?</p><div class="svar"><span class="fasit" hidden><b>Q2 21–22</b> i spolekretsen til Q1 og <b>Q1 21–22</b> i spolekretsen til Q2.</span></div>
+        <p>d) Motoren går fram. Operatøren trykker BAK. Hva skjer?</p><div class="svar"><span class="fasit" hidden>Ingenting: Q1 21–22 er åpen, så Q2 kan ikke trekke. Motoren går fram til STOPP trykkes.</span></div>
       </div>
 
       <div class="oppgave">
@@ -560,20 +559,19 @@ table.t th{background:var(--steel-soft)}
         <p>a) En 15 kW motor har merkestrøm I<sub>n</sub> = 28 A. Regn ut omtrentlig startstrøm:</p>
         <table class="ot c" style="width:auto; min-width:60%">
           <tr><th>Startmetode</th><th style="width:8rem">Startstrøm</th></tr>
-          <tr><td>Direktestart (7 × I<sub>n</sub>)</td><td class="tom"></td></tr>
-          <tr><td>Stjerne-trekant (1/3 av direktestart)</td><td class="tom"></td></tr>
-          <tr><td>Frekvensomformer (1,2 × I<sub>n</sub>)</td><td class="tom"></td></tr>
+          <tr><td>Direktestart (7 × I<sub>n</sub>)</td><td class="tom"><span class="fasit" hidden>7 · 28 = <b>196 A</b></span></td></tr>
+          <tr><td>Stjerne-trekant (1/3 av direktestart)</td><td class="tom"><span class="fasit" hidden>196 / 3 ≈ <b>65 A</b></span></td></tr>
+          <tr><td>Frekvensomformer (1,2 × I<sub>n</sub>)</td><td class="tom"><span class="fasit" hidden>1,2 · 28 ≈ <b>34 A</b></span></td></tr>
         </table>
         <p>b) Velg startmetode: <b>direktestart, stjerne-trekant, mykstarter, frekvensomformer</b>.</p>
         <table class="ot">
           <tr><th>Maskin</th><th style="width:12rem">Startmetode</th></tr>
-          <tr><td>Lite transportbånd, 0,75 kW</td><td class="tom"></td></tr>
-          <tr><td>Avsugsvifte der turtallet skal styres etter behov</td><td class="tom"></td></tr>
-          <tr><td>Vannpumpe 30 kW – unngå trykkstøt i rørene</td><td class="tom"></td></tr>
-          <tr><td>Stor vifte 22 kW, motor 400/690 V Δ/Y, starter uten last</td><td class="tom"></td></tr>
+          <tr><td>Lite transportbånd, 0,75 kW</td><td class="tom"><span class="fasit" hidden>Direktestart</span></td></tr>
+          <tr><td>Avsugsvifte der turtallet skal styres etter behov</td><td class="tom"><span class="fasit" hidden>Frekvensomformer</span></td></tr>
+          <tr><td>Vannpumpe 30 kW – unngå trykkstøt i rørene</td><td class="tom"><span class="fasit" hidden>Mykstarter (frekvensomformer også riktig)</span></td></tr>
+          <tr><td>Stor vifte 22 kW, motor 400/690 V Δ/Y, starter uten last</td><td class="tom"><span class="fasit" hidden>Stjerne-trekant</span></td></tr>
         </table>
-        <p>c) Kan motoren i oppgave 3 (230/400 V Δ/Y) stjerne-trekant-startes på 400 V? Hvorfor?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 7 · 28 = <b>196 A</b>. 196 / 3 ≈ <b>65 A</b>. 1,2 · 28 ≈ <b>34 A</b>. b) Direktestart – frekvensomformer – mykstarter (frekvensomformer også riktig) – stjerne-trekant. c) <b>Nei.</b> Den skal gå i stjerne på 400 V. I trekant ville hver vikling fått 400 V i stedet for 230 V og brent.</div>
+        <p>c) Kan motoren i oppgave 3 (230/400 V Δ/Y) stjerne-trekant-startes på 400 V? Hvorfor?</p><div class="svar"><span class="fasit" hidden><b>Nei.</b> Den skal gå i stjerne på 400 V. I trekant ville hver vikling fått 400 V i stedet for 230 V og brent.</span></div>
       </div>
 
       <div class="oppgave">
@@ -582,21 +580,19 @@ table.t th{background:var(--steel-soft)}
         <div class="ofig" id="o6fig"></div>
         <table class="ot c">
           <tr><th>Tilfelle</th><th>TP1</th><th>TP2</th><th>TP3</th><th>TP4</th><th>TP5</th><th>TP6</th><th>TP7</th><th style="width:30%">Feilen er …</th></tr>
-          <tr><td>A</td><td>24</td><td>24</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"></td></tr>
-          <tr><td>B</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td>0</td><td class="tom"></td></tr>
-          <tr><td>C</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td class="tom"></td></tr>
-          <tr><td>D</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"></td></tr>
+          <tr><td>A</td><td>24</td><td>24</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden><b>S0 stopp</b> (24 V før, 0 V etter)</span></td></tr>
+          <tr><td>B</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden><b>F2 95–96</b> – motorvernet har løst ut</span></td></tr>
+          <tr><td>C</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td class="tom"><span class="fasit" hidden><b>Spolen Q1</b> er defekt: 24 V over den, men den trekker ikke</span></td></tr>
+          <tr><td>D</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden><b>F3</b> er gått</span></td></tr>
         </table>
-        <p>b) I tilfelle B lyser P2. Hva gjør du før du tilbakestiller?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> A) <b>S0 stopp</b> (24 V før, 0 V etter). B) <b>F2 95–96</b> – motorvernet har løst ut. C) <b>Spolen Q1</b> er defekt: 24 V over den, men den trekker ikke. D) <b>F3</b> er gått. b) Finn årsaken til overlasten (fastkjørt last, feil innstilling, fasebrudd) og la motoren kjøle seg ned.</div>
+        <p>b) I tilfelle B lyser P2. Hva gjør du før du tilbakestiller?</p><div class="svar"><span class="fasit" hidden>Finn årsaken til overlasten (fastkjørt last, feil innstilling, fasebrudd) og la motoren kjøle seg ned.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 2 min</small></h3>
-        <p>1. Hva er forskjellen på hovedstrøm og styrestrøm?</p><div class="svar"></div>
-        <p>2. Hva gjør selvholdet?</p><div class="svar"></div>
-        <p>3. Hvordan snur du en trefasemotor – og hva må du passe på?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Hovedstrømmen (400 V, stor strøm) går til motoren. Styrestrømmen (24 V, liten strøm) går gjennom knapper og kontaktorspole. 2) Q1 13–14 holder spolen inne etter at START er sluppet. 3) Bytt to faser. Kontaktorene for fram og bak må forrigles, ellers blir det kortslutning.</div>
+        <p>1. Hva er forskjellen på hovedstrøm og styrestrøm?</p><div class="svar"><span class="fasit" hidden>Hovedstrømmen (400 V, stor strøm) går til motoren. Styrestrømmen (24 V, liten strøm) går gjennom knapper og kontaktorspole.</span></div>
+        <p>2. Hva gjør selvholdet?</p><div class="svar"><span class="fasit" hidden>Q1 13–14 holder spolen inne etter at START er sluppet.</span></div>
+        <p>3. Hvordan snur du en trefasemotor – og hva må du passe på?</p><div class="svar"><span class="fasit" hidden>Bytt to faser. Kontaktorene for fram og bak må forrigles, ellers blir det kortslutning.</span></div>
       </div>
     </div>
   </div>
@@ -1409,11 +1405,12 @@ function fsSVG(K, o={}){
 
 /* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToPng(svg){
   const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
   const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  c.querySelectorAll(".fasit-svg").forEach(t => { if (!fasitOn) t.remove(); else { t.setAttribute("display","inline"); if (!t.getAttribute("fill") || t.getAttribute("fill").startsWith("var(")) t.setAttribute("fill","#2b8a3e"); } });
   const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
   await img.decode();
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
@@ -1427,9 +1424,10 @@ $("btnCopy").onclick = async () => {
     try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = svgs[i].closest(".minis") ? 110 : Math.min(640, Math.round(w*.75)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "___"; });
   clone.querySelectorAll(".minis").forEach(m => { const t = document.createElement("table"); const tr = t.insertRow(); m.querySelectorAll("figure").forEach(f => { const td = tr.insertCell(); td.innerHTML = f.innerHTML; td.style.padding = "4px"; }); m.replaceWith(t); });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom") && !c.textContent.trim()) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
   const html = clone.innerHTML, text = clone.innerText;

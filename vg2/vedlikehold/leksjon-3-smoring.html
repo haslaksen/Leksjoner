@@ -108,9 +108,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -381,17 +384,16 @@ table.t th{background:var(--steel-soft)}
         <h3>Oppgave 1 – Hva smøring gjør <small>Time 1 · 6 min</small></h3>
         <p>To stålflater, forstørret.</p>
         <div class="ofig" id="o1fig" style="max-width:720px"></div>
-        <p>a) Hvilken figur viser smurte flater? Hva skjer med flatene i den andre figuren?</p><div class="svar"></div><div class="svar"></div>
-        <p>b) Skriv fire ting smøring gjør i en maskin.</p><div class="svar"></div><div class="svar"></div>
+        <p>a) Hvilken figur viser smurte flater? Hva skjer med flatene i den andre figuren?</p><div class="svar"><span class="fasit" hidden>B har oljefilm.</span></div><div class="svar"><span class="fasit" hidden>I A slår toppene i stålet mot hverandre: rykk, varme, gnister og slitasje (metallspon).</span></div>
+        <p>b) Skriv fire ting smøring gjør i en maskin.</p><div class="svar"><span class="fasit" hidden>Mindre friksjon, kjøler,</span></div><div class="svar"><span class="fasit" hidden>beskytter mot rust, holder ute skitt / skyller bort slitepartikler.</span></div>
         <p>c) Sant eller usant? Sett kryss.</p>
         <table class="ot c">
           <tr><th>Påstand</th><th style="width:5rem">Sant</th><th style="width:5rem">Usant</th></tr>
-          <tr><td>1. En blankpolert stålflate er helt glatt.</td><td></td><td></td></tr>
-          <tr><td>2. Olje kan kjøle en girkasse.</td><td></td><td></td></tr>
-          <tr><td>3. Alle typer fett kan blandes fritt.</td><td></td><td></td></tr>
-          <tr><td>4. Et tynt lag olje beskytter stål mot rust.</td><td></td><td></td></tr>
+          <tr><td>1. En blankpolert stålflate er helt glatt.</td><td></td><td><span class="fasit" hidden>✗ (ruglete under mikroskop)</span></td></tr>
+          <tr><td>2. Olje kan kjøle en girkasse.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>3. Alle typer fett kan blandes fritt.</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>4. Et tynt lag olje beskytter stål mot rust.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) B har oljefilm. I A slår toppene i stålet mot hverandre: rykk, varme, gnister og slitasje (metallspon). b) Mindre friksjon, kjøler, beskytter mot rust, holder ute skitt / skyller bort slitepartikler. c) 1 U (den er ruglete under mikroskop) · 2 S · 3 U · 4 S.</div>
       </div>
 
       <div class="oppgave">
@@ -399,17 +401,16 @@ table.t th{background:var(--steel-soft)}
         <p>a) Sett kryss for olje eller fett, og skriv en kort grunn.</p>
         <table class="ot">
           <tr><th>Hvor?</th><th style="width:4rem">Olje</th><th style="width:4rem">Fett</th><th>Hvorfor?</th></tr>
-          <tr><td>Girkassen på dreiebenken</td><td></td><td></td><td class="tom"></td></tr>
-          <tr><td>Lager med smørenippel</td><td></td><td></td><td class="tom"></td></tr>
-          <tr><td>Sleidebanene på dreiebenken</td><td></td><td></td><td class="tom"></td></tr>
-          <tr><td>Hydraulikkpressa HP-01 (leksjon 2)</td><td></td><td></td><td class="tom"></td></tr>
-          <tr><td>Lager på en vifte som står ute i regn og støv</td><td></td><td></td><td class="tom"></td></tr>
-          <tr><td>Ledeskrua på dreiebenken</td><td></td><td></td><td class="tom"></td></tr>
+          <tr><td>Girkassen på dreiebenken</td><td><span class="fasit" hidden>✗</span></td><td></td><td class="tom"><span class="fasit" hidden>Kjøler, når alle gir</span></td></tr>
+          <tr><td>Lager med smørenippel</td><td></td><td><span class="fasit" hidden>✗</span></td><td class="tom"><span class="fasit" hidden>Blir sittende</span></td></tr>
+          <tr><td>Sleidebanene på dreiebenken</td><td><span class="fasit" hidden>✗</span></td><td></td><td class="tom"><span class="fasit" hidden>Tynt lag, skyller bort skitt</span></td></tr>
+          <tr><td>Hydraulikkpressa HP-01 (leksjon 2)</td><td><span class="fasit" hidden>✗</span></td><td></td><td class="tom"><span class="fasit" hidden>Hydraulikkolje overfører kraft</span></td></tr>
+          <tr><td>Lager på en vifte som står ute i regn og støv</td><td></td><td><span class="fasit" hidden>✗</span></td><td class="tom"><span class="fasit" hidden>Tetter mot vann og støv</span></td></tr>
+          <tr><td>Ledeskrua på dreiebenken</td><td><span class="fasit" hidden>✗</span></td><td></td><td class="tom"><span class="fasit" hidden>Tynt lag, spon børstes bort</span></td></tr>
         </table>
-        <p>b) Sett disse oljene i rekkefølge fra <b>tynnest</b> til <b>tykkest</b>: &nbsp; ISO VG 220 &nbsp;·&nbsp; ISO VG 32 &nbsp;·&nbsp; ISO VG 68</p><div class="svar"></div>
-        <p>c) Hva skjer med viskositeten når olja blir varm?</p><div class="svar"></div>
-        <p>d) Forklar med egne ord: hva er fett laget av?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) Girkasse – olje (kjøler, når alle gir). Lager med nippel – fett (blir sittende). Sleidebaner – olje (tynt lag, skyller bort skitt). Hydraulikkpresse – olje (hydraulikkolje overfører kraft). Vifte ute – fett (tetter mot vann og støv). Ledeskrue – olje (tynt lag, spon børstes bort). b) VG 32 – VG 68 – VG 220. c) Den synker – olja blir tynnere. d) Olje + fortykningsmiddel som holder på olja som en svamp.</div>
+        <p>b) Sett disse oljene i rekkefølge fra <b>tynnest</b> til <b>tykkest</b>: &nbsp; ISO VG 220 &nbsp;·&nbsp; ISO VG 32 &nbsp;·&nbsp; ISO VG 68</p><div class="svar"><span class="fasit" hidden>VG 32 – VG 68 – VG 220</span></div>
+        <p>c) Hva skjer med viskositeten når olja blir varm?</p><div class="svar"><span class="fasit" hidden>Den synker – olja blir tynnere.</span></div>
+        <p>d) Forklar med egne ord: hva er fett laget av?</p><div class="svar"><span class="fasit" hidden>Olje + fortykningsmiddel som holder på olja som en svamp.</span></div>
       </div>
 
       <div class="oppgave">
@@ -417,45 +418,43 @@ table.t th{background:var(--steel-soft)}
         <p>a) Skriv riktig nummer (1–5).</p>
         <table class="ot">
           <tr><th style="width:4rem">Nr.</th><th>Trinn</th></tr>
-          <tr><td class="tom"></td><td>Pump antall slag som står i smøreplanen</td></tr>
-          <tr><td class="tom"></td><td>Tørk av nippelen</td></tr>
-          <tr><td class="tom"></td><td>Lås og merk hvis vernet må av</td></tr>
-          <tr><td class="tom"></td><td>Ta av munnstykket og tørk av – skriv i smøreloggen</td></tr>
-          <tr><td class="tom"></td><td>Sett munnstykket rett på nippelen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>4</span></td><td>Pump antall slag som står i smøreplanen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>2</span></td><td>Tørk av nippelen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>1</span></td><td>Lås og merk hvis vernet må av</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>5</span></td><td>Ta av munnstykket og tørk av – skriv i smøreloggen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>3</span></td><td>Sett munnstykket rett på nippelen</td></tr>
         </table>
         <p>b) Tre lagerhus. Hvilket har riktig mengde fett? Hva skjer med de to andre?</p>
         <div class="ofig" id="o3fig" style="max-width:700px"></div>
-        <div class="svar"></div><div class="svar"></div>
-        <p>c) Du pumper, men fettet kommer ut ved siden av nippelen. Hva er galt, og hva gjør du?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 5, 2, 1, 4, 3 (lås og merk – tørk av – munnstykket på – pump – ta av og logg). b) C (ca. ⅓–½). A er overfylt: kulene elter fettet, lageret blir varmt og fettet presses ut forbi tetningen. B har for lite: metall mot metall og slitasje. c) Munnstykket sitter skjevt, eller nippelen er tett. Sett munnstykket rett på og prøv igjen – hjelper ikke det: bytt nippelen.</div>
+        <div class="svar"><span class="fasit" hidden><b>C</b> (ca. ⅓–½). A er overfylt: kulene elter fettet, lageret blir varmt og fettet presses ut forbi tetningen.</span></div><div class="svar"><span class="fasit" hidden>B har for lite: metall mot metall og slitasje.</span></div>
+        <p>c) Du pumper, men fettet kommer ut ved siden av nippelen. Hva er galt, og hva gjør du?</p><div class="svar"><span class="fasit" hidden>Munnstykket sitter skjevt, eller nippelen er tett. Sett munnstykket rett på og prøv igjen – hjelper ikke det: bytt nippelen.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 4 – Oljenivå og oljeskift <small>Time 2 · 8 min</small></h3>
         <p>a) Tre seglass. Skriv <b>OK</b>, <b>Fyll på</b> eller <b>For mye</b> under hvert.</p>
         <div class="ofig" id="o4fig" style="max-width:560px"></div>
-        <table class="ot c"><tr><th>A</th><th>B</th><th>C</th></tr><tr><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr></table>
+        <table class="ot c"><tr><th>A</th><th>B</th><th>C</th></tr><tr><td class="tom"><span class="fasit" hidden>For mye</span></td><td class="tom"><span class="fasit" hidden>Fyll på</span></td><td class="tom"><span class="fasit" hidden>OK</span></td></tr></table>
         <p>b) Oljeskift: skriv riktig nummer (1–8).</p>
         <table class="ot">
           <tr><th style="width:4rem">Nr.</th><th>Trinn</th></tr>
-          <tr><td class="tom"></td><td>Fyll ny olje til midt i seglasset</td></tr>
-          <tr><td class="tom"></td><td>Lås og merk</td></tr>
-          <tr><td class="tom"></td><td>Skru ut tappepluggen og tapp i kar</td></tr>
-          <tr><td class="tom"></td><td>Sjekk magnetpluggen</td></tr>
-          <tr><td class="tom"></td><td>Rengjør rundt pluggene</td></tr>
-          <tr><td class="tom"></td><td>Spillolje i fat, skriv i arbeidsordren</td></tr>
-          <tr><td class="tom"></td><td>Åpne påfyllingspluggen</td></tr>
-          <tr><td class="tom"></td><td>Ny pakning – skru inn tappepluggen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>7</span></td><td>Fyll ny olje til midt i seglasset</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>1</span></td><td>Lås og merk</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>4</span></td><td>Skru ut tappepluggen og tapp i kar</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>5</span></td><td>Sjekk magnetpluggen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>2</span></td><td>Rengjør rundt pluggene</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>8</span></td><td>Spillolje i fat, skriv i arbeidsordren</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>3</span></td><td>Åpne påfyllingspluggen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>6</span></td><td>Ny pakning – skru inn tappepluggen</td></tr>
         </table>
         <p>c) Hva kan det bety – og hva gjør du?</p>
         <table class="ot">
           <tr><th style="width:38%">Du ser …</th><th>Det betyr / jeg gjør</th></tr>
-          <tr><td>Melkehvit olje</td><td class="tom"></td></tr>
-          <tr><td>Metallflak på magnetpluggen</td><td class="tom"></td></tr>
-          <tr><td>Svart, tykk olje som lukter brent</td><td class="tom"></td></tr>
+          <tr><td>Melkehvit olje</td><td class="tom"><span class="fasit" hidden>Vann i olja – skift olje og finn hvor vannet kommer fra.</span></td></tr>
+          <tr><td>Metallflak på magnetpluggen</td><td class="tom"><span class="fasit" hidden>Skade på gir eller lager – skriv i arbeidsordren, si fra til leder.</span></td></tr>
+          <tr><td>Svart, tykk olje som lukter brent</td><td class="tom"><span class="fasit" hidden>Gammel eller overopphetet olje – skift olje, sjekk nivå, temperatur og om det er riktig olje.</span></td></tr>
         </table>
-        <p>d) Hvorfor skal spillolja ikke helles i sluket?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) A For mye · B Fyll på · C OK. b) 7, 1, 4, 5, 2, 8, 3, 6 (lås og merk – rengjør – åpne topp – tapp ut – sjekk magnet – ny pakning – fyll – rydd og skriv). c) Melkehvit: vann i olja – skift olje og finn hvor vannet kommer fra. Metallflak: skade på gir eller lager – skriv i arbeidsordren, si fra til leder. Svart og brent: gammel eller overopphetet olje – skift olje, sjekk nivå, temperatur og om det er riktig olje. d) Spillolje er farlig avfall. Den forurenser vann og jord. Leveres i merket fat.</div>
+        <p>d) Hvorfor skal spillolja ikke helles i sluket?</p><div class="svar"><span class="fasit" hidden>Spillolje er farlig avfall. Den forurenser vann og jord. Leveres i merket fat.</span></div>
       </div>
 
       <div class="oppgave">
@@ -465,39 +464,36 @@ table.t th{background:var(--steel-soft)}
         <p>a) Bruk manualen og figuren. Fyll ut smøreplanen. (Ord: spindelkasse, sleidebaner, sleide, ledeskrue, pinoll, matekasse.)</p>
         <table class="ot">
           <tr><th style="width:2.5rem">Nr.</th><th style="width:20%">Smørepunkt</th><th style="width:20%">Smøremiddel</th><th>Hvor mye / hvordan</th><th style="width:15%">Hvor ofte</th></tr>
-          <tr><td>1</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>2</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>3</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>4</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>5</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>6</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>1</td><td class="tom"><span class="fasit" hidden>Spindelkasse</span></td><td><span class="fasit" hidden>Girolje VG 68</span></td><td><span class="fasit" hidden>Sjekk nivå i seglasset</span></td><td><span class="fasit" hidden>Daglig</span></td></tr>
+          <tr><td>2</td><td class="tom"><span class="fasit" hidden>Sleidebaner</span></td><td><span class="fasit" hidden>Sleidebaneolje VG 68</span></td><td><span class="fasit" hidden>Tørk bort spon, tynt lag</span></td><td><span class="fasit" hidden>Daglig</span></td></tr>
+          <tr><td>3</td><td class="tom"><span class="fasit" hidden>Sleide (smørenipler)</span></td><td><span class="fasit" hidden>Fett NLGI 2</span></td><td><span class="fasit" hidden>2 slag per nippel</span></td><td><span class="fasit" hidden>Ukentlig</span></td></tr>
+          <tr><td>4</td><td class="tom"><span class="fasit" hidden>Ledeskrue og trekkstang</span></td><td><span class="fasit" hidden>Olje VG 68</span></td><td><span class="fasit" hidden>Børst rent, tynt lag</span></td><td><span class="fasit" hidden>Ukentlig</span></td></tr>
+          <tr><td>5</td><td class="tom"><span class="fasit" hidden>Pinoll</span></td><td><span class="fasit" hidden>Olje VG 68</span></td><td><span class="fasit" hidden>2–3 dråper i oljekoppen</span></td><td><span class="fasit" hidden>Ukentlig</span></td></tr>
+          <tr><td>6</td><td class="tom"><span class="fasit" hidden>Matekasse</span></td><td><span class="fasit" hidden>Girolje VG 68</span></td><td><span class="fasit" hidden>Sjekk nivå, fyll ved behov</span></td><td><span class="fasit" hidden>Månedlig</span></td></tr>
         </table>
-        <p>b) På smørekartet er ● olje og ▲ fett. Rød = daglig, blå = ukentlig, grønn = månedlig. Hvilken form og farge får punkt 3 og punkt 6?</p><div class="svar"></div>
-        <p>c) Hvilke punkter kan operatøren ta selv hver dag? Hvorfor er det lurt?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 Spindelkasse – girolje VG 68 – sjekk nivå i seglasset – daglig. 2 Sleidebaner – sleidebaneolje VG 68 – tørk bort spon, tynt lag – daglig. 3 Sleide (smørenipler) – fett NLGI 2 – 2 slag per nippel – ukentlig. 4 Ledeskrue og trekkstang – olje VG 68 – børst rent, tynt lag – ukentlig. 5 Pinoll – olje VG 68 – 2–3 dråper i oljekoppen – ukentlig. 6 Matekasse – girolje VG 68 – sjekk nivå, fyll ved behov – månedlig. b) Punkt 3: blå trekant. Punkt 6: grønn sirkel. c) Punkt 1 og 2. Operatøren bruker maskinen hver dag og ser fort om noe er galt – og fagarbeideren får tid til de større jobbene (autonomt vedlikehold, leksjon 1).</div>
+        <p>b) På smørekartet er ● olje og ▲ fett. Rød = daglig, blå = ukentlig, grønn = månedlig. Hvilken form og farge får punkt 3 og punkt 6?</p><div class="svar"><span class="fasit" hidden>Punkt 3: blå trekant. Punkt 6: grønn sirkel.</span></div>
+        <p>c) Hvilke punkter kan operatøren ta selv hver dag? Hvorfor er det lurt?</p><div class="svar"><span class="fasit" hidden>Punkt 1 og 2. Operatøren bruker maskinen hver dag og ser fort om noe er galt – og fagarbeideren får tid til de større jobbene (autonomt vedlikehold, leksjon 1).</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 6 – Det varme lageret <small>Time 2 · 8 min</small></h3>
         <div class="scenario">Viftemotoren <b>VM-03</b> ble smurt forrige uke. Ola ga lageret <b>20 slag</b> «for sikkerhets skyld». Smøreplanen sier <b>3 slag</b>. Nå er lagerhuset <b>85 °C</b>, og det ligger fett på gulvet under tetningen.</div>
-        <p>a) Hva er den mest sannsynlige årsaken til at lageret er varmt?</p><div class="svar"></div>
-        <p>b) Hva må du gjøre før du åpner lagerhuset? (Tenk leksjon 2.)</p><div class="svar"></div>
+        <p>a) Hva er den mest sannsynlige årsaken til at lageret er varmt?</p><div class="svar"><span class="fasit" hidden>For mye fett: kulene elter fettet, det blir varmt, og fettet presses ut forbi tetningen.</span></div>
+        <p>b) Hva må du gjøre før du åpner lagerhuset? (Tenk leksjon 2.)</p><div class="svar"><span class="fasit" hidden>Lås og merk (hovedbryter / arbeidsbryter), prøvestart, vent til viftehjulet står stille og huset er kaldt nok.</span></div>
         <p>c) Fyll ut arbeidsordren.</p>
         <table class="ot">
-          <tr><th style="width:28%">Maskin</th><td class="tom"></td></tr>
-          <tr><th>Funn</th><td class="tom"></td></tr>
-          <tr><th>Tiltak</th><td class="tom"></td></tr>
-          <tr><th>Slik unngår vi det neste gang</th><td class="tom"></td></tr>
+          <tr><th style="width:28%">Maskin</th><td class="tom"><span class="fasit" hidden>VM-03, viftemotor</span></td></tr>
+          <tr><th>Funn</th><td class="tom"><span class="fasit" hidden>Lagerhus 85 °C, fett lekker ved tetningen – overfylt (20 slag mot 3 i planen)</span></td></tr>
+          <tr><th>Tiltak</th><td class="tom"><span class="fasit" hidden>Åpne lagerhuset, fjern overskuddsfett til ca. ⅓–½, sjekk tetning og lager, prøvekjør og mål temperaturen</span></td></tr>
+          <tr><th>Slik unngår vi det neste gang</th><td class="tom"><span class="fasit" hidden>Følg smøreplanen, merk antall slag ved nippelen, opplæring – «mer er ikke bedre»</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) For mye fett: kulene elter fettet, det blir varmt, og fettet presses ut forbi tetningen. b) Lås og merk (hovedbryter / arbeidsbryter), prøvestart, vent til viftehjulet står stille og huset er kaldt nok. c) Maskin: VM-03, viftemotor. Funn: lagerhus 85 °C, fett lekker ved tetningen – overfylt (20 slag mot 3 i planen). Tiltak: åpne lagerhuset, fjern overskuddsfett til ca. ⅓–½, sjekk tetning og lager, prøvekjør og mål temperaturen. Unngå: følg smøreplanen, merk antall slag ved nippelen, opplæring – «mer er ikke bedre».</div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 2 min</small></h3>
-        <p>1. Nevn tre ting smøring gjør.</p><div class="svar"></div>
-        <p>2. Hvorfor blir et lager varmt av for mye fett?</p><div class="svar"></div>
-        <p>3. Hvor skal oljenivået stå i seglasset – og når leser du det av?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Mindre friksjon, kjøler, mot rust, holder ute skitt. 2) Kulene må elte fettet hver runde – det gir varme. 3) Midt i seglasset (mellom min og maks), med maskinen stoppet slik at olja har rent ned.</div>
+        <p>1. Nevn tre ting smøring gjør.</p><div class="svar"><span class="fasit" hidden>Mindre friksjon, kjøler, mot rust, holder ute skitt.</span></div>
+        <p>2. Hvorfor blir et lager varmt av for mye fett?</p><div class="svar"><span class="fasit" hidden>Kulene må elte fettet hver runde – det gir varme.</span></div>
+        <p>3. Hvor skal oljenivået stå i seglasset – og når leser du det av?</p><div class="svar"><span class="fasit" hidden>Midt i seglasset (mellom min og maks), med maskinen stoppet slik at olja har rent ned.</span></div>
       </div>
     </div>
   </div>
@@ -1126,11 +1122,12 @@ function latheSVG(o={}){
 
 /* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToPng(svg){
   const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
   const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  c.querySelectorAll(".fasit-svg").forEach(t => { if (!fasitOn) t.remove(); else { t.style.display = "inline"; if (!t.getAttribute("fill") || /var\(/.test(t.getAttribute("fill"))) t.setAttribute("fill", "#2b8a3e"); } });
   const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
   await img.decode();
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
@@ -1143,10 +1140,11 @@ $("btnCopy").onclick = async () => {
   for (let i=0;i<svgs.length;i++){
     try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.min(640, Math.round(w*.7)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
-  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); else { f.style.color = "#2b8a3e"; f.style.fontWeight = "600"; } });
+  clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "_____"; });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); if (s.textContent.trim()) { p.innerHTML = s.innerHTML; } else p.textContent="_____________________________________________________________"; s.replaceWith(p); });
   clone.querySelectorAll(".scenario").forEach(s => { s.style.border="1px dashed #777"; s.style.padding="6px 10px"; });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom") && !c.textContent.trim()) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
   const html = clone.innerHTML, text = clone.innerText;

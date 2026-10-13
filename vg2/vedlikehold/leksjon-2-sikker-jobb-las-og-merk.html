@@ -105,9 +105,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -404,14 +407,13 @@ table.t th{background:var(--steel-soft)}
         <div class="ofig" id="o1fig"></div>
         <table class="ot">
           <tr><th style="width:2.5rem">Nr.</th><th style="width:20%">Energi</th><th>Hva kan skje?</th><th>Hvordan gjør du den trygg?</th></tr>
-          <tr><td>1</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>2</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>3</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>4</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>5</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>6</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>1</td><td class="tom"><span class="fasit" hidden>Elektrisk (400 V)</span></td><td><span class="fasit" hidden>Støt, maskinen starter</span></td><td><span class="fasit" hidden>Hovedbryter av, lås og merk, prøvestart</span></td></tr>
+          <tr><td>2</td><td class="tom"><span class="fasit" hidden>Hydraulisk (akkumulator 140 bar)</span></td><td><span class="fasit" hidden>Stempelet beveger seg, oljestråle</span></td><td><span class="fasit" hidden>Sikre stempelet, åpne avlastingsventilen, manometer 0</span></td></tr>
+          <tr><td>3</td><td class="tom"><span class="fasit" hidden>Pneumatisk (6 bar)</span></td><td><span class="fasit" hidden>Klemma slår igjen, slange piskes</span></td><td><span class="fasit" hidden>Steng kuleventilen med utlufting, lås den</span></td></tr>
+          <tr><td>4</td><td class="tom"><span class="fasit" hidden>Tyngde (stempel og oververktøy)</span></td><td><span class="fasit" hidden>Siger eller faller</span></td><td><span class="fasit" hidden>Sikringsklosser eller kjør ned på underlag</span></td></tr>
+          <tr><td>5</td><td class="tom"><span class="fasit" hidden>Fjær (verktøyfjærer)</span></td><td><span class="fasit" hidden>Deler spretter ut</span></td><td><span class="fasit" hidden>Avspenn etter instruks</span></td></tr>
+          <tr><td>6</td><td class="tom"><span class="fasit" hidden>Varme (olje 60 °C)</span></td><td><span class="fasit" hidden>Brannskade</span></td><td><span class="fasit" hidden>La kjøle seg, bruk hansker</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> 1 Elektrisk (400 V) – støt, maskinen starter – hovedbryter av, lås og merk, prøvestart. 2 Hydraulisk (akkumulator 140 bar) – stempelet beveger seg, oljestråle – sikre stempelet, åpne avlastingsventilen, manometer 0. 3 Pneumatisk (6 bar) – klemma slår igjen, slange piskes – steng kuleventilen med utlufting, lås den. 4 Tyngde (stempel og oververktøy) – siger eller faller – sikringsklosser eller kjør ned på underlag. 5 Fjær (verktøyfjærer) – deler spretter ut – avspenn etter instruks. 6 Varme (olje 60 °C) – brannskade – la kjøle seg, bruk hansker.</div>
       </div>
 
       <div class="oppgave">
@@ -419,25 +421,23 @@ table.t th{background:var(--steel-soft)}
         <p>a) Sant eller usant? Sett kryss.</p>
         <table class="ot c">
           <tr><th>Påstand</th><th style="width:5rem">Sant</th><th style="width:5rem">Usant</th></tr>
-          <tr><td>1. Når hovedbryteren er av, er det ingen energi igjen i maskinen.</td><td></td><td></td></tr>
-          <tr><td>2. En akkumulator kan holde trykk i timevis etter at pumpa har stoppet.</td><td></td><td></td></tr>
-          <tr><td>3. Et stempel som henger oppe, kan sige ned selv om pumpa står.</td><td></td><td></td></tr>
-          <tr><td>4. Du skal avlaste hydraulikken før du setter inn sikringsklosser.</td><td></td><td></td></tr>
-          <tr><td>5. Varm olje er også en energikilde.</td><td></td><td></td></tr>
-          <tr><td>6. Tar jobben bare to minutter, holder det å trykke på stoppknappen.</td><td></td><td></td></tr>
+          <tr><td>1. Når hovedbryteren er av, er det ingen energi igjen i maskinen.</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>2. En akkumulator kan holde trykk i timevis etter at pumpa har stoppet.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>3. Et stempel som henger oppe, kan sige ned selv om pumpa står.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>4. Du skal avlaste hydraulikken før du setter inn sikringsklosser.</td><td></td><td><span class="fasit" hidden>✗ (klossene først, ellers faller stempelet)</span></td></tr>
+          <tr><td>5. Varm olje er også en energikilde.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>6. Tar jobben bare to minutter, holder det å trykke på stoppknappen.</td><td></td><td><span class="fasit" hidden>✗ (stoppknappen bryter ikke energien, og noen kan trykke start)</span></td></tr>
         </table>
-        <p>b) Manometeret viser 0 bar, men stempelet henger fortsatt oppe uten klosser. Hvorfor er det farlig å løsne slangen til sylinderen?</p><div class="svar"></div><div class="svar"></div>
-        <p>c) Forklar med egne ord hva <b>restenergi</b> er.</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 U · 2 S · 3 S · 4 U (klossene først, ellers faller stempelet) · 5 S · 6 U (stoppknappen bryter ikke energien, og noen kan trykke start). b) Vekta av stempelet presser på olja i sylinderen og lager trykk der. Løsner du slangen, renner olja ut og stempelet faller. Tyngden må sikres med klosser først. c) Energi som er igjen i maskinen etter at strømmen er slått av – f.eks. trykk i akkumulatoren, trykkluft, et stempel som henger, spente fjærer eller varm olje.</div>
+        <p>b) Manometeret viser 0 bar, men stempelet henger fortsatt oppe uten klosser. Hvorfor er det farlig å løsne slangen til sylinderen?</p><div class="svar"><span class="fasit" hidden>Vekta av stempelet presser på olja i sylinderen og lager trykk der. Løsner du slangen, renner olja ut og stempelet faller.</span></div><div class="svar"><span class="fasit" hidden>Tyngden må sikres med klosser først.</span></div>
+        <p>c) Forklar med egne ord hva <b>restenergi</b> er.</p><div class="svar"><span class="fasit" hidden>Energi som er igjen i maskinen etter at strømmen er slått av – f.eks. trykk i akkumulatoren, trykkluft, et stempel som henger, spente fjærer eller varm olje.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Lås og merkelapp <small>Time 1 · 5 min</small></h3>
         <div class="scenario">I dag kl. 08.15 skal <b>du</b> bytte oververktøyet i pressa <b>HP-01</b>. Jobben tar to timer. Fyll ut merkelappen.</div>
         <div class="ofig" id="o3fig" style="max-width:330px"></div>
-        <p>b) Hvorfor skal hver person ha sin egen lås – med bare én nøkkel?</p><div class="svar"></div>
-        <p>c) Hvem har lov til å fjerne låsen din?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) Navn, telefon, dato og kl. 08.15, arbeid: «bytter oververktøy», maskin: HP-01. b) Da er det bare du som kan låse opp – ingen andre kan starte maskinen mens du er inne. Med to nøkler kan noen andre låse opp. c) Bare du. (Unntak: leder etter en skriftlig prosedyre hvis du har dratt hjem med låsen på.)</div>
+        <p>b) Hvorfor skal hver person ha sin egen lås – med bare én nøkkel?</p><div class="svar"><span class="fasit" hidden>Da er det bare du som kan låse opp – ingen andre kan starte maskinen mens du er inne. Med to nøkler kan noen andre låse opp.</span></div>
+        <p>c) Hvem har lov til å fjerne låsen din?</p><div class="svar"><span class="fasit" hidden>Bare du. (Unntak: leder etter en skriftlig prosedyre hvis du har dratt hjem med låsen på.)</span></div>
       </div>
 
       <div class="oppgave">
@@ -445,17 +445,16 @@ table.t th{background:var(--steel-soft)}
         <p>a) Skriv riktig nummer (1–7).</p>
         <table class="ot">
           <tr><th style="width:4rem">Nr.</th><th>Trinn</th></tr>
-          <tr><td class="tom"></td><td>Lås og merk hovedbryteren og luftventilen</td></tr>
-          <tr><td class="tom"></td><td>Varsle operatøren og de som blir berørt</td></tr>
-          <tr><td class="tom"></td><td>Les instruksen og finn alle energikildene</td></tr>
-          <tr><td class="tom"></td><td>Prøvestart og sjekk at manometeret viser 0</td></tr>
-          <tr><td class="tom"></td><td>Stopp pressa med stoppknappen</td></tr>
-          <tr><td class="tom"></td><td>Sett inn sikringsklosser og avlast akkumulatoren</td></tr>
-          <tr><td class="tom"></td><td>Slå av hovedbryteren og steng luftventilen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>5</span></td><td>Lås og merk hovedbryteren og luftventilen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>2</span></td><td>Varsle operatøren og de som blir berørt</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>1</span></td><td>Les instruksen og finn alle energikildene</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>7</span></td><td>Prøvestart og sjekk at manometeret viser 0</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>3</span></td><td>Stopp pressa med stoppknappen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>6</span></td><td>Sett inn sikringsklosser og avlast akkumulatoren</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>4</span></td><td>Slå av hovedbryteren og steng luftventilen</td></tr>
         </table>
-        <p>b) Du gjør prøvestart, og stempelet beveger seg. Hva gjør du?</p><div class="svar"></div>
-        <p>c) Hvorfor er ikke nødstoppen godt nok når du skal jobbe inne i maskinen?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 5, 2, 1, 7, 3, 6, 4. b) Stopp. Ikke start jobben. Noe er ikke isolert – sjekk alle isolasjonspunktene, spør leder. c) Nødstoppen er en del av styringen. Den bryter ikke energien, den kan trekkes ut av andre, og den er ikke låst og merket med din lås.</div>
+        <p>b) Du gjør prøvestart, og stempelet beveger seg. Hva gjør du?</p><div class="svar"><span class="fasit" hidden>Stopp. Ikke start jobben. Noe er ikke isolert – sjekk alle isolasjonspunktene, spør leder.</span></div>
+        <p>c) Hvorfor er ikke nødstoppen godt nok når du skal jobbe inne i maskinen?</p><div class="svar"><span class="fasit" hidden>Nødstoppen er en del av styringen. Den bryter ikke energien, den kan trekkes ut av andre, og den er ikke låst og merket med din lås.</span></div>
       </div>
 
       <div class="oppgave">
@@ -464,42 +463,39 @@ table.t th{background:var(--steel-soft)}
         <div class="ofig" id="o5fig" style="max-width:620px"></div>
         <table class="ot">
           <tr><th style="width:18%">Energi</th><th style="width:3.5rem">Nr.</th><th>Slik isolerer / avlaster jeg</th><th>Slik kontrollerer jeg</th></tr>
-          <tr><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>Elektrisk</span></td><td><span class="fasit" hidden>1</span></td><td><span class="fasit" hidden>(eksempel) Trekk ut støpselet og lås det med støpsellås (eller hold det under egen kontroll), merk</span></td><td><span class="fasit" hidden>Prøv å starte på trykkbryteren: ingenting skjer</span></td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>Pneumatisk</span></td><td><span class="fasit" hidden>3/6</span></td><td><span class="fasit" hidden>Steng utløpsventilen; tøm tanken med tappekranen hvis instruksen krever det</span></td><td><span class="fasit" hidden>Manometeret</span></td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>Bevegelse</span></td><td><span class="fasit" hidden>4</span></td><td><span class="fasit" hidden>Vent til svinghjulet står helt stille</span></td><td><span class="fasit" hidden>Se</span></td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>Varme</span></td><td><span class="fasit" hidden>5</span></td><td><span class="fasit" hidden>La kompressorblokka og trykkrøret kjøle seg, bruk hansker</span></td><td><span class="fasit" hidden>Kjenn forsiktig med baksiden av hånden</span></td></tr>
         </table>
-        <p>b) Hvorfor er det livsfarlig å bare trykke «av» på trykkbryteren og så stikke hånden inn til reima?</p><div class="svar"></div>
-        <p>c) Hva må være på plass før du fjerner låsen etter reimbyttet?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit (eksempel):</b> Elektrisk – 1 – trekk ut støpselet og lås det med støpsellås (eller hold det under egen kontroll), merk – prøv å starte på trykkbryteren: ingenting skjer. Pneumatisk – 3/6 – steng utløpsventilen; tøm tanken med tappekranen hvis instruksen krever det – manometeret. Bevegelse – 4 – vent til svinghjulet står helt stille – se. Varme – 5 – la kompressorblokka og trykkrøret kjøle seg, bruk hansker – kjenn forsiktig med baksiden av hånden. b) Trykkbryteren er bare styring. Kompressoren kan starte av seg selv, eller noen kan slå den på igjen. Reima og svinghjulet kan dra inn hånden. c) Reimvernet montert, verktøy ryddet, ingen i faresonen, operatøren varslet – så tar du av egen lås og prøvekjører.</div>
+        <p>b) Hvorfor er det livsfarlig å bare trykke «av» på trykkbryteren og så stikke hånden inn til reima?</p><div class="svar"><span class="fasit" hidden>Trykkbryteren er bare styring. Kompressoren kan starte av seg selv, eller noen kan slå den på igjen. Reima og svinghjulet kan dra inn hånden.</span></div>
+        <p>c) Hva må være på plass før du fjerner låsen etter reimbyttet?</p><div class="svar"><span class="fasit" hidden>Reimvernet montert, verktøy ryddet, ingen i faresonen, operatøren varslet – så tar du av egen lås og prøvekjører.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 6 – Gruppelås og oppstart <small>Time 2 · 6 min</small></h3>
         <div class="scenario"><b>Kristian</b> (mekaniker), <b>Sara</b> (elektriker) og <b>Ola</b> (lærling) jobber på pressa samtidig.</div>
-        <p>a) Hvor mange låser skal henge på hovedbryteren?</p><div class="svar"></div>
-        <p>b) Kristian blir ferdig først. Kan han ta av alle låsene? Begrunn.</p><div class="svar"></div>
-        <p>c) Ola har dratt hjem med låsen på. Hva skal skje?</p><div class="svar"></div>
+        <p>a) Hvor mange låser skal henge på hovedbryteren?</p><div class="svar"><span class="fasit" hidden>Tre – én per person.</span></div>
+        <p>b) Kristian blir ferdig først. Kan han ta av alle låsene? Begrunn.</p><div class="svar"><span class="fasit" hidden>Nei. Han tar bare av sin egen. Sara og Ola kan fortsatt være inne i maskinen.</span></div>
+        <p>c) Ola har dratt hjem med låsen på. Hva skal skje?</p><div class="svar"><span class="fasit" hidden>Låsen skal ikke klippes av. Leder følger bedriftens prosedyre: prøver å nå Ola, sjekker selv at ingen er i maskinen og at den er klar, fjerner låsen med vitne, dokumenterer og gir beskjed til Ola.</span></div>
         <p>d) Oppstart: skriv riktig nummer (1–7).</p>
         <table class="ot">
           <tr><th style="width:4rem">Nr.</th><th>Trinn</th></tr>
-          <tr><td class="tom"></td><td>Fjern egen lås og merkelapp</td></tr>
-          <tr><td class="tom"></td><td>Ta ut sikringsklosser og rydd verktøy</td></tr>
-          <tr><td class="tom"></td><td>Prøvekjør</td></tr>
-          <tr><td class="tom"></td><td>Monter vernet</td></tr>
-          <tr><td class="tom"></td><td>Dokumenter i arbeidsordren</td></tr>
-          <tr><td class="tom"></td><td>Sjekk at ingen er i faresonen</td></tr>
-          <tr><td class="tom"></td><td>Varsle operatøren</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>4</span></td><td>Fjern egen lås og merkelapp</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>1</span></td><td>Ta ut sikringsklosser og rydd verktøy</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>6</span></td><td>Prøvekjør</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>2</span></td><td>Monter vernet</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>7</span></td><td>Dokumenter i arbeidsordren</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>3</span></td><td>Sjekk at ingen er i faresonen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>5</span></td><td>Varsle operatøren</td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) Tre – én per person. b) Nei. Han tar bare av sin egen. Sara og Ola kan fortsatt være inne i maskinen. c) Låsen skal ikke klippes av. Leder følger bedriftens prosedyre: prøver å nå Ola, sjekker selv at ingen er i maskinen og at den er klar, fjerner låsen med vitne, dokumenterer og gir beskjed til Ola. d) 4, 1, 6, 2, 7, 3, 5.</div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 2 min</small></h3>
-        <p>1. Nevn fire energikilder i en maskin.</p><div class="svar"></div>
-        <p>2. Hva er restenergi? Gi ett eksempel.</p><div class="svar"></div>
-        <p>3. Hvorfor gjør vi prøvestart etter at maskinen er låst?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Elektrisk, hydraulisk, pneumatisk, tyngde, fjær, varme (og bevegelse). 2) Energi som er igjen etter at strømmen er av – f.eks. trykket i en akkumulator eller et stempel som henger oppe. 3) For å kontrollere at vi har låst riktig bryter og at maskinen virkelig ikke kan starte – før hendene går inn.</div>
+        <p>1. Nevn fire energikilder i en maskin.</p><div class="svar"><span class="fasit" hidden>Elektrisk, hydraulisk, pneumatisk, tyngde, fjær, varme (og bevegelse).</span></div>
+        <p>2. Hva er restenergi? Gi ett eksempel.</p><div class="svar"><span class="fasit" hidden>Energi som er igjen etter at strømmen er av – f.eks. trykket i en akkumulator eller et stempel som henger oppe.</span></div>
+        <p>3. Hvorfor gjør vi prøvestart etter at maskinen er låst?</p><div class="svar"><span class="fasit" hidden>For å kontrollere at vi har låst riktig bryter og at maskinen virkelig ikke kan starte – før hendene går inn.</span></div>
       </div>
     </div>
   </div>
@@ -1018,6 +1014,7 @@ function lappSVG(){
   let s = `<path d="M30 40 L300 40 L300 400 L30 400 Z" fill="#fff" stroke="${k}" stroke-width="2.5"/>`+CI(165,70,14,"#fff",k,2.5);
   s += RC(30,96,270,58,"#000")+TX(165,122,"⚠ FARE",{size:20,weight:800,anchor:"middle",fill:"#fff"})+TX(165,145,"IKKE START – ARBEID PÅGÅR",{size:13,weight:700,anchor:"middle",fill:"#fff"});
   ["Navn","Telefon","Dato og kl.","Arbeid","Maskin"].forEach((f,i) => { const y=192+i*44; s += TX(44,y,f+":",{size:14,weight:700,fill:k})+ln(44,y+18,286,y+18,k,1); });
+  ["ditt navn","ditt telefonnr.","i dag, kl. 08.15","bytter oververktøy","HP-01"].forEach((t,i) => { const y=192+i*44+14; s += `<text class="fasit-svg" x="140" y="${y}" font-size="14" font-weight="700" fill="#2b8a3e">${t}</text>`; });
   return s;
 }
 (function(){
@@ -1029,11 +1026,12 @@ function lappSVG(){
 
 /* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToPng(svg){
   const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
   const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  c.querySelectorAll(".fasit-svg").forEach(t => { if (!fasitOn) t.remove(); else { t.style.display = "inline"; if (!t.getAttribute("fill") || /var\(/.test(t.getAttribute("fill"))) t.setAttribute("fill", "#2b8a3e"); } });
   const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
   await img.decode();
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
@@ -1046,10 +1044,11 @@ $("btnCopy").onclick = async () => {
   for (let i=0;i<svgs.length;i++){
     try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.min(640, Math.round(w*.7)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
-  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); else { f.style.color = "#2b8a3e"; f.style.fontWeight = "600"; } });
+  clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "_____"; });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); if (s.textContent.trim()) { p.innerHTML = s.innerHTML; } else p.textContent="_____________________________________________________________"; s.replaceWith(p); });
   clone.querySelectorAll(".scenario").forEach(s => { s.style.border="1px dashed #777"; s.style.padding="6px 10px"; });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom") && !c.textContent.trim()) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
   const html = clone.innerHTML, text = clone.innerText;

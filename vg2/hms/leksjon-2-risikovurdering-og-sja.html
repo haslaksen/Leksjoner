@@ -118,9 +118,12 @@ table.sja td.r{text-align:center; width:3.2em}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -134,7 +137,7 @@ table.sja td.r{text-align:center; width:3.2em}
 .thumbs figure{margin:0; border:1px solid var(--muted); border-radius:8px; padding:.35rem; background:#fff; color:#000}
 .thumbs svg{display:block; width:100%; height:auto}
 .thumbs figcaption{font-size:.8rem; font-weight:650; margin-top:.25rem}
-.thumbs .nr{display:inline-block; border:1.5px solid #000; width:2.2rem; height:1.5rem; vertical-align:middle; margin-left:.3rem}
+.thumbs .nr{display:inline-block; border:1.5px solid #000; width:2.2rem; height:1.5rem; vertical-align:middle; margin-left:.3rem; text-align:center; line-height:1.4rem}
 .toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
 .toast.show{opacity:1}
 
@@ -475,29 +478,27 @@ table.sja td.r{text-align:center; width:3.2em}
         <p>a) Sett ett kryss per jobb.</p>
         <table class="ot c">
           <tr><th>Jobb</th><th style="width:7rem">Ingen SJA (instruks)</th><th style="width:5.5rem">SJA</th><th style="width:8rem">SJA + arbeids­tillatelse</th></tr>
-          <tr><td>1. Bore hull i en stålplate på søyleboremaskinen – det gjør du hver uke.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>2. Bytte lager på en pumpe i kjølevannsanlegget.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>3. Kappe rør på båndsaga – men i dag skal dere løfte et 6 m langt rør inn sammen.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>4. Sveise en brakett på en tank som har hatt diesel.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>5. Feie gulvet i verkstedet.</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>1. Bore hull i en stålplate på søyleboremaskinen – det gjør du hver uke.</td><td class="tom"><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
+          <tr><td>2. Bytte lager på en pumpe i kjølevannsanlegget.</td><td class="tom"></td><td></td><td><span class="fasit" hidden>✗<br><small>farlig energi i anlegg</small></span></td></tr>
+          <tr><td>3. Kappe rør på båndsaga – men i dag skal dere løfte et 6 m langt rør inn sammen.</td><td class="tom"></td><td><span class="fasit" hidden>✗<br><small>noe er annerledes: tungt og langt løft</small></span></td><td></td></tr>
+          <tr><td>4. Sveise en brakett på en tank som har hatt diesel.</td><td class="tom"></td><td></td><td><span class="fasit" hidden>✗<br><small>varmt arbeid, eksplosjonsfare</small></span></td></tr>
+          <tr><td>5. Feie gulvet i verkstedet.</td><td class="tom"><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
         </table>
-        <p>b) Hvem skal lage SJA-en?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 Ingen SJA · 2 SJA + arbeidstillatelse (farlig energi i anlegg) · 3 SJA (noe er annerledes: tungt og langt løft) · 4 SJA + arbeidstillatelse (varmt arbeid, eksplosjonsfare) · 5 Ingen SJA. b) De som skal gjøre jobben – sammen, på stedet, rett før de starter. Leder/arbeidsleder er med og godkjenner.</div>
+        <p>b) Hvem skal lage SJA-en?</p><div class="svar"><span class="fasit" hidden>De som skal gjøre jobben – sammen, på stedet, rett før de starter. Leder/arbeidsleder er med og godkjenner.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 2 – Del jobben i steg <small>Time 1 · 5 min</small></h3>
         <p>a) Bildene viser jobben «bytte lager på pumpe» i feil rekkefølge. Skriv riktig nummer (1–8) i ruta.</p>
         <div class="thumbs" id="o2thumbs"></div>
-        <p>b) Hvorfor må strømmen låses <b>før</b> vernet tas av?</p><div class="svar"></div>
-        <div class="fasit" hidden id="o2fasit"></div>
+        <p>b) Hvorfor må strømmen låses <b>før</b> vernet tas av?</p><div class="svar"><span class="fasit" hidden>Når vernet er av, er koblingen åpen. Hvis pumpa starter, kan fingre, klær eller verktøy trekkes inn.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Finn energiene <small>Time 1 · 6 min</small></h3>
         <p>Hva er farlig ved hvert nummer? Fyll ut tabellen.</p>
         <div class="ofig" id="o3fig"></div>
-        <table class="ot">
+        <table class="ot" id="o3tab">
           <tr><th style="width:2.5rem">Nr.</th><th>Energi / fare</th><th>Hva kan skje?</th><th>Tiltak</th></tr>
           <tr><td>1</td><td class="tom"></td><td></td><td></td></tr>
           <tr><td>2</td><td class="tom"></td><td></td><td></td></tr>
@@ -506,7 +507,6 @@ table.sja td.r{text-align:center; width:3.2em}
           <tr><td>5</td><td class="tom"></td><td></td><td></td></tr>
           <tr><td>6</td><td class="tom"></td><td></td><td></td></tr>
         </table>
-        <div class="fasit" hidden id="o3fasit"></div>
       </div>
 
       <div class="oppgave">
@@ -514,15 +514,14 @@ table.sja td.r{text-align:center; width:3.2em}
         <p>a) Regn ut R = S × K før og etter tiltak. Skriv fargen (grønn 1–4, gul 5–10, rød 12–25).</p>
         <table class="ot c">
           <tr><th>Fare</th><th style="width:2.6rem">S</th><th style="width:2.6rem">K</th><th style="width:5.5rem">R før / farge</th><th>Tiltak</th><th style="width:2.6rem">S</th><th style="width:2.6rem">K</th><th style="width:5.5rem">R etter / farge</th></tr>
-          <tr><td>1. Pumpa starter mens du jobber</td><td>3</td><td>5</td><td class="tom"></td><td>Lås og merk + prøvestart</td><td>1</td><td>5</td><td></td></tr>
-          <tr><td>2. Fingre i koblingen</td><td>3</td><td>4</td><td class="tom"></td><td>Vernet på før start</td><td>1</td><td>4</td><td></td></tr>
-          <tr><td>3. Motoren (80 kg) faller</td><td>4</td><td>3</td><td class="tom"></td><td>Talje, ingen under last</td><td>1</td><td>3</td><td></td></tr>
-          <tr><td>4. Glatt gulv av olje</td><td>4</td><td>2</td><td class="tom"></td><td>Kar og absorbent</td><td>2</td><td>1</td><td></td></tr>
+          <tr><td>1. Pumpa starter mens du jobber</td><td>3</td><td>5</td><td class="tom"><span class="fasit" hidden>15 rød</span></td><td>Lås og merk + prøvestart</td><td>1</td><td>5</td><td><span class="fasit" hidden>5 gul</span></td></tr>
+          <tr><td>2. Fingre i koblingen</td><td>3</td><td>4</td><td class="tom"><span class="fasit" hidden>12 rød</span></td><td>Vernet på før start</td><td>1</td><td>4</td><td><span class="fasit" hidden>4 grønn</span></td></tr>
+          <tr><td>3. Motoren (80 kg) faller</td><td>4</td><td>3</td><td class="tom"><span class="fasit" hidden>12 rød</span></td><td>Talje, ingen under last</td><td>1</td><td>3</td><td><span class="fasit" hidden>3 grønn</span></td></tr>
+          <tr><td>4. Glatt gulv av olje</td><td>4</td><td>2</td><td class="tom"><span class="fasit" hidden>8 gul</span></td><td>Kar og absorbent</td><td>2</td><td>1</td><td><span class="fasit" hidden>2 grønn</span></td></tr>
         </table>
         <p>b) Skriv nummeret til hver fare i matrisen der den er <b>før</b> tiltak. Tegn en pil til der den havner <b>etter</b>.</p>
         <div class="ofig" id="o4fig" style="max-width:480px"></div>
-        <p>c) Fare 1 er fortsatt gul etter tiltak. Hvorfor? Hva gjør vi da?</p><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) R før: 1 = 15 rød · 2 = 12 rød · 3 = 12 rød · 4 = 8 gul. R etter: 1 = 5 gul · 2 = 4 grønn · 3 = 3 grønn · 4 = 2 grønn. b) Pilene går nedover (lavere sannsynlighet); fare 4 går også mot venstre (lavere konsekvens). c) Konsekvensen er fortsatt død eller alvorlig skade – tiltaket senker bare sannsynligheten. Derfor ekstra sikre tiltak: hver person sin egen lås, prøvestart, og ingen fjerner en lås som ikke er deres.</div>
+        <p>c) Fare 1 er fortsatt gul etter tiltak. Hvorfor? Hva gjør vi da?</p><div class="svar"><span class="fasit" hidden>Konsekvensen er fortsatt død eller alvorlig skade – tiltaket senker bare sannsynligheten.</span></div><div class="svar"><span class="fasit" hidden>Derfor ekstra sikre tiltak: hver person sin egen lås, prøvestart, og ingen fjerner en lås som ikke er deres.</span></div>
       </div>
 
       <div class="oppgave">
@@ -532,41 +531,38 @@ table.sja td.r{text-align:center; width:3.2em}
         <p style="margin-bottom:.3rem">Deltakere: ______________________________ &nbsp; Dato: ____________</p>
         <table class="ot">
           <tr><th style="width:2rem">Nr</th><th style="width:22%">Arbeidssteg</th><th>Fare – hva kan skje?</th><th style="width:4.2rem">R før</th><th>Tiltak</th><th style="width:4.2rem">R etter</th><th style="width:4.5rem">Hvem</th></tr>
-          <tr><td>1</td><td>Stopp viften og lås arbeidsbryteren</td><td class="hoy"></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>2</td><td>Ta av reimvernet</td><td class="hoy"></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>3</td><td>Løsne strammeskruen og ta av den gamle reimen</td><td class="hoy"></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>4</td><td>Legg på ny reim og stram</td><td class="hoy"></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>5</td><td>Sett på vernet, fjern låsen og test</td><td class="hoy"></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>1</td><td>Stopp viften og lås arbeidsbryteren</td><td class="hoy"><span class="fasit" hidden>Forslag – Viften starter mens vi jobber, eller hjulet snurrer av trekk</span></td><td><span class="fasit" hidden>15</span></td><td><span class="fasit" hidden>Lås og merk, prøvestart, vent til hjulet står helt stille</span></td><td><span class="fasit" hidden>5</span></td><td></td></tr>
+          <tr><td>2</td><td>Ta av reimvernet</td><td class="hoy"><span class="fasit" hidden>Vernet er tungt og har skarpe kanter</span></td><td><span class="fasit" hidden>6</span></td><td><span class="fasit" hidden>Arbeidshansker, to personer ved behov</span></td><td><span class="fasit" hidden>2</span></td><td></td></tr>
+          <tr><td>3</td><td>Løsne strammeskruen og ta av den gamle reimen</td><td class="hoy"><span class="fasit" hidden>Fingre i klem mellom reim og reimskive</span></td><td><span class="fasit" hidden>9</span></td><td><span class="fasit" hidden>Aldri fingre mellom reim og skive, ikke drei hjulet for hånd med fingrene inne</span></td><td><span class="fasit" hidden>3</span></td><td></td></tr>
+          <tr><td>4</td><td>Legg på ny reim og stram</td><td class="hoy"><span class="fasit" hidden>Feil stramming gjør at reimen ryker eller lagrene ødelegges; klem</span></td><td><span class="fasit" hidden>6</span></td><td><span class="fasit" hidden>Stram med strammeskruen, sjekk nedbøyningen etter tabellen</span></td><td><span class="fasit" hidden>2</span></td><td></td></tr>
+          <tr><td>5</td><td>Sett på vernet, fjern låsen og test</td><td class="hoy"><span class="fasit" hidden>Viften startes uten vern, eller noen står i nærheten</span></td><td><span class="fasit" hidden>10</span></td><td><span class="fasit" hidden>Vernet på og verktøy ryddet før låsen fjernes, si fra til alle</span></td><td><span class="fasit" hidden>2</span></td><td></td></tr>
         </table>
-        <p>Stoppkriterier – når stopper vi jobben?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit (eksempel – godta gode svar):</b> 1) Viften starter mens vi jobber, eller hjulet snurrer av trekk → lås og merk, prøvestart, vent til hjulet står helt stille (R 15 → 5). 2) Vernet er tungt og har skarpe kanter → arbeidshansker, to personer ved behov (R 6 → 2). 3) Fingre i klem mellom reim og reimskive → aldri fingre mellom reim og skive, ikke drei hjulet for hånd med fingrene inne (R 9 → 3). 4) Feil stramming gjør at reimen ryker eller lagrene ødelegges; klem → stram med strammeskruen, sjekk nedbøyningen etter tabellen (R 6 → 2). 5) Viften startes uten vern, eller noen står i nærheten → vernet på og verktøy ryddet før låsen fjernes, si fra til alle (R 10 → 2). Stoppkriterier: noe er annerledes enn planlagt, reimen eller skivene er skadet, verktøy mangler, noen blir skadet.</div>
+        <p>Stoppkriterier – når stopper vi jobben?</p><div class="svar"><span class="fasit" hidden>Noe er annerledes enn planlagt, reimen eller skivene er skadet, verktøy mangler, noen blir skadet. (Eksempelsvar i hele SJA-en – godta gode svar.)</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 6 – Arbeidstillatelse <small>Time 2 · 3 min</small></h3>
         <p>a) Sett riktig rekkefølge (1–4).</p>
         <table class="ot">
-          <tr><td style="width:3rem" class="tom"></td><td>Områdeansvarlig sjekker at anlegget er sikret og signerer.</td></tr>
-          <tr><td class="tom"></td><td>Jobben utføres. Tillatelsen henger på stedet.</td></tr>
-          <tr><td class="tom"></td><td>Utførende søker og legger ved SJA-en.</td></tr>
-          <tr><td class="tom"></td><td>Begge signerer ut. Anlegget tas i drift igjen.</td></tr>
+          <tr><td style="width:3rem" class="tom"><span class="fasit" hidden>2</span></td><td>Områdeansvarlig sjekker at anlegget er sikret og signerer.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>3</span></td><td>Jobben utføres. Tillatelsen henger på stedet.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>1</span></td><td>Utførende søker og legger ved SJA-en.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>4</span></td><td>Begge signerer ut. Anlegget tas i drift igjen.</td></tr>
         </table>
         <p>b) Sant eller usant? Skriv S eller U.</p>
         <table class="ot">
-          <tr><td>1. SJA og arbeidstillatelse er det samme.</td><td style="width:3rem" class="tom"></td></tr>
-          <tr><td>2. Hvis forholdene endrer seg, skal arbeidet stoppes.</td><td class="tom"></td></tr>
-          <tr><td>3. En arbeidstillatelse gjelder til jobben er ferdig – uansett hvor lenge.</td><td class="tom"></td></tr>
-          <tr><td>4. Sveising utenfor sveisebåsen krever ofte arbeidstillatelse.</td><td class="tom"></td></tr>
+          <tr><td>1. SJA og arbeidstillatelse er det samme. <span class="fasit" hidden>→ SJA sier hvordan, tillatelsen gir lov</span></td><td style="width:3rem" class="tom"><span class="fasit" hidden>U</span></td></tr>
+          <tr><td>2. Hvis forholdene endrer seg, skal arbeidet stoppes.</td><td class="tom"><span class="fasit" hidden>S</span></td></tr>
+          <tr><td>3. En arbeidstillatelse gjelder til jobben er ferdig – uansett hvor lenge. <span class="fasit" hidden>→ gjelder for et bestemt tidsrom, ofte ett skift</span></td><td class="tom"><span class="fasit" hidden>U</span></td></tr>
+          <tr><td>4. Sveising utenfor sveisebåsen krever ofte arbeidstillatelse.</td><td class="tom"><span class="fasit" hidden>S</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) 2 – 3 – 1 – 4. b) 1 U (SJA sier hvordan, tillatelsen gir lov) · 2 S · 3 U (den gjelder for et bestemt tidsrom, ofte ett skift) · 4 S.</div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 2 min</small></h3>
-        <p>1. Hva er forskjellen på en risikovurdering og en SJA?</p><div class="svar"></div>
-        <p>2. Nevn tre farlige energier i et pumpeanlegg.</p><div class="svar"></div>
-        <p>3. Hva gjør du hvis noe er annerledes enn det som står i SJA-en?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Risikovurderingen gjelder hele verkstedet og gjøres på forhånd. SJA gjelder én jobb og gjøres rett før, av de som skal gjøre den. 2) Strøm, rotasjon, trykk, varme, tunge deler (tyngdekraft), kjemikalier/olje. 3) Stopper jobben, sier fra og lager ny SJA.</div>
+        <p>1. Hva er forskjellen på en risikovurdering og en SJA?</p><div class="svar"><span class="fasit" hidden>Risikovurderingen gjelder hele verkstedet og gjøres på forhånd. SJA gjelder én jobb og gjøres rett før, av de som skal gjøre den.</span></div>
+        <p>2. Nevn tre farlige energier i et pumpeanlegg.</p><div class="svar"><span class="fasit" hidden>Strøm, rotasjon, trykk, varme, tunge deler (tyngdekraft), kjemikalier/olje.</span></div>
+        <p>3. Hva gjør du hvis noe er annerledes enn det som står i SJA-en?</p><div class="svar"><span class="fasit" hidden>Stopper jobben, sier fra og lager ny SJA.</span></div>
       </div>
     </div>
   </div>
@@ -624,6 +620,19 @@ function matrixSVG(o){
   }
   s += `<text x="40" y="${y0+2.5*c}" font-size="17" font-weight="800" fill="${mono?"#000":"var(--ink)"}" text-anchor="middle" transform="rotate(-90 40 ${y0+2.5*c})">Sannsynlighet (S) ↑</text>`;
   s += TX(x0+2.5*c, y0+5*c+50, "Konsekvens (K) →", {size:17, weight:800, anchor:"middle", fill:mono?"#000":"var(--ink)"});
+  if (o.ans){
+    const P = (S,K) => [x0+(K-1)*c+c/2, y0+(5-S)*c+c/2], G = "#2b8a3e";
+    let g = "";
+    o.ans.forEach(([n,S1,K1,S2,K2]) => {
+      const [ax,ay] = P(S1,K1), [bx,by] = P(S2,K2), d = Math.hypot(bx-ax,by-ay), ux = (bx-ax)/d, uy = (by-ay)/d;
+      const sx = ax+ux*17, sy = ay+uy*17, ex = bx-ux*14, ey = by-uy*14;
+      g += `<line x1="${fx(sx)}" y1="${fx(sy)}" x2="${fx(ex)}" y2="${fx(ey)}" stroke="${G}" stroke-width="3"/>`;
+      g += `<polygon points="${fx(ex+ux*2)},${fx(ey+uy*2)} ${fx(ex-ux*12-uy*7)},${fx(ey-uy*12+ux*7)} ${fx(ex-ux*12+uy*7)},${fx(ey-uy*12-ux*7)}" fill="${G}"/>`;
+      g += `<circle cx="${ax}" cy="${ay}" r="15" fill="#fff" stroke="${G}" stroke-width="2.5"/>`+TX(ax, ay+6, n, {size:17, weight:800, anchor:"middle", fill:G});
+      g += TX(bx, by+6, n, {size:17, weight:800, anchor:"middle", fill:G});
+    });
+    s += `<g class="fasit-svg">${g}</g>`;
+  }
   return s;
 }
 
@@ -1145,24 +1154,24 @@ function fanSVG(){
   const order = [5,2,8,1,6,3,7,4], L = "ABCDEFGH";
   $("o2thumbs").innerHTML = order.map((st,i)=>{
     const s = stepState(st), mode = STEPS[st].mode;
-    return `<figure>${svgOpen(1000,480)}${pumpSVG({s, t:.3, mode, p:.6, labels:false, hot:false})}</svg><figcaption><b>${L[i]}.</b> ${STEPS[st].t.replace(/^\d+ · /,"")} <span class="nr"></span></figcaption></figure>`;
+    return `<figure>${svgOpen(1000,480)}${pumpSVG({s, t:.3, mode, p:.6, labels:false, hot:false})}</svg><figcaption><b>${L[i]}.</b> ${STEPS[st].t.replace(/^\d+ · /,"")} <span class="nr"><span class="fasit" hidden>${st}</span></span></figcaption></figure>`;
   }).join("");
-  $("o2fasit").innerHTML = "<b>Fasit:</b> a) "+order.map((st,i)=>`${L[i]} = ${st}`).join(" · ")+". Rekkefølge: D – B – F – H – A – E – G – C. b) Når vernet er av, er koblingen åpen. Hvis pumpa starter, kan fingre, klær eller verktøy trekkes inn.";
   const st = Object.assign({}, STATE[0], {ang:20, noise:0});
   $("o3fig").innerHTML = svgOpen(1000,480)+pumpSVG({s:st, t:.3, labels:true, hot:true, oil:true, nums:true})+"</svg>";
-  $("o3fasit").innerHTML = "<b>Fasit:</b> "+HS.map((h,i)=>`${i+1}) <b>${h.n}</b> – ${h.fare} Tiltak: ${h.tiltak}`).join(" ");
-  $("o4fig").innerHTML = svgOpen(560,480)+matrixSVG({mono:true})+"</svg>";
+  $("o3tab").querySelectorAll("tr").forEach((tr,r) => { const h = HS[r-1]; if (!h) return; const td = tr.cells; td[1].innerHTML = `<span class="fasit" hidden>${h.n}</span>`; td[2].innerHTML = `<span class="fasit" hidden>${h.fare}</span>`; td[3].innerHTML = `<span class="fasit" hidden>${h.tiltak}</span>`; });
+  $("o4fig").innerHTML = svgOpen(560,480)+matrixSVG({mono:true, ans:[[1,3,5,1,5],[2,3,4,1,4],[3,4,3,1,3],[4,4,2,2,1]]})+"</svg>";
   $("o5fig").innerHTML = svgOpen(640,420)+fanSVG()+"</svg>";
   document.querySelectorAll("#oppgavetekst .ofig svg, #oppgavetekst .thumbs svg").forEach(s => { s.removeAttribute("width"); s.removeAttribute("height"); });
 })();
 
 /* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToPng(svg){
   const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
   const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  c.querySelectorAll(".fasit-svg").forEach(t => { if (fasitOn){ t.setAttribute("display","inline"); t.style.display="inline"; } else t.remove(); });
   const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
   await img.decode();
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
@@ -1176,10 +1185,10 @@ $("btnCopy").onclick = async () => {
     try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = svgs[i].closest(".thumbs") ? 200 : Math.min(640, Math.round(w*.75)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
-  clone.querySelectorAll(".nr").forEach(n => n.textContent = " Nr: ____");
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); if (t){ p.textContent=t; p.style.color="#2b8a3e"; p.style.borderBottom="1px solid #777"; } else p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".nr").forEach(n => { const t = n.textContent.trim(); n.textContent = " Nr: " + (t || "____"); if (t) n.style.color = "#2b8a3e"; });
   clone.querySelectorAll(".thumbs").forEach(m => { const t = document.createElement("table"); let tr; m.querySelectorAll("figure").forEach((f,i) => { if (i%4===0) tr = t.insertRow(); const td = tr.insertCell(); td.innerHTML = f.innerHTML; td.style.padding = "4px"; }); m.replaceWith(t); });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom") || c.classList.contains("hoy")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.querySelector(".fasit")) c.querySelectorAll(".fasit").forEach(f => f.style.color="#2b8a3e"); else if (c.classList.contains("tom") || c.classList.contains("hoy")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   const html = clone.innerHTML, text = clone.innerText;
   try {
