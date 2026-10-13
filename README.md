@@ -31,4 +31,4 @@ vg2/<emne>/leksjon-N-<navn>.html
 
 ## Deploy
 
-Vercel: importer repoet, velg Framework Preset **Other**, la Build Command og Output Directory stå tomme.
+Vercel publiserer fra grenen `main`. Oppsett: importer repoet, velg Framework Preset **Other**, la Build Command og Output Directory stå tomme.
