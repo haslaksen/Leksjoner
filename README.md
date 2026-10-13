@@ -14,7 +14,7 @@ vg2/<emne>/leksjon-N-<navn>.html
 |---|---|---|
 | Vg1 | Elektro | 1 Spenning, strøm og motstand · 2 Repetisjon og effekt |
 | Vg1 | YFF | 1 Hva er YFF? |
-| Vg1 | Konstruksjon og styringsteknikk | 1 Tekniske tegninger |
+| Vg1 | Konstruksjon og styringsteknikk | 1 Tekniske tegninger · 2 Fra skisse til 3D-modell |
 | Vg2 | Elektro | 1 Strøm, spenning og resistans · 2 Måling med multimeter · 3 Motorstyring |
 | Vg2 | HMS | 1 Grunnleggende HMS · 2 Risikovurdering og SJA |
 | Vg2 | Materiallære | 1 Grunnleggende · 2 Stål og jern · 3 Mekanisk prøving · 4 Varmebehandling |
