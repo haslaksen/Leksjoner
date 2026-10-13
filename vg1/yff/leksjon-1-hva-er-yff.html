@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>YFF Vg1 · Leksjon 1: Hva er YFF?</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+/* steg for steg */
+.stepper{display:flex;flex-wrap:wrap;gap:8px}
+.stepper button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.steg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(160px,260px) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.steg>*{min-width:0}
+.steg svg{width:100%;height:auto;display:block}
+.steg ul{margin:.6rem 0 0;padding-left:1.2em;display:grid;gap:6px;font-size:1.1rem}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--orange);transition:width .4s}
+
+/* verneutstyr */
+.vern{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.vern>*{min-width:0}
+.vern svg{width:100%;height:auto;display:block}
+.vern .knapper{display:flex;flex-wrap:wrap;gap:8px}
+.vern .knapper button[aria-pressed="true"]{background:var(--r-soft);border-color:var(--r);color:var(--r)}
+.vern g.utstyr{opacity:0;transition:opacity .3s}
+.vern g.utstyr.paa{opacity:1}
+.teller{font:700 1.4rem/1.2 var(--mono)}
+.regler{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.regler>div{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--orange);border-radius:14px;padding:14px 16px;display:grid;gap:4px}
+.regler .ico{font-size:2rem}
+
+/* riktig eller galt */
+.measure{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mcard{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.mcard .ico{font-size:2.2rem}
+.mcard .verdict{font:700 18px/1.25 var(--display);min-height:1.2em}
+.mcard[data-shown="ok"]{border-color:var(--r);background:var(--r-soft)}
+.mcard[data-shown="bad"]{border-color:var(--bad);background:var(--bad-soft)}
+.mcard[data-shown="ok"] .verdict{color:var(--r)} .mcard[data-shown="bad"] .verdict{color:var(--bad)}
+
+/* logg */
+.logg{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(20px,4vw,56px);align-items:center}
+.logg>*{min-width:0}
+.skriv{stroke-dasharray:400;stroke-dashoffset:400;animation:skriv 6s ease-in-out infinite}
+.skriv.b{animation-delay:.6s}.skriv.c{animation-delay:1.2s}.skriv.d{animation-delay:1.8s}
+@keyframes skriv{30%,85%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+.sporsmal{display:grid;gap:10px;padding:0;margin:0;list-style:none;font-size:1.1rem}
+.sporsmal li{display:flex;gap:12px;align-items:baseline}
+.sporsmal .n{font:800 1.3em var(--display);color:var(--orange);min-width:1.2em}
+.gaa{animation:gaa 7s ease-in-out infinite}
+@keyframes gaa{0%,10%{transform:translateX(0)}45%,55%{transform:translateX(110px)}90%,100%{transform:translateX(0)}}
+.spinn{transform-box:fill-box;transform-origin:center;animation:spinn 4s linear infinite}
+@keyframes spinn{to{transform:rotate(360deg)}}
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+@media (max-width:860px){
+  .hero,.steg,.vern,.logg{grid-template-columns:1fr}
+  .trio,.measure,.regler{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.skriv,.gaa,.spinn{animation:none}.skriv{stroke-dashoffset:0}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">YFF Vg1 · <span>Leksjon 1</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hva">Hva er YFF?</a><a href="#steg">Steg for steg</a><a href="#hms">HMS</a><a href="#oppforsel">Riktig eller galt</a><a href="#logg">Logg</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Yrkesfaglig fordypning Vg1 · Leksjon 1</div>
+    <h1 style="margin-top:10px">Hva er <span style="color:var(--orange)">YFF</span>?</h1>
+    <p class="lead" style="margin-top:12px">Fra klasserommet ut i en ekte bedrift.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Hva <b>YFF</b> er</span></li>
+      <li><span class="n i">2</span><span>Hvordan en <b>utplassering</b> går</span></li>
+      <li><span class="n r">3</span><span><b>HMS</b> og oppførsel i bedriften</span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span>Skrive <b>logg</b></span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+  <svg viewBox="0 0 420 260" role="img" aria-label="Animasjon: eleven går fra skolen til bedriften og tilbake">
+    <!-- skole -->
+    <g>
+      <path d="M20 120 L80 80 L140 120 Z" fill="var(--u)"/>
+      <rect x="30" y="120" width="100" height="90" fill="var(--u-soft)" stroke="var(--u)" stroke-width="4"/>
+      <rect x="45" y="135" width="20" height="20" fill="var(--surface)" stroke="var(--u)" stroke-width="3"/>
+      <rect x="95" y="135" width="20" height="20" fill="var(--surface)" stroke="var(--u)" stroke-width="3"/>
+      <rect x="68" y="170" width="24" height="40" fill="var(--u)"/>
+      <text x="80" y="240" text-anchor="middle" font-weight="700" font-size="20" fill="var(--u)">Skole</text>
+    </g>
+    <!-- bedrift -->
+    <g>
+      <path d="M280 210 V120 L310 100 V120 L340 100 V120 L370 100 V210 Z" fill="var(--i-soft)" stroke="var(--i)" stroke-width="4" stroke-linejoin="round"/>
+      <rect x="380" y="70" width="18" height="140" fill="var(--i)"/>
+      <circle cx="389" cy="58" r="8" fill="var(--line)" class="pulse"/>
+      <circle cx="380" cy="40" r="11" fill="var(--line)" class="pulse" style="animation-delay:.8s"/>
+      <g class="spinn"><circle cx="325" cy="165" r="22" fill="none" stroke="var(--i)" stroke-width="8" stroke-dasharray="8 6"/><circle cx="325" cy="165" r="8" fill="var(--i)"/></g>
+      <text x="330" y="240" text-anchor="middle" font-weight="700" font-size="20" fill="var(--i)">Bedrift</text>
+    </g>
+    <!-- vei -->
+    <line x1="130" y1="212" x2="280" y2="212" stroke="var(--wire)" stroke-width="4" stroke-dasharray="10 8" class="flow"/>
+    <!-- elev -->
+    <g class="gaa">
+      <g transform="translate(40 0)">
+        <circle cx="105" cy="150" r="9" fill="var(--orange)"/>
+        <path d="M95 146 h20 v-4 a10 6 0 0 0 -20 0 Z" fill="#f2c200"/>
+        <path d="M105 160 V185 M93 168 H117 M105 185 L96 205 M105 185 L114 205" stroke="var(--orange)" stroke-width="5" stroke-linecap="round" fill="none"/>
+      </g>
+    </g>
+  </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Mål</h3>
+      <p>Læreplan i yrkesfaglig fordypning Vg1: utforske arbeidsoppgaver i ett eller flere lærefag, følge HMS-regler og bruke verneutstyr, og reflektere over egen læring. Tilpass til bedriftene klassen skal ut i.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: «Hvilket yrke vil du prøve?» Rundt i klassen.</dd>
+        <dt>10–25</dt><dd>Hva er YFF og veien til fagbrev. Del A.</dd>
+        <dt>25–40</dt><dd>Steg for steg: klikk gjennom de fem stegene. Fortell hvordan det gjøres på vår skole.</dd>
+        <dt>40–55</dt><dd>HMS: kle på eleven i fellesskap. Del B.</dd>
+        <dt>55–65</dt><dd>Pause</dd>
+        <dt>65–75</dt><dd>Riktig eller galt: klassen stemmer før kortet snus. Del C.</dd>
+        <dt>75–88</dt><dd>Logg: vis eksempelet. Elevene skriver logg for dagen i dag (Del E) og svarer på Del D.</dd>
+        <dt>88–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="hva">
+  <div class="tag">Del 1 · Hva er YFF?</div>
+  <h2>YFF = yrkesfaglig fordypning</h2>
+  <div class="trio">
+    <div class="q U">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><circle cx="85" cy="50" r="30" fill="var(--u-soft)" stroke="var(--u)" stroke-width="6"/><line x1="107" y1="72" x2="140" y2="100" stroke="var(--u)" stroke-width="10" stroke-linecap="round"/><g fill="var(--u)"><circle cx="72" cy="50" r="5"><animate attributeName="opacity" values=".2;1;.2" dur="1.5s" repeatCount="indefinite"/></circle><circle cx="85" cy="50" r="5"><animate attributeName="opacity" values=".2;1;.2" dur="1.5s" begin=".3s" repeatCount="indefinite"/></circle><circle cx="98" cy="50" r="5"><animate attributeName="opacity" values=".2;1;.2" dur="1.5s" begin=".6s" repeatCount="indefinite"/></circle></g></svg>
+      <h3>Utforsk yrker</h3>
+      <p>Bli kjent med <b>lærefag</b> du kan velge.</p>
+    </div>
+    <div class="q I">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><path d="M40 100 V50 L70 30 V50 L100 30 V50 L130 30 V100 Z" fill="var(--i-soft)" stroke="var(--i)" stroke-width="5" stroke-linejoin="round"/><g class="spinn"><circle cx="160" cy="60" r="20" fill="none" stroke="var(--i)" stroke-width="8" stroke-dasharray="7 6"/></g><rect x="74" y="70" width="22" height="30" fill="var(--i)"/></svg>
+      <h3>Prøv deg i bedrift</h3>
+      <p>Gjør <b>ekte arbeid</b> i en ekte bedrift.</p>
+    </div>
+    <div class="q R">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><line x1="100" y1="100" x2="100" y2="20" stroke="var(--wire)" stroke-width="6"/><path d="M100 28 H160 L172 40 L160 52 H100 Z" fill="var(--r)"/><path d="M100 58 H40 L28 70 L40 82 H100 Z" fill="var(--r-soft)" stroke="var(--r)" stroke-width="3"/></svg>
+      <h3>Velg vei videre</h3>
+      <p>Finn ut hva du vil ta på <b>Vg2</b>.</p>
+    </div>
+  </div>
+
+  <h3>Veien til fagbrev</h3>
+  <div class="fig"><div class="tablewrap"><div style="min-width:560px">
+  <svg viewBox="0 0 800 170" role="img" aria-label="Vg1 og Vg2 på skolen, så to år som lærling i bedrift, så fagbrev. YFF er på Vg1 og Vg2.">
+    <path id="vei" d="M40 70 H760" fill="none" stroke="var(--line)" stroke-width="14" stroke-linecap="round"/>
+    <rect x="40" y="40" width="160" height="60" rx="12" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/>
+    <text x="120" y="78" text-anchor="middle" font-weight="700" font-size="22" fill="var(--u)">Vg1</text>
+    <rect x="220" y="40" width="160" height="60" rx="12" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/>
+    <text x="300" y="78" text-anchor="middle" font-weight="700" font-size="22" fill="var(--u)">Vg2</text>
+    <rect x="400" y="40" width="240" height="60" rx="12" fill="var(--i-soft)" stroke="var(--i)" stroke-width="3"/>
+    <text x="520" y="78" text-anchor="middle" font-weight="700" font-size="22" fill="var(--i)">Lærling 2 år</text>
+    <circle cx="710" cy="70" r="36" fill="var(--r)"/>
+    <text x="710" y="66" text-anchor="middle" font-weight="700" font-size="15" fill="#fff">Fag-</text>
+    <text x="710" y="84" text-anchor="middle" font-weight="700" font-size="15" fill="#fff">brev</text>
+    <text x="210" y="28" text-anchor="middle" font-size="16" fill="var(--u)">2 år på skolen</text>
+    <text x="520" y="28" text-anchor="middle" font-size="16" fill="var(--i)">2 år i bedrift</text>
+    <g fill="var(--orange)" font-weight="700" font-size="16" text-anchor="middle">
+      <path d="M120 106 v18 M300 106 v18" stroke="var(--orange)" stroke-width="3"/>
+      <text x="120" y="146">YFF</text><text x="300" y="146">YFF</text>
+    </g>
+    <circle r="10" fill="var(--orange)"><animateMotion dur="6s" repeatCount="indefinite" path="M40 70 H700"/></circle>
+  </svg>
+  </div></div></div>
+  <p style="color:var(--muted)">Bedriften du er i på YFF, kan bli <b>læreplassen</b> din.</p>
+</section>
+
+<section id="steg">
+  <div class="tag">Del 2 · Utplassering</div>
+  <h2>Steg for steg</h2>
+  <div class="stepper" id="stepper" role="group" aria-label="Velg steg"></div>
+  <div class="bar" aria-hidden="true"><i id="stegBar"></i></div>
+  <div class="steg">
+    <svg id="stegFig" viewBox="0 0 200 160" aria-hidden="true"></svg>
+    <div>
+      <h3 id="stegTittel"></h3>
+      <ul id="stegListe"></ul>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Tilpass stegene til skolens rutiner: hvem som skaffer bedrift, avtaleskjema, taushetserklæring, og hvordan eleven melder fravær. Elevene skal ha kontaktpersonens navn og telefonnummer før første dag.</details>
+</section>
+
+<section id="hms">
+  <div class="tag">Del 3 · HMS i bedriften</div>
+  <h2>Kle på deg verneutstyret</h2>
+  <div class="vern">
+    <svg viewBox="0 0 200 300" role="img" aria-label="Person som får på seg verneutstyr">
+      <!-- kropp -->
+      <circle cx="100" cy="50" r="26" fill="#f1c9a5" stroke="var(--wire)" stroke-width="3"/>
+      <circle cx="91" cy="48" r="3" fill="var(--wire)"/><circle cx="109" cy="48" r="3" fill="var(--wire)"/>
+      <path d="M92 62 q8 6 16 0" fill="none" stroke="var(--wire)" stroke-width="3" stroke-linecap="round"/>
+      <rect x="70" y="80" width="60" height="100" rx="14" fill="var(--line)" stroke="var(--wire)" stroke-width="3"/>
+      <rect x="44" y="84" width="22" height="80" rx="10" fill="var(--line)" stroke="var(--wire)" stroke-width="3"/>
+      <rect x="134" y="84" width="22" height="80" rx="10" fill="var(--line)" stroke="var(--wire)" stroke-width="3"/>
+      <rect x="74" y="178" width="24" height="90" rx="10" fill="var(--line)" stroke="var(--wire)" stroke-width="3"/>
+      <rect x="102" y="178" width="24" height="90" rx="10" fill="var(--line)" stroke="var(--wire)" stroke-width="3"/>
+      <!-- utstyr -->
+      <g class="utstyr" data-u="klaer"><rect x="70" y="80" width="60" height="100" rx="14" fill="#1f4e8c"/><rect x="44" y="84" width="22" height="80" rx="10" fill="#1f4e8c"/><rect x="134" y="84" width="22" height="80" rx="10" fill="#1f4e8c"/><rect x="74" y="178" width="24" height="88" rx="10" fill="#1f4e8c"/><rect x="102" y="178" width="24" height="88" rx="10" fill="#1f4e8c"/><rect x="70" y="120" width="60" height="8" fill="#f2c200"/><rect x="74" y="230" width="52" height="6" fill="#f2c200"/></g>
+      <g class="utstyr" data-u="hjelm"><path d="M70 42 a30 26 0 0 1 60 0 Z" fill="#f2c200" stroke="var(--wire)" stroke-width="3"/><rect x="64" y="40" width="72" height="7" rx="3" fill="#f2c200" stroke="var(--wire)" stroke-width="2"/></g>
+      <g class="utstyr" data-u="briller"><rect x="80" y="42" width="40" height="13" rx="5" fill="#9fd3f5" fill-opacity=".75" stroke="var(--wire)" stroke-width="3"/></g>
+      <g class="utstyr" data-u="horsel"><rect x="66" y="40" width="12" height="22" rx="5" fill="var(--bad)" stroke="var(--wire)" stroke-width="2"/><rect x="122" y="40" width="12" height="22" rx="5" fill="var(--bad)" stroke="var(--wire)" stroke-width="2"/></g>
+      <g class="utstyr" data-u="hansker"><rect x="42" y="158" width="26" height="24" rx="8" fill="var(--orange)" stroke="var(--wire)" stroke-width="2"/><rect x="132" y="158" width="26" height="24" rx="8" fill="var(--orange)" stroke="var(--wire)" stroke-width="2"/></g>
+      <g class="utstyr" data-u="sko"><path d="M68 262 h32 v18 h-40 a8 8 0 0 1 8 -18 Z" fill="#333" stroke="var(--wire)" stroke-width="2"/><path d="M100 262 h32 a8 8 0 0 1 8 18 h-40 Z" fill="#333" stroke="var(--wire)" stroke-width="2"/></g>
+    </svg>
+    <div style="display:grid;gap:16px">
+      <div class="knapper" id="vernKnapper">
+        <button type="button" data-u="klaer" aria-pressed="false">👕 Arbeidsklær</button>
+        <button type="button" data-u="sko" aria-pressed="false">🥾 Vernesko</button>
+        <button type="button" data-u="briller" aria-pressed="false">🥽 Vernebriller</button>
+        <button type="button" data-u="horsel" aria-pressed="false">🎧 Hørselvern</button>
+        <button type="button" data-u="hansker" aria-pressed="false">🧤 Hansker</button>
+        <button type="button" data-u="hjelm" aria-pressed="false">⛑️ Hjelm</button>
+      </div>
+      <div class="teller"><span id="vernAntall">0</span> av 6</div>
+      <p id="vernTekst" style="font-size:1.1rem">Klikk på utstyret.</p>
+    </div>
+  </div>
+  <div class="regler">
+    <div><span class="ico">✋</span><b>Spør før du gjør</b><span>Aldri bruk en maskin du ikke har fått opplæring på.</span></div>
+    <div><span class="ico">📣</span><b>Si fra</b><span>Om farer, skader og nesten-ulykker. Med en gang.</span></div>
+    <div><span class="ico">📋</span><b>Følg bedriftens regler</b><span>Hver bedrift har egne HMS-regler. Lær dem første dag.</span></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Hvilket verneutstyr som trengs, avhenger av bedriften og jobben. Hjelm brukes for eksempel der det kan falle ting ned eller der det går kran. Hansker skal ikke brukes ved roterende maskiner (dreiebenk, boremaskin), fordi de kan bli dratt inn. Grundigere HMS kommer på Vg2.</details>
+</section>
+
+<section id="oppforsel">
+  <div class="tag">Del 4 · Oppførsel</div>
+  <h2>Riktig eller galt?</h2>
+  <p class="lead">Klikk på kortet.</p>
+  <div class="measure">
+    <button type="button" class="mcard" data-ans="ok" data-txt="✓ Riktig: kom 5 minutter før"><span class="ico">⏰</span><b>Jeg møter presis hver dag.</b><span class="verdict"></span></button>
+    <button type="button" class="mcard" data-ans="bad" data-txt="✗ Galt: mobilen ligger i lomma eller skapet"><span class="ico">📱</span><b>Jeg sjekker mobilen mens jeg jobber.</b><span class="verdict"></span></button>
+    <button type="button" class="mcard" data-ans="ok" data-txt="✓ Riktig: ring før arbeidstid"><span class="ico">🤒</span><b>Er jeg syk, ringer jeg kontaktpersonen og læreren.</b><span class="verdict"></span></button>
+    <button type="button" class="mcard" data-ans="bad" data-txt="✗ Galt: spør alltid først"><span class="ico">⚙️</span><b>Jeg prøver maskinen selv, så slipper jeg å forstyrre.</b><span class="verdict"></span></button>
+    <button type="button" class="mcard" data-ans="ok" data-txt="✓ Riktig: da lærer du mest"><span class="ico">🙋</span><b>Jeg spør når jeg er usikker eller ferdig.</b><span class="verdict"></span></button>
+    <button type="button" class="mcard" data-ans="bad" data-txt="✗ Galt: avtal alltid med kontaktpersonen"><span class="ico">🚪</span><b>Det er rolig, så jeg går hjem litt tidlig.</b><span class="verdict"></span></button>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>La klassen stemme med tommel opp eller ned før kortet snus. Ta gjerne med taushetsplikt: det du ser i bedriften (tegninger, kunder, priser), skal ikke på sosiale medier.</details>
+</section>
+
+<section id="logg">
+  <div class="tag">Del 5 · Logg</div>
+  <h2>Skriv logg hver dag</h2>
+  <div class="logg">
+    <div class="fig">
+    <svg viewBox="0 0 400 260" role="img" aria-label="Eksempel på en loggside som blir skrevet">
+      <rect x="20" y="10" width="360" height="240" rx="10" fill="var(--surface)" stroke="var(--wire)" stroke-width="3"/>
+      <line x1="60" y1="10" x2="60" y2="250" stroke="var(--bad)" stroke-width="2" opacity=".5"/>
+      <text x="74" y="40" font-weight="700" font-size="15" fill="var(--ink)">Tirsdag 4. mars · Mek. verksted AS</text>
+      <g font-size="15" fill="var(--muted)">
+        <text x="74" y="80">1 Gjorde:</text><text x="74" y="130">2 Verktøy:</text><text x="74" y="180">3 Lærte:</text><text x="74" y="230">4 HMS:</text>
+      </g>
+      <g fill="none" stroke="var(--u)" stroke-width="3" stroke-linecap="round">
+        <path class="skriv" d="M160 76 q10 -10 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
+        <path class="skriv b" d="M160 126 q10 -10 20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
+        <path class="skriv c" d="M160 176 q10 -10 20 0 t20 0 t20 0 t20 0 t20 0 t20 0 t20 0"/>
+        <path class="skriv d" d="M160 226 q10 -10 20 0 t20 0 t20 0 t20 0"/>
+      </g>
+    </svg>
+    </div>
+    <div>
+      <ul class="sporsmal">
+        <li><span class="n">1</span><span>Hva <b>gjorde</b> jeg i dag?</span></li>
+        <li><span class="n">2</span><span>Hvilke <b>verktøy og maskiner</b> brukte jeg?</span></li>
+        <li><span class="n">3</span><span>Hva <b>lærte</b> jeg?</span></li>
+        <li><span class="n">4</span><span><b>HMS:</b> hva passet jeg på?</span></li>
+      </ul>
+      <p style="margin-top:14px;color:var(--muted)">Ta gjerne et <b>bilde</b> av arbeidet. Spør først om det er lov.</p>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Eksempel på en god logg: «Jeg kappet 20 flattstål i båndsag og filte bort graderne. Brukte båndsag, fil og skyvelære. Lærte å måle med skyvelære på 0,1 mm. HMS: vernebriller og hørselvern ved sagen.» Loggen brukes til rapporten etter utplasseringen.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 1: Hva er YFF?</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Hva er YFF?</h3>
+      <p>Fyll inn ordene.</p>
+      <p>YFF står for <span class="luke"><span class="fasit" hidden>yrkesfaglig fordypning</span></span>.</p>
+      <p>I YFF får jeg prøve meg i en <span class="luke"><span class="fasit" hidden>bedrift</span></span>.</p>
+      <p>Veien til fagbrev: <span class="luke"><span class="fasit" hidden>2</span></span> år på skolen og <span class="luke"><span class="fasit" hidden>2</span></span> år som <span class="luke"><span class="fasit" hidden>lærling</span></span>.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Verneutstyr</h3>
+      <p>Hvilket verneutstyr trenger du?</p>
+      <div class="tablewrap"><table>
+        <tr><th>Jobb</th><th>Verneutstyr</th></tr>
+        <tr><td>Du sliper med vinkelsliper.</td><td class="blank"><span class="fasit" hidden>Vernebriller (visir), hørselvern, hansker, arbeidsklær</span></td></tr>
+        <tr><td>Du er i en hall med mye støy.</td><td class="blank"><span class="fasit" hidden>Hørselvern</span></td></tr>
+        <tr><td>Du bærer tunge stålplater.</td><td class="blank"><span class="fasit" hidden>Vernesko og hansker</span></td></tr>
+        <tr><td>Du jobber der det går en kran over deg.</td><td class="blank"><span class="fasit" hidden>Hjelm</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Riktig eller galt</h3>
+      <p>Sett kryss.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Jeg kan bruke en maskin hvis jeg har sett andre gjøre det.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Jeg sier fra hvis jeg ser noe farlig.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Mobilen ligger i lomma når jeg jobber.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Jeg kan legge ut bilder fra bedriften uten å spørre.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Er jeg syk, ringer jeg før arbeidstid.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Før utplasseringen</h3>
+      <ol>
+        <li>Hvilket yrke eller hvilken bedrift vil du prøve? Hvorfor?<div class="svar"></div></li>
+        <li>Hvem må du gi beskjed til hvis du blir syk?<div class="svar"><span class="fasit" hidden>Kontaktpersonen i bedriften og læreren, før arbeidstid</span></div></li>
+        <li>Hva gjør du hvis du ikke vet hvordan en maskin virker?<div class="svar"><span class="fasit" hidden>Spør kontaktpersonen og får opplæring før jeg bruker den</span></div></li>
+        <li>Hvorfor er det lurt å gjøre en god jobb i YFF?<div class="svar"><span class="fasit" hidden>Bedriften kan bli læreplassen min. De husker hvordan jeg jobbet</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del E · Skriv logg for i dag</h3>
+      <p>Øv deg: skriv logg for skoledagen i dag.</p>
+      <ol>
+        <li>Hva gjorde jeg i dag?<div class="svar"></div></li>
+        <li>Hvilke verktøy, maskiner eller programmer brukte jeg?<div class="svar"></div></li>
+        <li>Hva lærte jeg?<div class="svar"></div></li>
+        <li>HMS: hva passet jeg på?<div class="svar"></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hva gleder du deg mest til i YFF?<div class="svar"></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+(function(){
+  const $ = id => document.getElementById(id);
+  // presentation attributes don't resolve CSS variables everywhere; move them to inline style
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+
+  // ---------- steg for steg ----------
+  const STEG = [
+    { t:"1 · Før", fig:'<rect x="40" y="20" width="120" height="130" rx="8" fill="var(--u-soft)" stroke="var(--u)" stroke-width="4"/><path d="M60 50 h80 M60 75 h80 M60 100 h50" stroke="var(--u)" stroke-width="5" stroke-linecap="round"/><path d="M110 120 l12 12 l24 -28" fill="none" stroke="var(--r)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" class="pulse"/>',
+      l:["Velg yrke og finn en bedrift","Skriv under avtalen","Få navn og telefon til <b>kontaktpersonen</b>","Finn ut når og hvor du skal møte"] },
+    { t:"2 · Første dag", fig:'<circle cx="65" cy="50" r="18" fill="var(--orange)"/><path d="M65 70 V115 M65 115 L50 150 M65 115 L80 150" stroke="var(--orange)" stroke-width="8" stroke-linecap="round"/><circle cx="135" cy="50" r="18" fill="var(--i)"/><path d="M135 70 V115 M135 115 L120 150 M135 115 L150 150" stroke="var(--i)" stroke-width="8" stroke-linecap="round"/><path d="M65 85 H135" stroke="var(--wire)" stroke-width="8" stroke-linecap="round"><animate attributeName="stroke-width" values="8;12;8" dur="1s" repeatCount="indefinite"/></path>',
+      l:["Møt presis og hils på kontaktpersonen","Omvisning: nødutganger, førstehjelp, brannslukker","Få <b>verneutstyr</b> og lær HMS-reglene"] },
+    { t:"3 · Hver dag", fig:'<g class="spinn"><circle cx="100" cy="70" r="40" fill="none" stroke="var(--i)" stroke-width="14" stroke-dasharray="14 10"/></g><circle cx="100" cy="70" r="14" fill="var(--i)"/><text x="100" y="148" text-anchor="middle" font-size="22" font-weight="700" fill="var(--ink)">Jobb + logg</text>',
+      l:["Gjør jobben, spør når du lurer","Følg HMS-reglene","Skriv <b>logg</b> før du går hjem"] },
+    { t:"4 · Siste dag", fig:'<path d="M60 90 q-6 -40 20 -40 h20 l-6 -28 q20 0 24 28 h28 q16 0 12 16 l-10 40 q-4 12 -16 12 h-52 q-14 0 -20 -28 Z" fill="var(--r-soft)" stroke="var(--r)" stroke-width="5" stroke-linejoin="round" class="pulse"/>',
+      l:["Rydd etter deg","Takk for deg","Be gjerne om en tilbakemelding"] },
+    { t:"5 · Etterpå", fig:'<rect x="30" y="20" width="140" height="95" rx="8" fill="var(--surface)" stroke="var(--wire)" stroke-width="4"/><rect x="48" y="80" width="18" height="25" fill="var(--u)"/><rect x="76" y="60" width="18" height="45" fill="var(--i)"/><rect x="104" y="45" width="18" height="60" fill="var(--r)"/><rect x="132" y="35" width="18" height="70" fill="var(--orange)"><animate attributeName="height" values="20;70;70" dur="2s" repeatCount="indefinite"/><animate attributeName="y" values="85;35;35" dur="2s" repeatCount="indefinite"/></rect><path d="M100 115 V140 M70 150 L100 140 L130 150" stroke="var(--wire)" stroke-width="5" stroke-linecap="round" fill="none"/>',
+      l:["Skriv <b>rapport</b> ut fra loggen","Fortell klassen hva du gjorde","Tenk: vil jeg bli lærling her?"] }
+  ];
+  const stepper = $('stepper');
+  STEG.forEach((s,i)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=s.t; b.setAttribute('aria-pressed','false'); b.onclick=()=>visSteg(i); stepper.appendChild(b); });
+  function visSteg(i){
+    [...stepper.children].forEach((b,k)=>b.setAttribute('aria-pressed', k===i));
+    $('stegTittel').textContent = STEG[i].t;
+    $('stegListe').innerHTML = STEG[i].l.map(x=>'<li>'+x+'</li>').join('');
+    $('stegFig').innerHTML = STEG[i].fig; fixVars($('stegFig'));
+    $('stegBar').style.width = ((i+1)/STEG.length*100)+'%';
+  }
+  visSteg(0);
+
+  // ---------- verneutstyr ----------
+  const TEKST = { klaer:"Arbeidsklær dekker huden og synes godt.", sko:"Vernesko har stålhette mot tunge ting.", briller:"Vernebriller mot spon og gnister.", horsel:"Hørselvern mot støy. Hørselsskader blir ikke bra igjen.", hansker:"Hansker mot kutt og varme. Ikke ved dreiebenk og boremaskin!", hjelm:"Hjelm der ting kan falle ned." };
+  document.querySelectorAll('#vernKnapper button').forEach(b=>b.addEventListener('click',()=>{
+    const on = b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',on);
+    document.querySelector('.vern g.utstyr[data-u="'+b.dataset.u+'"]').classList.toggle('paa',on);
+    const n = document.querySelectorAll('#vernKnapper button[aria-pressed="true"]').length;
+    $('vernAntall').textContent = n;
+    $('vernTekst').textContent = on ? TEKST[b.dataset.u] : (n ? 'Hva mer trenger du?' : 'Klikk på utstyret.');
+    if(n===6) $('vernTekst').textContent = 'Fullt utstyrt! Bedriften sier hva som trengs i hver jobb.';
+  }));
+
+  // ---------- riktig eller galt ----------
+  document.querySelectorAll('.mcard').forEach(c=>c.addEventListener('click',()=>{
+    c.dataset.shown=c.dataset.ans; c.querySelector('.verdict').textContent=c.dataset.txt;
+  }));
+
+  fixVars(document);
+
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
