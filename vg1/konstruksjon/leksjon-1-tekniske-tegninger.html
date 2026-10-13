@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Konstruksjon Vg1 · Leksjon 1: Tekniske tegninger</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+/* steg for steg */
+.stepper{display:flex;flex-wrap:wrap;gap:8px}
+.stepper button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.steg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(160px,260px) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.steg>*{min-width:0}
+.steg svg{width:100%;height:auto;display:block}
+.steg ul{margin:.6rem 0 0;padding-left:1.2em;display:grid;gap:6px;font-size:1.1rem}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--orange);transition:width .4s}
+
+/* verneutstyr */
+.vern{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.vern>*{min-width:0}
+.vern svg{width:100%;height:auto;display:block}
+.vern .knapper{display:flex;flex-wrap:wrap;gap:8px}
+.vern .knapper button[aria-pressed="true"]{background:var(--r-soft);border-color:var(--r);color:var(--r)}
+.vern g.utstyr{opacity:0;transition:opacity .3s}
+.vern g.utstyr.paa{opacity:1}
+.teller{font:700 1.4rem/1.2 var(--mono)}
+.regler{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.regler>div{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--orange);border-radius:14px;padding:14px 16px;display:grid;gap:4px}
+.regler .ico{font-size:2rem}
+
+/* riktig eller galt */
+.measure{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mcard{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.mcard .ico{font-size:2.2rem}
+.mcard .verdict{font:700 18px/1.25 var(--display);min-height:1.2em}
+.mcard[data-shown="ok"]{border-color:var(--r);background:var(--r-soft)}
+.mcard[data-shown="bad"]{border-color:var(--bad);background:var(--bad-soft)}
+.mcard[data-shown="ok"] .verdict{color:var(--r)} .mcard[data-shown="bad"] .verdict{color:var(--bad)}
+
+/* logg */
+.logg{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(20px,4vw,56px);align-items:center}
+.logg>*{min-width:0}
+.skriv{stroke-dasharray:400;stroke-dashoffset:400;animation:skriv 6s ease-in-out infinite}
+.skriv.b{animation-delay:.6s}.skriv.c{animation-delay:1.2s}.skriv.d{animation-delay:1.8s}
+@keyframes skriv{30%,85%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+.sporsmal{display:grid;gap:10px;padding:0;margin:0;list-style:none;font-size:1.1rem}
+.sporsmal li{display:flex;gap:12px;align-items:baseline}
+.sporsmal .n{font:800 1.3em var(--display);color:var(--orange);min-width:1.2em}
+.gaa{animation:gaa 7s ease-in-out infinite}
+@keyframes gaa{0%,10%{transform:translateX(0)}45%,55%{transform:translateX(110px)}90%,100%{transform:translateX(0)}}
+.spinn{transform-box:fill-box;transform-origin:center;animation:spinn 4s linear infinite}
+@keyframes spinn{to{transform:rotate(360deg)}}
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+@media (max-width:860px){
+  .hero,.steg,.vern,.logg{grid-template-columns:1fr}
+  .trio,.measure,.regler{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.skriv,.gaa,.spinn{animation:none}.skriv{stroke-dashoffset:0}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+
+/* Konstruksjon: riss og tegning */
+.flate{fill:var(--surface);stroke:var(--wire);stroke-width:2.5;stroke-linejoin:round;transition:fill .3s}
+.flate.lys{fill:var(--orange-soft);stroke:var(--orange)}
+.synspil{opacity:0;transition:opacity .3s}
+.synspil.paa{opacity:1}
+.tegn{stroke-dasharray:600;stroke-dashoffset:600;animation:tegn 5s ease-in-out infinite}
+.tegn.b{animation-delay:.5s}.tegn.c{animation-delay:1s}.tegn.d{animation-delay:1.5s}
+@keyframes tegn{40%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:0}}
+.regler.fire svg{width:100%;height:auto;max-height:30px}
+.mal{opacity:0;animation:malinn 8s ease-in-out infinite}
+.mal.b{animation-delay:1s}.mal.c{animation-delay:2s}.mal.d{animation-delay:3s}
+@keyframes malinn{0%{opacity:0}10%,90%{opacity:1}100%{opacity:0}}
+.rutenett{display:block;max-width:440px;width:100%;height:auto;margin:8px 0}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.regler.fire{grid-template-columns:repeat(4,1fr)}
+@media (max-width:860px){.regler.fire{grid-template-columns:1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.tegn{animation:none;stroke-dashoffset:0}.mal{animation:none;opacity:1}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Konstruksjon Vg1 · <span>Leksjon 1</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hvorfor">Hvorfor tegning?</a><a href="#riss">Tre riss</a><a href="#linjer">Linjetyper</a><a href="#mal">Mål</a><a href="#malestokk">Målestokk</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Konstruksjon og styringsteknikk Vg1 · Leksjon 1</div>
+    <h1 style="margin-top:10px">Tekniske <span style="color:var(--orange)">tegninger</span></h1>
+    <p class="lead" style="margin-top:12px">Fra ting i 3D til tegning i 2D.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Hvorfor vi <b>tegner</b></span></li>
+      <li><span class="n i">2</span><span><b>Tre riss</b>: forfra, ovenfra, fra siden</span></li>
+      <li><span class="n r">3</span><span><b>Linjetyper</b> og <b>mål</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span><b>Målestokk</b></span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+  <svg viewBox="0 0 420 260" role="img" aria-label="Animasjon: en kloss i 3D blir til en tegning forfra">
+    <g transform="translate(-60 10)">
+      <polygon points="200,32 257,65 200,98 143,65" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
+      <polygon points="257,109 314,142 257,175 200,142" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
+      <polygon points="257,65 200,98 200,142 257,109" fill="var(--r-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
+      <polygon points="314,142 257,175 257,219 314,186" fill="var(--r-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
+      <polygon points="143,153 257,219 257,175 200,142 200,98 143,65" fill="var(--u-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
+    </g>
+    <!-- lysstråle forfra -->
+    <path d="M120 170 L250 120" stroke="var(--orange)" stroke-width="4" class="flow"/>
+    <!-- tegning -->
+    <g>
+      <rect x="290" y="40" width="120" height="180" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+      <path d="M310 190 H390 V160 H350 V110 H310 Z" fill="none" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" class="skriv"/>
+      <text x="350" y="212" text-anchor="middle" font-size="14" font-weight="700" fill="var(--u)">Forfra</text>
+    </g>
+  </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Mål</h3>
+      <p>Konstruksjon og styringsteknikk Vg1 (TIP01-03): «bruke programmer for 2D- og 3D-dataassistert konstruksjon (DAK) og dataassistert produksjon (DAP) til grunnleggende tegning og dokumentasjon». Denne leksjonen gir grunnlaget: riss, linjetyper, mål og målestokk. Neste steg er å tegne det samme i DAK.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: vis en ekte del. «Hvordan forklarer du den uten å vise den?»</dd>
+        <dt>10–30</dt><dd>Tre riss: klikk gjennom forfra, ovenfra og fra venstre. Del A og B.</dd>
+        <dt>30–45</dt><dd>Linjetyper og mål. Del C.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–65</dt><dd>Målestokk. Del D.</dd>
+        <dt>65–88</dt><dd>Tegn tre riss på rutepapir. Del E.</dd>
+        <dt>88–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="hvorfor">
+  <div class="tag">Del 1 · Hvorfor tegning?</div>
+  <h2>Tegningen er språket i verkstedet</h2>
+  <div class="trio">
+    <div class="q U">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><rect x="30" y="20" width="60" height="70" rx="6" fill="var(--u-soft)" stroke="var(--u)" stroke-width="4"/><path d="M42 40 h36 M42 55 h36 M42 70 h24" stroke="var(--u)" stroke-width="4" stroke-linecap="round"/><path d="M100 55 H140" stroke="var(--wire)" stroke-width="4" class="flow"/><circle cx="160" cy="45" r="12" fill="var(--i)"/><path d="M160 58 v30" stroke="var(--i)" stroke-width="8" stroke-linecap="round"/></svg>
+      <h3>Alle forstår den</h3>
+      <p>Samme tegning, samme del. <b>Uansett</b> hvem som lager den.</p>
+    </div>
+    <div class="q I">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><path d="M30 70 H170" stroke="var(--i)" stroke-width="3"/><path d="M30 55 v30 M170 55 v30" stroke="var(--i)" stroke-width="3"/><path d="M30 70 l12 -6 v12 Z M170 70 l-12 -6 v12 Z" fill="var(--i)"/><text x="100" y="58" text-anchor="middle" font-size="26" font-weight="800" fill="var(--i)">60</text></svg>
+      <h3>Alle mål står der</h3>
+      <p>Mål i <b>millimeter</b>. Ingen gjetting.</p>
+    </div>
+    <div class="q R">
+      <svg viewBox="0 0 200 110" aria-hidden="true"><g class="spinn"><circle cx="70" cy="55" r="30" fill="none" stroke="var(--r)" stroke-width="10" stroke-dasharray="10 7"/></g><circle cx="70" cy="55" r="10" fill="var(--r)"/><path d="M120 40 l14 14 l28 -30" fill="none" stroke="var(--r)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" class="pulse"/></svg>
+      <h3>Riktig første gang</h3>
+      <p>Delen kan lages og <b>kontrolleres</b>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="riss">
+  <div class="tag">Del 2 · Tre riss</div>
+  <h2>Se klossen fra tre kanter</h2>
+  <p class="lead">Klikk på en retning.</p>
+  <div class="stepper" id="rissKnapper" role="group" aria-label="Velg riss">
+    <button type="button" data-r="forfra" aria-pressed="true">👁️ Forfra</button>
+    <button type="button" data-r="ovenfra" aria-pressed="false">⬇️ Ovenfra</button>
+    <button type="button" data-r="venstre" aria-pressed="false">➡️ Fra venstre</button>
+  </div>
+  <div class="steg">
+    <svg viewBox="0 0 400 290" role="img" aria-label="Kloss i 3D med piler for synsretning">
+      <defs><marker id="pil" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="var(--orange)"/></marker></defs>
+      <g transform="translate(0 50)">
+        <polygon class="flate f-ovenfra" points="200,32 257,65 200,98 143,65"/>
+        <polygon class="flate f-ovenfra" points="257,109 314,142 257,175 200,142"/>
+        <polygon class="flate" points="257,65 200,98 200,142 257,109"/>
+        <polygon class="flate" points="314,142 257,175 257,219 314,186"/>
+        <polygon class="flate f-forfra" points="143,153 257,219 257,175 200,142 200,98 143,65"/>
+        <g class="synspil" data-r="forfra"><path d="M70 230 L170 172" stroke="var(--orange)" stroke-width="6" marker-end="url(#pil)" class="flow"/></g>
+        <g class="synspil" data-r="ovenfra"><path d="M200 -40 L200 20" stroke="var(--orange)" stroke-width="6" marker-end="url(#pil)" class="flow"/></g>
+        <g class="synspil" data-r="venstre"><path d="M40 10 L120 56" stroke="var(--orange)" stroke-width="6" marker-end="url(#pil)" class="flow"/></g>
+      </g>
+    </svg>
+    <div>
+      <h3 id="rissTittel">Forfra</h3>
+      <svg id="rissFig" viewBox="0 0 200 140" style="max-width:320px" aria-hidden="true"></svg>
+      <p id="rissTekst" style="font-size:1.1rem"></p>
+    </div>
+  </div>
+
+  <h3>Slik ligger rissene på tegningen</h3>
+  <div class="fig" style="max-width:640px"><div class="tablewrap"><div style="min-width:420px">
+  <svg viewBox="0 0 440 270" role="img" aria-label="Europeisk projeksjon: forfra øverst til venstre, ovenfra under, fra venstre til høyre for forfra">
+    <g fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 4">
+      <path d="M40 120 V150 M160 120 V150 M100 120 V150"/>
+      <path d="M160 40 H220 M160 80 H220"/>
+    </g>
+    <g fill="none" stroke="var(--ink)" stroke-width="3" stroke-linejoin="round">
+      <path d="M40 120 H160 V80 H100 V40 H40 Z" class="tegn"/>
+      <path d="M40 150 H160 V210 H40 Z M100 150 V210" class="tegn b"/>
+      <path d="M220 40 H280 V120 H220 Z" class="tegn c"/>
+    </g>
+    <path d="M220 80 H280" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 5" class="tegn c"/>
+    <g font-weight="700" font-size="15" text-anchor="middle">
+      <text x="100" y="30" fill="var(--u)">Forfra</text>
+      <text x="100" y="235" fill="var(--i)">Ovenfra</text>
+      <text x="250" y="30" fill="var(--r)">Fra venstre</text>
+    </g>
+    <g font-size="14" fill="var(--muted)">
+      <text x="300" y="170">Ovenfra: under</text>
+      <text x="300" y="192">Fra venstre: til høyre</text>
+      <text x="300" y="214">(europeisk metode)</text>
+    </g>
+  </svg>
+  </div></div></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Norge bruker europeisk projeksjon (første vinkels projeksjon, ISO E). Riss fra venstre plasseres til høyre for forfra-risset, og riss ovenfra plasseres under. Tegn symbolet for projeksjonsmetode på tavla.</details>
+</section>
+
+<section id="linjer">
+  <div class="tag">Del 3 · Linjetyper</div>
+  <h2>Hver linje betyr noe</h2>
+  <div class="regler fire">
+    <div><svg viewBox="0 0 160 30" aria-hidden="true"><path d="M5 15 H155" stroke="var(--ink)" stroke-width="5" class="tegn"/></svg><b>Tykk heltrukket</b><span>Kanter du <b>ser</b>.</span></div>
+    <div><svg viewBox="0 0 160 30" aria-hidden="true"><path d="M5 15 H155" stroke="var(--ink)" stroke-width="3" stroke-dasharray="12 7" class="tegn b"/></svg><b>Stiplet</b><span>Kanter som er <b>skjult</b>.</span></div>
+    <div><svg viewBox="0 0 160 30" aria-hidden="true"><path d="M5 15 H155" stroke="var(--r)" stroke-width="2" stroke-dasharray="24 5 3 5" class="tegn c"/></svg><b>Strek-prikk</b><span><b>Senterlinje</b> i hull og symmetri.</span></div>
+    <div><svg viewBox="0 0 160 30" aria-hidden="true"><path d="M5 15 H155" stroke="var(--i)" stroke-width="1.5" class="tegn d"/><path d="M5 15 l10 -5 v10 Z M155 15 l-10 -5 v10 Z" fill="var(--i)"/></svg><b>Tynn heltrukket</b><span><b>Mållinjer</b> og hjelpelinjer.</span></div>
+  </div>
+  <div class="fig" style="max-width:560px">
+  <svg viewBox="0 0 330 170" role="img" aria-label="Plate med hull: synlige kanter, skjult hull og senterlinje">
+    <rect x="40" y="30" width="220" height="40" fill="none" stroke="var(--ink)" stroke-width="4"/>
+    <path d="M135 30 V70 M165 30 V70" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 4"/>
+    <path d="M150 20 V80" stroke="var(--r)" stroke-width="1.5" stroke-dasharray="14 4 2 4"/>
+    <rect x="40" y="100" width="220" height="50" fill="none" stroke="var(--ink)" stroke-width="4"/>
+    <circle cx="150" cy="125" r="15" fill="none" stroke="var(--ink)" stroke-width="4"/>
+    <path d="M150 104 V146 M129 125 H171" stroke="var(--r)" stroke-width="1.5" stroke-dasharray="14 4 2 4"/>
+    <text x="270" y="55" font-size="12" fill="var(--muted)">forfra</text>
+    <text x="270" y="130" font-size="12" fill="var(--muted)">ovenfra</text>
+  </svg>
+  <p class="caption">Hullet ser vi ovenfra (heltrukket). Forfra er det skjult (stiplet).</p>
+  </div>
+</section>
+
+<section id="mal">
+  <div class="tag">Del 4 · Målsetting</div>
+  <h2>Sett mål på tegningen</h2>
+  <div class="logg">
+    <div class="fig">
+    <svg viewBox="0 0 320 210" role="img" aria-label="Forfra-riss av klossen med mål 60, 40, 30 og 20">
+      <path d="M60 170 H180 V130 H120 V90 H60 Z" fill="none" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"/>
+      <g stroke="var(--i)" stroke-width="1.5" fill="none">
+        <path d="M60 175 V198 M180 175 V198 M60 192 H180" class="mal a"/>
+        <path d="M55 90 H32 M55 170 H32 M38 90 V170" class="mal b"/>
+        <path d="M60 85 V62 M120 85 V62 M60 68 H120" class="mal c"/>
+        <path d="M185 130 H208 M185 170 H208 M202 130 V170" class="mal d"/>
+      </g>
+      <g fill="var(--i)" font-size="15" font-weight="700" text-anchor="middle">
+        <text x="120" y="188" class="mal a">60</text>
+        <text x="28" y="135" class="mal b" transform="rotate(-90 28 130)">40</text>
+        <text x="90" y="62" class="mal c">30</text>
+        <text x="220" y="155" class="mal d">20</text>
+      </g>
+    </svg>
+    </div>
+    <div>
+      <ul class="sporsmal">
+        <li><span class="n">1</span><span>Mål i <b>mm</b>. Skriv ikke «mm».</span></li>
+        <li><span class="n">2</span><span>Hvert mål står <b>én gang</b>.</span></li>
+        <li><span class="n">3</span><span>Tallet står <b>over</b> mållinjen.</span></li>
+        <li><span class="n">4</span><span>Mål <b>utenfor</b> delen når det går.</span></li>
+      </ul>
+      <a class="simlink no-print" data-sim="skyvelaere" style="margin-top:16px"><span class="ico">📏</span><span><b>Prøv selv: Skyvelære-simulatoren</b><small>Mål en del før du tegner den.</small></span><span class="pil">→</span></a>
+      <a class="simlink no-print" data-sim="toleranser"><span class="ico">🎯</span><span><b>Prøv selv: Toleranser</b><small>Hvor nøyaktig må målet være?</small></span><span class="pil">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="malestokk">
+  <div class="tag">Del 5 · Målestokk</div>
+  <h2>Stor ting, lite papir</h2>
+  <p class="lead">Målet på tegningen er alltid det <b>ekte</b> målet.</p>
+  <div class="stepper" id="msKnapper" role="group" aria-label="Velg målestokk">
+    <button type="button" data-k="0.5" aria-pressed="false">1:2 forminsket</button>
+    <button type="button" data-k="1" aria-pressed="true">1:1 naturlig</button>
+    <button type="button" data-k="2" aria-pressed="false">2:1 forstørret</button>
+  </div>
+  <div class="fig" style="max-width:640px">
+  <svg viewBox="0 0 400 200" role="img" aria-label="Klossen tegnet i valgt målestokk">
+    <g id="msKloss" style="transition:transform .5s;transform-origin:40px 180px">
+      <path d="M40 180 H100 V160 H70 V140 H40 Z" fill="var(--u-soft)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+    </g>
+    <text x="390" y="40" text-anchor="end" font-size="28" font-weight="800" fill="var(--orange)" id="msTekst">1:1</text>
+    <text x="390" y="70" text-anchor="end" font-size="15" fill="var(--muted)" id="msLengde">60 mm på papiret</text>
+    <text x="390" y="92" text-anchor="end" font-size="15" fill="var(--muted)">Målet skrives: 60</text>
+  </svg>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Figuren er tegnet slik at 1:1 er 60 enheter bred. Vanlige målestokker: 1:2, 1:5, 1:10 og 2:1, 5:1. Målestokken står i tegningshodet.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 1: Tekniske tegninger</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p>Mål på tegninger står i <span class="luke"><span class="fasit" hidden>millimeter (mm)</span></span>.</p>
+      <p>Vi tegner tre riss: forfra, <span class="luke"><span class="fasit" hidden>ovenfra</span></span> og fra <span class="luke"><span class="fasit" hidden>venstre</span></span>.</p>
+      <p>Risset ovenfra plasseres <span class="luke"><span class="fasit" hidden>under</span></span> risset forfra.</p>
+      <p>Risset fra venstre plasseres til <span class="luke"><span class="fasit" hidden>høyre</span></span> for risset forfra.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Linjetyper</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Linje</th><th>Hva betyr den?</th></tr>
+        <tr><td>Tykk heltrukket</td><td class="blank"><span class="fasit" hidden>Synlig kant</span></td></tr>
+        <tr><td>Stiplet</td><td class="blank"><span class="fasit" hidden>Skjult kant</span></td></tr>
+        <tr><td>Strek-prikk</td><td class="blank"><span class="fasit" hidden>Senterlinje (hull, symmetri)</span></td></tr>
+        <tr><td>Tynn heltrukket med piler</td><td class="blank"><span class="fasit" hidden>Mållinje</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Les tegningen</h3>
+      <p>Se på tegningen av klossen i Del 4.</p>
+      <ol>
+        <li>Hvor lang er klossen?<div class="svar"><span class="fasit" hidden>60 mm</span></div></li>
+        <li>Hvor høy er klossen på det høyeste?<div class="svar"><span class="fasit" hidden>40 mm</span></div></li>
+        <li>Hvor høy er den lave delen?<div class="svar"><span class="fasit" hidden>20 mm</span></div></li>
+        <li>Hvorfor er det en stiplet linje i risset fra venstre?<div class="svar"><span class="fasit" hidden>Kanten på den lave delen er skjult bak den høye delen</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del D · Målestokk</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Ekte mål</th><th>Målestokk</th><th>Lengde på papiret</th></tr>
+        <tr><td>100 mm</td><td>1:2</td><td class="blank"><span class="fasit" hidden>50 mm</span></td></tr>
+        <tr><td>30 mm</td><td>2:1</td><td class="blank"><span class="fasit" hidden>60 mm</span></td></tr>
+        <tr><td>500 mm</td><td>1:10</td><td class="blank"><span class="fasit" hidden>50 mm</span></td></tr>
+      </table></div>
+      <p style="margin-top:8px">En del er 200 mm lang og tegnet i 1:2. Hvilket tall skriver du på mållinjen? <span class="luke"><span class="fasit" hidden>200</span></span></p>
+    </div>
+
+    <div>
+      <h3>Del E · Tegn tre riss</h3>
+      <p>Tegn klossen forfra, ovenfra og fra venstre. Én rute = 10 mm.</p>
+      <svg class="oppfig" viewBox="0 0 300 200" role="img" aria-label="U-formet kloss: 60 lang, 20 dyp, 30 høy, med et spor 20 bredt og 15 dypt på midten">
+        <g transform="translate(0 15)">
+          <polygon points="192,58 233,82 192,106 150,82" fill="var(--bg)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>
+          <polygon points="192,22 150,46 150,82 192,58" fill="var(--r-soft)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>
+          <polygon points="150,-2 192,22 150,46 108,22" fill="var(--i-soft)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>
+          <polygon points="233,46 275,70 233,94 192,70" fill="var(--i-soft)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>
+          <polygon points="275,70 233,94 233,166 275,142" fill="var(--r-soft)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>
+          <polygon points="108,94 233,166 233,94 192,70 192,106 150,82 150,46 108,22" fill="var(--u-soft)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>
+          <text x="60" y="150" font-size="13" fill="var(--muted)">Lengde 60</text>
+          <text x="60" y="166" font-size="13" fill="var(--muted)">Dybde 20 · Høyde 30</text>
+          <text x="60" y="182" font-size="13" fill="var(--muted)">Spor 20 bredt, 15 dypt</text>
+        </g>
+      </svg>
+      <svg class="rutenett" viewBox="0 0 340 220" role="img" aria-label="Rutenett til å tegne på">
+        <defs><pattern id="ruter" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0 H0 V20" fill="none" stroke="var(--line)" stroke-width="1"/></pattern></defs>
+        <rect x="0" y="0" width="340" height="220" fill="url(#ruter)" stroke="var(--line)"/>
+        <path class="fasit-svg" d="M20 80 H140 V20 H100 V50 H60 V20 H20 Z" fill="none" stroke="var(--r)" stroke-width="3" stroke-linejoin="round"/>
+        <path class="fasit-svg" d="M20 120 H140 V160 H20 Z M60 120 V160 M100 120 V160" fill="none" stroke="var(--r)" stroke-width="3"/>
+        <path class="fasit-svg" d="M180 20 H220 V80 H180 Z" fill="none" stroke="var(--r)" stroke-width="3"/>
+        <path class="fasit-svg" d="M180 50 H220" stroke="var(--r)" stroke-width="2" stroke-dasharray="6 4"/>
+      </svg>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hvilken linjetype viser en kant du ikke ser?<div class="svar"><span class="fasit" hidden>Stiplet linje</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+
+  // ---------- tre riss ----------
+  const K='fill="none" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round"';
+  const RISS = {
+    forfra:{t:"Forfra", fig:'<path d="M40 120 H160 V80 H100 V40 H40 Z" '+K+' class="tegn"/>', tx:"Vi ser lengden (60) og høyden (40). Trappen synes."},
+    ovenfra:{t:"Ovenfra", fig:'<path d="M40 40 H160 V100 H40 Z M100 40 V100" '+K+' class="tegn"/>', tx:"Vi ser lengden (60) og dybden (30). Linjen i midten er kanten der trappen går ned."},
+    venstre:{t:"Fra venstre", fig:'<path d="M70 40 H130 V120 H70 Z" '+K+' class="tegn"/><path d="M70 80 H130" stroke="var(--ink)" stroke-width="2.5" stroke-dasharray="8 5"/>', tx:"Vi ser dybden (30) og høyden (40). Den lave delen er skjult bak, derfor stiplet linje."}
+  };
+  function visRiss(r){
+    document.querySelectorAll('#rissKnapper button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.r===r));
+    document.querySelectorAll('.synspil').forEach(g=>g.classList.toggle('paa', g.dataset.r===r));
+    document.querySelectorAll('.flate').forEach(f=>f.classList.toggle('lys', f.classList.contains('f-'+r)));
+    $('rissTittel').textContent=RISS[r].t; $('rissTekst').textContent=RISS[r].tx;
+    $('rissFig').innerHTML=RISS[r].fig; fixVars($('rissFig'));
+  }
+  document.querySelectorAll('#rissKnapper button').forEach(b=>b.addEventListener('click',()=>visRiss(b.dataset.r)));
+  visRiss('forfra');
+
+  // ---------- målestokk ----------
+  document.querySelectorAll('#msKnapper button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#msKnapper button').forEach(x=>x.setAttribute('aria-pressed', x===b));
+    const k=+b.dataset.k;
+    $('msKloss').style.transform='scale('+(k*2)+')';
+    $('msTekst').textContent = k===1?'1:1':(k<1?'1:2':'2:1');
+    $('msLengde').textContent = (60*k)+' mm på papiret';
+  }));
+  $('msKloss').style.transform='scale(2)';
+
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  // fasit i rutenettet følger «Vis fasit»
+  const fbtn=$('fasitBtn'); if(fbtn) fbtn.addEventListener('click',()=>$('sheet').classList.toggle('vis-fasit', fbtn.getAttribute('aria-pressed')!=='true'));
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
