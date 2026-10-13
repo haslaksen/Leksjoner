@@ -79,6 +79,16 @@ table.t th{background:var(--steel-soft)}
 .hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
 .goals li{margin:.4rem 0}
 .plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
 
 /* Materialtre */
 .tree text{font-family:inherit}
@@ -184,13 +194,13 @@ table.t th{background:var(--steel-soft)}
 @media (max-width:900px){
   .slide{min-height:auto; padding:2rem 1rem}
   .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
-  .grid4{grid-template-columns:1fr 1fr}
+  .grid4,.grid3{grid-template-columns:1fr 1fr}
   .calc{grid-template-columns:1fr 1fr}
   h1{font-size:2.2rem} h2{font-size:1.6rem}
   .top .brand{display:none}
   .bars .row{grid-template-columns:6.5rem 1fr 4.5rem}
 }
-@media (max-width:600px){ .grid4{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .gi{grid-template-columns:1fr} }
+@media (max-width:600px){ .grid4,.grid3{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .gi{grid-template-columns:1fr} }
 
 /* Utskrift: bare oppgavene */
 @media print{
@@ -226,18 +236,62 @@ table.t th{background:var(--steel-soft)}
     <div>
       <div class="kicker">Vg2 industriteknologi · Materiallære</div>
       <h1>Leksjon 1<br>Materiallære: grunnleggende</h1>
-      <p class="lead">Hvorfor er en skiftenøkkel laget av stål, en vindusrute av glass og en glidelist av plast? Alt i verkstedet er valgt på grunn av egenskapene til materialet.</p>
-      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <p class="lead">Hvorfor bøyer stål seg, mens glass knuser?</p>
       <ol class="goals">
-        <li>nevne de <b>fire materialgruppene</b> og gi eksempler fra verkstedet</li>
-        <li>forklare med en enkel <b>atommodell</b> hvorfor metall leder strøm og kan bøyes</li>
-        <li>forklare forskjellen på <b>hard, seig, sprø, elastisk og plastisk</b></li>
-        <li>regne ut <b>masse</b> med densitet: m = ρ · V</li>
-        <li><b>begrunne</b> et enkelt materialvalg</li>
+        <li>De <b>fire materialgruppene</b></li>
+        <li><b>Atommodell</b>: hvorfor metall kan bøyes</li>
+        <li><b>Elastisk</b> og <b>plastisk</b> – flytegrense</li>
+        <li><b>Hard</b>, <b>seig</b> og <b>sprø</b></li>
+        <li><b>Masse</b>: m = ρ · V</li>
+        <li><b>Velge</b> riktig materiale</li>
       </ol>
     </div>
     <div>
-      <div class="card">
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Hammer slår på en stålstang som bøyer seg og på en keramisk flis som knuser">
+          <g style="font-size:20px;font-weight:800;text-anchor:middle">
+            <text x="140" y="30" style="fill:var(--steel-dark)">Metall</text>
+            <text x="380" y="30" style="fill:var(--orange)">Keram</text>
+          </g>
+          <!-- Metall: stang på to opplegg -->
+          <path d="M70 206 l-14 26 h28z M210 206 l-14 26 h28z" style="fill:var(--muted)"/>
+          <path d="M50 198 Q140 198 230 198" style="fill:none;stroke:var(--steel);stroke-width:12;stroke-linecap:round">
+            <animate attributeName="d" dur="4s" repeatCount="indefinite" keyTimes="0;.34;.4;.9;1" values="M50 198 Q140 198 230 198;M50 198 Q140 198 230 198;M50 198 Q140 238 230 198;M50 198 Q140 238 230 198;M50 198 Q140 198 230 198"/>
+          </path>
+          <g><animateTransform attributeName="transform" type="translate" dur="4s" repeatCount="indefinite" keyTimes="0;.3;.34;.4;.6;1" values="0 -10;0 -10;0 52;0 72;0 0;0 -10"/>
+            <rect x="136" y="44" width="10" height="80" rx="3" style="fill:var(--orange)"/>
+            <rect x="112" y="116" width="58" height="26" rx="4" style="fill:var(--steel-dark)"/>
+          </g>
+          <!-- Keram: flis på to opplegg -->
+          <path d="M310 206 l-14 26 h28z M450 206 l-14 26 h28z" style="fill:var(--muted)"/>
+          <rect x="290" y="192" width="90" height="14" style="fill:var(--orange-soft);stroke:var(--orange);stroke-width:2">
+            <animateTransform attributeName="transform" type="rotate" dur="4s" repeatCount="indefinite" keyTimes="0;.36;.42;.9;1" values="0 310 206;0 310 206;14 310 206;14 310 206;0 310 206"/></rect>
+          <rect x="380" y="192" width="90" height="14" style="fill:var(--orange-soft);stroke:var(--orange);stroke-width:2">
+            <animateTransform attributeName="transform" type="rotate" dur="4s" repeatCount="indefinite" keyTimes="0;.36;.42;.9;1" values="0 450 206;0 450 206;-14 450 206;-14 450 206;0 450 206"/></rect>
+          <g style="fill:var(--orange)" opacity="0">
+            <animate attributeName="opacity" dur="4s" repeatCount="indefinite" keyTimes="0;.36;.37;.6;.61;1" values="0;0;1;1;0;0"/>
+            <path d="M0 0 l6 -3 l-2 7z"><animateMotion dur="4s" repeatCount="indefinite" keyTimes="0;.36;.6;1" keyPoints="0;0;1;1" calcMode="linear" path="M378 192 q-30 -40 -60 -20"/></path>
+            <path d="M0 0 l6 -3 l-2 7z"><animateMotion dur="4s" repeatCount="indefinite" keyTimes="0;.36;.6;1" keyPoints="0;0;1;1" calcMode="linear" path="M382 192 q30 -46 64 -24"/></path>
+            <path d="M0 0 l5 -2 l-1 5z"><animateMotion dur="4s" repeatCount="indefinite" keyTimes="0;.36;.6;1" keyPoints="0;0;1;1" calcMode="linear" path="M380 192 q6 -50 18 -60"/></path>
+          </g>
+          <g><animateTransform attributeName="transform" type="translate" dur="4s" repeatCount="indefinite" keyTimes="0;.3;.36;.42;.6;1" values="0 -10;0 -10;0 50;0 64;0 0;0 -10"/>
+            <rect x="376" y="44" width="10" height="80" rx="3" style="fill:var(--orange)"/>
+            <rect x="352" y="116" width="58" height="26" rx="4" style="fill:var(--steel-dark)"/>
+          </g>
+          <g style="font-size:15px;text-anchor:middle;fill:var(--muted)">
+            <text x="140" y="256">bøyer seg</text><text x="380" y="256">knuser</text>
+          </g>
+          <!-- Fire materialgrupper -->
+          <g style="font-size:14px;font-weight:700;text-anchor:middle">
+            <g opacity="0"><animate attributeName="opacity" to="1" begin=".2s" dur=".5s" fill="freeze"/><rect x="5" y="276" width="120" height="40" rx="10" class="g-met" style="stroke-width:2"/><text x="65" y="301" style="fill:var(--ink)">Metaller</text></g>
+            <g opacity="0"><animate attributeName="opacity" to="1" begin=".6s" dur=".5s" fill="freeze"/><rect x="135" y="276" width="120" height="40" rx="10" class="g-pol" style="stroke-width:2"/><text x="195" y="301" style="fill:var(--ink)">Polymerer</text></g>
+            <g opacity="0"><animate attributeName="opacity" to="1" begin="1s" dur=".5s" fill="freeze"/><rect x="265" y="276" width="120" height="40" rx="10" class="g-ker" style="stroke-width:2"/><text x="325" y="301" style="fill:var(--ink)">Keramer</text></g>
+            <g opacity="0"><animate attributeName="opacity" to="1" begin="1.4s" dur=".5s" fill="freeze"/><rect x="395" y="276" width="120" height="40" rx="10" class="g-kom" style="stroke-width:2"/><text x="455" y="301" style="fill:var(--ink)">Kompositter</text></g>
+          </g>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <div class="card" style="margin-top:.6rem">
         <h3>Kompetansemål (PIN02-03, Teknologi)</h3>
         <p style="margin-bottom:.4rem">Hovedmål for denne serien:</p>
         <p><i>«vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer»</i></p>
@@ -251,13 +305,15 @@ table.t th{background:var(--steel-soft)}
           <tr><td>5–30 min</td><td>Del 1–3: hvorfor, materialgrupper, inni metallet</td></tr>
           <tr><td>30–45 min</td><td>Oppgave 1 og 2</td></tr>
           <tr><th colspan="2">Time 2</th></tr>
-          <tr><td>0–20 min</td><td>Del 4–6: egenskaper, elastisk/plastisk, seig/sprø, densitet</td></tr>
+          <tr><td>0–20 min</td><td>Del 4–7: egenskaper, flytekurve, hard/seig, densitet</td></tr>
           <tr><td>20–35 min</td><td>Oppgave 3 og 4</td></tr>
-          <tr><td>35–40 min</td><td>Del 7–8: materialvalg og gjenvinning, oppgave 5</td></tr>
+          <tr><td>35–40 min</td><td>Del 8–9: materialvalg og gjenvinning, oppgave 5</td></tr>
           <tr><td>40–45 min</td><td>Exit-lapp</td></tr>
         </table>
+        <p style="font-size:.85rem; margin:.6rem 0 0">Oppstartsspørsmål: «Hvorfor er en skiftenøkkel av stål, en vindusrute av glass og en glidelist av plast?» Alt i verkstedet er valgt på grunn av egenskapene til materialet.</p>
       </div>
-      <p class="caption no-print">Tips: bruk piltastene ↑ ↓ eller Page Up/Down for å bla mellom delene. A+ gir større tekst på fremviser.</p>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓. A+ gir større tekst på fremviser.</p>
     </div>
   </div>
 </section>
@@ -267,7 +323,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 1 · ca. 5 min</div>
     <h2>Hvorfor lære om materialer?</h2>
-    <p class="lead">Feil materiale gir deler som ruster, sprekker, slites eller blir for tunge. Riktig materiale gjør jobben enkel å produsere og trygg å bruke.</p>
+    <p class="lead">Feil materiale ruster, sprekker eller blir for tungt.</p>
     <div class="grid4" style="margin-top:1.5rem">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Bjelke som bøyer seg under last">
@@ -281,7 +337,7 @@ table.t th{background:var(--steel-soft)}
           </g>
           <text x="100" y="118" text-anchor="middle" font-size="11" style="fill:var(--muted)">last → nedbøyning</text>
         </svg>
-        <h3>Styrke</h3><p>Tåler delen kreftene? En løftebrakett må ikke bøye seg varig eller knekke.</p></div>
+        <h3>Styrke</h3><p class="short">Tåler delen kreftene?</p></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Vekt med stål og aluminium">
           <rect x="70" y="98" width="60" height="6" rx="2" style="fill:var(--steel-dark)"/>
@@ -301,7 +357,7 @@ table.t th{background:var(--steel-soft)}
             <text x="160" y="88" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--ink)">alu 2,70 kg</text></g>
           <text x="100" y="118" text-anchor="middle" font-size="11" style="fill:var(--muted)">like store terninger, 1 dm³</text>
         </svg>
-        <h3>Vekt</h3><p>Aluminium veier bare en tredjedel av stål. Viktig i biler, fly og droner.</p></div>
+        <h3>Vekt</h3><p class="short">Alu veier en tredjedel av stål.</p></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Stål ruster i sjøvann, rustfritt gjør ikke">
           <rect x="30" y="18" width="56" height="84" rx="3" style="fill:#7d8995"/>
@@ -320,7 +376,7 @@ table.t th{background:var(--steel-soft)}
           <text x="142" y="14" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--ink)">rustfritt 316</text>
           <text x="100" y="116" text-anchor="middle" font-size="11" style="fill:var(--ink)">sjøvann</text>
         </svg>
-        <h3>Korrosjon</h3><p>Ulegert stål ruster i sjøvann. Til båt brukes rustfritt syrefast, bronse eller sjøvannsbestandig aluminium.</p></div>
+        <h3>Korrosjon</h3><p class="short">Vanlig stål ruster i sjøvann.</p></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Fres som tar spon">
           <rect x="15" y="70" width="170" height="36" style="fill:var(--steel)"/>
@@ -340,10 +396,12 @@ table.t th{background:var(--steel-soft)}
           </g>
           <text x="100" y="118" text-anchor="middle" font-size="11" style="fill:var(--muted)">fresing: spon og verktøyslitasje</text>
         </svg>
-        <h3>Bearbeiding</h3><p>Lar det seg frese, sveise, bøye eller støpe? Det styrer metoden og skjæredataene du velger.</p></div>
+        <h3>Bearbeiding</h3><p class="short">Kan det freses, sveises, bøyes?</p></div>
     </div>
-    <div class="tip o"><b>Oppstartsspørsmål (2 min med sidemannen):</b> Se deg rundt. Finn tre ting som er laget av ulike materialer. Hvorfor tror dere produsenten valgte akkurat det materialet?</div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Samle 4–5 svar på tavla og sorter dem i fire kolonner uten overskrift. Avslør overskriftene (metall, polymer, kerami, kompositt) på neste del.</details>
+    <div class="tip o"><b>Snakk med sidemannen (2 min):</b> Finn tre ting av ulike materialer. Hvorfor akkurat det?</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Samle 4–5 svar på tavla og sorter dem i fire kolonner uten overskrift. Avslør overskriftene (metall, polymer, kerami, kompositt) på neste del.<br>
+    Feil materiale gir deler som ruster, sprekker, slites eller blir for tunge. Riktig materiale gjør jobben enkel å produsere og trygg å bruke.
+    <ul class="clean"><li><b>Styrke:</b> en løftebrakett må ikke bøye seg varig eller knekke.</li><li><b>Vekt:</b> aluminium veier bare en tredjedel av stål – viktig i biler, fly og droner.</li><li><b>Korrosjon:</b> ulegert stål ruster i sjøvann. Til båt brukes rustfritt syrefast, bronse eller sjøvannsbestandig aluminium.</li><li><b>Bearbeiding:</b> om materialet lar seg frese, sveise, bøye eller støpe styrer metoden og skjæredataene du velger.</li></ul></details>
   </div>
 </section>
 
@@ -352,7 +410,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 2 · ca. 10 min</div>
     <h2>De fire materialgruppene</h2>
-    <p class="lead">Nesten alle materialer i industrien hører til én av fire grupper. Klikk på en gruppe for å lese mer.</p>
+    <p class="lead">Nesten alt hører til én av fire grupper. Klikk på en.</p>
     <div class="fig">
       <svg class="tree" id="tree" viewBox="0 0 1100 460" role="img" aria-label="Materialtre med fire grupper">
         <g class="pop" style="animation-delay:0s">
@@ -387,10 +445,11 @@ table.t th{background:var(--steel-soft)}
         <p class="caption">Grå kuler = metallatomer (positive ioner). Blå prikker = frie elektroner. Bevegelse og utvidelse er sterkt forstørret.</p>
       </div>
       <div>
-        <h3>Tre ting modellen forklarer</h3>
-        <div class="card" style="margin-bottom:.7rem"><b style="color:var(--blue)">⚡ Leder strøm og varme</b><br>Elektronene er ikke bundet til ett atom. De flyter fritt og kan frakte strøm og varme. Derfor er kobber brukt i kabler.</div>
-        <div class="card" style="margin-bottom:.7rem"><b style="color:var(--green)">↔ Kan bøyes og formes</b><br>Atomene ligger i ordnede lag (et <b>krystallgitter</b>). Lagene kan gli forbi hverandre uten at bindingen brytes. Se neste figur.</div>
-        <div class="card"><b style="color:var(--orange)">🌡 Utvider seg når det blir varmt</b><br>Dra i temperaturen: atomene vibrerer mer og trenger mer plass. Derfor måles deler ved 20 °C, og derfor kan et lager krympes på en aksel med varme.</div>
+        <h3>Modellen forklarer</h3>
+        <div class="card" style="margin-bottom:.7rem"><b style="color:var(--blue)">⚡ Leder strøm og varme</b><br>Frie elektroner frakter strømmen.</div>
+        <div class="card" style="margin-bottom:.7rem"><b style="color:var(--green)">↔ Kan bøyes og formes</b><br>Atomlagene glir, bindingen holder.</div>
+        <div class="card"><b style="color:var(--orange)">🌡 Utvider seg i varme</b><br>Varme atomer vibrerer og tar mer plass.</div>
+        <details class="laerer no-print"><summary>Lærernotat</summary>Elektronene er ikke bundet til ett atom. De flyter fritt og kan frakte strøm og varme – derfor er kobber brukt i kabler. Atomene ligger i ordnede lag (et <b>krystallgitter</b>), og lagene kan gli forbi hverandre uten at bindingen brytes. Når temperaturen øker, vibrerer atomene mer og trenger mer plass. Derfor måles deler ved 20 °C, og derfor kan et lager krympes på en aksel med varme.</details>
       </div>
     </div>
 
@@ -409,7 +468,8 @@ table.t th{background:var(--steel-soft)}
       <button class="btn orange" id="btnSlip">🔨 Slå med hammeren</button>
       <button class="btn" id="btnSlipReset">↻ Tilbakestill</button>
     </div>
-    <div class="tip">I metallet ser atomene helt like ut etter at laget har glidd. Bindingen holder, og metallet har fått <b>varig formendring</b>. I keramet havner + over + og − over −. Like ladninger frastøter hverandre, og materialet <b>sprekker</b>.</div>
+    <div class="tip"><b>Metall:</b> lagene glir → <b>varig formendring</b>. &nbsp; <b>Keram:</b> + møter + → frastøting → <b>sprekk</b>.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>I metallet ser atomene helt like ut etter at laget har glidd. Bindingen holder, og metallet har fått varig formendring. I keramet havner + over + og − over −. Like ladninger frastøter hverandre, og materialet sprekker.</details>
   </div>
 </section>
 
@@ -418,14 +478,63 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 4 · ca. 5 min</div>
     <h2>Fire typer materialegenskaper</h2>
-    <p class="lead">Når du leser et datablad eller velger materiale, ser du etter egenskaper i fire grupper.</p>
+    <p class="lead">Et datablad viser egenskaper i fire grupper.</p>
     <div class="grid4" style="margin-top:1.2rem">
-      <div class="card" style="border-top:6px solid var(--blue)"><h3>Mekaniske</h3><p style="color:var(--muted)">Hvordan materialet tåler krefter</p><ul class="clean"><li><b>Fasthet</b> – hvor stor last før det flyter/brister</li><li><b>Hardhet</b> – motstand mot riper og inntrykk</li><li><b>Seighet</b> – tåler slag uten å knekke</li><li><b>Elastisitet</b> – fjærer tilbake</li></ul><p style="font-size:.85rem">Eks: bolter, kroker, verktøy</p></div>
-      <div class="card" style="border-top:6px solid var(--orange)"><h3>Fysiske</h3><p style="color:var(--muted)">Egenskaper uten ytre kraft</p><ul class="clean"><li><b>Densitet</b> (ρ) – masse per volum</li><li><b>Smeltepunkt</b></li><li><b>Varme- og strømledning</b></li><li><b>Varmeutvidelse</b></li></ul><p style="font-size:.85rem">Eks: kjøleribber av aluminium</p></div>
-      <div class="card" style="border-top:6px solid var(--green)"><h3>Kjemiske</h3><p style="color:var(--muted)">Hvordan materialet reagerer med omgivelsene</p><ul class="clean"><li><b>Korrosjonsbestandighet</b></li><li>Tåler syre, olje, kjølevæske?</li><li>Tåler sollys (UV) – viktig for plast</li></ul><p style="font-size:.85rem">Eks: rustfritt i næringsmiddelindustri</p></div>
-      <div class="card" style="border-top:6px solid var(--purple)"><h3>Teknologiske</h3><p style="color:var(--muted)">Hvor lett det er å bearbeide</p><ul class="clean"><li><b>Maskinerbarhet</b> (sponbarhet)</li><li><b>Sveisbarhet</b></li><li><b>Formbarhet</b> – bøye, valse, smi</li><li><b>Støpbarhet</b></li></ul><p style="font-size:.85rem">Eks: messing er lett å dreie</p></div>
+      <div class="card" style="border-top:6px solid var(--blue)">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Stålstang som trekkes og blir lengre">
+          <rect x="50" y="48" width="100" height="22" rx="3" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2">
+            <animate attributeName="width" dur="3s" repeatCount="indefinite" values="100;118;100"/>
+            <animate attributeName="x" dur="3s" repeatCount="indefinite" values="50;41;50"/></rect>
+          <g style="fill:var(--blue)">
+            <path d="M22 59 l18 -10 v20z"><animateTransform attributeName="transform" type="translate" dur="3s" repeatCount="indefinite" values="0 0;-9 0;0 0"/></path>
+            <path d="M178 59 l-18 -10 v20z"><animateTransform attributeName="transform" type="translate" dur="3s" repeatCount="indefinite" values="0 0;9 0;0 0"/></path>
+          </g>
+          <text x="100" y="108" text-anchor="middle" font-size="11" style="fill:var(--muted)">tåler den kraften?</text>
+        </svg>
+        <h3>Mekaniske</h3><p class="short"><b>fasthet · hardhet · seighet · elastisitet</b></p></div>
+      <div class="card" style="border-top:6px solid var(--orange)">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Kjøleribbe av aluminium som sender varme ut i lufta">
+          <rect x="44" y="84" width="112" height="12" style="fill:var(--steel)"/>
+          <g style="fill:var(--steel)"><rect x="48" y="42" width="8" height="44"/><rect x="66" y="42" width="8" height="44"/><rect x="84" y="42" width="8" height="44"/><rect x="102" y="42" width="8" height="44"/><rect x="120" y="42" width="8" height="44"/><rect x="138" y="42" width="8" height="44"/></g>
+          <rect x="78" y="96" width="44" height="8" rx="2" style="fill:var(--red)"/>
+          <g style="fill:none;stroke:var(--red);stroke-width:2.5;stroke-linecap:round">
+            <path d="M61 38 q5 -6 0 -12 q-5 -6 0 -12"><animate attributeName="opacity" dur="2s" repeatCount="indefinite" values="0;1;0"/><animateTransform attributeName="transform" type="translate" dur="2s" repeatCount="indefinite" values="0 6;0 -6"/></path>
+            <path d="M97 38 q5 -6 0 -12 q-5 -6 0 -12"><animate attributeName="opacity" dur="2s" begin=".6s" repeatCount="indefinite" values="0;1;0"/><animateTransform attributeName="transform" type="translate" dur="2s" begin=".6s" repeatCount="indefinite" values="0 6;0 -6"/></path>
+            <path d="M133 38 q5 -6 0 -12 q-5 -6 0 -12"><animate attributeName="opacity" dur="2s" begin="1.2s" repeatCount="indefinite" values="0;1;0"/><animateTransform attributeName="transform" type="translate" dur="2s" begin="1.2s" repeatCount="indefinite" values="0 6;0 -6"/></path>
+          </g>
+          <text x="100" y="118" text-anchor="middle" font-size="11" style="fill:var(--muted)">kjøleribbe av aluminium</text>
+        </svg>
+        <h3>Fysiske</h3><p class="short"><b>densitet · smeltepunkt · ledning · utvidelse</b></p></div>
+      <div class="card" style="border-top:6px solid var(--green)">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Vanndråper på en stålplate gir rustflekk">
+          <rect x="30" y="72" width="140" height="16" rx="2" style="fill:var(--steel)"/>
+          <ellipse cx="100" cy="72" rx="0" ry="4" style="fill:#b5541c"><animate attributeName="rx" dur="4s" repeatCount="indefinite" keyTimes="0;.2;.85;1" values="0;0;34;34"/></ellipse>
+          <path d="M100 8 q-7 10 -7 15 a7 7 0 0 0 14 0 q0 -5 -7 -15z" style="fill:var(--blue)">
+            <animateTransform attributeName="transform" type="translate" dur="1s" repeatCount="indefinite" values="0 0;0 44"/>
+            <animate attributeName="opacity" dur="1s" repeatCount="indefinite" values="1;1;0" keyTimes="0;.85;1"/></path>
+          <text x="100" y="108" text-anchor="middle" font-size="11" style="fill:var(--muted)">vann + luft → rust</text>
+        </svg>
+        <h3>Kjemiske</h3><p class="short"><b>korrosjon · kjemikalier · UV-lys</b></p></div>
+      <div class="card" style="border-top:6px solid var(--purple)">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Kantpresse bøyer en plate">
+          <path d="M60 104 h80 v-30 h-22 l-18 18 l-18 -18 h-22z" style="fill:var(--steel-dark)"/>
+          <polyline points="40,70 100,70 160,70" style="fill:none;stroke:var(--purple);stroke-width:5;stroke-linejoin:round">
+            <animate attributeName="points" dur="3s" repeatCount="indefinite" keyTimes="0;.3;.6;.85;1" values="40,70 100,70 160,70;40,70 100,70 160,70;50,46 100,86 150,46;50,46 100,86 150,46;40,70 100,70 160,70"/></polyline>
+          <g><animateTransform attributeName="transform" type="translate" dur="3s" repeatCount="indefinite" keyTimes="0;.3;.6;.85;1" values="0 -8;0 0;0 16;0 -8;0 -8"/>
+            <path d="M90 10 h20 v40 l-10 17 l-10 -17z" style="fill:var(--steel)"/></g>
+          <text x="100" y="116" text-anchor="middle" font-size="11" style="fill:var(--muted)">bøying i kantpresse</text>
+        </svg>
+        <h3>Teknologiske</h3><p class="short"><b>maskinering · sveising · forming · støping</b></p></div>
     </div>
-    <div class="tip o"><b>Husk:</b> Ingen materialer er best på alt. Materialvalg handler om å finne den beste <b>kombinasjonen</b> for akkurat denne delen.</div>
+    <div class="tip o"><b>Husk:</b> Ingen materialer er best på alt.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>
+      <ul class="clean">
+        <li><b>Mekaniske</b> – hvordan materialet tåler krefter. Fasthet: hvor stor last før det flyter/brister. Hardhet: motstand mot riper og inntrykk. Seighet: tåler slag uten å knekke. Elastisitet: fjærer tilbake. Eks: bolter, kroker, verktøy.</li>
+        <li><b>Fysiske</b> – egenskaper uten ytre kraft: densitet (ρ, masse per volum), smeltepunkt, varme- og strømledning, varmeutvidelse. Eks: kjøleribber av aluminium.</li>
+        <li><b>Kjemiske</b> – hvordan materialet reagerer med omgivelsene: korrosjonsbestandighet, tåler syre, olje, kjølevæske? Tåler sollys (UV) – viktig for plast. Eks: rustfritt i næringsmiddelindustri.</li>
+        <li><b>Teknologiske</b> – hvor lett det er å bearbeide: maskinerbarhet (sponbarhet), sveisbarhet, formbarhet (bøye, valse, smi), støpbarhet. Eks: messing er lett å dreie.</li>
+      </ul>
+      Materialvalg handler om å finne den beste <b>kombinasjonen</b> for akkurat denne delen.</details>
   </div>
 </section>
 
@@ -434,7 +543,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 5 · ca. 8 min</div>
     <h2>Strekkprøve: flytekurven for stål</h2>
-    <p class="lead">En prøvestav av stål trekkes til den ryker. Dra i glideren og følg punktet på kurven. Prøv å <b>avlaste</b> underveis og dra på nytt.</p>
+    <p class="lead">Dra i glideren til staven ryker. Prøv <b>Avlast</b> underveis.</p>
     <div class="grid2">
       <div class="fig">
         <svg id="stav" viewBox="0 0 700 165" role="img" aria-label="Prøvestav i strekkmaskin"></svg>
@@ -456,16 +565,26 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="fig">
         <svg id="graf" viewBox="0 0 480 370" role="img" aria-label="Spenning–tøyning-kurve for stål S355"></svg>
-        <p class="caption">Typisk kurve for S355, rund prøvestav Ø10 mm (A₀ = 78,5 mm², L₀ = 50 mm). Den elastiske delen er tegnet ca. 10 ganger bredere enn i virkeligheten: stålet er egentlig bare ca. 0,2 % lengre når det begynner å flyte.</p>
+        <p class="caption">S355, Ø10 mm. Elastisk del tegnet ca. 10× bredere.</p>
       </div>
     </div>
     <div class="grid4" style="margin-top:1rem">
-      <div class="card" style="border-top:6px solid var(--green)"><b>Elastisk område</b><br>Spenning og tøyning øker likt (Hookes lov: σ = E · ε). Stål har E ≈ 210 GPa. Staven går helt tilbake når du avlaster.</div>
-      <div class="card" style="border-top:6px solid var(--blue)"><b>Flytegrense R<sub>e</sub></b><br>Her begynner varig (plastisk) deformasjon. S355 betyr minst <b>355 MPa</b>. Konstruksjoner regnes slik at de holder seg under denne.</div>
-      <div class="card" style="border-top:6px solid var(--orange)"><b>Strekkfasthet R<sub>m</sub></b><br>Høyeste spenning staven tåler. For S355: 470–630 MPa. Mellom R<sub>e</sub> og R<sub>m</sub> blir stålet <b>kaldherdet</b> – sterkere jo mer det strekkes.</div>
-      <div class="card" style="border-top:6px solid var(--red)"><b>Innsnøring og brudd</b><br>Staven blir tynn på ett sted, kraften synker, og den ryker. <b>Bruddforlengelse A</b> for S355: minst 22 %. Seigt stål gir forvarsel.</div>
+      <div class="card" style="border-top:6px solid var(--green)"><b>Elastisk område</b><br>Går tilbake når du slipper.</div>
+      <div class="card" style="border-top:6px solid var(--blue)"><b>Flytegrense R<sub>e</sub></b><br>Varig forlengelse starter. S355: <b>355 MPa</b>.</div>
+      <div class="card" style="border-top:6px solid var(--orange)"><b>Strekkfasthet R<sub>m</sub></b><br>Høyeste spenning staven tåler.</div>
+      <div class="card" style="border-top:6px solid var(--red)"><b>Innsnøring og brudd</b><br>Staven blir tynn og ryker.</div>
     </div>
-    <div class="tip o"><b>Prøv dette:</b> Dra til ca. 10 %, trykk <b>Avlast</b>, og dra igjen. Staven har fått varig forlengelse, og den flyter ikke før spenningen er høyere enn sist. Det er kaldherding – det samme som skjer når du bøyer en plate i kantpressa.</div>
+    <div class="tip o"><b>Prøv:</b> dra til 10 % → <b>Avlast</b> → dra igjen. Nå flyter den senere: <b>kaldherding</b>.</div>
+    <a class="simlink no-print" data-sim="strekkprove"><span class="ico">🧪</span><span><b>Prøv selv: Strekkprøve-simulatoren</b><small>Dra prøvestaven til den ryker.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>
+      <p>Typisk kurve for S355, rund prøvestav Ø10 mm (A₀ = 78,5 mm², L₀ = 50 mm). Den elastiske delen er tegnet ca. 10 ganger bredere enn i virkeligheten: stålet er egentlig bare ca. 0,2 % lengre når det begynner å flyte.</p>
+      <ul class="clean">
+        <li><b>Elastisk område:</b> spenning og tøyning øker likt (Hookes lov: σ = E · ε). Stål har E ≈ 210 GPa. Staven går helt tilbake når du avlaster.</li>
+        <li><b>Flytegrense R<sub>e</sub>:</b> her begynner varig (plastisk) deformasjon. S355 betyr minst 355 MPa. Konstruksjoner regnes slik at de holder seg under denne.</li>
+        <li><b>Strekkfasthet R<sub>m</sub>:</b> for S355 470–630 MPa. Mellom R<sub>e</sub> og R<sub>m</sub> blir stålet kaldherdet – sterkere jo mer det strekkes.</li>
+        <li><b>Innsnøring og brudd:</b> staven blir tynn på ett sted, kraften synker, og den ryker. Bruddforlengelse A for S355: minst 22 %. Seigt stål gir forvarsel.</li>
+      </ul>
+      <p style="margin:0">Avlast-forsøket: staven har fått varig forlengelse, og den flyter ikke før spenningen er høyere enn sist. Det er kaldherding – det samme som skjer når du bøyer en plate i kantpressa.</p></details>
   </div>
 </section>
 
@@ -485,15 +604,24 @@ table.t th{background:var(--steel-soft)}
         <div class="matbtns no-print" id="cpBtns"></div>
         <div class="bars"><div class="row"><div>Tatt opp</div><div class="track"><div class="fill" id="cpFill" style="background:var(--orange)"></div></div><div class="val" id="cpVal">–</div></div></div>
         <div class="status info" id="cpTxt">Velg et materiale – hammeren slippes fra samme høyde hver gang (300 J).</div>
-        <p class="caption">Jo lavere hammeren svinger opp på andre siden, jo mer energi tok prøvestaven opp. Verdiene er typiske eksempler.</p>
+        <p class="caption">Lav sving etter slaget = mye energi tatt opp. Typiske verdier.</p>
       </div>
     </div>
     <div class="grid4" style="margin-top:1rem">
-      <div class="card"><b>Hard</b> = vanskelig å ripe eller lage inntrykk i. Et keramisk skjær er hardere enn stålet det skjærer i.</div>
-      <div class="card"><b>Seig</b> = tar opp mye energi og bøyer seg før det brekker. En hammer må være seig.</div>
-      <div class="card"><b>Sprø</b> = brekker uten forvarsel, uten å bøye seg først. Glass, støpejern og herdet stål som ikke er anløpt.</div>
-      <div class="tip o" style="margin:0">Verktøy skal være <b>både hardt og seigt</b>. Stålet herdes (hardt) og <b>anløpes</b> etterpå (seigere). Mer om dette i leksjonen om varmebehandling.</div>
+      <div class="card"><b>Hard</b><br>Vanskelig å ripe.</div>
+      <div class="card"><b>Seig</b><br>Bøyer seg før det brekker.</div>
+      <div class="card"><b>Sprø</b><br>Brekker uten forvarsel.</div>
+      <div class="tip o" style="margin:0">Verktøy: <b>herdes</b> (hardt) og <b>anløpes</b> (seigere).</div>
     </div>
+    <a class="simlink no-print" data-sim="charpy"><span class="ico">🧪</span><span><b>Prøv selv: Charpy-simulatoren</b><small>Se hvordan kulde gjør stål sprøtt.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>
+      <ul class="clean">
+        <li><b>Hard</b> = vanskelig å ripe eller lage inntrykk i. Et keramisk skjær er hardere enn stålet det skjærer i.</li>
+        <li><b>Seig</b> = tar opp mye energi og bøyer seg før det brekker. En hammer må være seig.</li>
+        <li><b>Sprø</b> = brekker uten forvarsel, uten å bøye seg først. Glass, støpejern og herdet stål som ikke er anløpt.</li>
+        <li>Verktøy skal være både hardt og seigt. Stålet herdes (hardt) og anløpes etterpå (seigere). Mer om dette i leksjonen om varmebehandling.</li>
+        <li>Charpy: jo lavere hammeren svinger opp på andre siden, jo mer energi tok prøvestaven opp. Verdiene i figuren er typiske eksempler.</li>
+      </ul></details>
   </div>
 </section>
 
@@ -504,7 +632,7 @@ table.t th{background:var(--steel-soft)}
     <h2>Densitet: hvor tungt er materialet?</h2>
     <div class="grid2">
       <div>
-        <p><b>Densitet</b> (ρ, uttales «rå») er masse per volum. I verkstedet bruker vi <b>kg/dm³</b>, fordi 1 dm³ er en terning på 100 × 100 × 100 mm.</p>
+        <p class="short" style="margin-bottom:.8rem"><b>Densitet ρ</b> («rå») = masse per volum, i <b>kg/dm³</b>.</p>
         <div class="fig bars" id="densBars">
           <div style="font-weight:650; margin-bottom:.4rem">Masse av én terning på 1 dm³ (1 liter):</div>
         </div>
@@ -523,21 +651,35 @@ table.t th{background:var(--steel-soft)}
           <svg id="cFig" viewBox="0 0 520 120" style="display:block;width:100%;height:auto;margin-top:.6rem"></svg>
           <div class="steps" id="cSteps"></div>
         </div>
-        <div class="tip"><b>Huskeregel:</b> 1 dm³ = 1 000 000 mm³. Regn volumet i mm³ og del på en million, så får du dm³. Gang med ρ i kg/dm³, så får du kg.</div>
+        <div class="fig" style="margin-top:1rem">
+          <svg viewBox="0 0 520 90" role="img" aria-label="Fra volum i kubikkmillimeter til masse i kilo">
+            <g style="font-size:16px;font-weight:700;text-anchor:middle">
+              <rect x="4" y="22" width="120" height="46" rx="10" style="fill:var(--blue-soft);stroke:var(--blue);stroke-width:2"/><text x="64" y="51" style="fill:var(--ink)">V i mm³</text>
+              <rect x="200" y="22" width="120" height="46" rx="10" style="fill:var(--blue-soft);stroke:var(--blue);stroke-width:2"/><text x="260" y="51" style="fill:var(--ink)">V i dm³</text>
+              <rect x="396" y="22" width="120" height="46" rx="10" style="fill:var(--orange-soft);stroke:var(--orange);stroke-width:2"/><text x="456" y="51" style="fill:var(--ink)">m i kg</text>
+            </g>
+            <g style="stroke:var(--muted);stroke-width:2.5"><line x1="128" y1="45" x2="190" y2="45"/><line x1="324" y1="45" x2="386" y2="45"/></g>
+            <g style="fill:var(--muted)"><path d="M196 45 l-10 -6 v12z"/><path d="M392 45 l-10 -6 v12z"/></g>
+            <g style="font-size:14px;font-weight:700;text-anchor:middle;fill:var(--orange)"><text x="162" y="16">÷ 1 000 000</text><text x="358" y="16">· ρ</text></g>
+            <circle r="6" style="fill:var(--orange)"><animateMotion dur="3s" repeatCount="indefinite" path="M64 80 H456"/></circle>
+          </svg>
+          <p class="caption" style="margin:0">1 dm³ = 100 × 100 × 100 mm = 1 000 000 mm³</p>
+        </div>
       </div>
     </div>
     <div class="grid2" style="margin-top:1.2rem">
       <div class="fig">
         <div style="font-weight:650">Hvor stor er 1 kg?</div>
         <svg class="kubber" id="kubber" viewBox="0 0 600 230" role="img" aria-label="Terninger som hver veier 1 kg"></svg>
-        <p class="caption">Hver terning veier 1 kg og er tegnet i riktig størrelsesforhold. Lett materiale gir stor terning.</p>
+        <p class="caption">Alle veier 1 kg. Lett materiale = stor terning.</p>
       </div>
       <div class="fig">
         <div style="font-weight:650">Smeltepunkt</div>
         <svg class="termo" id="termo" viewBox="0 0 600 150"></svg>
-        <p class="caption">Lavt smeltepunkt gir lett støping (aluminium). Høyt smeltepunkt krever mer energi ved sveising.</p>
+        <p class="caption">Lavt smeltepunkt = lett å støpe.</p>
       </div>
     </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>I verkstedet bruker vi kg/dm³, fordi 1 dm³ er en terning på 100 × 100 × 100 mm. Regn volumet i mm³ og del på en million, så får du dm³. Gang med ρ i kg/dm³, så får du kg. Terningene er tegnet i riktig størrelsesforhold. Lavt smeltepunkt gir lett støping (aluminium). Høyt smeltepunkt krever mer energi ved sveising.</details>
   </div>
 </section>
 
@@ -546,7 +688,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 8 · ca. 3 min</div>
     <h2>Sammenlign vanlige verkstedmaterialer</h2>
-    <p class="lead">Velg et materiale, og legg et annet oppå for å sammenligne. Jo lenger ut, jo bedre på den egenskapen (5 = svært bra).</p>
+    <p class="lead">Velg to materialer. Lenger ut = bedre (5 = svært bra).</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <div class="matbtns no-print" id="matBtns"></div>
@@ -568,19 +710,43 @@ table.t th{background:var(--steel-soft)}
     <div class="grid2">
       <div class="fig"><svg class="loop" id="loop" viewBox="0 0 480 480"></svg></div>
       <div>
+        <div class="fig" style="margin-bottom:1rem">
+          <div style="font-weight:650">Sorter sponet!</div>
+          <svg viewBox="0 0 400 160" role="img" aria-label="Spon av fire metaller faller i hver sin kasse">
+            <g style="stroke-width:3">
+              <path d="M12 90 h76 l-6 50 h-64z" style="fill:var(--steel-soft);stroke:var(--steel-dark)"/>
+              <path d="M112 90 h76 l-6 50 h-64z" style="fill:var(--steel-soft);stroke:var(--purple)"/>
+              <path d="M212 90 h76 l-6 50 h-64z" style="fill:var(--steel-soft);stroke:var(--blue)"/>
+              <path d="M312 90 h76 l-6 50 h-64z" style="fill:var(--steel-soft);stroke:#d4a017"/>
+            </g>
+            <g style="font-size:13px;font-weight:700;text-anchor:middle;fill:var(--ink)"><text x="50" y="156">Stål</text><text x="150" y="156">Rustfritt</text><text x="250" y="156">Aluminium</text><text x="350" y="156">Messing</text></g>
+            <g>
+              <path d="M-10 0 q10 -10 20 0 q-10 8 -20 0z" style="fill:var(--steel-dark)"><animateMotion dur="2s" repeatCount="indefinite" path="M50 10 q6 55 0 110"/></path>
+              <path d="M-10 0 q10 -10 20 0 q-10 8 -20 0z" style="fill:var(--purple)"><animateMotion dur="2s" begin=".5s" repeatCount="indefinite" path="M150 10 q-6 55 0 110"/></path>
+              <path d="M-10 0 q10 -10 20 0 q-10 8 -20 0z" style="fill:var(--blue)"><animateMotion dur="2s" begin="1s" repeatCount="indefinite" path="M250 10 q6 55 0 110"/></path>
+              <path d="M-10 0 q10 -10 20 0 q-10 8 -20 0z" style="fill:#d4a017"><animateMotion dur="2s" begin="1.5s" repeatCount="indefinite" path="M350 10 q-6 55 0 110"/></path>
+            </g>
+          </svg>
+        </div>
         <ul class="clean" style="font-size:1.05rem">
-          <li><b>Metaller</b> kan smeltes om igjen og igjen uten at egenskapene blir dårligere.</li>
-          <li>Omsmelting av <b>aluminium</b> bruker bare rundt 5 % av energien som trengs for å lage nytt aluminium fra malm.</li>
-          <li><b>Sorter sponet:</b> stål, rustfritt, aluminium og messing i hver sin kasse. Blandet skrap er verdt mye mindre.</li>
-          <li><b>Termoplast</b> kan smeltes om, men kvaliteten synker for hver gang.</li>
-          <li><b>Herdeplast og kompositter</b> (glassfiber, karbonfiber) er vanskelige å gjenvinne.</li>
+          <li><b>Metall</b>: kan smeltes om igjen og igjen.</li>
+          <li><b>Termoplast</b>: kvaliteten synker.</li>
+          <li><b>Kompositter</b>: vanskelig å gjenvinne.</li>
         </ul>
         <div class="fig bars" id="energiBars">
           <div style="font-weight:650; margin-bottom:.3rem">Energi for å lage 1 kg aluminium</div>
           <div class="row"><div>Fra malm</div><div class="track"><div class="fill" data-w="100" style="background:var(--steel-dark)"></div></div><div class="val">100 %</div></div>
           <div class="row"><div>Omsmeltet skrap</div><div class="track"><div class="fill" data-w="5" style="background:var(--green)"></div></div><div class="val">ca. 5 %</div></div>
         </div>
-        <div class="tip o">Bærekraft i verkstedet: velg riktig råemne så du lager minst mulig spon, og sorter det som blir til overs.</div>
+        <div class="tip o">Velg råemne som gir <b>minst mulig spon</b>.</div>
+        <details class="laerer no-print"><summary>Lærernotat</summary>
+          <ul class="clean">
+            <li>Metaller kan smeltes om igjen og igjen uten at egenskapene blir dårligere.</li>
+            <li>Omsmelting av aluminium bruker bare rundt 5 % av energien som trengs for å lage nytt aluminium fra malm.</li>
+            <li>Sorter sponet: stål, rustfritt, aluminium og messing i hver sin kasse. Blandet skrap er verdt mye mindre.</li>
+            <li>Termoplast kan smeltes om, men kvaliteten synker for hver gang. Herdeplast og kompositter (glassfiber, karbonfiber) er vanskelige å gjenvinne.</li>
+            <li>Bærekraft i verkstedet: velg riktig råemne så du lager minst mulig spon, og sorter det som blir til overs.</li>
+          </ul></details>
       </div>
     </div>
   </div>
@@ -669,11 +835,23 @@ table.t th{background:var(--steel-soft)}
           <tr><td>f) Du bøyer en binders frem og tilbake til den brekker.<span class="fasit" hidden><br>Bindersen kaldherdes og blir sprø, til slutt brekker den.</span></td><td><span class="fasit" hidden><b>P</b></span></td></tr>
         </table>
         <p>Hva heter grensen mellom elastisk og plastisk område? <span class="luke" style="min-width:12em"><span class="fasit" hidden>flytegrensen</span></span></p>
+        <p>Skriv riktig navn ved A–D på kurven.</p>
+        <svg viewBox="0 0 360 200" style="display:block;width:100%;max-width:420px;height:auto" role="img" aria-label="Spenning–tøyning-kurve med punktene A til D">
+          <g style="stroke:var(--ink);stroke-width:2"><line x1="40" y1="175" x2="340" y2="175"/><line x1="40" y1="175" x2="40" y2="15"/></g>
+          <path d="M40 175 L70 72 L92 74 Q140 30 220 38 Q262 44 292 74" style="fill:none;stroke:var(--orange);stroke-width:3.5"/>
+          <path d="M286 68 l12 12 M298 68 l-12 12" style="stroke:var(--red);stroke-width:3"/>
+          <g style="fill:var(--ink)"><circle cx="55" cy="124" r="4"/><circle cx="70" cy="72" r="4"/><circle cx="220" cy="38" r="4"/><circle cx="292" cy="74" r="4"/></g>
+          <g style="font-size:16px;font-weight:800;fill:var(--blue)"><text x="62" y="134">A</text><text x="56" y="62">B</text><text x="214" y="28">C</text><text x="304" y="70">D</text></g>
+          <g style="font-size:12px;fill:var(--muted)"><text x="340" y="194" text-anchor="end">tøyning ε</text><text x="46" y="14">spenning σ</text></g>
+        </svg>
+        <p>A <span class="luke" style="min-width:10em"><span class="fasit" hidden>elastisk område</span></span> &nbsp; B <span class="luke" style="min-width:10em"><span class="fasit" hidden>flytegrense R<sub>e</sub></span></span><br>
+           C <span class="luke" style="min-width:10em"><span class="fasit" hidden>strekkfasthet R<sub>m</sub></span></span> &nbsp; D <span class="luke" style="min-width:10em"><span class="fasit" hidden>brudd (etter innsnøring)</span></span></p>
+        <p>Bruk <a data-sim="strekkprove">Strekkprøve-simulatoren</a> og sjekk svarene dine.</p>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 4 – Regn ut masse <small>Time 2 · 15 min</small></h3>
-        <p>Bruk m = ρ · V. Husk: 1 dm³ = 1 000 000 mm³. Vis utregningen.</p>
+        <p>m = ρ · V. 1 dm³ = 1 000 000 mm³. Vis utregningen.</p>
         <table class="ot" style="width:auto"><tr><th>Materiale</th><th>ρ (kg/dm³)</th></tr><tr><td>Stål</td><td>7,85</td></tr><tr><td>Rustfritt stål</td><td>7,9</td></tr><tr><td>Aluminium</td><td>2,70</td></tr><tr><td>Messing</td><td>8,5</td></tr><tr><td>POM (plast)</td><td>1,41</td></tr></table>
         <p>a) Flattstål av stål, 50 × 10 × 1000 mm.</p><div class="svar"><span class="fasit" hidden>V = 50 · 10 · 1000 = 500 000 mm³ = 0,5 dm³</span></div><div class="svar"><span class="fasit" hidden>m = 7,85 · 0,5 ≈ <b>3,93 kg</b></span></div>
         <p>b) Samme flattstål i aluminium. Hvor mange kg sparer du?</p><div class="svar"><span class="fasit" hidden>m = 2,70 · 0,5 = <b>1,35 kg</b></span></div><div class="svar"><span class="fasit" hidden>Sparer ca. <b>2,6 kg</b> (aluminium veier omtrent 1/3 av stål).</span></div>
@@ -697,7 +875,7 @@ table.t th{background:var(--steel-soft)}
 
       <div class="oppgave">
         <h3>Oppgave 6 – Gjenvinning <small>Hjemme eller ekstra</small></h3>
-        <p>Hvorfor skal stålspon, aluminiumsspon og messingspon i hver sin kasse i verkstedet? Gi to grunner.</p>
+        <p>Hvorfor skal stål-, aluminiums- og messingspon i hver sin kasse? Gi to grunner.</p>
         <div class="svar"><span class="fasit" hidden>Forslag – Sortert skrap er verdt mer og kan smeltes direkte om til samme materiale. Blandet skrap gir urene legeringer eller må sorteres i ettertid.</span></div><div class="svar"><span class="fasit" hidden>Omsmelting sparer mye energi (aluminium ca. 95 %) og råstoff.</span></div><div class="svar"><span class="fasit" hidden>Brannfare: fint aluminiums- og magnesiumspon skal holdes for seg.</span></div>
       </div>
 
@@ -708,6 +886,15 @@ table.t th{background:var(--steel-soft)}
           <tr><th>Gjenstand</th><th>Materiale</th><th>Gruppe</th><th>Viktigste egenskap</th></tr>
           <tr><td class="tom"></td><td></td><td></td><td></td></tr><tr><td class="tom"></td><td></td><td></td><td></td></tr><tr><td class="tom"></td><td></td><td></td><td></td></tr><tr><td class="tom"></td><td></td><td></td><td></td></tr><tr><td class="tom"></td><td></td><td></td><td></td></tr>
         </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 8 – Kulde og slag <small>Ekstra</small></h3>
+        <p>Bruk <a data-sim="charpy">Charpy-simulatoren</a>. Slå på en stålprøve ved romtemperatur og ved lav minusgrad.</p>
+        <p>a) Hvor mye energi tok prøven opp ved hver temperatur?</p>
+        <div class="svar"><span class="fasit" hidden>Varm prøve: mye energi (seigt brudd). Kald prøve: lite energi (sprøtt brudd). Tallene avhenger av stålet i simulatoren.</span></div>
+        <p>b) Hvorfor er dette viktig for en kran som står ute om vinteren?</p>
+        <div class="svar"><span class="fasit" hidden>Stålet kan bli sprøtt i kulde og knekke uten forvarsel. Derfor velges stål som er slagprøvd ved lav temperatur.</span></div>
       </div>
 
       <div class="oppgave">
@@ -726,6 +913,9 @@ table.t th{background:var(--steel-soft)}
 <script>
 (function(){
 "use strict";
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
 const $ = id => document.getElementById(id);
 const NS = "http://www.w3.org/2000/svg";
 const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});

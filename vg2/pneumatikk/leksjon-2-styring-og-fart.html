@@ -154,6 +154,16 @@ table.t th{background:var(--steel-soft)}
   .fasit[hidden]{display:none!important}
   h2{font-size:18pt}
 }
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
 .steps{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.6rem}
 .steps span{padding:.3rem .75rem; border-radius:99px; border:1px solid var(--line); font-size:.8rem; font-weight:600; color:var(--muted); transition:background .2s}
 .steps span.on{background:var(--orange); color:#fff; border-color:var(--orange)}
@@ -177,19 +187,53 @@ table.t th{background:var(--steel-soft)}
     <div>
       <div class="kicker">Vg2 industriteknologi · Pneumatikk</div>
       <h1>Leksjon 2<br>Styring og fart</h1>
-      <p class="lead">I leksjon 1 fikk vi sylinderen til å gå. Nå skal vi bestemme <b>hvor fort</b> den går, <b>hvem</b> som får starte den – og få den til å gå <b>av seg selv</b>.</p>
-      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <p class="lead">Hvor fort, hvem starter – og går den av seg selv?</p>
       <ol class="goals">
-        <li>stille <b>farten</b> med en strupe-tilbakeslagsventil – og forklare hvorfor vi struper <b>avlufta</b></li>
-        <li>forklare <b>indirekte styring</b>: en liten knapp sender et <b>luftsignal</b> til en stor ventil</li>
-        <li>forklare hvordan en <b>impulsventil</b> «husker»</li>
-        <li>bruke <b>OG</b> og <b>ELLER</b> med luft (tohåndsbetjening, start fra to steder)</li>
-        <li>lese et skjema for <b>automatisk tur-retur</b> med rulleventiler</li>
-        <li>finne feil ved å <b>se, lytte og tenke</b> i riktig rekkefølge</li>
+        <li><b>Fart</b> med strupe – strup <b>avlufta</b></li>
+        <li><b>Indirekte styring</b> med luftsignal</li>
+        <li><b>Impulsventil</b> som husker</li>
+        <li><b>OG</b> og <b>ELLER</b> med luft</li>
+        <li>Automatisk <b>tur-retur</b> med rulleventiler</li>
+        <li><b>Feilsøking</b>: se, lytt, tenk</li>
       </ol>
     </div>
     <div>
-      <div class="card">
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Sylinder som går automatisk ut og inn. Kammen på stanga trykker inn rulleventilene a0 og a1, som sender luftsignaler til ventilen.">
+          <!-- signalledninger (stiplet) -->
+          <path d="M360 262 V300 H40 V60 H150" style="fill:none;stroke:var(--blue);stroke-width:2.5;stroke-dasharray:8 6"><animate attributeName="stroke-dashoffset" values="28;0" dur="1s" repeatCount="indefinite"/></path>
+          <path d="M460 262 V300 H500 V60 H250" style="fill:none;stroke:var(--blue);stroke-width:2.5;stroke-dasharray:8 6"><animate attributeName="stroke-dashoffset" values="28;0" dur="1s" repeatCount="indefinite"/></path>
+          <!-- arbeidsledninger -->
+          <path d="M180 80 V100 H140 V120 M220 80 V100 H310 V120" style="fill:none;stroke:var(--ink);stroke-width:3"/>
+          <path d="M258 92 Q266 100 258 108 M274 92 Q266 100 274 108" style="fill:none;stroke:var(--ink);stroke-width:2.5"/>
+          <path d="M250 114 L282 86" style="stroke:var(--orange);stroke-width:2.5"/>
+          <!-- impulsventil -->
+          <g><animateTransform attributeName="transform" type="translate" values="25 0;25 0;-25 0;-25 0;25 0" keyTimes="0;.06;.1;.56;.6" dur="5s" repeatCount="indefinite"/>
+            <rect x="150" y="34" width="50" height="46" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"/>
+            <rect x="200" y="34" width="50" height="46" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"/>
+            <path d="M162 76 L188 40 M212 40 L238 76" style="stroke:var(--blue);stroke-width:3"/>
+          </g>
+          <text x="200" y="24" text-anchor="middle" style="fill:var(--muted);font-size:14px">impulsventil</text>
+          <text x="318" y="105" style="fill:var(--orange);font-size:14px;font-weight:700">strupe</text>
+          <!-- sylinder -->
+          <rect x="120" y="120" width="210" height="60" rx="6" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
+          <g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;100 0;100 0;0 0;0 0" keyTimes="0;.1;.45;.6;.95;1" dur="5s" repeatCount="indefinite"/>
+            <rect x="126" y="123" width="12" height="54" style="fill:var(--steel-dark)"/>
+            <rect x="138" y="143" width="222" height="14" style="fill:var(--steel)"/>
+            <rect x="352" y="140" width="16" height="66" rx="3" style="fill:var(--orange)"/>
+          </g>
+          <!-- rulleventiler -->
+          <g style="stroke:var(--ink);stroke-width:3"><line x1="360" y1="218" x2="360" y2="232"/><line x1="460" y1="218" x2="460" y2="232"/></g>
+          <rect x="340" y="232" width="40" height="30" rx="3" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"/>
+          <rect x="440" y="232" width="40" height="30" rx="3" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"/>
+          <circle cx="360" cy="212" r="9" style="fill:var(--steel)"><animate attributeName="fill" values="#51cf66;#9aa5b1;#51cf66" keyTimes="0;.12;.93" calcMode="discrete" dur="5s" repeatCount="indefinite"/></circle>
+          <circle cx="460" cy="212" r="9" style="fill:var(--steel)"><animate attributeName="fill" values="#9aa5b1;#51cf66;#9aa5b1" keyTimes="0;.44;.62" calcMode="discrete" dur="5s" repeatCount="indefinite"/></circle>
+          <g style="font-size:20px;font-weight:800;text-anchor:middle;fill:var(--ink)"><text x="360" y="290">a0</text><text x="460" y="290">a1</text></g>
+          <text x="225" y="215" text-anchor="middle" style="fill:var(--muted);font-size:14px">går av seg selv</text>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <div class="card" style="margin-top:.6rem">
         <h3>Kompetansemål (PIN02-03)</h3>
         <p style="margin-bottom:.4rem"><i>«montere, sette i drift og feilsøke automatiserte hydraulikk- og pneumatikkanlegg etter spesifikasjoner»</i> (teknologi)</p>
         <p style="margin-bottom:.4rem"><i>«arbeide på elektriske og automatiserte systemer ved reparasjons- og vedlikeholdsarbeid etter instrukser og gjeldende forskrifter»</i> (vedlikehold)</p>
@@ -213,7 +257,9 @@ table.t th{background:var(--steel-soft)}
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
-      <div class="tip" style="margin-bottom:0"><b>Bygger på leksjon 1:</b> 3/2- og 5/2-ventil, porttallene 1–2–4–3–5, enkelt- og dobbeltvirkende sylinder og koblingsskjema. Slå opp i <a href="https://verkstedhandboka.vercel.app/#hydraulikk-pneumatikk" target="_blank" rel="noopener">Verkstedhåndboka, emne 8</a>.</div>
+      <div class="tip" style="margin-bottom:0"><b>Bygger på leksjon 1:</b> 3/2- og 5/2-ventil, porttallene 1–2–4–3–5, enkelt- og dobbeltvirkende sylinder og koblingsskjema. Slå opp i <a href="https://verkstedhandboka.vercel.app/#hydraulikk-pneumatikk" target="_blank" rel="noopener">Verkstedhåndboka, emne 8</a>. <i>I leksjon 1 fikk vi sylinderen til å gå. Nå bestemmer vi hvor fort den går, hvem som får starte den – og får den til å gå av seg selv.</i></div>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓. A+ gir større tekst på fremviser.</p>
     </div>
   </div>
 </section>
@@ -223,7 +269,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Repetisjon · ca. 4 min</div>
     <h2>Husker du fra leksjon 1?</h2>
-    <p class="lead">Svar høyt i klassen – klikk på kortet for å se svaret.</p>
+    <p class="lead">Svar høyt – klikk for svar.</p>
     <div class="flipgrid" id="repGrid"></div>
   </div>
 </section>
@@ -233,7 +279,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 1 · ca. 7 min</div>
     <h2>Strupe-tilbakeslagsventilen – «krana» for fart</h2>
-    <p class="lead">En <b>strupe</b> gjør hullet mindre. Mindre hull → mindre luft per sekund → <b>lavere fart</b>. Kula slipper lufta <b>fritt den andre veien</b>. Bytt retning og skru på skruen.</p>
+    <p class="lead">Mindre hull → <b>lavere fart</b>. Bytt retning og skru.</p>
     <div class="fig">
       <svg id="p1Svg" viewBox="0 0 1000 400" role="img" aria-label="Strupe-tilbakeslagsventil i snitt med nåleskrue, kule og fjær, og symbolet"></svg>
       <div class="controls">
@@ -248,11 +294,17 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="p1Msg"></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>Strupe</h3>En <b>innsnevring</b> i røret. En nåleskrue gjør hullet større eller mindre – som en kran.</div>
-      <div class="card"><h3>Tilbakeslagsventil</h3>En <b>enveisventil</b>. Kula løftes av setet den ene veien (åpen), og presses inn i setet den andre veien (stengt).</div>
-      <div class="card"><h3>Begge i ett hus</h3><b>Strupe-tilbakeslagsventil</b> = struper bare <b>én vei</b>. Den andre veien går lufta fritt forbi gjennom kula.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Rør med en nåleskrue som gjør hullet mindre"><rect x="10" y="44" width="180" height="48" style="fill:var(--air-soft)"/><path d="M10 44 H82 L94 62 H106 L118 44 H190" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><path d="M10 92 H190" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><g style="fill:var(--blue)"><circle r="3.5"><animateMotion dur="3s" begin="-0.00s" repeatCount="indefinite" path="M10 76 H82 Q100 80 118 76 H190"/></circle><circle r="3.5"><animateMotion dur="3s" begin="-0.60s" repeatCount="indefinite" path="M10 76 H82 Q100 80 118 76 H190"/></circle><circle r="3.5"><animateMotion dur="3s" begin="-1.20s" repeatCount="indefinite" path="M10 76 H82 Q100 80 118 76 H190"/></circle><circle r="3.5"><animateMotion dur="3s" begin="-1.80s" repeatCount="indefinite" path="M10 76 H82 Q100 80 118 76 H190"/></circle><circle r="3.5"><animateMotion dur="3s" begin="-2.40s" repeatCount="indefinite" path="M10 76 H82 Q100 80 118 76 H190"/></circle></g><g><animateTransform attributeName="transform" type="translate" values="0 -10;0 4;0 -10" dur="4s" repeatCount="indefinite"/><path d="M94 8 H106 V52 L100 66 L94 52 Z" style="fill:var(--steel-dark)"/><rect x="88" y="4" width="24" height="8" rx="2" style="fill:var(--orange)"/></g><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">skru inn = mindre hull = lavere fart</text></svg>
+        <h3>Strupe</h3><p class="short">Nåleskrue = kran for lufta.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Tilbakeslagsventil: kula løftes den ene veien og stenger den andre"><path d="M10 40 H190 M10 90 H190" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><path d="M86 41 L100 56 V41 Z M86 89 L100 74 V89 Z" style="fill:var(--steel-dark)"/><path d="M150 65 l6 -8 l6 16 l6 -16 l6 16 l6 -8 H190" style="fill:none;stroke:var(--steel-dark);stroke-width:2"/><g style="fill:var(--blue)"><animate attributeName="opacity" values="1;0" keyTimes="0;.5" calcMode="discrete" dur="4s" repeatCount="indefinite"/><circle r="3.5"><animateMotion dur="1s" repeatCount="indefinite" path="M12 65 H80 Q100 65 108 50 H188"/></circle><circle r="3.5"><animateMotion dur="1s" begin="-.5s" repeatCount="indefinite" path="M12 65 H80 Q100 65 108 50 H188"/></circle></g><circle cx="112" cy="65" r="13" style="fill:var(--orange)"><animate attributeName="cx" values="112;134;134;112;112" keyTimes="0;.06;.46;.52;1" dur="4s" repeatCount="indefinite"/></circle><g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0;.5" calcMode="discrete" dur="4s" repeatCount="indefinite"/><path d="M185 30 H140 M150 24 L140 30 L150 36" style="fill:none;stroke:var(--red);stroke-width:3"/><text x="60" y="30" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--red)">stengt</text></g><g><animate attributeName="opacity" values="1;0" keyTimes="0;.5" calcMode="discrete" dur="4s" repeatCount="indefinite"/><path d="M140 30 H185 M175 24 L185 30 L175 36" style="fill:none;stroke:var(--green);stroke-width:3"/><text x="60" y="30" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--green)">åpen</text></g><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">én vei åpen – den andre stengt</text></svg>
+        <h3>Tilbakeslagsventil</h3><p class="short"><b>Enveisventil</b> med kule.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Symbol for strupe-tilbakeslagsventil: strupe og tilbakeslagsventil i parallell"><rect x="34" y="18" width="132" height="86" rx="4" style="fill:none;stroke:var(--muted);stroke-width:1.5;stroke-dasharray:5 4"/><path d="M10 61 H50 M50 38 V84 M150 38 V84 M150 61 H190 M50 38 H150 M50 84 H150" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><path d="M92 30 Q100 38 92 46 M108 30 Q100 38 108 46" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><path d="M80 52 L120 24 M112 24 L120 24 L116 31" style="fill:none;stroke:var(--ink);stroke-width:2"/><path d="M98 73 L86 84 L98 95" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><circle cx="102" cy="84" r="8" style="fill:var(--panel);stroke:var(--ink);stroke-width:2.5"/><g style="fill:var(--blue)"><animate attributeName="opacity" values="1;0" keyTimes="0;.5" calcMode="discrete" dur="6s" repeatCount="indefinite"/><circle r="3.5"><animateMotion dur="1s" begin="-0.00s" repeatCount="indefinite" path="M10 61 H50 V84 H150 V61 H190"/></circle><circle r="3.5"><animateMotion dur="1s" begin="-0.33s" repeatCount="indefinite" path="M10 61 H50 V84 H150 V61 H190"/></circle><circle r="3.5"><animateMotion dur="1s" begin="-0.67s" repeatCount="indefinite" path="M10 61 H50 V84 H150 V61 H190"/></circle></g><g style="fill:var(--orange)" opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0;.5" calcMode="discrete" dur="6s" repeatCount="indefinite"/><circle r="3.5"><animateMotion dur="3s" begin="-0.00s" repeatCount="indefinite" path="M190 61 H150 V38 H50 V61 H10"/></circle><circle r="3.5"><animateMotion dur="3s" begin="-1.00s" repeatCount="indefinite" path="M190 61 H150 V38 H50 V61 H10"/></circle><circle r="3.5"><animateMotion dur="3s" begin="-2.00s" repeatCount="indefinite" path="M190 61 H150 V38 H50 V61 H10"/></circle></g><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">→ fritt · ← strupt</text></svg>
+        <h3>Begge i ett hus</h3><p class="short">Struper bare <b>én vei</b>.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Kalles også «enveis strupeventil» eller på engelsk «one-way flow control valve». Den sitter ofte skrudd rett inn i porten på sylinderen («banjo»-type), slik at slangevolumet mellom strupe og sylinder blir minst mulig. Pilen i symbolet betyr «justerbar». Symbolet i snitt-figuren er tegnet loddrett fordi den står slik i skjemaene våre: sylinderen øverst, ventilen under. Merk: ventilen struper alltid <i>i én retning</i> – og hvilken retning den er montert, avgjør om den struper tilluft eller avluft (del 2).</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>En strupe er en innsnevring i røret: mindre hull → mindre luft per sekund → lavere fart. En nåleskrue gjør hullet større eller mindre. Tilbakeslagsventilen er en enveisventil: kula løftes av setet den ene veien (åpen) og presses inn i setet den andre veien (stengt). Strupe-tilbakeslagsventil = begge i ett hus; struper bare én vei, den andre veien går lufta fritt forbi gjennom kula. Kalles også «enveis strupeventil» eller på engelsk «one-way flow control valve». Den sitter ofte skrudd rett inn i porten på sylinderen («banjo»-type), slik at slangevolumet mellom strupe og sylinder blir minst mulig. Pilen i symbolet betyr «justerbar». Symbolet i snitt-figuren er tegnet loddrett fordi den står slik i skjemaene våre: sylinderen øverst, ventilen under. Merk: ventilen struper alltid <i>i én retning</i> – og hvilken retning den er montert, avgjør om den struper tilluft eller avluft (del 2).</details>
   </div>
 </section>
 
@@ -261,7 +313,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 2 · ca. 7 min</div>
     <h2>Fart – struper vi lufta inn eller ut?</h2>
-    <p class="lead">Hold inne knappen. Se på grafen: <b style="color:var(--green)">jevn linje</b> = jevn fart. Bytt til tilluftstruping og se hva som skjer.</p>
+    <p class="lead">Hold inne knappen. <b style="color:var(--green)">Jevn linje</b> = jevn fart.</p>
     <div class="fig">
       <div class="controls" style="margin:0 0 .5rem"><span class="chips" id="p2Mode"></span></div>
       <svg id="p2Svg" viewBox="0 0 1000 560" role="img" aria-label="Koblingsskjema med 5/2-ventil, to strupe-tilbakeslagsventiler og dobbeltvirkende sylinder, og en graf over stangas posisjon"></svg>
@@ -277,11 +329,18 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="p2Msg"></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>Tilluft</h3>= lufta som går <b>inn</b> i sylinderen og skyver.</div>
-      <div class="card"><h3>Avluft</h3>= lufta som blir <b>presset ut</b> på den andre siden av stempelet.</div>
-      <div class="card"><h3>Huskeregel</h3>Vi struper <b>avlufta</b>. Strupen på <b>minussiden (B)</b> styrer farten <b>ut</b>, strupen på plussiden (A) styrer farten <b>inn</b>.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Tilluft: trykkluft går inn i sylinderen og skyver stempelet"><rect x="30" y="40" width="140" height="44" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2.5"/><path d="M36 40 V16" style="stroke:var(--air);stroke-width:7"/><rect x="33" y="43" height="38" width="6" style="fill:var(--air)"><animate attributeName="width" values="6;76;76;6" keyTimes="0;.5;.7;1" dur="4s" repeatCount="indefinite"/></rect><g><animateTransform attributeName="transform" type="translate" values="0 0;70 0;70 0;0 0" keyTimes="0;.5;.7;1" dur="4s" repeatCount="indefinite"/><rect x="40" y="43" width="10" height="38" style="fill:var(--steel-dark)"/><rect x="50" y="57" width="140" height="10" style="fill:var(--steel)"/></g><g style="fill:var(--blue)"><circle r="3.5"><animateMotion dur="1.2s" begin="-0.00s" repeatCount="indefinite" path="M36 6 V44"/></circle><circle r="3.5"><animateMotion dur="1.2s" begin="-0.40s" repeatCount="indefinite" path="M36 6 V44"/></circle><circle r="3.5"><animateMotion dur="1.2s" begin="-0.80s" repeatCount="indefinite" path="M36 6 V44"/></circle></g><text x="50" y="22" font-size="12" font-weight="700" style="fill:var(--blue)">inn ↓</text><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">tilluft = lufta som skyver</text></svg>
+        <h3>Tilluft</h3><p class="short">Lufta som går <b>inn</b> og skyver.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Avluft: lufta på den andre siden blir presset ut"><rect x="30" y="40" width="140" height="44" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2.5"/><path d="M164 40 V16" style="stroke:var(--orange);stroke-width:7;opacity:.6"/><g><animateTransform attributeName="transform" type="translate" values="0 0;70 0;70 0;0 0" keyTimes="0;.5;.7;1" dur="4s" repeatCount="indefinite"/><rect x="40" y="43" width="10" height="38" style="fill:var(--steel-dark)"/><rect x="50" y="57" width="140" height="10" style="fill:var(--steel)"/></g><g style="fill:var(--orange)"><animate attributeName="opacity" values="1;0;0;1" keyTimes="0;.5;.95;1" calcMode="discrete" dur="4s" repeatCount="indefinite"/><circle r="3.5"><animateMotion dur="1s" begin="-0.00s" repeatCount="indefinite" path="M164 44 V4"/></circle><circle r="3.5"><animateMotion dur="1s" begin="-0.33s" repeatCount="indefinite" path="M164 44 V4"/></circle><circle r="3.5"><animateMotion dur="1s" begin="-0.67s" repeatCount="indefinite" path="M164 44 V4"/></circle></g><text x="146" y="22" text-anchor="end" font-size="12" font-weight="700" style="fill:var(--orange)">ut ↑</text><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">avluft = lufta som presses ut</text></svg>
+        <h3>Avluft</h3><p class="short">Lufta som <b>presses ut</b>.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Strupen på minussiden B styrer farten ut"><rect x="30" y="40" width="140" height="44" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2.5"/><path d="M164 40 V22" style="stroke:var(--orange);stroke-width:5"/><path d="M156 6 Q164 14 156 22 M172 6 Q164 14 172 22" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><path d="M150 24 L178 4" style="stroke:var(--ink);stroke-width:2"/><g><animateTransform attributeName="transform" type="translate" values="0 0;70 0;70 0;0 0" keyTimes="0;.5;.7;1" dur="7s" repeatCount="indefinite"/><rect x="40" y="43" width="10" height="38" style="fill:var(--steel-dark)"/><rect x="50" y="57" width="140" height="10" style="fill:var(--steel)"/></g><text x="140" y="18" text-anchor="end" font-size="14" font-weight="800" style="fill:var(--orange)">B</text><text x="20" y="18" font-size="12" style="fill:var(--muted)">🐢 sakte ut</text><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">strupe B (minussiden) = fart ut</text></svg>
+        <h3>Huskeregel</h3><p class="short">Strup <b>avlufta</b>. B = fart ut, A = fart inn.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Avluftstruping: stempelet har trykk på begge sider («klemt mellom to luftputer»). Det gir jevn fart, også når lasten varierer eller drar i sylinderen. Tilluftstruping: minussiden tømmes fort, plussiden fylles sakte. Friksjonen i pakningene holder stempelet til trykket er høyt nok – så rykker det, trykket faller, og det stopper igjen («stick-slip»). Tilluftstruping brukes på <i>enkeltvirkende</i> sylindere (de har bare én luftport) og noen ganger på svært små sylindere. Fartsområdet i animasjonen er forenklet. Spør: «Hvilken skrue skrur du på hvis sylinderen går for fort UT?» (B – minussiden). Dette er den vanligste feilen elever gjør på verkstedet.</details>
+    <a class="simlink no-print" data-sim="pneumatikk-og-hydraulikk"><span class="ico">🧪</span><span><b>Prøv selv: Pneumatikk- og hydraulikksimulatoren</b><small>Sett inn to strupe-tilbakeslagsventiler og still farten.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Bytt til tilluftstruping i figuren og se hva som skjer med grafen. Tilluft = lufta som går inn i sylinderen og skyver. Avluft = lufta som presses ut på den andre siden av stempelet. Vi struper avlufta: strupen på minussiden (B) styrer farten ut, strupen på plussiden (A) styrer farten inn. Avluftstruping: stempelet har trykk på begge sider («klemt mellom to luftputer»). Det gir jevn fart, også når lasten varierer eller drar i sylinderen. Tilluftstruping: minussiden tømmes fort, plussiden fylles sakte. Friksjonen i pakningene holder stempelet til trykket er høyt nok – så rykker det, trykket faller, og det stopper igjen («stick-slip»). Tilluftstruping brukes på <i>enkeltvirkende</i> sylindere (de har bare én luftport) og noen ganger på svært små sylindere. Fartsområdet i animasjonen er forenklet. Spør: «Hvilken skrue skrur du på hvis sylinderen går for fort UT?» (B – minussiden). Dette er den vanligste feilen elever gjør på verkstedet.</details>
   </div>
 </section>
 
@@ -290,7 +349,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 3 · ca. 7 min</div>
     <h2>Indirekte styring – knappen sender et signal</h2>
-    <p class="lead"><b>Direkte:</b> knappeventilen sender <i>all</i> lufta til sylinderen. <b>Indirekte:</b> knappen sender bare et lite <b>luftsignal</b> (stiplet linje) til en stor ventil ved maskinen. Hold inne knappen i begge.</p>
+    <p class="lead">Knappen sender bare et <b>luftsignal</b> (stiplet). Prøv begge.</p>
     <div class="fig">
       <div class="controls" style="margin:0 0 .5rem"><span class="chips" id="p3Mode"></span></div>
       <svg id="p3Svg" viewBox="0 0 1000 580" role="img" aria-label="Direkte og indirekte styring av en stor sylinder, med betjeningspanel og maskin"></svg>
@@ -305,11 +364,18 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="p3Msg"></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>Styresignal (pilot)</h3>Lufta skyver ventilen i stedet for hånda. Symbol: en liten <b>trekant</b> ved ruta, og port <b>14</b> eller <b>12</b>.</div>
-      <div class="card"><h3>To slags linjer</h3><b>Hel linje</b> = arbeidsledning (luft som gjør jobben).<br><b>Stiplet linje</b> = styreledning (bare et signal).</div>
-      <div class="card"><h3>Hvorfor indirekte?</h3>Store sylindere trenger mye luft. Knappen kan stå langt unna, slangene blir tynne, og vi kan koble på automatikk.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Luftsignal på port 14 skyver ventilen"><path d="M6 60 H46" style="fill:none;stroke:var(--blue);stroke-width:2.5;stroke-dasharray:6 5"><animate attributeName="stroke-dashoffset" values="22;0" dur=".8s" repeatCount="indefinite"/></path><path d="M46 50 L60 60 L46 70 Z" style="fill:var(--blue)"/><text x="30" y="48" text-anchor="middle" font-size="13" font-weight="800" style="fill:var(--blue)">14</text><path d="M100 20 V38 M90 102 V82 M110 102 V82" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;40 0;40 0;0 0" keyTimes="0;.3;.4;.8;.9" dur="4s" repeatCount="indefinite"/><rect x="60" y="38" width="40" height="44" style="fill:var(--panel);stroke:var(--ink);stroke-width:2.5"/><rect x="100" y="38" width="40" height="44" style="fill:var(--panel);stroke:var(--ink);stroke-width:2.5"/><path d="M70 80 L86 44" style="stroke:var(--blue);stroke-width:2.5"/><path d="M110 44 L126 80" style="stroke:var(--orange);stroke-width:2.5"/><path d="M140 60 l6 -8 l6 16 l6 -16 l6 8" style="fill:none;stroke:var(--ink);stroke-width:2"/></g><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">▷ = styres med luft</text></svg>
+        <h3>Styresignal (pilot)</h3><p class="short">Lufta skyver ventilen – port <b>14</b> eller <b>12</b>.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Hel linje er arbeidsledning, stiplet linje er styreledning"><path d="M10 36 H190" style="stroke:var(--blue);stroke-width:5"/><g style="fill:var(--panel)"><circle r="4"><animateMotion dur="2s" begin="-0.00s" repeatCount="indefinite" path="M10 36 H190"/></circle><circle r="4"><animateMotion dur="2s" begin="-0.50s" repeatCount="indefinite" path="M10 36 H190"/></circle><circle r="4"><animateMotion dur="2s" begin="-1.00s" repeatCount="indefinite" path="M10 36 H190"/></circle><circle r="4"><animateMotion dur="2s" begin="-1.50s" repeatCount="indefinite" path="M10 36 H190"/></circle></g><text x="100" y="24" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--ink)">arbeidsledning – luft som jobber</text><path d="M10 80 H190" style="fill:none;stroke:var(--blue);stroke-width:2.5;stroke-dasharray:8 6"><animate attributeName="stroke-dashoffset" values="28;0" dur="1s" repeatCount="indefinite"/></path><text x="100" y="100" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--ink)">styreledning – bare et signal</text></svg>
+        <h3>To slags linjer</h3><p class="short"><b>Hel</b> = arbeid. <b>Stiplet</b> = signal.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Liten knapp langt unna sender signal til en stor ventil ved maskinen"><rect x="8" y="40" width="34" height="40" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/><circle cx="25" cy="60" r="8" style="fill:var(--green)"><animate attributeName="r" values="8;6;8" dur="2s" repeatCount="indefinite"/></circle><path d="M42 60 H118" style="fill:none;stroke:var(--blue);stroke-width:2;stroke-dasharray:6 5"><animate attributeName="stroke-dashoffset" values="22;0" dur=".8s" repeatCount="indefinite"/></path><rect x="118" y="44" width="30" height="32" style="fill:var(--panel);stroke:var(--ink);stroke-width:2.5"/><path d="M133 44 V20 H160" style="fill:none;stroke:var(--blue);stroke-width:6"/><rect x="156" y="8" width="38" height="70" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2.5"/><g><animateTransform attributeName="transform" type="translate" values="0 0;0 24;0 24;0 0" keyTimes="0;.4;.7;1" dur="2s" repeatCount="indefinite"/><rect x="160" y="14" width="30" height="8" style="fill:var(--steel-dark)"/><rect x="171" y="22" width="8" height="60" style="fill:var(--steel)"/></g><g font-size="10" style="fill:var(--muted)"><text x="25" y="94" text-anchor="middle">knapp</text><text x="80" y="54" text-anchor="middle">langt unna</text><text x="133" y="92" text-anchor="middle">ventil</text></g><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">liten knapp – stor sylinder</text></svg>
+        <h3>Hvorfor indirekte?</h3><p class="short">Tynne slanger, lang avstand, automatikk.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Ventilen ved maskinen kalles «hovedventil», «trykkstyrt ventil» eller «pilotstyrt ventil». Port 14 betyr: signal her kobler 1 til 4. Port 12 kobler 1 til 2. Dette er de samme tallene som i leksjon 1 – men nå er det luft, ikke en knapp, som påvirker. Forsinkelsen ved direkte styring kommer av at lange, tykke slanger må fylles og tømmes for hvert slag (stort «dødvolum»). Dette sløser også luft. I industrien er nesten all pneumatikk indirekte – og fra leksjon 4 er signalet elektrisk (magnetventil).</details>
+    <a class="simlink no-print" data-sim="pneumatikk-og-hydraulikk"><span class="ico">🧪</span><span><b>Prøv selv: Pneumatikk- og hydraulikksimulatoren</b><small>Bygg indirekte styring med en pilotstyrt 5/2-ventil.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Direkte: knappeventilen sender all lufta til sylinderen. Indirekte: knappen sender bare et lite luftsignal (stiplet linje) til en stor ventil ved maskinen. Styresignal (pilot): lufta skyver ventilen i stedet for hånda; symbol er en liten trekant ved ruta, og port 14 eller 12. Hel linje = arbeidsledning, stiplet linje = styreledning. Hvorfor indirekte: store sylindere trenger mye luft, knappen kan stå langt unna, slangene blir tynne, og vi kan koble på automatikk. Ventilen ved maskinen kalles «hovedventil», «trykkstyrt ventil» eller «pilotstyrt ventil». Port 14 betyr: signal her kobler 1 til 4. Port 12 kobler 1 til 2. Dette er de samme tallene som i leksjon 1 – men nå er det luft, ikke en knapp, som påvirker. Forsinkelsen ved direkte styring kommer av at lange, tykke slanger må fylles og tømmes for hvert slag (stort «dødvolum»). Dette sløser også luft. I industrien er nesten all pneumatikk indirekte – og fra leksjon 4 er signalet elektrisk (magnetventil).</details>
   </div>
 </section>
 
@@ -318,7 +384,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 4 · ca. 5 min</div>
     <h2>Impulsventilen husker</h2>
-    <p class="lead">Trykk kort på <b>S1</b> og slipp. Hva gjør sylinderen? Prøv det samme med <b>fjærretur</b>. En impulsventil har <b>to signaler</b> og <b>ingen fjær</b>.</p>
+    <p class="lead">Trykk kort på <b>S1</b>. Prøv så med <b>fjærretur</b>.</p>
     <div class="fig">
       <div class="controls" style="margin:0 0 .5rem"><span class="chips" id="p4Mode"></span></div>
       <svg id="p4Svg" viewBox="0 0 1000 570" role="img" aria-label="Koblingsskjema med to knapper S1 og S2, 5/2 impulsventil og dobbeltvirkende sylinder"></svg>
@@ -335,11 +401,17 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="p4Msg"></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>Impuls</h3>Et <b>kort signal</b> – et «dytt». Det holder å trykke kort.</div>
-      <div class="card"><h3>Minne</h3>Ventilen blir stående til den får signal på <b>den andre siden</b>. Den husker det siste signalet.</div>
-      <div class="card"><h3>⚠ Pass på</h3>Den husker også <b>etter at lufta har vært borte</b>. Når lufta kommer tilbake, kan sylinderen gå.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Et kort signal: linja går opp og ned igjen"><path d="M10 90 H190 M10 90 V20" style="fill:none;stroke:var(--muted);stroke-width:1.5"/><path id="impPath" d="M10 88 H60 V36 H84 V88 H190" style="fill:none;stroke:var(--blue);stroke-width:3"/><circle r="5" style="fill:var(--orange)"><animateMotion dur="3s" repeatCount="indefinite" path="M10 88 H60 V36 H84 V88 H190"/></circle><g font-size="11" style="fill:var(--muted)"><text x="14" y="30">1</text><text x="14" y="84">0</text><text x="186" y="104" text-anchor="end">tid →</text></g><text x="72" y="28" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--blue)">dytt</text></svg>
+        <h3>Impuls</h3><p class="short">Et <b>kort signal</b> holder.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Impulsventil: blir stående etter signal 14 til den får signal 12"><path d="M100 16 V34 M90 98 V82 M110 98 V82" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><g><animateTransform attributeName="transform" type="translate" values="0 0;40 0;40 0;0 0;0 0" keyTimes="0;.12;.5;.62;1" dur="6s" repeatCount="indefinite"/><rect x="60" y="34" width="40" height="48" style="fill:var(--panel);stroke:var(--ink);stroke-width:2.5"/><rect x="100" y="34" width="40" height="48" style="fill:var(--panel);stroke:var(--ink);stroke-width:2.5"/><path d="M70 80 L86 40" style="stroke:var(--blue);stroke-width:2.5"/><path d="M110 40 L126 80" style="stroke:var(--orange);stroke-width:2.5"/><path d="M46 50 L60 58 L46 66 Z M154 50 L140 58 L154 66 Z" style="fill:var(--ink)"/></g><circle cx="20" cy="58" r="10" style="fill:var(--steel-soft)"><animate attributeName="fill" values="#51cf66;#9aa5b1" keyTimes="0;.1" calcMode="discrete" dur="6s" repeatCount="indefinite"/></circle><circle cx="180" cy="58" r="10" style="fill:var(--steel-soft)"><animate attributeName="fill" values="#9aa5b1;#51cf66;#9aa5b1" keyTimes="0;.5;.6" calcMode="discrete" dur="6s" repeatCount="indefinite"/></circle><g font-size="12" font-weight="800" text-anchor="middle" style="fill:var(--ink)"><text x="20" y="84">14</text><text x="180" y="84">12</text></g><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">står der til signal på andre side</text></svg>
+        <h3>Minne</h3><p class="short">Husker til signal på <b>andre siden</b>.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Når lufta slås på igjen, kan sylinderen gå av seg selv"><circle cx="30" cy="40" r="20" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:2.5"/><line x1="30" y1="40" x2="30" y2="25" style="stroke:var(--red);stroke-width:2.5;stroke-linecap:round"><animateTransform attributeName="transform" type="rotate" values="-120 30 40;-120 30 40;40 30 40;40 30 40" keyTimes="0;.15;.35;1" dur="4s" repeatCount="indefinite"/></line><text x="30" y="78" text-anchor="middle" font-size="10" style="fill:var(--muted)">luft på</text><rect x="64" y="34" width="80" height="36" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2.5"/><g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;46 0;46 0" keyTimes="0;.4;.5;1" dur="4s" repeatCount="indefinite"/><rect x="70" y="37" width="8" height="30" style="fill:var(--steel-dark)"/><rect x="78" y="48" width="70" height="8" style="fill:var(--steel)"/></g><g opacity="0"><animate attributeName="opacity" values="0;1" keyTimes="0;.5" calcMode="discrete" dur="4s" repeatCount="indefinite"/><path d="M168 14 L186 44 H150 Z" style="fill:var(--yellow);stroke:var(--ink);stroke-width:2"/><text x="168" y="40" text-anchor="middle" font-size="18" font-weight="800" style="fill:var(--ink)">!</text></g><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">sylinderen kan gå uten at du trykker</text></svg>
+        <h3>⚠ Pass på</h3><p class="short">Husker også når lufta har vært borte.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Impulsventilen kalles også «bistabil ventil» eller «5/2 dobbeltpilot». Den har samme areal på begge sider, så hvis det er signal på både 12 og 14 samtidig, blir den stående der den var. Det kalles <i>signalkollisjon</i> og er hovedtema i leksjon 3. Fjærventilen kalles «monostabil»: den har én stilling den alltid går tilbake til. Sammenlign med en lysbryter (husker) og en ringeklokke (glemmer).</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>En impulsventil har to signaler og ingen fjær. Impuls = et kort signal, et «dytt» – det holder å trykke kort. Minne: ventilen blir stående til den får signal på den andre siden; den husker det siste signalet. Pass på: den husker også etter at lufta har vært borte – når lufta kommer tilbake, kan sylinderen gå. Impulsventilen kalles også «bistabil ventil» eller «5/2 dobbeltpilot». Den har samme areal på begge sider, så hvis det er signal på både 12 og 14 samtidig, blir den stående der den var. Det kalles <i>signalkollisjon</i> og er hovedtema i leksjon 3. Fjærventilen kalles «monostabil»: den har én stilling den alltid går tilbake til. Sammenlign med en lysbryter (husker) og en ringeklokke (glemmer).</details>
   </div>
 </section>
 
@@ -348,7 +420,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 5 · ca. 7 min</div>
     <h2>OG og ELLER – logikk med luft</h2>
-    <p class="lead">Slå signal <b>A</b> og <b>B</b> av og på. <b>ELLER</b>: én av dem holder. <b>OG</b>: begge må være på. Se på kula og sleiden inni.</p>
+    <p class="lead"><b>ELLER</b>: én holder. <b>OG</b>: begge må være på.</p>
     <div class="fig">
       <div class="controls" style="margin:0 0 .5rem"><span class="chips" id="p5Kind"></span></div>
       <svg id="p5Svg" viewBox="0 0 1000 420" role="img" aria-label="Vekselventil og tofrykkventil i snitt, sannhetstabell og symbol"></svg>
@@ -359,11 +431,17 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="p5Msg"></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>ELLER = vekselventil</h3>Start fra <b>to steder</b>: ved maskinen <i>eller</i> fra kontrollrommet.</div>
-      <div class="card"><h3>OG = tofrykkventil</h3><b>Tohåndsbetjening</b> på en presse: begge hendene på knappene – ingen hånd i pressa.</div>
-      <div class="card"><h3>1 og 0</h3><b>1</b> = signal (luft). <b>0</b> = ikke signal. Tabellen som viser alle muligheter, heter en <b>sannhetstabell</b>.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="ELLER: utgangen får luft når A eller B er trykket"><path d="M38 30 H100 V50 M38 90 H100 V70" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><circle cx="24" cy="30" r="13" style="fill:var(--steel)"><animate attributeName="fill" values="#51cf66;#9aa5b1" keyTimes="0;.33" calcMode="discrete" dur="6s" repeatCount="indefinite"/></circle><text x="24" y="34" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">A</text><circle cx="24" cy="90" r="13" style="fill:var(--steel)"><animate attributeName="fill" values="#9aa5b1;#51cf66;#9aa5b1" keyTimes="0;.5;.83" calcMode="discrete" dur="6s" repeatCount="indefinite"/></circle><text x="24" y="94" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">B</text><rect x="84" y="48" width="32" height="24" rx="3" style="fill:var(--panel);stroke:var(--ink);stroke-width:2.5"/><text x="100" y="64" text-anchor="middle" font-size="10" font-weight="800" style="fill:var(--ink)">ELLER</text><path d="M116 60 H150" style="fill:none;stroke:var(--ink);stroke-width:2.5"/><circle cx="166" cy="60" r="15" style="fill:var(--steel)"><animate attributeName="fill" values="#51cf66;#9aa5b1;#51cf66;#9aa5b1" keyTimes="0;.33;.5;.83" calcMode="discrete" dur="6s" repeatCount="indefinite"/></circle><text x="166" y="64" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">ut</text><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">start fra to steder</text></svg>
+        <h3>ELLER = vekselventil</h3><p class="short">Start fra <b>to steder</b>.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="OG: pressa går bare ned når begge hendene trykker"><rect x="70" y="6" width="60" height="14" style="fill:var(--steel-dark)"/><g><animateTransform attributeName="transform" type="translate" values="0 0;0 30;0 0" keyTimes="0;.3;.6" calcMode="discrete" dur="6s" repeatCount="indefinite"/><rect x="92" y="20" width="16" height="22" style="fill:var(--steel)"/><rect x="80" y="40" width="40" height="10" style="fill:var(--orange)"/></g><rect x="70" y="80" width="60" height="8" style="fill:var(--steel-dark)"/><circle cx="28" cy="66" r="13" style="fill:var(--steel)"><animate attributeName="fill" values="#51cf66;#9aa5b1" keyTimes="0;.6" calcMode="discrete" dur="6s" repeatCount="indefinite"/></circle><text x="28" y="70" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">A</text><circle cx="172" cy="66" r="13" style="fill:var(--steel)"><animate attributeName="fill" values="#9aa5b1;#51cf66;#9aa5b1" keyTimes="0;.3;.9" calcMode="discrete" dur="6s" repeatCount="indefinite"/></circle><text x="172" y="70" text-anchor="middle" font-size="12" font-weight="800" fill="#fff">B</text><g font-size="18" text-anchor="middle"><text x="28" y="48">✋</text><text x="172" y="48">✋</text></g><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">tohåndsbetjening</text></svg>
+        <h3>OG = tofrykkventil</h3><p class="short">Begge hender på knappene.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Sannhetstabell for OG og ELLER med en markering som går nedover radene"><rect x="8" y="26" width="184" height="18" rx="3" style="fill:var(--yellow);opacity:.5"><animateTransform attributeName="transform" type="translate" values="0 0;0 19;0 38;0 57" keyTimes="0;.25;.5;.75" calcMode="discrete" dur="6s" repeatCount="indefinite"/></rect><text x="30" y="18" text-anchor="middle" font-size="12" font-weight="800" style="fill:var(--ink)">A</text><text x="70" y="18" text-anchor="middle" font-size="12" font-weight="800" style="fill:var(--ink)">B</text><text x="125" y="18" text-anchor="middle" font-size="12" font-weight="800" style="fill:var(--ink)">OG</text><text x="175" y="18" text-anchor="middle" font-size="12" font-weight="800" style="fill:var(--ink)">ELLER</text><path d="M8 23 H192" style="stroke:var(--line);stroke-width:1.5"/><text x="30" y="39" text-anchor="middle" font-size="12" style="fill:var(--ink)">0</text><text x="70" y="39" text-anchor="middle" font-size="12" style="fill:var(--ink)">0</text><text x="125" y="39" text-anchor="middle" font-size="12" style="fill:var(--ink)">0</text><text x="175" y="39" text-anchor="middle" font-size="12" style="fill:var(--ink)">0</text><text x="30" y="58" text-anchor="middle" font-size="12" style="fill:var(--ink)">1</text><text x="70" y="58" text-anchor="middle" font-size="12" style="fill:var(--ink)">0</text><text x="125" y="58" text-anchor="middle" font-size="12" style="fill:var(--ink)">0</text><text x="175" y="58" text-anchor="middle" font-size="12" style="fill:var(--ink)">1</text><text x="30" y="77" text-anchor="middle" font-size="12" style="fill:var(--ink)">0</text><text x="70" y="77" text-anchor="middle" font-size="12" style="fill:var(--ink)">1</text><text x="125" y="77" text-anchor="middle" font-size="12" style="fill:var(--ink)">0</text><text x="175" y="77" text-anchor="middle" font-size="12" style="fill:var(--ink)">1</text><text x="30" y="96" text-anchor="middle" font-size="12" style="fill:var(--ink)">1</text><text x="70" y="96" text-anchor="middle" font-size="12" style="fill:var(--ink)">1</text><text x="125" y="96" text-anchor="middle" font-size="12" style="fill:var(--ink)">1</text><text x="175" y="96" text-anchor="middle" font-size="12" style="fill:var(--ink)">1</text><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">1 = luft · 0 = ingen luft</text></svg>
+        <h3>Sannhetstabell</h3><p class="short">Viser alle muligheter.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Vekselventil (shuttle valve): kula legger seg mot den inngangen som <i>ikke</i> har trykk, slik at lufta ikke lekker ut gjennom den andre knappens avlufting. Tofrykkventil (two-pressure valve): sleiden stenger den inngangen som kommer først; først når begge har trykk, slipper den siste gjennom. En ekte tohåndsbetjening for presser krever i tillegg at begge knappene trykkes innen ca. 0,5 s, og er en egen sikkerhetskomponent – tofrykkventilen viser bare prinsippet. Symbolene for OG og ELLER tegnes litt ulikt i ulike bøker; her står det OG/ELLER ved siden av for å hjelpe.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Slå A og B av og på, og se på kula og sleiden inni. ELLER = vekselventil: start fra to steder, ved maskinen eller fra kontrollrommet. OG = tofrykkventil: tohåndsbetjening på en presse – begge hendene på knappene, ingen hånd i pressa. 1 = signal (luft), 0 = ikke signal; tabellen som viser alle muligheter, heter en sannhetstabell. Vekselventil (shuttle valve): kula legger seg mot den inngangen som <i>ikke</i> har trykk, slik at lufta ikke lekker ut gjennom den andre knappens avlufting. Tofrykkventil (two-pressure valve): sleiden stenger den inngangen som kommer først; først når begge har trykk, slipper den siste gjennom. En ekte tohåndsbetjening for presser krever i tillegg at begge knappene trykkes innen ca. 0,5 s, og er en egen sikkerhetskomponent – tofrykkventilen viser bare prinsippet. Symbolene for OG og ELLER tegnes litt ulikt i ulike bøker; her står det OG/ELLER ved siden av for å hjelpe.</details>
   </div>
 </section>
 
@@ -372,7 +450,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 6 · ca. 10 min</div>
     <h2>Automatisk tur-retur med rulleventiler</h2>
-    <p class="lead">Hele kretsen. Når stanga når ut, trykker kammen inn rulleventil <b>a1</b> – og sylinderen går tilbake av seg selv. <b>a0</b> sier «jeg er helt inne». Start = <b>S1 OG a0</b>.</p>
+    <p class="lead">Kammen treffer <b>a1</b> – sylinderen går tilbake av seg selv.</p>
     <div class="fig">
       <svg id="p6Svg" viewBox="0 0 1000 580" role="img" aria-label="Koblingsskjema for automatisk tur-retur med startknapp, rulleventiler a0 og a1, tofrykkventil, impulsventil, strupe-tilbakeslagsventiler og sylinder"></svg>
       <div class="steps" id="p6Steps"><span>① S1 OG a0 → signal 14</span><span>② sylinderen går ut</span><span>③ kammen treffer a1 → signal 12</span><span>④ sylinderen går inn til a0</span></div>
@@ -392,11 +470,18 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="p6Msg"></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>Rulleventil</h3>En 3/2-ventil med et <b>hjul (rulle)</b>. En <b>kam</b> på stanga trykker den inn. Den «kjenner» hvor stanga er.</div>
-      <div class="card"><h3>Endeposisjon</h3><b>a0</b> = stanga helt inne. <b>a1</b> = stanga helt ute. Strekene ved stanga viser hvor rulleventilene sitter.</div>
-      <div class="card"><h3>Feilsøk i rekkefølge</h3>1 Hva gjør sylinderen? 2 Hvilke ruller er trykket inn? 3 Hører du det hvese? 4 Følg signalet i skjemaet.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Kam på stanga trykker inn rulla på en rulleventil"><rect x="0" y="22" width="200" height="10" style="fill:var(--steel)"/><g><animateTransform attributeName="transform" type="translate" values="-70 0;70 0;-70 0" dur="4s" repeatCount="indefinite"/><path d="M84 32 H116 L110 46 H90 Z" style="fill:var(--orange)"/></g><g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 8;0 8;0 0;0 0;0 8;0 8;0 0;0 0" keyTimes="0;.15;.22;.28;.35;.65;.72;.78;.85;1" dur="4s" repeatCount="indefinite"/><line x1="100" y1="56" x2="100" y2="68" style="stroke:var(--ink);stroke-width:3"/><circle cx="100" cy="54" r="8" style="fill:var(--panel);stroke:var(--ink);stroke-width:2.5"/></g><rect x="70" y="68" width="60" height="30" rx="3" style="fill:var(--panel);stroke:var(--ink);stroke-width:2.5"/><text x="100" y="88" text-anchor="middle" font-size="11" font-weight="700" style="fill:var(--ink)">3/2</text><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">kammen trykker inn rulla</text></svg>
+        <h3>Rulleventil</h3><p class="short">3/2-ventil som <b>kjenner</b> hvor stanga er.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Stanga går mellom a0 helt inne og a1 helt ute"><rect x="10" y="30" width="90" height="36" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2.5"/><g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;60 0;60 0;0 0" keyTimes="0;.1;.45;.6;.95" dur="4s" repeatCount="indefinite"/><rect x="16" y="33" width="8" height="30" style="fill:var(--steel-dark)"/><rect x="24" y="44" width="100" height="8" style="fill:var(--steel)"/><rect x="118" y="40" width="8" height="40" style="fill:var(--orange)"/></g><path d="M122 84 V94 M182 84 V94" style="stroke:var(--ink);stroke-width:3"/><circle cx="122" cy="84" r="6" style="fill:var(--steel)"><animate attributeName="fill" values="#51cf66;#9aa5b1;#51cf66" keyTimes="0;.12;.93" calcMode="discrete" dur="4s" repeatCount="indefinite"/></circle><circle cx="182" cy="84" r="6" style="fill:var(--steel)"><animate attributeName="fill" values="#9aa5b1;#51cf66;#9aa5b1" keyTimes="0;.44;.62" calcMode="discrete" dur="4s" repeatCount="indefinite"/></circle><g font-size="13" font-weight="800" text-anchor="middle" style="fill:var(--ink)"><text x="122" y="20">a0</text><text x="182" y="20">a1</text></g><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">a0 = inne · a1 = ute</text></svg>
+        <h3>Endeposisjon</h3><p class="short"><b>a0</b> = inne. <b>a1</b> = ute.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Feilsøking i fire steg: se, sjekk rullene, lytt, følg signalet"><rect x="4" y="18" width="46" height="70" rx="8" style="fill:var(--orange-soft);stroke:var(--orange);stroke-width:2"><animateTransform attributeName="transform" type="translate" values="0 0;48 0;96 0;144 0" keyTimes="0;.25;.5;.75" calcMode="discrete" dur="6s" repeatCount="indefinite"/></rect><g font-size="22" text-anchor="middle"><text x="27" y="52">👁</text><text x="75" y="52">⚙</text><text x="123" y="52">👂</text><text x="171" y="52">📋</text></g><g font-size="10" font-weight="700" text-anchor="middle" style="fill:var(--ink)"><text x="27" y="76">1 se</text><text x="75" y="76">2 ruller</text><text x="123" y="76">3 lytt</text><text x="171" y="76">4 skjema</text></g><text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">symptom → årsak</text></svg>
+        <h3>Feilsøk i rekkefølge</h3><p class="short">Se → ruller → lytt → skjema.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Hvorfor a0 i OG-en? Uten a0 kunne et langt trykk på S1 gi signal på 14 samtidig med signalet fra a1 på 12 – da står impulsventilen (signalkollisjon), og sylinderen blir stående ute. Med a0 kan en ny syklus bare starte når stanga er helt inne. Med «kontinuerlig drift» holdes S1 inne (en bryter med lås), og sylinderen går fram og tilbake til bryteren slås av. Feilspillet: (1) a1 er montert for langt ute – kammen når den aldri, (2) slangen fra a1 til 12 har løsnet – a1 trykkes inn, men signalet hveser ut, (3) a0 mangler luft – det blir aldri noe OG. Be elevene beskrive symptom → hva de ser/hører → årsak. Strupe B styrer farten ut, strupe A farten inn (avluftstruping, del 2).</details>
+    <a class="simlink no-print" data-sim="pneumatikk-og-hydraulikk"><span class="ico">🧪</span><span><b>Prøv selv: Pneumatikk- og hydraulikksimulatoren</b><small>Bygg tur-retur med rulleventiler, OG-ventil og impulsventil.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Når stanga når ut, trykker kammen inn rulleventil a1 – og sylinderen går tilbake av seg selv. a0 sier «jeg er helt inne». Start = S1 OG a0. Rulleventil: en 3/2-ventil med et hjul (rulle); en kam på stanga trykker den inn. Strekene ved stanga i skjemaet viser hvor rulleventilene sitter. Feilsøk i rekkefølge: 1 Hva gjør sylinderen? 2 Hvilke ruller er trykket inn? 3 Hører du det hvese? 4 Følg signalet i skjemaet. Hvorfor a0 i OG-en? Uten a0 kunne et langt trykk på S1 gi signal på 14 samtidig med signalet fra a1 på 12 – da står impulsventilen (signalkollisjon), og sylinderen blir stående ute. Med a0 kan en ny syklus bare starte når stanga er helt inne. Med «kontinuerlig drift» holdes S1 inne (en bryter med lås), og sylinderen går fram og tilbake til bryteren slås av. Feilspillet: (1) a1 er montert for langt ute – kammen når den aldri, (2) slangen fra a1 til 12 har løsnet – a1 trykkes inn, men signalet hveser ut, (3) a0 mangler luft – det blir aldri noe OG. Be elevene beskrive symptom → hva de ser/hører → årsak. Strupe B styrer farten ut, strupe A farten inn (avluftstruping, del 2).</details>
   </div>
 </section>
 
@@ -405,7 +490,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 7 · ca. 3 min</div>
     <h2>Trygg styring – riktig eller galt?</h2>
-    <p class="lead">Klikk på kortene. Automatikk betyr at ting kan bevege seg <b>uten</b> at noen trykker.</p>
+    <p class="lead">Klikk på kortene. Automatikk kan gå <b>uten</b> at noen trykker.</p>
     <div class="flipgrid" id="p7Grid"></div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Kobles til LOTO i Vedlikehold 2: steng, avluft, lås og merk før arbeid i maskinen. Impulsventiler og fulle trykktanker gir lagret energi og «minne» – maskinen kan bevege seg når lufta slås på. Merk slangene med portnummer når kretsen kobles opp, det gjør feilsøking mye raskere. Tohåndsbetjening må aldri forbikobles.</details>
   </div>
@@ -434,7 +519,7 @@ table.t th{background:var(--steel-soft)}
         </div>
         <div class="card" style="margin-top:1rem">
           <h3>Neste leksjon</h3>
-          <p style="margin:0"><b>Pneumatikk 3 – Sekvenser:</b> to sylindere som jobber etter hverandre, vei-steg-diagram og hva som skjer når to signaler kolliderer.</p>
+          <p style="margin:0"><b>Pneumatikk 3 – Sekvenser:</b> to sylindere, vei-steg-diagram og signalkollisjon.</p>
         </div>
       </div>
     </div>
@@ -467,7 +552,7 @@ table.t th{background:var(--steel-soft)}
           <tr><td>2</td><td class="tom"><span class="fasit" hidden>Vedlikeholdsenhet</span></td><td>5</td><td><span class="fasit" hidden>Strupe-tilbakeslagsventil B (minussiden)</span></td></tr>
           <tr><td>3</td><td class="tom"><span class="fasit" hidden>5/2-ventil med knapp og fjær</span></td><td>6</td><td><span class="fasit" hidden>Dobbeltvirkende sylinder</span></td></tr>
         </table>
-        <p>b) Hvilken strupe (4 eller 5) bestemmer farten når sylinderen går <b>ut</b>? Og når den går <b>inn</b>?</p><div class="svar"><span class="fasit" hidden>Ut: <b>5</b> (den struper lufta som presses ut av minussiden). Inn: <b>4</b>.</span></div>
+        <p>b) Hvilken strupe (4 eller 5) styrer farten <b>ut</b>? Og <b>inn</b>?</p><div class="svar"><span class="fasit" hidden>Ut: <b>5</b> (den struper lufta som presses ut av minussiden). Inn: <b>4</b>.</span></div>
         <p>c) Hva gjør kula inni strupe-tilbakeslagsventilen?</p><div class="svar"><span class="fasit" hidden>Kula slipper lufta fritt <i>inn</i> til sylinderen. Når lufta skal <i>ut</i>, presses kula inn i setet, og lufta må gjennom strupen.</span></div>
         <p>d) Hvorfor struper vi <b>avlufta</b> og ikke tilluft på en dobbeltvirkende sylinder?</p><div class="svar"><span class="fasit" hidden>Med avluftstruping har stempelet trykk på begge sider – det er «klemt mellom to luftputer» og går jevnt.</span></div><div class="svar"><span class="fasit" hidden>Tilluftstruping gir rykkete bevegelse.</span></div>
         <p>e) Hva skjer?</p>
@@ -477,6 +562,7 @@ table.t th{background:var(--steel-soft)}
           <tr><td>Skrur strupe 4 helt opp</td><td class="tom"><span class="fasit" hidden>Ut som før, inn går raskere.</span></td></tr>
           <tr><td>Skrur strupe 5 helt igjen</td><td class="tom"><span class="fasit" hidden>Går ikke ut – lufta på minussiden kommer ikke ut.</span></td></tr>
         </table>
+        <p>f) <i>Ekstra:</i> Bygg kretsen i <a data-sim="pneumatikk-og-hydraulikk">Pneumatikk- og hydraulikksimulatoren</a>. Sjekk svarene i e). Stemte de?</p><div class="svar"><span class="fasit" hidden>Ja: strupe 5 styrer farten ut, strupe 4 farten inn. Helt stengt strupe 5 = sylinderen går ikke ut.</span></div>
       </div>
 
       <div class="oppgave">
@@ -493,12 +579,12 @@ table.t th{background:var(--steel-soft)}
         <p>b) Hva er forskjellen på en <b>hel</b> og en <b>stiplet</b> linje i skjemaet?</p><div class="svar"><span class="fasit" hidden>Hel = arbeidsledning, luft som gjør jobben. Stiplet = styreledning, bare et signal.</span></div>
         <p>c) Gi to grunner til å bruke indirekte styring.</p><div class="svar"><span class="fasit" hidden>F.eks.: en stor sylinder trenger mye luft – en liten knappeventil holder; knappen kan stå langt unna maskinen;</span></div><div class="svar"><span class="fasit" hidden>tynne slanger og mindre luftsløsing; raskere start; vi kan koble på automatikk (OG/ELLER, rulleventiler).</span></div>
         <p>d) Hva skjer når S1 trykkes inn? Skriv tre steg.</p><div class="svar"><span class="fasit" hidden>S1 kobler 1 → 2 → luft i styreledningen til port 14 →</span></div><div class="svar"><span class="fasit" hidden>ventil 5 skifter og kobler 1 → 4 → sylinderen går ut.</span></div>
-        <p>e) <b>Feilsøking:</b> Slangen 4 har løsnet ved ventil 5. Hva skjer med sylinderen når du trykker S1? Hva hører du?</p><div class="svar"><span class="fasit" hidden>Sylinderen står stille. Det hveser ved den løse slangen når S1 trykkes.</span></div>
+        <p>e) <b>Feilsøking:</b> Styreledningen (4) har løsnet ved ventil 5. Du trykker S1. Hva skjer, og hva hører du?</p><div class="svar"><span class="fasit" hidden>Sylinderen står stille. Det hveser ved den løse slangen når S1 trykkes.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Fjær eller impuls? <small>Time 2 · 5 min</small></h3>
-        <p>a) Sylinderen står inne. Skriv hva sylinderen gjør: <b>går ut</b>, <b>går inn</b>, <b>blir stående ute</b> eller <b>blir stående inne</b>.</p>
+        <p>a) Sylinderen står inne. Velg: <b>går ut</b> · <b>går inn</b> · <b>blir stående ute</b> · <b>blir stående inne</b>.</p>
         <table class="ot c">
           <tr><th>Steg</th><th>Hva du gjør</th><th style="width:26%">5/2 med fjærretur</th><th style="width:26%">5/2 impulsventil</th></tr>
           <tr><td>1</td><td>Trykker S1 (signal 14) og holder</td><td class="tom"><span class="fasit" hidden>går ut</span></td><td><span class="fasit" hidden>går ut</span></td></tr>
@@ -507,13 +593,13 @@ table.t th{background:var(--steel-soft)}
           <tr><td>4</td><td>Slipper S2</td><td class="tom">(finnes ikke)</td><td><span class="fasit" hidden>blir stående inne</span></td></tr>
         </table>
         <p>b) Hvorfor kalles impulsventilen en «minneventil»?</p><div class="svar"><span class="fasit" hidden>Den husker det siste signalet og blir stående til den får signal på den andre siden.</span></div>
-        <p>c) Lufta har vært avstengt og blir slått på igjen. Hvorfor kan en impulsventil være farlig da?</p><div class="svar"><span class="fasit" hidden>Den husker stillingen sin. Når lufta kommer tilbake, kan sylinderen bevege seg uten at noen trykker på noe.</span></div>
+        <p>c) Lufta slås på igjen etter stans. Hvorfor kan en impulsventil være farlig nå?</p><div class="svar"><span class="fasit" hidden>Den husker stillingen sin. Når lufta kommer tilbake, kan sylinderen bevege seg uten at noen trykker på noe.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 4 – OG eller ELLER? <small>Time 2 · 5 min</small></h3>
         <div class="ofig" id="o4fig"></div>
-        <p>a) Hvilket symbol er OG (tofrykkventil), og hvilket er ELLER (vekselventil)? &nbsp; X = <span class="luke"><span class="fasit" hidden>ELLER (vekselventil, kula)</span></span> &nbsp; Y = <span class="luke"><span class="fasit" hidden>OG (tofrykkventil, sleiden)</span></span></p>
+        <p>a) Hvilket symbol er OG, og hvilket er ELLER? &nbsp; X = <span class="luke"><span class="fasit" hidden>ELLER (vekselventil, kula)</span></span> &nbsp; Y = <span class="luke"><span class="fasit" hidden>OG (tofrykkventil, sleiden)</span></span></p>
         <p>b) Fyll ut sannhetstabellen. 1 = signal, 0 = ikke signal.</p>
         <table class="ot c" style="max-width:520px">
           <tr><th>A</th><th>B</th><th>OG gir ut</th><th>ELLER gir ut</th></tr>
@@ -563,6 +649,7 @@ table.t th{background:var(--steel-soft)}
           <tr><td>Ingenting skjer når du trykker S1. Sylinderen står inne.</td><td class="tom"><span class="fasit" hidden>a0 får ikke luft eller blir ikke trykket inn (ev. S1 er defekt).</span></td></tr>
           <tr><td>Sylinderen går altfor sakte ut, men inn går normalt.</td><td class="tom"><span class="fasit" hidden>Strupe B (minussiden) er skrudd for langt igjen.</span></td></tr>
         </table>
+        <p>e) <i>Ekstra:</i> Bygg tur-retur-kretsen i <a data-sim="pneumatikk-og-hydraulikk">Pneumatikk- og hydraulikksimulatoren</a>. Fjern a0 fra OG-ventilen og hold S1 inne. Hva skjer?</p><div class="svar"><span class="fasit" hidden>Sylinderen går ut, men blir stående ute: S1 gir fortsatt signal på 14 mens a1 gir signal på 12 (signalkollisjon), så impulsventilen skifter ikke tilbake.</span></div>
       </div>
 
       <div class="oppgave">
@@ -592,12 +679,16 @@ table.t th{background:var(--steel-soft)}
 <div class="toast" id="toast"></div>
 
 <script>
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
 (function(){
 "use strict";
 const $ = id => document.getElementById(id);
 const NS = "http://www.w3.org/2000/svg";
 const nf = (x, d=0) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
 const RM = (()=>{ try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } })();
+if (RM) document.querySelectorAll(".hero-fig svg, svg.scene").forEach(sv => { try { sv.pauseAnimations(); } catch(e){} });
 function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
 function rng(seed){ let a = seed>>>0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 const clamp = (v,a,b) => Math.max(a, Math.min(b, v));

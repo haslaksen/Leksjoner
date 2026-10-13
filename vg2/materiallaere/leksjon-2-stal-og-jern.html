@@ -79,6 +79,16 @@ table.t th{background:var(--steel-soft)}
 .hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
 .goals li{margin:.4rem 0}
 .plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
 .readout{display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; margin-top:.6rem}
 .readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
 .readout span{display:block; font-size:.75rem; color:var(--muted)}
@@ -215,20 +225,56 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
     <div>
       <div class="kicker">Vg2 industriteknologi · Materiallære</div>
       <h1>Leksjon 2<br>Stål og jern</h1>
-      <p class="lead">S355, C45, 42CrMo4 og 316L er alle stål – men de sveises, freses og herdes helt forskjellig. Forskjellen ligger i litt karbon og noen få legeringselementer.</p>
-      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <p class="lead">Hvorfor er ikke alt stål likt?</p>
       <ol class="goals">
-        <li>forklare forskjellen på <b>jern, stål og støpejern</b> ut fra karboninnholdet</li>
-        <li>forklare hva <b>korn</b>, <b>ferritt</b>, <b>sementitt</b> og <b>perlitt</b> er</li>
-        <li>forklare hvorfor mer karbon gir <b>sterkere og hardere</b>, men <b>mindre seigt</b> og <b>dårligere sveisbart</b> stål</li>
-        <li>forklare hvorfor bare stål med nok karbon <b>kan herdes</b></li>
-        <li>nevne de viktigste <b>legeringselementene</b> og hva de gjør</li>
-        <li><b>lese stålbetegnelser</b> som S355J2, C45, 42CrMo4 og X2CrNiMo17-12-2</li>
-        <li><b>velge</b> riktig ståltype til en enkel jobb</li>
+        <li><b>Jern, stål, støpejern</b>: karbonet avgjør</li>
+        <li><b>Korn</b>, <b>ferritt</b> og <b>perlitt</b></li>
+        <li>Mer karbon: <b>hardere</b>, men <b>mindre seigt</b></li>
+        <li>Hvorfor noe stål kan <b>herdes</b></li>
+        <li><b>Legeringselementer</b>: Cr, Ni, Mo …</li>
+        <li><b>Les og velg</b> stål: S355J2, 42CrMo4</li>
       </ol>
     </div>
     <div>
-      <div class="card">
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Karbonatomer fyller mellomrommene i jerngitteret: stålet blir sterkere, men mindre seigt">
+  <text x="200" y="22" text-anchor="middle" style="font-size:15px;font-weight:700;fill:var(--muted)">jernatomer + karbon</text>
+  <g style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2">
+    <circle cx="60" cy="50" r="21"/><circle cx="116" cy="50" r="21"/><circle cx="172" cy="50" r="21"/><circle cx="228" cy="50" r="21"/><circle cx="284" cy="50" r="21"/><circle cx="340" cy="50" r="21"/>
+    <circle cx="60" cy="100" r="21"/><circle cx="116" cy="100" r="21"/><circle cx="172" cy="100" r="21"/><circle cx="228" cy="100" r="21"/><circle cx="284" cy="100" r="21"/><circle cx="340" cy="100" r="21"/>
+    <circle cx="60" cy="150" r="21"/><circle cx="116" cy="150" r="21"/><circle cx="172" cy="150" r="21"/><circle cx="228" cy="150" r="21"/><circle cx="284" cy="150" r="21"/><circle cx="340" cy="150" r="21"/>
+    <circle cx="60" cy="200" r="21"/><circle cx="116" cy="200" r="21"/><circle cx="172" cy="200" r="21"/><circle cx="228" cy="200" r="21"/><circle cx="284" cy="200" r="21"/><circle cx="340" cy="200" r="21"/>
+  </g>
+  <g style="fill:var(--ink)">
+    <circle cx="144" cy="75" r="8" opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.05;0.08;.94;1" values="0;0;1;1;0"/></circle>
+    <circle cx="256" cy="125" r="8" opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.13;0.16;.94;1" values="0;0;1;1;0"/></circle>
+    <circle cx="88" cy="175" r="8" opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.21;0.24;.94;1" values="0;0;1;1;0"/></circle>
+    <circle cx="312" cy="75" r="8" opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.29;0.32;.94;1" values="0;0;1;1;0"/></circle>
+    <circle cx="200" cy="125" r="8" opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.37;0.40;.94;1" values="0;0;1;1;0"/></circle>
+    <circle cx="144" cy="175" r="8" opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.45;0.48;.94;1" values="0;0;1;1;0"/></circle>
+    <circle cx="256" cy="175" r="8" opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.53;0.56;.94;1" values="0;0;1;1;0"/></circle>
+    <circle cx="88" cy="75" r="8" opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.61;0.64;.94;1" values="0;0;1;1;0"/></circle>
+    <circle cx="312" cy="125" r="8" opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.69;0.72;.94;1" values="0;0;1;1;0"/></circle>
+    <circle cx="200" cy="175" r="8" opacity="0"><animate attributeName="opacity" dur="9s" repeatCount="indefinite" keyTimes="0;0.77;0.80;.94;1" values="0;0;1;1;0"/></circle>
+  </g>
+  <g style="font-size:13px;font-weight:700;text-anchor:middle">
+    <rect x="392" y="40" width="44" height="170" rx="4" style="fill:var(--steel-soft)"/><rect x="456" y="40" width="44" height="170" rx="4" style="fill:var(--steel-soft)"/>
+    <rect x="392" y="170" width="44" height="40" rx="4" style="fill:var(--blue)"><animate attributeName="height" dur="9s" repeatCount="indefinite" keyTimes="0;.05;.85;.94;1" values="40;40;160;160;40"/><animate attributeName="y" dur="9s" repeatCount="indefinite" keyTimes="0;.05;.85;.94;1" values="170;170;50;50;170"/></rect>
+    <rect x="456" y="50" width="44" height="160" rx="4" style="fill:var(--green)"><animate attributeName="height" dur="9s" repeatCount="indefinite" keyTimes="0;.05;.85;.94;1" values="160;160;14;14;160"/><animate attributeName="y" dur="9s" repeatCount="indefinite" keyTimes="0;.05;.85;.94;1" values="50;50;196;196;50"/></rect>
+    <text x="414" y="230" style="fill:var(--blue)">hardhet</text><text x="478" y="230" style="fill:var(--green)">seighet</text>
+  </g>
+  <line x1="40" y1="280" x2="490" y2="280" style="stroke:var(--muted);stroke-width:3"/>
+  <g style="font-size:13px;text-anchor:middle;fill:var(--ink)">
+    <line x1="70" y1="274" x2="70" y2="286" style="stroke:var(--muted);stroke-width:2"/><text x="70" y="302" style="font-weight:700">0,15 % C</text><text x="70" y="320" style="fill:var(--muted)">S355</text>
+    <line x1="180" y1="274" x2="180" y2="286" style="stroke:var(--muted);stroke-width:2"/><text x="180" y="302" style="font-weight:700">0,45 % C</text><text x="180" y="320" style="fill:var(--muted)">C45</text>
+    <line x1="310" y1="274" x2="310" y2="286" style="stroke:var(--muted);stroke-width:2"/><text x="310" y="302" style="font-weight:700">1 % C</text><text x="310" y="320" style="fill:var(--muted)">verktøy</text>
+    <line x1="450" y1="274" x2="450" y2="286" style="stroke:var(--muted);stroke-width:2"/><text x="450" y="302" style="font-weight:700">3,5 % C</text><text x="450" y="320" style="fill:var(--muted)">støpejern</text>
+  </g>
+  <path d="M0 0 l-9 -14 h18z" style="fill:var(--orange)"><animateTransform attributeName="transform" type="translate" dur="9s" repeatCount="indefinite" keyTimes="0;.05;.85;.94;1" values="70 272;70 272;450 272;450 272;70 272"/></path>
+</svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <div class="card" style="margin-top:.6rem">
         <h3>Kompetansemål (PIN02-03, Teknologi)</h3>
         <p><i>«vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer»</i></p>
         <p style="font-size:.85rem; color:var(--muted); margin:0">Støtter også målet om å velge bearbeidingsmetode ut fra materialet (sveising, maskinering). Bygger på leksjon 1: atomlag som glir, flytegrense, hard/seig/sprø.</p>
@@ -248,8 +294,10 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
           <tr><td>37–42 min</td><td>Oppgave 6 (oppgave 5 er ekstra)</td></tr>
           <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
         </table>
+        <p style="font-size:.85rem; margin:.6rem 0 0">Innledning: S355, C45, 42CrMo4 og 316L er alle stål – men de sveises, freses og herdes helt forskjellig. Forskjellen ligger i litt karbon og noen få legeringselementer. Fullstendige mål: forklare jern/stål/støpejern ut fra karbon; korn, ferritt, sementitt, perlitt; hvorfor mer karbon gir sterkere og hardere, men mindre seigt og dårligere sveisbart stål; hvorfor bare stål med nok karbon kan herdes; legeringselementer; lese S355J2, C45, 42CrMo4, X2CrNiMo17-12-2; velge ståltype til en enkel jobb.</p>
       </div>
-      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓. A+ gir større tekst på fremviser.</p>
     </div>
   </div>
 </section>
@@ -259,14 +307,15 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
   <div class="wrap">
     <div class="kicker">Repetisjon · ca. 5 min</div>
     <h2>Husker du fra leksjon 1?</h2>
-    <p class="lead">Svar muntlig med sidemannen. Klikk på kortet for å se svaret.</p>
+    <p class="lead">Svar med sidemannen. Klikk for svar.</p>
     <div class="grid4" style="margin-top:1.2rem">
       <button class="card flip"><span class="q">Hva er de fire materialgruppene?</span><span class="a">Metaller, polymerer, keramer og kompositter.</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Hvorfor kan metall bøyes uten å sprekke?</span><span class="a">Atomlagene glir forbi hverandre, og elektronsjøen holder bindingen.</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Hva skjer ved flytegrensen R<sub>e</sub>?</span><span class="a">Varig (plastisk) deformasjon starter. S355: minst 355 MPa.</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Hva er forskjellen på hard og seig?</span><span class="a">Hard: motstår riper og inntrykk. Seig: tar opp energi og bøyer seg før brudd.</span><span class="hint">Klikk for svar</span></button>
     </div>
-    <div class="tip o"><b>I dag:</b> Hvorfor glir atomlagene lett i noen stål og tungt i andre? Svaret er et lite atom: <b>karbon</b>.</div>
+    <div class="tip o"><b>I dag:</b> et lite atom – <b>karbon</b> – endrer alt.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Overgang: Hvorfor glir atomlagene lett i noen stål og tungt i andre? Svaret er et lite atom: karbon.</details>
   </div>
 </section>
 
@@ -275,7 +324,7 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
   <div class="wrap">
     <div class="kicker">Del 1 · ca. 4 min</div>
     <h2>Fra malm og skrap til stål</h2>
-    <p class="lead">Stål lages på to måter: av jernmalm i masovn, eller av skrap i lysbueovn. Begge ender med flytende stål som støpes og valses.</p>
+    <p class="lead">To veier: malm i masovn, eller skrap i lysbueovn.</p>
     <div class="fig">
       <svg id="proc" viewBox="0 0 1100 420" role="img" aria-label="Prosessen fra malm og skrap til stålprodukter">
         <defs>
@@ -349,10 +398,48 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
       <div class="status info" id="procTxt">To veier til samme mål: flytende stål med under ca. 2 % karbon.</div>
     </div>
     <div class="grid3" style="margin-top:1rem">
-      <div class="card"><b style="color:var(--steel-dark)">Masovn + konverter</b><br>Koks (karbon) tar oksygenet fra jernmalmen. Råjernet som kommer ut har ca. 4 % karbon og er sprøtt. I konverteren blåses oksygen inn, og det meste av karbonet brenner bort. Gir store CO₂-utslipp.</div>
-      <div class="card"><b style="color:var(--green)">Lysbueovn</b><br>Skrap smeltes med strøm. Mye lavere CO₂-utslipp med fornybar strøm. Celsa i Mo i Rana lager armeringsstål av skrap på denne måten. Derfor er sortert skrap fra verkstedet verdifullt (leksjon 1).</div>
-      <div class="card"><b style="color:var(--blue)">Fremtiden</b><br>Hydrogen i stedet for koks for å ta oksygenet fra malmen. Da blir det vanndamp i stedet for CO₂. Det testes blant annet i HYBRIT-prosjektet i Sverige.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Masovn som slipper ut CO2">
+          <path d="M80 30 h40 l10 40 l-6 40 h-48 l-6 -40z" style="fill:var(--steel-dark)"/>
+          <path d="M88 76 h24 l3 30 h-30z" style="fill:var(--orange)"><animate attributeName="opacity" values=".7;1;.7" dur="1.6s" repeatCount="indefinite"/></path>
+          <g style="fill:var(--steel)">
+            <g><animateTransform attributeName="transform" type="translate" values="0 0;-18 -26" dur="3s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="3s" repeatCount="indefinite"/><circle cx="100" cy="22" r="12"/><text x="100" y="26" text-anchor="middle" font-size="10" font-weight="700" style="fill:var(--ink)">CO₂</text></g>
+            <g><animateTransform attributeName="transform" type="translate" values="0 0;20 -26" dur="3s" begin="1.5s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="3s" begin="1.5s" repeatCount="indefinite"/><circle cx="100" cy="22" r="12"/><text x="100" y="26" text-anchor="middle" font-size="10" font-weight="700" style="fill:var(--ink)">CO₂</text></g>
+          </g>
+        </svg>
+        <b style="color:var(--steel-dark)">Masovn + konverter</b><p class="short">Koks fjerner oksygen. Mye CO₂.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Lysbueovn smelter skrap med strøm">
+          <path d="M50 60 h100 l-10 46 q-40 12 -80 0z" style="fill:var(--steel-dark)"/>
+          <ellipse cx="100" cy="72" rx="44" ry="8" style="fill:var(--orange)"/>
+          <g style="fill:#555"><rect x="80" y="8" width="8" height="58"/><rect x="96" y="8" width="8" height="58"/><rect x="112" y="8" width="8" height="58"/></g>
+          <g style="stroke:#74c0fc;stroke-width:2.5;fill:none">
+            <polyline points="84,66 80,72 87,76"><animate attributeName="opacity" values="1;0;1;.2;1" dur=".35s" repeatCount="indefinite"/></polyline>
+            <polyline points="100,66 104,72 97,76"><animate attributeName="opacity" values=".2;1;0;1;.5" dur=".3s" repeatCount="indefinite"/></polyline>
+            <polyline points="116,66 112,72 119,76"><animate attributeName="opacity" values="1;.3;1;0;1" dur=".4s" repeatCount="indefinite"/></polyline>
+          </g>
+          <text x="160" y="30" font-size="22">⚡</text>
+        </svg>
+        <b style="color:var(--green)">Lysbueovn</b><p class="short">Skrap smeltes med strøm. Lite CO₂.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Hydrogen inn, vanndamp ut">
+          <rect x="70" y="36" width="60" height="60" rx="6" style="fill:var(--steel-dark)"/>
+          <text x="100" y="72" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">malm</text>
+          <g style="font-size:13px;font-weight:800;text-anchor:middle">
+            <text x="0" y="0" style="fill:var(--blue)">H₂<animateMotion dur="2.4s" repeatCount="indefinite" path="M14 70 H64"/><animate attributeName="opacity" values="0;1;1;0" dur="2.4s" repeatCount="indefinite"/></text>
+            <text x="0" y="0" style="fill:var(--blue)">H₂O<animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite" path="M150 70 Q170 50 180 20"/><animate attributeName="opacity" values="0;1;1;0" dur="2.4s" begin="1.2s" repeatCount="indefinite"/></text>
+          </g>
+          <text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">hydrogen i stedet for koks</text>
+        </svg>
+        <b style="color:var(--blue)">Fremtiden</b><p class="short">Hydrogen gir vanndamp, ikke CO₂.</p></div>
     </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>
+      <ul class="clean">
+        <li><b>Masovn + konverter:</b> koks (karbon) tar oksygenet fra jernmalmen. Råjernet som kommer ut har ca. 4 % karbon og er sprøtt. I konverteren blåses oksygen inn, og det meste av karbonet brenner bort. Gir store CO₂-utslipp.</li>
+        <li><b>Lysbueovn:</b> skrap smeltes med strøm. Mye lavere CO₂-utslipp med fornybar strøm. Celsa i Mo i Rana lager armeringsstål av skrap på denne måten. Derfor er sortert skrap fra verkstedet verdifullt (leksjon 1).</li>
+        <li><b>Fremtiden:</b> hydrogen i stedet for koks for å ta oksygenet fra malmen. Da blir det vanndamp i stedet for CO₂. Det testes blant annet i HYBRIT-prosjektet i Sverige.</li>
+        <li>Begge rutene ender med flytende stål som støpes og valses.</li>
+      </ul></details>
   </div>
 </section>
 
@@ -361,7 +448,7 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
   <div class="wrap">
     <div class="kicker">Del 2 · ca. 6 min</div>
     <h2>Byggeklossene inni stålet</h2>
-    <p class="lead">I leksjon 1 så vi at atomene ligger i ordnede lag – et krystallgitter. Men et stålstykke er ikke ett stort gitter. Det består av millioner av små krystaller som kalles <b>korn</b>.</p>
+    <p class="lead">Stål består av millioner av små krystaller: <b>korn</b>.</p>
     <div class="grid2">
       <div class="fig">
         <div style="font-weight:650">Slik dannes korn når flytende stål størkner</div>
@@ -370,9 +457,10 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         <div class="status info" id="kornTxt">Oransje = flytende stål. Trykk på knappen.</div>
       </div>
       <div>
-        <div class="card" style="margin-bottom:.8rem"><b style="color:var(--blue)">Korn</b> = én liten krystall. Inni kornet ligger atomlagene pent ordnet, men lagene peker i ulik retning fra korn til korn (se strekene i figuren).</div>
-        <div class="card" style="margin-bottom:.8rem"><b style="color:var(--blue)">Korngrense</b> = skillet mellom to korn. Her passer ikke atomlagene sammen, så glidningen bremses. <b>Små korn → flere korngrenser → sterkere og seigere stål.</b></div>
-        <div class="card"><b style="color:var(--blue)">Hvor små?</b> Et korn i vanlig konstruksjonsstål er ca. 0,01–0,05 mm. For å se dem slipes stålet blankt og etses med svak syre. Da kommer korngrensene fram i mikroskopet.</div>
+        <div class="card" style="margin-bottom:.8rem"><b style="color:var(--blue)">Korn</b> = én liten krystall.</div>
+        <div class="card" style="margin-bottom:.8rem"><b style="color:var(--blue)">Korngrense</b> = skillet mellom korn.<br><b>Små korn → sterkere og seigere.</b></div>
+        <div class="card"><b style="color:var(--blue)">Hvor små?</b> Ca. 0,01–0,05 mm.</div>
+        <details class="laerer no-print"><summary>Lærernotat</summary>I leksjon 1 så vi at atomene ligger i ordnede lag – et krystallgitter. Men et stålstykke er ikke ett stort gitter. Inni kornet ligger atomlagene pent ordnet, men lagene peker i ulik retning fra korn til korn (se strekene i figuren). Ved korngrensen passer ikke atomlagene sammen, så glidningen bremses: små korn → flere korngrenser → sterkere og seigere stål. Et korn i vanlig konstruksjonsstål er ca. 0,01–0,05 mm. For å se dem slipes stålet blankt og etses med svak syre. Da kommer korngrensene fram i mikroskopet.</details>
       </div>
     </div>
 
@@ -381,22 +469,25 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
       <div class="card" style="border-top:6px solid var(--steel)">
         <svg viewBox="0 0 260 130" id="bbF" style="display:block;width:100%;height:auto"></svg>
         <h3>Ferritt</h3>
-        <p style="margin:.2rem 0">Nesten <b>rent jern</b>. Gitteret har plass til nesten ikke noe karbon (maks ca. 0,02 %).</p>
-        <p style="margin:0;color:var(--muted);font-size:.9rem">Mykt, seigt og magnetisk. <b>Lyst</b> i mikroskopet.</p>
+        <p class="short">Nesten <b>rent jern</b>. Mykt og seigt.</p>
       </div>
       <div class="card" style="border-top:6px solid var(--purple)">
         <svg viewBox="0 0 260 130" id="bbS" style="display:block;width:100%;height:auto"></svg>
         <h3>Sementitt (jernkarbid)</h3>
-        <p style="margin:.2rem 0">En kjemisk forbindelse, Fe₃C: <b>tre jernatomer per karbonatom</b> (6,7 % C).</p>
-        <p style="margin:0;color:var(--muted);font-size:.9rem">Svært hardt og sprøtt – nesten som keramikk. <b>Hvitt</b> i mikroskopet.</p>
+        <p class="short"><b>Fe₃C</b>. Svært hardt og sprøtt.</p>
       </div>
       <div class="card" style="border-top:6px solid var(--orange)">
         <svg viewBox="0 0 260 130" id="bbP" style="display:block;width:100%;height:auto"></svg>
         <h3>Perlitt</h3>
-        <p style="margin:.2rem 0">Ikke et nytt stoff, men <b>tynne lag av ferritt og sementitt</b> annenhver – som en lagkake. Inneholder ca. 0,8 % C.</p>
-        <p style="margin:0;color:var(--muted);font-size:.9rem">Harde lag gir styrke, myke lag gir seighet. <b>Stripete</b> i mikroskopet – og skimrer som perlemor, derav navnet.</p>
+        <p class="short"><b>Lagkake</b> av ferritt og sementitt.</p>
       </div>
     </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>
+      <ul class="clean">
+        <li><b>Ferritt:</b> nesten rent jern. Gitteret har plass til nesten ikke noe karbon (maks ca. 0,02 %). Mykt, seigt og magnetisk. Lyst i mikroskopet.</li>
+        <li><b>Sementitt (jernkarbid):</b> en kjemisk forbindelse, Fe₃C – tre jernatomer per karbonatom (6,7 % C). Svært hardt og sprøtt – nesten som keramikk. Hvitt i mikroskopet.</li>
+        <li><b>Perlitt:</b> ikke et nytt stoff, men tynne lag av ferritt og sementitt annenhver – som en lagkake. Inneholder ca. 0,8 % C. Harde lag gir styrke, myke lag gir seighet. Stripete i mikroskopet – og skimrer som perlemor, derav navnet.</li>
+      </ul></details>
 
     <h3 style="margin-top:2rem">Se C45 bli til ferritt og perlitt når det avkjøles sakte</h3>
     <div class="grid2 wide-left">
@@ -409,15 +500,15 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
           <button class="btn small orange no-print" id="btnAvk">▶ Avkjøl</button>
         </div>
         <div class="status warn" id="avkTxt"></div>
-        <p class="caption">Modell, ikke ekte mikroskopbilde. Den oransje fargen betyr bare at stålet er glødende.</p>
+        <p class="caption">Modell. Oransje = glødende.</p>
       </div>
       <div>
-        <div class="card" style="margin-bottom:.8rem;border-left:6px solid var(--orange)"><b>Austenitt</b> – den formen jernet har når det er glødende (over ca. 727–900 °C, avhengig av karbonet). Atomene ligger tettere pakket, og gitteret har plass til <b>mye</b> karbon.<br><span style="color:var(--muted);font-size:.9rem">I rustfritt 304/316 sørger nikkel for at stålet er austenitt også når det er kaldt. Derfor er det ikke magnetisk (del 9).</span></div>
-        <div class="card" style="margin-bottom:.8rem;border-left:6px solid var(--red)"><b>Martensitt</b> – det du får hvis du <b>bråkjøler</b> austenitten i stedet for å avkjøle sakte. Karbonet rekker ikke å flytte seg og blir låst inne. Svært hardt (del 4).</div>
+        <div class="card" style="margin-bottom:.8rem;border-left:6px solid var(--orange)"><b>Austenitt</b> = glødende jern. Plass til <b>mye</b> karbon.</div>
+        <div class="card" style="margin-bottom:.8rem;border-left:6px solid var(--red)"><b>Martensitt</b> = <b>bråkjølt</b>: karbonet låst inne. Svært hardt.</div>
         <div class="tip o" style="margin:0"><b>Huskeregel</b><br>Ferritt = mykt jern<br>Sementitt = hardt jernkarbid<br>Perlitt = lagkake av begge<br>Austenitt = glødende jern med plass til karbon<br>Martensitt = karbon låst inne ved bråkjøling</div>
       </div>
     </div>
-    <p class="caption">Jernkarbid er én av flere <b>karbider</b> (metall + karbon). Krom, vanadium og wolfram lager enda hardere karbider – det er derfor verktøystål er så slitesterkt (del 5).</p>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Austenitt er den formen jernet har når det er glødende (over ca. 727–900 °C, avhengig av karbonet). Atomene ligger tettere pakket, og gitteret har plass til mye karbon. I rustfritt 304/316 sørger nikkel for at stålet er austenitt også når det er kaldt. Derfor er det ikke magnetisk (del 9). Martensitt er det du får hvis du bråkjøler austenitten i stedet for å avkjøle sakte. Karbonet rekker ikke å flytte seg og blir låst inne (del 4). Jernkarbid er én av flere karbider (metall + karbon). Krom, vanadium og wolfram lager enda hardere karbider – det er derfor verktøystål er så slitesterkt (del 5). Animasjonen er en modell, ikke ekte mikroskopbilde; den oransje fargen betyr bare at stålet er glødende.</details>
   </div>
 </section>
 
@@ -426,7 +517,7 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
   <div class="wrap">
     <div class="kicker">Del 3 · ca. 5 min</div>
     <h2>Karbon bestemmer nesten alt</h2>
-    <p class="lead">Dra i glideren og se hva som skjer inni stålet og med egenskapene. Bare noen tideler prosent karbon gjør stor forskjell.</p>
+    <p class="lead">Dra i glideren: litt karbon gjør stor forskjell.</p>
     <div class="grid2">
       <div class="fig">
         <div style="font-weight:650">Slik ser stålet ut i mikroskop (slipt og etset)</div>
@@ -438,7 +529,7 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         </div>
         <div class="presets no-print" id="cPre"></div>
         <div class="status info" id="microTxt"></div>
-        <p class="caption">Lys = <b>ferritt</b>. Stripet = <b>perlitt</b>. Hvitt nett = <b>sementitt</b> (se del 2). Svart i støpejern = <b>grafitt</b> (rent karbon). Forenklet tegning, forstørret ca. 500×.</p>
+        <p class="caption">Lys = <b>ferritt</b>. Stripet = <b>perlitt</b>. Hvitt nett = <b>sementitt</b>. Svart = <b>grafitt</b>.</p>
       </div>
       <div class="fig">
         <div class="legend"><span><i style="border-color:var(--blue)"></i>Strekkfasthet R<sub>m</sub></span><span><i style="border-color:var(--orange)"></i>Hardhet</span><span><i style="border-color:var(--green)"></i>Bruddforlengelse A (seighet)</span></div>
@@ -451,15 +542,25 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
           <div><span>Sveisbarhet</span><b id="oSv" style="font-size:.95rem">–</b></div>
           <div><span>Kan herdes?</span><b id="oHe" style="font-size:.95rem">–</b></div>
         </div>
-        <p class="caption">Typiske verdier for ulegert stål slik det leveres fra valseverket (ikke herdet). Avrundet. <b>HB</b> (Brinell) og <b>HV</b> (Vickers) er måleenheter for hardhet – større tall = hardere. Hardhetsmåling kommer i leksjon 3.</p>
+        <p class="caption">Ulegert stål, ikke herdet. HB/HV = hardhet: større tall = hardere.</p>
       </div>
     </div>
     <div class="grid4" style="margin-top:1rem">
-      <div class="card" style="border-top:6px solid var(--steel)"><b>Rent jern</b> &lt; 0,02 % C<br>Mykt og svakt. Brukes nesten ikke som konstruksjonsmateriale.</div>
-      <div class="card" style="border-top:6px solid var(--green)"><b>Lavkarbonstål</b> &lt; ca. 0,25 % C<br>Seigt og lett å sveise og bøye. S235, S355, tynnplate DC01.</div>
-      <div class="card" style="border-top:6px solid var(--orange)"><b>Middels/høykarbon</b> 0,3–1,5 % C<br>Kan herdes. Aksler (C45), fjærer, kulelager, verktøy.</div>
-      <div class="card" style="border-top:6px solid var(--purple)"><b>Støpejern</b> 2–4 % C<br>Smelter lett og fyller formen godt. Sprøtt – kan ikke smis eller bøyes.</div>
+      <div class="card" style="border-top:6px solid var(--steel)"><b>Rent jern</b> &lt; 0,02 % C<br>Mykt og svakt.</div>
+      <div class="card" style="border-top:6px solid var(--green)"><b>Lavkarbonstål</b> &lt; ca. 0,25 % C<br>Seigt, lett å sveise. S355.</div>
+      <div class="card" style="border-top:6px solid var(--orange)"><b>Middels/høykarbon</b> 0,3–1,5 % C<br>Kan herdes. C45, verktøy.</div>
+      <div class="card" style="border-top:6px solid var(--purple)"><b>Støpejern</b> 2–4 % C<br>Lett å støpe. Sprøtt.</div>
     </div>
+    <a class="simlink no-print" data-sim="strekkprove"><span class="ico">🧪</span><span><b>Prøv selv: Strekkprøve-simulatoren</b><small>Dra prøvestaven til den ryker.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>
+      <ul class="clean">
+        <li>Rent jern brukes nesten ikke som konstruksjonsmateriale.</li>
+        <li>Lavkarbonstål er seigt og lett å sveise og bøye: S235, S355, tynnplate DC01.</li>
+        <li>Middels/høykarbon kan herdes: aksler (C45), fjærer, kulelager, verktøy.</li>
+        <li>Støpejern smelter lett og fyller formen godt. Sprøtt – kan ikke smis eller bøyes.</li>
+        <li>Mikrobildet er en forenklet tegning, forstørret ca. 500×. Grafitt = rent karbon. Verdiene i grafen er typiske, avrundede verdier for ulegert stål slik det leveres fra valseverket (ikke herdet). HB (Brinell) og HV (Vickers) er måleenheter for hardhet. Hardhetsmåling kommer i leksjon 3.</li>
+        <li>Strekkprøve-simulatoren viser hvor stålet begynner å flyte og ryker – koble til flytegrense og bruddforlengelse i grafen.</li>
+      </ul></details>
   </div>
 </section>
 
@@ -468,7 +569,7 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
   <div class="wrap">
     <div class="kicker">Del 4 · ca. 8 min</div>
     <h2>Karbon i jerngitteret</h2>
-    <p class="lead">Karbonatomet er mye mindre enn jernatomet. Det setter seg i mellomrommene mellom jernatomene – som en kile.</p>
+    <p class="lead">Karbon er lite. Det setter seg som en <b>kile</b> mellom jernatomene.</p>
     <div class="grid2">
       <div class="fig">
         <div style="font-weight:650">Rent jern</div>
@@ -485,13 +586,13 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
       <button class="btn orange" id="btnPush">➡ Skyv øverste lag</button>
       <button class="btn" id="btnPushReset">↻ Tilbakestill</button>
     </div>
-    <div class="tip">Husk leksjon 1: metall bøyes ved at atomlag glir. Karbonet <b>bremser glidningen</b>. Derfor blir stålet sterkere og hardere – men også mindre seigt, fordi det tåler mindre glidning før det ryker.</div>
+    <div class="tip">Karbon <b>bremser glidningen</b> → sterkere og hardere, men mindre seigt.</div>
 
     <h3 style="margin-top:2rem">Hvorfor kan C45 herdes, men ikke S355?</h3>
     <div class="grid2">
       <div class="fig">
         <svg id="herdSvg" viewBox="0 0 440 300" role="img" aria-label="Atomgitter under herding"></svg>
-        <p class="caption">Grå = jern, svart = karbon. Mørk søyle til høyre = jernkarbid (sementitten i perlitten), der karbonet «bor» når stålet er mykt. Sterkt forenklet modell. HV og HRC er hardhetsenheter (leksjon 3).</p>
+        <p class="caption">Grå = jern, svart = karbon. Mørk søyle = jernkarbid.</p>
       </div>
       <div class="fig">
         <div class="controls no-print" style="margin-top:0">
@@ -512,7 +613,8 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         <div class="status info" id="hTxt"></div>
       </div>
     </div>
-    <div class="tip o"><b>Regel:</b> Stål må ha over ca. <b>0,3 % karbon</b> for å kunne herdes ordentlig, og det må <b>bråkjøles</b>. Anløping og de andre varmebehandlingene kommer i leksjon 4.</div>
+    <div class="tip o"><b>Regel:</b> herding krever over ca. <b>0,3 % C</b> + <b>bråkjøling</b>.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Husk leksjon 1: metall bøyes ved at atomlag glir. Karbonatomet er mye mindre enn jernatomet og setter seg i mellomrommene. Det bremser glidningen. Derfor blir stålet sterkere og hardere – men også mindre seigt, fordi det tåler mindre glidning før det ryker. I herdefiguren er den mørke søylen til høyre jernkarbid (sementitten i perlitten), der karbonet «bor» når stålet er mykt. Sterkt forenklet modell. HV og HRC er hardhetsenheter (leksjon 3). Stål må ha over ca. 0,3 % karbon for å kunne herdes ordentlig, og det må bråkjøles. Anløping og de andre varmebehandlingene kommer i leksjon 4.</details>
   </div>
 </section>
 
@@ -521,7 +623,7 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
   <div class="wrap">
     <div class="kicker">Del 5 · ca. 6 min</div>
     <h2>Legeringselementer: krydderet i stålet</h2>
-    <p class="lead">Ved å tilsette andre grunnstoffer kan stålet bli rustfritt, seigere i kulde, lettere å maskinere eller hardere når det blir varmt. Klikk på et element.</p>
+    <p class="lead">Andre grunnstoffer gir nye egenskaper. Klikk på et element.</p>
     <div class="grid2">
       <div>
         <div class="ptable" id="ptable"></div>
@@ -547,7 +649,7 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
   <div class="wrap">
     <div class="kicker">Del 6 · ca. 9 min</div>
     <h2>Les stålets navn</h2>
-    <p class="lead">Navnet forteller hva stålet er laget av eller hva det tåler (NS-EN 10027). Skriv inn et navn, et materialnummer (1.4404) eller AISI-nummer (316L), eller klikk et eksempel.</p>
+    <p class="lead">Navnet sier hva stålet inneholder eller tåler. Prøv et navn.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <div class="controls no-print" style="margin-top:0">
@@ -562,10 +664,10 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         <div class="card" style="margin-bottom:.8rem">
           <h3>Fire typer navn</h3>
           <ol style="margin:.2rem 0 0; padding-left:1.2rem; font-size:.92rem">
-            <li style="margin-bottom:.4rem"><b>Etter styrke:</b> <code>S355J2</code> – S = konstruksjonsstål, 355 = minste flytegrense i MPa.</li>
-            <li style="margin-bottom:.4rem"><b>Ulegert:</b> <code>C45</code> – 45 : 100 = 0,45 % karbon.</li>
-            <li style="margin-bottom:.4rem"><b>Lavlegert</b> (alle elementer under 5 %): <code>42CrMo4</code> – 0,42 % C. Tallet bak deles med faktoren i tabellen.</li>
-            <li><b>Høylegert</b> (minst ett element over 5 %): <code>X2CrNiMo17-12-2</code> – X, så karbon : 100, så prosent rett frem.</li>
+            <li style="margin-bottom:.4rem"><b>Styrke:</b> <code>S355J2</code> – flytegrense 355 MPa</li>
+            <li style="margin-bottom:.4rem"><b>Ulegert:</b> <code>C45</code> – 0,45 % C</li>
+            <li style="margin-bottom:.4rem"><b>Lavlegert:</b> <code>42CrMo4</code> – del på faktor</li>
+            <li><b>Høylegert:</b> <code>X2CrNiMo17-12-2</code> – prosent rett frem</li>
           </ol>
         </div>
         <div class="card">
@@ -577,11 +679,32 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
             <tr><td><b>100</b></td><td>N, P, S, Ce</td></tr>
             <tr><td><b>1000</b></td><td>B (bor)</td></tr>
           </table>
-          <p style="font-size:.85rem;margin:.5rem 0 0;color:var(--muted)">Eksempel: 42Cr<b>Mo</b>4 → Cr = 4 : 4 = <b>1 %</b>. Mo har ikke eget tall – det er bare litt.</p>
+          <p style="font-size:.85rem;margin:.5rem 0 0;color:var(--muted)">42CrMo4 → Cr = 4 : 4 = <b>1 %</b></p>
         </div>
       </div>
     </div>
-    <div class="tip"><b>Slagseighet bak S-stål</b> (Charpy fra leksjon 1): <b>JR</b> = 27 J ved +20 °C · <b>J0</b> = 27 J ved 0 °C · <b>J2</b> = 27 J ved −20 °C · <b>K2</b> = 40 J ved −20 °C. Bygger du noe som skal brukes ute om vinteren, velg J2 eller bedre.</div>
+    <div class="fig" style="margin-top:1rem">
+      <div style="font-weight:650">Bokstavene bak S-stål = slagseighet i kulde</div>
+      <svg viewBox="0 0 640 130" role="img" aria-label="Temperaturskala: JR ved +20, J0 ved 0, J2 og K2 ved minus 20 grader">
+        <defs><linearGradient id="kaldVarm" x1="0" x2="1"><stop offset="0" stop-color="#e8590c"/><stop offset="1" stop-color="#1c6fd1"/></linearGradient></defs>
+        <rect x="40" y="56" width="560" height="14" rx="7" fill="url(#kaldVarm)"/>
+        <g style="font-size:14px;text-anchor:middle;fill:var(--muted)"><text x="80" y="92">+20 °C</text><text x="320" y="92">0 °C</text><text x="560" y="92">−20 °C</text></g>
+        <g style="font-size:18px;font-weight:800;text-anchor:middle;fill:var(--ink)"><text x="80" y="42">JR</text><text x="320" y="42">J0</text><text x="540" y="42">J2</text><text x="590" y="42">K2</text></g>
+        <g style="font-size:12px;text-anchor:middle;fill:var(--muted)"><text x="80" y="118">27 J</text><text x="320" y="118">27 J</text><text x="540" y="118">27 J</text><text x="590" y="118">40 J</text></g>
+        <text x="620" y="30" font-size="22" text-anchor="middle" style="fill:var(--blue)">❄<animateTransform attributeName="transform" type="rotate" values="0 620 22;360 620 22" dur="6s" repeatCount="indefinite"/></text>
+        <circle cx="80" cy="63" r="9" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"><animate attributeName="cx" dur="5s" repeatCount="indefinite" keyTimes="0;.15;.75;1" values="80;80;560;560"/></circle>
+      </svg>
+      <p class="short">Ute om vinteren: velg <b>J2</b> eller bedre.</p>
+    </div>
+    <a class="simlink no-print" data-sim="charpy"><span class="ico">🧪</span><span><b>Prøv selv: Charpy-simulatoren</b><small>Se hvordan kulde gjør stål sprøtt.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Betegnelser etter NS-EN 10027. Søkefeltet tar også materialnummer (1.4404) eller AISI-nummer (316L).
+      <ul class="clean">
+        <li><b>Etter styrke:</b> S355J2 – S = konstruksjonsstål, 355 = minste flytegrense i MPa.</li>
+        <li><b>Ulegert:</b> C45 – 45 : 100 = 0,45 % karbon.</li>
+        <li><b>Lavlegert</b> (alle elementer under 5 %): 42CrMo4 – 0,42 % C. Tallet bak deles med faktoren i tabellen. Mo har ikke eget tall – det er bare litt.</li>
+        <li><b>Høylegert</b> (minst ett element over 5 %): X2CrNiMo17-12-2 – X, så karbon : 100, så prosent rett frem.</li>
+        <li><b>Slagseighet bak S-stål</b> (Charpy fra leksjon 1): JR = 27 J ved +20 °C · J0 = 27 J ved 0 °C · J2 = 27 J ved −20 °C · K2 = 40 J ved −20 °C. Bygger du noe som skal brukes ute om vinteren, velg J2 eller bedre.</li>
+      </ul></details>
   </div>
 </section>
 
@@ -600,8 +723,9 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         <div class="status info" id="crackTxt">Begge har ca. 3,5 % karbon. Forskjellen er formen på grafitten.</div>
       </div>
       <div>
-        <div class="card" style="margin-bottom:.8rem"><b>Gråjern</b> – f.eks. <code>EN-GJL-250</code><br>Grafitt som <b>flak</b>. Flakene virker som små sprekker, så det er sprøtt. Men det demper vibrasjoner godt og er lett å maskinere (grafitten smører, korte spon). <br><span style="color:var(--muted);font-size:.9rem">Brukes til: maskinstativ, dreiebenksenger, bremseskiver. 250 = minste strekkfasthet i MPa.</span></div>
-        <div class="card"><b>Kulegrafittjern (seigjern)</b> – f.eks. <code>EN-GJS-400-15</code><br>Litt magnesium gjør grafitten til <b>kuler</b>. Sprekker stopper mot kulene, så det tåler slag og kan bøye seg litt.<br><span style="color:var(--muted);font-size:.9rem">Brukes til: veivaksler, ventilhus, kumlokk. 400 MPa, 15 % bruddforlengelse.</span></div>
+        <div class="card" style="margin-bottom:.8rem"><b>Gråjern</b> <code>EN-GJL-250</code><br>Grafitt<b>flak</b> = små sprekker. Sprøtt, men demper vibrasjoner.</div>
+        <div class="card"><b>Kulegrafittjern</b> <code>EN-GJS-400-15</code><br>Grafitt<b>kuler</b> stopper sprekker. Tåler slag.</div>
+        <details class="laerer no-print"><summary>Lærernotat</summary><b>Gråjern</b> (EN-GJL-250): grafitt som flak. Flakene virker som små sprekker, så det er sprøtt. Men det demper vibrasjoner godt og er lett å maskinere (grafitten smører, korte spon). Brukes til maskinstativ, dreiebenksenger, bremseskiver. 250 = minste strekkfasthet i MPa.<br><b>Kulegrafittjern/seigjern</b> (EN-GJS-400-15): litt magnesium gjør grafitten til kuler. Sprekker stopper mot kulene, så det tåler slag og kan bøye seg litt. Brukes til veivaksler, ventilhus, kumlokk. 400 MPa, 15 % bruddforlengelse.</details>
       </div>
     </div>
   </div>
@@ -612,7 +736,7 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
   <div class="wrap">
     <div class="kicker">Del 8 · ca. 4 min</div>
     <h2>Sveisbarhet: karbonekvivalent (CEV)</h2>
-    <p class="lead">Etter sveising avkjøles stålet rundt sveisen raskt – nesten som bråkjøling. Med mye karbon og legering blir denne sonen hard og sprø, og den kan sprekke.</p>
+    <p class="lead">Sonen ved sveisen kjøles raskt og kan bli hard, sprø og sprekke.</p>
     <div class="grid2">
       <div class="fig">
         <div class="controls no-print" id="cevPre" style="margin-top:0"></div>
@@ -642,7 +766,8 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         </table>
       </div>
     </div>
-    <p class="caption">CEV = C + Mn/6 + (Cr + Mo + V)/5 + (Ni + Cu)/15 (IIW-formelen). Grensene er veiledende – tykkelse, tilsett og sveisemetode påvirker også. Gjelder ikke austenittisk rustfritt (304/316), som er lett å sveise av andre grunner.</p>
+    <p class="caption">CEV = C + Mn/6 + (Cr + Mo + V)/5 + (Ni + Cu)/15</p>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Etter sveising avkjøles stålet rundt sveisen raskt – nesten som bråkjøling. Med mye karbon og legering blir denne sonen hard og sprø, og den kan sprekke. CEV-formelen er IIW-formelen. Grensene er veiledende – tykkelse, tilsett og sveisemetode påvirker også. Gjelder ikke austenittisk rustfritt (304/316), som er lett å sveise av andre grunner.</details>
   </div>
 </section>
 
@@ -657,13 +782,42 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         <canvas id="spark"></canvas>
         <div class="presets no-print" id="sparkBtns"></div>
         <div class="status info" id="sparkTxt"></div>
-        <p class="caption">Animasjonen er en forenkling. Karbonet brenner i gnisten og gir «stjerner» (forgreninger). Mer karbon = flere stjerner.</p>
+        <p class="caption">Mer karbon = flere «stjerner» i gnisten.</p>
       </div>
       <div>
-        <div class="card" style="margin-bottom:.8rem"><b>🧲 Magnettest</b><br>Vanlig stål, støpejern og verktøystål er magnetiske. <b>Austenittisk rustfritt (304/316) er ikke magnetisk</b> (austenitt, del 2) – bare svakt der det er kaldbearbeidet (bøyd, dreid). Ferritisk rustfritt (430) er magnetisk.</div>
-        <div class="card" style="margin-bottom:.8rem"><b>🪚 Filtest</b><br>Fila biter i mykt stål. Glir den uten å ta, er stålet herdet.</div>
-        <div class="card"><b>🏷 Merking og sertifikat</b><br>Stangender er ofte fargekodet, men fargekoden varierer mellom leverandører. Sikrest er merkingen på materialet og <b>3.1-sertifikatet</b> (EN 10204) med analyse og målte egenskaper.</div>
-        <div class="tip o" style="margin-bottom:0">Gnistprøve: vernebriller, ingen brennbart i gnistretningen, og hold delen på verktøyanlegget.</div>
+        <div class="grid2" style="gap:.8rem;margin-bottom:.8rem">
+          <div class="card">
+            <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Magnet trekker til seg vanlig stål, men ikke rustfritt 316">
+              <g><animateTransform attributeName="transform" type="translate" dur="3s" repeatCount="indefinite" keyTimes="0;.4;.8;1" values="0 0;0 14;0 14;0 0"/>
+                <g transform="translate(0 56) scale(1 -1)">
+                <path d="M60 10 v24 a12 12 0 0 0 24 0 v-24 h-8 v24 a4 4 0 0 1 -8 0 v-24z" style="fill:var(--red)"/>
+                <path d="M116 10 v24 a12 12 0 0 0 24 0 v-24 h-8 v24 a4 4 0 0 1 -8 0 v-24z" style="fill:var(--red)"/></g></g>
+              <rect x="52" y="74" width="40" height="22" rx="2" style="fill:var(--steel-dark)"><animateTransform attributeName="transform" type="translate" dur="3s" repeatCount="indefinite" keyTimes="0;.4;.5;.8;.9;1" values="0 0;0 0;0 -14;0 -14;0 0;0 0"/></rect>
+              <rect x="108" y="74" width="40" height="22" rx="2" style="fill:var(--steel-soft);stroke:var(--steel);stroke-width:2"/>
+              <g style="font-size:11px;text-anchor:middle;fill:var(--muted)"><text x="72" y="112">stål</text><text x="128" y="112">rustfritt 316</text></g>
+            </svg>
+            <b>🧲 Magnettest</b><p class="short">Rustfritt 304/316 er ikke magnetisk.</p></div>
+          <div class="card">
+            <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Fil som glir over et emne">
+              <rect x="30" y="70" width="140" height="24" rx="2" style="fill:var(--steel)"/>
+              <g><animateTransform attributeName="transform" type="translate" dur="1.6s" repeatCount="indefinite" values="-24 0;24 0;-24 0"/>
+                <path d="M50 58 h90 l8 6 l-8 6 h-90z" style="fill:var(--steel-dark)"/>
+                <path d="M58 58 l4 12 M68 58 l4 12 M78 58 l4 12 M88 58 l4 12 M98 58 l4 12 M108 58 l4 12 M118 58 l4 12 M128 58 l4 12" style="stroke:var(--steel);stroke-width:1.5"/>
+                <rect x="10" y="60" width="40" height="8" rx="3" style="fill:var(--orange)"/></g>
+              <text x="100" y="112" text-anchor="middle" font-size="11" style="fill:var(--muted)">glir fila? → herdet</text>
+            </svg>
+            <b>🪚 Filtest</b><p class="short">Glir fila, er stålet herdet.</p></div>
+        </div>
+        <div class="card"><b>🏷 Sikrest:</b> merkingen og <b>3.1-sertifikatet</b>.</div>
+        <div class="tip o" style="margin-bottom:0">Gnistprøve: <b>vernebriller</b>!</div>
+        <details class="laerer no-print"><summary>Lærernotat</summary>
+          <ul class="clean">
+            <li>Gnistprøve-animasjonen er en forenkling. Karbonet brenner i gnisten og gir «stjerner» (forgreninger).</li>
+            <li>Vanlig stål, støpejern og verktøystål er magnetiske. Austenittisk rustfritt (304/316) er ikke magnetisk (austenitt, del 2) – bare svakt der det er kaldbearbeidet (bøyd, dreid). Ferritisk rustfritt (430) er magnetisk.</li>
+            <li>Fila biter i mykt stål. Glir den uten å ta, er stålet herdet.</li>
+            <li>Stangender er ofte fargekodet, men fargekoden varierer mellom leverandører. Sikrest er merkingen på materialet og 3.1-sertifikatet (EN 10204) med analyse og målte egenskaper.</li>
+            <li>Gnistprøve: vernebriller, ingen brennbart i gnistretningen, og hold delen på verktøyanlegget.</li>
+          </ul></details>
       </div>
     </div>
   </div>
@@ -727,25 +881,43 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
           <tr><td>1,0 %</td><td class="tom"><span class="fasit" hidden>Stål</span></td><td><span class="fasit" hidden>Ja</span></td><td><span class="fasit" hidden>Dårlig</span></td><td><span class="fasit" hidden>Kulelager/verktøy (100Cr6)</span></td></tr>
           <tr><td>3,5 %</td><td class="tom"><span class="fasit" hidden>Støpejern</span></td><td><span class="fasit" hidden>Sjelden (bare overflate, f.eks. glidebaner)</span></td><td><span class="fasit" hidden>Svært dårlig</span></td><td><span class="fasit" hidden>Maskinstativ/bremseskiver/kumlokk</span></td></tr>
         </table>
-        <p>b) Råjernet fra masovnen har ca. 4 % karbon. Hva gjøres i konverteren, og hvorfor?</p>
+        <p>b) Råjern har ca. 4 % karbon. Hva skjer i konverteren, og hvorfor?</p>
         <div class="svar"><span class="fasit" hidden>Oksygen blåses inn og brenner bort det meste av karbonet.</span></div><div class="svar"><span class="fasit" hidden>Råjern med 4 % C er sprøtt; stål med lite karbon er seigt og kan bøyes, sveises og valses.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 2 – Forklar med egne ord <small>Time 1 · 9 min</small></h3>
-        <p>a) Forklar med én setning hver: <i>korn</i>, <i>ferritt</i>, <i>sementitt</i> og <i>perlitt</i>.</p>
+        <p>a) Forklar kort: <i>korn</i>, <i>ferritt</i>, <i>sementitt</i> og <i>perlitt</i>.</p>
         <div class="svar"><span class="fasit" hidden>Korn: en liten krystall der atomlagene peker i samme retning.</span></div><div class="svar"><span class="fasit" hidden>Ferritt: nesten rent jern – mykt og seigt.</span></div><div class="svar"><span class="fasit" hidden>Sementitt: jernkarbid (Fe₃C) – svært hardt og sprøtt.</span></div><div class="svar"><span class="fasit" hidden>Perlitt: tynne lag av ferritt og sementitt annenhver.</span></div>
-        <p>b) Bruk atommodellen: Hvorfor blir stålet hardere og sterkere med mer karbon, men mindre seigt?</p>
+        <p>b) Hvilken figur viser hva? Skriv ferritt, perlitt eller ferritt + perlitt.</p>
+        <svg viewBox="0 0 420 130" style="display:block;width:100%;max-width:480px;height:auto" role="img" aria-label="Tre forenklede mikrobilder merket 1, 2 og 3">
+          <defs>
+            <pattern id="oppgStripe" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(35)"><rect width="8" height="8" style="fill:var(--panel)"/><rect width="8" height="3.5" style="fill:var(--ink)"/></pattern>
+          </defs>
+          <g style="stroke:var(--ink);stroke-width:2">
+            <rect x="10" y="10" width="110" height="100" style="fill:var(--panel)"/>
+            <path d="M10 50 L50 40 L70 10 M50 40 L60 80 L10 90 M60 80 L120 70 M50 40 L100 45 L120 30 M100 45 L120 70 M60 80 L70 110" style="fill:none"/>
+            <rect x="155" y="10" width="110" height="100" style="fill:url(#oppgStripe)"/>
+            <path d="M155 55 L210 45 L230 10 M210 45 L215 110 M210 45 L265 70" style="fill:none;stroke-width:3"/>
+            <rect x="300" y="10" width="110" height="100" style="fill:var(--panel)"/>
+            <path d="M300 40 L345 10 L360 60 Z" style="fill:url(#oppgStripe)"/>
+            <path d="M360 60 L410 50 L410 100 L370 110 Z" style="fill:url(#oppgStripe)"/>
+            <path d="M300 40 L330 75 L300 110 M330 75 L360 60 M330 75 L370 110 M360 60 L390 10" style="fill:none"/>
+          </g>
+          <g style="font-size:15px;font-weight:800;text-anchor:middle;fill:var(--ink)"><text x="65" y="127">1</text><text x="210" y="127">2</text><text x="355" y="127">3</text></g>
+        </svg>
+        <p>1 <span class="luke" style="min-width:8em"><span class="fasit" hidden>ferritt</span></span> &nbsp; 2 <span class="luke" style="min-width:8em"><span class="fasit" hidden>perlitt</span></span> &nbsp; 3 <span class="luke" style="min-width:10em"><span class="fasit" hidden>ferritt + perlitt (f.eks. C45)</span></span></p>
+        <p>c) Bruk atommodellen: Hvorfor blir stålet hardere og sterkere med mer karbon, men mindre seigt?</p>
         <div class="svar"><span class="fasit" hidden>Karbonatomene sitter i mellomrommene mellom jernatomene og står i veien når atomlagene skal gli.</span></div><div class="svar"><span class="fasit" hidden>Det trengs mer kraft → sterkere og hardere.</span></div><div class="svar"><span class="fasit" hidden>Men stålet tåler mindre glidning før det ryker → mindre seigt.</span></div>
-        <p>c) Hvorfor kan C45 herdes, men ikke S355? Bruk ordene <i>karbon</i>, <i>bråkjøling</i> og <i>gitter</i>.</p>
+        <p>d) Hvorfor kan C45 herdes, men ikke S355? Bruk ordene <i>karbon</i>, <i>bråkjøling</i> og <i>gitter</i>.</p>
         <div class="svar"><span class="fasit" hidden>Ved oppvarming løses karbonet opp i gitteret.</span></div><div class="svar"><span class="fasit" hidden>Ved bråkjøling rekker ikke karbonet å vandre ut, det låses inne og spenner gitteret (martensitt), så lagene ikke kan gli.</span></div><div class="svar"><span class="fasit" hidden>C45 har nok karbon (0,45 %) til dette; S355 har for lite (ca. 0,15–0,2 %), så det blir bare litt hardere.</span></div>
-        <p>d) Hvilken stålverk-rute gir lavest CO₂-utslipp: masovn eller lysbueovn? Hvorfor? Hva kan du gjøre i verkstedet for å hjelpe?</p>
+        <p>e) Masovn eller lysbueovn: hva gir minst CO₂, og hvorfor? Hva kan du gjøre i verkstedet?</p>
         <div class="svar"><span class="fasit" hidden><b>Lysbueovn</b>: smelter skrap med strøm i stedet for å bruke koks til å fjerne oksygen fra malm.</span></div><div class="svar"><span class="fasit" hidden>I verkstedet: sorter spon og skrap riktig.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Les stålbetegnelser <small>Time 2 · 8 min</small></h3>
-        <p>Skriv hva navnet forteller. Bruk faktortabellen: Cr, Co, Mn, Ni, Si, W : 4 · Mo, V, Cu, Pb, Ti : 10 · S, P, N : 100.</p>
+        <p>Skriv hva navnet forteller. Faktorer: Cr, Co, Mn, Ni, Si, W : 4 · Mo, V, Cu, Pb, Ti : 10 · S, P, N : 100.</p>
         <table class="ot">
           <tr><th style="width:28%">Betegnelse</th><th>Hva betyr den?</th></tr>
           <tr><td>S235JR</td><td class="tom"><span class="fasit" hidden>Konstruksjonsstål, minste flytegrense 235 MPa, 27 J ved +20 °C.</span></td></tr>
@@ -758,6 +930,8 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
           <tr><td>11SMnPb30</td><td class="tom"><span class="fasit" hidden>0,11 % C, 30 : 100 = 0,30 % S, litt Mn og Pb (automatstål).</span></td></tr>
           <tr><td>HS6-5-2-5</td><td class="tom"><span class="fasit" hidden>Hurtigstål med 6 % W, 5 % Mo, 2 % V, 5 % Co.</span></td></tr>
         </table>
+        <p>Bruk <a data-sim="strekkprove">Strekkprøve-simulatoren</a>: Hva betyr tallet 355 i S355 på kurven?</p>
+        <div class="svar"><span class="fasit" hidden>355 MPa er minste flytegrense R<sub>e</sub>: der kurven slutter å være rett og staven får varig forlengelse.</span></div>
       </div>
 
       <div class="oppgave">
@@ -776,7 +950,7 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
 
       <div class="oppgave">
         <h3>Oppgave 5 – Sveisbarhet <small>Ekstra / hjemme · 10 min</small></h3>
-        <p>CEV = C + Mn/6 + (Cr + Mo + V)/5 + (Ni + Cu)/15. Regn ut CEV og si om stålet trenger forvarming. Vis utregningen.</p>
+        <p>CEV = C + Mn/6 + (Cr + Mo + V)/5 + (Ni + Cu)/15. Regn ut CEV. Trengs forvarming? Vis utregningen.</p>
         <p>a) Stål A: C 0,16 %, Mn 1,32 % (resten ≈ 0)</p><div class="svar"><span class="fasit" hidden>CEV = 0,16 + 1,32/6 = 0,16 + 0,22 = <b>0,38</b></span></div><div class="svar"><span class="fasit" hidden>God sveisbarhet, normalt ingen forvarming.</span></div>
         <p>b) Stål B: C 0,45 %, Mn 0,72 %</p><div class="svar"><span class="fasit" hidden>CEV = 0,45 + 0,72/6 = 0,45 + 0,12 = <b>0,57</b></span></div><div class="svar"><span class="fasit" hidden>Forvarming nødvendig.</span></div>
         <p>c) Stål C: C 0,42 %, Mn 0,78 %, Cr 1,0 %, Mo 0,25 %</p><div class="svar"><span class="fasit" hidden>CEV = 0,42 + 0,78/6 + (1,0 + 0,25)/5 = 0,42 + 0,13 + 0,25 = <b>0,80</b></span></div><div class="svar"><span class="fasit" hidden>Vanskelig, krever egen sveiseprosedyre.</span></div>
@@ -796,6 +970,8 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
           <tr><td>e) Stanseverktøy for tynnplate</td><td class="tom"><span class="fasit" hidden>Verktøystål, f.eks. 1.2379</span></td><td><span class="fasit" hidden>Hardt og slitesterkt.</span></td></tr>
           <tr><td>f) Stativ til en maskin som skal dempe vibrasjoner</td><td class="tom"><span class="fasit" hidden>Gråjern EN-GJL-250</span></td><td><span class="fasit" hidden>Demper vibrasjoner. Andre svar kan være riktige hvis begrunnelsen holder.</span></td></tr>
         </table>
+        <p>g) Bruk <a data-sim="charpy">Charpy-simulatoren</a>: Hvorfor velger du J2 og ikke JR til tilhengeren i a)?</p>
+        <div class="svar"><span class="fasit" hidden>Stål blir sprøtt i kulde. J2 er slagprøvd til minst 27 J ved −20 °C, JR bare ved +20 °C.</span></div>
       </div>
 
       <div class="oppgave">
@@ -814,6 +990,9 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
 <script>
 (function(){
 "use strict";
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
 const $ = id => document.getElementById(id);
 const NS = "http://www.w3.org/2000/svg";
 const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
