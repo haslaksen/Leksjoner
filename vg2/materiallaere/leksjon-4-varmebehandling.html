@@ -87,6 +87,19 @@ table.t th{background:var(--steel-soft)}
 .hero > *{min-width:0}
 .goals li{margin:.4rem 0}
 .plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+details.laerer{margin-top:1.2rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
 .readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
 .readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
 .readout span{display:block; font-size:.75rem; color:var(--muted)}
@@ -159,7 +172,7 @@ table.t th{background:var(--steel-soft)}
   .top .brand{display:none}
 }
 @media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4,.phase3{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .ba{grid-template-columns:1fr} .ba .arrow{transform:rotate(90deg); text-align:center} }
-@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} .scene *, .hero-fig *{animation:none!important} }
 
 @media print{
   :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
@@ -193,23 +206,68 @@ table.t th{background:var(--steel-soft)}
     <div>
       <div class="kicker">Vg2 industriteknologi · Materiallære</div>
       <h1>Leksjon 4<br>Varmebehandling</h1>
-      <p class="lead">Samme stang C45 kan bli myk nok til å dreie, hard nok til å skjære i annet stål – eller seig nok til å bli en bolt. Forskjellen er bare temperatur og tid.</p>
-      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <p class="lead">Hvordan kan samme stål bli mykt, hardt eller seigt?</p>
       <ol class="goals">
-        <li>forklare de tre trinnene i all varmebehandling: <b>oppvarming, holding og avkjøling</b></li>
-        <li>bruke et forenklet <b>jern-karbon-diagram</b> til å finne riktig temperatur</li>
-        <li>forklare <b>herding</b> og hvorfor stålet trenger nok karbon</li>
-        <li>forklare hvorfor herdet stål må <b>anløpes</b>, og lese <b>anløpsfarger</b></li>
-        <li>forklare <b>seigherding</b> og hva +QT og boltklasse 10.9 betyr</li>
-        <li>velge mellom <b>normalisering, bløtgløding, spenningsfriglødning og rekrystallisering</b></li>
-        <li>forklare <b>settherding</b> og regne ut omtrentlig herdedybde</li>
+        <li><b>Tre trinn</b>: varme, holde, kjøle</li>
+        <li><b>Jern-karbon-diagrammet</b></li>
+        <li><b>Herding</b> og <b>anløping</b></li>
+        <li><b>Seigherding</b> og boltklasser</li>
+        <li><b>Gløding</b> og <b>normalisering</b></li>
+        <li><b>Settherding</b>: hard overflate, seig kjerne</li>
       </ol>
     </div>
     <div>
-      <div class="card">
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Stålstang varmes til den gløder, holdes og bråkjøles i vann, mens temperaturkurven tegnes">
+          <!-- Kurve -->
+          <path d="M30 280 H262 M30 280 V30" style="stroke:var(--ink);stroke-width:2"/>
+          <text x="36" y="40" font-size="14" font-weight="700" style="fill:var(--ink)">T</text>
+          <text x="256" y="298" font-size="14" font-weight="700" style="fill:var(--ink)">tid</text>
+          <path d="M30 150 H262" style="stroke:var(--red);stroke-width:1.5;stroke-dasharray:5 4"/>
+          <text x="258" y="144" text-anchor="end" font-size="12" style="fill:var(--red)">A1 = 727 °C</text>
+          <path id="heroTT" d="M40 270 L110 90 H170 L190 260 H250" style="fill:none;stroke:var(--orange);stroke-width:4;stroke-linejoin:round"/>
+          <circle r="8" style="fill:var(--orange);stroke:var(--panel);stroke-width:3">
+            <animateMotion dur="8s" repeatCount="indefinite" calcMode="linear" keyTimes="0;.35;.6;.7;1" keyPoints="0;.399;.523;.876;1"><mpath href="#heroTT"/></animateMotion></circle>
+          <g font-size="12" font-weight="700" style="fill:var(--muted)">
+            <text x="66" y="262">oppvarming</text>
+            <text x="140" y="80" text-anchor="middle">holding</text>
+            <text x="196" y="200">bråkjøling</text>
+          </g>
+          <!-- Kar med vann -->
+          <path d="M300 190 V292 Q300 304 312 304 H478 Q490 304 490 292 V190" style="fill:none;stroke:var(--steel-dark);stroke-width:5"/>
+          <rect x="303" y="208" width="184" height="93" style="fill:var(--blue);opacity:.35"/>
+          <!-- Flammer -->
+          <g style="fill:var(--orange)" opacity="1">
+            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;.58;.6;1" values="1;1;0;0"/>
+            <path d="M350 140 q8 -20 0 -32 q14 12 8 32 z"><animate attributeName="opacity" values="1;.5;1" dur=".4s" repeatCount="indefinite"/></path>
+            <path d="M390 140 q8 -22 0 -36 q14 14 8 36 z"/>
+            <path d="M430 140 q8 -20 0 -32 q14 12 8 32 z"/>
+          </g>
+          <!-- Stang -->
+          <g>
+            <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" keyTimes="0;.6;.7;1" values="0 0;0 0;0 150;0 150"/>
+            <circle cx="395" cy="85" r="70" style="fill:#ff8a00" opacity="0">
+              <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;.3;.35;.6;.68;1" values="0;.15;.3;.3;0;0"/></circle>
+            <rect x="335" y="74" width="120" height="22" rx="4" fill="#8d99a6">
+              <animate attributeName="fill" dur="8s" repeatCount="indefinite" keyTimes="0;.2;.35;.6;.72;1" values="#8d99a6;#a33b20;#ffb347;#ffb347;#6b7580;#6b7580"/></rect>
+          </g>
+          <!-- Damp -->
+          <g style="fill:var(--steel)" opacity="0">
+            <animate attributeName="opacity" dur="8s" repeatCount="indefinite" keyTimes="0;.68;.72;.92;1" values="0;0;.8;0;0"/>
+            <circle cx="360" cy="190" r="10"><animate attributeName="cy" dur="8s" repeatCount="indefinite" keyTimes="0;.68;1" values="195;195;120"/></circle>
+            <circle cx="395" cy="190" r="13"><animate attributeName="cy" dur="8s" repeatCount="indefinite" keyTimes="0;.68;1" values="195;195;105"/></circle>
+            <circle cx="430" cy="190" r="10"><animate attributeName="cy" dur="8s" repeatCount="indefinite" keyTimes="0;.68;1" values="195;195;125"/></circle>
+          </g>
+          <text x="395" y="30" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--ink)">C45</text>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <p style="margin:.6rem 0">Innledning: Samme stang C45 kan bli myk nok til å dreie, hard nok til å skjære i annet stål – eller seig nok til å bli en bolt. Forskjellen er bare temperatur og tid.</p>
+      <div class="card" style="margin-top:.6rem">
         <h3>Kompetansemål (PIN02-03, Teknologi)</h3>
         <p><i>«vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer»</i></p>
         <p style="font-size:.85rem; color:var(--muted); margin:0">Støtter også valg av bearbeidingsmetode ut fra materiale. Bygger på leksjon 2 (austenitt, martensitt, herdesimulatoren) og leksjon 3 (hardhetsmåling, Charpy, sertifikat).</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:.4rem 0 0">Fulle læringsmål: forklare oppvarming, holding og avkjøling · bruke et forenklet jern-karbon-diagram til å finne riktig temperatur · forklare herding og hvorfor stålet trenger nok karbon · forklare anløping og lese anløpsfarger · forklare seigherding, +QT og boltklasse 10.9 · velge mellom normalisering, bløtgløding, spenningsfriglødning og rekrystallisering · forklare settherding og regne omtrentlig herdedybde.</p>
       </div>
       <div class="card" style="margin-top:1rem">
         <h3>Plan for to skoletimer</h3>
@@ -228,6 +286,7 @@ table.t th{background:var(--steel-soft)}
           <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
+      </details>
       <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
     </div>
   </div>
@@ -238,14 +297,14 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Repetisjon · ca. 5 min</div>
     <h2>Husker du?</h2>
-    <p class="lead">Svar muntlig med sidemannen. Klikk på kortet for å se svaret.</p>
+    <p class="lead">Svar med sidemannen – klikk for svar.</p>
     <div class="grid4" style="margin-top:1.2rem">
       <button class="card flip"><span class="q">Hva er austenitt?</span><span class="a">Stålets struktur når det er glødende varmt. Karbonet er løst opp i jernet (leksjon 2).</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Hva er martensitt?</span><span class="a">Svært hard og sprø struktur. Oppstår når austenitt kjøles så raskt at karbonet blir låst i gitteret.</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Hvilken hardhetsmåling brukes på herdet stål på verkstedet?</span><span class="a">Rockwell C (HRC) – tallet leses rett av (leksjon 3).</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Blir herdet stål stivere (høyere E-modul)?</span><span class="a">Nei. Det blir sterkere og hardere, men like stivt: ca. 210 GPa (leksjon 3).</span><span class="hint">Klikk for svar</span></button>
     </div>
-    <div class="tip o"><b>I dag:</b> Vi styrer strukturen i stålet med temperatur og tid – og måler resultatet med hardhetsmålingen fra leksjon 3.</div>
+    <div class="tip o"><b>I dag:</b> Vi styrer stålet med <b>temperatur og tid</b>.</div>
   </div>
 </section>
 
@@ -254,7 +313,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 1 · ca. 6 min</div>
     <h2>All varmebehandling har tre trinn</h2>
-    <p class="lead"><b>Varmebehandling</b> = å varme opp og kjøle ned metall på en bestemt måte for å endre egenskapene. Formen er den samme etterpå – det er innsiden som endres.</p>
+    <p class="lead">Formen er lik etterpå – det er <b>innsiden</b> som endres.</p>
     <div class="grid2">
       <div class="fig">
         <svg id="ovnSvg" viewBox="0 0 520 330" role="img" aria-label="Ovn og herdekar"></svg>
@@ -267,15 +326,37 @@ table.t th{background:var(--steel-soft)}
       </div>
     </div>
     <div class="phase3">
-      <div style="border-top:5px solid var(--red)"><b>1 · Oppvarming</b>Til riktig temperatur. Jevnt og ikke for fort, ellers kan tykke deler sprekke.</div>
-      <div style="border-top:5px solid var(--orange)"><b>2 · Holding</b><b style="display:inline;font-size:.9rem">Holdetid</b> = tiden delen står på temperaturen, så den blir like varm helt inn i kjernen. Tommelfinger: ca. 1 min per mm tykkelse, minst 20 min.</div>
-      <div style="border-top:5px solid var(--blue)"><b>3 · Avkjøling</b>Farten avgjør resultatet. <b style="display:inline;font-size:.9rem">Bråkjøling</b> = svært rask avkjøling i vann eller olje. Væsken kalles <b style="display:inline;font-size:.9rem">herdemiddel</b>.</div>
+      <div style="border-top:5px solid var(--red)">
+        <svg class="scene" viewBox="0 0 200 80" role="img" aria-label="Termometer som stiger">
+          <rect x="90" y="6" width="20" height="56" rx="10" style="fill:var(--panel);stroke:var(--ink);stroke-width:2"/>
+          <circle cx="100" cy="64" r="12" style="fill:var(--red)"/>
+          <rect x="95" y="50" width="10" height="12" style="fill:var(--red)"><animate attributeName="y" values="50;12;12;50" keyTimes="0;.6;.9;1" dur="3s" repeatCount="indefinite"/><animate attributeName="height" values="12;50;50;12" keyTimes="0;.6;.9;1" dur="3s" repeatCount="indefinite"/></rect>
+        </svg><b>1 · Oppvarming</b>Jevnt, ikke for fort.</div>
+      <div style="border-top:5px solid var(--orange)">
+        <svg class="scene" viewBox="0 0 200 80" role="img" aria-label="Klokke: holdetid">
+          <circle cx="100" cy="40" r="32" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"/>
+          <line x1="100" y1="40" x2="100" y2="16" style="stroke:var(--orange);stroke-width:4;stroke-linecap:round"><animateTransform attributeName="transform" type="rotate" from="0 100 40" to="360 100 40" dur="3s" repeatCount="indefinite"/></line>
+          <circle cx="100" cy="40" r="4" style="fill:var(--ink)"/>
+          <text x="140" y="46" font-size="12" font-weight="700" style="fill:var(--muted)">1 min/mm</text>
+        </svg><b>2 · Holding</b>Varm helt inn i kjernen.</div>
+      <div style="border-top:5px solid var(--blue)">
+        <svg class="scene" viewBox="0 0 200 80" role="img" aria-label="Stang senkes i vann og damper">
+          <rect x="60" y="40" width="80" height="36" style="fill:var(--blue);opacity:.35"/>
+          <path d="M60 30 V78 H140 V30" style="fill:none;stroke:var(--steel-dark);stroke-width:3"/>
+          <rect x="94" y="0" width="12" height="30" rx="2" fill="#ffb347"><animate attributeName="y" values="0;44;44;0" keyTimes="0;.3;.85;1" dur="3s" repeatCount="indefinite"/><animate attributeName="fill" values="#ffb347;#ffb347;#6b7580;#6b7580" keyTimes="0;.3;.5;1" dur="3s" repeatCount="indefinite"/></rect>
+          <g style="fill:var(--steel)" opacity="0"><animate attributeName="opacity" values="0;0;.9;0;0" keyTimes="0;.3;.4;.7;1" dur="3s" repeatCount="indefinite"/>
+            <circle cx="80" cy="24" r="7"/><circle cx="120" cy="20" r="8"/><circle cx="100" cy="12" r="6"/></g>
+        </svg><b>3 · Avkjøling</b>Farten avgjør. <b style="display:inline;font-size:.9rem">Bråkjøling</b> = raskt i vann/olje.</div>
     </div>
     <div class="fig" style="margin-top:1rem">
       <div style="font-weight:650">Glødefarger: slik ser smeden temperaturen</div>
       <svg id="glowScale" viewBox="0 0 900 96" role="img" aria-label="Glødefarger fra 500 til 1200 grader"></svg>
-      <p class="caption" style="margin:0">Fargene ses best i halvmørke. I dagslys ser stålet kaldere ut enn det er. I ovner måles temperaturen med en temperaturføler – det er mer nøyaktig.</p>
     </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary><b>Varmebehandling</b> = å varme opp og kjøle ned metall på en bestemt måte for å endre egenskapene. Formen er den samme etterpå – det er innsiden som endres.
+      <ul><li><b>Oppvarming</b> til riktig temperatur. Jevnt og ikke for fort, ellers kan tykke deler sprekke.</li>
+      <li><b>Holdetid</b> = tiden delen står på temperaturen, så den blir like varm helt inn i kjernen. Tommelfinger: ca. 1 min per mm tykkelse, minst 20 min.</li>
+      <li><b>Avkjøling</b>: farten avgjør resultatet. Bråkjøling = svært rask avkjøling i vann eller olje. Væsken kalles <b>herdemiddel</b>.</li></ul>
+      Glødefarger ses best i halvmørke. I dagslys ser stålet kaldere ut enn det er. I ovner måles temperaturen med en temperaturføler – det er mer nøyaktig.</details>
   </div>
 </section>
 
@@ -284,7 +365,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 2 · ca. 7 min</div>
     <h2>Hva skjer inne i stålet?</h2>
-    <p class="lead"><b>Jern-karbon-diagrammet</b> er et kart: det viser hvilken struktur stålet har ved hver temperatur og hvert karboninnhold. Vi bruker bare «stålhjørnet» av kartet.</p>
+    <p class="lead"><b>Jern-karbon-diagrammet</b> er et kart over stålets struktur.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <div class="controls no-print" id="fcSteel" style="margin-top:0"></div>
@@ -306,10 +387,38 @@ table.t th{background:var(--steel-soft)}
       </div>
     </div>
     <div class="grid3" style="margin-top:1rem">
-      <div class="card"><b>A1 = 727 °C</b><br>Over denne linja blir perlitten til austenitt. Gjelder alt stål.</div>
-      <div class="card"><b>A3-linja</b><br>Over denne er <i>alt</i> blitt austenitt. Jo mer karbon (opp til 0,8 %), jo lavere ligger den. C45: ca. 775 °C.</div>
-      <div class="card"><b>Overoppheting</b><br>For høy temperatur eller for lang tid gjør at austenittkornene vokser. Grove korn gir sprøtt stål.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Perlitt med striper blir til austenitt over 727 grader">
+          <rect x="40" y="10" width="120" height="70" rx="8" fill="#ced4da"/>
+          <path d="M44 18 L152 76 M44 30 L132 76 M44 42 L110 76 M60 14 L156 64 M84 14 L156 50 M108 14 L156 38" style="stroke:#495057;stroke-width:4">
+            <animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;.3;.5;.85;1" dur="4s" repeatCount="indefinite"/></path>
+          <rect x="40" y="10" width="120" height="70" rx="8" fill="#ffc58a" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.3;.5;.85;1" dur="4s" repeatCount="indefinite"/></rect>
+          <text x="100" y="102" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--ink)">perlitt → austenitt</text>
+        </svg>
+        <h3>A1 = 727 °C</h3><p class="short">Perlitt blir austenitt. Gjelder alt stål.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Termometer med A1- og A3-linje">
+          <path d="M20 30 H180" style="stroke:var(--purple);stroke-width:2;stroke-dasharray:6 4"/>
+          <path d="M20 62 H180" style="stroke:var(--red);stroke-width:2;stroke-dasharray:6 4"/>
+          <text x="180" y="24" text-anchor="end" font-size="12" font-weight="700" style="fill:var(--purple)">A3 ≈ 775 °C (C45)</text>
+          <text x="180" y="78" text-anchor="end" font-size="12" font-weight="700" style="fill:var(--red)">A1 = 727 °C</text>
+          <rect x="40" y="6" width="16" height="84" rx="8" style="fill:var(--panel);stroke:var(--ink);stroke-width:2"/>
+          <circle cx="48" cy="94" r="10" style="fill:var(--red)"/>
+          <rect x="44" y="80" width="8" height="10" style="fill:var(--red)"><animate attributeName="y" values="80;20;20;80" keyTimes="0;.6;.9;1" dur="4s" repeatCount="indefinite"/><animate attributeName="height" values="10;70;70;10" keyTimes="0;.6;.9;1" dur="4s" repeatCount="indefinite"/></rect>
+        </svg>
+        <h3>A3-linja</h3><p class="short">Over den er <i>alt</i> austenitt.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Korn som vokser seg store ved for høy temperatur">
+          <rect x="40" y="10" width="120" height="70" rx="8" fill="#ffc58a"/>
+          <g style="fill:none;stroke:#8a4b12;stroke-width:2">
+            <path d="M40 33 H160 M40 56 H160 M70 10 V80 M100 10 V80 M130 10 V80"><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;.3;.5;.85;1" dur="4s" repeatCount="indefinite"/></path>
+            <path d="M40 45 H160 M100 10 V80" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.3;.5;.85;1" dur="4s" repeatCount="indefinite"/></path>
+          </g>
+          <text x="100" y="102" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--red)">for varmt → grove korn</text>
+        </svg>
+        <h3>Overoppheting</h3><p class="short">Grove korn gir sprøtt stål.</p></div>
     </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Diagrammet viser hvilken struktur stålet har ved hver temperatur og hvert karboninnhold. Vi bruker bare «stålhjørnet» av kartet. A1 = 727 °C: over denne linja blir perlitten til austenitt (gjelder alt stål). A3: over denne er alt blitt austenitt; jo mer karbon (opp til 0,8 %), jo lavere ligger den. C45: ca. 775 °C. Overoppheting: for høy temperatur eller for lang tid gjør at austenittkornene vokser. Grove korn gir sprøtt stål.</details>
   </div>
 </section>
 
@@ -318,7 +427,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 3 · ca. 15 min</div>
     <h2>Herding: et kappløp mot klokka</h2>
-    <p class="lead"><b>Herding</b> = varme til austenitt og bråkjøle. Stålet må forbi «nesa» før perlitt rekker å dannes. Da blir karbonet låst og vi får martensitt. Under <b>M<sub>s</sub></b> (martensitt-start) begynner martensitten å dannes.</p>
+    <p class="lead">Bråkjøl forbi «nesa» – da låses karbonet: <b>martensitt</b>.</p>
     <div class="grid2">
       <div class="fig">
         <div class="controls no-print" id="hSteel" style="margin-top:0"></div>
@@ -343,11 +452,54 @@ table.t th{background:var(--steel-soft)}
       </div>
     </div>
     <div class="grid4" style="margin-top:1rem">
-      <div class="card"><b>Nok karbon</b><br>Under ca. 0,3 % C blir stålet nesten ikke hardere. S235 og S355 er ikke laget for herding.</div>
-      <div class="card"><b>Herdbarhet</b><br>Hvor dypt stålet kan herdes. Legeringselementer (Cr, Mo, Mn) flytter nesa til høyre og gir mer tid.</div>
-      <div class="card"><b>Mildt middel er best</b><br>Vann er raskest, men gir store indre spenninger. Bruk det mildeste midlet som rekker forbi nesa.</div>
-      <div class="card"><b>Sprekker og kast</b><br>Overflaten krymper før kjernen. Delen kan sprekke eller <b>kaste seg</b> (bli skjev). Skarpe hjørner og hull øker faren.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Hardhet etter bråkjøling: lite karbon gir lav søyle, mye karbon gir høy søyle">
+          <path d="M20 96 H180" style="stroke:var(--ink);stroke-width:2"/>
+          <rect x="45" y="80" width="40" height="16" style="fill:var(--steel)"><animate attributeName="y" values="96;80;80;96" keyTimes="0;.3;.85;1" dur="3s" repeatCount="indefinite"/><animate attributeName="height" values="0;16;16;0" keyTimes="0;.3;.85;1" dur="3s" repeatCount="indefinite"/></rect>
+          <rect x="115" y="20" width="40" height="76" style="fill:var(--orange)"><animate attributeName="y" values="96;20;20;96" keyTimes="0;.3;.85;1" dur="3s" repeatCount="indefinite"/><animate attributeName="height" values="0;76;76;0" keyTimes="0;.3;.85;1" dur="3s" repeatCount="indefinite"/></rect>
+          <text x="60" y="112" text-anchor="middle" font-size="10" style="fill:var(--muted)">S235: 0,17 % C</text>
+          <text x="142" y="112" text-anchor="middle" font-size="10" style="fill:var(--muted)">C45: 0,45 % C</text>
+          <text x="20" y="14" font-size="11" font-weight="700" style="fill:var(--ink)">hardhet</text>
+        </svg>
+        <h3>Nok karbon</h3><p class="short">Over ca. 0,3 % C.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Tverrsnitt: ulegert stål herdes bare ytterst, legert stål herdes dypere">
+          <circle cx="55" cy="55" r="38" style="fill:var(--steel)"/>
+          <circle cx="55" cy="55" r="38" style="fill:none;stroke:var(--orange);stroke-width:6"/>
+          <circle cx="145" cy="55" r="38" style="fill:var(--steel)"/>
+          <circle cx="145" cy="55" r="29" style="fill:none;stroke:var(--orange);stroke-width:18"><animate attributeName="stroke-width" values="6;18;18;6" keyTimes="0;.4;.85;1" dur="3s" repeatCount="indefinite"/><animate attributeName="r" values="35;29;29;35" keyTimes="0;.4;.85;1" dur="3s" repeatCount="indefinite"/></circle>
+          <text x="55" y="112" text-anchor="middle" font-size="11" style="fill:var(--muted)">C45</text>
+          <text x="145" y="112" text-anchor="middle" font-size="11" style="fill:var(--muted)">42CrMo4</text>
+        </svg>
+        <h3>Herdbarhet</h3><p class="short">Hvor dypt stålet herdes.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Tre kar: vann koker kraftig, olje litt, luft rolig">
+          <g style="stroke:var(--steel-dark);stroke-width:3;fill:none"><path d="M12 50 V100 H62 V50"/><path d="M75 50 V100 H125 V50"/><path d="M138 50 V100 H188 V50"/></g>
+          <rect x="14" y="62" width="46" height="36" style="fill:var(--blue);opacity:.45"/>
+          <rect x="77" y="62" width="46" height="36" style="fill:var(--yellow);opacity:.45"/>
+          <g style="fill:var(--steel)">
+            <circle cx="27" cy="50" r="6"><animate attributeName="cy" values="60;20" dur=".8s" repeatCount="indefinite"/></circle>
+            <circle cx="45" cy="50" r="7"><animate attributeName="cy" values="60;16" dur=".7s" begin=".3s" repeatCount="indefinite"/></circle>
+            <circle cx="100" cy="50" r="4"><animate attributeName="cy" values="60;34" dur="1.6s" repeatCount="indefinite"/></circle>
+          </g>
+          <g font-size="11" text-anchor="middle" style="fill:var(--muted)"><text x="37" y="114">vann</text><text x="100" y="114">olje</text><text x="163" y="114">luft</text></g>
+          <text x="163" y="82" text-anchor="middle" font-size="16" style="fill:var(--steel)">~</text>
+        </svg>
+        <h3>Mildt middel</h3><p class="short">Det mildeste som rekker forbi nesa.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Aksel som kaster seg og sprekker">
+          <path style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2">
+            <animate attributeName="d" values="M20 50 Q100 50 180 50 V70 Q100 70 20 70 Z;M20 40 Q100 66 180 40 V60 Q100 86 20 60 Z;M20 40 Q100 66 180 40 V60 Q100 86 20 60 Z;M20 50 Q100 50 180 50 V70 Q100 70 20 70 Z" keyTimes="0;.4;.85;1" dur="3s" repeatCount="indefinite"/></path>
+          <path d="M100 56 l-4 8 l6 4 l-4 8" style="fill:none;stroke:var(--red);stroke-width:2.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.35;.45;.85;1" dur="3s" repeatCount="indefinite"/></path>
+          <text x="100" y="110" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--red)">kast + sprekk</text>
+        </svg>
+        <h3>Sprekker og kast</h3><p class="short">Skarpe hjørner øker faren.</p></div>
     </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary><b>Herding</b> = varme til austenitt og bråkjøle. Stålet må forbi «nesa» før perlitt rekker å dannes. Da blir karbonet låst og vi får martensitt. Under M<sub>s</sub> (martensitt-start) begynner martensitten å dannes.
+      <ul><li><b>Nok karbon</b>: under ca. 0,3 % C blir stålet nesten ikke hardere. S235 og S355 er ikke laget for herding.</li>
+      <li><b>Herdbarhet</b>: hvor dypt stålet kan herdes. Legeringselementer (Cr, Mo, Mn) flytter nesa til høyre og gir mer tid.</li>
+      <li><b>Mildt middel er best</b>: vann er raskest, men gir store indre spenninger. Bruk det mildeste midlet som rekker forbi nesa.</li>
+      <li><b>Sprekker og kast</b>: overflaten krymper før kjernen. Delen kan sprekke eller kaste seg (bli skjev). Skarpe hjørner og hull øker faren.</li></ul></details>
   </div>
 </section>
 
@@ -356,7 +508,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 4 · ca. 7 min</div>
     <h2>Anløping: litt mindre hardt, mye mindre sprøtt</h2>
-    <p class="lead">Rett etter herding er stålet hardt som glass – og nesten like sprøtt. <b>Anløping</b> = varme det herdede stålet opp igjen til 150–650 °C. Noe av karbonet slipper fri, og stålet blir seigere. Jo varmere, jo mykere og seigere.</p>
+    <p class="lead">Varm herdet stål til <b>150–650 °C</b>: jo varmere, jo mykere og seigere.</p>
     <div class="grid2">
       <div class="fig">
         <svg id="anChart" viewBox="0 0 560 360" role="img" aria-label="Hardhet og slagseighet mot anløpstemperatur"></svg>
@@ -369,7 +521,7 @@ table.t th{background:var(--steel-soft)}
           <div><span>Slagseighet KV</span><b id="anK">–</b></div>
           <div><span>Passer til</span><b id="anU" style="font-size:.9rem">–</b></div>
         </div>
-        <p class="caption">C45 vannherdet, typiske forenklede verdier. Holdetid ca. 1–2 timer i ovn.</p>
+        <p class="caption">C45 vannherdet, forenklede verdier.</p>
       </div>
       <div class="fig">
         <div style="font-weight:650">Anløpe en meisel med farger</div>
@@ -379,12 +531,13 @@ table.t th{background:var(--steel-soft)}
           <span class="pill" id="chTv" style="font-size:1rem">270 °C</span>
         </div>
         <div class="controls no-print"><button class="btn orange" id="chGo">🔥 Varm opp bak eggen</button></div>
-        <div class="status info" id="chTxt">Herdet meisel, eggen er blankslipt. Varm opp bak eggen og se fargene vandre fram.</div>
+        <div class="status info" id="chTxt">Varm bak eggen – se fargene vandre fram.</div>
         <table class="t" id="anTab" style="font-size:.82rem; margin-top:.6rem"></table>
-        <p class="caption">Fargene er et tynt lag oksid (rust-hinne) som vokser med temperaturen. Bare på blank overflate. Typiske verdier.</p>
+        <p class="caption">Fargene er en tynn oksidhinne. Bare på blank overflate.</p>
       </div>
     </div>
-    <div class="tip o"><b>Anløp med en gang!</b> Herdet stål er fullt av <b>restspenninger</b> – spenninger som blir igjen inne i delen uten ytre last. Venter du flere timer, kan delen sprekke av seg selv.</div>
+    <div class="tip o"><b>Anløp med en gang!</b> Ellers kan delen sprekke av seg selv.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Rett etter herding er stålet hardt som glass – og nesten like sprøtt. Anløping = varme det herdede stålet opp igjen til 150–650 °C. Noe av karbonet slipper fri, og stålet blir seigere. Holdetid ca. 1–2 timer i ovn. Meiselen: herdet, eggen er blankslipt; varm opp bak eggen og se fargene vandre fram. Fargene er et tynt lag oksid (rust-hinne) som vokser med temperaturen – bare på blank overflate, typiske verdier. Herdet stål er fullt av <b>restspenninger</b> – spenninger som blir igjen inne i delen uten ytre last. Venter du flere timer, kan delen sprekke av seg selv.</details>
   </div>
 </section>
 
@@ -393,7 +546,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 5 · ca. 5 min</div>
     <h2>Seigherding = herding + høy anløping</h2>
-    <p class="lead">Herd først, og anløp så ved 500–680 °C – alltid under A1. Resultatet er sterkt <i>og</i> seigt – det beste av begge. Brukes til aksler, bolter, tannhjul og maskindeler med store laster og støt.</p>
+    <p class="lead">Herd, og anløp ved 500–680 °C: <b>sterkt og seigt</b>.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <div class="controls no-print" id="qtBtns" style="margin-top:0"></div>
@@ -417,11 +570,28 @@ table.t th{background:var(--steel-soft)}
       </div>
     </div>
     <div class="grid3" style="margin-top:1rem">
-      <div class="card"><b>Bolt 8.8</b><br>8 × 100 = <b>R<sub>m</sub> 800 MPa</b><br>0,8 × 800 = <b>R<sub>e</sub> 640 MPa</b></div>
-      <div class="card"><b>Bolt 10.9</b><br>10 × 100 = <b>R<sub>m</sub> 1000 MPa</b><br>0,9 × 1000 = <b>R<sub>e</sub> 900 MPa</b></div>
-      <div class="card"><b>Bolt 12.9</b><br>12 × 100 = <b>R<sub>m</sub> 1200 MPa</b><br>0,9 × 1200 = <b>R<sub>e</sub> 1080 MPa</b></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 90" role="img" aria-label="Sekskanthode på bolt merket 8.8">
+          <path d="M60 10 H140 L160 45 L140 80 H60 L40 45 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:3"/>
+          <text x="100" y="54" text-anchor="middle" font-size="26" font-weight="800" style="fill:var(--ink)">8.8<animate attributeName="opacity" values="1;.35;1" dur="2.4s" repeatCount="indefinite"/></text>
+        </svg>
+        <b>Bolt 8.8</b><br>8 × 100 = <b>R<sub>m</sub> 800 MPa</b><br>0,8 × 800 = <b>R<sub>e</sub> 640 MPa</b></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 90" role="img" aria-label="Sekskanthode på bolt merket 10.9">
+          <path d="M60 10 H140 L160 45 L140 80 H60 L40 45 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:3"/>
+          <text x="100" y="54" text-anchor="middle" font-size="26" font-weight="800" style="fill:var(--ink)">10.9<animate attributeName="opacity" values="1;.35;1" dur="2.4s" repeatCount="indefinite"/></text>
+        </svg>
+        <b>Bolt 10.9</b><br>10 × 100 = <b>R<sub>m</sub> 1000 MPa</b><br>0,9 × 1000 = <b>R<sub>e</sub> 900 MPa</b></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 90" role="img" aria-label="Sekskanthode på bolt merket 12.9">
+          <path d="M60 10 H140 L160 45 L140 80 H60 L40 45 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:3"/>
+          <text x="100" y="54" text-anchor="middle" font-size="26" font-weight="800" style="fill:var(--ink)">12.9<animate attributeName="opacity" values="1;.35;1" dur="2.4s" repeatCount="indefinite"/></text>
+        </svg>
+        <b>Bolt 12.9</b><br>12 × 100 = <b>R<sub>m</sub> 1200 MPa</b><br>0,9 × 1200 = <b>R<sub>e</sub> 1080 MPa</b></div>
     </div>
-    <p class="caption">Alle disse boltene er seigherdet. Første tall × 100 = strekkfasthet. Andre tall = flytegrensen i tideler av strekkfastheten.</p>
+    <p class="caption">Første tall × 100 = R<sub>m</sub>. Andre tall = R<sub>e</sub> i tideler av R<sub>m</sub>.</p>
+    <a class="simlink no-print" data-sim="charpy"><span class="ico">🔨</span><span><b>Prøv selv: Charpy-simulatoren</b><small>Se hvor mye energi et seigt stål tar opp.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Herd først, og anløp så ved 500–680 °C – alltid under A1. Resultatet er sterkt og seigt – det beste av begge. Brukes til aksler, bolter, tannhjul og maskindeler med store laster og støt. Alle boltene 8.8–12.9 er seigherdet. Første tall × 100 = strekkfasthet. Andre tall = flytegrensen i tideler av strekkfastheten. Charpy-simulatoren (leksjon 3) kan brukes til å vise forskjellen på seigt og sprøtt brudd.</details>
   </div>
 </section>
 
@@ -430,7 +600,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 6 · ca. 7 min</div>
     <h2>Gløding og normalisering</h2>
-    <p class="lead"><b>Gløding</b> = varme opp, holde og kjøle <i>sakte</i>. Målet er ikke hardhet, men å gjøre stålet mykere, jevnere eller fritt for spenninger. Velg en behandling:</p>
+    <p class="lead"><b>Gløding</b>: kjøl <i>sakte</i> – mykere, jevnere eller uten spenninger.</p>
     <div class="tabs no-print" id="glTabs"></div>
     <div class="grid2" style="margin-top:.8rem">
       <div>
@@ -452,6 +622,7 @@ table.t th{background:var(--steel-soft)}
         <div class="status info" id="glTxt"></div>
       </div>
     </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Gløding = varme opp, holde og kjøle sakte. Målet er ikke hardhet, men å gjøre stålet mykere, jevnere eller fritt for spenninger. Velg en behandling i fanene og kjør den.</details>
   </div>
 </section>
 
@@ -460,7 +631,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 7 · ca. 6 min</div>
     <h2>Settherding: hard overflate, seig kjerne</h2>
-    <p class="lead">Et tannhjul må tåle slitasje på overflaten og støt i kjernen. Løsning: start med et seigt lavkarbonstål (f.eks. <b>16MnCr5</b>), og la karbon vandre inn i overflaten i en ovn med karbonrik gass ved ca. 930 °C. Dette kalles <b>innsetting</b>. Etterpå herdes og lavanløpes delen (ca. 180 °C).</p>
+    <p class="lead">Karbon vandrer inn i overflaten → <b>hard overflate, seig kjerne</b>.</p>
     <div class="grid2">
       <div class="fig">
         <svg id="stDots" viewBox="0 0 560 230" role="img" aria-label="Karbon vandrer inn i overflaten"></svg>
@@ -479,16 +650,40 @@ table.t th{background:var(--steel-soft)}
           <div><span>Kjerne</span><b id="stC">–</b></div>
         </div>
         <div class="steps" id="stSteps"></div>
-        <p class="caption"><b>Herdedybde</b> = dybden der hardheten har falt til 550 HV (målt med Vickers, leksjon 3). Tommelfingerregel ved ca. 930 °C: <b>dybde ≈ 0,5 · √t</b> (mm, t i timer). Forenklet.</p>
+        <p class="caption"><b>Herdedybde</b> = dybden med 550 HV. <b>Dybde ≈ 0,5 · √t</b> (mm, t i timer).</p>
       </div>
     </div>
     <div class="grid3" style="margin-top:1rem">
       <div class="card"><b>Induksjonsherding</b>
         <svg id="indSvg" viewBox="0 0 300 110" role="img" aria-label="Induksjonsherding av aksel" style="width:100%;margin:.3rem 0"></svg>
-        <span style="font-size:.9rem">En strømspole varmer bare overflaten på sekunder, og vann spyler rett etter. For C45 og 42CrMo4: aksler, lagerbaner.</span></div>
-      <div class="card"><b>Flammeherding</b><br><span style="font-size:.9rem">Som induksjon, men med gassflamme. Enkelt utstyr – brukes på store deler som skinner og store tannhjul.</span></div>
-      <div class="card"><b>Nitrering</b><br><span style="font-size:.9rem">Nitrogen vandrer inn ved ca. 500–570 °C. Lav temperatur gir nesten ingen kast. Tynt, svært hardt lag (0,1–0,6 mm).</span></div>
+        <p class="short">Spole varmer overflaten, vann spyler.</p></div>
+      <div class="card"><b>Flammeherding</b>
+        <svg class="scene" viewBox="0 0 300 110" role="img" aria-label="Gassflamme beveger seg langs en skinne" style="margin:.3rem 0">
+          <rect x="20" y="62" width="260" height="30" rx="3" style="fill:var(--steel)"/>
+          <rect x="20" y="62" width="0" height="6" style="fill:var(--orange)"><animate attributeName="width" values="0;240;240" keyTimes="0;.85;1" dur="4s" repeatCount="indefinite"/></rect>
+          <g><animateTransform attributeName="transform" type="translate" values="0 0;240 0;240 0" keyTimes="0;.85;1" dur="4s" repeatCount="indefinite"/>
+            <rect x="24" y="10" width="12" height="30" rx="2" style="fill:var(--steel-dark)"/>
+            <path d="M30 58 q-8 -10 0 -18 q8 8 0 18 z" style="fill:var(--blue)"><animate attributeName="opacity" values="1;.5;1" dur=".3s" repeatCount="indefinite"/></path></g>
+        </svg>
+        <p class="short">Gassflamme – store deler, f.eks. skinner.</p></div>
+      <div class="card"><b>Nitrering</b>
+        <svg class="scene" viewBox="0 0 300 110" role="img" aria-label="Nitrogenatomer vandrer inn i et tynt overflatelag" style="margin:.3rem 0">
+          <rect x="20" y="50" width="260" height="50" rx="3" style="fill:var(--steel)"/>
+          <rect x="20" y="50" width="260" height="8" style="fill:var(--purple);opacity:.6"/>
+          <g style="fill:var(--purple)">
+            <circle cx="70" r="5"><animate attributeName="cy" values="10;54" dur="2s" repeatCount="indefinite"/></circle>
+            <circle cx="130" r="5"><animate attributeName="cy" values="10;54" dur="2s" begin=".6s" repeatCount="indefinite"/></circle>
+            <circle cx="190" r="5"><animate attributeName="cy" values="10;54" dur="2s" begin="1.2s" repeatCount="indefinite"/></circle>
+            <circle cx="240" r="5"><animate attributeName="cy" values="10;54" dur="2s" begin=".3s" repeatCount="indefinite"/></circle>
+          </g>
+          <text x="150" y="84" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">N inn ved 500–570 °C</text>
+        </svg>
+        <p class="short">Lav temperatur, nesten ikke kast.</p></div>
     </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Et tannhjul må tåle slitasje på overflaten og støt i kjernen. Løsning: start med et seigt lavkarbonstål (f.eks. 16MnCr5), og la karbon vandre inn i overflaten i en ovn med karbonrik gass ved ca. 930 °C. Dette kalles <b>innsetting</b>. Etterpå herdes og lavanløpes delen (ca. 180 °C). Herdedybde = dybden der hardheten har falt til 550 HV (målt med Vickers, leksjon 3). Tommelfingerregel ved ca. 930 °C: dybde ≈ 0,5 · √t (mm, t i timer), forenklet.
+      <ul><li><b>Induksjonsherding</b>: en strømspole varmer bare overflaten på sekunder, og vann spyler rett etter. For C45 og 42CrMo4: aksler, lagerbaner.</li>
+      <li><b>Flammeherding</b>: som induksjon, men med gassflamme. Enkelt utstyr – brukes på store deler som skinner og store tannhjul.</li>
+      <li><b>Nitrering</b>: nitrogen vandrer inn ved ca. 500–570 °C. Lav temperatur gir nesten ingen kast. Tynt, svært hardt lag (0,1–0,6 mm).</li></ul></details>
   </div>
 </section>
 
@@ -501,8 +696,9 @@ table.t th{background:var(--steel-soft)}
     <div class="quiz" id="quiz"></div>
     <div class="grid2" style="margin-top:1rem">
       <div class="status info" id="quizScore" style="margin:0">0 av 7 riktige</div>
-      <div class="tip" style="margin:0"><b>Uønsket herding:</b> Ved sveising varmes stålet ved sveisen over A1 og kjøles raskt av resten av plata. Med høy CEV (leksjon 2) blir det martensitt og sprekker i varmepåvirket sone. Derfor <b>forvarmer</b> vi – det gir langsommere avkjøling.</div>
+      <div class="tip" style="margin:0"><b>Uønsket herding ved sveising:</b> <b>forvarm</b>, så kjøles det langsommere.</div>
     </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Ved sveising varmes stålet ved sveisen over A1 og kjøles raskt av resten av plata. Med høy CEV (leksjon 2) blir det martensitt og sprekker i varmepåvirket sone. Derfor forvarmer vi – det gir langsommere avkjøling.</details>
   </div>
 </section>
 
@@ -551,7 +747,7 @@ table.t th{background:var(--steel-soft)}
     <div id="oppgavetekst">
       <h2>Materiallære 4 – Varmebehandling · Oppgaver</h2>
       <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
-      <p style="font-size:.9rem">Du trenger bare penn og kalkulator (mobil/PC er greit).</p>
+      <p style="font-size:.9rem">Penn og kalkulator.</p>
 
       <div class="oppgave">
         <h3>Oppgave 1 – Les varmebehandlingskurvene <small>Time 1 · 6 min</small></h3>
@@ -567,7 +763,7 @@ table.t th{background:var(--steel-soft)}
 
       <div class="oppgave">
         <h3>Oppgave 2 – Hva skjer inne i C45? <small>Time 1 · 6 min</small></h3>
-        <p>a) Fyll ut strukturen i C45 (0,45 % C) ved de ulike temperaturene. Bruk: ferritt, perlitt, austenitt.</p>
+        <p>a) Hvilken struktur har C45 (0,45 % C)? Bruk: ferritt, perlitt, austenitt.</p>
         <table class="ot">
           <tr><th style="width:30%">Temperatur</th><th>Struktur</th></tr>
           <tr><td>20 °C (romtemperatur)</td><td class="tom"><span class="fasit" hidden>ferritt + perlitt</span></td></tr>
@@ -593,14 +789,14 @@ table.t th{background:var(--steel-soft)}
         <div class="oppfig"><svg id="oppAn" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg"></svg></div>
         <p>a) Hvor hardt er stålet etter anløping ved 300 °C?</p><div class="svar"><span class="fasit" hidden>ca. 50 HRC</span></div>
         <p>b) Hvilken anløpstemperatur gir 35 HRC?</p><div class="svar"><span class="fasit" hidden>ca. 500 °C</span></div>
-        <p>c) Stålet anløpes ved 600 °C. Les av HRC. Bruk tabellen (24 HRC ≈ 250 HB) og R<sub>m</sub> ≈ 3,3 · HB til å anslå strekkfastheten.</p><div class="svar"><span class="fasit" hidden>ca. 24 HRC ≈ 250 HB</span></div><div class="svar"><span class="fasit" hidden>R<sub>m</sub> ≈ 3,3 · 250 ≈ <b>825 MPa</b></span></div>
-        <p>d) Du anløper en blankslipt meisel og ser at eggen er blitt <b>mørkeblå</b>. Ca. hvilken temperatur? Er meiselen nå for hard eller for myk?</p><div class="svar"><span class="fasit" hidden>ca. 295–300 °C. For myk for en meisel (blått passer til fjærer). Den må herdes på nytt.</span></div>
+        <p>c) Anløpt ved 600 °C: les av HRC. Anslå R<sub>m</sub> (24 HRC ≈ 250 HB, R<sub>m</sub> ≈ 3,3 · HB).</p><div class="svar"><span class="fasit" hidden>ca. 24 HRC ≈ 250 HB</span></div><div class="svar"><span class="fasit" hidden>R<sub>m</sub> ≈ 3,3 · 250 ≈ <b>825 MPa</b></span></div>
+        <p>d) Eggen på en blankslipt meisel er blitt <b>mørkeblå</b>. Ca. hvilken temperatur? For hard eller for myk?</p><div class="svar"><span class="fasit" hidden>ca. 295–300 °C. For myk for en meisel (blått passer til fjærer). Den må herdes på nytt.</span></div>
         <p>e) Hvorfor skal stålet anløpes med en gang etter herding?</p><div class="svar"><span class="fasit" hidden>Herdet stål har store restspenninger og er sprøtt. Det kan sprekke av seg selv hvis det blir liggende.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 4 – Settherding <small>Time 2 · 6 min</small></h3>
-        <p>Diagrammet viser hardheten under overflaten på to tannhjul av 16MnCr5 etter settherding. Herdedybden er der kurven krysser 550 HV.</p>
+        <p>Hardheten under overflaten på to settherdede tannhjul (16MnCr5). Herdedybde = der kurven krysser 550 HV.</p>
         <div class="oppfig"><svg id="oppSt" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg"></svg></div>
         <table class="ot">
           <tr><th style="width:55%">Spørsmål</th><th>Svar</th></tr>
@@ -631,10 +827,12 @@ table.t th{background:var(--steel-soft)}
         <h3>Oppgave 6 – Boltklasser <small>Ekstra · 5 min</small></h3>
         <p>a) Regn ut R<sub>m</sub> og R<sub>e</sub> for en bolt i klasse 8.8 og en i klasse 12.9.</p>
         <div class="svar"><span class="fasit" hidden>8.8: R<sub>m</sub> = 800 MPa, R<sub>e</sub> = 640 MPa</span></div><div class="svar"><span class="fasit" hidden>12.9: R<sub>m</sub> = 1200 MPa, R<sub>e</sub> = 1080 MPa</span></div>
-        <p>b) En M12-bolt har <b>spenningsareal</b> 84,3 mm² (det effektive tverrsnittet i gjengene). Hvor stor kraft tåler en 10.9-bolt før den begynner å flyte? (F = R<sub>e</sub> · A, leksjon 3)</p>
+        <p>b) M12 har <b>spenningsareal</b> 84,3 mm² (tverrsnittet i gjengene). Hvor stor kraft tåler en 10.9-bolt før den flyter? (F = R<sub>e</sub> · A)</p>
         <div class="svar"><span class="fasit" hidden>10.9: R<sub>e</sub> = 900 MPa</span></div><div class="svar"><span class="fasit" hidden>F = 900 · 84,3 = 75 870 N ≈ <b>76 kN</b></span></div>
         <p>c) Hvorfor er boltene seigherdet og ikke bare herdet?</p>
         <div class="svar"><span class="fasit" hidden>Bare herdet stål er sprøtt. En bolt får støt og bøying og må kunne strekke seg litt uten å knekke.</span></div>
+        <p>d) Se et sprøtt brudd i <a data-sim="charpy">Charpy-simulatoren</a>. Hvorfor er sprøtt brudd farlig for en bolt?</p>
+        <div class="svar"><span class="fasit" hidden>Sprøtt brudd tar opp lite energi (lav KV) og kommer plutselig, uten forvarsel. En seig bolt strekker seg først.</span></div>
       </div>
 
       <div class="oppgave">
@@ -654,6 +852,9 @@ table.t th{background:var(--steel-soft)}
 "use strict";
 const $ = id => document.getElementById(id);
 const NS = "http://www.w3.org/2000/svg";
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
 const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
 const fmtT = (x, d=2) => x.toLocaleString("nb-NO", {maximumFractionDigits:d});
 const clamp = (x,a,b) => Math.max(a, Math.min(b, x));

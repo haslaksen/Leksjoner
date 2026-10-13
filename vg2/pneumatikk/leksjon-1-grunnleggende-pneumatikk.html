@@ -128,6 +128,16 @@ table.t th{background:var(--steel-soft)}
 .formelark{display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; font-size:.92rem; border:1px solid var(--muted); border-radius:8px; padding:.5rem .8rem; margin:.5rem 0 1rem}
 .ordbank{font-size:.9rem; border:1px dashed var(--muted); border-radius:8px; padding:.45rem .8rem; margin:.4rem 0}
 .scenario{border:1px dashed var(--muted); border-radius:8px; padding:.6rem .9rem; margin:.5rem 0; font-size:.95rem}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
 .toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
 .toast.show{opacity:1}
 
@@ -174,20 +184,66 @@ table.t th{background:var(--steel-soft)}
     <div>
       <div class="kicker">Vg2 industriteknologi · Pneumatikk</div>
       <h1>Leksjon 1<br>Grunnleggende pneumatikk</h1>
-      <p class="lead"><b>Pneumatikk</b> = å flytte og skyve ting med <b>trykkluft</b>. Lufta er gratis – men den må trykkes sammen, renses og styres.</p>
-      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <p class="lead">Hvordan kan luft skyve og løfte tunge ting?</p>
       <ol class="goals">
-        <li>forklare hva <b>trykk</b> er, og forskjellen på <b>overtrykk</b> og <b>absolutt trykk</b></li>
-        <li>følge lufta fra <b>kompressor</b> til <b>sylinder</b> og si hva hver del gjør</li>
-        <li>regne ut <b>kraften</b> fra en sylinder: <b>F = p · A</b></li>
-        <li>forklare <b>enkeltvirkende</b> og <b>dobbeltvirkende</b> sylinder</li>
-        <li>lese symbolet for en <b>3/2-</b> og en <b>5/2-ventil</b> og tallene på portene</li>
-        <li>lese et enkelt <b>koblingsskjema</b> og finne en feil</li>
-        <li>jobbe <b>trygt</b> med trykkluft</li>
+        <li><b>Trykk</b> – overtrykk og absolutt trykk</li>
+        <li>Fra <b>kompressor</b> til <b>sylinder</b></li>
+        <li>Kraft: <b>F = p · A</b></li>
+        <li><b>Enkelt-</b> og <b>dobbeltvirkende</b> sylinder</li>
+        <li><b>3/2-</b> og <b>5/2-ventil</b> og <b>koblingsskjema</b></li>
+        <li><b>Trygt</b> med trykkluft</li>
       </ol>
     </div>
     <div>
-      <div class="card">
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Kompressor sender trykkluft gjennom en ventil til en sylinder som skyver en kasse">
+          <line x1="10" y1="300" x2="510" y2="300" style="stroke:var(--steel);stroke-width:3"/>
+          <text x="260" y="48" text-anchor="middle" style="fill:var(--orange);font-size:34px;font-weight:800">F = p · A</text>
+          <!-- rør -->
+          <path id="heroPipe" d="M120 240 H190 V140 H240" style="fill:none;stroke:var(--air);stroke-width:10;stroke-linejoin:round"/>
+          <path d="M290 140 H302" style="fill:none;stroke:var(--air);stroke-width:10"/>
+          <g style="fill:var(--blue)">
+            <circle r="4.5"><animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#heroPipe"/></animateMotion></circle>
+            <circle r="4.5"><animateMotion dur="1.6s" begin="-.4s" repeatCount="indefinite"><mpath href="#heroPipe"/></animateMotion></circle>
+            <circle r="4.5"><animateMotion dur="1.6s" begin="-.8s" repeatCount="indefinite"><mpath href="#heroPipe"/></animateMotion></circle>
+            <circle r="4.5"><animateMotion dur="1.6s" begin="-1.2s" repeatCount="indefinite"><mpath href="#heroPipe"/></animateMotion></circle>
+          </g>
+          <!-- kompressor -->
+          <rect x="20" y="195" width="100" height="95" rx="10" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
+          <g><animateTransform attributeName="transform" type="rotate" from="0 70 242" to="360 70 242" dur=".8s" repeatCount="indefinite"/>
+            <circle cx="70" cy="242" r="30" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:3"/>
+            <path d="M70 242 L70 214 M70 242 L94 256 M70 242 L46 256" style="stroke:var(--orange);stroke-width:6;stroke-linecap:round"/>
+          </g>
+          <!-- manometer -->
+          <line x1="190" y1="118" x2="190" y2="140" style="stroke:var(--steel-dark);stroke-width:4"/>
+          <circle cx="190" cy="98" r="22" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:3"/>
+          <line x1="190" y1="98" x2="190" y2="82" style="stroke:var(--red);stroke-width:3;stroke-linecap:round"><animateTransform attributeName="transform" type="rotate" values="-110 190 98;30 190 98;20 190 98;30 190 98" keyTimes="0;.3;.6;1" dur="4s" repeatCount="indefinite"/></line>
+          <text x="222" y="92" style="fill:var(--muted);font-size:14px">6 bar</text>
+          <!-- ventil -->
+          <rect x="240" y="115" width="50" height="50" rx="4" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"/>
+          <path d="M252 152 L278 128" style="stroke:var(--blue);stroke-width:3"/>
+          <rect x="258" y="100" width="14" height="15" rx="3" style="fill:var(--green)"><animateTransform attributeName="transform" type="translate" values="0 -6;0 -6;0 0;0 0;0 -6" keyTimes="0;.14;.16;.7;.72" dur="4s" repeatCount="indefinite"/></rect>
+          <!-- sylinder -->
+          <rect x="302" y="110" width="130" height="60" rx="6" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
+          <rect x="305" y="113" height="54" width="4" style="fill:var(--air)"><animate attributeName="width" values="4;4;40;40;4" keyTimes="0;.15;.45;.7;1" dur="4s" repeatCount="indefinite"/></rect>
+          <g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;36 0;36 0;0 0" keyTimes="0;.15;.45;.7;1" dur="4s" repeatCount="indefinite"/>
+            <rect x="306" y="113" width="12" height="54" style="fill:var(--steel-dark)"/>
+            <rect x="318" y="133" width="128" height="14" style="fill:var(--steel)"/>
+          </g>
+          <!-- kasse -->
+          <line x1="440" y1="200" x2="515" y2="200" style="stroke:var(--steel);stroke-width:4"/>
+          <g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;36 0;36 0;80 0;80 0" keyTimes="0;.15;.45;.7;.85;1" dur="4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="1;1;1;1;0;0;1" keyTimes="0;.15;.45;.7;.85;.95;1" dur="4s" repeatCount="indefinite"/>
+            <rect x="446" y="150" width="36" height="48" rx="3" style="fill:var(--orange)"/>
+            <path d="M446 174 H482" style="stroke:#a63c04;stroke-width:2"/>
+          </g>
+          <g style="font-size:15px;text-anchor:middle;fill:var(--muted)">
+            <text x="70" y="322">kompressor</text><text x="265" y="190">ventil</text><text x="367" y="196">sylinder</text>
+          </g>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <div class="card" style="margin-top:.6rem">
         <h3>Kompetansemål (PIN02-03)</h3>
         <p style="margin-bottom:.4rem"><i>«montere, sette i drift og feilsøke automatiserte hydraulikk- og pneumatikkanlegg etter spesifikasjoner»</i> (teknologi)</p>
         <p style="margin-bottom:.4rem"><i>«arbeide på elektriske og automatiserte systemer ved reparasjons- og vedlikeholdsarbeid etter instrukser og gjeldende forskrifter»</i> (vedlikehold)</p>
@@ -210,7 +266,9 @@ table.t th{background:var(--steel-soft)}
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
-      <div class="tip" style="margin-bottom:0"><b>Du kjenner allerede:</b> trykkluft som restenergi og at lufta må slippes ut før du jobber (Vedlikehold 2). Slå opp i <a href="https://verkstedhandboka.vercel.app/#hydraulikk-pneumatikk" target="_blank" rel="noopener">Verkstedhåndboka, emne 8</a>.</div>
+      <div class="tip" style="margin-bottom:0"><b>Elevene kjenner allerede:</b> trykkluft som restenergi og at lufta må slippes ut før du jobber (Vedlikehold 2). Slå opp i <a href="https://verkstedhandboka.vercel.app/#hydraulikk-pneumatikk" target="_blank" rel="noopener">Verkstedhåndboka, emne 8</a>. <i>Pneumatikk = å flytte og skyve ting med trykkluft. Lufta er gratis, men må trykkes sammen, renses og styres.</i></div>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓. A+ gir større tekst på fremviser.</p>
     </div>
   </div>
 </section>
@@ -220,7 +278,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 1 · ca. 6 min</div>
     <h2>Luft er en fjær</h2>
-    <p class="lead">Skyv stempelet inn. Luftmolekylene får mindre plass, treffer veggene oftere – og <b>trykket stiger</b>.</p>
+    <p class="lead">Skyv stempelet inn – <b>trykket stiger</b>.</p>
     <div class="fig">
       <svg id="p1Svg" viewBox="0 0 1000 360" role="img" aria-label="Sylinder med luftmolekyler som trykkes sammen, og et manometer"></svg>
       <div class="controls">
@@ -236,11 +294,45 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="p1Msg"></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>Trykk = kraft per flate</h3>1 bar = 10 N på hver cm². Lufta rundt oss presser med ca. <b>1 bar</b> hele tiden.</div>
-      <div class="card"><h3>Manometeret</h3>viser <b>overtrykk</b> – hvor mye mer enn lufta rundt. <br>Absolutt = overtrykk + 1 bar.</div>
-      <div class="card"><h3>Luft eller olje?</h3>Luft kan trykkes sammen (myk, rask, ren). Olje nesten ikke (stiv, sterk) – det er hydraulikk.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Et lodd på 1 kg trykker på en flate på 1 kvadratcentimeter">
+          <rect x="60" y="84" width="80" height="14" rx="2" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <rect x="85" y="80" width="30" height="6" style="fill:var(--blue)"/>
+          <g><animateTransform attributeName="transform" type="translate" values="0 -10;0 0;0 0;0 -10" keyTimes="0;.3;.7;1" dur="2.4s" repeatCount="indefinite"/>
+            <path d="M88 76 L112 76 L118 40 L82 40 Z" style="fill:var(--steel-dark)"/>
+            <rect x="94" y="30" width="12" height="10" rx="3" style="fill:var(--steel-dark)"/>
+            <text x="100" y="64" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">1 kg</text>
+          </g>
+          <text x="152" y="86" font-size="11" style="fill:var(--blue)">1 cm²</text>
+          <text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">1 bar = 10 N ≈ 1 kg per cm²</text>
+        </svg>
+        <h3>Trykk = kraft per flate</h3><p class="short">Lufta rundt oss presser med ca. <b>1 bar</b>.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Manometer der viseren går fra 0 til 6 bar">
+          <circle cx="100" cy="55" r="44" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:4"/>
+          <path d="M65.4 75 L70.6 72 M62 42.6 L67.7 44.5 M83.7 18.4 L86.2 23.9 M116.3 18.4 L113.8 23.9 M138 42.6 L132.3 44.5 M134.6 75 L129.4 72" style="stroke:var(--ink);stroke-width:2.5"/>
+          <g font-size="11" text-anchor="middle" style="fill:var(--muted)"><text x="78" y="70">0</text><text x="74" y="42">2</text><text x="90" y="33">4</text><text x="110" y="33">6</text><text x="126" y="42">8</text><text x="121" y="70">10</text></g>
+          <line x1="100" y1="55" x2="100" y2="20" style="stroke:var(--red);stroke-width:3;stroke-linecap:round"><animateTransform attributeName="transform" type="rotate" values="-120 100 55;24 100 55;24 100 55;-120 100 55" keyTimes="0;.35;.75;1" dur="4s" repeatCount="indefinite"/></line>
+          <circle cx="100" cy="55" r="5" style="fill:var(--ink)"/>
+          <text x="100" y="88" text-anchor="middle" font-size="10" style="fill:var(--muted)">bar</text>
+          <text x="100" y="115" text-anchor="middle" font-size="11" style="fill:var(--muted)">absolutt = overtrykk + 1 bar</text>
+        </svg>
+        <h3>Manometeret</h3><p class="short">Viser <b>overtrykk</b>: 0 = lufta rundt oss.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Luft blir trykt sammen under et stempel, olje nesten ikke">
+          <rect x="30" y="26" width="50" height="72" style="fill:var(--air-soft);stroke:var(--steel-dark);stroke-width:3"/>
+          <rect x="120" y="26" width="50" height="72" style="fill:var(--yellow);opacity:.55;stroke:var(--steel-dark);stroke-width:3"/>
+          <rect x="31.5" y="26" width="47" height="0" style="fill:var(--panel)"><animate attributeName="height" values="0;34;34;0" keyTimes="0;.4;.7;1" dur="3s" repeatCount="indefinite"/></rect>
+          <g><animateTransform attributeName="transform" type="translate" values="0 0;0 34;0 34;0 0" keyTimes="0;.4;.7;1" dur="3s" repeatCount="indefinite"/>
+            <rect x="32" y="20" width="46" height="8" style="fill:var(--steel-dark)"/><rect x="51" y="4" width="8" height="16" style="fill:var(--steel)"/></g>
+          <rect x="121.5" y="26" width="47" height="0" style="fill:var(--panel)"><animate attributeName="height" values="0;1.5;1.5;0" keyTimes="0;.4;.7;1" dur="3s" repeatCount="indefinite"/></rect>
+          <g><animateTransform attributeName="transform" type="translate" values="0 0;0 1.5;0 1.5;0 0" keyTimes="0;.4;.7;1" dur="3s" repeatCount="indefinite"/>
+            <rect x="122" y="20" width="46" height="8" style="fill:var(--steel-dark)"/><rect x="141" y="4" width="8" height="16" style="fill:var(--steel)"/></g>
+          <g font-size="11" text-anchor="middle" style="fill:var(--muted)"><text x="55" y="114">luft: fjærer</text><text x="145" y="114">olje: stiv</text></g>
+        </svg>
+        <h3>Luft eller olje?</h3><p class="short">Luft kan trykkes sammen. Olje nesten ikke (hydraulikk).</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Boyles lov p₁·V₁ = p₂·V₂ gjelder med <i>absolutt</i> trykk og konstant temperatur. I virkeligheten blir lufta varm når den trykkes sammen (kompressoren). Poeng: 1/7 av volumet gir 7 bar absolutt = 6 bar på manometeret – vanlig nettrykk i verksteder. Trykk på «Olje»: et volum olje må få ca. 75 bar for å krympe 0,5 % (kompresjonsmodul ca. 1,5 GPa). Derfor er hydraulikk stiv og presis, mens pneumatikk er «fjærende» og vanskelig å stoppe midt i slaget. 1 bar = 100 000 Pa = 0,1 N/mm² = 10 N/cm².</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Trykk = kraft per flate: 1 bar = 10 N på hver cm². Manometeret viser overtrykk – hvor mye mer enn lufta rundt; absolutt trykk = overtrykk + 1 bar. Luft er myk, rask og ren; olje er stiv og sterk (hydraulikk).Boyles lov p₁·V₁ = p₂·V₂ gjelder med <i>absolutt</i> trykk og konstant temperatur. I virkeligheten blir lufta varm når den trykkes sammen (kompressoren). Poeng: 1/7 av volumet gir 7 bar absolutt = 6 bar på manometeret – vanlig nettrykk i verksteder. Trykk på «Olje»: et volum olje må få ca. 75 bar for å krympe 0,5 % (kompresjonsmodul ca. 1,5 GPa). Derfor er hydraulikk stiv og presis, mens pneumatikk er «fjærende» og vanskelig å stoppe midt i slaget. 1 bar = 100 000 Pa = 0,1 N/mm² = 10 N/cm².</details>
   </div>
 </section>
 
@@ -249,7 +341,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 2 · ca. 10 min</div>
     <h2>Luftforsyningen – fra uteluft til sylinder</h2>
-    <p class="lead">Følg lufta. Klikk på tallene. Se etter <b style="color:var(--water)">vanndråpene</b> – hvor kommer de fra, og hvor blir de borte?</p>
+    <p class="lead">Klikk på tallene. Hvor blir <b style="color:var(--water)">vannet</b> av?</p>
     <div class="fig">
       <svg id="p2Svg" viewBox="0 0 1100 470" role="img" aria-label="Luftforsyning: inntak, kompressor, etterkjøler, tank, tørker, rørnett, vedlikeholdsenhet, ventil og sylinder"></svg>
       <div class="readout">
@@ -261,11 +353,50 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="p2Msg">Klikk på et tall for å se hva delen gjør.</div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>💧 Lufta er våt</h3>Uteluft inneholder vanndamp. Når lufta trykkes sammen og avkjøles, blir dampen til <b>vann</b> (kondens).</div>
-      <div class="card"><h3>Vann ødelegger</h3>Rust i rør, slitte pakninger, ventiler som henger. Derfor: kjøle, drenere, tørke og filtrere.</div>
-      <div class="card"><h3>Vedlikeholdsenheten</h3><b>F</b>ilter · <b>R</b>egulator (med manometer) · <b>S</b>mører. Står foran hver maskin.</div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Varm luft kjøles i et rør, og vanndråper faller ned i bunnen">
+          <rect x="15" y="30" width="170" height="40" rx="6" style="fill:var(--air-soft);stroke:var(--steel-dark);stroke-width:2.5"/>
+          <g style="fill:var(--red)"><circle r="4"><animateMotion dur="3s" repeatCount="indefinite" path="M20 45 H180"/><animate attributeName="fill" values="#e8590c;#74c0fc;#74c0fc" keyTimes="0;.6;1" dur="3s" repeatCount="indefinite"/></circle>
+            <circle r="4"><animateMotion dur="3s" begin="-1s" repeatCount="indefinite" path="M20 45 H180"/><animate attributeName="fill" values="#e8590c;#74c0fc;#74c0fc" keyTimes="0;.6;1" dur="3s" begin="-1s" repeatCount="indefinite"/></circle>
+            <circle r="4"><animateMotion dur="3s" begin="-2s" repeatCount="indefinite" path="M20 45 H180"/><animate attributeName="fill" values="#e8590c;#74c0fc;#74c0fc" keyTimes="0;.6;1" dur="3s" begin="-2s" repeatCount="indefinite"/></circle></g>
+          <g style="fill:var(--water)">
+            <path d="M120 48 c4 6 4 10 0 10 c-4 0 -4 -4 0 -10z"><animateTransform attributeName="transform" type="translate" values="0 -6;0 12" dur="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="1.4s" repeatCount="indefinite"/></path>
+            <path d="M150 48 c4 6 4 10 0 10 c-4 0 -4 -4 0 -10z"><animateTransform attributeName="transform" type="translate" values="0 -6;0 12" dur="1.4s" begin=".7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="1.4s" begin=".7s" repeatCount="indefinite"/></path>
+            <rect x="100" y="64" width="80" height="5" rx="2"/>
+          </g>
+          <g font-size="11" style="fill:var(--muted)"><text x="20" y="22">varm</text><text x="180" y="22" text-anchor="end">kald</text></g>
+          <text x="100" y="98" text-anchor="middle" font-size="11" style="fill:var(--muted)">damp → vann (kondens)</text>
+        </svg>
+        <h3>💧 Lufta er våt</h3><p class="short">Kald trykkluft gir <b>vann</b>.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Rør med rust og vann i bunnen">
+          <circle cx="70" cy="55" r="38" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:6"/>
+          <path d="M37 72 A38 38 0 0 0 103 72 Z" style="fill:var(--water);opacity:.7"/>
+          <g style="fill:#a5521c"><circle cx="45" cy="34" r="5"><animate attributeName="r" values="3;6;3" dur="3s" repeatCount="indefinite"/></circle><circle cx="96" cy="44" r="4"><animate attributeName="r" values="4;7;4" dur="3s" begin="1s" repeatCount="indefinite"/></circle><circle cx="58" cy="88" r="4"/></g>
+          <rect x="125" y="30" width="55" height="50" rx="6" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:2.5"/>
+          <path d="M140 42 l10 10 M150 42 l-10 10" style="stroke:var(--red);stroke-width:3"/>
+          <rect x="157" y="40" width="16" height="30" rx="3" style="fill:var(--steel)"><animateTransform attributeName="transform" type="translate" values="0 0;0 3;0 0;0 2;0 0" dur=".6s" repeatCount="indefinite"/></rect>
+          <text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">rust · slitte pakninger · ventil henger</text>
+        </svg>
+        <h3>Vann ødelegger</h3><p class="short">Derfor: kjøle, drenere, tørke, filtrere.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Vedlikeholdsenhet med filter, regulator med manometer og smører">
+          <path id="frsLine" d="M4 70 H196" style="fill:none;stroke:var(--air);stroke-width:8"/>
+          <rect x="20" y="45" width="44" height="60" rx="5" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:2.5"/>
+          <rect x="78" y="45" width="44" height="60" rx="5" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:2.5"/>
+          <rect x="136" y="45" width="44" height="60" rx="5" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:2.5"/>
+          <path d="M28 92 h28 v8 h-28z" style="fill:var(--water)"/>
+          <path d="M144 92 h28 v8 h-28z" style="fill:var(--yellow)"/>
+          <line x1="100" y1="45" x2="100" y2="34" style="stroke:var(--steel-dark);stroke-width:3"/>
+          <circle cx="100" cy="22" r="13" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:2.5"/>
+          <line x1="100" y1="22" x2="100" y2="12" style="stroke:var(--red);stroke-width:2"><animateTransform attributeName="transform" type="rotate" values="-100 100 22;30 100 22;30 100 22" keyTimes="0;.4;1" dur="3s" repeatCount="indefinite"/></line>
+          <g style="fill:var(--blue)"><circle r="3.5"><animateMotion dur="2s" repeatCount="indefinite"><mpath href="#frsLine"/></animateMotion></circle><circle r="3.5"><animateMotion dur="2s" begin="-.7s" repeatCount="indefinite"><mpath href="#frsLine"/></animateMotion></circle><circle r="3.5"><animateMotion dur="2s" begin="-1.4s" repeatCount="indefinite"><mpath href="#frsLine"/></animateMotion></circle></g>
+          <g font-size="20" font-weight="800" text-anchor="middle" style="fill:var(--ink)"><text x="42" y="66">F</text><text x="100" y="66">R</text><text x="158" y="66">S</text></g>
+          <text x="100" y="118" text-anchor="middle" font-size="11" style="fill:var(--muted)">filter · regulator · smører</text>
+        </svg>
+        <h3>Vedlikeholdsenheten</h3><p class="short">Står foran hver maskin.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Kompressoren gjør lufta varm (ofte over 100 °C ved utløpet). Etterkjøleren kjøler den, og mye vann felles ut. Tanken jevner ut trykket og gir kompressoren pauser (trykkbryter: starter ved lavt trykk, stopper ved høyt). Sikkerhetsventilen åpner hvis trykkbryteren svikter. Tanken må dreneres – automatisk eller manuelt – og kontrolleres etter forskrift om trykkpåkjent utstyr. Tørkeren (kjøletørker) senker duggpunktet. Rørnettet legges med fall (ca. 1–2 %) mot et dreneringspunkt, og uttak tas fra <i>toppen</i> av røret (svanehals) så vannet ikke renner med. Smøreren brukes mindre i dag: mange komponenter er smurt fra fabrikk og skal ha oljefri luft – har du først begynt å smøre, må du fortsette. Lekkasjer koster mye strøm – det kommer i leksjon 6.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Uteluft inneholder vanndamp. Når lufta trykkes sammen og avkjøles, blir dampen til vann (kondens). Vann gir rust i rør, slitte pakninger og ventiler som henger – derfor kjøle, drenere, tørke og filtrere. Vedlikeholdsenheten: Filter, Regulator (med manometer), Smører.Kompressoren gjør lufta varm (ofte over 100 °C ved utløpet). Etterkjøleren kjøler den, og mye vann felles ut. Tanken jevner ut trykket og gir kompressoren pauser (trykkbryter: starter ved lavt trykk, stopper ved høyt). Sikkerhetsventilen åpner hvis trykkbryteren svikter. Tanken må dreneres – automatisk eller manuelt – og kontrolleres etter forskrift om trykkpåkjent utstyr. Tørkeren (kjøletørker) senker duggpunktet. Rørnettet legges med fall (ca. 1–2 %) mot et dreneringspunkt, og uttak tas fra <i>toppen</i> av røret (svanehals) så vannet ikke renner med. Smøreren brukes mindre i dag: mange komponenter er smurt fra fabrikk og skal ha oljefri luft – har du først begynt å smøre, må du fortsette. Lekkasjer koster mye strøm – det kommer i leksjon 6.</details>
   </div>
 </section>
 
@@ -274,7 +405,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 3 · ca. 10 min</div>
     <h2>Hvor sterk er sylinderen? F = p · A</h2>
-    <p class="lead">Trykket virker på hele stempelflaten. <b>Større flate</b> eller <b>høyere trykk</b> = mer kraft.</p>
+    <p class="lead"><b>Større flate</b> eller <b>høyere trykk</b> gir mer kraft.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <svg id="p3Svg" viewBox="0 0 1000 420" role="img" aria-label="Sylinder i snitt med trykkpiler på stempelet og kraftpil på stempelstanga"></svg>
@@ -299,10 +430,10 @@ table.t th{background:var(--steel-soft)}
           <p style="margin:.2rem 0">Areal av sirkel: <b>A = π · d² / 4</b></p>
           <div class="calc" id="p3Calc"></div>
         </div>
-        <div class="tip o"><b>Inn er svakere enn ut!</b> På vei inn tar stanga opp en del av flata. Trykk «Inn» og se ringen.</div>
+        <div class="tip o"><b>Inn er svakere enn ut!</b> Trykk «Inn» og se ringen.</div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Dette er teoretisk kraft. Friksjon i pakninger tar ca. 10 % (mer i små sylindere), og i praksis velger man sylinder med god margin (ofte bare 50–70 % utnyttelse for dynamisk bevegelse). Stangdiametre etter vanlige standardserier: Ø32–Ø50 har stang 12–20 mm. «Kan løfte ca.» = F / 9,81, uten friksjon og margin. Spør: Hvorfor er Ø100 nesten fire ganger så sterk som Ø50? (Arealet går med diameteren i andre.)</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Trykket virker på hele stempelflaten. På vei inn tar stanga opp en del av flata, så bare ringarealet virker. Dette er teoretisk kraft. Friksjon i pakninger tar ca. 10 % (mer i små sylindere), og i praksis velger man sylinder med god margin (ofte bare 50–70 % utnyttelse for dynamisk bevegelse). Stangdiametre etter vanlige standardserier: Ø32–Ø50 har stang 12–20 mm. «Kan løfte ca.» = F / 9,81, uten friksjon og margin. Spør: Hvorfor er Ø100 nesten fire ganger så sterk som Ø50? (Arealet går med diameteren i andre.)</details>
   </div>
 </section>
 
@@ -311,7 +442,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 4 · ca. 5 min</div>
     <h2>To typer sylindere</h2>
-    <p class="lead">Øverst: slik ser den ut inni. Nederst: <b>symbolet</b> vi bruker i skjema. <span style="color:var(--blue)">Blått</span> = trykkluft, <span style="color:var(--orange)">oransje</span> = luft som slippes ut.</p>
+    <p class="lead">Øverst: inni. Nederst: <b>symbolet</b>. <span style="color:var(--blue)">Blått</span> = trykkluft, <span style="color:var(--orange)">oransje</span> = ut.</p>
     <div class="fig">
       <svg id="p4Svg" viewBox="0 0 1000 400" role="img" aria-label="Enkeltvirkende og dobbeltvirkende sylinder i snitt og som symbol"></svg>
       <div class="controls">
@@ -321,10 +452,10 @@ table.t th{background:var(--steel-soft)}
       </div>
     </div>
     <div class="grid2" style="margin-top:1rem">
-      <div class="card"><h3>Enkeltvirkende</h3>Én luftport. Lufta skyver ut – <b>fjæra</b> skyver tilbake.<br><b style="color:var(--green)">+</b> Halvparten av lufta, enkel. <b style="color:var(--red)">−</b> Kraft bare én vei, fjæra «spiser» litt kraft, kort slag.<br><i>Eks.: klemme, stemple, låse.</i></div>
-      <div class="card"><h3>Dobbeltvirkende</h3>To luftporter. Lufta skyver <b>både ut og inn</b>.<br><b style="color:var(--green)">+</b> Kraft begge veier, langt slag, vanligst i industrien. <b style="color:var(--red)">−</b> Bruker mer luft.<br><i>Eks.: skyve deler, åpne porter, løfte.</i></div>
+      <div class="card"><h3>Enkeltvirkende</h3><p class="short">Luft ut – <b>fjær</b> inn. <i>Klemme, stemple.</i></p></div>
+      <div class="card"><h3>Dobbeltvirkende</h3><p class="short">Luft <b>både ut og inn</b>. <i>Skyve, løfte.</i></p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Plussiden (stempelsiden) og minussiden (stangsiden) er vanlige ord – kobles til Del 3. Enkeltvirkende sylinder har et lufthull med filter på fjærsiden («pustehull»). Mange sylindere har endedemping og magnet i stempelet for sensorer – kommer i senere leksjoner.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Enkeltvirkende: én luftport, fjæra skyver tilbake. + halvparten av lufta, enkel. − kraft bare én vei, fjæra «spiser» litt kraft, kort slag. Eks.: klemme, stemple, låse. Dobbeltvirkende: to luftporter, kraft begge veier, langt slag, vanligst i industrien; − bruker mer luft. Eks.: skyve deler, åpne porter, løfte. Plussiden (stempelsiden) og minussiden (stangsiden) er vanlige ord – kobles til Del 3. Enkeltvirkende sylinder har et lufthull med filter på fjærsiden («pustehull»). Mange sylindere har endedemping og magnet i stempelet for sensorer – kommer i senere leksjoner.</details>
   </div>
 </section>
 
@@ -333,7 +464,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 5 · ca. 7 min</div>
     <h2>Ventiler – les symbolet</h2>
-    <p class="lead"><b>5/2-ventil</b> = <b>5</b> porter, <b>2</b> stillinger. Hver <b>rute</b> er én stilling. Pilene viser hvor lufta går. <b>Hold inne knappen</b> og se både sleiden og symbolet bytte.</p>
+    <p class="lead"><b>5/2</b> = 5 porter, 2 stillinger. <b>Hold inne knappen.</b></p>
     <div class="grid2 wide-left">
       <div class="fig">
         <svg id="p5Svg" viewBox="0 0 1000 480" role="img" aria-label="Sleideventil i snitt og ventilsymbol"></svg>
@@ -355,18 +486,42 @@ table.t th{background:var(--steel-soft)}
           </table>
         </div>
         <div class="card" style="margin-top:.8rem">
-          <h3>Slik leser du det</h3>
-          <ol style="margin:0; padding-left:1.2rem">
-            <li>Tell <b>ruter</b> = antall stillinger.</li>
-            <li>Tell portene på én rute = antall porter.</li>
-            <li>Portene tegnes på ruta som er i bruk <b>nå</b> (hvilestilling).</li>
-            <li>Det som står ved siden av ruta, <b>skyver</b> ruta inn: knapp, fjær …</li>
-            <li><b>⊥</b> = stengt port.</li>
-          </ol>
+          <h3>Slik leser du symbolet</h3>
+          <svg class="scene" viewBox="0 0 360 210" role="img" aria-label="3/2-ventil: to ruter er to stillinger, tre porter, fjær og knapp. Rutene skyves som en skuff når knappen trykkes.">
+            <!-- faste porter -->
+            <g style="stroke:var(--ink);stroke-width:3">
+              <line x1="150" y1="44" x2="150" y2="70"/><line x1="135" y1="130" x2="135" y2="156"/><line x1="165" y1="130" x2="165" y2="156"/>
+            </g>
+            <g font-size="16" font-weight="800" text-anchor="middle" style="fill:var(--ink)"><text x="150" y="38">2</text><text x="135" y="174" style="fill:var(--blue)">1</text><text x="165" y="174" style="fill:var(--orange)">3</text></g>
+            <g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;-60 0;-60 0;0 0" keyTimes="0;.35;.45;.8;.9" dur="5s" repeatCount="indefinite"/>
+              <rect x="120" y="70" width="60" height="60" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"/>
+              <rect x="180" y="70" width="60" height="60" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"/>
+              <!-- hvile: 2 til 3, 1 stengt -->
+              <line x1="150" y1="72" x2="165" y2="120" style="stroke:var(--orange);stroke-width:3"/><path d="M165 128 L159 116 L170 114 Z" style="fill:var(--orange)"/>
+              <path d="M135 128 V108 M127 108 H143" style="stroke:var(--ink);stroke-width:3;fill:none"/>
+              <!-- påvirket: 1 til 2, 3 stengt -->
+              <line x1="195" y1="128" x2="208" y2="82" style="stroke:var(--blue);stroke-width:3"/><path d="M210 72 L202 82 L214 84 Z" style="fill:var(--blue)"/>
+              <path d="M225 128 V108 M217 108 H233" style="stroke:var(--ink);stroke-width:3;fill:none"/>
+              <!-- fjær og knapp -->
+              <path d="M120 100 l-8 -12 l-8 24 l-8 -24 l-8 24 l-8 -12" style="fill:none;stroke:var(--ink);stroke-width:2.5"/>
+              <path d="M240 100 H256 M256 86 V114 M256 86 Q266 100 256 114" style="fill:none;stroke:var(--green);stroke-width:3"/>
+            </g>
+            <!-- forklaringer -->
+            <g font-size="13" style="fill:var(--muted)">
+              <path d="M120 62 V56 H140 M160 56 H240 V62" style="fill:none;stroke:var(--purple);stroke-width:2"/>
+              <text x="248" y="48" style="fill:var(--purple);font-weight:700">2 ruter =</text><text x="248" y="64" style="fill:var(--purple);font-weight:700">2 stillinger</text>
+              <text x="238" y="196" text-anchor="middle" style="fill:var(--ink);font-weight:700">3 porter: 1 inn · 2 ut · 3 luft</text>
+              <text x="10" y="196">fjær = hvile</text>
+              <text x="276" y="104" style="fill:var(--green);font-weight:700">knapp</text>
+              <text x="10" y="40">⊥ = stengt</text>
+            </g>
+          </svg>
+          <p class="short">Rutene skyves som en <b>skuff</b> inn under portene.</p>
         </div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Symbolene følger ISO 1219-1 og portnummer ISO 5599-3. Tenk på symbolet som en skuff: ruta skyves sideveis inn under portene. Det er derfor det animerte symbolet beveger seg. 3/2 «normalt stengt» (NC): uten signal er 1 stengt og 2 avluftet mot 3. Her er knappen tegnet til høyre og fjæra til venstre – det kan like gjerne være motsatt; det viktige er at påvirkningen står ved den ruta den kobler inn. Ventiltyper med to signaler (impulsventil/minne) kommer i leksjon 2.</details>
+    <a class="simlink no-print" data-sim="pneumatikk-og-hydraulikk"><span class="ico">🧪</span><span><b>Prøv selv: Pneumatikk- og hydraulikksimulatoren</b><small>Finn 3/2- og 5/2-ventilen og se symbolene.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Hver rute er én stilling; pilene viser hvor lufta går. Slik leser du det: (1) tell ruter = antall stillinger, (2) tell portene på én rute = antall porter, (3) portene tegnes på ruta som er i bruk nå (hvilestilling), (4) det som står ved siden av ruta, skyver ruta inn: knapp, fjær …, (5) ⊥ = stengt port. Symbolene følger ISO 1219-1 og portnummer ISO 5599-3. Tenk på symbolet som en skuff: ruta skyves sideveis inn under portene. Det er derfor det animerte symbolet beveger seg. 3/2 «normalt stengt» (NC): uten signal er 1 stengt og 2 avluftet mot 3. Her er knappen tegnet til høyre og fjæra til venstre – det kan like gjerne være motsatt; det viktige er at påvirkningen står ved den ruta den kobler inn. Ventiltyper med to signaler (impulsventil/minne) kommer i leksjon 2.</details>
   </div>
 </section>
 
@@ -375,7 +530,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 6 · ca. 9 min</div>
     <h2>Første koblingsskjema</h2>
-    <p class="lead">Hele kretsen: <b>kilde → vedlikeholdsenhet → ventil → sylinder</b>. Hold inne knappen. Følg den <span style="color:var(--blue)">blå</span> lufta inn og den <span style="color:var(--orange)">oransje</span> ut.</p>
+    <p class="lead"><b>Kilde → vedlikeholdsenhet → ventil → sylinder.</b> Hold inne knappen.</p>
     <div class="fig">
       <div class="controls" style="margin:0 0 .5rem"><span class="chips" id="p6Mode"></span></div>
       <svg id="p6Svg" viewBox="0 0 1000 560" role="img" aria-label="Pneumatisk koblingsskjema med trykkluftkilde, vedlikeholdsenhet, ventil og sylinder"></svg>
@@ -392,7 +547,8 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="status info" id="p6Msg"></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Krets 2 presser en bøssing inn i et hull. Ø32-sylinder: A = 804 mm². Bøssinga trenger 400 N. Ved 6 bar gir sylinderen 482 N – nok. Skru regulatoren ned til 4 bar (322 N): sylinderen stopper ved hullet – kobling til Del 3. Feilspillet: feilen ligger i <i>anlegget</i>, ikke i tegningen. La elevene trykke, se på manometrene og gjette. De tre feilene: (1) regulatoren står på 2 bar, (2) slangene til port 2 og 4 er byttet, (3) lyddemperen på port 3 er tett – lufta på minussiden kan ikke komme ut, trykket der stiger (≈ 7 bar fordi arealet er mindre), og sylinderen står nesten stille. Dette er systematisk feilsøking: symptom → måling → årsak.</details>
+    <a class="simlink no-print" data-sim="pneumatikk-og-hydraulikk"><span class="ico">🧪</span><span><b>Prøv selv: Pneumatikk- og hydraulikksimulatoren</b><small>Koble kilde, 5/2-ventil og sylinder – og test.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Følg den blå lufta inn og den oransje ut. Krets 2 presser en bøssing inn i et hull. Ø32-sylinder: A = 804 mm². Bøssinga trenger 400 N. Ved 6 bar gir sylinderen 482 N – nok. Skru regulatoren ned til 4 bar (322 N): sylinderen stopper ved hullet – kobling til Del 3. Feilspillet: feilen ligger i <i>anlegget</i>, ikke i tegningen. La elevene trykke, se på manometrene og gjette. De tre feilene: (1) regulatoren står på 2 bar, (2) slangene til port 2 og 4 er byttet, (3) lyddemperen på port 3 er tett – lufta på minussiden kan ikke komme ut, trykket der stiger (≈ 7 bar fordi arealet er mindre), og sylinderen står nesten stille. Dette er systematisk feilsøking: symptom → måling → årsak.</details>
   </div>
 </section>
 
@@ -401,7 +557,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 7 · ca. 3 min</div>
     <h2>Trygt med trykkluft – riktig eller galt?</h2>
-    <p class="lead">Klikk på kortene. Trykkluft ser ufarlig ut – det er det ikke.</p>
+    <p class="lead">Klikk på kortene. Trykkluft er farligere enn du tror.</p>
     <div class="flipgrid" id="p7Grid"></div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Trykkluft kan presses inn gjennom huden eller små sår og gi alvorlige skader (luftemboli). Spon og støv blåses i øynene. Blåsing gir ofte over 85 dB. En slange som løsner under trykk, kan piske og treffe hode og øyne – bruk sikkerhetskoblinger og avlufte før du løsner. Ved vedlikehold: steng, avluft, lås og merk (LOTO, Vedlikehold 2). Bruk kost eller støvsuger til spon der det går.</details>
   </div>
@@ -429,7 +585,7 @@ table.t th{background:var(--steel-soft)}
         </div>
         <div class="card" style="margin-top:1rem">
           <h3>Neste leksjon</h3>
-          <p style="margin:0"><b>Pneumatikk 2 – Styring og fart:</b> strupe-tilbakeslagsventil, indirekte styring, OG/ELLER-ventiler og automatisk tur-retur med rulleventil.</p>
+          <p style="margin:0"><b>Pneumatikk 2 – Styring og fart:</b> fart, indirekte styring, OG/ELLER og tur-retur.</p>
         </div>
       </div>
     </div>
@@ -475,15 +631,31 @@ table.t th{background:var(--steel-soft)}
       <div class="oppgave">
         <h3>Oppgave 2 – Trykk og kraft <small>Time 1 · 10 min</small></h3>
         <p>a) Manometeret viser <b>6 bar</b>. Hva er det absolutte trykket? Hvor mange N/mm² er 6 bar?</p><div class="svar"><span class="fasit" hidden><b>7 bar</b> absolutt. 6 · 0,1 = <b>0,6 N/mm²</b>.</span></div>
-        <p>b) Regn ut areal og kraft <b>ut</b> (plussiden). Vis utregning.</p>
+        <p>b) Regn ut areal og kraft <b>ut</b>. Vis utregning.</p>
         <table class="ot c">
           <tr><th>Sylinder</th><th>Trykk</th><th style="width:28%">Areal A (mm²)</th><th style="width:28%">Kraft F (N)</th></tr>
           <tr><td>Ø25</td><td>6 bar</td><td class="tom"><span class="fasit" hidden>π·25²/4 = 491 mm²</span></td><td><span class="fasit" hidden>6·0,1·491 = <b>295 N</b></span></td></tr>
           <tr><td>Ø50</td><td>6 bar</td><td class="tom"><span class="fasit" hidden>π·50²/4 = 1963 mm²</span></td><td><span class="fasit" hidden>6·0,1·1963 = <b>1178 N</b></span></td></tr>
           <tr><td>Ø50</td><td>3 bar</td><td class="tom"><span class="fasit" hidden>1963 mm²</span></td><td><span class="fasit" hidden><b>589 N</b> (halvt trykk = halv kraft)</span></td></tr>
         </table>
-        <p>c) Ø50-sylinderen har stang <b>Ø20</b>. Regn ut kraften <b>inn</b> ved 6 bar. Hvorfor er den mindre?</p><div class="svar"><span class="fasit" hidden>A<sub>stang</sub> = 314 mm², ringareal = 1963 − 314 = 1649 mm², F = 6·0,1·1649 = <b>989 N</b>.</span></div><div class="svar"><span class="fasit" hidden>Stanga tar opp en del av flata, så lufta har mindre å trykke på.</span></div>
-        <p>d) Du trenger <b>1000 N</b> ut ved 6 bar. Hvilken er den minste sylinderen som holder: Ø32, Ø40, Ø50 eller Ø63? Vis regning.</p><div class="svar"><span class="fasit" hidden>Ø40: A = 1257 mm² → 754 N (for lite). Ø50: 1178 N → <b>Ø50</b>.</span></div><div class="svar"><span class="fasit" hidden>I praksis velger man gjerne litt margin for friksjon.</span></div>
+        <div class="ofig" style="max-width:560px"><svg viewBox="0 0 600 180" role="img" aria-label="Sylinder i snitt med plusside og minusside">
+          <rect width="600" height="180" fill="#fff"/>
+          <rect x="60" y="40" width="300" height="100" fill="none" stroke="#000" stroke-width="3"/>
+          <rect x="180" y="43" width="18" height="94" fill="#555"/>
+          <rect x="198" y="76" width="250" height="28" fill="#bbb" stroke="#000" stroke-width="2"/>
+          <path d="M70 90 h90 M150 82 l12 8 l-12 8" fill="none" stroke="#000" stroke-width="2.5"/>
+          <path d="M350 60 h-130 M232 52 l-12 8 l12 8 M350 120 h-130 M232 112 l-12 8 l12 8" fill="none" stroke="#000" stroke-width="2.5"/>
+          <path d="M48 40 v100 M42 40 h12 M42 140 h12" stroke="#000" stroke-width="2"/>
+          <text x="40" y="96" font-size="16" text-anchor="end" font-weight="700">Ø50</text>
+          <path d="M470 76 v28 M464 76 h12 M464 104 h12" stroke="#000" stroke-width="2"/>
+          <text x="482" y="96" font-size="16" font-weight="700">Ø20 stang</text>
+          <text x="120" y="30" font-size="15" text-anchor="middle" font-weight="700">plussiden (ut)</text>
+          <text x="280" y="30" font-size="15" text-anchor="middle" font-weight="700">minussiden (inn)</text>
+          <text x="120" y="165" font-size="13" text-anchor="middle">hele flata</text>
+          <text x="280" y="165" font-size="13" text-anchor="middle">ring = flate − stang</text>
+        </svg></div>
+        <p>c) Se figuren. Regn ut kraften <b>inn</b> ved 6 bar. Hvorfor er den mindre?</p><div class="svar"><span class="fasit" hidden>A<sub>stang</sub> = 314 mm², ringareal = 1963 − 314 = 1649 mm², F = 6·0,1·1649 = <b>989 N</b>.</span></div><div class="svar"><span class="fasit" hidden>Stanga tar opp en del av flata, så lufta har mindre å trykke på.</span></div>
+        <p>d) Du trenger <b>1000 N</b> ut ved 6 bar. Velg minste sylinder: Ø32, Ø40, Ø50 eller Ø63? Vis regning.</p><div class="svar"><span class="fasit" hidden>Ø40: A = 1257 mm² → 754 N (for lite). Ø50: 1178 N → <b>Ø50</b>.</span></div><div class="svar"><span class="fasit" hidden>I praksis velger man gjerne litt margin for friksjon.</span></div>
       </div>
 
       <div class="oppgave">
@@ -523,6 +695,7 @@ table.t th{background:var(--steel-soft)}
           <tr><td>Knappen trykkes. Sylinderen går ut, men stopper før bøssinga er presset inn. Manometeret på plussiden viser 2 bar.</td><td class="tom"><span class="fasit" hidden>For lavt trykk – regulatoren står på 2 bar (kraft 161 N &lt; 400 N). Still til 6 bar.</span></td></tr>
           <tr><td>Knappen trykkes. Sylinderen rører seg nesten ikke. Plussiden viser 6 bar og minussiden 7 bar.</td><td class="tom"><span class="fasit" hidden>Lufta på minussiden kommer ikke ut – tett lyddemper/avlufting på port 3.</span></td></tr>
         </table>
+        <p>d) <i>Ekstra:</i> Bygg kretsen i <a data-sim="pneumatikk-og-hydraulikk">Pneumatikk- og hydraulikksimulatoren</a>. Test den. Bytt så slangene på port 2 og 4. Hva skjer?</p><div class="svar"><span class="fasit" hidden>Sylinderen går ut med en gang lufta slås på, og går inn når knappen trykkes – samme symptom som første rad i c).</span></div>
       </div>
 
       <div class="oppgave">
@@ -552,12 +725,16 @@ table.t th{background:var(--steel-soft)}
 <div class="toast" id="toast"></div>
 
 <script>
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
 (function(){
 "use strict";
 const $ = id => document.getElementById(id);
 const NS = "http://www.w3.org/2000/svg";
 const nf = (x, d=0) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
 const RM = (()=>{ try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch(e){ return false; } })();
+if (RM) document.querySelectorAll(".hero-fig svg, svg.scene").forEach(sv => { try { sv.pauseAnimations(); } catch(e){} });
 function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
 function rng(seed){ let a = seed>>>0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 const clamp = (v,a,b) => Math.max(a, Math.min(b, v));

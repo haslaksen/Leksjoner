@@ -220,6 +220,12 @@ table.t th{background:var(--steel-soft)}
 .ad-where svg{display:block; width:100%; max-width:90px; margin:0 auto .2rem; height:auto}
 .dio-tri{stroke:var(--ink); stroke-width:2.5; transition:fill .15s}
 .dio-on .dio-tri{fill:var(--orange)} .dio-off .dio-tri{fill:var(--panel)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+@media screen and (max-width:700px){ table.ot{display:block; overflow-x:auto} }
 </style>
 </head>
 <body>
@@ -826,6 +832,7 @@ table.t th{background:var(--steel-soft)}
         <div class="tip" style="margin-bottom:0"><b>Prefikser:</b> 1 mA = 0,001 A (milli = tusendel) · 1 kΩ = 1 000 Ω (kilo = tusen)</div>
       </div>
     </div>
+    <a class="simlink no-print" data-sim="multimeter"><span class="ico">🧪</span><span><b>Prøv selv: Multimeter-simulatoren</b><small>Mål U og I, og sjekk Ohms lov.</small></span><span class="pil">→</span></a>
   </div>
 </section>
 
@@ -1675,6 +1682,11 @@ function tick(dt){
   });
 }
 })();
+</script>
+<script>
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
 </script>
 </body>
 </html>

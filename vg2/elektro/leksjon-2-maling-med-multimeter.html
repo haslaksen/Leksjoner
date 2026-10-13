@@ -202,6 +202,12 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
 .hp-focus > .on{opacity:1; animation:hpDash 1.2s linear infinite}
 @keyframes hpDash{to{stroke-dashoffset:-46}}
 .hp-txt{font-size:1.1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+@media screen and (max-width:700px){ table.ot{display:block; overflow-x:auto} }
 </style>
 </head>
 <body>
@@ -330,6 +336,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         </div>
       </div>
     </div>
+    <a class="simlink no-print" data-sim="multimeter"><span class="ico">🧪</span><span><b>Prøv selv: Multimeter-simulatoren</b><small>Velg funksjon, område og kontakt, og mål selv.</small></span><span class="pil">→</span></a>
     <details class="laerer no-print"><summary>Lærernotat</summary>Gå gjennom i rekkefølgen Spenning → Strøm → Motstand → Kontinuitet → Strømtang, og vis «vanlig feil» for hver. Strøm-figuren viser strømmen gjennom måleren og «shunten» – en liten motstand inne i måleren som måleren måler spenningen over (Ohms lov fra L1). Derfor har amperemeteret nesten null motstand, og derfor kortslutter det kretsen hvis det kobles parallelt. Voltmeteret har svært stor motstand (ca. 10 MΩ) og «stjeler» nesten ingen strøm.</details>
   </div>
 </section>
@@ -655,6 +662,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <tr><td>5. Strømmen til en 400 V-motor</td><td class="tom"><span class="fasit" hidden>tang A~</span></td><td><span class="fasit" hidden>(ingen)</span></td><td><span class="fasit" hidden>tang rundt én fase</span></td></tr>
         </table>
         <p>c) Du måler over en sikring på Ω, og displayet viser <b>OL</b>. Hva betyr det?</p><div class="svar"><span class="fasit" hidden>Uendelig stor motstand = <b>brudd</b>. Sikringen er gått.</span></div>
+        <p class="no-print">Øv mer: mål spenning, strøm og motstand i <a data-sim="multimeter">Multimeter-simulatoren</a>.</p>
       </div>
 
       <div class="oppgave">
@@ -1538,6 +1546,11 @@ function tick(dt){
   cur.setAttribute("x1", xOf(t720)); cur.setAttribute("x2", xOf(t720));
 }
 })();
+</script>
+<script>
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
 </script>
 </body>
 </html>
