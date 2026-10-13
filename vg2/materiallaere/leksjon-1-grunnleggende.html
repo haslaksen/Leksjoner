@@ -632,9 +632,9 @@ table.t th{background:var(--steel-soft)}
     <h2>Densitet: hvor tungt er materialet?</h2>
     <div class="grid2">
       <div>
-        <p class="short" style="margin-bottom:.8rem"><b>Densitet ρ</b> («rå») = masse per volum, i <b>kg/dm³</b>.</p>
+        <p class="short" style="margin-bottom:.8rem"><b>Densitet ρ</b> («rå») = masse per volum, i <b>kg/m³</b>.</p>
         <div class="fig bars" id="densBars">
-          <div style="font-weight:650; margin-bottom:.4rem">Masse av én terning på 1 dm³ (1 liter):</div>
+          <div style="font-weight:650; margin-bottom:.4rem">Densitet ρ i kg/m³ (= masse av en terning på 1 × 1 × 1 m):</div>
         </div>
       </div>
       <div>
@@ -652,18 +652,18 @@ table.t th{background:var(--steel-soft)}
           <div class="steps" id="cSteps"></div>
         </div>
         <div class="fig" style="margin-top:1rem">
-          <svg viewBox="0 0 520 90" role="img" aria-label="Fra volum i kubikkmillimeter til masse i kilo">
+          <svg viewBox="0 0 520 90" role="img" aria-label="Fra mål i millimeter til volum i kubikkmeter til masse i kilo">
             <g style="font-size:16px;font-weight:700;text-anchor:middle">
-              <rect x="4" y="22" width="120" height="46" rx="10" style="fill:var(--blue-soft);stroke:var(--blue);stroke-width:2"/><text x="64" y="51" style="fill:var(--ink)">V i mm³</text>
-              <rect x="200" y="22" width="120" height="46" rx="10" style="fill:var(--blue-soft);stroke:var(--blue);stroke-width:2"/><text x="260" y="51" style="fill:var(--ink)">V i dm³</text>
+              <rect x="4" y="22" width="120" height="46" rx="10" style="fill:var(--blue-soft);stroke:var(--blue);stroke-width:2"/><text x="64" y="51" style="fill:var(--ink)">mål i mm</text>
+              <rect x="200" y="22" width="120" height="46" rx="10" style="fill:var(--blue-soft);stroke:var(--blue);stroke-width:2"/><text x="260" y="51" style="fill:var(--ink)">V i m³</text>
               <rect x="396" y="22" width="120" height="46" rx="10" style="fill:var(--orange-soft);stroke:var(--orange);stroke-width:2"/><text x="456" y="51" style="fill:var(--ink)">m i kg</text>
             </g>
             <g style="stroke:var(--muted);stroke-width:2.5"><line x1="128" y1="45" x2="190" y2="45"/><line x1="324" y1="45" x2="386" y2="45"/></g>
             <g style="fill:var(--muted)"><path d="M196 45 l-10 -6 v12z"/><path d="M392 45 l-10 -6 v12z"/></g>
-            <g style="font-size:14px;font-weight:700;text-anchor:middle;fill:var(--orange)"><text x="162" y="16">÷ 1 000 000</text><text x="358" y="16">· ρ</text></g>
+            <g style="font-size:14px;font-weight:700;text-anchor:middle;fill:var(--orange)"><text x="162" y="16">÷ 1000, gang</text><text x="358" y="16">· ρ</text></g>
             <circle r="6" style="fill:var(--orange)"><animateMotion dur="3s" repeatCount="indefinite" path="M64 80 H456"/></circle>
           </svg>
-          <p class="caption" style="margin:0">1 dm³ = 100 × 100 × 100 mm = 1 000 000 mm³</p>
+          <p class="caption" style="margin:0">Gjør om hvert mål til meter først (1000 mm = 1 m). Gang målene sammen, så blir V i m³.</p>
         </div>
       </div>
     </div>
@@ -679,7 +679,7 @@ table.t th{background:var(--steel-soft)}
         <p class="caption">Lavt smeltepunkt = lett å støpe.</p>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>I verkstedet bruker vi kg/dm³, fordi 1 dm³ er en terning på 100 × 100 × 100 mm. Regn volumet i mm³ og del på en million, så får du dm³. Gang med ρ i kg/dm³, så får du kg. Terningene er tegnet i riktig størrelsesforhold. Lavt smeltepunkt gir lett støping (aluminium). Høyt smeltepunkt krever mer energi ved sveising.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Vi bruker ρ i kg/m³ (stål 7850 kg/m³). Gjør om alle mål fra mm til meter (÷ 1000) før de ganges sammen, så blir volumet i m³. Gang med ρ, så får du kg. Da slipper elevene å regne om mellom mm³ og dm³. Terningene er tegnet i riktig størrelsesforhold. Lavt smeltepunkt gir lett støping (aluminium). Høyt smeltepunkt krever mer energi ved sveising.</details>
   </div>
 </section>
 
@@ -764,7 +764,7 @@ table.t th{background:var(--steel-soft)}
           <li>Metall = atomer i lag + frie elektroner → leder strøm, kan formes, utvider seg ved varme.</li>
           <li><b>Elastisk</b> går tilbake, <b>plastisk</b> er varig. Grensen heter <b>flytegrense</b>.</li>
           <li><b>Hard</b> ≠ <b>seig</b>. Sprø materialer brekker uten forvarsel.</li>
-          <li><b>m = ρ · V</b>. Stål 7,85 kg/dm³, aluminium 2,70 kg/dm³.</li>
+          <li><b>m = ρ · V</b>. Stål 7850 kg/m³, aluminium 2700 kg/m³. Mål i meter → V i m³.</li>
           <li>Materialvalg = beste kombinasjon av egenskaper, pris og bearbeiding.</li>
         </ol>
       </div>
@@ -851,13 +851,13 @@ table.t th{background:var(--steel-soft)}
 
       <div class="oppgave">
         <h3>Oppgave 4 – Regn ut masse <small>Time 2 · 15 min</small></h3>
-        <p>m = ρ · V. 1 dm³ = 1 000 000 mm³. Vis utregningen.</p>
-        <table class="ot" style="width:auto"><tr><th>Materiale</th><th>ρ (kg/dm³)</th></tr><tr><td>Stål</td><td>7,85</td></tr><tr><td>Rustfritt stål</td><td>7,9</td></tr><tr><td>Aluminium</td><td>2,70</td></tr><tr><td>Messing</td><td>8,5</td></tr><tr><td>POM (plast)</td><td>1,41</td></tr></table>
-        <p>a) Flattstål av stål, 50 × 10 × 1000 mm.</p><div class="svar"><span class="fasit" hidden>V = 50 · 10 · 1000 = 500 000 mm³ = 0,5 dm³</span></div><div class="svar"><span class="fasit" hidden>m = 7,85 · 0,5 ≈ <b>3,93 kg</b></span></div>
-        <p>b) Samme flattstål i aluminium. Hvor mange kg sparer du?</p><div class="svar"><span class="fasit" hidden>m = 2,70 · 0,5 = <b>1,35 kg</b></span></div><div class="svar"><span class="fasit" hidden>Sparer ca. <b>2,6 kg</b> (aluminium veier omtrent 1/3 av stål).</span></div>
-        <p>c) Rundstang av stål, Ø40 × 500 mm. (Areal av sirkel: A = π · r²)</p><div class="svar"><span class="fasit" hidden>A = π · 20² ≈ 1256,6 mm². V = 1256,6 · 500 ≈ 628 300 mm³ = 0,628 dm³</span></div><div class="svar"><span class="fasit" hidden>m = 7,85 · 0,628 ≈ <b>4,93 kg</b></span></div>
-        <p>d) Plate av rustfritt stål, 2000 × 1000 × 3 mm. Klarer én person å bære den trygt alene?</p><div class="svar"><span class="fasit" hidden>V = 2000 · 1000 · 3 = 6 000 000 mm³ = 6 dm³ → m = 7,9 · 6 = <b>47,4 kg</b></span></div><div class="svar"><span class="fasit" hidden>For tungt og uhåndterlig for én person: bruk to personer eller løfteutstyr (platesug/plateklemme).</span></div>
-        <p>e) <b>Utfordring:</b> Hvor lang må en messingstang Ø20 mm være for å veie 1 kg?</p><div class="svar"><span class="fasit" hidden>V = 1 / 8,5 ≈ 0,1176 dm³ = 117 600 mm³. A = π · 10² ≈ 314,2 mm²</span></div><div class="svar"><span class="fasit" hidden>L = V / A ≈ <b>374 mm</b></span></div>
+        <p>m = ρ · V. Gjør om mm til meter først (1000 mm = 1 m), så blir V i m³. Vis utregningen.</p>
+        <table class="ot" style="width:auto"><tr><th>Materiale</th><th>ρ (kg/m³)</th></tr><tr><td>Stål</td><td>7850</td></tr><tr><td>Rustfritt stål</td><td>7900</td></tr><tr><td>Aluminium</td><td>2700</td></tr><tr><td>Messing</td><td>8500</td></tr><tr><td>POM (plast)</td><td>1410</td></tr></table>
+        <p>a) Flattstål av stål, 50 × 10 × 1000 mm.</p><div class="svar"><span class="fasit" hidden>V = 0,05 · 0,01 · 1 = 0,0005 m³</span></div><div class="svar"><span class="fasit" hidden>m = 7850 · 0,0005 ≈ <b>3,93 kg</b></span></div>
+        <p>b) Samme flattstål i aluminium. Hvor mange kg sparer du?</p><div class="svar"><span class="fasit" hidden>m = 2700 · 0,0005 = <b>1,35 kg</b></span></div><div class="svar"><span class="fasit" hidden>Sparer ca. <b>2,6 kg</b> (aluminium veier omtrent 1/3 av stål).</span></div>
+        <p>c) Rundstang av stål, Ø40 × 500 mm. (Areal av sirkel: A = π · r²)</p><div class="svar"><span class="fasit" hidden>r = 0,02 m, L = 0,5 m. A = π · 0,02² ≈ 0,001257 m². V = 0,001257 · 0,5 ≈ 0,000628 m³</span></div><div class="svar"><span class="fasit" hidden>m = 7850 · 0,000628 ≈ <b>4,93 kg</b></span></div>
+        <p>d) Plate av rustfritt stål, 2000 × 1000 × 3 mm. Klarer én person å bære den trygt alene?</p><div class="svar"><span class="fasit" hidden>V = 2 · 1 · 0,003 = 0,006 m³ → m = 7900 · 0,006 = <b>47,4 kg</b></span></div><div class="svar"><span class="fasit" hidden>For tungt og uhåndterlig for én person: bruk to personer eller løfteutstyr (platesug/plateklemme).</span></div>
+        <p>e) <b>Utfordring:</b> Hvor lang må en messingstang Ø20 mm være for å veie 1 kg?</p><div class="svar"><span class="fasit" hidden>V = 1 / 8500 ≈ 0,0001176 m³. A = π · 0,01² ≈ 0,000314 m²</span></div><div class="svar"><span class="fasit" hidden>L = V / A ≈ 0,374 m = <b>374 mm</b></span></div>
       </div>
 
       <div class="oppgave">
@@ -1493,8 +1493,8 @@ CMATS.forEach((m,i) => { const b = document.createElement("button"); b.className
 const DENS = [["Tre (furu)",0.5,"var(--green)"],["PE-plast",0.95,"var(--green)"],["Vann",1.0,"var(--blue)"],["POM-plast",1.41,"var(--green)"],["Aluminium",2.70,"var(--steel-dark)"],["Titan",4.51,"var(--steel-dark)"],["Stål",7.85,"var(--orange)"],["Messing",8.5,"#b08900"],["Kobber",8.96,"#c0703a"],["Bly",11.3,"var(--purple)"]];
 const db = $("densBars");
 DENS.forEach(d => {
-  const row = document.createElement("div"); row.className="row"; row.title = `${d[0]}: ${fmt(d[1],2)} kg/dm³`;
-  row.innerHTML = `<div>${d[0]}</div><div class="track"><div class="fill" style="background:${d[2]}" data-w="${d[1]/11.3*100}"></div></div><div class="val">${fmt(d[1],2)} kg</div>`;
+  const row = document.createElement("div"); row.className="row"; row.title = `${d[0]}: ${Math.round(d[1]*1000)} kg/m³`;
+  row.innerHTML = `<div>${d[0]}</div><div class="track"><div class="fill" style="background:${d[2]}" data-w="${d[1]/11.3*100}"></div></div><div class="val">${Math.round(d[1]*1000)}</div>`;
   db.appendChild(row);
 });
 onVisible(db, () => db.querySelectorAll(".fill").forEach((f,i) => setTimeout(()=>f.style.width=f.dataset.w+"%", i*90)));
@@ -1535,7 +1535,7 @@ onVisible(tm, () => { tfill.setAttribute("width", TX(1700)-30); tm.classList.add
 // kalkulator med figur
 const cMat = $("cMat");
 const CM = [["Stål",7.85,"#6c7a89"],["Rustfritt stål",7.9,"#a7b3bf"],["Aluminium",2.70,"#c9d1d9"],["Messing",8.5,"#d4a72c"],["Kobber",8.96,"#c0703a"],["Titan",4.51,"#8d99a6"],["POM-plast",1.41,"#f1f3f5"]];
-CM.forEach((m,i) => { const o=document.createElement("option"); o.value=i; o.textContent=`${m[0]} (${fmt(m[1],2)})`; cMat.appendChild(o); });
+CM.forEach((m,i) => { const o=document.createElement("option"); o.value=i; o.textContent=`${m[0]} (${Math.round(m[1]*1000)})`; cMat.appendChild(o); });
 function drawProfile(form, b, t, D, L, col){
   const f = $("cFig"); f.replaceChildren();
   const lab = (x,y,txt,anc="middle") => el("text",{x,y,"text-anchor":anc,"font-size":15,"font-weight":700,style:"fill:var(--orange)"},f,txt);
@@ -1562,15 +1562,17 @@ function drawProfile(form, b, t, D, L, col){
   }
 }
 function calc(){
-  const m = CM[+cMat.value], rho = m[1], form = $("cForm").value, L = +$("cL").value;
+  const m = CM[+cMat.value], rho = Math.round(m[1]*1000), form = $("cForm").value, L = +$("cL").value;
   $("lb1").style.display = $("lb2").style.display = form==="flat" ? "" : "none";
   $("lbD").style.display = form==="rund" ? "" : "none";
-  let A, aTxt; const b=+$("cB").value, t=+$("cT").value, D=+$("cD").value;
-  if (form==="flat"){ A=b*t; aTxt=`A = b · t = ${fmt(b,0)} · ${fmt(t,0)} = ${fmt(A,0)} mm²`; }
-  else { A=Math.PI*(D/2)**2; aTxt=`A = π · r² = π · ${fmt(D/2,1)}² = ${fmt(A,1)} mm²`; }
-  const V = A*L, Vdm = V/1e6, mass = rho*Vdm;
+  const b=+$("cB").value, t=+$("cT").value, D=+$("cD").value;
+  const sig = x => x.toLocaleString("nb-NO", {maximumSignificantDigits:4}), mm = x => `${sig(x)} mm = ${sig(x/1000)} m`;
+  let V, s1, s2;
+  if (form==="flat"){ V = b/1000*t/1000*L/1000; s1 = `b = ${mm(b)}<br>t = ${mm(t)}<br>L = ${mm(L)}`; s2 = `V = b · t · L = ${sig(b/1000)} · ${sig(t/1000)} · ${sig(L/1000)} = ${sig(V)} m³`; }
+  else { const r = D/2000, A = Math.PI*r*r; V = A*L/1000; s1 = `r = ${mm(D/2)}<br>L = ${mm(L)}`; s2 = `A = π · r² = π · ${sig(r)}² = ${sig(A)} m²<br>V = A · L = ${sig(A)} · ${sig(L/1000)} = ${sig(V)} m³`; }
+  const mass = rho*V;
   drawProfile(form, b, t, D, L, m[2]);
-  $("cSteps").innerHTML = `<div>${aTxt}</div><div>V = A · L = ${fmt(A,1)} · ${fmt(L,0)} = ${fmt(V,0)} mm³</div><div>V = ${fmt(V,0)} / 1 000 000 = ${fmt(Vdm,3)} dm³</div><div class="res">m = ρ · V = ${fmt(rho,2)} · ${fmt(Vdm,3)} = ${fmt(mass,2)} kg</div>`;
+  $("cSteps").innerHTML = `<div>${s1}</div><div>${s2}</div><div class="res">m = ρ · V = ${rho} · ${sig(V)} = ${fmt(mass,2)} kg</div>`;
 }
 ["cMat","cForm","cL","cB","cT","cD"].forEach(id => $(id).addEventListener("input", calc)); calc();
 
