@@ -109,9 +109,12 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -452,17 +455,16 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
         <p>Sett ett kryss per linje.</p>
         <table class="ot c">
           <tr><th>Situasjon</th><th style="width:5.5rem">Korr.<br>akutt</th><th style="width:5.5rem">Korr.<br>utsatt</th><th style="width:5.5rem">Tids-<br>basert</th><th style="width:5.5rem">Tilstands-<br>basert</th><th style="width:5.5rem">Pre-<br>diktivt</th></tr>
-          <tr><td>a) Filteret i kompressoren skiftes hver 3. måned.</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>b) En hydraulikkslange sprekker. Maskinen står.</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>c) Operatøren hører ulyd fra et lager under ukentlig runde. Lageret byttes fredag.</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>d) En sensor måler motortemperaturen hvert minutt. Programmet varsler at grensen nås om 3 uker.</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>e) Lyset i maskinen er gått, men det er nok lys. Det byttes ved neste planlagte stopp.</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>f) Olja i girkassa skiftes etter 2000 driftstimer.</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>g) Vibrasjonen på viftemotoren måles hver måned.</td><td></td><td></td><td></td><td></td><td></td></tr>
-          <tr><td>h) Reima på båndsaga ryker midt i en ordre.</td><td></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>a) Filteret i kompressoren skiftes hver 3. måned.</td><td></td><td></td><td><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
+          <tr><td>b) En hydraulikkslange sprekker. Maskinen står.</td><td><span class="fasit" hidden>✗</span></td><td></td><td></td><td></td><td></td></tr>
+          <tr><td>c) Operatøren hører ulyd fra et lager under ukentlig runde. Lageret byttes fredag.</td><td></td><td></td><td></td><td><span class="fasit" hidden>✗ (oppdaget før havari)</span></td><td></td></tr>
+          <tr><td>d) En sensor måler motortemperaturen hvert minutt. Programmet varsler at grensen nås om 3 uker.</td><td></td><td></td><td></td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>e) Lyset i maskinen er gått, men det er nok lys. Det byttes ved neste planlagte stopp.</td><td></td><td><span class="fasit" hidden>✗</span></td><td></td><td></td><td></td></tr>
+          <tr><td>f) Olja i girkassa skiftes etter 2000 driftstimer.</td><td></td><td></td><td><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
+          <tr><td>g) Vibrasjonen på viftemotoren måles hver måned.</td><td></td><td></td><td></td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>h) Reima på båndsaga ryker midt i en ordre.</td><td><span class="fasit" hidden>✗</span></td><td></td><td></td><td></td><td></td></tr>
         </table>
-        <p>i) Nevn én fordel og én ulempe med <b>tidsbasert</b> vedlikehold.</p><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) tidsbasert. b) korrigerende akutt. c) tilstandsbasert (feilen ble oppdaget før havari). d) prediktivt. e) korrigerende utsatt. f) tidsbasert. g) tilstandsbasert. h) korrigerende akutt. i) Fordel: lett å planlegge, deler og folk kan bestilles på forhånd. Ulempe: deler byttes før de er slitt (kastet levetid), og noen deler ryker likevel før intervallet.</div>
+        <p>i) Nevn én fordel og én ulempe med <b>tidsbasert</b> vedlikehold.</p><div class="svar"><span class="fasit" hidden>Fordel: lett å planlegge, deler og folk kan bestilles på forhånd.</span></div><div class="svar"><span class="fasit" hidden>Ulempe: deler byttes før de er slitt (kastet levetid), og noen deler ryker likevel før intervallet.</span></div>
       </div>
 
       <div class="oppgave">
@@ -471,40 +473,38 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
         <div class="ofig" id="o2fig"></div>
         <table class="ot">
           <tr><th style="width:2.5rem">Nr.</th><th>Feil</th><th style="width:7rem">Sans</th><th style="width:8rem">Stopp straks eller meld?</th><th>Tiltak</th></tr>
-          <tr><td>1</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>2</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>3</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>4</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>5</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>6</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>1</td><td class="tom"><span class="fasit" hidden>Oljelekkasje ved slangekoblingen</span></td><td><span class="fasit" hidden>se/lukte</span></td><td><span class="fasit" hidden>meld</span></td><td><span class="fasit" hidden>absorbent, stram/bytt pakning</span></td></tr>
+          <tr><td>2</td><td class="tom"><span class="fasit" hidden>Lavt oljenivå under MIN</span></td><td><span class="fasit" hidden>se</span></td><td><span class="fasit" hidden>meld</span></td><td><span class="fasit" hidden>finn lekkasjen, fyll riktig olje</span></td></tr>
+          <tr><td>3</td><td class="tom"><span class="fasit" hidden>Løs fundamentbolt</span></td><td><span class="fasit" hidden>se/kjenne vibrasjon</span></td><td><span class="fasit" hidden><b>stopp</b></span></td><td><span class="fasit" hidden>trekk til</span></td></tr>
+          <tr><td>4</td><td class="tom"><span class="fasit" hidden>Reimvern mangler – står på gulvet</span></td><td><span class="fasit" hidden>se</span></td><td><span class="fasit" hidden><b>stopp og lås</b></span></td><td><span class="fasit" hidden>monter vern</span></td></tr>
+          <tr><td>5</td><td class="tom"><span class="fasit" hidden>Skadet kabel med synlig kobber<br>Ulyd fra pumpa</span></td><td><span class="fasit" hidden>se<br>lytte</span></td><td><span class="fasit" hidden><b>stopp og lås</b><br>meld</span></td><td><span class="fasit" hidden>elektrofagperson<br>arbeidsordre</span></td></tr>
+          <tr><td>6</td><td class="tom"><span class="fasit" hidden>Varmt motorlager<br>Spon og fille på kjøleribbene</span></td><td><span class="fasit" hidden>kjenne<br>se</span></td><td><span class="fasit" hidden>meld<br>stopp</span></td><td><span class="fasit" hidden>sjekk smøring/kjøling<br>rengjør</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> Oljelekkasje ved slangekoblingen (se/lukte, meld, absorbent, stram/bytt pakning). Lavt oljenivå under MIN (se, meld, finn lekkasjen, fyll riktig olje). Løs fundamentbolt (se/kjenne vibrasjon, <b>stopp</b>, trekk til). Reimvern mangler – står på gulvet (se, <b>stopp og lås</b>, monter vern). Skadet kabel med synlig kobber (se, <b>stopp og lås</b>, elektrofagperson). Varmt motorlager (kjenne, meld, sjekk smøring/kjøling). Ulyd fra pumpa (lytte, meld, arbeidsordre). Spon og fille på kjøleribbene (se, stopp og rengjør).</div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Kilereim <small>Time 1 · 4 min</small></h3>
-        <p>a) Akselavstanden er 800 mm. Hvor stor skal nedbøyningen være (16 mm per meter)?</p><div class="svar"></div>
+        <p>a) Akselavstanden er 800 mm. Hvor stor skal nedbøyningen være (16 mm per meter)?</p><div class="svar"><span class="fasit" hidden>16 · 0,8 = 12,8 ≈ <b>13 mm</b></span></div>
         <p>b) Hva er årsaken?</p>
         <table class="ot">
           <tr><th>Symptom</th><th style="width:50%">Årsak</th></tr>
-          <tr><td>Reima hviner når maskinen starter</td><td class="tom"></td></tr>
-          <tr><td>Reima har blanke, glatte flanker</td><td class="tom"></td></tr>
-          <tr><td>Reima er slitt bare på den ene siden</td><td class="tom"></td></tr>
-          <tr><td>Lagrene i motoren blir varme etter reimbytte</td><td class="tom"></td></tr>
+          <tr><td>Reima hviner når maskinen starter</td><td class="tom"><span class="fasit" hidden>For slakk</span></td></tr>
+          <tr><td>Reima har blanke, glatte flanker</td><td class="tom"><span class="fasit" hidden>Reima slurer (for slakk eller slitt)</span></td></tr>
+          <tr><td>Reima er slitt bare på den ene siden</td><td class="tom"><span class="fasit" hidden>Skivene står ikke på linje</span></td></tr>
+          <tr><td>Lagrene i motoren blir varme etter reimbytte</td><td class="tom"><span class="fasit" hidden>For stram</span></td></tr>
         </table>
         <p>c) Sett trinnene for reimbytte i riktig rekkefølge (1–8).</p>
         <table class="ot">
           <tr><th style="width:4rem">Nr.</th><th>Trinn</th></tr>
-          <tr><td class="tom"></td><td>Legg på ny reim</td></tr>
-          <tr><td class="tom"></td><td>Prøvekjør</td></tr>
-          <tr><td class="tom"></td><td>Stopp, slå av og lås hovedbryteren</td></tr>
-          <tr><td class="tom"></td><td>Stram til riktig nedbøyning</td></tr>
-          <tr><td class="tom"></td><td>Ta av reimvernet</td></tr>
-          <tr><td class="tom"></td><td>Rett opp skivene med linjal</td></tr>
-          <tr><td class="tom"></td><td>Løsne motoren og skyv den inn</td></tr>
-          <tr><td class="tom"></td><td>Sett på vernet og fjern låsen</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>4</span></td><td>Legg på ny reim</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>8</span></td><td>Prøvekjør</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>1</span></td><td>Stopp, slå av og lås hovedbryteren</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>6</span></td><td>Stram til riktig nedbøyning</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>2</span></td><td>Ta av reimvernet</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>5</span></td><td>Rett opp skivene med linjal</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>3</span></td><td>Løsne motoren og skyv den inn</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>7</span></td><td>Sett på vernet og fjern låsen</td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) 16 · 0,8 = 12,8 ≈ <b>13 mm</b>. b) For slakk · reima slurer (for slakk eller slitt) · skivene står ikke på linje · for stram. c) 4, 8, 1, 6, 2, 5, 3, 7 (lås → vern av → løsne motor → ny reim → rett opp → stram → vern på → prøvekjør).</div>
       </div>
 
       <div class="oppgave">
@@ -512,31 +512,29 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
         <p>Et lager i en CNC-dreiebenk. Timepris for fagarbeider: <b>650 kr</b>. Tapt produksjon når maskinen står uplanlagt: <b>4 000 kr per time</b>.</p>
         <table class="ot c">
           <tr><th></th><th>Deler</th><th>Arbeid</th><th>Tapt produksjon</th><th style="width:9rem">Sum</th></tr>
-          <tr><td><b>Havari</b> (lageret ryker)</td><td>8 000 kr</td><td>6 t</td><td>10 t</td><td class="tom"></td></tr>
-          <tr><td><b>Planlagt bytte</b> (i planlagt stopp)</td><td>1 500 kr</td><td>1 t</td><td>0 t</td><td class="tom"></td></tr>
+          <tr><td><b>Havari</b> (lageret ryker)</td><td>8 000 kr</td><td>6 t</td><td>10 t</td><td class="tom"><span class="fasit" hidden>8 000 + 6 · 650 + 10 · 4 000 = 8 000 + 3 900 + 40 000 = <b>51 900 kr</b></span></td></tr>
+          <tr><td><b>Planlagt bytte</b> (i planlagt stopp)</td><td>1 500 kr</td><td>1 t</td><td>0 t</td><td class="tom"><span class="fasit" hidden>1 500 + 650 = <b>2 150 kr</b></span></td></tr>
         </table>
-        <p>b) Hvor mange planlagte bytter kan du gjøre for prisen av ett havari?</p><div class="svar"></div>
-        <p>c) Nevn to <b>skjulte</b> kostnader ved et havari som ikke står i tabellen.</p><div class="svar"></div>
-        <p>d) Hvorfor er godt vedlikehold også bra for miljøet? Gi to grunner.</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> Havari: 8 000 + 6 · 650 + 10 · 4 000 = 8 000 + 3 900 + 40 000 = <b>51 900 kr</b>. Planlagt: 1 500 + 650 = <b>2 150 kr</b>. b) 51 900 / 2 150 ≈ <b>24</b> bytter. c) F.eks. forsinket levering/misfornøyd kunde, kassasjon av deler i maskinen, følgeskader på aksel, overtid, hastefrakt, risiko for ulykke. d) Maskinen varer lenger (mindre stål og energi til nye maskiner), mindre kassasjon, ingen lekkasjer av olje/kjølevæske, lavere energiforbruk når maskinen går lett.</div>
+        <p>b) Hvor mange planlagte bytter kan du gjøre for prisen av ett havari?</p><div class="svar"><span class="fasit" hidden>51 900 / 2 150 ≈ <b>24</b> bytter</span></div>
+        <p>c) Nevn to <b>skjulte</b> kostnader ved et havari som ikke står i tabellen.</p><div class="svar"><span class="fasit" hidden>F.eks. forsinket levering/misfornøyd kunde, kassasjon av deler i maskinen, følgeskader på aksel, overtid, hastefrakt, risiko for ulykke.</span></div>
+        <p>d) Hvorfor er godt vedlikehold også bra for miljøet? Gi to grunner.</p><div class="svar"><span class="fasit" hidden>Maskinen varer lenger (mindre stål og energi til nye maskiner), mindre kassasjon, ingen lekkasjer av olje/kjølevæske, lavere energiforbruk når maskinen går lett.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 5 – Fyll ut arbeidsordren <small>Time 2 · 8 min</small></h3>
         <div class="scenario">Mandag 12. oktober kl. 09.30 merker <b>Sara</b> (operatør) at båndsaga <b>BS-01</b> kutter skjevt og at det lukter brent. Hun stopper maskinen. Verkstedlederen sier at saga må fikses i dag. <b>Kristian</b> (fagarbeider) slår av hovedbryteren og låser den. Han finner at sagbladet er sløvt og at én føringsrulle er slitt. Han bytter blad og føringsrulle (del nr. <b>GR-22</b>). Jobben tar <b>1,5 timer</b>.</div>
         <table class="ot">
-          <tr><td class="lbl">Maskin</td><td class="tom"></td></tr>
-          <tr><td class="lbl">Meldt av / dato og tid</td><td class="tom"></td></tr>
-          <tr><td class="lbl">Feilbeskrivelse</td><td class="tom"></td></tr>
-          <tr><td class="lbl">Prioritet (1 straks · 2 innen en uke · 3 neste stopp)</td><td class="tom"></td></tr>
-          <tr><td class="lbl">Type vedlikehold</td><td class="tom"></td></tr>
-          <tr><td class="lbl">Sikkerhetstiltak</td><td class="tom"></td></tr>
-          <tr><td class="lbl">Deler brukt</td><td class="tom"></td></tr>
-          <tr><td class="lbl">Utført av / tid brukt</td><td class="tom"></td></tr>
-          <tr><td class="lbl">Funn / årsak</td><td class="tom"></td></tr>
-          <tr><td class="lbl">Forslag: hvordan unngå at det skjer igjen?</td><td class="tom"></td></tr>
+          <tr><td class="lbl">Maskin</td><td class="tom"><span class="fasit" hidden>Båndsag BS-01</span></td></tr>
+          <tr><td class="lbl">Meldt av / dato og tid</td><td class="tom"><span class="fasit" hidden>Sara, man. 12.10 kl. 09.30</span></td></tr>
+          <tr><td class="lbl">Feilbeskrivelse</td><td class="tom"><span class="fasit" hidden>Kutter skjevt, lukter brent</span></td></tr>
+          <tr><td class="lbl">Prioritet (1 straks · 2 innen en uke · 3 neste stopp)</td><td class="tom"><span class="fasit" hidden><b>1</b> (står, må fikses i dag)</span></td></tr>
+          <tr><td class="lbl">Type vedlikehold</td><td class="tom"><span class="fasit" hidden><b>Korrigerende, akutt</b></span></td></tr>
+          <tr><td class="lbl">Sikkerhetstiltak</td><td class="tom"><span class="fasit" hidden>Hovedbryter av og låst (+ skilt)</span></td></tr>
+          <tr><td class="lbl">Deler brukt</td><td class="tom"><span class="fasit" hidden>Sagblad, føringsrulle GR-22</span></td></tr>
+          <tr><td class="lbl">Utført av / tid brukt</td><td class="tom"><span class="fasit" hidden>Kristian, 1,5 t</span></td></tr>
+          <tr><td class="lbl">Funn / årsak</td><td class="tom"><span class="fasit" hidden>Sløvt blad, slitt føringsrulle</span></td></tr>
+          <tr><td class="lbl">Forslag: hvordan unngå at det skjer igjen?</td><td class="tom"><span class="fasit" hidden>F.eks.: sjekk føringsruller ved ukentlig ettersyn; bytt blad etter fast antall driftstimer eller ved første tegn på skjevt kutt; lær opp operatører til å melde fra tidlig.</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> Maskin: båndsag BS-01. Meldt av: Sara, man. 12.10 kl. 09.30. Feil: kutter skjevt, lukter brent. Prioritet: <b>1</b> (står, må fikses i dag). Type: <b>korrigerende, akutt</b>. Sikkerhet: hovedbryter av og låst (+ skilt). Deler: sagblad, føringsrulle GR-22. Utført: Kristian, 1,5 t. Funn: sløvt blad, slitt føringsrulle. Forslag (eksempler): sjekk føringsruller ved ukentlig ettersyn; bytt blad etter fast antall driftstimer eller ved første tegn på skjevt kutt; lær opp operatører til å melde fra tidlig.</div>
       </div>
 
       <div class="oppgave">
@@ -545,24 +543,22 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
         <div class="ofig" id="o5fig" style="max-width:520px"></div>
         <table class="ot">
           <tr><th style="width:3rem">Nr.</th><th>Hva sjekker eller gjør du?</th><th style="width:8rem">Hvor ofte</th><th style="width:9rem">Hvem</th></tr>
-          <tr><td>1</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>2</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>3</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>4</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>5</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>6</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>7</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>8</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>1</td><td class="tom"><span class="fasit" hidden>(eksempel) Vern: helt og virker</span></td><td><span class="fasit" hidden>daglig</span></td><td><span class="fasit" hidden>operatør</span></td></tr>
+          <tr><td>2</td><td class="tom"><span class="fasit" hidden>Nødstopp: test</span></td><td><span class="fasit" hidden>daglig</span></td><td><span class="fasit" hidden>operatør</span></td></tr>
+          <tr><td>3</td><td class="tom"><span class="fasit" hidden>Bord og søyle: rengjør spon, smør tynt</span></td><td><span class="fasit" hidden>daglig</span></td><td><span class="fasit" hidden>operatør</span></td></tr>
+          <tr><td>4</td><td class="tom"><span class="fasit" hidden>Kjølevæske: nivå og blanding</span></td><td><span class="fasit" hidden>ukentlig</span></td><td><span class="fasit" hidden>operatør</span></td></tr>
+          <tr><td>5</td><td class="tom"><span class="fasit" hidden>Pinol/spindel: rengjør konus, smør pinol</span></td><td><span class="fasit" hidden>ukentlig</span></td><td><span class="fasit" hidden>operatør</span></td></tr>
+          <tr><td>6</td><td class="tom"><span class="fasit" hidden>Reimer: slitasje og stramming</span></td><td><span class="fasit" hidden>månedlig</span></td><td><span class="fasit" hidden>fagarbeider (frakoblet)</span></td></tr>
+          <tr><td>7</td><td class="tom"><span class="fasit" hidden>Motor/lagre: lytt og kjenn etter varme</span></td><td><span class="fasit" hidden>månedlig</span></td><td><span class="fasit" hidden>fagarbeider</span></td></tr>
+          <tr><td>8</td><td class="tom"><span class="fasit" hidden>Kabel og elektrisk: kontroll</span></td><td><span class="fasit" hidden>årlig</span></td><td><span class="fasit" hidden>elektrofagperson. Andre fornuftige svar godtas.</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit (eksempel):</b> 1 Vern: helt og virker – daglig – operatør. 2 Nødstopp: test – daglig – operatør. 3 Bord og søyle: rengjør spon, smør tynt – daglig – operatør. 4 Kjølevæske: nivå og blanding – ukentlig – operatør. 5 Pinol/spindel: rengjør konus, smør pinol – ukentlig – operatør. 6 Reimer: slitasje og stramming – månedlig – fagarbeider (frakoblet). 7 Motor/lagre: lytt og kjenn etter varme – månedlig – fagarbeider. 8 Kabel og elektrisk: kontroll – årlig – elektrofagperson. Andre fornuftige svar godtas.</div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 2 min</small></h3>
-        <p>1. Hva er forskjellen på korrigerende og forebyggende vedlikehold?</p><div class="svar"></div>
-        <p>2. Nevn tre ting du sjekker ved daglig ettersyn – og hvilken sans du bruker.</p><div class="svar"></div>
-        <p>3. Hvorfor skal alt vedlikehold dokumenteres?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Korrigerende gjøres etter at feilen har skjedd. Forebyggende gjøres før, for å hindre feil. 2) F.eks. lekkasjer og oljenivå (se), ulyd (lytte), varme lagre (kjenne med baksiden av hånden), brent lukt (lukte), vern og nødstopp (se/teste). 3) Historikken viser hva som er gjort og hvilke feil som kommer igjen, slik at planen kan forbedres. Det er også krav om dokumentasjon for sikkerhet og kvalitet.</div>
+        <p>1. Hva er forskjellen på korrigerende og forebyggende vedlikehold?</p><div class="svar"><span class="fasit" hidden>Korrigerende gjøres etter at feilen har skjedd. Forebyggende gjøres før, for å hindre feil.</span></div>
+        <p>2. Nevn tre ting du sjekker ved daglig ettersyn – og hvilken sans du bruker.</p><div class="svar"><span class="fasit" hidden>F.eks. lekkasjer og oljenivå (se), ulyd (lytte), varme lagre (kjenne med baksiden av hånden), brent lukt (lukte), vern og nødstopp (se/teste).</span></div>
+        <p>3. Hvorfor skal alt vedlikehold dokumenteres?</p><div class="svar"><span class="fasit" hidden>Historikken viser hva som er gjort og hvilke feil som kommer igjen, slik at planen kan forbedres. Det er også krav om dokumentasjon for sikkerhet og kvalitet.</span></div>
       </div>
     </div>
   </div>
@@ -1200,11 +1196,12 @@ function drillSVG(P, o={}){
 
 /* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToPng(svg){
   const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
   const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  c.querySelectorAll(".fasit-svg").forEach(t => { if (!fasitOn) t.remove(); else { t.style.display = "inline"; if (!t.getAttribute("fill") || /var\(/.test(t.getAttribute("fill"))) t.setAttribute("fill", "#2b8a3e"); } });
   const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
   await img.decode();
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
@@ -1217,10 +1214,11 @@ $("btnCopy").onclick = async () => {
   for (let i=0;i<svgs.length;i++){
     try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.min(640, Math.round(w*.7)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
-  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); else { f.style.color = "#2b8a3e"; f.style.fontWeight = "600"; } });
+  clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "_____"; });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); if (s.textContent.trim()) { p.innerHTML = s.innerHTML; } else p.textContent="_____________________________________________________________"; s.replaceWith(p); });
   clone.querySelectorAll(".scenario").forEach(s => { s.style.border="1px dashed #777"; s.style.padding="6px 10px"; });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom") && !c.textContent.trim()) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
   const html = clone.innerHTML, text = clone.innerText;

@@ -143,6 +143,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .tablewrap{overflow-x:auto}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .fasit{color:var(--r);font-weight:700}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
 #copyMsg{color:var(--muted);font-size:15px}
 details.teacher{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px 18px}
 details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
@@ -425,7 +427,7 @@ details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
         <tr><td>Strøm</td><td class="blank"><span class="fasit" hidden>I</span></td><td class="blank"><span class="fasit" hidden>ampere (A)</span></td><td class="blank"><span class="fasit" hidden>Hvor mye som renner forbi per sekund</span></td></tr>
         <tr><td>Motstand</td><td class="blank"><span class="fasit" hidden>R</span></td><td class="blank"><span class="fasit" hidden>ohm (Ω)</span></td><td class="blank"><span class="fasit" hidden>Hvor mye noe bremser strømmen</span></td></tr>
       </table></div>
-      <p style="margin-top:12px">Se på Eksempler på motstand. Hva har lavest motstand, og hva har høyest? ______ <span class="fasit" hidden>Kobberledningen har lavest, isolasjonen i kabelen høyest</span></p>
+      <p style="margin-top:12px">Se på Eksempler på motstand. Hva har lavest motstand, og hva har høyest?</p><div class="svar"><span class="fasit" hidden>Kobberledningen har lavest, isolasjonen i kabelen høyest</span></div>
     </div>
 
     <div>
@@ -440,21 +442,20 @@ details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
         <tr><th>U (V)</th><th>6</th><th>12</th><th>24</th></tr>
         <tr><th>I (mA)</th><td class="blank"><span class="fasit" hidden>30</span></td><td class="blank"><span class="fasit" hidden>60</span></td><td class="blank"><span class="fasit" hidden>120</span></td></tr>
       </table></div>
-      <p style="margin-top:12px">3. Fullfør setningene: Når R dobles, blir strømmen ______. Når U dobles, blir strømmen ______.</p>
-      <p class="fasit" hidden>Halvparten. Dobbelt så stor.</p>
+      <p style="margin-top:12px">3. Fullfør setningene: Når R dobles, blir strømmen <span class="luke"><span class="fasit" hidden>halvparten</span></span>. Når U dobles, blir strømmen <span class="luke"><span class="fasit" hidden>dobbelt så stor</span></span>.</p>
     </div>
 
     <div>
       <h3>Del C · Regn ut (vis formel, innsetting og svar med enhet)</h3>
       <ol>
-        <li>En lampe på 2,2 kΩ kobles til 12 V. Hvor stor blir strømmen? <span class="fasit" hidden>I = 12 / 2200 ≈ 0,0055 A = 5,5 mA</span></li>
-        <li>Det går 0,5 A gjennom en motstand på 24 Ω. Hvor stor er spenningen? <span class="fasit" hidden>U = 24 × 0,5 = 12 V</span></li>
-        <li>En komponent får 9 V og trekker 15 mA. Hvor stor er motstanden? <span class="fasit" hidden>R = 9 / 0,015 = 600 Ω</span></li>
-        <li>Gjør om: 4,7 kΩ til Ω, 250 mA til A og 0,012 A til mA. <span class="fasit" hidden>4700 Ω, 0,25 A, 12 mA</span></li>
-        <li>En reléspole på 600 Ω kobles til 24 V styrespenning. Hvor stor strøm trekker den? <span class="fasit" hidden>I = 24 / 600 = 0,04 A = 40 mA</span></li>
-        <li>Du dobler spenningen over den samme motstanden. Hva skjer med strømmen? Begrunn. <span class="fasit" hidden>Den dobles, fordi I = U / R og R er lik</span></li>
-        <li>En vannkoker har en motstand på 26 Ω og kobles til 230 V. Hvor stor blir strømmen? <span class="fasit" hidden>I = 230 / 26 ≈ 8,8 A</span></li>
-        <li>Menneskekroppen kan ha en motstand på ca. 1000 Ω når huden er våt. Hvor stor strøm går ved 230 V? Hvorfor er det farlig? <span class="fasit" hidden>I = 230 / 1000 = 0,23 A = 230 mA. Allerede rundt 30 mA kan være livsfarlig, derfor har vi jordfeilbryter på 30 mA</span></li>
+        <li>En lampe på 2,2 kΩ kobles til 12 V. Hvor stor blir strømmen?<div class="svar"><span class="fasit" hidden>I = 12 / 2200 ≈ 0,0055 A = 5,5 mA</span></div></li>
+        <li>Det går 0,5 A gjennom en motstand på 24 Ω. Hvor stor er spenningen?<div class="svar"><span class="fasit" hidden>U = 24 × 0,5 = 12 V</span></div></li>
+        <li>En komponent får 9 V og trekker 15 mA. Hvor stor er motstanden?<div class="svar"><span class="fasit" hidden>R = 9 / 0,015 = 600 Ω</span></div></li>
+        <li>Gjør om: 4,7 kΩ til Ω, 250 mA til A og 0,012 A til mA.<div class="svar"><span class="fasit" hidden>4700 Ω, 0,25 A, 12 mA</span></div></li>
+        <li>En reléspole på 600 Ω kobles til 24 V styrespenning. Hvor stor strøm trekker den?<div class="svar"><span class="fasit" hidden>I = 24 / 600 = 0,04 A = 40 mA</span></div></li>
+        <li>Du dobler spenningen over den samme motstanden. Hva skjer med strømmen? Begrunn.<div class="svar"><span class="fasit" hidden>Den dobles, fordi I = U / R og R er lik</span></div></li>
+        <li>En vannkoker har en motstand på 26 Ω og kobles til 230 V. Hvor stor blir strømmen?<div class="svar"><span class="fasit" hidden>I = 230 / 26 ≈ 8,8 A</span></div></li>
+        <li>Menneskekroppen kan ha en motstand på ca. 1000 Ω når huden er våt. Hvor stor strøm går ved 230 V? Hvorfor er det farlig?<div class="svar"><span class="fasit" hidden>I = 230 / 1000 = 0,23 A = 230 mA. Allerede rundt 30 mA kan være livsfarlig, derfor har vi jordfeilbryter på 30 mA</span></div></li>
       </ol>
     </div>
 
@@ -462,14 +463,14 @@ details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
       <h3>Del D · Måle riktig</h3>
       <ol>
         <li>Tegn en krets med batteri, lampe, voltmeter og amperemeter koblet riktig.</li>
-        <li>Hvorfor ryker sikringen i multimeteret hvis amperemeteret kobles rett over batteriet? <span class="fasit" hidden>Amperemeteret har nesten ingen motstand, så det blir kortslutning og svært stor strøm</span></li>
+        <li>Hvorfor ryker sikringen i multimeteret hvis amperemeteret kobles rett over batteriet?<div class="svar"><span class="fasit" hidden>Amperemeteret har nesten ingen motstand, så det blir kortslutning og svært stor strøm</span></div></li>
       </ol>
     </div>
 
     <div>
       <h3>Exit ticket</h3>
       <ol>
-        <li>En motstand på 1 kΩ får 6 V. Hvor stor er strømmen? <span class="fasit" hidden>6 mA</span></li>
+        <li>En motstand på 1 kΩ får 6 V. Hvor stor er strømmen?<div class="svar"><span class="fasit" hidden>6 mA</span></div></li>
         <li>Hva var vanskeligst i dag?</li>
       </ol>
     </div>
@@ -591,6 +592,8 @@ details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
   $('copyBtn').addEventListener('click',()=>{
     const src=$('sheet').cloneNode(true);
     if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
     src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
     src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
     const html=src.innerHTML, text=src.innerText||src.textContent;

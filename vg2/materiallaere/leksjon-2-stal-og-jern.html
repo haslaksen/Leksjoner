@@ -157,9 +157,12 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -719,27 +722,25 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         <p>a) Fyll ut tabellen.</p>
         <table class="ot">
           <tr><th>Karbon</th><th>Stål eller støpejern?</th><th>Kan herdes?</th><th>Sveisbarhet (god / dårlig)</th><th>Eksempel på bruk</th></tr>
-          <tr><td>0,15 %</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>0,45 %</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>1,0 %</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>3,5 %</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>0,15 %</td><td class="tom"><span class="fasit" hidden>Stål</span></td><td><span class="fasit" hidden>Nei</span></td><td><span class="fasit" hidden>God</span></td><td><span class="fasit" hidden>Bjelker/plater (S235/S355)</span></td></tr>
+          <tr><td>0,45 %</td><td class="tom"><span class="fasit" hidden>Stål</span></td><td><span class="fasit" hidden>Ja</span></td><td><span class="fasit" hidden>Dårlig (forvarming)</span></td><td><span class="fasit" hidden>Aksler (C45)</span></td></tr>
+          <tr><td>1,0 %</td><td class="tom"><span class="fasit" hidden>Stål</span></td><td><span class="fasit" hidden>Ja</span></td><td><span class="fasit" hidden>Dårlig</span></td><td><span class="fasit" hidden>Kulelager/verktøy (100Cr6)</span></td></tr>
+          <tr><td>3,5 %</td><td class="tom"><span class="fasit" hidden>Støpejern</span></td><td><span class="fasit" hidden>Sjelden (bare overflate, f.eks. glidebaner)</span></td><td><span class="fasit" hidden>Svært dårlig</span></td><td><span class="fasit" hidden>Maskinstativ/bremseskiver/kumlokk</span></td></tr>
         </table>
         <p>b) Råjernet fra masovnen har ca. 4 % karbon. Hva gjøres i konverteren, og hvorfor?</p>
-        <div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 0,15 %: stål, nei, god, bjelker/plater (S235/S355). 0,45 %: stål, ja, dårlig (forvarming), aksler (C45). 1,0 %: stål, ja, dårlig, kulelager/verktøy (100Cr6). 3,5 %: støpejern, sjelden (bare overflate, f.eks. glidebaner), svært dårlig, maskinstativ/bremseskiver/kumlokk. b) Oksygen blåses inn og brenner bort det meste av karbonet. Råjern med 4 % C er sprøtt; stål med lite karbon er seigt og kan bøyes, sveises og valses.</div>
+        <div class="svar"><span class="fasit" hidden>Oksygen blåses inn og brenner bort det meste av karbonet.</span></div><div class="svar"><span class="fasit" hidden>Råjern med 4 % C er sprøtt; stål med lite karbon er seigt og kan bøyes, sveises og valses.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 2 – Forklar med egne ord <small>Time 1 · 9 min</small></h3>
         <p>a) Forklar med én setning hver: <i>korn</i>, <i>ferritt</i>, <i>sementitt</i> og <i>perlitt</i>.</p>
-        <div class="svar"></div><div class="svar"></div><div class="svar"></div><div class="svar"></div>
+        <div class="svar"><span class="fasit" hidden>Korn: en liten krystall der atomlagene peker i samme retning.</span></div><div class="svar"><span class="fasit" hidden>Ferritt: nesten rent jern – mykt og seigt.</span></div><div class="svar"><span class="fasit" hidden>Sementitt: jernkarbid (Fe₃C) – svært hardt og sprøtt.</span></div><div class="svar"><span class="fasit" hidden>Perlitt: tynne lag av ferritt og sementitt annenhver.</span></div>
         <p>b) Bruk atommodellen: Hvorfor blir stålet hardere og sterkere med mer karbon, men mindre seigt?</p>
-        <div class="svar"></div><div class="svar"></div><div class="svar"></div>
+        <div class="svar"><span class="fasit" hidden>Karbonatomene sitter i mellomrommene mellom jernatomene og står i veien når atomlagene skal gli.</span></div><div class="svar"><span class="fasit" hidden>Det trengs mer kraft → sterkere og hardere.</span></div><div class="svar"><span class="fasit" hidden>Men stålet tåler mindre glidning før det ryker → mindre seigt.</span></div>
         <p>c) Hvorfor kan C45 herdes, men ikke S355? Bruk ordene <i>karbon</i>, <i>bråkjøling</i> og <i>gitter</i>.</p>
-        <div class="svar"></div><div class="svar"></div><div class="svar"></div>
+        <div class="svar"><span class="fasit" hidden>Ved oppvarming løses karbonet opp i gitteret.</span></div><div class="svar"><span class="fasit" hidden>Ved bråkjøling rekker ikke karbonet å vandre ut, det låses inne og spenner gitteret (martensitt), så lagene ikke kan gli.</span></div><div class="svar"><span class="fasit" hidden>C45 har nok karbon (0,45 %) til dette; S355 har for lite (ca. 0,15–0,2 %), så det blir bare litt hardere.</span></div>
         <p>d) Hvilken stålverk-rute gir lavest CO₂-utslipp: masovn eller lysbueovn? Hvorfor? Hva kan du gjøre i verkstedet for å hjelpe?</p>
-        <div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) Korn: en liten krystall der atomlagene peker i samme retning. Ferritt: nesten rent jern – mykt og seigt. Sementitt: jernkarbid (Fe₃C) – svært hardt og sprøtt. Perlitt: tynne lag av ferritt og sementitt annenhver. b) Karbonatomene sitter i mellomrommene mellom jernatomene og står i veien når atomlagene skal gli. Det trengs mer kraft → sterkere og hardere. Men stålet tåler mindre glidning før det ryker → mindre seigt. b) Ved oppvarming løses karbonet opp i gitteret. Ved bråkjøling rekker ikke karbonet å vandre ut, det låses inne og spenner gitteret (martensitt), så lagene ikke kan gli. C45 har nok karbon (0,45 %) til dette; S355 har for lite (ca. 0,15–0,2 %), så det blir bare litt hardere. d) Lysbueovn: smelter skrap med strøm i stedet for å bruke koks til å fjerne oksygen fra malm. I verkstedet: sorter spon og skrap riktig.</div>
+        <div class="svar"><span class="fasit" hidden><b>Lysbueovn</b>: smelter skrap med strøm i stedet for å bruke koks til å fjerne oksygen fra malm.</span></div><div class="svar"><span class="fasit" hidden>I verkstedet: sorter spon og skrap riktig.</span></div>
       </div>
 
       <div class="oppgave">
@@ -747,17 +748,16 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         <p>Skriv hva navnet forteller. Bruk faktortabellen: Cr, Co, Mn, Ni, Si, W : 4 · Mo, V, Cu, Pb, Ti : 10 · S, P, N : 100.</p>
         <table class="ot">
           <tr><th style="width:28%">Betegnelse</th><th>Hva betyr den?</th></tr>
-          <tr><td>S235JR</td><td class="tom"></td></tr>
-          <tr><td>S355J2</td><td class="tom"></td></tr>
-          <tr><td>C45</td><td class="tom"></td></tr>
-          <tr><td>42CrMo4</td><td class="tom"></td></tr>
-          <tr><td>16MnCr5</td><td class="tom"></td></tr>
-          <tr><td>X5CrNi18-10</td><td class="tom"></td></tr>
-          <tr><td>X2CrNiMo17-12-2</td><td class="tom"></td></tr>
-          <tr><td>11SMnPb30</td><td class="tom"></td></tr>
-          <tr><td>HS6-5-2-5</td><td class="tom"></td></tr>
+          <tr><td>S235JR</td><td class="tom"><span class="fasit" hidden>Konstruksjonsstål, minste flytegrense 235 MPa, 27 J ved +20 °C.</span></td></tr>
+          <tr><td>S355J2</td><td class="tom"><span class="fasit" hidden>Konstruksjonsstål, 355 MPa, 27 J ved −20 °C.</span></td></tr>
+          <tr><td>C45</td><td class="tom"><span class="fasit" hidden>Ulegert stål, 0,45 % karbon.</span></td></tr>
+          <tr><td>42CrMo4</td><td class="tom"><span class="fasit" hidden>Lavlegert, 0,42 % C, 4 : 4 = 1 % Cr, litt Mo.</span></td></tr>
+          <tr><td>16MnCr5</td><td class="tom"><span class="fasit" hidden>Lavlegert, 0,16 % C, 5 : 4 = 1,25 % Mn, litt Cr (settherdingsstål).</span></td></tr>
+          <tr><td>X5CrNi18-10</td><td class="tom"><span class="fasit" hidden>Høylegert, 0,05 % C, 18 % Cr, 10 % Ni (= 304 / 1.4301).</span></td></tr>
+          <tr><td>X2CrNiMo17-12-2</td><td class="tom"><span class="fasit" hidden>Høylegert, 0,02 % C, 17 % Cr, 12 % Ni, 2 % Mo (= 316L / 1.4404).</span></td></tr>
+          <tr><td>11SMnPb30</td><td class="tom"><span class="fasit" hidden>0,11 % C, 30 : 100 = 0,30 % S, litt Mn og Pb (automatstål).</span></td></tr>
+          <tr><td>HS6-5-2-5</td><td class="tom"><span class="fasit" hidden>Hurtigstål med 6 % W, 5 % Mo, 2 % V, 5 % Co.</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b><br>S235JR: konstruksjonsstål, minste flytegrense 235 MPa, 27 J ved +20 °C.<br>S355J2: konstruksjonsstål, 355 MPa, 27 J ved −20 °C.<br>C45: ulegert stål, 0,45 % karbon.<br>42CrMo4: lavlegert, 0,42 % C, 4 : 4 = 1 % Cr, litt Mo.<br>16MnCr5: lavlegert, 0,16 % C, 5 : 4 = 1,25 % Mn, litt Cr (settherdingsstål).<br>X5CrNi18-10: høylegert, 0,05 % C, 18 % Cr, 10 % Ni (= 304 / 1.4301).<br>X2CrNiMo17-12-2: høylegert, 0,02 % C, 17 % Cr, 12 % Ni, 2 % Mo (= 316L / 1.4404).<br>11SMnPb30: 0,11 % C, 30 : 100 = 0,30 % S, litt Mn og Pb (automatstål).<br>HS6-5-2-5: hurtigstål med 6 % W, 5 % Mo, 2 % V, 5 % Co.</div>
       </div>
 
       <div class="oppgave">
@@ -765,25 +765,23 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         <p>Skriv riktig bokstav bak hvert element.</p>
         <table class="ot">
           <tr><th style="width:40%">Element</th><th>Virkning</th></tr>
-          <tr><td>1. Krom (Cr) ____</td><td>A. Gir korte spon – lett å maskinere</td></tr>
-          <tr><td>2. Nikkel (Ni) ____</td><td>B. Gjør stålet rustfritt når det er over 10,5 %</td></tr>
-          <tr><td>3. Molybden (Mo) ____</td><td>C. Harde karbider – verktøyet holder seg skarpt, også når det blir varmt</td></tr>
-          <tr><td>4. Svovel (S) ____</td><td>D. Finnes i nesten alt stål og øker fastheten</td></tr>
-          <tr><td>5. Vanadium og wolfram (V, W) ____</td><td>E. Gir seighet, også i kulde, og gjør rustfritt umagnetisk</td></tr>
-          <tr><td>6. Mangan (Mn) ____</td><td>F. Gjør rustfritt bedre mot saltvann og syre (316)</td></tr>
+          <tr><td>1. Krom (Cr) <span class="luke"><span class="fasit" hidden>B</span></span></td><td>A. Gir korte spon – lett å maskinere</td></tr>
+          <tr><td>2. Nikkel (Ni) <span class="luke"><span class="fasit" hidden>E</span></span></td><td>B. Gjør stålet rustfritt når det er over 10,5 %</td></tr>
+          <tr><td>3. Molybden (Mo) <span class="luke"><span class="fasit" hidden>F</span></span></td><td>C. Harde karbider – verktøyet holder seg skarpt, også når det blir varmt</td></tr>
+          <tr><td>4. Svovel (S) <span class="luke"><span class="fasit" hidden>A</span></span></td><td>D. Finnes i nesten alt stål og øker fastheten</td></tr>
+          <tr><td>5. Vanadium og wolfram (V, W) <span class="luke"><span class="fasit" hidden>C</span></span></td><td>E. Gir seighet, også i kulde, og gjør rustfritt umagnetisk</td></tr>
+          <tr><td>6. Mangan (Mn) <span class="luke"><span class="fasit" hidden>D</span></span></td><td>F. Gjør rustfritt bedre mot saltvann og syre (316)</td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> 1B, 2E, 3F, 4A, 5C, 6D.</div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 5 – Sveisbarhet <small>Ekstra / hjemme · 10 min</small></h3>
         <p>CEV = C + Mn/6 + (Cr + Mo + V)/5 + (Ni + Cu)/15. Regn ut CEV og si om stålet trenger forvarming. Vis utregningen.</p>
-        <p>a) Stål A: C 0,16 %, Mn 1,32 % (resten ≈ 0)</p><div class="svar"></div><div class="svar"></div>
-        <p>b) Stål B: C 0,45 %, Mn 0,72 %</p><div class="svar"></div><div class="svar"></div>
-        <p>c) Stål C: C 0,42 %, Mn 0,78 %, Cr 1,0 %, Mo 0,25 %</p><div class="svar"></div><div class="svar"></div>
-        <p>d) Hvilke av stålene A, B og C tror du er S355, C45 og 42CrMo4?</p><div class="svar"></div>
-        <p>e) Hvorfor er forvarming ekstra viktig når emnet er tykt?</p><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 0,16 + 1,32/6 = 0,16 + 0,22 = <b>0,38</b> → god sveisbarhet, normalt ingen forvarming. b) 0,45 + 0,72/6 = 0,45 + 0,12 = <b>0,57</b> → forvarming nødvendig. c) 0,42 + 0,78/6 + (1,0 + 0,25)/5 = 0,42 + 0,13 + 0,25 = <b>0,80</b> → vanskelig, krever egen sveiseprosedyre. d) A = S355, B = C45, C = 42CrMo4. e) Tykt, kaldt gods trekker varmen raskt ut av sveisen. Da avkjøles sonen rundt sveisen nesten som ved bråkjøling, og den blir hard og sprø. Forvarming gir langsommere avkjøling.</div>
+        <p>a) Stål A: C 0,16 %, Mn 1,32 % (resten ≈ 0)</p><div class="svar"><span class="fasit" hidden>CEV = 0,16 + 1,32/6 = 0,16 + 0,22 = <b>0,38</b></span></div><div class="svar"><span class="fasit" hidden>God sveisbarhet, normalt ingen forvarming.</span></div>
+        <p>b) Stål B: C 0,45 %, Mn 0,72 %</p><div class="svar"><span class="fasit" hidden>CEV = 0,45 + 0,72/6 = 0,45 + 0,12 = <b>0,57</b></span></div><div class="svar"><span class="fasit" hidden>Forvarming nødvendig.</span></div>
+        <p>c) Stål C: C 0,42 %, Mn 0,78 %, Cr 1,0 %, Mo 0,25 %</p><div class="svar"><span class="fasit" hidden>CEV = 0,42 + 0,78/6 + (1,0 + 0,25)/5 = 0,42 + 0,13 + 0,25 = <b>0,80</b></span></div><div class="svar"><span class="fasit" hidden>Vanskelig, krever egen sveiseprosedyre.</span></div>
+        <p>d) Hvilke av stålene A, B og C tror du er S355, C45 og 42CrMo4?</p><div class="svar"><span class="fasit" hidden>A = S355, B = C45, C = 42CrMo4</span></div>
+        <p>e) Hvorfor er forvarming ekstra viktig når emnet er tykt?</p><div class="svar"><span class="fasit" hidden>Tykt, kaldt gods trekker varmen raskt ut av sveisen. Da avkjøles sonen rundt sveisen nesten som ved bråkjøling, og den blir hard og sprø.</span></div><div class="svar"><span class="fasit" hidden>Forvarming gir langsommere avkjøling.</span></div>
       </div>
 
       <div class="oppgave">
@@ -791,22 +789,20 @@ table.fac td, table.fac th{font-size:.85rem; padding:.3rem .5rem}
         <p>Velg ståltype og begrunn med minst én egenskap.</p>
         <table class="ot">
           <tr><th style="width:42%">Del</th><th style="width:22%">Stål</th><th>Fordi …</th></tr>
-          <tr><td>a) Sveist ramme til en tilhenger som brukes om vinteren</td><td class="tom"></td><td></td></tr>
-          <tr><td>b) Hardt belastet aksel i en girkasse</td><td class="tom"></td><td></td></tr>
-          <tr><td>c) 5000 små dreide nipler</td><td class="tom"></td><td></td></tr>
-          <tr><td>d) Rekkverk på en kai i sjøvann</td><td class="tom"></td><td></td></tr>
-          <tr><td>e) Stanseverktøy for tynnplate</td><td class="tom"></td><td></td></tr>
-          <tr><td>f) Stativ til en maskin som skal dempe vibrasjoner</td><td class="tom"></td><td></td></tr>
+          <tr><td>a) Sveist ramme til en tilhenger som brukes om vinteren</td><td class="tom"><span class="fasit" hidden>S355J2</span></td><td><span class="fasit" hidden>Sterkt, lett å sveise, seigt ved −20 °C.</span></td></tr>
+          <tr><td>b) Hardt belastet aksel i en girkasse</td><td class="tom"><span class="fasit" hidden>42CrMo4 seigherdet</span></td><td><span class="fasit" hidden>Høy fasthet og seighet.</span></td></tr>
+          <tr><td>c) 5000 små dreide nipler</td><td class="tom"><span class="fasit" hidden>Automatstål 11SMnPb30</span></td><td><span class="fasit" hidden>Korte spon, rask produksjon.</span></td></tr>
+          <tr><td>d) Rekkverk på en kai i sjøvann</td><td class="tom"><span class="fasit" hidden>Rustfritt syrefast 316L</span></td><td><span class="fasit" hidden>Mo gir motstand mot klorid.</span></td></tr>
+          <tr><td>e) Stanseverktøy for tynnplate</td><td class="tom"><span class="fasit" hidden>Verktøystål, f.eks. 1.2379</span></td><td><span class="fasit" hidden>Hardt og slitesterkt.</span></td></tr>
+          <tr><td>f) Stativ til en maskin som skal dempe vibrasjoner</td><td class="tom"><span class="fasit" hidden>Gråjern EN-GJL-250</span></td><td><span class="fasit" hidden>Demper vibrasjoner. Andre svar kan være riktige hvis begrunnelsen holder.</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Forslag:</b> a) S355J2 – sterkt, lett å sveise, seigt ved −20 °C. b) 42CrMo4 seigherdet – høy fasthet og seighet. c) Automatstål 11SMnPb30 – korte spon, rask produksjon. d) Rustfritt syrefast 316L – Mo gir motstand mot klorid. e) Verktøystål, f.eks. 1.2379 – hardt og slitesterkt. f) Gråjern EN-GJL-250 – demper vibrasjoner. Andre svar kan være riktige hvis begrunnelsen holder.</div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 3 min</small></h3>
-        <p>1. Hva skiller stål fra støpejern?</p><div class="svar"></div>
-        <p>2. Hva betyr 355 og J2 i S355J2?</p><div class="svar"></div><div class="svar"></div>
-        <p>3. Hvilket element gjør stål rustfritt, og hvor mye trengs?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Karboninnholdet: stål under ca. 2 %, støpejern 2–4 %. 2) 355 = minste flytegrense 355 MPa. J2 = minst 27 J slagseighet ved −20 °C. 3) Krom, minst 10,5 %.</div>
+        <p>1. Hva skiller stål fra støpejern?</p><div class="svar"><span class="fasit" hidden>Karboninnholdet: stål under ca. 2 %, støpejern 2–4 %.</span></div>
+        <p>2. Hva betyr 355 og J2 i S355J2?</p><div class="svar"><span class="fasit" hidden>355 = minste flytegrense 355 MPa.</span></div><div class="svar"><span class="fasit" hidden>J2 = minst 27 J slagseighet ved −20 °C.</span></div>
+        <p>3. Hvilket element gjør stål rustfritt, og hvor mye trengs?</p><div class="svar"><span class="fasit" hidden>Krom, minst 10,5 %.</span></div>
       </div>
     </div>
   </div>
@@ -1556,14 +1552,16 @@ let fasitOn = false;
 $("btnFasit").onclick = () => {
   fasitOn = !fasitOn;
   document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn);
+  $("oppgavetekst").classList.toggle("vis-fasit", fasitOn);
   $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit";
 };
 $("btnPrint").onclick = () => window.print();
 $("btnCopy").onclick = async () => {
   const clone = $("oppgavetekst").cloneNode(true);
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "____"; });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.textContent.trim()) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   const html = clone.innerHTML, text = clone.innerText;
   try {

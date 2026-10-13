@@ -111,9 +111,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -460,21 +463,20 @@ table.t th{background:var(--steel-soft)}
         <div class="ordbank"><b>Ord:</b> trykkluftkilde · vedlikeholdsenhet · 5/2-ventil med knapp og fjær · strupe-tilbakeslagsventil (2 stk.) · dobbeltvirkende sylinder</div>
         <table class="ot">
           <tr><th style="width:2.5rem">Nr.</th><th>Navn</th><th style="width:2.5rem">Nr.</th><th>Navn</th></tr>
-          <tr><td>1</td><td class="tom"></td><td>4</td><td></td></tr>
-          <tr><td>2</td><td class="tom"></td><td>5</td><td></td></tr>
-          <tr><td>3</td><td class="tom"></td><td>6</td><td></td></tr>
+          <tr><td>1</td><td class="tom"><span class="fasit" hidden>Trykkluftkilde</span></td><td>4</td><td><span class="fasit" hidden>Strupe-tilbakeslagsventil A (plussiden)</span></td></tr>
+          <tr><td>2</td><td class="tom"><span class="fasit" hidden>Vedlikeholdsenhet</span></td><td>5</td><td><span class="fasit" hidden>Strupe-tilbakeslagsventil B (minussiden)</span></td></tr>
+          <tr><td>3</td><td class="tom"><span class="fasit" hidden>5/2-ventil med knapp og fjær</span></td><td>6</td><td><span class="fasit" hidden>Dobbeltvirkende sylinder</span></td></tr>
         </table>
-        <p>b) Hvilken strupe (4 eller 5) bestemmer farten når sylinderen går <b>ut</b>? Og når den går <b>inn</b>?</p><div class="svar"></div>
-        <p>c) Hva gjør kula inni strupe-tilbakeslagsventilen?</p><div class="svar"></div>
-        <p>d) Hvorfor struper vi <b>avlufta</b> og ikke tilluft på en dobbeltvirkende sylinder?</p><div class="svar"></div><div class="svar"></div>
+        <p>b) Hvilken strupe (4 eller 5) bestemmer farten når sylinderen går <b>ut</b>? Og når den går <b>inn</b>?</p><div class="svar"><span class="fasit" hidden>Ut: <b>5</b> (den struper lufta som presses ut av minussiden). Inn: <b>4</b>.</span></div>
+        <p>c) Hva gjør kula inni strupe-tilbakeslagsventilen?</p><div class="svar"><span class="fasit" hidden>Kula slipper lufta fritt <i>inn</i> til sylinderen. Når lufta skal <i>ut</i>, presses kula inn i setet, og lufta må gjennom strupen.</span></div>
+        <p>d) Hvorfor struper vi <b>avlufta</b> og ikke tilluft på en dobbeltvirkende sylinder?</p><div class="svar"><span class="fasit" hidden>Med avluftstruping har stempelet trykk på begge sider – det er «klemt mellom to luftputer» og går jevnt.</span></div><div class="svar"><span class="fasit" hidden>Tilluftstruping gir rykkete bevegelse.</span></div>
         <p>e) Hva skjer?</p>
         <table class="ot">
           <tr><th style="width:50%">Du gjør dette</th><th>Hva skjer med sylinderen?</th></tr>
-          <tr><td>Skrur strupe 5 nesten helt igjen</td><td class="tom"></td></tr>
-          <tr><td>Skrur strupe 4 helt opp</td><td class="tom"></td></tr>
-          <tr><td>Skrur strupe 5 helt igjen</td><td class="tom"></td></tr>
+          <tr><td>Skrur strupe 5 nesten helt igjen</td><td class="tom"><span class="fasit" hidden>Går veldig sakte ut (inn som før).</span></td></tr>
+          <tr><td>Skrur strupe 4 helt opp</td><td class="tom"><span class="fasit" hidden>Ut som før, inn går raskere.</span></td></tr>
+          <tr><td>Skrur strupe 5 helt igjen</td><td class="tom"><span class="fasit" hidden>Går ikke ut – lufta på minussiden kommer ikke ut.</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 trykkluftkilde, 2 vedlikeholdsenhet, 3 5/2-ventil med knapp og fjær, 4 strupe-tilbakeslagsventil A (plussiden), 5 strupe-tilbakeslagsventil B (minussiden), 6 dobbeltvirkende sylinder. b) Ut: <b>5</b> (den struper lufta som presses ut av minussiden). Inn: <b>4</b>. c) Kula slipper lufta fritt <i>inn</i> til sylinderen. Når lufta skal <i>ut</i>, presses kula inn i setet, og lufta må gjennom strupen. d) Med avluftstruping har stempelet trykk på begge sider – det er «klemt mellom to luftputer» og går jevnt. Tilluftstruping gir rykkete bevegelse. e) Går veldig sakte ut (inn som før). / Ut som før, inn går raskere. / Går ikke ut – lufta på minussiden kommer ikke ut.</div>
       </div>
 
       <div class="oppgave">
@@ -484,15 +486,14 @@ table.t th{background:var(--steel-soft)}
         <div class="ordbank"><b>Ord:</b> trykkluftkilde · vedlikeholdsenhet · 3/2-ventil med knapp (S1) · styreledning · 5/2-ventil styrt med luft · dobbeltvirkende sylinder</div>
         <table class="ot">
           <tr><th style="width:2.5rem">Nr.</th><th>Navn</th><th style="width:2.5rem">Nr.</th><th>Navn</th></tr>
-          <tr><td>1</td><td class="tom"></td><td>4</td><td></td></tr>
-          <tr><td>2</td><td class="tom"></td><td>5</td><td></td></tr>
-          <tr><td>3</td><td class="tom"></td><td>6</td><td></td></tr>
+          <tr><td>1</td><td class="tom"><span class="fasit" hidden>Trykkluftkilde</span></td><td>4</td><td><span class="fasit" hidden>Styreledning</span></td></tr>
+          <tr><td>2</td><td class="tom"><span class="fasit" hidden>Vedlikeholdsenhet</span></td><td>5</td><td><span class="fasit" hidden>5/2-ventil styrt med luft (pilot) og fjær</span></td></tr>
+          <tr><td>3</td><td class="tom"><span class="fasit" hidden>3/2-ventil med knapp (S1)</span></td><td>6</td><td><span class="fasit" hidden>Dobbeltvirkende sylinder</span></td></tr>
         </table>
-        <p>b) Hva er forskjellen på en <b>hel</b> og en <b>stiplet</b> linje i skjemaet?</p><div class="svar"></div>
-        <p>c) Gi to grunner til å bruke indirekte styring.</p><div class="svar"></div><div class="svar"></div>
-        <p>d) Hva skjer når S1 trykkes inn? Skriv tre steg.</p><div class="svar"></div><div class="svar"></div>
-        <p>e) <b>Feilsøking:</b> Slangen 4 har løsnet ved ventil 5. Hva skjer med sylinderen når du trykker S1? Hva hører du?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 trykkluftkilde, 2 vedlikeholdsenhet, 3 3/2-ventil med knapp (S1), 4 styreledning, 5 5/2-ventil styrt med luft (pilot) og fjær, 6 dobbeltvirkende sylinder. b) Hel = arbeidsledning, luft som gjør jobben. Stiplet = styreledning, bare et signal. c) F.eks.: en stor sylinder trenger mye luft – en liten knappeventil holder; knappen kan stå langt unna maskinen; tynne slanger og mindre luftsløsing; raskere start; vi kan koble på automatikk (OG/ELLER, rulleventiler). d) S1 kobler 1 → 2 → luft i styreledningen til port 14 → ventil 5 skifter og kobler 1 → 4 → sylinderen går ut. e) Sylinderen står stille. Det hveser ved den løse slangen når S1 trykkes.</div>
+        <p>b) Hva er forskjellen på en <b>hel</b> og en <b>stiplet</b> linje i skjemaet?</p><div class="svar"><span class="fasit" hidden>Hel = arbeidsledning, luft som gjør jobben. Stiplet = styreledning, bare et signal.</span></div>
+        <p>c) Gi to grunner til å bruke indirekte styring.</p><div class="svar"><span class="fasit" hidden>F.eks.: en stor sylinder trenger mye luft – en liten knappeventil holder; knappen kan stå langt unna maskinen;</span></div><div class="svar"><span class="fasit" hidden>tynne slanger og mindre luftsløsing; raskere start; vi kan koble på automatikk (OG/ELLER, rulleventiler).</span></div>
+        <p>d) Hva skjer når S1 trykkes inn? Skriv tre steg.</p><div class="svar"><span class="fasit" hidden>S1 kobler 1 → 2 → luft i styreledningen til port 14 →</span></div><div class="svar"><span class="fasit" hidden>ventil 5 skifter og kobler 1 → 4 → sylinderen går ut.</span></div>
+        <p>e) <b>Feilsøking:</b> Slangen 4 har løsnet ved ventil 5. Hva skjer med sylinderen når du trykker S1? Hva hører du?</p><div class="svar"><span class="fasit" hidden>Sylinderen står stille. Det hveser ved den løse slangen når S1 trykkes.</span></div>
       </div>
 
       <div class="oppgave">
@@ -500,37 +501,35 @@ table.t th{background:var(--steel-soft)}
         <p>a) Sylinderen står inne. Skriv hva sylinderen gjør: <b>går ut</b>, <b>går inn</b>, <b>blir stående ute</b> eller <b>blir stående inne</b>.</p>
         <table class="ot c">
           <tr><th>Steg</th><th>Hva du gjør</th><th style="width:26%">5/2 med fjærretur</th><th style="width:26%">5/2 impulsventil</th></tr>
-          <tr><td>1</td><td>Trykker S1 (signal 14) og holder</td><td class="tom"></td><td></td></tr>
-          <tr><td>2</td><td>Slipper S1</td><td class="tom"></td><td></td></tr>
-          <tr><td>3</td><td>Trykker S2 (signal 12) og holder</td><td class="tom">(finnes ikke)</td><td></td></tr>
-          <tr><td>4</td><td>Slipper S2</td><td class="tom">(finnes ikke)</td><td></td></tr>
+          <tr><td>1</td><td>Trykker S1 (signal 14) og holder</td><td class="tom"><span class="fasit" hidden>går ut</span></td><td><span class="fasit" hidden>går ut</span></td></tr>
+          <tr><td>2</td><td>Slipper S1</td><td class="tom"><span class="fasit" hidden>går inn</span></td><td><span class="fasit" hidden>blir stående ute</span></td></tr>
+          <tr><td>3</td><td>Trykker S2 (signal 12) og holder</td><td class="tom">(finnes ikke)</td><td><span class="fasit" hidden>går inn</span></td></tr>
+          <tr><td>4</td><td>Slipper S2</td><td class="tom">(finnes ikke)</td><td><span class="fasit" hidden>blir stående inne</span></td></tr>
         </table>
-        <p>b) Hvorfor kalles impulsventilen en «minneventil»?</p><div class="svar"></div>
-        <p>c) Lufta har vært avstengt og blir slått på igjen. Hvorfor kan en impulsventil være farlig da?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) Fjærretur: 1 går ut, 2 går inn. Impulsventil: 1 går ut, 2 blir stående ute, 3 går inn, 4 blir stående inne. b) Den husker det siste signalet og blir stående til den får signal på den andre siden. c) Den husker stillingen sin. Når lufta kommer tilbake, kan sylinderen bevege seg uten at noen trykker på noe.</div>
+        <p>b) Hvorfor kalles impulsventilen en «minneventil»?</p><div class="svar"><span class="fasit" hidden>Den husker det siste signalet og blir stående til den får signal på den andre siden.</span></div>
+        <p>c) Lufta har vært avstengt og blir slått på igjen. Hvorfor kan en impulsventil være farlig da?</p><div class="svar"><span class="fasit" hidden>Den husker stillingen sin. Når lufta kommer tilbake, kan sylinderen bevege seg uten at noen trykker på noe.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 4 – OG eller ELLER? <small>Time 2 · 5 min</small></h3>
         <div class="ofig" id="o4fig"></div>
-        <p>a) Hvilket symbol er OG (tofrykkventil), og hvilket er ELLER (vekselventil)? &nbsp; X = ______________ &nbsp; Y = ______________</p>
+        <p>a) Hvilket symbol er OG (tofrykkventil), og hvilket er ELLER (vekselventil)? &nbsp; X = <span class="luke"><span class="fasit" hidden>ELLER (vekselventil, kula)</span></span> &nbsp; Y = <span class="luke"><span class="fasit" hidden>OG (tofrykkventil, sleiden)</span></span></p>
         <p>b) Fyll ut sannhetstabellen. 1 = signal, 0 = ikke signal.</p>
         <table class="ot c" style="max-width:520px">
           <tr><th>A</th><th>B</th><th>OG gir ut</th><th>ELLER gir ut</th></tr>
-          <tr><td>0</td><td>0</td><td class="tom"></td><td></td></tr>
-          <tr><td>1</td><td>0</td><td class="tom"></td><td></td></tr>
-          <tr><td>0</td><td>1</td><td class="tom"></td><td></td></tr>
-          <tr><td>1</td><td>1</td><td class="tom"></td><td></td></tr>
+          <tr><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden>0</span></td><td><span class="fasit" hidden>0</span></td></tr>
+          <tr><td>1</td><td>0</td><td class="tom"><span class="fasit" hidden>0</span></td><td><span class="fasit" hidden>1</span></td></tr>
+          <tr><td>0</td><td>1</td><td class="tom"><span class="fasit" hidden>0</span></td><td><span class="fasit" hidden>1</span></td></tr>
+          <tr><td>1</td><td>1</td><td class="tom"><span class="fasit" hidden>1</span></td><td><span class="fasit" hidden>1</span></td></tr>
         </table>
         <p>c) Sett kryss: trenger du OG eller ELLER?</p>
         <table class="ot c">
           <tr><th>Situasjon</th><th style="width:5rem">OG</th><th style="width:5rem">ELLER</th></tr>
-          <tr><td>Tohåndsbetjening på en presse</td><td></td><td></td></tr>
-          <tr><td>Start fra maskinen eller fra kontrollrommet</td><td></td><td></td></tr>
-          <tr><td>Sylinderen skal bare gå når døra er lukket og start er trykket</td><td></td><td></td></tr>
-          <tr><td>Porten skal kunne åpnes fra innsiden og fra utsiden</td><td></td><td></td></tr>
+          <tr><td>Tohåndsbetjening på en presse</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>Start fra maskinen eller fra kontrollrommet</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>Sylinderen skal bare gå når døra er lukket og start er trykket</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>Porten skal kunne åpnes fra innsiden og fra utsiden</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) X = ELLER (vekselventil, kula). Y = OG (tofrykkventil, sleiden). b) OG: 0, 0, 0, 1. ELLER: 0, 1, 1, 1. c) OG · ELLER · OG · ELLER.</div>
       </div>
 
       <div class="oppgave">
@@ -540,53 +539,50 @@ table.t th{background:var(--steel-soft)}
         <div class="ordbank"><b>Ord:</b> trykkluftkilde · vedlikeholdsenhet · impulsventil 5/2 · strupe-tilbakeslagsventil A · strupe-tilbakeslagsventil B · sylinder · rulleventil a1 · startknapp S1 · rulleventil a0 · tofrykkventil (OG)</div>
         <table class="ot">
           <tr><th style="width:2.5rem">Nr.</th><th>Navn</th><th style="width:2.5rem">Nr.</th><th>Navn</th></tr>
-          <tr><td>1</td><td class="tom"></td><td>6</td><td></td></tr>
-          <tr><td>2</td><td class="tom"></td><td>7</td><td></td></tr>
-          <tr><td>3</td><td class="tom"></td><td>8</td><td></td></tr>
-          <tr><td>4</td><td class="tom"></td><td>9</td><td></td></tr>
-          <tr><td>5</td><td class="tom"></td><td>10</td><td></td></tr>
+          <tr><td>1</td><td class="tom"><span class="fasit" hidden>Trykkluftkilde</span></td><td>6</td><td><span class="fasit" hidden>Sylinder</span></td></tr>
+          <tr><td>2</td><td class="tom"><span class="fasit" hidden>Vedlikeholdsenhet</span></td><td>7</td><td><span class="fasit" hidden>Rulleventil a1</span></td></tr>
+          <tr><td>3</td><td class="tom"><span class="fasit" hidden>Impulsventil 5/2</span></td><td>8</td><td><span class="fasit" hidden>Startknapp S1</span></td></tr>
+          <tr><td>4</td><td class="tom"><span class="fasit" hidden>Strupe-tilbakeslagsventil A</span></td><td>9</td><td><span class="fasit" hidden>Rulleventil a0</span></td></tr>
+          <tr><td>5</td><td class="tom"><span class="fasit" hidden>Strupe-tilbakeslagsventil B</span></td><td>10</td><td><span class="fasit" hidden>Tofrykkventil (OG)</span></td></tr>
         </table>
         <p>b) Sett stegene i riktig rekkefølge (1–5).</p>
         <table class="ot">
           <tr><th style="width:4rem">Nr.</th><th>Steg</th></tr>
-          <tr><td class="tom"></td><td>Sylinderen går ut.</td></tr>
-          <tr><td class="tom"></td><td>S1 trykkes, og a0 er trykket inn → OG gir signal til 14.</td></tr>
-          <tr><td class="tom"></td><td>Sylinderen går inn til a0.</td></tr>
-          <tr><td class="tom"></td><td>Kammen treffer a1 → signal til 12.</td></tr>
-          <tr><td class="tom"></td><td>Impulsventilen skifter til 14-stilling.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>3</span></td><td>Sylinderen går ut.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>1</span></td><td>S1 trykkes, og a0 er trykket inn → OG gir signal til 14.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>5</span></td><td>Sylinderen går inn til a0.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>4</span></td><td>Kammen treffer a1 → signal til 12.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>2</span></td><td>Impulsventilen skifter til 14-stilling.</td></tr>
         </table>
-        <p>c) Hvorfor er a0 koblet inn sammen med S1 i en OG-ventil?</p><div class="svar"></div>
+        <p>c) Hvorfor er a0 koblet inn sammen med S1 i en OG-ventil?</p><div class="svar"><span class="fasit" hidden>En ny start skal bare kunne skje når stanga er helt inne. Ellers kan det komme signal på 14 og 12 samtidig, og sylinderen blir stående ute.</span></div>
         <p>d) <b>Feilsøking.</b> Finn den mest sannsynlige feilen.</p>
         <table class="ot">
           <tr><th style="width:55%">Symptom</th><th>Mest sannsynlig feil</th></tr>
-          <tr><td>Sylinderen går ut og blir stående ute. Rulla på a1 er ikke trykket inn.</td><td class="tom"></td></tr>
-          <tr><td>Sylinderen går ut og blir stående ute. Rulla på a1 er trykket inn, og det hveser ved impulsventilen.</td><td class="tom"></td></tr>
-          <tr><td>Ingenting skjer når du trykker S1. Sylinderen står inne.</td><td class="tom"></td></tr>
-          <tr><td>Sylinderen går altfor sakte ut, men inn går normalt.</td><td class="tom"></td></tr>
+          <tr><td>Sylinderen går ut og blir stående ute. Rulla på a1 er ikke trykket inn.</td><td class="tom"><span class="fasit" hidden>a1 sitter for langt ute / er feiljustert.</span></td></tr>
+          <tr><td>Sylinderen går ut og blir stående ute. Rulla på a1 er trykket inn, og det hveser ved impulsventilen.</td><td class="tom"><span class="fasit" hidden>Slangen fra a1 til 12 er løs eller lekker.</span></td></tr>
+          <tr><td>Ingenting skjer når du trykker S1. Sylinderen står inne.</td><td class="tom"><span class="fasit" hidden>a0 får ikke luft eller blir ikke trykket inn (ev. S1 er defekt).</span></td></tr>
+          <tr><td>Sylinderen går altfor sakte ut, men inn går normalt.</td><td class="tom"><span class="fasit" hidden>Strupe B (minussiden) er skrudd for langt igjen.</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 trykkluftkilde, 2 vedlikeholdsenhet, 3 impulsventil 5/2, 4 strupe-tilbakeslagsventil A, 5 strupe-tilbakeslagsventil B, 6 sylinder, 7 rulleventil a1, 8 startknapp S1, 9 rulleventil a0, 10 tofrykkventil (OG). b) 3 – 1 – 5 – 4 – 2 (rekkefølgen er: S1 og a0 → impulsventilen skifter → går ut → a1 → går inn). c) En ny start skal bare kunne skje når stanga er helt inne. Ellers kan det komme signal på 14 og 12 samtidig, og sylinderen blir stående ute. d) a1 sitter for langt ute / er feiljustert. · Slangen fra a1 til 12 er løs eller lekker. · a0 får ikke luft eller blir ikke trykket inn (ev. S1 er defekt). · Strupe B (minussiden) er skrudd for langt igjen.</div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 6 – Trygg styring <small>Time 2 · 3 min</small></h3>
         <table class="ot c">
           <tr><th>Påstand</th><th style="width:5rem">Riktig</th><th style="width:5rem">Galt</th></tr>
-          <tr><td>a) Tohåndsbetjening skal sikre at begge hendene er utenfor farlig område.</td><td></td><td></td></tr>
-          <tr><td>b) Det er greit å teipe ned den ene knappen på en tohåndsbetjening.</td><td></td><td></td></tr>
-          <tr><td>c) En impulsventil kan få sylinderen til å gå når lufta slås på igjen.</td><td></td><td></td></tr>
-          <tr><td>d) Når du tester en ny krets, starter du med strupene nesten igjen.</td><td></td><td></td></tr>
-          <tr><td>e) Du kan justere rulleventilene mens maskinen går automatisk.</td><td></td><td></td></tr>
-          <tr><td>f) Før du kobler om slanger, stenger du og slipper ut lufta.</td><td></td><td></td></tr>
+          <tr><td>a) Tohåndsbetjening skal sikre at begge hendene er utenfor farlig område.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>b) Det er greit å teipe ned den ene knappen på en tohåndsbetjening.</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>c) En impulsventil kan få sylinderen til å gå når lufta slås på igjen.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>d) Når du tester en ny krets, starter du med strupene nesten igjen.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>e) Du kan justere rulleventilene mens maskinen går automatisk.</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>f) Før du kobler om slanger, stenger du og slipper ut lufta.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) riktig. b) galt. c) riktig. d) riktig. e) galt. f) riktig.</div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 2 min</small></h3>
-        <p>1. Hvilken strupe styrer farten <b>ut</b> på en dobbeltvirkende sylinder?</p><div class="svar"></div>
-        <p>2. Hva er forskjellen på en impulsventil og en ventil med fjærretur?</p><div class="svar"></div>
-        <p>3. Når gir en OG-ventil luft ut?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Strupen på minussiden (den som struper avlufta når sylinderen går ut). 2) Impulsventilen husker siste signal og blir stående. Fjærventilen går tilbake når signalet forsvinner. 3) Bare når begge inngangene har signal.</div>
+        <p>1. Hvilken strupe styrer farten <b>ut</b> på en dobbeltvirkende sylinder?</p><div class="svar"><span class="fasit" hidden>Strupen på minussiden (den som struper avlufta når sylinderen går ut).</span></div>
+        <p>2. Hva er forskjellen på en impulsventil og en ventil med fjærretur?</p><div class="svar"><span class="fasit" hidden>Impulsventilen husker siste signal og blir stående. Fjærventilen går tilbake når signalet forsvinner.</span></div>
+        <p>3. Når gir en OG-ventil luft ut?</p><div class="svar"><span class="fasit" hidden>Bare når begge inngangene har signal.</span></div>
       </div>
     </div>
   </div>
@@ -1328,11 +1324,12 @@ $("pSumSvg").innerHTML = symSheet2(PS);
 
 /* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToPng(svg){
   const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
   const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  c.querySelectorAll(".fasit-svg").forEach(e => { if (!fasitOn) e.remove(); else { e.style.display = "inline"; e.setAttribute("fill", "#2b8a3e"); } });
   const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
   await img.decode();
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
@@ -1346,9 +1343,11 @@ $("btnCopy").onclick = async () => {
     try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.min(640, Math.round(w*.62)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".fasit").forEach(f => f.style.color = "#2b8a3e");
+  clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "____________"; });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); if (s.textContent.trim()) { p.innerHTML = s.innerHTML; p.style.borderBottom = "1px solid #777"; } else p.textContent="_____________________________________________________________"; s.replaceWith(p); });
   clone.querySelectorAll(".scenario,.ordbank").forEach(s => { s.style.border="1px dashed #777"; s.style.padding="6px 10px"; });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
   const html = clone.innerHTML, text = clone.innerText;

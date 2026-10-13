@@ -103,9 +103,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -418,16 +421,15 @@ table.t th{background:var(--steel-soft)}
         <p>Sett kryss. Noen passer i flere – velg det viktigste.</p>
         <table class="ot c">
           <tr><th>Hendelse</th><th style="width:5.5rem">Helse</th><th style="width:5.5rem">Miljø</th><th style="width:5.5rem">Sikkerhet</th></tr>
-          <tr><td>1. Du får spon i øyet.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>2. Du står ved en støyende maskin hele dagen.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>3. Spillolje helles i sluket.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>4. Du løfter tunge emner med krum rygg.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>5. En gassflaske velter.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>6. Metallspon kastes i restavfallet.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>7. Du puster inn sveiserøyk hver dag.</td><td class="tom"></td><td></td><td></td></tr>
-          <tr><td>8. Nødutgangen er sperret.</td><td class="tom"></td><td></td><td></td></tr>
+          <tr><td>1. Du får spon i øyet.</td><td class="tom"></td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>2. Du står ved en støyende maskin hele dagen.</td><td class="tom"><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
+          <tr><td>3. Spillolje helles i sluket.</td><td class="tom"></td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>4. Du løfter tunge emner med krum rygg.</td><td class="tom"><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
+          <tr><td>5. En gassflaske velter.</td><td class="tom"></td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>6. Metallspon kastes i restavfallet.</td><td class="tom"></td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>7. Du puster inn sveiserøyk hver dag.</td><td class="tom"><span class="fasit" hidden>✗</span></td><td><span class="fasit" hidden>(✗) for omgivelsene</span></td><td></td></tr>
+          <tr><td>8. Nødutgangen er sperret.</td><td class="tom"></td><td></td><td><span class="fasit" hidden>✗<br><small>Godta andre svar med god begrunnelse</small></span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> 1 S · 2 H · 3 M · 4 H · 5 S · 6 M · 7 H (også M for omgivelsene) · 8 S. Godta andre svar med god begrunnelse.</div>
       </div>
 
       <div class="oppgave">
@@ -437,20 +439,19 @@ table.t th{background:var(--steel-soft)}
         <p>b) Hva slags hendelse er det? Skriv <b>N</b> (nestenulykke), <b>MS</b> (materiell skade) eller <b>PS</b> (personskade).</p>
         <table class="ot">
           <tr><th>Hendelse</th><th style="width:7rem">N / MS / PS</th></tr>
-          <tr><td>En kollega snubler i en ledning, men tar seg for.</td><td class="tom"></td></tr>
-          <tr><td>Et bor knekker fordi turtallet var feil.</td><td class="tom"></td></tr>
-          <tr><td>Du kutter deg på en skarp grader og trenger plaster.</td><td class="tom"></td></tr>
-          <tr><td>En kasse faller ned fra reolen og lander rett ved siden av en elev.</td><td class="tom"></td></tr>
+          <tr><td>En kollega snubler i en ledning, men tar seg for.</td><td class="tom"><span class="fasit" hidden>N</span></td></tr>
+          <tr><td>Et bor knekker fordi turtallet var feil.</td><td class="tom"><span class="fasit" hidden>MS</span></td></tr>
+          <tr><td>Du kutter deg på en skarp grader og trenger plaster.</td><td class="tom"><span class="fasit" hidden>PS</span></td></tr>
+          <tr><td>En kasse faller ned fra reolen og lander rett ved siden av en elev.</td><td class="tom"><span class="fasit" hidden>N</span></td></tr>
         </table>
-        <p>c) Hvorfor er det lurt å melde nestenulykker?</p><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) Fra toppen: 1 alvorlig skade/død – 10 mindre skader – 30 materielle skader – 600 nestenulykker – (mange) farlige forhold og handlinger. b) N – MS – PS – N. c) Nestenulykker har de samme årsakene som alvorlige ulykker. Når vi melder og retter dem, fjerner vi årsaken før noen blir skadet.</div>
+        <p>c) Hvorfor er det lurt å melde nestenulykker?</p><div class="svar"><span class="fasit" hidden>Nestenulykker har de samme årsakene som alvorlige ulykker.</span></div><div class="svar"><span class="fasit" hidden>Når vi melder og retter dem, fjerner vi årsaken før noen blir skadet.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Finn farene <small>Time 1 · 8 min</small></h3>
         <p>Finn 8 farer i tegningen. Fyll ut tabellen.</p>
         <div class="ofig" id="o3fig"></div>
-        <table class="ot">
+        <table class="ot" id="o3tab">
           <tr><th style="width:2.5rem">Nr.</th><th>Fare – hva ser du?</th><th>Hva kan skje?</th><th>Tiltak</th></tr>
           <tr><td>1</td><td class="tom"></td><td></td><td></td></tr>
           <tr><td>2</td><td class="tom"></td><td></td><td></td></tr>
@@ -461,7 +462,6 @@ table.t th{background:var(--steel-soft)}
           <tr><td>7</td><td class="tom"></td><td></td><td></td></tr>
           <tr><td>8</td><td class="tom"></td><td></td><td></td></tr>
         </table>
-        <div class="fasit" hidden id="o3fasit"></div>
       </div>
 
       <div class="oppgave">
@@ -469,16 +469,15 @@ table.t th{background:var(--steel-soft)}
         <p>a) Sett kryss for hvem det gjelder.</p>
         <table class="ot c">
           <tr><th>Utsagn</th><th style="width:6.5rem">Arbeids­giver</th><th style="width:6.5rem">Arbeids­taker</th><th style="width:6.5rem">Verne­ombud</th><th style="width:5rem">AMU</th></tr>
-          <tr><td>1. Skal kartlegge farer og sørge for at arbeidsplassen er trygg.</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>2. Skal bruke verneutstyret han eller hun får.</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>3. Er valgt av de ansatte og kan stanse farlig arbeid.</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>4. Skal gi verneutstyr gratis og gi opplæring.</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>5. Skal si fra om feil og farer han eller hun oppdager.</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>6. Ledere, ansatte og bedriftshelsetjenesten møtes og behandler HMS-saker.</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>7. Skal avbryte arbeidet hvis det er fare for liv eller helse.</td><td class="tom"></td><td></td><td></td><td></td></tr>
+          <tr><td>1. Skal kartlegge farer og sørge for at arbeidsplassen er trygg.</td><td class="tom"><span class="fasit" hidden>✗</span></td><td></td><td></td><td></td></tr>
+          <tr><td>2. Skal bruke verneutstyret han eller hun får.</td><td class="tom"></td><td><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
+          <tr><td>3. Er valgt av de ansatte og kan stanse farlig arbeid.</td><td class="tom"></td><td></td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>4. Skal gi verneutstyr gratis og gi opplæring.</td><td class="tom"><span class="fasit" hidden>✗</span></td><td></td><td></td><td></td></tr>
+          <tr><td>5. Skal si fra om feil og farer han eller hun oppdager.</td><td class="tom"></td><td><span class="fasit" hidden>✗</span></td><td><span class="fasit" hidden>(✗) også</span></td><td></td></tr>
+          <tr><td>6. Ledere, ansatte og bedriftshelsetjenesten møtes og behandler HMS-saker.</td><td class="tom"></td><td></td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>7. Skal avbryte arbeidet hvis det er fare for liv eller helse.</td><td class="tom"></td><td><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
         </table>
-        <p>b) En bedrift har 25 ansatte. Må den ha verneombud? Må den ha AMU?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 Arbeidsgiver · 2 Arbeidstaker · 3 Verneombud · 4 Arbeidsgiver · 5 Arbeidstaker (verneombudet også) · 6 AMU · 7 Arbeidstaker. b) <b>Verneombud: ja</b> (krav fra 10 ansatte). <b>AMU: ikke automatisk</b> – krav fra 50 ansatte. Med 20–50 ansatte skal det opprettes AMU hvis arbeidsgiver eller de ansatte krever det.</div>
+        <p>b) En bedrift har 25 ansatte. Må den ha verneombud? Må den ha AMU?</p><div class="svar"><span class="fasit" hidden><b>Verneombud: ja</b> (krav fra 10 ansatte). <b>AMU: ikke automatisk</b> – krav fra 50 ansatte. Med 20–50 ansatte skal det opprettes AMU hvis arbeidsgiver eller de ansatte krever det.</span></div>
       </div>
 
       <div class="oppgave">
@@ -487,14 +486,13 @@ table.t th{background:var(--steel-soft)}
         <p>a) Regn ut risikoen R = S × K og skriv fargen (grønn 1–4, gul 5–10, rød 12–25).</p>
         <table class="ot c">
           <tr><th>Hendelse</th><th style="width:3.5rem">S</th><th style="width:3.5rem">K</th><th style="width:5rem">R = S × K</th><th style="width:6rem">Farge</th></tr>
-          <tr><td>A. Spon i øyet ved fresing uten vernebriller</td><td>4</td><td>3</td><td class="tom"></td><td></td></tr>
-          <tr><td>B. Kutt på skarpe grader</td><td>4</td><td>2</td><td class="tom"></td><td></td></tr>
-          <tr><td>C. Usikret gassflaske velter</td><td>3</td><td>4</td><td class="tom"></td><td></td></tr>
-          <tr><td>D. Hanske trekkes inn i dreiebenken</td><td>2</td><td>5</td><td class="tom"></td><td></td></tr>
+          <tr><td>A. Spon i øyet ved fresing uten vernebriller</td><td>4</td><td>3</td><td class="tom"><span class="fasit" hidden>12</span></td><td><span class="fasit" hidden>rød</span></td></tr>
+          <tr><td>B. Kutt på skarpe grader</td><td>4</td><td>2</td><td class="tom"><span class="fasit" hidden>8</span></td><td><span class="fasit" hidden>gul</span></td></tr>
+          <tr><td>C. Usikret gassflaske velter</td><td>3</td><td>4</td><td class="tom"><span class="fasit" hidden>12</span></td><td><span class="fasit" hidden>rød</span></td></tr>
+          <tr><td>D. Hanske trekkes inn i dreiebenken</td><td>2</td><td>5</td><td class="tom"><span class="fasit" hidden>10</span></td><td><span class="fasit" hidden>gul</span></td></tr>
           <tr><td>E. Velg selv: ______________________</td><td class="tom"></td><td></td><td></td><td></td></tr>
         </table>
-        <p>b) D blir bare gul, selv om konsekvensen kan være å miste en hånd. Bør vi godta den? Begrunn.</p><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) A 12 rød · B 8 gul · C 12 rød · D 10 gul. b) Nei. Når konsekvensen er så alvorlig, skal vi gjøre alt vi kan: forby hansker ved roterende maskiner, gi opplæring og ha nødstopp i nærheten. Mange bedrifter krever tiltak for alle hendelser med konsekvens 5.</div>
+        <p>b) D blir bare gul, selv om konsekvensen kan være å miste en hånd. Bør vi godta den? Begrunn.</p><div class="svar"><span class="fasit" hidden>Nei. Når konsekvensen er så alvorlig, skal vi gjøre alt vi kan: forby hansker ved roterende maskiner, gi opplæring og ha nødstopp i nærheten.</span></div><div class="svar"><span class="fasit" hidden>Mange bedrifter krever tiltak for alle hendelser med konsekvens 5.</span></div>
       </div>
 
       <div class="oppgave">
@@ -508,8 +506,7 @@ table.t th{background:var(--steel-soft)}
           <tr><td><b>E</b></td><td>Bytte på hvem som sager, og henge opp skilt «Hørselvern påbudt»</td></tr>
         </table>
         <div class="ofig" id="o6fig" style="max-width:560px"></div>
-        <p>b) Hvorfor står personlig verneutstyr nederst?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 Fjerne: <b>D</b> · 2 Erstatte: <b>B</b> · 3 Teknisk: <b>C</b> · 4 Organisatorisk: <b>E</b> · 5 PVU: <b>A</b>. b) Verneutstyr fjerner ikke faren. Det beskytter bare den som bruker det, bare når det sitter riktig og bare når det er på.</div>
+        <p>b) Hvorfor står personlig verneutstyr nederst?</p><div class="svar"><span class="fasit" hidden>Verneutstyr fjerner ikke faren. Det beskytter bare den som bruker det, bare når det sitter riktig og bare når det er på.</span></div>
       </div>
 
       <div class="oppgave">
@@ -518,28 +515,26 @@ table.t th{background:var(--steel-soft)}
         <div class="minis" id="o7minis"></div>
         <table class="ot c">
           <tr><th style="width:3rem">Nr.</th><th>Betyr</th><th style="width:3rem">Nr.</th><th>Betyr</th></tr>
-          <tr><td>1</td><td class="tom"></td><td>4</td><td></td></tr>
-          <tr><td>2</td><td class="tom"></td><td>5</td><td></td></tr>
-          <tr><td>3</td><td class="tom"></td><td>6</td><td></td></tr>
+          <tr><td>1</td><td class="tom"><span class="fasit" hidden>Vernebriller</span></td><td>4</td><td><span class="fasit" hidden>Vernehansker</span></td></tr>
+          <tr><td>2</td><td class="tom"><span class="fasit" hidden>Hørselvern</span></td><td>5</td><td><span class="fasit" hidden>Åndedrettsvern</span></td></tr>
+          <tr><td>3</td><td class="tom"><span class="fasit" hidden>Vernesko</span></td><td>6</td><td><span class="fasit" hidden>Sveisehjelm</span></td></tr>
         </table>
         <p>b) Hvilket verneutstyr skal brukes?</p>
         <table class="ot">
           <tr><th style="width:12rem">Jobb</th><th>Verneutstyr</th></tr>
-          <tr><td>Dreiing i dreiebenk</td><td class="tom"></td></tr>
-          <tr><td>Sliping med vinkelsliper</td><td class="tom"></td></tr>
-          <tr><td>MIG-sveising</td><td class="tom"></td></tr>
-          <tr><td>Avfetting med løsemiddel</td><td class="tom"></td></tr>
+          <tr><td>Dreiing i dreiebenk</td><td class="tom"><span class="fasit" hidden>Vernesko, vernebriller, tettsittende klær, <b>ingen hansker</b>.</span></td></tr>
+          <tr><td>Sliping med vinkelsliper</td><td class="tom"><span class="fasit" hidden>Vernesko, vernebriller (gjerne ansiktsskjerm), hørselvern, hansker (gjerne støvmaske).</span></td></tr>
+          <tr><td>MIG-sveising</td><td class="tom"><span class="fasit" hidden>Vernesko, sveisehjelm, sveisehansker, flammehemmende klær (gjerne åndedrettsvern/avsug).</span></td></tr>
+          <tr><td>Avfetting med løsemiddel</td><td class="tom"><span class="fasit" hidden>Vernebriller, kjemikaliehansker etter sikkerhetsdatabladet, god ventilasjon.</span></td></tr>
         </table>
-        <p>c) Hvorfor skal du ikke bruke hansker ved dreiebenken?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 Vernebriller · 2 Hørselvern · 3 Vernesko · 4 Vernehansker · 5 Åndedrettsvern · 6 Sveisehjelm. b) Dreiing: vernesko, vernebriller, tettsittende klær, <b>ingen hansker</b>. Sliping: vernesko, vernebriller (gjerne ansiktsskjerm), hørselvern, hansker (gjerne støvmaske). MIG: vernesko, sveisehjelm, sveisehansker, flammehemmende klær (gjerne åndedrettsvern/avsug). Avfetting: vernebriller, kjemikaliehansker etter sikkerhetsdatabladet, god ventilasjon. c) Hansken kan bli fanget av chucken eller emnet og trekke hånden inn.</div>
+        <p>c) Hvorfor skal du ikke bruke hansker ved dreiebenken?</p><div class="svar"><span class="fasit" hidden>Hansken kan bli fanget av chucken eller emnet og trekke hånden inn.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 2 min</small></h3>
-        <p>1. Hva betyr H, M og S?</p><div class="svar"></div>
-        <p>2. Hva gjør du hvis du ser en fare i verkstedet?</p><div class="svar"></div>
-        <p>3. Hva er best: vernebriller eller en verneskjerm på maskinen? Hvorfor?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Helse, miljø og sikkerhet. 2) Sikre (stopp om nødvendig), si fra til lærer/leder, skriv avviksmelding (RUH), følg opp. 3) Verneskjermen på maskinen er et teknisk tiltak og står høyere i tiltakshierarkiet: den virker alltid og for alle. Vernebriller brukes i tillegg.</div>
+        <p>1. Hva betyr H, M og S?</p><div class="svar"><span class="fasit" hidden>Helse, miljø og sikkerhet.</span></div>
+        <p>2. Hva gjør du hvis du ser en fare i verkstedet?</p><div class="svar"><span class="fasit" hidden>Sikre (stopp om nødvendig), si fra til lærer/leder, skriv avviksmelding (RUH), følg opp.</span></div>
+        <p>3. Hva er best: vernebriller eller en verneskjerm på maskinen? Hvorfor?</p><div class="svar"><span class="fasit" hidden>Verneskjermen på maskinen er et teknisk tiltak og står høyere i tiltakshierarkiet: den virker alltid og for alle. Vernebriller brukes i tillegg.</span></div>
       </div>
     </div>
   </div>
@@ -707,6 +702,10 @@ function pyramidSVG(o){
       const bw = Math.min(76, w1*.5);
       s += `<rect x="${fx(cx-bw/2)}" y="${fx(y0+lh/2-(i?14:4))}" width="${fx(bw)}" height="${i?28:22}" rx="4" fill="#fff" stroke="#000" stroke-width="1.5"/>`;
       s += ln(cx+w1/2+8, y0+lh/2, 600, y0+lh/2, "#000", 1.2, "3 4") + ln(612, y0+lh/2+12, 960, y0+lh/2+12, "#000", 1.2);
+      if (o.ans){
+        s += `<text class="fasit-svg" x="${cx}" y="${fx(y0+lh/2+(i?6:12))}" font-size="${i===4?15:(i?18:15)}" font-weight="700" fill="#2b8a3e" text-anchor="middle">${l.n===null?"mange":l.n}</text>`;
+        s += `<text class="fasit-svg" x="616" y="${fx(y0+lh/2+7)}" font-size="18" font-weight="700" fill="#2b8a3e">${l.t}</text>`;
+      }
     }
   });
   if (!blank) s += TX(30, 412, "Bird (1969). Forholdstallene er omtrentlige.", {size:12, fill:"var(--muted)"});
@@ -993,6 +992,7 @@ function hierSVG(o){
     s += `<path d="M${fx(cx-w0/2)} ${fx(y0)} L${fx(cx+w0/2)} ${fx(y0)} L${fx(cx+w1/2)} ${fx(y1)} L${fx(cx-w1/2)} ${fx(y1)} Z" fill="${mono?"#fff":(on[i]?l.col:"var(--steel-soft)")}" stroke="${mono?"#000":"var(--panel)"}" stroke-width="${mono?1.5:3}"/>`;
     s += TX(cx, y0+H/10+(mono?-4:6), i===4?"5 PVU":l.n, {size:i<4?17:16, weight:800, anchor:"middle", fill:mono?"#000":(on[i]?"#fff":"var(--ink)")});
     if (mono) s += `<rect x="${cx-22}" y="${fx(y0+H/10+4)}" width="44" height="24" rx="3" fill="#fff" stroke="#000" stroke-width="1.5"/>`;
+    if (mono && o.ans) s += `<text class="fasit-svg" x="${cx}" y="${fx(y0+H/10+22)}" font-size="17" font-weight="800" fill="#2b8a3e" text-anchor="middle">${o.ans[i]}</text>`;
   });
   s += `<path d="M14 ${top+H} L14 ${top+6}" stroke="${mono?"#000":"var(--green)"}" stroke-width="4"/><path d="M4 ${top+18} L14 ${top} L24 ${top+18}" fill="none" stroke="${mono?"#000":"var(--green)"}" stroke-width="4"/>`;
   s += `<text x="0" y="0" transform="translate(36 ${top+H/2}) rotate(-90)" font-size="13" font-weight="700" fill="${mono?"#000":"var(--muted)"}" text-anchor="middle">mest effektiv ↑</text>`;
@@ -1146,23 +1146,24 @@ function workerSVG(it){
    OPPGAVEFIGURER (utskrift)
    ===================================================================== */
 (function(){
-  $("o2fig").innerHTML = svgOpen(980,400)+pyramidSVG({blank:true})+"</svg>";
+  $("o2fig").innerHTML = svgOpen(980,400)+pyramidSVG({blank:true, ans:true})+"</svg>";
   $("o3fig").innerHTML = svgOpen(1000,560)+sceneSVG({t:.37})+"</svg>";
   $("o5fig").innerHTML = svgOpen(560,480)+matrixSVG({mono:true})+"</svg>";
-  $("o6fig").innerHTML = svgOpen(440,410)+hierSVG({mono:true})+"</svg>";
+  $("o6fig").innerHTML = svgOpen(440,410)+hierSVG({mono:true, ans:["D","B","C","E","A"]})+"</svg>";
   const ks = ["briller","horsel","sko","hansker","maske","sveis"];
   $("o7minis").innerHTML = ks.map((k,i)=>`<figure><figcaption>${i+1}</figcaption>${svgOpen(100,100)}${sign(k,50,50,42,false)}</svg></figure>`).join("");
-  $("o3fasit").innerHTML = "<b>Fasit:</b> "+HAZ.map((h,i)=>`${i+1}) <b>${h.n}</b> – ${h.fare} Tiltak: ${h.tiltak}`).join(" ");
+  $("o3tab").querySelectorAll("tr").forEach((tr,r) => { const h = HAZ[r-1]; if (!h) return; const td = tr.cells; td[1].innerHTML = `<span class="fasit" hidden>${h.n}</span>`; td[2].innerHTML = `<span class="fasit" hidden>${h.fare}</span>`; td[3].innerHTML = `<span class="fasit" hidden>${h.tiltak}</span>`; });
   document.querySelectorAll("#oppgavetekst .ofig svg, #oppgavetekst .minis svg").forEach(s => { s.removeAttribute("width"); s.removeAttribute("height"); });
 })();
 
 /* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToPng(svg){
   const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
   const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  c.querySelectorAll(".fasit-svg").forEach(t => { if (fasitOn){ t.setAttribute("display","inline"); t.setAttribute("fill","#2b8a3e"); t.style.display="inline"; } else t.remove(); });
   const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
   await img.decode();
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
@@ -1176,9 +1177,9 @@ $("btnCopy").onclick = async () => {
     try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = svgs[i].closest(".minis") ? 90 : Math.min(640, Math.round(w*.75)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); if (t){ p.textContent=t; p.style.color="#2b8a3e"; p.style.borderBottom="1px solid #777"; } else p.textContent="_____________________________________________________________"; s.replaceWith(p); });
   clone.querySelectorAll(".minis").forEach(m => { const t = document.createElement("table"); const tr = t.insertRow(); m.querySelectorAll("figure").forEach(f => { const td = tr.insertCell(); td.innerHTML = f.innerHTML; td.style.padding = "4px"; }); m.replaceWith(t); });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.querySelector(".fasit")) c.querySelectorAll(".fasit").forEach(f => f.style.color="#2b8a3e"); else if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   const html = clone.innerHTML, text = clone.innerText;
   try {

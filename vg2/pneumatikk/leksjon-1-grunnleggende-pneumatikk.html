@@ -111,9 +111,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -455,34 +458,32 @@ table.t th{background:var(--steel-soft)}
         <div class="ordbank"><b>Ord:</b> kompressor · trykktank · vedlikeholdsenhet · etterkjøler · inntaksfilter · tørker · rørnett med svanehals · ventil · sylinder</div>
         <table class="ot">
           <tr><th style="width:2.5rem">Nr.</th><th style="width:32%">Navn</th><th>Hva gjør den?</th></tr>
-          <tr><td>1</td><td class="tom"></td><td></td></tr>
-          <tr><td>2</td><td class="tom"></td><td></td></tr>
-          <tr><td>3</td><td class="tom"></td><td></td></tr>
-          <tr><td>4</td><td class="tom"></td><td></td></tr>
-          <tr><td>5</td><td class="tom"></td><td></td></tr>
-          <tr><td>6</td><td class="tom"></td><td></td></tr>
-          <tr><td>7</td><td class="tom"></td><td></td></tr>
-          <tr><td>8</td><td class="tom"></td><td></td></tr>
-          <tr><td>9</td><td class="tom"></td><td></td></tr>
+          <tr><td>1</td><td class="tom"><span class="fasit" hidden>Inntaksfilter</span></td><td><span class="fasit" hidden>Holder støv ute.</span></td></tr>
+          <tr><td>2</td><td class="tom"><span class="fasit" hidden>Kompressor</span></td><td><span class="fasit" hidden>Trykker sammen lufta (den blir varm).</span></td></tr>
+          <tr><td>3</td><td class="tom"><span class="fasit" hidden>Etterkjøler</span></td><td><span class="fasit" hidden>Kjøler lufta, vann felles ut.</span></td></tr>
+          <tr><td>4</td><td class="tom"><span class="fasit" hidden>Trykktank</span></td><td><span class="fasit" hidden>Lagrer luft, jevner ut trykket, kompressoren får pauser. Har manometer, sikkerhetsventil, trykkbryter og drenering.</span></td></tr>
+          <tr><td>5</td><td class="tom"><span class="fasit" hidden>Tørker</span></td><td><span class="fasit" hidden>Tar ut resten av vannet.</span></td></tr>
+          <tr><td>6</td><td class="tom"><span class="fasit" hidden>Rørnett med svanehals</span></td><td><span class="fasit" hidden>Frakter lufta, legges med fall mot drenering.</span></td></tr>
+          <tr><td>7</td><td class="tom"><span class="fasit" hidden>Vedlikeholdsenhet</span></td><td><span class="fasit" hidden>Filter, regulator (stiller trykket) og manometer (+ ev. smører).</span></td></tr>
+          <tr><td>8</td><td class="tom"><span class="fasit" hidden>Ventil</span></td><td><span class="fasit" hidden>Styrer lufta.</span></td></tr>
+          <tr><td>9</td><td class="tom"><span class="fasit" hidden>Sylinder</span></td><td><span class="fasit" hidden>Gjør arbeidet.</span></td></tr>
         </table>
-        <p>b) Hvorfor tar vi uttaket fra <b>toppen</b> av røret (svanehals)?</p><div class="svar"></div>
-        <p>c) Nevn to ting vann i trykklufta kan ødelegge.</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1 Inntaksfilter – holder støv ute. 2 Kompressor – trykker sammen lufta (den blir varm). 3 Etterkjøler – kjøler lufta, vann felles ut. 4 Trykktank – lagrer luft, jevner ut trykket, kompressoren får pauser; har manometer, sikkerhetsventil, trykkbryter og drenering. 5 Tørker – tar ut resten av vannet. 6 Rørnett med svanehals – frakter lufta, legges med fall mot drenering. 7 Vedlikeholdsenhet – filter, regulator (stiller trykket) og manometer (+ ev. smører). 8 Ventil – styrer lufta. 9 Sylinder – gjør arbeidet. b) Vannet renner i bunnen av røret; tar vi lufta fra toppen, blir vannet igjen og går til drenering. c) Rust i rør og komponenter, slitte pakninger, ventiler som henger/fryser, ødelagt smøring, dårlig lakk ved lakkering.</div>
+        <p>b) Hvorfor tar vi uttaket fra <b>toppen</b> av røret (svanehals)?</p><div class="svar"><span class="fasit" hidden>Vannet renner i bunnen av røret; tar vi lufta fra toppen, blir vannet igjen og går til drenering.</span></div>
+        <p>c) Nevn to ting vann i trykklufta kan ødelegge.</p><div class="svar"><span class="fasit" hidden>Rust i rør og komponenter, slitte pakninger, ventiler som henger/fryser, ødelagt smøring, dårlig lakk ved lakkering.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 2 – Trykk og kraft <small>Time 1 · 10 min</small></h3>
-        <p>a) Manometeret viser <b>6 bar</b>. Hva er det absolutte trykket? Hvor mange N/mm² er 6 bar?</p><div class="svar"></div>
+        <p>a) Manometeret viser <b>6 bar</b>. Hva er det absolutte trykket? Hvor mange N/mm² er 6 bar?</p><div class="svar"><span class="fasit" hidden><b>7 bar</b> absolutt. 6 · 0,1 = <b>0,6 N/mm²</b>.</span></div>
         <p>b) Regn ut areal og kraft <b>ut</b> (plussiden). Vis utregning.</p>
         <table class="ot c">
           <tr><th>Sylinder</th><th>Trykk</th><th style="width:28%">Areal A (mm²)</th><th style="width:28%">Kraft F (N)</th></tr>
-          <tr><td>Ø25</td><td>6 bar</td><td class="tom"></td><td></td></tr>
-          <tr><td>Ø50</td><td>6 bar</td><td class="tom"></td><td></td></tr>
-          <tr><td>Ø50</td><td>3 bar</td><td class="tom"></td><td></td></tr>
+          <tr><td>Ø25</td><td>6 bar</td><td class="tom"><span class="fasit" hidden>π·25²/4 = 491 mm²</span></td><td><span class="fasit" hidden>6·0,1·491 = <b>295 N</b></span></td></tr>
+          <tr><td>Ø50</td><td>6 bar</td><td class="tom"><span class="fasit" hidden>π·50²/4 = 1963 mm²</span></td><td><span class="fasit" hidden>6·0,1·1963 = <b>1178 N</b></span></td></tr>
+          <tr><td>Ø50</td><td>3 bar</td><td class="tom"><span class="fasit" hidden>1963 mm²</span></td><td><span class="fasit" hidden><b>589 N</b> (halvt trykk = halv kraft)</span></td></tr>
         </table>
-        <p>c) Ø50-sylinderen har stang <b>Ø20</b>. Regn ut kraften <b>inn</b> ved 6 bar. Hvorfor er den mindre?</p><div class="svar"></div><div class="svar"></div>
-        <p>d) Du trenger <b>1000 N</b> ut ved 6 bar. Hvilken er den minste sylinderen som holder: Ø32, Ø40, Ø50 eller Ø63? Vis regning.</p><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 7 bar absolutt. 6 · 0,1 = 0,6 N/mm². b) Ø25: A = π·25²/4 = 491 mm², F = 6·0,1·491 = <b>295 N</b>. Ø50: A = 1963 mm², F = <b>1178 N</b>. Ø50 ved 3 bar: <b>589 N</b> (halvt trykk = halv kraft). c) A<sub>stang</sub> = 314 mm², ringareal = 1963 − 314 = 1649 mm², F = 6·0,1·1649 = <b>989 N</b>. Stanga tar opp en del av flata, så lufta har mindre å trykke på. d) Ø40: A = 1257 mm² → 754 N (for lite). Ø50: 1178 N → <b>Ø50</b> (i praksis velger man gjerne litt margin for friksjon).</div>
+        <p>c) Ø50-sylinderen har stang <b>Ø20</b>. Regn ut kraften <b>inn</b> ved 6 bar. Hvorfor er den mindre?</p><div class="svar"><span class="fasit" hidden>A<sub>stang</sub> = 314 mm², ringareal = 1963 − 314 = 1649 mm², F = 6·0,1·1649 = <b>989 N</b>.</span></div><div class="svar"><span class="fasit" hidden>Stanga tar opp en del av flata, så lufta har mindre å trykke på.</span></div>
+        <p>d) Du trenger <b>1000 N</b> ut ved 6 bar. Hvilken er den minste sylinderen som holder: Ø32, Ø40, Ø50 eller Ø63? Vis regning.</p><div class="svar"><span class="fasit" hidden>Ø40: A = 1257 mm² → 754 N (for lite). Ø50: 1178 N → <b>Ø50</b>.</span></div><div class="svar"><span class="fasit" hidden>I praksis velger man gjerne litt margin for friksjon.</span></div>
       </div>
 
       <div class="oppgave">
@@ -490,63 +491,58 @@ table.t th{background:var(--steel-soft)}
         <div class="ofig" id="o3fig"></div>
         <table class="ot">
           <tr><th style="width:2.5rem">Bokstav</th><th>Navn på symbolet</th></tr>
-          <tr><td>A</td><td class="tom"></td></tr><tr><td>B</td><td class="tom"></td></tr><tr><td>C</td><td class="tom"></td></tr><tr><td>D</td><td class="tom"></td></tr>
-          <tr><td>E</td><td class="tom"></td></tr><tr><td>F</td><td class="tom"></td></tr><tr><td>G</td><td class="tom"></td></tr><tr><td>H</td><td class="tom"></td></tr>
+          <tr><td>A</td><td class="tom"><span class="fasit" hidden>Trykkluftkilde</span></td></tr><tr><td>B</td><td class="tom"><span class="fasit" hidden>Vedlikeholdsenhet (filter, regulator, manometer)</span></td></tr><tr><td>C</td><td class="tom"><span class="fasit" hidden>3/2-ventil, normalt stengt, med trykknapp og fjær</span></td></tr><tr><td>D</td><td class="tom"><span class="fasit" hidden>5/2-ventil med trykknapp og fjær</span></td></tr>
+          <tr><td>E</td><td class="tom"><span class="fasit" hidden>Enkeltvirkende sylinder med fjærretur</span></td></tr><tr><td>F</td><td class="tom"><span class="fasit" hidden>Dobbeltvirkende sylinder</span></td></tr><tr><td>G</td><td class="tom"><span class="fasit" hidden>Manometer</span></td></tr><tr><td>H</td><td class="tom"><span class="fasit" hidden>Avlufting (utløp til luft, ofte med lyddemper)</span></td></tr>
         </table>
-        <p>b) Hva betyr tallene i «5/2-ventil»?</p><div class="svar"></div>
-        <p>c) Hva betyr port <b>1</b>, port <b>4</b> og port <b>3</b>?</p><div class="svar"></div>
-        <p>d) Se på C. Hvor går lufta når knappen <b>ikke</b> er trykket?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> A trykkluftkilde. B vedlikeholdsenhet (filter, regulator, manometer). C 3/2-ventil, normalt stengt, med trykknapp og fjær. D 5/2-ventil med trykknapp og fjær. E enkeltvirkende sylinder med fjærretur. F dobbeltvirkende sylinder. G manometer. H avlufting (utløp til luft, ofte med lyddemper). b) 5 porter, 2 stillinger. c) 1 = trykkluft inn, 4 = arbeidsport (til sylinderen), 3 = avlufting. d) Port 1 er stengt. Port 2 er koblet til 3 – sylinderen er avluftet.</div>
+        <p>b) Hva betyr tallene i «5/2-ventil»?</p><div class="svar"><span class="fasit" hidden>5 porter, 2 stillinger.</span></div>
+        <p>c) Hva betyr port <b>1</b>, port <b>4</b> og port <b>3</b>?</p><div class="svar"><span class="fasit" hidden>1 = trykkluft inn, 4 = arbeidsport (til sylinderen), 3 = avlufting.</span></div>
+        <p>d) Se på C. Hvor går lufta når knappen <b>ikke</b> er trykket?</p><div class="svar"><span class="fasit" hidden>Port 1 er stengt. Port 2 er koblet til 3 – sylinderen er avluftet.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 4 – Enkelt eller dobbelt? <small>Time 2 · 3 min</small></h3>
         <table class="ot c">
           <tr><th>Jobb</th><th style="width:7rem">Enkelt­virkende</th><th style="width:7rem">Dobbelt­virkende</th></tr>
-          <tr><td>a) Stemple et nummer i en plate (kort slag)</td><td></td><td></td></tr>
-          <tr><td>b) Skyve en kasse av et transportbånd og trekke tilbake med kraft</td><td></td><td></td></tr>
-          <tr><td>c) Åpne og lukke en tung port</td><td></td><td></td></tr>
-          <tr><td>d) Holde fast en liten del i en jigg</td><td></td><td></td></tr>
-          <tr><td>e) Løfte en last opp og senke den kontrollert</td><td></td><td></td></tr>
+          <tr><td>a) Stemple et nummer i en plate (kort slag)</td><td><span class="fasit" hidden>✗<br>kort slag, kraft én vei</span></td><td></td></tr>
+          <tr><td>b) Skyve en kasse av et transportbånd og trekke tilbake med kraft</td><td></td><td><span class="fasit" hidden>✗<br>kraft begge veier</span></td></tr>
+          <tr><td>c) Åpne og lukke en tung port</td><td></td><td><span class="fasit" hidden>✗<br>kraft begge veier / langt slag</span></td></tr>
+          <tr><td>d) Holde fast en liten del i en jigg</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>e) Løfte en last opp og senke den kontrollert</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) enkelt. b) dobbelt. c) dobbelt. d) enkelt. e) dobbelt. (Kraft begge veier / langt slag → dobbelt. Kort slag, kraft én vei → enkelt.)</div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 5 – Koblingsskjema og feilsøking <small>Time 2 · 7 min</small></h3>
         <div class="ofig" id="o5fig"></div>
-        <p>a) Skriv navnet på 1–6: &nbsp;1 ____________ &nbsp;2 ____________ &nbsp;3 ____________ &nbsp;4 ____________ &nbsp;5 ____________ &nbsp;6 ____________</p>
-        <p>b) Hva skjer når knappen trykkes inn? Og når den slippes?</p><div class="svar"></div><div class="svar"></div>
+        <p>a) Skriv navnet på 1–6:  &nbsp;1&nbsp;<span class="luke"><span class="fasit" hidden>trykkluftkilde</span></span> &nbsp;2&nbsp;<span class="luke"><span class="fasit" hidden>vedlikeholdsenhet</span></span> &nbsp;3&nbsp;<span class="luke"><span class="fasit" hidden>5/2-ventil (trykknapp/fjær)</span></span> &nbsp;4&nbsp;<span class="luke"><span class="fasit" hidden>avlufting (port 3/5)</span></span> &nbsp;5&nbsp;<span class="luke"><span class="fasit" hidden>dobbeltvirkende sylinder</span></span> &nbsp;6&nbsp;<span class="luke"><span class="fasit" hidden>manometer</span></span></p>
+        <p>b) Hva skjer når knappen trykkes inn? Og når den slippes?</p><div class="svar"><span class="fasit" hidden>Inn: 1 kobles til 4, plussiden får luft, minussiden avluftes gjennom 2 → 3, sylinderen går ut.</span></div><div class="svar"><span class="fasit" hidden>Slippes: fjæra skyver ventilen tilbake, 1 → 2, sylinderen går inn, plussiden avluftes 4 → 5.</span></div>
         <p>c) Finn feilen.</p>
         <table class="ot">
           <tr><th style="width:55%">Symptom</th><th>Mest sannsynlig feil</th></tr>
-          <tr><td>Sylinderen går ut av seg selv når lufta slås på. Når knappen trykkes, går den inn.</td><td class="tom"></td></tr>
-          <tr><td>Knappen trykkes. Sylinderen går ut, men stopper før bøssinga er presset inn. Manometeret på plussiden viser 2 bar.</td><td class="tom"></td></tr>
-          <tr><td>Knappen trykkes. Sylinderen rører seg nesten ikke. Plussiden viser 6 bar og minussiden 7 bar.</td><td class="tom"></td></tr>
+          <tr><td>Sylinderen går ut av seg selv når lufta slås på. Når knappen trykkes, går den inn.</td><td class="tom"><span class="fasit" hidden>Slangene på port 2 og 4 er byttet om.</span></td></tr>
+          <tr><td>Knappen trykkes. Sylinderen går ut, men stopper før bøssinga er presset inn. Manometeret på plussiden viser 2 bar.</td><td class="tom"><span class="fasit" hidden>For lavt trykk – regulatoren står på 2 bar (kraft 161 N &lt; 400 N). Still til 6 bar.</span></td></tr>
+          <tr><td>Knappen trykkes. Sylinderen rører seg nesten ikke. Plussiden viser 6 bar og minussiden 7 bar.</td><td class="tom"><span class="fasit" hidden>Lufta på minussiden kommer ikke ut – tett lyddemper/avlufting på port 3.</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 trykkluftkilde, 2 vedlikeholdsenhet, 3 5/2-ventil (trykknapp/fjær), 4 avlufting (port 3/5), 5 dobbeltvirkende sylinder, 6 manometer. b) Inn: 1 kobles til 4, plussiden får luft, minussiden avluftes gjennom 2 → 3, sylinderen går ut. Slippes: fjæra skyver ventilen tilbake, 1 → 2, sylinderen går inn, plussiden avluftes 4 → 5. c) 1: slangene på port 2 og 4 er byttet om. 2: for lavt trykk – regulatoren står på 2 bar (kraft 161 N < 400 N); still til 6 bar. 3: lufta på minussiden kommer ikke ut – tett lyddemper/avlufting på port 3.</div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 6 – Trygt med trykkluft <small>Time 2 · 3 min</small></h3>
         <table class="ot c">
           <tr><th>Påstand</th><th style="width:5rem">Riktig</th><th style="width:5rem">Galt</th></tr>
-          <tr><td>a) Det er greit å blåse spon av klærne hvis trykket er lavt.</td><td></td><td></td></tr>
-          <tr><td>b) Før du løsner en slange, stenger du og slipper ut lufta.</td><td></td><td></td></tr>
-          <tr><td>c) Vernebriller trengs bare ved sveising, ikke ved blåsing.</td><td></td><td></td></tr>
-          <tr><td>d) Trykkluft kan gå gjennom huden og gi alvorlig skade.</td><td></td><td></td></tr>
-          <tr><td>e) En slange som løsner under trykk, kan piske.</td><td></td><td></td></tr>
-          <tr><td>f) Blåsing kan gi så mye støy at du trenger hørselvern.</td><td></td><td></td></tr>
+          <tr><td>a) Det er greit å blåse spon av klærne hvis trykket er lavt.</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>b) Før du løsner en slange, stenger du og slipper ut lufta.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>c) Vernebriller trengs bare ved sveising, ikke ved blåsing.</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>d) Trykkluft kan gå gjennom huden og gi alvorlig skade.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>e) En slange som løsner under trykk, kan piske.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+          <tr><td>f) Blåsing kan gi så mye støy at du trenger hørselvern.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) galt. b) riktig. c) galt. d) riktig. e) riktig. f) riktig.</div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 2 min</small></h3>
-        <p>1. Manometeret viser 6 bar. Hva er det absolutte trykket?</p><div class="svar"></div>
-        <p>2. Hvorfor er kraften inn mindre enn kraften ut på en dobbeltvirkende sylinder?</p><div class="svar"></div>
-        <p>3. Hva betyr 3/2 i «3/2-ventil»?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) 7 bar. 2) Stanga tar opp en del av stempelflata på minussiden – mindre areal gir mindre kraft. 3) 3 porter og 2 stillinger.</div>
+        <p>1. Manometeret viser 6 bar. Hva er det absolutte trykket?</p><div class="svar"><span class="fasit" hidden>7 bar.</span></div>
+        <p>2. Hvorfor er kraften inn mindre enn kraften ut på en dobbeltvirkende sylinder?</p><div class="svar"><span class="fasit" hidden>Stanga tar opp en del av stempelflata på minussiden – mindre areal gir mindre kraft.</span></div>
+        <p>3. Hva betyr 3/2 i «3/2-ventil»?</p><div class="svar"><span class="fasit" hidden>3 porter og 2 stillinger.</span></div>
       </div>
     </div>
   </div>
@@ -1218,11 +1214,12 @@ $("pSumSvg").innerHTML = symSheet(PS,true);
 
 /* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToPng(svg){
   const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
   const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  c.querySelectorAll(".fasit-svg").forEach(e => { if (!fasitOn) e.remove(); else { e.style.display = "inline"; e.setAttribute("fill", "#2b8a3e"); } });
   const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
   await img.decode();
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
@@ -1236,9 +1233,11 @@ $("btnCopy").onclick = async () => {
     try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.min(640, Math.round(w*.62)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".fasit").forEach(f => f.style.color = "#2b8a3e");
+  clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "____________"; });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); if (s.textContent.trim()) { p.innerHTML = s.innerHTML; p.style.borderBottom = "1px solid #777"; } else p.textContent="_____________________________________________________________"; s.replaceWith(p); });
   clone.querySelectorAll(".scenario,.ordbank").forEach(s => { s.style.border="1px dashed #777"; s.style.padding="6px 10px"; });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
   const html = clone.innerHTML, text = clone.innerText;

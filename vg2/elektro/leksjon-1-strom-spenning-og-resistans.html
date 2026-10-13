@@ -159,9 +159,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -1051,14 +1054,13 @@ table.t th{background:var(--steel-soft)}
         <h3>Oppgave 1 – Størrelser og enheter <small>Time 1 · 4 min</small></h3>
         <table class="ot">
           <tr><th>Størrelse</th><th>Symbol</th><th>Enhet</th><th>Enhetssymbol</th><th>Hva tilsvarer det i vannmodellen?</th></tr>
-          <tr><td>Spenning</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>Strøm</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>Resistans</td><td class="tom"></td><td></td><td></td><td></td></tr>
-          <tr><td>Effekt</td><td class="tom"></td><td></td><td></td><td>(ikke i vannmodellen)</td></tr>
+          <tr><td>Spenning</td><td class="tom"><span class="fasit" hidden>U</span></td><td><span class="fasit" hidden>volt</span></td><td><span class="fasit" hidden>V</span></td><td><span class="fasit" hidden>Trykket fra pumpa</span></td></tr>
+          <tr><td>Strøm</td><td class="tom"><span class="fasit" hidden>I</span></td><td><span class="fasit" hidden>ampere</span></td><td><span class="fasit" hidden>A</span></td><td><span class="fasit" hidden>Vannmengden som strømmer</span></td></tr>
+          <tr><td>Resistans</td><td class="tom"><span class="fasit" hidden>R</span></td><td><span class="fasit" hidden>ohm</span></td><td><span class="fasit" hidden>Ω</span></td><td><span class="fasit" hidden>Smalt rør</span></td></tr>
+          <tr><td>Effekt</td><td class="tom"><span class="fasit" hidden>P</span></td><td><span class="fasit" hidden>watt</span></td><td><span class="fasit" hidden>W</span></td><td>(ikke i vannmodellen)</td></tr>
         </table>
         <p>Hvilke av disse er <b>ledere</b>, og hvilke er <b>isolatorer</b>? Skriv L eller I.</p>
-        <p>kobber ___ &nbsp; plast ___ &nbsp; stål ___ &nbsp; gummi ___ &nbsp; aluminium ___ &nbsp; glass ___</p>
-        <div class="fasit" hidden><b>Fasit:</b> Spenning – U – volt – V – trykket fra pumpa. Strøm – I – ampere – A – vannmengden som strømmer. Resistans – R – ohm – Ω – smalt rør. Effekt – P – watt – W. Ledere: kobber, stål, aluminium. Isolatorer: plast, gummi, glass.</div>
+        <p>kobber <span class="luke"><span class="fasit" hidden>L</span></span> &nbsp; plast <span class="luke"><span class="fasit" hidden>I</span></span> &nbsp; stål <span class="luke"><span class="fasit" hidden>L</span></span> &nbsp; gummi <span class="luke"><span class="fasit" hidden>I</span></span> &nbsp; aluminium <span class="luke"><span class="fasit" hidden>L</span></span> &nbsp; glass <span class="luke"><span class="fasit" hidden>I</span></span></p>
       </div>
 
       <div class="oppgave">
@@ -1067,76 +1069,69 @@ table.t th{background:var(--steel-soft)}
         <div class="minis" id="minis"></div>
         <table class="ot">
           <tr><th style="width:3rem"></th><th style="width:6rem">Lyser?</th><th>Fordi …</th></tr>
-          <tr><td>a)</td><td class="tom"></td><td></td></tr>
-          <tr><td>b)</td><td class="tom"></td><td></td></tr>
-          <tr><td>c)</td><td class="tom"></td><td></td></tr>
-          <tr><td>d)</td><td class="tom"></td><td></td></tr>
+          <tr><td>a)</td><td class="tom"><span class="fasit" hidden>Ja</span></td><td><span class="fasit" hidden>Kretsen er lukket.</span></td></tr>
+          <tr><td>b)</td><td class="tom"><span class="fasit" hidden>Nei</span></td><td><span class="fasit" hidden>Bryteren er åpen, kretsen er brutt.</span></td></tr>
+          <tr><td>c)</td><td class="tom"><span class="fasit" hidden>Nei</span></td><td><span class="fasit" hidden>Brudd i ledningen, ingen hel vei rundt.</span></td></tr>
+          <tr><td>d)</td><td class="tom"><span class="fasit" hidden>Nei</span></td><td><span class="fasit" hidden>Kortslutning: strømmen tar snarveien utenom lampa, strømmen blir svært stor og sikringen går.</span></td></tr>
         </table>
         <p>Hva er en sikring, og hvorfor trenger vi den?</p>
-        <div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) Ja – kretsen er lukket. b) Nei – bryteren er åpen, kretsen er brutt. c) Nei – brudd i ledningen, ingen hel vei rundt. d) Nei – kortslutning: strømmen tar snarveien utenom lampa, strømmen blir svært stor og sikringen går. Sikringen er en tråd som smelter (eller en bryter som løser ut) når strømmen blir for stor. Den hindrer at ledningene blir så varme at det begynner å brenne.</div>
+        <div class="svar"><span class="fasit" hidden>Sikringen er en tråd som smelter (eller en bryter som løser ut) når strømmen blir for stor.</span></div><div class="svar"><span class="fasit" hidden>Den hindrer at ledningene blir så varme at det begynner å brenne.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Fra AC til DC <small>Time 1 · 4 min</small></h3>
-        <p>a) Sett delene i en strømforsyning i riktig rekkefølge: <b>kondensator · stikkontakt · likeretter · transformator</b></p><div class="svar"></div>
-        <p>b) Hva gjør transformatoren?</p><div class="svar"></div>
-        <p>c) Hva gjør dioden? Sammenlign med en ventil.</p><div class="svar"></div>
-        <p>d) Hvorfor trenger vi kondensatoren?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) Stikkontakt → transformator → likeretter → kondensator. b) Gjør spenningen lavere (f.eks. 230 V ~ til 18 V ~). Det er fortsatt vekselstrøm. c) Slipper strøm bare én vei, som en enveisventil (tilbakeslagsventil). d) Etter likeretteren pulserer spenningen. Kondensatoren lagrer energi på toppene og gir den fra seg mellom dem, så spenningen blir jevn.</div>
+        <p>a) Sett delene i en strømforsyning i riktig rekkefølge: <b>kondensator · stikkontakt · likeretter · transformator</b></p><div class="svar"><span class="fasit" hidden>Stikkontakt → transformator → likeretter → kondensator</span></div>
+        <p>b) Hva gjør transformatoren?</p><div class="svar"><span class="fasit" hidden>Gjør spenningen lavere (f.eks. 230 V ~ til 18 V ~). Det er fortsatt vekselstrøm.</span></div>
+        <p>c) Hva gjør dioden? Sammenlign med en ventil.</p><div class="svar"><span class="fasit" hidden>Slipper strøm bare én vei, som en enveisventil (tilbakeslagsventil).</span></div>
+        <p>d) Hvorfor trenger vi kondensatoren?</p><div class="svar"><span class="fasit" hidden>Etter likeretteren pulserer spenningen. Kondensatoren lagrer energi på toppene og gir den fra seg mellom dem, så spenningen blir jevn.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 4 – Ohms lov <small>Time 2 · 10 min</small></h3>
         <p>Skriv formelen, sett inn tallene og svar med enhet.</p>
-        <p>a) En lampe på 48 Ω er koblet til 24 V. Hvor stor er strømmen?</p><div class="svar"></div>
-        <p>b) Spolen i en magnetventil (en elektromagnet som åpner en luftventil) trekker 0,25 A på 24 V. Hva er resistansen?</p><div class="svar"></div>
-        <p>c) Det går 0,1 A gjennom en motstand på 220 Ω. Hva er spenningen over motstanden?</p><div class="svar"></div>
-        <p>d) En sensor på 24 V trekker 12 mA. Hva er resistansen? Svar i Ω og i kΩ.</p><div class="svar"></div><div class="svar"></div>
-        <p>e) Resistansen er den samme, men spenningen dobles. Hva skjer med strømmen?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) I = U / R = 24 / 48 = <b>0,5 A</b>. b) R = U / I = 24 / 0,25 = <b>96 Ω</b>. c) U = R · I = 220 · 0,1 = <b>22 V</b>. d) 12 mA = 0,012 A. R = 24 / 0,012 = <b>2 000 Ω = 2 kΩ</b>. e) Strømmen <b>dobles</b> også.</div>
+        <p>a) En lampe på 48 Ω er koblet til 24 V. Hvor stor er strømmen?</p><div class="svar"><span class="fasit" hidden>I = U / R = 24 / 48 = <b>0,5 A</b></span></div>
+        <p>b) Spolen i en magnetventil (en elektromagnet som åpner en luftventil) trekker 0,25 A på 24 V. Hva er resistansen?</p><div class="svar"><span class="fasit" hidden>R = U / I = 24 / 0,25 = <b>96 Ω</b></span></div>
+        <p>c) Det går 0,1 A gjennom en motstand på 220 Ω. Hva er spenningen over motstanden?</p><div class="svar"><span class="fasit" hidden>U = R · I = 220 · 0,1 = <b>22 V</b></span></div>
+        <p>d) En sensor på 24 V trekker 12 mA. Hva er resistansen? Svar i Ω og i kΩ.</p><div class="svar"><span class="fasit" hidden>12 mA = 0,012 A</span></div><div class="svar"><span class="fasit" hidden>R = 24 / 0,012 = <b>2 000 Ω = 2 kΩ</b></span></div>
+        <p>e) Resistansen er den samme, men spenningen dobles. Hva skjer med strømmen?</p><div class="svar"><span class="fasit" hidden>Strømmen <b>dobles</b> også.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 5 – Effekt og energi <small>Time 2 · 7 min</small></h3>
-        <p>a) En vinkelsliper på 230 V trekker 9 A. Hvor stor effekt har den?</p><div class="svar"></div>
-        <p>b) En kurs har 16 A sikring og 230 V. Hvor stor effekt kan kursen gi før sikringen går?</p><div class="svar"></div>
-        <p>c) Kan du bruke vinkelsliperen og en varmeovn på 2 000 W på samme kurs samtidig? Vis utregning.</p><div class="svar"></div><div class="svar"></div>
-        <p>d) En CNC-maskin bruker 11 kW i 6 timer hver dag, 5 dager i uka. Hvor mange kWh blir det per uke? Hva koster det med 1,50 kr/kWh?</p><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) P = U · I = 230 · 9 = <b>2 070 W</b>. b) P = 230 · 16 = <b>3 680 W</b>. c) 2 070 + 2 000 = 4 070 W, som er mer enn 3 680 W. I = 4 070 / 230 ≈ 17,7 A &gt; 16 A. <b>Nei</b>, sikringen løser ut. d) E = 11 kW · 6 h · 5 = <b>330 kWh</b>. Pris: 330 · 1,50 = <b>495 kr</b>.</div>
+        <p>a) En vinkelsliper på 230 V trekker 9 A. Hvor stor effekt har den?</p><div class="svar"><span class="fasit" hidden>P = U · I = 230 · 9 = <b>2 070 W</b></span></div>
+        <p>b) En kurs har 16 A sikring og 230 V. Hvor stor effekt kan kursen gi før sikringen går?</p><div class="svar"><span class="fasit" hidden>P = 230 · 16 = <b>3 680 W</b></span></div>
+        <p>c) Kan du bruke vinkelsliperen og en varmeovn på 2 000 W på samme kurs samtidig? Vis utregning.</p><div class="svar"><span class="fasit" hidden>2 070 + 2 000 = 4 070 W, som er mer enn 3 680 W. I = 4 070 / 230 ≈ 17,7 A &gt; 16 A.</span></div><div class="svar"><span class="fasit" hidden><b>Nei</b>, sikringen løser ut.</span></div>
+        <p>d) En CNC-maskin bruker 11 kW i 6 timer hver dag, 5 dager i uka. Hvor mange kWh blir det per uke? Hva koster det med 1,50 kr/kWh?</p><div class="svar"><span class="fasit" hidden>E = 11 kW · 6 h · 5 = <b>330 kWh</b></span></div><div class="svar"><span class="fasit" hidden>Pris: 330 · 1,50 = <b>495 kr</b></span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 6 – Sikkerhet <small>Time 2 · 6 min</small></h3>
-        <p>a) En person med våt hud (ca. 1 000 Ω) tar på 230 V. Hvor stor blir strømmen i mA? Hva kan skje?</p><div class="svar"></div><div class="svar"></div>
-        <p>b) Hvorfor bruker vi 24 V til sensorer og styring?</p><div class="svar"></div>
+        <p>a) En person med våt hud (ca. 1 000 Ω) tar på 230 V. Hvor stor blir strømmen i mA? Hva kan skje?</p><div class="svar"><span class="fasit" hidden>I = U / R = 230 / 1 000 = 0,23 A = <b>230 mA</b></span></div><div class="svar"><span class="fasit" hidden>Fare for hjerteflimmer – livsfarlig.</span></div>
+        <p>b) Hvorfor bruker vi 24 V til sensorer og styring?</p><div class="svar"><span class="fasit" hidden>Med lav spenning blir strømmen gjennom kroppen liten (24 / 10 000 Ω ≈ 2,4 mA), så det er mye tryggere å jobbe med.</span></div>
         <p>c) Sett de fem sikkerhetsreglene i riktig rekkefølge (1–5):</p>
         <table class="ot" style="width:auto">
-          <tr><td style="width:3rem"></td><td>Kontroller at det er spenningsløst</td></tr>
-          <tr><td></td><td>Avskjerm deler i nærheten som har spenning</td></tr>
-          <tr><td></td><td>Koble fra</td></tr>
-          <tr><td></td><td>Jord og kortslutt</td></tr>
-          <tr><td></td><td>Sikre mot innkobling (lås og merk)</td></tr>
+          <tr><td style="width:3rem"><span class="fasit" hidden>3</span></td><td>Kontroller at det er spenningsløst</td></tr>
+          <tr><td><span class="fasit" hidden>5</span></td><td>Avskjerm deler i nærheten som har spenning</td></tr>
+          <tr><td><span class="fasit" hidden>1</span></td><td>Koble fra</td></tr>
+          <tr><td><span class="fasit" hidden>4</span></td><td>Jord og kortslutt</td></tr>
+          <tr><td><span class="fasit" hidden>2</span></td><td>Sikre mot innkobling (lås og merk)</td></tr>
         </table>
-        <p>d) Hva gjør en jordfeilbryter?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) I = U / R = 230 / 1 000 = 0,23 A = <b>230 mA</b>. Fare for hjerteflimmer – livsfarlig. b) Med lav spenning blir strømmen gjennom kroppen liten (24 / 10 000 Ω ≈ 2,4 mA), så det er mye tryggere å jobbe med. c) 3 – 5 – 1 – 4 – 2 (Koble fra = 1, Sikre = 2, Kontroller = 3, Jorde = 4, Avskjerme = 5). d) Den merker at strøm lekker ut av kretsen (f.eks. gjennom en person) og slår av strømmen raskt. Løser ut ved 30 mA.</div>
+        <p>d) Hva gjør en jordfeilbryter?</p><div class="svar"><span class="fasit" hidden>Den merker at strøm lekker ut av kretsen (f.eks. gjennom en person) og slår av strømmen raskt. Løser ut ved 30 mA.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 7 – Les merkeskiltet <small>Ekstra</small></h3>
         <div style="max-width:420px" id="skilt"></div>
-        <p>a) Går maskinen på likestrøm eller vekselstrøm? Hvordan ser du det?</p><div class="svar"></div>
-        <p>b) Hvor stor strøm trekker den ved full effekt?</p><div class="svar"></div>
-        <p>c) Hvor mange kWh bruker den på 3 timer?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) Vekselstrøm – symbolet ~ og 50 Hz. b) I = P / U = 1 500 / 230 ≈ <b>6,5 A</b>. c) E = 1,5 kW · 3 h = <b>4,5 kWh</b>.</div>
+        <p>a) Går maskinen på likestrøm eller vekselstrøm? Hvordan ser du det?</p><div class="svar"><span class="fasit" hidden>Vekselstrøm – symbolet ~ og 50 Hz.</span></div>
+        <p>b) Hvor stor strøm trekker den ved full effekt?</p><div class="svar"><span class="fasit" hidden>I = P / U = 1 500 / 230 ≈ <b>6,5 A</b></span></div>
+        <p>c) Hvor mange kWh bruker den på 3 timer?</p><div class="svar"><span class="fasit" hidden>E = 1,5 kW · 3 h = <b>4,5 kWh</b></span></div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 2–3 min</small></h3>
-        <p>1. Hva er enheten for spenning, og hva er enheten for strøm?</p><div class="svar"></div>
-        <p>2. U = 12 V og R = 4 Ω. Hvor stor er strømmen?</p><div class="svar"></div>
-        <p>3. Nevn de tre første sikkerhetsreglene før du jobber på en maskin.</p><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Volt (V) og ampere (A). 2) I = 12 / 4 = 3 A. 3) Koble fra, sikre mot innkobling (lås og merk), kontroller at det er spenningsløst.</div>
+        <p>1. Hva er enheten for spenning, og hva er enheten for strøm?</p><div class="svar"><span class="fasit" hidden>Volt (V) og ampere (A).</span></div>
+        <p>2. U = 12 V og R = 4 Ω. Hvor stor er strømmen?</p><div class="svar"><span class="fasit" hidden>I = 12 / 4 = <b>3 A</b></span></div>
+        <p>3. Nevn de tre første sikkerhetsreglene før du jobber på en maskin.</p><div class="svar"><span class="fasit" hidden>Koble fra, sikre mot innkobling (lås og merk),</span></div><div class="svar"><span class="fasit" hidden>kontroller at det er spenningsløst.</span></div>
       </div>
     </div>
   </div>
@@ -1494,11 +1489,12 @@ $("skilt").innerHTML = `<svg xmlns="${NS}" viewBox="0 0 320 150" width="640" hei
 
 /* ---------- Oppgaver: utskrift, kopi, fasit ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToPng(svg){
   const vb = svg.viewBox.baseVal, w = vb.width*2, h = vb.height*2;
   const c = svg.cloneNode(true); c.setAttribute("xmlns", NS); c.setAttribute("width", w); c.setAttribute("height", h); c.removeAttribute("style");
+  c.querySelectorAll(".fasit-svg").forEach(t => { if (!fasitOn) t.remove(); else { t.setAttribute("display","inline"); if (!t.getAttribute("fill") || t.getAttribute("fill").startsWith("var(")) t.setAttribute("fill","#2b8a3e"); } });
   const img = new Image(); img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
   await img.decode();
   const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
@@ -1512,9 +1508,10 @@ $("btnCopy").onclick = async () => {
     try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.round(w*(svgs[i].closest("#skilt") ? 1.3 : .9)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "___"; });
   clone.querySelectorAll(".minis").forEach(m => { const t = document.createElement("table"); const tr = t.insertRow(); m.querySelectorAll("figure").forEach(f => { const td = tr.insertCell(); td.innerHTML = f.innerHTML; td.style.padding = "4px"; }); m.replaceWith(t); });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.textContent.trim()) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   clone.querySelectorAll(".formelark span").forEach(s => s.textContent = s.textContent + "   ·   ");
   const html = clone.innerHTML, text = clone.innerText;

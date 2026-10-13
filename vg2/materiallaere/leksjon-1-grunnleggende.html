@@ -146,9 +146,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -633,8 +636,7 @@ table.t th{background:var(--steel-soft)}
         <h3>Oppgave 1 – Sorter i materialgrupper <small>Time 1 · 8 min</small></h3>
         <p>Skriv hver gjenstand i riktig kolonne.</p>
         <p><i>skiftenøkkel · PET-flaske · kaffekopp av porselen · aluminiumsfelg · sykkelramme av karbonfiber · tannhjul av nylon · vindusglass · båtskrog av glassfiber · kobberledning · gummipakning · slipeskive · messingmutter · armert betong</i></p>
-        <table class="ot"><tr><th>Metaller</th><th>Polymerer</th><th>Keramer</th><th>Kompositter</th></tr><tr><td class="tom"></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr><tr><td class="tom"></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr><tr><td class="tom"></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr><tr><td class="tom"></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr></table>
-        <div class="fasit" hidden><b>Fasit:</b> Metaller: skiftenøkkel, aluminiumsfelg, kobberledning, messingmutter. Polymerer: PET-flaske, tannhjul av nylon, gummipakning. Keramer: porselenskopp, vindusglass, slipeskive. Kompositter: sykkelramme av karbonfiber, båtskrog av glassfiber, armert betong.</div>
+        <table class="ot"><tr><th>Metaller</th><th>Polymerer</th><th>Keramer</th><th>Kompositter</th></tr><tr><td class="tom"><span class="fasit" hidden>skiftenøkkel</span></td><td class="tom"><span class="fasit" hidden>PET-flaske</span></td><td class="tom"><span class="fasit" hidden>porselenskopp</span></td><td class="tom"><span class="fasit" hidden>sykkelramme av karbonfiber</span></td></tr><tr><td class="tom"><span class="fasit" hidden>aluminiumsfelg</span></td><td class="tom"><span class="fasit" hidden>tannhjul av nylon</span></td><td class="tom"><span class="fasit" hidden>vindusglass</span></td><td class="tom"><span class="fasit" hidden>båtskrog av glassfiber</span></td></tr><tr><td class="tom"><span class="fasit" hidden>kobberledning</span></td><td class="tom"><span class="fasit" hidden>gummipakning</span></td><td class="tom"><span class="fasit" hidden>slipeskive</span></td><td class="tom"><span class="fasit" hidden>armert betong</span></td></tr><tr><td class="tom"><span class="fasit" hidden>messingmutter</span></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr></table>
       </div>
 
       <div class="oppgave">
@@ -642,50 +644,42 @@ table.t th{background:var(--steel-soft)}
         <p>Skriv riktig bokstav bak hvert begrep.</p>
         <table class="ot">
           <tr><th style="width:40%">Begrep</th><th>Forklaring</th></tr>
-          <tr><td>1. Hardhet ____</td><td>A. Masse per volum</td></tr>
-          <tr><td>2. Seighet ____</td><td>B. Går tilbake til opprinnelig form når kraften fjernes</td></tr>
-          <tr><td>3. Sprøhet ____</td><td>C. Motstand mot riper og inntrykk i overflaten</td></tr>
-          <tr><td>4. Elastisitet ____</td><td>D. Evne til å motstå rust og kjemisk angrep</td></tr>
-          <tr><td>5. Plastisitet ____</td><td>E. Brekker uten å bøye seg først</td></tr>
-          <tr><td>6. Fasthet ____</td><td>F. Hvor stor last materialet tåler før det flyter eller brister</td></tr>
-          <tr><td>7. Densitet ____</td><td>G. Får varig formendring uten å sprekke</td></tr>
-          <tr><td>8. Korrosjonsbestandighet ____</td><td>H. Tar opp mye energi (slag) og bøyer seg før brudd</td></tr>
+          <tr><td>1. Hardhet <span class="luke"><span class="fasit" hidden>C</span></span></td><td>A. Masse per volum</td></tr>
+          <tr><td>2. Seighet <span class="luke"><span class="fasit" hidden>H</span></span></td><td>B. Går tilbake til opprinnelig form når kraften fjernes</td></tr>
+          <tr><td>3. Sprøhet <span class="luke"><span class="fasit" hidden>E</span></span></td><td>C. Motstand mot riper og inntrykk i overflaten</td></tr>
+          <tr><td>4. Elastisitet <span class="luke"><span class="fasit" hidden>B</span></span></td><td>D. Evne til å motstå rust og kjemisk angrep</td></tr>
+          <tr><td>5. Plastisitet <span class="luke"><span class="fasit" hidden>G</span></span></td><td>E. Brekker uten å bøye seg først</td></tr>
+          <tr><td>6. Fasthet <span class="luke"><span class="fasit" hidden>F</span></span></td><td>F. Hvor stor last materialet tåler før det flyter eller brister</td></tr>
+          <tr><td>7. Densitet <span class="luke"><span class="fasit" hidden>A</span></span></td><td>G. Får varig formendring uten å sprekke</td></tr>
+          <tr><td>8. Korrosjonsbestandighet <span class="luke"><span class="fasit" hidden>D</span></span></td><td>H. Tar opp mye energi (slag) og bøyer seg før brudd</td></tr>
         </table>
         <p>Forklar med egne ord: Hvorfor kan et metall bøyes, mens en keramisk kopp knuser? (Tips: tenk på lagene av atomer.)</p>
-        <div class="svar"></div><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1C, 2H, 3E, 4B, 5G, 6F, 7A, 8D. I metall er atomene like og holdes sammen av frie elektroner, så lagene kan gli uten at bindingen brytes. I kerami er det annenhver + og − ion. Glir lagene, kommer like ladninger over hverandre, de frastøter hverandre og materialet sprekker.</div>
+        <div class="svar"><span class="fasit" hidden>I metall er atomene like og holdes sammen av frie elektroner, så lagene kan gli uten at bindingen brytes.</span></div><div class="svar"><span class="fasit" hidden>I kerami er det annenhver + og − ion. Glir lagene, kommer like ladninger over hverandre, de frastøter hverandre og materialet sprekker.</span></div><div class="svar"></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Elastisk (E) eller plastisk (P)? <small>Time 2 · 5 min</small></h3>
         <table class="ot">
           <tr><th>Situasjon</th><th style="width:5rem">E / P</th></tr>
-          <tr><td>a) Du bøyer en stållinjal litt, og den retter seg ut igjen.</td><td></td></tr>
-          <tr><td>b) Kantpressa bøyer en stålplate 90°.</td><td></td></tr>
-          <tr><td>c) En fjær i en ventil trykkes sammen og slippes.</td><td></td></tr>
-          <tr><td>d) En bolt strammes med riktig moment.</td><td></td></tr>
-          <tr><td>e) Bilen treffer en kantstein og felgen får en bulk.</td><td></td></tr>
-          <tr><td>f) Du bøyer en binders frem og tilbake til den brekker.</td><td></td></tr>
+          <tr><td>a) Du bøyer en stållinjal litt, og den retter seg ut igjen.</td><td><span class="fasit" hidden><b>E</b></span></td></tr>
+          <tr><td>b) Kantpressa bøyer en stålplate 90°.</td><td><span class="fasit" hidden><b>P</b></span></td></tr>
+          <tr><td>c) En fjær i en ventil trykkes sammen og slippes.</td><td><span class="fasit" hidden><b>E</b></span></td></tr>
+          <tr><td>d) En bolt strammes med riktig moment.<span class="fasit" hidden><br>Bolten strekkes elastisk og virker som en stiv fjær som holder klemkraften. Strammes den for hardt, blir den plastisk og mister forspenning.</span></td><td><span class="fasit" hidden><b>E</b></span></td></tr>
+          <tr><td>e) Bilen treffer en kantstein og felgen får en bulk.</td><td><span class="fasit" hidden><b>P</b></span></td></tr>
+          <tr><td>f) Du bøyer en binders frem og tilbake til den brekker.<span class="fasit" hidden><br>Bindersen kaldherdes og blir sprø, til slutt brekker den.</span></td><td><span class="fasit" hidden><b>P</b></span></td></tr>
         </table>
-        <p>Hva heter grensen mellom elastisk og plastisk område? ______________________</p>
-        <div class="fasit" hidden><b>Fasit:</b> a) E, b) P, c) E, d) E – bolten strekkes elastisk og virker som en stiv fjær som holder klemkraften. Strammes den for hardt, blir den plastisk og mister forspenning. e) P, f) P – bindersen kaldherdes og blir sprø, til slutt brekker den. Grensen heter <b>flytegrensen</b>.</div>
+        <p>Hva heter grensen mellom elastisk og plastisk område? <span class="luke" style="min-width:12em"><span class="fasit" hidden>flytegrensen</span></span></p>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 4 – Regn ut masse <small>Time 2 · 15 min</small></h3>
         <p>Bruk m = ρ · V. Husk: 1 dm³ = 1 000 000 mm³. Vis utregningen.</p>
         <table class="ot" style="width:auto"><tr><th>Materiale</th><th>ρ (kg/dm³)</th></tr><tr><td>Stål</td><td>7,85</td></tr><tr><td>Rustfritt stål</td><td>7,9</td></tr><tr><td>Aluminium</td><td>2,70</td></tr><tr><td>Messing</td><td>8,5</td></tr><tr><td>POM (plast)</td><td>1,41</td></tr></table>
-        <p>a) Flattstål av stål, 50 × 10 × 1000 mm.</p><div class="svar"></div><div class="svar"></div>
-        <p>b) Samme flattstål i aluminium. Hvor mange kg sparer du?</p><div class="svar"></div><div class="svar"></div>
-        <p>c) Rundstang av stål, Ø40 × 500 mm. (Areal av sirkel: A = π · r²)</p><div class="svar"></div><div class="svar"></div>
-        <p>d) Plate av rustfritt stål, 2000 × 1000 × 3 mm. Klarer én person å bære den trygt alene?</p><div class="svar"></div><div class="svar"></div>
-        <p>e) <b>Utfordring:</b> Hvor lang må en messingstang Ø20 mm være for å veie 1 kg?</p><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b><br>
-          a) V = 50 · 10 · 1000 = 500 000 mm³ = 0,5 dm³ → m = 7,85 · 0,5 ≈ <b>3,93 kg</b><br>
-          b) m = 2,70 · 0,5 = <b>1,35 kg</b>. Sparer ca. 2,6 kg (aluminium veier omtrent 1/3 av stål).<br>
-          c) A = π · 20² ≈ 1256,6 mm². V = 1256,6 · 500 ≈ 628 300 mm³ = 0,628 dm³ → m ≈ <b>4,93 kg</b><br>
-          d) V = 2000 · 1000 · 3 = 6 000 000 mm³ = 6 dm³ → m = 7,9 · 6 = <b>47,4 kg</b>. For tungt og uhåndterlig for én person: bruk to personer eller løfteutstyr (platesug/plateklemme).<br>
-          e) V = 1 / 8,5 ≈ 0,1176 dm³ = 117 600 mm³. A = π · 10² ≈ 314,2 mm². L = V / A ≈ <b>374 mm</b>.</div>
+        <p>a) Flattstål av stål, 50 × 10 × 1000 mm.</p><div class="svar"><span class="fasit" hidden>V = 50 · 10 · 1000 = 500 000 mm³ = 0,5 dm³</span></div><div class="svar"><span class="fasit" hidden>m = 7,85 · 0,5 ≈ <b>3,93 kg</b></span></div>
+        <p>b) Samme flattstål i aluminium. Hvor mange kg sparer du?</p><div class="svar"><span class="fasit" hidden>m = 2,70 · 0,5 = <b>1,35 kg</b></span></div><div class="svar"><span class="fasit" hidden>Sparer ca. <b>2,6 kg</b> (aluminium veier omtrent 1/3 av stål).</span></div>
+        <p>c) Rundstang av stål, Ø40 × 500 mm. (Areal av sirkel: A = π · r²)</p><div class="svar"><span class="fasit" hidden>A = π · 20² ≈ 1256,6 mm². V = 1256,6 · 500 ≈ 628 300 mm³ = 0,628 dm³</span></div><div class="svar"><span class="fasit" hidden>m = 7,85 · 0,628 ≈ <b>4,93 kg</b></span></div>
+        <p>d) Plate av rustfritt stål, 2000 × 1000 × 3 mm. Klarer én person å bære den trygt alene?</p><div class="svar"><span class="fasit" hidden>V = 2000 · 1000 · 3 = 6 000 000 mm³ = 6 dm³ → m = 7,9 · 6 = <b>47,4 kg</b></span></div><div class="svar"><span class="fasit" hidden>For tungt og uhåndterlig for én person: bruk to personer eller løfteutstyr (platesug/plateklemme).</span></div>
+        <p>e) <b>Utfordring:</b> Hvor lang må en messingstang Ø20 mm være for å veie 1 kg?</p><div class="svar"><span class="fasit" hidden>V = 1 / 8,5 ≈ 0,1176 dm³ = 117 600 mm³. A = π · 10² ≈ 314,2 mm²</span></div><div class="svar"><span class="fasit" hidden>L = V / A ≈ <b>374 mm</b></span></div>
       </div>
 
       <div class="oppgave">
@@ -693,20 +687,18 @@ table.t th{background:var(--steel-soft)}
         <p>Velg materiale til hver del og begrunn med <b>minst én egenskap</b>.</p>
         <table class="ot">
           <tr><th style="width:42%">Del</th><th style="width:22%">Materiale</th><th>Fordi …</th></tr>
-          <tr><td>a) Beslag på en båt som står i saltvann</td><td class="tom"></td><td></td></tr>
-          <tr><td>b) Glidelist som skal gli mot stål uten smøring</td><td class="tom"></td><td></td></tr>
-          <tr><td>c) Bjelke i en sveist stålkonstruksjon, billig</td><td class="tom"></td><td></td></tr>
-          <tr><td>d) Arm på en drone – lett og stiv</td><td class="tom"></td><td></td></tr>
-          <tr><td>e) Strømskinne i et elskap</td><td class="tom"></td><td></td></tr>
+          <tr><td>a) Beslag på en båt som står i saltvann</td><td class="tom"><span class="fasit" hidden>Rustfritt syrefast stål (316) eller bronse</span></td><td><span class="fasit" hidden>Tåler saltvann.</span></td></tr>
+          <tr><td>b) Glidelist som skal gli mot stål uten smøring</td><td class="tom"><span class="fasit" hidden>POM eller nylon (PA)</span></td><td><span class="fasit" hidden>Lav friksjon, slitesterk, trenger ikke smøring.</span></td></tr>
+          <tr><td>c) Bjelke i en sveist stålkonstruksjon, billig</td><td class="tom"><span class="fasit" hidden>Konstruksjonsstål S355</span></td><td><span class="fasit" hidden>Sterkt, lett å sveise, billig.</span></td></tr>
+          <tr><td>d) Arm på en drone – lett og stiv</td><td class="tom"><span class="fasit" hidden>Aluminium eller karbonfiberkompositt</span></td><td><span class="fasit" hidden>Lav densitet, stiv.</span></td></tr>
+          <tr><td>e) Strømskinne i et elskap</td><td class="tom"><span class="fasit" hidden>Kobber</span></td><td><span class="fasit" hidden>Svært god strømleder. Andre svar kan være riktige hvis begrunnelsen holder.</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Forslag til svar:</b> a) Rustfritt syrefast stål (316) eller bronse – tåler saltvann. b) POM eller nylon (PA) – lav friksjon, slitesterk, trenger ikke smøring. c) Konstruksjonsstål S355 – sterkt, lett å sveise, billig. d) Aluminium eller karbonfiberkompositt – lav densitet, stiv. e) Kobber – svært god strømleder. Andre svar kan være riktige hvis begrunnelsen holder.</div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 6 – Gjenvinning <small>Hjemme eller ekstra</small></h3>
         <p>Hvorfor skal stålspon, aluminiumsspon og messingspon i hver sin kasse i verkstedet? Gi to grunner.</p>
-        <div class="svar"></div><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Forslag:</b> Sortert skrap er verdt mer og kan smeltes direkte om til samme materiale. Blandet skrap gir urene legeringer eller må sorteres i ettertid. Omsmelting sparer mye energi (aluminium ca. 95 %) og råstoff. Brannfare: fint aluminiums- og magnesiumspon skal holdes for seg.</div>
+        <div class="svar"><span class="fasit" hidden>Forslag – Sortert skrap er verdt mer og kan smeltes direkte om til samme materiale. Blandet skrap gir urene legeringer eller må sorteres i ettertid.</span></div><div class="svar"><span class="fasit" hidden>Omsmelting sparer mye energi (aluminium ca. 95 %) og råstoff.</span></div><div class="svar"><span class="fasit" hidden>Brannfare: fint aluminiums- og magnesiumspon skal holdes for seg.</span></div>
       </div>
 
       <div class="oppgave">
@@ -720,10 +712,9 @@ table.t th{background:var(--steel-soft)}
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 5 min</small></h3>
-        <p>1. Nevn de fire materialgruppene.</p><div class="svar"></div>
-        <p>2. Hva er forskjellen på et hardt og et seigt materiale?</p><div class="svar"></div><div class="svar"></div>
-        <p>3. Hvorfor leder metaller strøm?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Metaller, polymerer, keramer, kompositter. 2) Hardt = motstår riper/inntrykk. Seigt = tar opp energi og bøyer seg før det brekker. Et materiale kan være hardt og sprøtt samtidig. 3) Metallet har frie elektroner som kan bevege seg gjennom hele materialet.</div>
+        <p>1. Nevn de fire materialgruppene.</p><div class="svar"><span class="fasit" hidden>Metaller, polymerer, keramer, kompositter.</span></div>
+        <p>2. Hva er forskjellen på et hardt og et seigt materiale?</p><div class="svar"><span class="fasit" hidden>Hardt = motstår riper/inntrykk. Seigt = tar opp energi og bøyer seg før det brekker.</span></div><div class="svar"><span class="fasit" hidden>Et materiale kan være hardt og sprøtt samtidig.</span></div>
+        <p>3. Hvorfor leder metaller strøm?</p><div class="svar"><span class="fasit" hidden>Metallet har frie elektroner som kan bevege seg gjennom hele materialet.</span></div>
       </div>
     </div>
   </div>
@@ -1477,14 +1468,16 @@ let fasitOn = false;
 $("btnFasit").onclick = () => {
   fasitOn = !fasitOn;
   document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn);
+  $("oppgavetekst").classList.toggle("vis-fasit", fasitOn);
   $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit";
 };
 $("btnPrint").onclick = () => window.print();
 $("btnCopy").onclick = async () => {
   const clone = $("oppgavetekst").cloneNode(true);
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "____"; });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.textContent.trim()) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   const html = clone.innerHTML, text = clone.innerText;
   try {

@@ -121,9 +121,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -544,12 +547,11 @@ table.t th{background:var(--steel-soft)}
       <div class="oppgave">
         <h3>Oppgave 1 – Spenning <small>Time 1 · 7 min</small></h3>
         <p>a) En rundstang Ø12 mm i S355 trekkes med F = 30 kN. Regn ut A₀ og σ. Begynner stangen å flyte? (R<sub>eH</sub> = 355 MPa)</p>
-        <div class="svar"></div><div class="svar"></div>
+        <div class="svar"><span class="fasit" hidden>A₀ = π · 12² / 4 = 113,1 mm². σ = 30 000 N / 113,1 mm² = <b>265 MPa</b></span></div><div class="svar"><span class="fasit" hidden>Under 355 → flyter ikke.</span></div>
         <p>b) Et flatstål 40 × 8 mm trekkes med 100 kN. Regn ut σ. Flyter det?</p>
-        <div class="svar"></div><div class="svar"></div>
+        <div class="svar"><span class="fasit" hidden>A₀ = 40 · 8 = 320 mm². σ = 100 000 / 320 = <b>312,5 MPa</b></span></div><div class="svar"><span class="fasit" hidden>Flyter ikke, men nær.</span></div>
         <p>c) En stang skal tåle 50 kN, og spenningen skal være høyst 200 MPa. Hvilket tverrsnitt trengs? Hvilken diameter (rund opp til hel mm)?</p>
-        <div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) A₀ = π · 12² / 4 = 113,1 mm². σ = 30 000 N / 113,1 mm² = 265 MPa. Under 355 → flyter ikke. b) A₀ = 40 · 8 = 320 mm². σ = 100 000 / 320 = 312,5 MPa. Flyter ikke, men nær. c) A₀ = 50 000 / 200 = 250 mm². d = √(4 · 250 / π) = 17,8 mm → <b>18 mm</b>.</div>
+        <div class="svar"><span class="fasit" hidden>A₀ = 50 000 / 200 = 250 mm²</span></div><div class="svar"><span class="fasit" hidden>d = √(4 · 250 / π) = 17,8 mm → <b>18 mm</b></span></div>
       </div>
 
       <div class="oppgave">
@@ -558,14 +560,13 @@ table.t th{background:var(--steel-soft)}
         <div class="oppfig"><svg id="oppDiag" viewBox="0 0 620 340" xmlns="http://www.w3.org/2000/svg"></svg></div>
         <table class="ot">
           <tr><th style="width:62%">Spørsmål</th><th>Svar</th></tr>
-          <tr><td>a) Øvre flytegrense R<sub>eH</sub></td><td class="tom"></td></tr>
-          <tr><td>b) Strekkfasthet R<sub>m</sub></td><td class="tom"></td></tr>
-          <tr><td>c) Forlengelse ved brudd (ca. %)</td><td class="tom"></td></tr>
-          <tr><td>d) Ved hvilken tøyning starter innsnevringen?</td><td class="tom"></td></tr>
-          <tr><td>e) Hvor i diagrammet er det elastiske området? Skraver det.</td><td class="tom"></td></tr>
-          <tr><td>f) Hvor stor var kraften ved R<sub>m</sub>? (F = σ · A₀)</td><td class="tom"></td></tr>
+          <tr><td>a) Øvre flytegrense R<sub>eH</sub></td><td class="tom"><span class="fasit" hidden>ca. 300 MPa</span></td></tr>
+          <tr><td>b) Strekkfasthet R<sub>m</sub></td><td class="tom"><span class="fasit" hidden>ca. 450 MPa</span></td></tr>
+          <tr><td>c) Forlengelse ved brudd (ca. %)</td><td class="tom"><span class="fasit" hidden>ca. 32 %</span></td></tr>
+          <tr><td>d) Ved hvilken tøyning starter innsnevringen?</td><td class="tom"><span class="fasit" hidden>ca. 20 % (der kurven er høyest, ved R<sub>m</sub>)</span></td></tr>
+          <tr><td>e) Hvor i diagrammet er det elastiske området? Skraver det.</td><td class="tom"><span class="fasit" hidden>Den nesten loddrette linja helt til venstre, fra 0 opp til ca. 300 MPa</span></td></tr>
+          <tr><td>f) Hvor stor var kraften ved R<sub>m</sub>? (F = σ · A₀)</td><td class="tom"><span class="fasit" hidden>450 · 78,5 = 35 300 N ≈ <b>35 kN</b></span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) ca. 300 MPa. b) ca. 450 MPa. c) ca. 32 %. d) ca. 20 % (der kurven er høyest, ved R<sub>m</sub>). e) Den nesten loddrette linja helt til venstre, fra 0 opp til ca. 300 MPa. f) 450 · 78,5 = 35 300 N ≈ 35 kN.</div>
       </div>
 
       <div class="oppgave">
@@ -573,15 +574,14 @@ table.t th{background:var(--steel-soft)}
         <p>En prøvestav fra en S355J2-plate: d₀ = 10 mm, L₀ = 50 mm. Målt: kraft ved flytegrensen 29,5 kN, største kraft 44,0 kN. Etter brudd: L<sub>u</sub> = 61,0 mm, minste diameter i halsen 6,0 mm.</p>
         <table class="ot">
           <tr><th style="width:52%">Regn ut</th><th>Utregning og svar</th></tr>
-          <tr><td>a) A₀</td><td class="tom"></td></tr>
-          <tr><td>b) R<sub>eH</sub></td><td class="tom"></td></tr>
-          <tr><td>c) R<sub>m</sub></td><td class="tom"></td></tr>
-          <tr><td>d) Bruddforlengelse A</td><td class="tom"></td></tr>
-          <tr><td>e) Innsnevring Z = (A₀ − S<sub>u</sub>) / A₀ · 100 %</td><td class="tom"></td></tr>
-          <tr><td>f) Er kravene til S355J2 oppfylt? (R<sub>eH</sub> ≥ 355, R<sub>m</sub> 470–630, A ≥ 22 %)</td><td class="tom"></td></tr>
-          <tr><td>g) Ved F = 10 kN var ΔL = 0,030 mm. Regn ut σ, ε og E. Stemmer det med stål?</td><td class="tom"></td></tr>
+          <tr><td>a) A₀</td><td class="tom"><span class="fasit" hidden>π · 10² / 4 = <b>78,5 mm²</b></span></td></tr>
+          <tr><td>b) R<sub>eH</sub></td><td class="tom"><span class="fasit" hidden>29 500 / 78,5 = <b>376 MPa</b></span></td></tr>
+          <tr><td>c) R<sub>m</sub></td><td class="tom"><span class="fasit" hidden>44 000 / 78,5 = <b>560 MPa</b></span></td></tr>
+          <tr><td>d) Bruddforlengelse A</td><td class="tom"><span class="fasit" hidden>(61 − 50) / 50 · 100 = <b>22 %</b></span></td></tr>
+          <tr><td>e) Innsnevring Z = (A₀ − S<sub>u</sub>) / A₀ · 100 %</td><td class="tom"><span class="fasit" hidden>S<sub>u</sub> = π · 6² / 4 = 28,3 mm². Z = (78,5 − 28,3) / 78,5 · 100 = <b>64 %</b></span></td></tr>
+          <tr><td>f) Er kravene til S355J2 oppfylt? (R<sub>eH</sub> ≥ 355, R<sub>m</sub> 470–630, A ≥ 22 %)</td><td class="tom"><span class="fasit" hidden>Ja – A er akkurat på grensen.</span></td></tr>
+          <tr><td>g) Ved F = 10 kN var ΔL = 0,030 mm. Regn ut σ, ε og E. Stemmer det med stål?</td><td class="tom"><span class="fasit" hidden>σ = 10 000 / 78,5 = 127 MPa. ε = 0,030 / 50 = 0,0006. E = 127 / 0,0006 ≈ 212 000 MPa ≈ <b>210 GPa</b> → stål.</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) π · 10² / 4 = 78,5 mm². b) 29 500 / 78,5 = 376 MPa. c) 44 000 / 78,5 = 560 MPa. d) (61 − 50) / 50 · 100 = 22 %. e) S<sub>u</sub> = π · 6² / 4 = 28,3 mm². Z = (78,5 − 28,3) / 78,5 · 100 = 64 %. f) Ja – A er akkurat på grensen. g) σ = 10 000 / 78,5 = 127 MPa. ε = 0,030 / 50 = 0,0006. E = 127 / 0,0006 ≈ 212 000 MPa ≈ 210 GPa → stål.</div>
       </div>
 
       <div class="oppgave">
@@ -589,18 +589,17 @@ table.t th{background:var(--steel-soft)}
         <p>a) Hvilken metode passer best? Skriv Brinell, Vickers eller Rockwell C.</p>
         <table class="ot">
           <tr><th style="width:62%">Situasjon</th><th>Metode</th></tr>
-          <tr><td>1. Kontroll av en herdet aksel (ca. 58 HRC) på verkstedet</td><td class="tom"></td></tr>
-          <tr><td>2. Maskinstativ i gråjern</td><td class="tom"></td></tr>
-          <tr><td>3. Et settherdet lag som er bare 0,3 mm tykt</td><td class="tom"></td></tr>
-          <tr><td>4. Mange herdede stanser skal kontrolleres raskt</td><td class="tom"></td></tr>
+          <tr><td>1. Kontroll av en herdet aksel (ca. 58 HRC) på verkstedet</td><td class="tom"><span class="fasit" hidden>Rockwell C</span></td></tr>
+          <tr><td>2. Maskinstativ i gråjern</td><td class="tom"><span class="fasit" hidden>Brinell</span></td></tr>
+          <tr><td>3. Et settherdet lag som er bare 0,3 mm tykt</td><td class="tom"><span class="fasit" hidden>Vickers (liten kraft)</span></td></tr>
+          <tr><td>4. Mange herdede stanser skal kontrolleres raskt</td><td class="tom"><span class="fasit" hidden>Rockwell C</span></td></tr>
         </table>
         <p>b) Vickers HV30 (F = 294,2 N). Diagonalene måles til 0,41 mm og 0,39 mm. Regn ut HV = 0,1891 · F / d², der d er snittet av diagonalene.</p>
-        <div class="svar"></div><div class="svar"></div>
+        <div class="svar"><span class="fasit" hidden>d = (0,41 + 0,39) / 2 = 0,40 mm</span></div><div class="svar"><span class="fasit" hidden>HV = 0,1891 · 294,2 / 0,16 = <b>348 HV30</b></span></div>
         <p>c) Rockwell C: inntrykket ble 0,080 mm dypere enn ved forlasten. HRC = 100 − dybde / 0,002. Regn ut HRC. Kan du bore i delen med et vanlig HSS-bor?</p>
-        <div class="svar"></div><div class="svar"></div>
+        <div class="svar"><span class="fasit" hidden>HRC = 100 − 0,080 / 0,002 = 100 − 40 = <b>60 HRC</b></span></div><div class="svar"><span class="fasit" hidden>Nei – like hardt som et HSS-bor. Bruk hardmetall, eller gløde delen først.</span></div>
         <p>d) Et stål måles til 180 HB. Anslå strekkfastheten.</p>
-        <div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 1 Rockwell C · 2 Brinell · 3 Vickers (liten kraft) · 4 Rockwell C. b) d = 0,40 mm. HV = 0,1891 · 294,2 / 0,16 = <b>348 HV30</b>. c) HRC = 100 − 0,080 / 0,002 = 100 − 40 = <b>60 HRC</b>. Nei – like hardt som et HSS-bor. Bruk hardmetall, eller gløde delen først. d) R<sub>m</sub> ≈ 3,3 · 180 ≈ <b>590 MPa</b>.</div>
+        <div class="svar"><span class="fasit" hidden>R<sub>m</sub> ≈ 3,3 · 180 ≈ <b>590 MPa</b></span></div>
       </div>
 
       <div class="oppgave">
@@ -608,28 +607,25 @@ table.t th{background:var(--steel-soft)}
         <p>Pendelen har m = 20 kg og starter i h₁ = 1,5 m. KV = m · g · (h₁ − h₂), g = 9,81 m/s². Fyll ut.</p>
         <table class="ot">
           <tr><th>Temperatur</th><th>h₂ (m)</th><th>KV (J)</th><th>Seigt eller sprøtt?</th></tr>
-          <tr><td>+20 °C</td><td>0,95</td><td class="tom"></td><td></td></tr>
-          <tr><td>−20 °C</td><td>1,32</td><td class="tom"></td><td></td></tr>
-          <tr><td>−40 °C</td><td>1,44</td><td class="tom"></td><td></td></tr>
+          <tr><td>+20 °C</td><td>0,95</td><td class="tom"><span class="fasit" hidden>20 · 9,81 · 0,55 = <b>108 J</b></span></td><td><span class="fasit" hidden>seigt</span></td></tr>
+          <tr><td>−20 °C</td><td>1,32</td><td class="tom"><span class="fasit" hidden>20 · 9,81 · 0,18 = <b>35 J</b></span></td><td><span class="fasit" hidden>mellomting</span></td></tr>
+          <tr><td>−40 °C</td><td>1,44</td><td class="tom"><span class="fasit" hidden>20 · 9,81 · 0,06 = <b>12 J</b></span></td><td><span class="fasit" hidden>sprøtt</span></td></tr>
         </table>
         <p>Holder stålet kravet til J2 (27 J ved −20 °C)? Kan det brukes i en konstruksjon ute ved −40 °C?</p>
-        <div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> +20 °C: 20 · 9,81 · 0,55 = 108 J, seigt. −20 °C: 20 · 9,81 · 0,18 = 35 J, mellomting. −40 °C: 20 · 9,81 · 0,06 = 12 J, sprøtt. J2 er oppfylt (35 ≥ 27 J). Ikke ved −40 °C – der er stålet sprøtt. Velg f.eks. S355NL (prøvd ved −50 °C).</div>
+        <div class="svar"><span class="fasit" hidden>J2 er oppfylt (35 ≥ 27 J ved −20 °C).</span></div><div class="svar"><span class="fasit" hidden>Ikke ved −40 °C – der er stålet sprøtt. Velg f.eks. S355NL (prøvd ved −50 °C).</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 6 – Sjekk sertifikatet <small>Ekstra · 5 min</small></h3>
         <p>Et 3.1-sertifikat for S355J2, 12 mm plate, viser: R<sub>eH</sub> = 371 MPa, R<sub>m</sub> = 528 MPa, A = 24 %, KV ved −20 °C: 41 J, 17 J og 35 J, CEV = 0,41. Bruk kravtabellen fra del 8. Kan plata brukes? Begrunn.</p>
-        <div class="svar"></div><div class="svar"></div><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> R<sub>eH</sub>, R<sub>m</sub>, A og CEV er OK. Snittet av KV er (41 + 17 + 35) / 3 = 31 J, som er over 27 J. Men én verdi (17 J) er under 19 J (70 % av 27 J). <b>Ikke godkjent</b> – kontakt leverandøren.</div>
+        <div class="svar"><span class="fasit" hidden>R<sub>eH</sub>, R<sub>m</sub>, A og CEV er OK.</span></div><div class="svar"><span class="fasit" hidden>Snittet av KV er (41 + 17 + 35) / 3 = 31 J, som er over 27 J. Men én verdi (17 J) er under 19 J (70 % av 27 J).</span></div><div class="svar"><span class="fasit" hidden><b>Ikke godkjent</b> – kontakt leverandøren.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 3 min</small></h3>
-        <p>1. Hva er forskjellen på kraft og spenning?</p><div class="svar"></div>
-        <p>2. Hva betyr R<sub>p0,2</sub>?</p><div class="svar"></div>
-        <p>3. Hvilken hardhetsmåling er raskest for herdet stål, og hvorfor?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Kraft er i N. Spenning er kraft per areal (N/mm² = MPa). 2) Spenningen som gir 0,2 % varig forlengelse. 3) Rockwell C – tallet leses rett av, ingen måling i mikroskop.</div>
+        <p>1. Hva er forskjellen på kraft og spenning?</p><div class="svar"><span class="fasit" hidden>Kraft er i N. Spenning er kraft per areal (N/mm² = MPa).</span></div>
+        <p>2. Hva betyr R<sub>p0,2</sub>?</p><div class="svar"><span class="fasit" hidden>Spenningen som gir 0,2 % varig forlengelse.</span></div>
+        <p>3. Hvilken hardhetsmåling er raskest for herdet stål, og hvorfor?</p><div class="svar"><span class="fasit" hidden>Rockwell C – tallet leses rett av, ingen måling i mikroskop.</span></div>
       </div>
     </div>
   </div>
@@ -1290,7 +1286,7 @@ drawCert(false);
 
 /* ---------- Oppgaver ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToImg(svg){
   const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
@@ -1303,8 +1299,8 @@ $("btnCopy").onclick = async () => {
   const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
   for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   const html = clone.innerHTML, text = clone.innerText;
   try {

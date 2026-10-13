@@ -134,9 +134,12 @@ table.t th{background:var(--steel-soft)}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
-.svar{border-bottom:1px solid var(--muted); height:2rem}
-.fasit{background:var(--green-soft); border-left:5px solid var(--green); padding:.6rem .9rem; border-radius:0 8px 8px 0; margin-top:.7rem; font-size:.9rem}
-.fasit b{color:var(--green)}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
 .ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
 .ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
 .ot th{background:var(--steel-soft); text-align:left}
@@ -556,11 +559,10 @@ table.t th{background:var(--steel-soft)}
         <div class="oppfig"><svg id="oppTT" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg"></svg></div>
         <table class="ot">
           <tr><th style="width:16%">Kurve</th><th>Høyeste temperatur</th><th>Holdetid</th><th>Avkjøling (rask / middels / langsom)</th><th>Navn på behandlingen</th></tr>
-          <tr><td>A</td><td class="tom"></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr>
-          <tr><td>B</td><td class="tom"></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr>
-          <tr><td>C</td><td class="tom"></td><td class="tom"></td><td class="tom"></td><td class="tom"></td></tr>
+          <tr><td>A</td><td class="tom"><span class="fasit" hidden>850 °C</span></td><td class="tom"><span class="fasit" hidden>20 min</span></td><td class="tom"><span class="fasit" hidden>rask (bråkjølt), deretter anløpt ved 600 °C i 60 min</span></td><td class="tom"><span class="fasit" hidden><b>seigherding</b> (herding + høy anløping)</span></td></tr>
+          <tr><td>B</td><td class="tom"><span class="fasit" hidden>870 °C</span></td><td class="tom"><span class="fasit" hidden>20 min</span></td><td class="tom"><span class="fasit" hidden>middels (luft)</span></td><td class="tom"><span class="fasit" hidden><b>normalisering</b></span></td></tr>
+          <tr><td>C</td><td class="tom"><span class="fasit" hidden>700 °C</span></td><td class="tom"><span class="fasit" hidden>180 min (3 h)</span></td><td class="tom"><span class="fasit" hidden>langsom i ovnen</span></td><td class="tom"><span class="fasit" hidden><b>bløtgløding</b> (under A1)</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> A: 850 °C, 20 min, rask (bråkjølt), deretter anløpt ved 600 °C i 60 min → <b>seigherding</b> (herding + høy anløping). B: 870 °C, 20 min, middels (luft) → <b>normalisering</b>. C: 700 °C, 180 min (3 h), langsom i ovnen → <b>bløtgløding</b> (under A1).</div>
       </div>
 
       <div class="oppgave">
@@ -568,34 +570,32 @@ table.t th{background:var(--steel-soft)}
         <p>a) Fyll ut strukturen i C45 (0,45 % C) ved de ulike temperaturene. Bruk: ferritt, perlitt, austenitt.</p>
         <table class="ot">
           <tr><th style="width:30%">Temperatur</th><th>Struktur</th></tr>
-          <tr><td>20 °C (romtemperatur)</td><td class="tom"></td></tr>
-          <tr><td>750 °C</td><td class="tom"></td></tr>
-          <tr><td>850 °C</td><td class="tom"></td></tr>
+          <tr><td>20 °C (romtemperatur)</td><td class="tom"><span class="fasit" hidden>ferritt + perlitt</span></td></tr>
+          <tr><td>750 °C</td><td class="tom"><span class="fasit" hidden>ferritt + austenitt (mellom A1 og A3)</span></td></tr>
+          <tr><td>850 °C</td><td class="tom"><span class="fasit" hidden>bare austenitt</span></td></tr>
         </table>
         <p>b) C45 varmes til 850 °C og avkjøles på tre måter. Fyll ut.</p>
         <table class="ot">
           <tr><th style="width:30%">Avkjøling</th><th>Struktur</th><th>Hard eller myk?</th></tr>
-          <tr><td>I vann</td><td class="tom"></td><td class="tom"></td></tr>
-          <tr><td>I luft</td><td class="tom"></td><td class="tom"></td></tr>
-          <tr><td>Sakte i ovnen</td><td class="tom"></td><td class="tom"></td></tr>
+          <tr><td>I vann</td><td class="tom"><span class="fasit" hidden>martensitt</span></td><td class="tom"><span class="fasit" hidden>hard (ca. 58 HRC)</span></td></tr>
+          <tr><td>I luft</td><td class="tom"><span class="fasit" hidden>fin ferritt + perlitt</span></td><td class="tom"><span class="fasit" hidden>ganske myk (ca. 200 HB)</span></td></tr>
+          <tr><td>Sakte i ovnen</td><td class="tom"><span class="fasit" hidden>grov ferritt + perlitt</span></td><td class="tom"><span class="fasit" hidden>mykest (ca. 180 HB)</span></td></tr>
         </table>
         <p>c) En elev varmer C45 til 1050 °C «for å være sikker». Hva er problemet?</p>
-        <div class="svar"></div>
+        <div class="svar"><span class="fasit" hidden>Overoppheting: austenittkornene vokser og blir grove. Stålet blir sprøtt og kan sprekke.</span></div>
         <p>d) Hvorfor blir ikke S235 hardt når det bråkjøles?</p>
-        <div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 20 °C: ferritt + perlitt. 750 °C: ferritt + austenitt (mellom A1 og A3). 850 °C: bare austenitt. b) Vann: martensitt, hard (ca. 58 HRC). Luft: fin ferritt + perlitt, ganske myk (ca. 200 HB). Ovn: grov ferritt + perlitt, mykest (ca. 180 HB). c) Overoppheting: austenittkornene vokser og blir grove. Stålet blir sprøtt og kan sprekke. d) For lite karbon (ca. 0,17 %). Det trengs over ca. 0,3 % C for å få hard martensitt.</div>
+        <div class="svar"><span class="fasit" hidden>For lite karbon (ca. 0,17 %). Det trengs over ca. 0,3 % C for å få hard martensitt.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Herding og anløping <small>Time 2 · 8 min</small></h3>
         <p>Kurven viser hardheten til vannherdet C45 etter anløping.</p>
         <div class="oppfig"><svg id="oppAn" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg"></svg></div>
-        <p>a) Hvor hardt er stålet etter anløping ved 300 °C?</p><div class="svar"></div>
-        <p>b) Hvilken anløpstemperatur gir 35 HRC?</p><div class="svar"></div>
-        <p>c) Stålet anløpes ved 600 °C. Les av HRC. Bruk tabellen (24 HRC ≈ 250 HB) og R<sub>m</sub> ≈ 3,3 · HB til å anslå strekkfastheten.</p><div class="svar"></div><div class="svar"></div>
-        <p>d) Du anløper en blankslipt meisel og ser at eggen er blitt <b>mørkeblå</b>. Ca. hvilken temperatur? Er meiselen nå for hard eller for myk?</p><div class="svar"></div>
-        <p>e) Hvorfor skal stålet anløpes med en gang etter herding?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) ca. 50 HRC. b) ca. 500 °C. c) ca. 24 HRC ≈ 250 HB → R<sub>m</sub> ≈ 3,3 · 250 ≈ <b>825 MPa</b>. d) ca. 295–300 °C. For myk for en meisel (blått passer til fjærer). Den må herdes på nytt. e) Herdet stål har store restspenninger og er sprøtt. Det kan sprekke av seg selv hvis det blir liggende.</div>
+        <p>a) Hvor hardt er stålet etter anløping ved 300 °C?</p><div class="svar"><span class="fasit" hidden>ca. 50 HRC</span></div>
+        <p>b) Hvilken anløpstemperatur gir 35 HRC?</p><div class="svar"><span class="fasit" hidden>ca. 500 °C</span></div>
+        <p>c) Stålet anløpes ved 600 °C. Les av HRC. Bruk tabellen (24 HRC ≈ 250 HB) og R<sub>m</sub> ≈ 3,3 · HB til å anslå strekkfastheten.</p><div class="svar"><span class="fasit" hidden>ca. 24 HRC ≈ 250 HB</span></div><div class="svar"><span class="fasit" hidden>R<sub>m</sub> ≈ 3,3 · 250 ≈ <b>825 MPa</b></span></div>
+        <p>d) Du anløper en blankslipt meisel og ser at eggen er blitt <b>mørkeblå</b>. Ca. hvilken temperatur? Er meiselen nå for hard eller for myk?</p><div class="svar"><span class="fasit" hidden>ca. 295–300 °C. For myk for en meisel (blått passer til fjærer). Den må herdes på nytt.</span></div>
+        <p>e) Hvorfor skal stålet anløpes med en gang etter herding?</p><div class="svar"><span class="fasit" hidden>Herdet stål har store restspenninger og er sprøtt. Det kan sprekke av seg selv hvis det blir liggende.</span></div>
       </div>
 
       <div class="oppgave">
@@ -604,13 +604,12 @@ table.t th{background:var(--steel-soft)}
         <div class="oppfig"><svg id="oppSt" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg"></svg></div>
         <table class="ot">
           <tr><th style="width:55%">Spørsmål</th><th>Svar</th></tr>
-          <tr><td>a) Les av herdedybden for kurve A og kurve B</td><td class="tom"></td></tr>
-          <tr><td>b) Hvor hard er overflaten (HV)? Og kjernen?</td><td class="tom"></td></tr>
-          <tr><td>c) Bruk dybde ≈ 0,5 · √t. Hvor mange timer sto tannhjul A og B i ovnen?</td><td class="tom"></td></tr>
-          <tr><td>d) Tegningen krever 1,2 mm herdedybde. Hvor lang tid trengs? (t = (dybde / 0,5)²)</td><td class="tom"></td></tr>
-          <tr><td>e) Hvorfor brukes 16MnCr5 og ikke C45 som er herdet helt gjennom?</td><td class="tom"></td></tr>
+          <tr><td>a) Les av herdedybden for kurve A og kurve B</td><td class="tom"><span class="fasit" hidden>A ≈ 0,7 mm, B ≈ 1,4 mm</span></td></tr>
+          <tr><td>b) Hvor hard er overflaten (HV)? Og kjernen?</td><td class="tom"><span class="fasit" hidden>Overflate ca. 700 HV (≈ 60 HRC). Kjerne ca. 350 HV.</span></td></tr>
+          <tr><td>c) Bruk dybde ≈ 0,5 · √t. Hvor mange timer sto tannhjul A og B i ovnen?</td><td class="tom"><span class="fasit" hidden>A: (0,7/0,5)² ≈ 2 h. B: (1,4/0,5)² ≈ 8 h.</span></td></tr>
+          <tr><td>d) Tegningen krever 1,2 mm herdedybde. Hvor lang tid trengs? (t = (dybde / 0,5)²)</td><td class="tom"><span class="fasit" hidden>(1,2/0,5)² = 2,4² = <b>5,8 h</b> (ca. 5 h 45 min)</span></td></tr>
+          <tr><td>e) Hvorfor brukes 16MnCr5 og ikke C45 som er herdet helt gjennom?</td><td class="tom"><span class="fasit" hidden>Et gjennomherdet tannhjul blir sprøtt og kan knekke tenner ved støt. 16MnCr5 gir hard overflate mot slitasje og seig kjerne.</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> a) A ≈ 0,7 mm, B ≈ 1,4 mm. b) Overflate ca. 700 HV (≈ 60 HRC). Kjerne ca. 350 HV. c) A: (0,7/0,5)² ≈ 2 h. B: (1,4/0,5)² ≈ 8 h. d) (1,2/0,5)² = 2,4² = <b>5,8 h</b> (ca. 5 h 45 min). e) Et gjennomherdet tannhjul blir sprøtt og kan knekke tenner ved støt. 16MnCr5 gir hard overflate mot slitasje og seig kjerne.</div>
       </div>
 
       <div class="oppgave">
@@ -618,34 +617,31 @@ table.t th{background:var(--steel-soft)}
         <p>Velg blant: herding + lav anløping · seigherding · normalisering · bløtgløding · spenningsfriglødning · rekrystallisasjonsgløding · settherding</p>
         <table class="ot">
           <tr><th style="width:62%">Situasjon</th><th>Varmebehandling</th></tr>
-          <tr><td>1. Et sveist stativ skal fres nøyaktig etterpå, og må ikke slå seg</td><td class="tom"></td></tr>
-          <tr><td>2. En aksel i 42CrMo4 skal tåle store laster og støt</td><td class="tom"></td></tr>
-          <tr><td>3. En stanse skal være så hard som mulig, men ikke knekke</td><td class="tom"></td></tr>
-          <tr><td>4. Et smidd emne har grove, ujevne korn</td><td class="tom"></td></tr>
-          <tr><td>5. Rundstål av C60 er for hardt å dreie</td><td class="tom"></td></tr>
-          <tr><td>6. En kaldbøyd plate har blitt hard og sprekker ved neste bøying</td><td class="tom"></td></tr>
-          <tr><td>7. Et kjedehjul trenger slitesterk overflate og seig kjerne</td><td class="tom"></td></tr>
+          <tr><td>1. Et sveist stativ skal fres nøyaktig etterpå, og må ikke slå seg</td><td class="tom"><span class="fasit" hidden>spenningsfriglødning</span></td></tr>
+          <tr><td>2. En aksel i 42CrMo4 skal tåle store laster og støt</td><td class="tom"><span class="fasit" hidden>seigherding</span></td></tr>
+          <tr><td>3. En stanse skal være så hard som mulig, men ikke knekke</td><td class="tom"><span class="fasit" hidden>herding + lav anløping</span></td></tr>
+          <tr><td>4. Et smidd emne har grove, ujevne korn</td><td class="tom"><span class="fasit" hidden>normalisering</span></td></tr>
+          <tr><td>5. Rundstål av C60 er for hardt å dreie</td><td class="tom"><span class="fasit" hidden>bløtgløding</span></td></tr>
+          <tr><td>6. En kaldbøyd plate har blitt hard og sprekker ved neste bøying</td><td class="tom"><span class="fasit" hidden>rekrystallisasjonsgløding</span></td></tr>
+          <tr><td>7. Et kjedehjul trenger slitesterk overflate og seig kjerne</td><td class="tom"><span class="fasit" hidden>settherding (eller induksjonsherding)</span></td></tr>
         </table>
-        <div class="fasit" hidden><b>Fasit:</b> 1 spenningsfriglødning · 2 seigherding · 3 herding + lav anløping · 4 normalisering · 5 bløtgløding · 6 rekrystallisasjonsgløding · 7 settherding (eller induksjonsherding).</div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 6 – Boltklasser <small>Ekstra · 5 min</small></h3>
         <p>a) Regn ut R<sub>m</sub> og R<sub>e</sub> for en bolt i klasse 8.8 og en i klasse 12.9.</p>
-        <div class="svar"></div><div class="svar"></div>
+        <div class="svar"><span class="fasit" hidden>8.8: R<sub>m</sub> = 800 MPa, R<sub>e</sub> = 640 MPa</span></div><div class="svar"><span class="fasit" hidden>12.9: R<sub>m</sub> = 1200 MPa, R<sub>e</sub> = 1080 MPa</span></div>
         <p>b) En M12-bolt har <b>spenningsareal</b> 84,3 mm² (det effektive tverrsnittet i gjengene). Hvor stor kraft tåler en 10.9-bolt før den begynner å flyte? (F = R<sub>e</sub> · A, leksjon 3)</p>
-        <div class="svar"></div><div class="svar"></div>
+        <div class="svar"><span class="fasit" hidden>10.9: R<sub>e</sub> = 900 MPa</span></div><div class="svar"><span class="fasit" hidden>F = 900 · 84,3 = 75 870 N ≈ <b>76 kN</b></span></div>
         <p>c) Hvorfor er boltene seigherdet og ikke bare herdet?</p>
-        <div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) 8.8: R<sub>m</sub> = 800 MPa, R<sub>e</sub> = 640 MPa. 12.9: R<sub>m</sub> = 1200 MPa, R<sub>e</sub> = 1080 MPa. b) R<sub>e</sub> = 900 MPa. F = 900 · 84,3 = 75 870 N ≈ <b>76 kN</b>. c) Bare herdet stål er sprøtt. En bolt får støt og bøying og må kunne strekke seg litt uten å knekke.</div>
+        <div class="svar"><span class="fasit" hidden>Bare herdet stål er sprøtt. En bolt får støt og bøying og må kunne strekke seg litt uten å knekke.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Exit-lapp <small>Siste 3 min</small></h3>
-        <p>1. Hvilke tre trinn har all varmebehandling?</p><div class="svar"></div>
-        <p>2. Hvorfor må herdet stål anløpes?</p><div class="svar"></div>
-        <p>3. Hva er forskjellen på herding og settherding?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> 1) Oppvarming, holding, avkjøling. 2) Herdet stål er sprøtt og har restspenninger. Anløping gjør det seigere. 3) Herding gjør stålet hardt med karbonet det allerede har. Settherding tilfører karbon i overflaten først, så bare overflaten blir hard og kjernen forblir seig.</div>
+        <p>1. Hvilke tre trinn har all varmebehandling?</p><div class="svar"><span class="fasit" hidden>Oppvarming, holding, avkjøling.</span></div>
+        <p>2. Hvorfor må herdet stål anløpes?</p><div class="svar"><span class="fasit" hidden>Herdet stål er sprøtt og har restspenninger. Anløping gjør det seigere.</span></div>
+        <p>3. Hva er forskjellen på herding og settherding?</p><div class="svar"><span class="fasit" hidden>Herding gjør stålet hardt med karbonet det allerede har. Settherding tilfører karbon i overflaten først, så bare overflaten blir hard og kjernen forblir seig.</span></div>
       </div>
     </div>
   </div>
@@ -1295,7 +1291,7 @@ function plain(svg){ const T = (x,y,t,o) => { const e = document.createElementNS
 
 /* ---------- Oppgaver ---------- */
 let fasitOn = false;
-$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
 $("btnPrint").onclick = () => window.print();
 async function svgToImg(svg){
   const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
@@ -1308,8 +1304,8 @@ $("btnCopy").onclick = async () => {
   const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
   for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
-  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); p.textContent="_____________________________________________________________"; s.replaceWith(p); });
-  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
   const html = clone.innerHTML, text = clone.innerText;
   try {

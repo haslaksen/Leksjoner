@@ -143,6 +143,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .tablewrap{overflow-x:auto}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .fasit{color:var(--r);font-weight:700}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
 #copyMsg{color:var(--muted);font-size:15px}
 details.teacher{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:6px 18px}
 details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
@@ -531,27 +533,27 @@ details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
         <tr><td>Motstand</td><td class="blank"><span class="fasit" hidden>R</span></td><td class="blank"><span class="fasit" hidden>ohm (Ω)</span></td></tr>
         <tr><td>Effekt</td><td class="blank"><span class="fasit" hidden>P</span></td><td class="blank"><span class="fasit" hidden>watt (W)</span></td></tr>
       </table></div>
-      <p style="margin-top:12px">Hvordan kobles et voltmeter, og hvordan kobles et amperemeter? ______ <span class="fasit" hidden>Voltmeter parallelt over komponenten, amperemeter i serie</span></p>
+      <p style="margin-top:12px">Hvordan kobles et voltmeter, og hvordan kobles et amperemeter?</p><div class="svar"><span class="fasit" hidden>Voltmeter parallelt over komponenten, amperemeter i serie</span></div>
     </div>
 
     <div>
       <h3>Del B · Ohms lov (vis formel, innsetting og svar med enhet)</h3>
       <ol>
-        <li>En motstand på 400 Ω kobles til 24 V. Hvor stor blir strømmen? <span class="fasit" hidden>I = 24 / 400 = 0,06 A = 60 mA</span></li>
-        <li>Det går 0,2 A gjennom en motstand på 60 Ω. Hvor stor er spenningen? <span class="fasit" hidden>U = 60 × 0,2 = 12 V</span></li>
-        <li>En komponent får 12 V og trekker 30 mA. Hvor stor er motstanden? <span class="fasit" hidden>R = 12 / 0,030 = 400 Ω</span></li>
-        <li>Kroppen har en motstand på 1000 Ω. Hvor stor strøm går ved 50 V? Er det farlig? <span class="fasit" hidden>I = 50 / 1000 = 0,05 A = 50 mA. Ja, over 30 mA kan være livsfarlig</span></li>
+        <li>En motstand på 400 Ω kobles til 24 V. Hvor stor blir strømmen?<div class="svar"><span class="fasit" hidden>I = 24 / 400 = 0,06 A = 60 mA</span></div></li>
+        <li>Det går 0,2 A gjennom en motstand på 60 Ω. Hvor stor er spenningen?<div class="svar"><span class="fasit" hidden>U = 60 × 0,2 = 12 V</span></div></li>
+        <li>En komponent får 12 V og trekker 30 mA. Hvor stor er motstanden?<div class="svar"><span class="fasit" hidden>R = 12 / 0,030 = 400 Ω</span></div></li>
+        <li>Kroppen har en motstand på 1000 Ω. Hvor stor strøm går ved 50 V? Er det farlig?<div class="svar"><span class="fasit" hidden>I = 50 / 1000 = 0,05 A = 50 mA. Ja, over 30 mA kan være livsfarlig</span></div></li>
       </ol>
     </div>
 
     <div>
       <h3>Del C · Effekt</h3>
       <ol>
-        <li>En lampe får 12 V og trekker 2 A. Hvor stor er effekten? <span class="fasit" hidden>P = 12 × 2 = 24 W</span></li>
-        <li>En vannkoker på 2000 W kobles til 230 V. Hvor stor strøm trekker den? <span class="fasit" hidden>I = 2000 / 230 ≈ 8,7 A</span></li>
-        <li>En panelovn trekker 4,35 A på 230 V. Hvor stor er effekten? <span class="fasit" hidden>P = 230 × 4,35 ≈ 1000 W = 1 kW</span></li>
-        <li>Hvilken trekker mest strøm på 230 V: en LED-pære på 9 W eller en lyspære på 60 W? Regn ut begge. <span class="fasit" hidden>LED: 9 / 230 ≈ 0,04 A. Lyspære: 60 / 230 ≈ 0,26 A. Lyspæra trekker mest</span></li>
-        <li>Gjør om: 2,5 kW til W og 750 W til kW. <span class="fasit" hidden>2500 W og 0,75 kW</span></li>
+        <li>En lampe får 12 V og trekker 2 A. Hvor stor er effekten?<div class="svar"><span class="fasit" hidden>P = 12 × 2 = 24 W</span></div></li>
+        <li>En vannkoker på 2000 W kobles til 230 V. Hvor stor strøm trekker den?<div class="svar"><span class="fasit" hidden>I = 2000 / 230 ≈ 8,7 A</span></div></li>
+        <li>En panelovn trekker 4,35 A på 230 V. Hvor stor er effekten?<div class="svar"><span class="fasit" hidden>P = 230 × 4,35 ≈ 1000 W = 1 kW</span></div></li>
+        <li>Hvilken trekker mest strøm på 230 V: en LED-pære på 9 W eller en lyspære på 60 W? Regn ut begge.<div class="svar"><span class="fasit" hidden>LED: 9 / 230 ≈ 0,04 A. Lyspære: 60 / 230 ≈ 0,26 A. Lyspæra trekker mest</span></div></li>
+        <li>Gjør om: 2,5 kW til W og 750 W til kW.<div class="svar"><span class="fasit" hidden>2500 W og 0,75 kW</span></div></li>
       </ol>
     </div>
 
@@ -563,15 +565,15 @@ details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
         <tr><th>I (A)</th><th>0,5</th><th>0,5</th><th>1,0</th></tr>
         <tr><th>P (W)</th><td class="blank"><span class="fasit" hidden>6</span></td><td class="blank"><span class="fasit" hidden>12</span></td><td class="blank"><span class="fasit" hidden>12</span></td></tr>
       </table></div>
-      <p style="margin-top:12px">Hva skjer med effekten når spenningen dobles? Og når strømmen dobles? ______ <span class="fasit" hidden>Effekten dobles i begge tilfeller</span></p>
-      <p style="margin-top:12px">Vannkokeren på 2000 W koker vannet på halve tiden av den på 1000 W. Forklar hvorfor. ______ <span class="fasit" hidden>Den gir dobbelt så mye energi hvert sekund</span></p>
+      <p style="margin-top:12px">Hva skjer med effekten når spenningen dobles? Og når strømmen dobles?</p><div class="svar"><span class="fasit" hidden>Effekten dobles i begge tilfeller</span></div>
+      <p style="margin-top:12px">Vannkokeren på 2000 W koker vannet på halve tiden av den på 1000 W. Forklar hvorfor.</p><div class="svar"><span class="fasit" hidden>Den gir dobbelt så mye energi hvert sekund</span></div>
     </div>
 
     <div>
       <h3>Exit ticket</h3>
       <ol>
-        <li>Et apparat på 230 V trekker 0,5 A. Hvor stor er effekten? <span class="fasit" hidden>P = 230 × 0,5 = 115 W</span></li>
-        <li>Forklar med egne ord hva effekt er. <span class="fasit" hidden>Hvor mye energi som brukes hvert sekund</span></li>
+        <li>Et apparat på 230 V trekker 0,5 A. Hvor stor er effekten?<div class="svar"><span class="fasit" hidden>P = 230 × 0,5 = 115 W</span></div></li>
+        <li>Forklar med egne ord hva effekt er.<div class="svar"><span class="fasit" hidden>Hvor mye energi som brukes hvert sekund</span></div></li>
       </ol>
     </div>
   </div>
@@ -775,6 +777,8 @@ details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
   $('copyBtn').addEventListener('click',()=>{
     const src=$('sheet').cloneNode(true);
     if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
     src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
     src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
     const html=src.innerHTML, text=src.innerText||src.textContent, msg=$('copyMsg');
