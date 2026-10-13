@@ -80,6 +80,8 @@ input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
 .status.info{background:var(--blue-soft); color:var(--blue)}
 .tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
 .tip.o{border-color:var(--orange); background:var(--orange-soft)}
+.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
 table.t{border-collapse:collapse; width:100%; font-size:.9rem}
 table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
 table.t th{background:var(--steel-soft)}
@@ -209,9 +211,9 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
       <p class="lead">Hvordan kan samme stål bli mykt, hardt eller seigt?</p>
       <ol class="goals">
         <li><b>Tre trinn</b>: varme, holde, kjøle</li>
-        <li><b>Jern-karbon-diagrammet</b></li>
+        <li><b>Riktig temperatur</b> på termometeret</li>
         <li><b>Herding</b> og <b>anløping</b></li>
-        <li><b>Seigherding</b> og boltklasser</li>
+        <li><b>Seigherding</b> og bolter</li>
         <li><b>Gløding</b> og <b>normalisering</b></li>
         <li><b>Settherding</b>: hard overflate, seig kjerne</li>
       </ol>
@@ -266,8 +268,8 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
       <div class="card" style="margin-top:.6rem">
         <h3>Kompetansemål (PIN02-03, Teknologi)</h3>
         <p><i>«vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer»</i></p>
-        <p style="font-size:.85rem; color:var(--muted); margin:0">Støtter også valg av bearbeidingsmetode ut fra materiale. Bygger på leksjon 2 (austenitt, martensitt, herdesimulatoren) og leksjon 3 (hardhetsmåling, Charpy, sertifikat).</p>
-        <p style="font-size:.85rem; color:var(--muted); margin:.4rem 0 0">Fulle læringsmål: forklare oppvarming, holding og avkjøling · bruke et forenklet jern-karbon-diagram til å finne riktig temperatur · forklare herding og hvorfor stålet trenger nok karbon · forklare anløping og lese anløpsfarger · forklare seigherding, +QT og boltklasse 10.9 · velge mellom normalisering, bløtgløding, spenningsfriglødning og rekrystallisering · forklare settherding og regne omtrentlig herdedybde.</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Støtter også valg av bearbeidingsmetode ut fra materiale. Bygger på leksjon 2 (karbon og herding, herdesimulatoren) og leksjon 3 (hardhetsmåling, Charpy, sertifikat).</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:.4rem 0 0">Fulle læringsmål: forklare oppvarming, holding og avkjøling · finne riktig temperatur på et termometer-kart · forklare herding og hvorfor stålet trenger nok karbon · velge herdemiddel (vann, olje, luft) · forklare anløping og lese anløpsfarger · forklare seigherding, +QT og boltmerking · velge mellom normalisering, bløtgløding og spenningsfriglødning · forklare settherding og lese herdedybde av en kurve. Formler og utregninger ligger i Ekstra-bokser og Ekstra-oppgaven.</p>
       </div>
       <div class="card" style="margin-top:1rem">
         <h3>Plan for to skoletimer</h3>
@@ -282,7 +284,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <tr><td>12–20 min</td><td>Oppgave 3</td></tr>
           <tr><td>20–32 min</td><td>Del 6–7: gløding, settherding</td></tr>
           <tr><td>32–36 min</td><td>Del 8: velg riktig behandling (i plenum)</td></tr>
-          <tr><td>36–42 min</td><td>Oppgave 4 (oppgave 5 og 6 er ekstra)</td></tr>
+          <tr><td>36–42 min</td><td>Oppgave 4 (oppgave 5–7 hvis tid)</td></tr>
           <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
@@ -299,8 +301,8 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
     <h2>Husker du?</h2>
     <p class="lead">Svar med sidemannen – klikk for svar.</p>
     <div class="grid4" style="margin-top:1.2rem">
-      <button class="card flip"><span class="q">Hva er austenitt?</span><span class="a">Stålets struktur når det er glødende varmt. Karbonet er løst opp i jernet (leksjon 2).</span><span class="hint">Klikk for svar</span></button>
-      <button class="card flip"><span class="q">Hva er martensitt?</span><span class="a">Svært hard og sprø struktur. Oppstår når austenitt kjøles så raskt at karbonet blir låst i gitteret.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvor mye karbon trengs for at stål kan herdes?</span><span class="a">Over ca. 0,3 % C. S355 kan ikke herdes, C45 kan (leksjon 2).</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva skjer når glødende C45 bråkjøles i vann?</span><span class="a">Det blir hardt – men også sprøtt (leksjon 2).</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Hvilken hardhetsmåling brukes på herdet stål på verkstedet?</span><span class="a">Rockwell C (HRC) – tallet leses rett av (leksjon 3).</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Blir herdet stål stivere (høyere E-modul)?</span><span class="a">Nei. Det blir sterkere og hardere, men like stivt: ca. 210 GPa (leksjon 3).</span><span class="hint">Klikk for svar</span></button>
     </div>
@@ -365,21 +367,20 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
   <div class="wrap">
     <div class="kicker">Del 2 · ca. 7 min</div>
     <h2>Hva skjer inne i stålet?</h2>
-    <p class="lead"><b>Jern-karbon-diagrammet</b> er et kart over stålets struktur.</p>
+    <p class="lead">Termometeret viser hva som skjer inne i stålet når det varmes.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <div class="controls no-print" id="fcSteel" style="margin-top:0"></div>
-        <svg id="fcSvg" viewBox="0 0 580 420" role="img" aria-label="Forenklet jern-karbon-diagram" style="margin-top:.4rem"></svg>
+        <svg id="fcSvg" viewBox="0 0 580 420" role="img" aria-label="Termometer med temperatursoner for stålet" style="margin-top:.4rem"></svg>
         <div class="controls">
           <label for="fcT">Temperatur:</label><input type="range" id="fcT" min="20" max="1100" step="5" value="20">
           <span class="pill" id="fcTv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">20 °C</span>
         </div>
-        <div class="controls no-print" id="fcBands"><label>Vis temperatur for:</label></div>
       </div>
       <div>
         <div class="fig">
           <div class="micro"><canvas id="fcMicro" width="220" height="220"></canvas><span class="tag" id="fcTag">mikroskop ×500</span></div>
-          <div class="mlegend"><span><i style="background:#e9ecef"></i>ferritt</span><span><i style="background:repeating-linear-gradient(45deg,#495057 0 3px,#ced4da 3px 6px)"></i>perlitt</span><span><i style="background:#ffc58a"></i>austenitt</span><span><i style="background:repeating-linear-gradient(60deg,#5a626a 0 2px,#adb5bd 2px 7px)"></i>martensitt</span></div>
+          <div class="mlegend"><span><i style="background:#e9ecef"></i>ferritt</span><span><i style="background:repeating-linear-gradient(45deg,#495057 0 3px,#ced4da 3px 6px)"></i>perlitt</span><span><i style="background:#ffc58a"></i>austenitt</span><span><i style="background:repeating-linear-gradient(60deg,#5a626a 0 2px,#adb5bd 2px 7px)"></i>herdet</span></div>
           <div class="controls no-print" style="justify-content:center"><span style="font-size:.85rem;color:var(--muted)">Avkjøl:</span>
             <button class="btn small" data-cool="ovn">🔥 i ovnen (sakte)</button><button class="btn small" data-cool="luft">💨 i luft</button><button class="btn small" data-cool="vann">💧 i vann</button></div>
           <div class="status info" id="fcTxt"></div>
@@ -418,7 +419,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         </svg>
         <h3>Overoppheting</h3><p class="short">Grove korn gir sprøtt stål.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Diagrammet viser hvilken struktur stålet har ved hver temperatur og hvert karboninnhold. Vi bruker bare «stålhjørnet» av kartet. A1 = 727 °C: over denne linja blir perlitten til austenitt (gjelder alt stål). A3: over denne er alt blitt austenitt; jo mer karbon (opp til 0,8 %), jo lavere ligger den. C45: ca. 775 °C. Overoppheting: for høy temperatur eller for lang tid gjør at austenittkornene vokser. Grove korn gir sprøtt stål.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Termometeret er en forenklet utgave av jern-karbon-diagrammet: én loddrett linje for ett stål. Bytt stål for å se at A3 flytter seg. A1 = 727 °C: over denne linja blir perlitten til austenitt (gjelder alt stål). A3: over denne er alt blitt austenitt; jo mer karbon (opp til 0,8 %), jo lavere ligger den. C45: ca. 775 °C. Overoppheting: for høy temperatur eller for lang tid gjør at austenittkornene vokser. Grove korn gir sprøtt stål.</details>
   </div>
 </section>
 
@@ -427,13 +428,12 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
   <div class="wrap">
     <div class="kicker">Del 3 · ca. 15 min</div>
     <h2>Herding: et kappløp mot klokka</h2>
-    <p class="lead">Bråkjøl forbi «nesa» – da låses karbonet: <b>martensitt</b>.</p>
+    <p class="lead">Kjøl <b>raskt nok</b>, så blir stålet hardt. For sakte, og det blir mykt.</p>
     <div class="grid2">
       <div class="fig">
         <div class="controls no-print" id="hSteel" style="margin-top:0"></div>
         <div class="controls no-print" id="hMed" style="margin-top:.4rem"></div>
-        <svg id="hChart" viewBox="0 0 560 390" role="img" aria-label="Forenklet avkjølingsdiagram" style="margin-top:.4rem"></svg>
-        <div class="legend"><span><i style="border-color:var(--red)"></i>overflaten</span><span><i style="border-color:var(--blue);border-top-style:dashed"></i>kjernen (midten)</span><span><i style="border-color:var(--orange);border-top-width:8px;opacity:.5"></i>perlitt dannes (mykt)</span></div>
+        <svg id="hChart" viewBox="0 0 560 330" role="img" aria-label="Kappløp: vann, olje og luft kjøler stålet med ulik fart" style="margin-top:.4rem"></svg>
       </div>
       <div class="fig">
         <div style="font-weight:650">Rundstang Ø30 mm, kappet på tvers etter herding</div>
@@ -485,7 +485,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <g font-size="11" text-anchor="middle" style="fill:var(--muted)"><text x="37" y="114">vann</text><text x="100" y="114">olje</text><text x="163" y="114">luft</text></g>
           <text x="163" y="82" text-anchor="middle" font-size="16" style="fill:var(--steel)">~</text>
         </svg>
-        <h3>Mildt middel</h3><p class="short">Det mildeste som rekker forbi nesa.</p></div>
+        <h3>Mildt middel</h3><p class="short">Det mildeste som fortsatt gir hardt stål.</p></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Aksel som kaster seg og sprekker">
           <path style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2">
@@ -495,10 +495,10 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         </svg>
         <h3>Sprekker og kast</h3><p class="short">Skarpe hjørner øker faren.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary><b>Herding</b> = varme til austenitt og bråkjøle. Stålet må forbi «nesa» før perlitt rekker å dannes. Da blir karbonet låst og vi får martensitt. Under M<sub>s</sub> (martensitt-start) begynner martensitten å dannes.
+    <details class="laerer no-print"><summary>Lærernotat</summary><b>Herding</b> = varme til austenitt og bråkjøle. Går avkjølingen raskt nok, blir karbonet låst og vi får martensitt (hardt). Går den for sakte, rekker det å bli perlitt (mykt). Den stiplede streken i kappløpet er den farten stålet minst trenger.
       <ul><li><b>Nok karbon</b>: under ca. 0,3 % C blir stålet nesten ikke hardere. S235 og S355 er ikke laget for herding.</li>
-      <li><b>Herdbarhet</b>: hvor dypt stålet kan herdes. Legeringselementer (Cr, Mo, Mn) flytter nesa til høyre og gir mer tid.</li>
-      <li><b>Mildt middel er best</b>: vann er raskest, men gir store indre spenninger. Bruk det mildeste midlet som rekker forbi nesa.</li>
+      <li><b>Herdbarhet</b>: hvor dypt stålet kan herdes. Legeringselementer (Cr, Mo, Mn) gir stålet mer tid, så det holder med olje eller luft.</li>
+      <li><b>Mildt middel er best</b>: vann er raskest, men gir store indre spenninger. Bruk det mildeste midlet som fortsatt gir hardt stål.</li>
       <li><b>Sprekker og kast</b>: overflaten krymper før kjernen. Delen kan sprekke eller kaste seg (bli skjev). Skarpe hjørner og hull øker faren.</li></ul></details>
   </div>
 </section>
@@ -511,17 +511,27 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
     <p class="lead">Varm herdet stål til <b>150–650 °C</b>: jo varmere, jo mykere og seigere.</p>
     <div class="grid2">
       <div class="fig">
-        <svg id="anChart" viewBox="0 0 560 360" role="img" aria-label="Hardhet og slagseighet mot anløpstemperatur"></svg>
-        <div class="controls">
-          <label for="anT">Anløpstemperatur:</label><input type="range" id="anT" min="20" max="650" step="10" value="200">
-          <span class="pill" id="anTv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">200 °C</span>
+        <svg viewBox="0 0 560 240" role="img" aria-label="Vippe: lav anløping gir hardt, høy anløping gir seigt">
+          <g font-size="13" font-weight="700" text-anchor="middle">
+            <text x="280" y="22" style="fill:var(--ink)">Jo varmere anløping …</text>
+          </g>
+          <path d="M260 200 L280 160 L300 200 Z" style="fill:var(--steel-dark)"/>
+          <g><animateTransform attributeName="transform" type="rotate" values="-12 280 160;-12 280 160;12 280 160;12 280 160;-12 280 160" keyTimes="0;.15;.45;.85;1" dur="6s" repeatCount="indefinite"/>
+            <rect x="70" y="152" width="420" height="10" rx="5" style="fill:var(--steel)"/>
+            <rect x="80" y="104" width="110" height="46" rx="8" style="fill:var(--red)"/>
+            <text x="135" y="133" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">HARDT</text>
+            <rect x="370" y="104" width="110" height="46" rx="8" style="fill:var(--blue)"/>
+            <text x="425" y="133" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">SEIGT</text>
+          </g>
+          <rect x="120" y="214" width="320" height="12" rx="6" style="fill:var(--orange-soft)"/>
+          <rect x="120" y="214" width="40" height="12" rx="6" style="fill:var(--orange)"><animate attributeName="width" values="40;40;320;320;40" keyTimes="0;.15;.45;.85;1" dur="6s" repeatCount="indefinite"/></rect>
+          <text x="112" y="225" text-anchor="end" font-size="12" font-weight="700" style="fill:var(--muted)">150 °C</text>
+          <text x="448" y="225" font-size="12" font-weight="700" style="fill:var(--muted)">650 °C</text>
+        </svg>
+        <div class="grid2" style="gap:.8rem; margin-top:.4rem">
+          <div class="card" style="border-top:5px solid var(--red)"><h3>Lav anløping<br><small>150–300 °C</small></h3><p class="short">Nesten like hardt, litt mindre sprøtt. <b>Verktøy</b>: meisler, bor, stanser.</p></div>
+          <div class="card" style="border-top:5px solid var(--blue)"><h3>Høy anløping<br><small>500–650 °C</small></h3><p class="short">Mykere, men mye seigere. <b>Aksler og bolter</b> (del 5).</p></div>
         </div>
-        <div class="readout" style="grid-template-columns:repeat(3,1fr)">
-          <div><span>Hardhet</span><b id="anH">–</b></div>
-          <div><span>Slagseighet KV</span><b id="anK">–</b></div>
-          <div><span>Passer til</span><b id="anU" style="font-size:.9rem">–</b></div>
-        </div>
-        <p class="caption">C45 vannherdet, forenklede verdier.</p>
       </div>
       <div class="fig">
         <div style="font-weight:650">Anløpe en meisel med farger</div>
@@ -575,21 +585,25 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <path d="M60 10 H140 L160 45 L140 80 H60 L40 45 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:3"/>
           <text x="100" y="54" text-anchor="middle" font-size="26" font-weight="800" style="fill:var(--ink)">8.8<animate attributeName="opacity" values="1;.35;1" dur="2.4s" repeatCount="indefinite"/></text>
         </svg>
-        <b>Bolt 8.8</b><br>8 × 100 = <b>R<sub>m</sub> 800 MPa</b><br>0,8 × 800 = <b>R<sub>e</sub> 640 MPa</b></div>
+        <b>Bolt 8.8</b><br>Vanlig maskinbolt. Sterk.</div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 90" role="img" aria-label="Sekskanthode på bolt merket 10.9">
           <path d="M60 10 H140 L160 45 L140 80 H60 L40 45 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:3"/>
           <text x="100" y="54" text-anchor="middle" font-size="26" font-weight="800" style="fill:var(--ink)">10.9<animate attributeName="opacity" values="1;.35;1" dur="2.4s" repeatCount="indefinite"/></text>
         </svg>
-        <b>Bolt 10.9</b><br>10 × 100 = <b>R<sub>m</sub> 1000 MPa</b><br>0,9 × 1000 = <b>R<sub>e</sub> 900 MPa</b></div>
+        <b>Bolt 10.9</b><br>Sterkere. Bil og maskiner.</div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 90" role="img" aria-label="Sekskanthode på bolt merket 12.9">
           <path d="M60 10 H140 L160 45 L140 80 H60 L40 45 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:3"/>
           <text x="100" y="54" text-anchor="middle" font-size="26" font-weight="800" style="fill:var(--ink)">12.9<animate attributeName="opacity" values="1;.35;1" dur="2.4s" repeatCount="indefinite"/></text>
         </svg>
-        <b>Bolt 12.9</b><br>12 × 100 = <b>R<sub>m</sub> 1200 MPa</b><br>0,9 × 1200 = <b>R<sub>e</sub> 1080 MPa</b></div>
+        <b>Bolt 12.9</b><br>Sterkest. Unbrakoskruer.</div>
     </div>
-    <p class="caption">Første tall × 100 = R<sub>m</sub>. Andre tall = R<sub>e</sub> i tideler av R<sub>m</sub>.</p>
+    <div class="tip"><b>Høyere tall på hodet = sterkere bolt.</b> Alle disse er seigherdet.</div>
+    <details class="ekstra"><summary>Ekstra: regn ut styrken fra tallet på bolten</summary>
+      <p>Første tall × 100 = strekkfasthet R<sub>m</sub> (MPa). Andre tall = flytegrensen R<sub>e</sub> i tideler av R<sub>m</sub>.</p>
+      <div class="steps">8.8: R<sub>m</sub> = 8 × 100 = 800 MPa · R<sub>e</sub> = 0,8 × 800 = 640 MPa<br>10.9: R<sub>m</sub> = 1000 MPa · R<sub>e</sub> = 0,9 × 1000 = 900 MPa<br>12.9: R<sub>m</sub> = 1200 MPa · R<sub>e</sub> = 0,9 × 1200 = 1080 MPa</div>
+    </details>
     <a class="simlink no-print" data-sim="charpy"><span class="ico">🔨</span><span><b>Prøv selv: Charpy-simulatoren</b><small>Se hvor mye energi et seigt stål tar opp.</small></span><span class="pil">→</span></a>
     <details class="laerer no-print"><summary>Lærernotat</summary>Herd først, og anløp så ved 500–680 °C – alltid under A1. Resultatet er sterkt og seigt – det beste av begge. Brukes til aksler, bolter, tannhjul og maskindeler med store laster og støt. Alle boltene 8.8–12.9 er seigherdet. Første tall × 100 = strekkfasthet. Andre tall = flytegrensen i tideler av strekkfastheten. Charpy-simulatoren (leksjon 3) kan brukes til å vise forskjellen på seigt og sprøtt brudd.</details>
   </div>
@@ -649,8 +663,11 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <div><span>Overflate</span><b id="stS">–</b></div>
           <div><span>Kjerne</span><b id="stC">–</b></div>
         </div>
-        <div class="steps" id="stSteps"></div>
-        <p class="caption"><b>Herdedybde</b> = dybden med 550 HV. <b>Dybde ≈ 0,5 · √t</b> (mm, t i timer).</p>
+        <p class="caption"><b>Herdedybde</b> = så dypt at hardheten er minst 550 HV. Lengre tid i ovnen = dypere lag.</p>
+        <details class="ekstra"><summary>Ekstra: regn ut herdedybden</summary>
+          <p style="margin:.4rem 0 0">Tommelfingerregel: <b>dybde ≈ 0,5 · √t</b> (mm, t i timer).</p>
+          <div class="steps" id="stSteps"></div>
+        </details>
       </div>
     </div>
     <div class="grid3" style="margin-top:1rem">
@@ -695,10 +712,10 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
     <p class="lead">Klikk på svaret ditt. Diskuter med sidemannen først!</p>
     <div class="quiz" id="quiz"></div>
     <div class="grid2" style="margin-top:1rem">
-      <div class="status info" id="quizScore" style="margin:0">0 av 7 riktige</div>
+      <div class="status info" id="quizScore" style="margin:0">0 av 6 riktige</div>
       <div class="tip" style="margin:0"><b>Uønsket herding ved sveising:</b> <b>forvarm</b>, så kjøles det langsommere.</div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Ved sveising varmes stålet ved sveisen over A1 og kjøles raskt av resten av plata. Med høy CEV (leksjon 2) blir det martensitt og sprekker i varmepåvirket sone. Derfor forvarmer vi – det gir langsommere avkjøling.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Ved sveising varmes stålet ved sveisen over A1 og kjøles raskt av resten av plata. Med mye karbon og legering (rødt lys i leksjon 2) blir det martensitt og sprekker i varmepåvirket sone. Derfor forvarmer vi – det gir langsommere avkjøling.</details>
   </div>
 </section>
 
@@ -711,18 +728,18 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
       <div>
         <ol style="font-size:1.05rem">
           <li>Tre trinn: <b>oppvarming → holding → avkjøling</b>. Farten på avkjølingen avgjør resultatet.</li>
-          <li>Over <b>A1 = 727 °C</b> begynner stålet å bli austenitt. Over <b>A3</b> er alt austenitt. For varmt gir grove korn.</li>
-          <li><b>Herding</b>: austenitt + bråkjøling → martensitt. Trenger over ca. 0,3 % C. Legert stål kan herdes i olje eller luft.</li>
+          <li>Over <b>A1 = 727 °C</b> begynner stålet å bli austenitt. Over <b>A3</b> er alt austenitt – klar for herding. For varmt gir grove korn.</li>
+          <li><b>Herding</b>: glødende stål + rask avkjøling → hardt. Trenger over ca. 0,3 % C. Vann er raskest, men gir mest sprekker. Legert stål klarer seg med olje eller luft.</li>
           <li><b>Anløping</b> 150–650 °C rett etter herding: mindre sprøtt. Anløpsfarger: gul → brun → purpur → blå.</li>
-          <li><b>Seigherding</b> (+QT) = herding + anløping 500–680 °C: sterkt og seigt. Bolter 8.8–12.9.</li>
-          <li><b>Normalisering</b> (+N): fine, jevne korn. <b>Bløtgløding</b> (+A): mykest, for maskinering. <b>Spenningsfriglødning</b>: fjerner restspenninger. <b>Rekrystallisering</b>: myker opp kaldformet stål.</li>
-          <li><b>Settherding</b>: karbon inn i overflaten, så herding. Hard overflate, seig kjerne. Dybde ≈ 0,5 · √t.</li>
+          <li><b>Seigherding</b> (+QT) = herding + anløping 500–680 °C: sterkt og seigt. Bolter 8.8–12.9: høyere tall = sterkere.</li>
+          <li><b>Normalisering</b> (+N): fine, jevne korn. <b>Bløtgløding</b> (+A): mykest, for maskinering. <b>Spenningsfriglødning</b>: fjerner restspenninger.</li>
+          <li><b>Settherding</b>: karbon inn i overflaten, så herding. Hard overflate, seig kjerne. Lengre tid = dypere lag.</li>
         </ol>
       </div>
       <div>
         <div class="card">
           <h3>Nøkkelord</h3>
-          <div class="chips"><span>varmebehandling</span><span>holdetid</span><span>bråkjøling</span><span>herdemiddel</span><span>glødefarger</span><span>jern-karbon-diagram</span><span>A1 og A3</span><span>overoppheting</span><span>herding</span><span>Ms</span><span>herdbarhet</span><span>kast</span><span>anløping</span><span>anløpsfarger</span><span>restspenninger</span><span>seigherding +QT</span><span>normalisering +N</span><span>bløtgløding +A</span><span>spenningsfriglødning</span><span>rekrystallisering</span><span>settherding</span><span>herdedybde</span><span>induksjonsherding</span><span>nitrering</span></div>
+          <div class="chips"><span>varmebehandling</span><span>holdetid</span><span>bråkjøling</span><span>herdemiddel</span><span>glødefarger</span><span>A1 og A3</span><span>overoppheting</span><span>herding</span><span>herdbarhet</span><span>kast</span><span>anløping</span><span>anløpsfarger</span><span>restspenninger</span><span>seigherding +QT</span><span>normalisering +N</span><span>bløtgløding +A</span><span>spenningsfriglødning</span><span>settherding</span><span>herdedybde</span><span>induksjonsherding</span><span>nitrering</span></div>
         </div>
         <div class="card" style="margin-top:1rem">
           <h3>Neste leksjon</h3>
@@ -747,7 +764,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
     <div id="oppgavetekst">
       <h2>Materiallære 4 – Varmebehandling · Oppgaver</h2>
       <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
-      <p style="font-size:.9rem">Penn og kalkulator.</p>
+      <p style="font-size:.9rem">Penn. Kalkulator trengs bare i Ekstra-oppgaven.</p>
 
       <div class="oppgave">
         <h3>Oppgave 1 – Les varmebehandlingskurvene <small>Time 1 · 6 min</small></h3>
@@ -773,14 +790,14 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <p>b) C45 varmes til 850 °C og avkjøles på tre måter. Fyll ut.</p>
         <table class="ot">
           <tr><th style="width:30%">Avkjøling</th><th>Struktur</th><th>Hard eller myk?</th></tr>
-          <tr><td>I vann</td><td class="tom"><span class="fasit" hidden>martensitt</span></td><td class="tom"><span class="fasit" hidden>hard (ca. 58 HRC)</span></td></tr>
+          <tr><td>I vann</td><td class="tom"><span class="fasit" hidden>herdet (martensitt)</span></td><td class="tom"><span class="fasit" hidden>hard (ca. 58 HRC)</span></td></tr>
           <tr><td>I luft</td><td class="tom"><span class="fasit" hidden>fin ferritt + perlitt</span></td><td class="tom"><span class="fasit" hidden>ganske myk (ca. 200 HB)</span></td></tr>
           <tr><td>Sakte i ovnen</td><td class="tom"><span class="fasit" hidden>grov ferritt + perlitt</span></td><td class="tom"><span class="fasit" hidden>mykest (ca. 180 HB)</span></td></tr>
         </table>
         <p>c) En elev varmer C45 til 1050 °C «for å være sikker». Hva er problemet?</p>
         <div class="svar"><span class="fasit" hidden>Overoppheting: austenittkornene vokser og blir grove. Stålet blir sprøtt og kan sprekke.</span></div>
         <p>d) Hvorfor blir ikke S235 hardt når det bråkjøles?</p>
-        <div class="svar"><span class="fasit" hidden>For lite karbon (ca. 0,17 %). Det trengs over ca. 0,3 % C for å få hard martensitt.</span></div>
+        <div class="svar"><span class="fasit" hidden>For lite karbon (ca. 0,17 %). Det trengs over ca. 0,3 % C for at stålet skal bli hardt.</span></div>
       </div>
 
       <div class="oppgave">
@@ -789,7 +806,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <div class="oppfig"><svg id="oppAn" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg"></svg></div>
         <p>a) Hvor hardt er stålet etter anløping ved 300 °C?</p><div class="svar"><span class="fasit" hidden>ca. 50 HRC</span></div>
         <p>b) Hvilken anløpstemperatur gir 35 HRC?</p><div class="svar"><span class="fasit" hidden>ca. 500 °C</span></div>
-        <p>c) Anløpt ved 600 °C: les av HRC. Anslå R<sub>m</sub> (24 HRC ≈ 250 HB, R<sub>m</sub> ≈ 3,3 · HB).</p><div class="svar"><span class="fasit" hidden>ca. 24 HRC ≈ 250 HB</span></div><div class="svar"><span class="fasit" hidden>R<sub>m</sub> ≈ 3,3 · 250 ≈ <b>825 MPa</b></span></div>
+        <p>c) Hva skjer med seigheten når anløpstemperaturen går opp?</p><div class="svar"><span class="fasit" hidden>Stålet blir seigere (mindre sprøtt), men mykere.</span></div>
         <p>d) Eggen på en blankslipt meisel er blitt <b>mørkeblå</b>. Ca. hvilken temperatur? For hard eller for myk?</p><div class="svar"><span class="fasit" hidden>ca. 295–300 °C. For myk for en meisel (blått passer til fjærer). Den må herdes på nytt.</span></div>
         <p>e) Hvorfor skal stålet anløpes med en gang etter herding?</p><div class="svar"><span class="fasit" hidden>Herdet stål har store restspenninger og er sprøtt. Det kan sprekke av seg selv hvis det blir liggende.</span></div>
       </div>
@@ -802,15 +819,15 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <tr><th style="width:55%">Spørsmål</th><th>Svar</th></tr>
           <tr><td>a) Les av herdedybden for kurve A og kurve B</td><td class="tom"><span class="fasit" hidden>A ≈ 0,7 mm, B ≈ 1,4 mm</span></td></tr>
           <tr><td>b) Hvor hard er overflaten (HV)? Og kjernen?</td><td class="tom"><span class="fasit" hidden>Overflate ca. 700 HV (≈ 60 HRC). Kjerne ca. 350 HV.</span></td></tr>
-          <tr><td>c) Bruk dybde ≈ 0,5 · √t. Hvor mange timer sto tannhjul A og B i ovnen?</td><td class="tom"><span class="fasit" hidden>A: (0,7/0,5)² ≈ 2 h. B: (1,4/0,5)² ≈ 8 h.</span></td></tr>
-          <tr><td>d) Tegningen krever 1,2 mm herdedybde. Hvor lang tid trengs? (t = (dybde / 0,5)²)</td><td class="tom"><span class="fasit" hidden>(1,2/0,5)² = 2,4² = <b>5,8 h</b> (ca. 5 h 45 min)</span></td></tr>
+          <tr><td>c) Hvilket tannhjul sto lengst i ovnen? Hvordan ser du det?</td><td class="tom"><span class="fasit" hidden>B. Det har dypest herdet lag – lengre tid gir dypere lag.</span></td></tr>
+          <tr><td>d) Tegningen krever minst 1,2 mm herdedybde. Holder A? Holder B?</td><td class="tom"><span class="fasit" hidden>A (0,7 mm) holder ikke. B (1,4 mm) holder.</span></td></tr>
           <tr><td>e) Hvorfor brukes 16MnCr5 og ikke C45 som er herdet helt gjennom?</td><td class="tom"><span class="fasit" hidden>Et gjennomherdet tannhjul blir sprøtt og kan knekke tenner ved støt. 16MnCr5 gir hard overflate mot slitasje og seig kjerne.</span></td></tr>
         </table>
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 5 – Velg varmebehandling <small>Ekstra · 5 min</small></h3>
-        <p>Velg blant: herding + lav anløping · seigherding · normalisering · bløtgløding · spenningsfriglødning · rekrystallisasjonsgløding · settherding</p>
+        <h3>Oppgave 5 – Velg varmebehandling <small>Hvis tid · 5 min</small></h3>
+        <p>Velg blant: herding + lav anløping · seigherding · normalisering · bløtgløding · spenningsfriglødning · settherding</p>
         <table class="ot">
           <tr><th style="width:62%">Situasjon</th><th>Varmebehandling</th></tr>
           <tr><td>1. Et sveist stativ skal fres nøyaktig etterpå, og må ikke slå seg</td><td class="tom"><span class="fasit" hidden>spenningsfriglødning</span></td></tr>
@@ -818,21 +835,32 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <tr><td>3. En stanse skal være så hard som mulig, men ikke knekke</td><td class="tom"><span class="fasit" hidden>herding + lav anløping</span></td></tr>
           <tr><td>4. Et smidd emne har grove, ujevne korn</td><td class="tom"><span class="fasit" hidden>normalisering</span></td></tr>
           <tr><td>5. Rundstål av C60 er for hardt å dreie</td><td class="tom"><span class="fasit" hidden>bløtgløding</span></td></tr>
-          <tr><td>6. En kaldbøyd plate har blitt hard og sprekker ved neste bøying</td><td class="tom"><span class="fasit" hidden>rekrystallisasjonsgløding</span></td></tr>
-          <tr><td>7. Et kjedehjul trenger slitesterk overflate og seig kjerne</td><td class="tom"><span class="fasit" hidden>settherding (eller induksjonsherding)</span></td></tr>
+          <tr><td>6. Et kjedehjul trenger slitesterk overflate og seig kjerne</td><td class="tom"><span class="fasit" hidden>settherding (eller induksjonsherding)</span></td></tr>
         </table>
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 6 – Boltklasser <small>Ekstra · 5 min</small></h3>
-        <p>a) Regn ut R<sub>m</sub> og R<sub>e</sub> for en bolt i klasse 8.8 og en i klasse 12.9.</p>
-        <div class="svar"><span class="fasit" hidden>8.8: R<sub>m</sub> = 800 MPa, R<sub>e</sub> = 640 MPa</span></div><div class="svar"><span class="fasit" hidden>12.9: R<sub>m</sub> = 1200 MPa, R<sub>e</sub> = 1080 MPa</span></div>
-        <p>b) M12 har <b>spenningsareal</b> 84,3 mm² (tverrsnittet i gjengene). Hvor stor kraft tåler en 10.9-bolt før den flyter? (F = R<sub>e</sub> · A)</p>
-        <div class="svar"><span class="fasit" hidden>10.9: R<sub>e</sub> = 900 MPa</span></div><div class="svar"><span class="fasit" hidden>F = 900 · 84,3 = 75 870 N ≈ <b>76 kN</b></span></div>
+        <h3>Oppgave 6 – Bolter <small>Hvis tid · 5 min</small></h3>
+        <p>a) Du har bolter merket 8.8, 10.9 og 12.9. Hvilken er sterkest? Hvilken er svakest?</p>
+        <div class="svar"><span class="fasit" hidden>Sterkest: 12.9. Svakest: 8.8. Høyere tall = sterkere.</span></div>
+        <p>b) En bolt på en maskin er merket 10.9. Du har bare 8.8-bolter. Kan du bruke en av dem?</p>
+        <div class="svar"><span class="fasit" hidden>Nei. 8.8 er svakere enn 10.9. Bruk alltid samme klasse eller sterkere.</span></div>
         <p>c) Hvorfor er boltene seigherdet og ikke bare herdet?</p>
         <div class="svar"><span class="fasit" hidden>Bare herdet stål er sprøtt. En bolt får støt og bøying og må kunne strekke seg litt uten å knekke.</span></div>
         <p>d) Se et sprøtt brudd i <a data-sim="charpy">Charpy-simulatoren</a>. Hvorfor er sprøtt brudd farlig for en bolt?</p>
         <div class="svar"><span class="fasit" hidden>Sprøtt brudd tar opp lite energi (lav KV) og kommer plutselig, uten forvarsel. En seig bolt strekker seg først.</span></div>
+      </div>
+
+      <div class="oppgave" style="border-style:dashed">
+        <h3>Oppgave 7 – Ekstra: regn selv <small>Ekstra · kalkulator</small></h3>
+        <p>a) Første tall på bolten × 100 = R<sub>m</sub>. Andre tall = R<sub>e</sub> i tideler av R<sub>m</sub>. Regn ut R<sub>m</sub> og R<sub>e</sub> for 8.8 og 12.9.</p>
+        <div class="svar"><span class="fasit" hidden>8.8: R<sub>m</sub> = 800 MPa, R<sub>e</sub> = 0,8 · 800 = 640 MPa</span></div><div class="svar"><span class="fasit" hidden>12.9: R<sub>m</sub> = 1200 MPa, R<sub>e</sub> = 0,9 · 1200 = 1080 MPa</span></div>
+        <p>b) En M12-bolt har spenningsareal 84,3 mm². Hvor stor kraft tåler en 10.9-bolt før den flyter? (F = R<sub>e</sub> · A)</p>
+        <div class="svar"><span class="fasit" hidden>R<sub>e</sub> = 900 MPa. F = 900 · 84,3 = 75 870 N ≈ <b>76 kN</b></span></div>
+        <p>c) Oppgave 3: C45 anløpt ved 600 °C har ca. 24 HRC ≈ 250 HB. Anslå R<sub>m</sub> med R<sub>m</sub> ≈ 3,3 · HB.</p>
+        <div class="svar"><span class="fasit" hidden>R<sub>m</sub> ≈ 3,3 · 250 ≈ <b>825 MPa</b></span></div>
+        <p>d) Settherding: dybde ≈ 0,5 · √t (mm, t i timer). Hvor lenge må et tannhjul stå i ovnen for 1,2 mm? (t = (dybde / 0,5)²)</p>
+        <div class="svar"><span class="fasit" hidden>t = (1,2 / 0,5)² = 2,4² ≈ <b>5,8 h</b> (ca. 5 h 45 min)</span></div>
       </div>
 
       <div class="oppgave">
@@ -1063,62 +1091,51 @@ function cGamma(T){ // karbon i austenitt ved T (på A3-linja)
 const FC_STEEL = [{n:"S235", C:0.17, H:{vann:"ca. 30 HRC – bare litt hardere", luft:"ca. 130 HB", ovn:"ca. 120 HB"}},
                   {n:"C45", C:0.45, H:{vann:"ca. 58 HRC – hardt", luft:"ca. 200 HB", ovn:"ca. 180 HB"}},
                   {n:"C100", C:1.0, H:{vann:"ca. 64 HRC – svært hardt", luft:"ca. 280 HB", ovn:"ca. 230 HB"}}];
-let fcI = 1, fcBand = -1, fcRes = null;
+let fcI = 1, fcRes = null;
 const fc = $("fcSvg");
-const FA = axes(fc, {x0:62, y0:380, x1:560, y1:30, xmax:1.2, ymin:400, ymax:1100, xt:[0,0.2,0.4,0.6,0.8,1,1.2], yt:[400,500,600,700,800,900,1000,1100], xl:"karbon (%) →", yl:"↑ temperatur (°C)"});
-const fcBandG = el("g",{}, fc), fcLines = el("g",{}, fc), fcCur = el("g",{}, fc);
-(function(){
-  const reg = (pts, col, op) => el("polygon",{points:pts.map(([c,T])=>`${FA.X(c)},${FA.Y(T)}`).join(" "), style:`fill:var(${col});opacity:${op}`}, fcLines);
-  const a3 = [], acm = []; for (let c=0;c<=0.77;c+=0.01) a3.push([c, interp(A3P,c)]); for (let c=0.77;c<=1.2;c+=0.01) acm.push([c, interp(ACMP,c)]);
-  reg([[0,1100],...a3,...acm,[1.2,1100]], "--orange", .12);
-  reg([...a3,[0.02,727],[0,727]].filter(p=>p[1]>=727), "--yellow", .15);
-  reg([[0,400],[0,727],[1.2,727],[1.2,400]], "--steel", .12);
-  const line = (pts, col, w, dash) => el("polyline",{points:pts.map(([c,T])=>`${FA.X(c)},${FA.Y(T)}`).join(" "), fill:"none", style:`stroke:var(${col});stroke-width:${w};${dash?"stroke-dasharray:6 4":""}`}, fcLines);
-  line(a3, "--red", 3); line(acm, "--red", 3); line([[0,727],[1.2,727]], "--red", 3);
-  el("text",{x:FA.X(1.18), y:FA.Y(727)+18, "text-anchor":"end", "font-size":13, "font-weight":800, style:"fill:var(--red)"}, fcLines, "A1 = 727 °C");
-  el("text",{x:FA.X(0.13), y:FA.Y(870)-4, "font-size":13, "font-weight":800, style:"fill:var(--red)"}, fcLines, "A3");
-  el("text",{x:FA.X(0.75), y:FA.Y(1040), "text-anchor":"middle", "font-size":16, "font-weight":800, style:"fill:var(--orange)"}, fcLines, "AUSTENITT");
-  el("text",{x:FA.X(0.06), y:FA.Y(770), "font-size":11, "font-weight":700, style:"fill:var(--ink)"}, fcLines, "ferritt +");
-  el("text",{x:FA.X(0.06), y:FA.Y(752), "font-size":11, "font-weight":700, style:"fill:var(--ink)"}, fcLines, "austenitt");
-  el("text",{x:FA.X(0.98), y:FA.Y(745), "text-anchor":"middle", "font-size":11, "font-weight":700, style:"fill:var(--ink)"}, fcLines, "austenitt + sementitt");
-  el("text",{x:FA.X(0.22), y:FA.Y(600), "text-anchor":"middle", "font-size":14, "font-weight":800, style:"fill:var(--steel-dark)"}, fcLines, "FERRITT + PERLITT");
-  el("text",{x:FA.X(0.99), y:FA.Y(640), "text-anchor":"middle", "font-size":12, "font-weight":800, style:"fill:var(--steel-dark)"}, fcLines, "PERLITT + SEMENTITT");
-  el("line",{x1:FA.X(0.77), y1:FA.Y(727), x2:FA.X(0.77), y2:FA.Y(400), style:"stroke:var(--steel-dark);stroke-dasharray:3 4"}, fcLines);
-  el("text",{x:FA.X(0.77)+4, y:FA.Y(410), "font-size":11, style:"fill:var(--muted)"}, fcLines, "0,77 % = bare perlitt");
-})();
-const BANDS = [
-  {n:"Herding", col:"--red", f:C => C<=0.77 ? [interp(A3P,C)+30, interp(A3P,C)+60] : [757,787]},
-  {n:"Normalisering", col:"--blue", f:C => C<=0.77 ? [interp(A3P,C)+40, interp(A3P,C)+80] : [interp(ACMP,C)+40, interp(ACMP,C)+80]},
-  {n:"Bløtgløding", col:"--green", f:() => [680,720]},
-  {n:"Spenningsfriglødning", col:"--purple", f:() => [550,650]},
-  {n:"Settherding", col:"--yellow", f:() => [900,940], cmax:0.3}
-];
-BANDS.forEach((b,i) => { const bt=document.createElement("button"); bt.className="btn small"; bt.textContent=b.n; bt.onclick=()=>{ fcBand = fcBand===i ? -1 : i; [...$("fcBands").querySelectorAll("button")].forEach((x,j)=>x.classList.toggle("on", j===fcBand)); drawBand(); }; $("fcBands").appendChild(bt); });
-function drawBand(){ fcBandG.replaceChildren(); if (fcBand<0) return; const b = BANDS[fcBand], top=[], bot=[], cm = b.cmax||1.2;
-  for (let c=0; c<=cm+1e-9; c+=0.01){ const [lo,hi] = b.f(c); top.push(`${FA.X(c)},${FA.Y(hi)}`); bot.unshift(`${FA.X(c)},${FA.Y(lo)}`); }
-  el("polygon",{points:top.concat(bot).join(" "), style:`fill:var(${b.col});opacity:.45`}, fcBandG);
-  const [lo,hi] = b.f(Math.min(0.45,cm)); el("text",{x:FA.X(Math.min(0.45,cm)/2)+30, y:FA.Y(hi)-6, "font-size":12, "font-weight":800, style:`fill:var(${b.col})`}, fcBandG, `${b.n}${cm>=0.45?` – C45: ${Math.round(lo)}–${Math.round(hi)} °C`:` ${Math.round(lo)}–${Math.round(hi)} °C`}`); }
+const FY = T => T<600 ? 370 - (T-20)/580*70 : 300 - (T-600)/500*250;
 makeBtns("fcSteel", FC_STEEL.map(s=>`${s.n} (${fmtT(s.C,2)} % C)`), 1, i => { fcI = i; fcRes = null; fcState(); });
 function fcSpec(C, T){
   const fP = clamp((C-0.02)/0.75, 0, 1), up = upperT(C);
-  if (T < 727){ if (C>0.77) return {spec:{N:40, seed:11, types:()=> "P", cb:true}, txt:"Perlitt med tynne hvite skall av sementitt (jernkarbid) langs korngrensene. Hardt og slitesterkt."};
-    return {spec:{N:40, seed:11, types:r => r<fP ? "P" : "F"}, txt:`Ferritt (myk, lys) + perlitt (stripete lag av ferritt og sementitt). Ca. ${Math.round(fP*100)} % perlitt.`}; }
+  if (T < 727){ if (C>0.77) return {spec:{N:40, seed:11, types:()=> "P", cb:true}, txt:"Perlitt med tynne hvite skall langs korngrensene. Hardt og slitesterkt."};
+    return {spec:{N:40, seed:11, types:r => r<fP ? "P" : "F"}, txt:`Ferritt (myk, lys) + perlitt (stripete, hardere). Ca. ${Math.round(fP*100)} % perlitt.`}; }
   if (T < up){
-    if (C>0.77) return {spec:{N:40, seed:11, types:()=> "A", cb:true}, txt:"Over A1: perlitten er blitt austenitt. Litt sementitt ligger igjen langs korngrensene."};
+    if (C>0.77) return {spec:{N:40, seed:11, types:()=> "A", cb:true}, txt:"Over A1: perlitten er blitt austenitt. Litt karbid ligger igjen langs korngrensene."};
     const fA = clamp((C-0.02)/(cGamma(T)-0.02), 0, 1);
     return {spec:{N:40, seed:11, types:r => r<fA ? "A" : "F"}, txt:`Mellom A1 og A3: perlitten er blitt austenitt, og ferritten løses gradvis opp. Ca. ${Math.round(fA*100)} % austenitt.`, part:fA};
   }
   const over = T - up, N = over<=70 ? 64 : Math.max(8, Math.round((64 - (over-70)*0.27)/4)*4);
-  return {spec:{N, seed:23, types:()=> "A"}, txt: over>170 ? `OVEROPPHETET! ${Math.round(over)} °C over linja. Austenittkornene vokser seg store. Grove korn gir sprøtt stål.` : over<20 ? "Akkurat over linja – alt er austenitt. Legg på 30–50 °C for å være sikker." : "Bare austenitt. Karbonet er løst opp i jernet. Klar for herding eller normalisering.", full:true, N};
+  return {spec:{N, seed:23, types:()=> "A"}, txt: over>170 ? `OVEROPPHETET! ${Math.round(over)} °C over linja. Austenittkornene vokser seg store. Grove korn gir sprøtt stål.` : over<20 ? "Akkurat over A3 – alt er austenitt. Legg på 30–60 °C for å være sikker." : "Bare austenitt. Karbonet er løst opp i jernet. Klar for herding eller normalisering.", full:true, N};
 }
 function fcState(){
-  const s = FC_STEEL[fcI], T = +$("fcT").value; $("fcTv").textContent = T + " °C";
-  fcCur.replaceChildren();
-  el("line",{x1:FA.X(s.C), y1:FA.Y(400), x2:FA.X(s.C), y2:FA.Y(1100), style:"stroke:var(--ink);stroke-width:2;stroke-dasharray:5 4"}, fcCur);
-  el("text",{x:FA.X(s.C)+5, y:FA.Y(1085), "font-size":13, "font-weight":800, style:"fill:var(--ink)"}, fcCur, s.n);
-  const y = FA.Y(Math.max(T,400));
-  el("circle",{cx:FA.X(s.C), cy:y, r:9, style:`fill:${T>500?glow(T):"var(--steel-dark)"};stroke:var(--ink);stroke-width:2.5`}, fcCur);
-  if (T<400) el("text",{x:FA.X(s.C)+12, y:y-6, "font-size":12, "font-weight":700, style:"fill:var(--ink)"}, fcCur, `↓ ${T} °C`);
+  const s = FC_STEEL[fcI], T = +$("fcT").value, up = Math.round(upperT(s.C)); $("fcTv").textContent = T + " °C";
+  fc.replaceChildren();
+  // soner
+  const zone = (lo, hi, col, op, t1, t2) => { el("rect",{x:170, y:FY(hi), width:390, height:FY(lo)-FY(hi), rx:4, style:`fill:var(${col});opacity:${op}`}, fc);
+    const on = T>=lo && (T<hi || hi>=1100); const ym = (FY(lo)+FY(hi))/2;
+    if (FY(lo)-FY(hi) < 40) el("text",{x:186, y:ym+5, "font-size":13, "font-weight":800, style:`fill:var(--ink);opacity:${on?1:.55}`}, fc, t1 + " · " + t2);
+    else { el("text",{x:186, y:ym-2, "font-size":15, "font-weight":800, style:`fill:var(--ink);opacity:${on?1:.55}`}, fc, t1);
+      el("text",{x:186, y:ym+16, "font-size":12, "font-weight":600, style:`fill:var(--muted);opacity:${on?1:.7}`}, fc, t2); }
+    if (on) el("rect",{x:170, y:FY(hi), width:390, height:FY(lo)-FY(hi), rx:4, style:"fill:none;stroke:var(--ink);stroke-width:3"}, fc); };
+  zone(20, 727, "--steel", .18, s.C>0.77 ? "PERLITT" : "FERRITT + PERLITT", "fast stål – slik det er på verkstedet");
+  zone(727, up, "--yellow", .28, "DELVIS AUSTENITT", "ikke herd her – det blir myke flekker");
+  zone(up, up+170, "--orange", .25, "AUSTENITT", `klar for herding – herd ved ca. ${up+30}–${up+60} °C`);
+  zone(up+170, 1100, "--red", .2, "FOR VARMT", "kornene vokser – stålet blir sprøtt");
+  // linjer
+  [[727, `A1 = 727 °C`, "--red", 16], [up, `A3 ≈ ${up} °C`, "--purple", -6]].forEach(([t, n, c, dy]) => {
+    el("line",{x1:150, y1:FY(t), x2:560, y2:FY(t), style:`stroke:var(${c});stroke-width:2.5;stroke-dasharray:7 4`}, fc);
+    el("text",{x:552, y:FY(t)+dy, "text-anchor":"end", "font-size":13, "font-weight":800, style:`fill:var(${c})`}, fc, n); });
+  // herdeområde
+  const h0 = up+30, h1 = up+60;
+  el("path",{d:`M548 ${FY(h0)} h8 V${FY(h1)} h-8`, style:"fill:none;stroke:var(--green);stroke-width:3"}, fc);
+  // termometer
+  [200,400,600,800,1000].forEach(t => { el("line",{x1:108, y1:FY(t), x2:118, y2:FY(t), style:"stroke:var(--ink);stroke-width:1.5"}, fc); el("text",{x:102, y:FY(t)+4, "text-anchor":"end", "font-size":12, style:"fill:var(--muted)"}, fc, t); });
+  el("rect",{x:120, y:FY(1100)-14, width:26, height:FY(20)-FY(1100)+20, rx:13, style:"fill:var(--panel);stroke:var(--ink);stroke-width:2.5"}, fc);
+  const mc = T>500 ? glow(T) : "var(--red)";
+  el("circle",{cx:133, cy:FY(20)+22, r:20, style:`fill:${mc};stroke:var(--ink);stroke-width:2.5`}, fc);
+  el("rect",{x:127, y:FY(T), width:12, height:FY(20)+6-FY(T), style:`fill:${mc}`}, fc);
+  el("path",{d:`M150 ${FY(T)} l14 -8 v16 z`, style:"fill:var(--ink)"}, fc);
+  el("text",{x:133, y:FY(1100)-22, "text-anchor":"middle", "font-size":15, "font-weight":800, style:"fill:var(--ink)"}, fc, s.n);
   const st = fcSpec(s.C, T);
   if (fcRes) return;
   drawMicro($("fcMicro"), st.spec, null, 0);
@@ -1131,10 +1148,10 @@ document.querySelectorAll("[data-cool]").forEach(b => b.onclick = () => {
   const s = FC_STEEL[fcI], T = +$("fcT").value, st = fcSpec(s.C, T), how = b.dataset.cool, fP = clamp((s.C-0.02)/0.75,0,1);
   let B, txt, cls;
   if (how==="vann"){
-    if (st.full){ B = {N:st.spec.N, seed:st.spec.seed, types:()=> "M"}; txt = `Vann: martensitt. ${s.n}: ${s.H.vann}.`; cls = s.C<0.3 ? "warn" : "bad";
-      if (s.C<0.3) txt += " For lite karbon til at martensitten blir hard."; if (s.C>0.77) txt += " Stor sprekkfare."; if (st.N<30) txt += " Grove korn → sprø martensitt med sprekkfare!"; }
-    else if (st.part!==undefined){ B = {N:40, seed:11, types:r => r<st.part ? "M" : "F"}; txt = `Bare austenitten ble martensitt. Myke flekker av ferritt ble igjen – ujevn herding. Varm over A3 neste gang!`; cls = "bad"; }
-    else { B = {N:40, seed:11, types:()=> "M", cb:true}; txt = `Martensitt med sementitt i korngrensene. ${s.H.vann}. Slik herdes verktøystål.`; cls = "warn"; }
+    if (st.full){ B = {N:st.spec.N, seed:st.spec.seed, types:()=> "M"}; txt = `Vann: herdet (martensitt). ${s.n}: ${s.H.vann}.`; cls = s.C<0.3 ? "warn" : "bad";
+      if (s.C<0.3) txt += " For lite karbon til at stålet blir ordentlig hardt."; if (s.C>0.77) txt += " Stor sprekkfare."; if (st.N<30) txt += " Grove korn → sprøtt, stor sprekkfare!"; }
+    else if (st.part!==undefined){ B = {N:40, seed:11, types:r => r<st.part ? "M" : "F"}; txt = `Bare austenitten ble herdet. Myke flekker av ferritt ble igjen – ujevn herding. Varm over A3 neste gang!`; cls = "bad"; }
+    else { B = {N:40, seed:11, types:()=> "M", cb:true}; txt = `Herdet, med karbid i korngrensene. ${s.H.vann}. Slik herdes verktøystål.`; cls = "warn"; }
   } else if (how==="luft"){ B = {N:84, seed:5, types:r => (s.C>0.77 || r<fP) ? "Pf" : "F"}; txt = `Luft: fine korn av ferritt + perlitt. ${s.H.luft}. Dette er normalisering.`; cls = "ok"; }
   else { const N = st.full ? Math.max(12, Math.round(st.N*0.45/4)*4) : 28; B = {N, seed:7, types:r => (s.C>0.77 || r<fP) ? "P" : "F"}; txt = `Sakte i ovnen: grove korn av ferritt + perlitt. ${s.H.ovn}. Mykest.`; cls = "ok"; }
   fcRes = true; setStatus("fcTxt", "Avkjøler …", "warn"); $("fcTag").textContent = "etter avkjøling";
@@ -1155,31 +1172,31 @@ let hsI = 1, hmI = 0, hId = {v:0};
 makeBtns("hSteel", HS.map(s=>s.n), 1, i => { hsI=i; hId.v++; hDraw(-1); });
 makeBtns("hMed", HMED.map(m=>m.n), 0, i => { hmI=i; hId.v++; hDraw(-1); });
 const hc = $("hChart");
-const HX = t => 62 + (Math.log10(t)+1)/5*(540-62), HY = T => 340 - T/1100*(340-30);
+const RX = t => 150 + clamp((3 - Math.log10(t))/4, 0, 1)*380;
 const tAt = (s, ts, tc) => ts*Math.pow(tc/ts, Math.pow(s,0.8));
 const fmAt = (t, nose) => 1/(1+Math.pow(t/nose,3));
 const coolT = (t, t550, Th) => { const tau = t550/Math.log((Th-20)/530); return 20 + (Th-20)*Math.exp(-t/tau); };
 function hDraw(u){ // u in [0,1] animation, -1 = reset
   const s = HS[hsI], m = HMED[hmI];
   hc.replaceChildren();
-  [0,200,400,600,800,1000].forEach(T => { el("line",{x1:62, y1:HY(T), x2:540, y2:HY(T), style:"stroke:var(--line)"}, hc); el("text",{x:55, y:HY(T)+4, "text-anchor":"end", "font-size":12, style:"fill:var(--muted)"}, hc, T); });
-  [0.1,1,10,100,1000,10000].forEach(t => { el("line",{x1:HX(t), y1:340, x2:HX(t), y2:345, style:"stroke:var(--ink)"}, hc); el("text",{x:HX(t), y:359, "text-anchor":t===10000?"end":"middle", "font-size":12, style:"fill:var(--muted)"}, hc, fmtT(t,1)+" s"); });
-  el("line",{x1:62, y1:340, x2:540, y2:340, style:"stroke:var(--ink);stroke-width:2"}, hc); el("line",{x1:62, y1:340, x2:62, y2:22, style:"stroke:var(--ink);stroke-width:2"}, hc);
-  el("text",{x:540, y:380, "text-anchor":"end", "font-size":13, "font-weight":600, style:"fill:var(--ink)"}, hc, "tid etter bråkjøling (logaritmisk) →");
-  el("text",{x:66, y:16, "font-size":13, "font-weight":600, style:"fill:var(--ink)"}, hc, "↑ temperatur (°C)");
-  // nese
-  const L=[], R=[];
-  for (let T=s.Ms+20; T<=720; T+=5){ const w = T>=550 ? 170 : (550-s.Ms-20); const t = Math.min(10000, s.nose*Math.exp(2.0*Math.pow((T-550)/w,2))); L.push(`${HX(Math.max(0.1,t)).toFixed(1)},${HY(T).toFixed(1)}`); }
-  el("polygon",{points:L.concat([`${HX(10000)},${HY(720)}`,`${HX(10000)},${HY(s.Ms+20)}`]).join(" "), style:"fill:var(--orange);opacity:.22"}, hc);
-  el("polyline",{points:L.join(" "), fill:"none", style:"stroke:var(--orange);stroke-width:3"}, hc);
-  el("text",{x:Math.min(HX(s.nose)+12, 440), y:HY(550)+4, "font-size":12, "font-weight":800, style:"fill:var(--orange)"}, hc, "◀ «nesa»");
-  el("line",{x1:62, y1:HY(s.Ms), x2:540, y2:HY(s.Ms), style:"stroke:var(--purple);stroke-width:2;stroke-dasharray:6 4"}, hc);
-  el("text",{x:536, y:HY(s.Ms)-6, "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--purple)"}, hc, `Ms ≈ ${s.Ms} °C: martensitt dannes`);
-  el("line",{x1:62, y1:HY(s.Th), x2:540, y2:HY(s.Th), style:"stroke:var(--red);stroke-width:1;stroke-dasharray:2 4"}, hc);
-  el("text",{x:536, y:HY(s.Th)-6, "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--red)"}, hc, `herdetemperatur ${s.Th} °C`);
   const tNow = u<0 ? 0 : Math.pow(10, -1 + 5*u);
-  const curve = (t550, dash, col) => { const p=[]; for (let lt=-1; lt<=Math.log10(Math.max(tNow,0.1))+1e-9; lt+=0.02){ const t = Math.pow(10,lt); p.push(`${HX(t).toFixed(1)},${HY(coolT(t,t550,s.Th)).toFixed(1)}`); } if (p.length>1) el("polyline",{points:p.join(" "), fill:"none", style:`stroke:var(${col});stroke-width:3.5;${dash?"stroke-dasharray:8 5":""}`}, hc); };
-  if (u>0){ curve(m.ts, false, "--red"); curve(m.tc, true, "--blue"); }
+  el("text",{x:150, y:22, "font-size":12, "font-weight":700, style:"fill:var(--muted)"}, hc, "← sakte");
+  el("text",{x:530, y:22, "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--muted)"}, hc, "raskt →");
+  const NOTE = ["rask · hardt · sprekkfare", "middels", "sakte · mykt"];
+  HMED.forEach((md, i) => { const y = 50 + i*90, sel = i===hmI, ok = fmAt(md.ts, s.nose) >= 0.5 && s.n!=="S235";
+    const g = el("g",{style:`opacity:${sel?1:.45}`}, hc);
+    el("text",{x:10, y:y+22, "font-size":16, "font-weight":800, style:"fill:var(--ink)"}, g, md.n);
+    el("text",{x:10, y:y+42, "font-size":11, style:"fill:var(--muted)"}, g, NOTE[i]);
+    el("rect",{x:150, y:y+8, width:380, height:30, rx:6, style:"fill:var(--bg);stroke:var(--line)"}, g);
+    const w = (RX(md.ts)-150) * (u<0 ? 0 : clamp(u*1.6,0,1));
+    el("rect",{x:150, y:y+8, width:w, height:30, rx:6, style:`fill:var(${["--blue","--yellow","--steel"][i]});opacity:.8`}, g);
+    const tc = u<0 ? s.Th : coolT(tNow, md.ts, s.Th), col = u>=1 || tc<150 ? hvColor(s.base + (s.Hm-s.base)*fmAt(md.ts, s.nose)) : glow(tc);
+    el("rect",{x:150+w-26, y:y+14, width:22, height:18, rx:3, style:`fill:${col};stroke:#333;stroke-width:1.5`}, g);
+    if (u>=1) el("text",{x:540, y:y+30, "font-size":18, "font-weight":800, style:`fill:var(--${ok?"green":"red"})`}, g, ok ? "✔" : "✘");
+    if (u>=1) el("text",{x:150, y:y+56, "font-size":12, "font-weight":700, style:`fill:var(--${ok?"green":"red"})`}, g, ok ? "blir hardt" : "blir mykt"); });
+  const xn = RX(s.nose);
+  el("line",{x1:xn, y1:40, x2:xn, y2:310, style:"stroke:var(--red);stroke-width:2.5;stroke-dasharray:7 5"}, hc);
+  el("text",{x:Math.min(Math.max(xn,160),520), y:326, "text-anchor":"middle", "font-size":12, "font-weight":800, style:"fill:var(--red)"}, hc, xn<=150 ? `${s.n}: selv luft er raskt nok` : `${s.n} må kjøles raskere enn streken`);
   // tverrsnitt
   const cv = $("hCross"), ctx = cv.getContext("2d"), W = cv.width, Rr = W/2-4;
   ctx.clearRect(0,0,W,W);
@@ -1196,10 +1213,10 @@ function hDraw(u){ // u in [0,1] animation, -1 = reset
     $("hS").textContent = hvTxt(hS); $("hC").textContent = hvTxt(hC);
     $("hD").textContent = dep>=15 ? "hele" : dep<0.3 ? "0 mm" : `ca. ${fmt(dep,0)} mm`; $("hR").textContent = rl[0]; $("hR").style.color = `var(--${rl[1]==="ok"?"green":rl[1]==="warn"?"orange":"red"})`;
     let msg;
-    if (s.n==="S235") msg = "Nesa ligger så langt til venstre at selv vann ikke rekker forbi. For lite karbon også. S235 kan ikke herdes.";
-    else if (fmAt(m.ts, s.nose) < 0.5) msg = `For langsomt! Overflaten traff nesa – det ble perlitt, ikke martensitt. ${s.n} trenger et raskere herdemiddel.`;
-    else if (dep>=15) msg = risk>=2.5 ? `Gjennomherdet – men ${m.n.slice(2)} er unødvendig hardt for ${s.n}. Stor fare for sprekker og kast. Velg et mildere middel.` : `Gjennomherdet! ${s.n} rekker forbi nesa også i kjernen. Godt valg av herdemiddel.`;
-    else msg = `Overflaten ble martensitt, men kjernen traff nesa og ble mykere. ${s.n} herdes bare ca. ${fmt(dep,0)} mm inn med ${m.n.slice(2).toLowerCase()}.`;
+    if (s.n==="S235") msg = "S235 har for lite karbon. Selv vann gjør det nesten ikke hardere. S235 kan ikke herdes.";
+    else if (fmAt(m.ts, s.nose) < 0.5) msg = `For langsomt! Overflaten ble ikke hard. ${s.n} trenger et raskere herdemiddel.`;
+    else if (dep>=15) msg = risk>=2.5 ? `Gjennomherdet – men ${m.n.slice(2).trim().toLowerCase()} er unødvendig brutalt for ${s.n}. Stor fare for sprekker og kast. Velg et mildere middel.` : `Gjennomherdet! ${s.n} blir hardt helt inn i kjernen. Godt valg av herdemiddel.`;
+    else msg = `Overflaten ble hard, men kjernen ble kjølt for sakte og ble mykere. ${s.n} herdes bare ca. ${fmt(dep,0)} mm inn med ${m.n.slice(2).toLowerCase()}.`;
     setStatus("hTxt", msg, s.n==="S235"||fmAt(m.ts,s.nose)<0.5 ? "bad" : risk>=2.5 ? "warn" : "ok");
   } else if (u<0){ ["hS","hC","hD","hR"].forEach(i=>$(i).textContent="–"); $("hR").style.color=""; setStatus("hTxt",`${s.n} er varmet til ${s.Th} °C og er austenitt. Trykk Bråkjøl.`,"info"); }
 }
@@ -1216,35 +1233,6 @@ redrawers.push(() => hDraw(-1));
 
 /* ---------- Del 4: anløping ---------- */
 const AN_H = [[20,58],[100,58],[200,55],[300,50],[400,44],[500,35],[600,24],[650,21]];
-const AN_K = [[20,5],[200,10],[300,12],[400,25],[500,45],[600,70],[650,85]];
-const USE = [[150,"–"],[190,"skjæreverktøy, skraper"],[235,"bor, stanser"],[260,"hammerbaner, stempler"],[280,"meisler, dorer"],[300,"skrutrekkere, fjærer"],[400,"fjærer"],[500,"aksler, bolter (seigherding)"],[650,"seige maskindeler"]];
-function useFor(T){ let u = "ikke anløpt – for sprøtt"; USE.forEach(([t,n]) => { if (T>=t) u = n; }); return T<150 ? "ikke anløpt – for sprøtt" : u; }
-const an = $("anChart");
-const AX = T => 62 + (T-0)/650*(500-62), AYH = h => 310 - (h-15)/50*270, AYK = k => 310 - k/100*270;
-function anDraw(){
-  const T = +$("anT").value; $("anTv").textContent = T + " °C"; an.replaceChildren();
-  [20,30,40,50,60].forEach(h => { el("line",{x1:62, y1:AYH(h), x2:500, y2:AYH(h), style:"stroke:var(--line)"}, an); el("text",{x:56, y:AYH(h)+4, "text-anchor":"end", "font-size":12, style:"fill:var(--red)"}, an, h); });
-  [0,25,50,75,100].forEach(k => el("text",{x:506, y:AYK(k)+4, "font-size":12, style:"fill:var(--blue)"}, an, k));
-  [0,100,200,300,400,500,600].forEach(t => { el("line",{x1:AX(t), y1:310, x2:AX(t), y2:315, style:"stroke:var(--ink)"}, an); el("text",{x:AX(t), y:329, "text-anchor":"middle", "font-size":12, style:"fill:var(--muted)"}, an, t); });
-  el("line",{x1:62, y1:310, x2:500, y2:310, style:"stroke:var(--ink);stroke-width:2"}, an);
-  el("text",{x:500, y:350, "text-anchor":"end", "font-size":13, "font-weight":600, style:"fill:var(--ink)"}, an, "anløpstemperatur (°C) →");
-  el("text",{x:62, y:24, "font-size":13, "font-weight":700, style:"fill:var(--red)"}, an, "↑ hardhet (HRC)");
-  el("text",{x:540, y:24, "text-anchor":"end", "font-size":13, "font-weight":700, style:"fill:var(--blue)"}, an, "KV (J) ↑");
-  // anløpsfarge-bånd
-  for (let t=200;t<=340;t+=5) el("rect",{x:AX(t), y:AYH(65), width:AX(5)-AX(0)+0.5, height:12, style:`fill:${steelColor(t)}`}, an);
-  el("text",{x:AX(270), y:AYH(65)+26, "text-anchor":"middle", "font-size":11, style:"fill:var(--muted)"}, an, "anløpsfarger");
-  const ph = [], pk = []; for (let t=20;t<=650;t+=5){ ph.push(`${AX(t)},${AYH(interp(AN_H,t))}`); pk.push(`${AX(t)},${AYK(interp(AN_K,t))}`); }
-  el("polyline",{points:ph.join(" "), fill:"none", style:"stroke:var(--red);stroke-width:4"}, an);
-  el("polyline",{points:pk.join(" "), fill:"none", style:"stroke:var(--blue);stroke-width:4;stroke-dasharray:9 5"}, an);
-  el("text",{x:AX(80), y:AYH(58)-8, "font-size":12, "font-weight":700, style:"fill:var(--red)"}, an, "hardhet");
-  el("text",{x:AX(560), y:AYK(62)-10, "text-anchor":"end", "font-size":12, "font-weight":700, style:"fill:var(--blue)"}, an, "slagseighet");
-  const h = interp(AN_H,T), k = interp(AN_K,T);
-  el("line",{x1:AX(T), y1:40, x2:AX(T), y2:310, style:"stroke:var(--ink);stroke-width:1.5"}, an);
-  el("circle",{cx:AX(T), cy:AYH(h), r:7, style:"fill:var(--red);stroke:var(--panel);stroke-width:2"}, an);
-  el("circle",{cx:AX(T), cy:AYK(k), r:7, style:"fill:var(--blue);stroke:var(--panel);stroke-width:2"}, an);
-  $("anH").textContent = `${Math.round(h)} HRC`; $("anK").textContent = `${Math.round(k)} J`; $("anU").textContent = useFor(T);
-}
-$("anT").addEventListener("input", anDraw); anDraw(); redrawers.push(anDraw);
 // meisel
 const ch = $("chisel"); let chId = {v:0}, chEdge = 20;
 const CH_X0 = 40, CH_X1 = 520;
@@ -1311,9 +1299,7 @@ const GL = [
   {n:"Bløtgløding", code:"+A", T:"rett under A1: 680–720 °C", hold:"2–6 timer", cool:"svært sakte i ovnen", when:"før mye maskinering eller kaldforming. Det mykeste stålet kan bli.", res:"Mykest. C45: ca. 170 HB. Lett å dreie, gir korte spon.",
    curve:[[0,20],[1.2,700],[5.5,700],[9,450],[10,300]], band:[680,720], A:{N:36, seed:11, types:r=>r<0.58?"P":"F"}, B:{N:36, seed:11, types:()=>"S"}, txt:"Lamellene i perlitten trekker seg sammen til små kuler av sementitt. Kulene er lettere å skjære gjennom."},
   {n:"Spenningsfriglødning", code:"", T:"550–650 °C (under A1)", hold:"1–2 timer", cool:"sakte i ovnen", when:"etter sveising, og før nøyaktig maskinering av sveiste deler.", res:"Strukturen endres ikke. Restspenningene forsvinner, og delen slår seg ikke ved fresing.",
-   curve:[[0,20],[1.5,600],[3,600],[6.5,250],[7.5,100]], band:[550,650], stress:true, txt:"Varmen gjør stålet litt mykere, så de indre spenningene «slipper taket». Ingen ny struktur."},
-  {n:"Rekrystallisering", code:"", T:"550–700 °C", hold:"ca. 1 time", cool:"i luft", when:"etter kaldforming: kaldvalsing, kaldtrekking, mye bøying. Stålet er kaldherdet (leksjon 1).", res:"Mykt og formbart igjen. Kan bøyes videre uten å sprekke.",
-   curve:[[0,20],[1.2,650],[2.2,650],[3.2,100],[3.6,40]], band:[550,700], A:{N:40, seed:41, sx:0.32, types:r=>r<0.25?"P":"F"}, B:{N:60, seed:43, types:r=>r<0.25?"P":"F"}, txt:"De flate, utstrakte kornene fra kaldformingen byttes ut med nye, runde korn."}
+   curve:[[0,20],[1.5,600],[3,600],[6.5,250],[7.5,100]], band:[550,650], stress:true, txt:"Varmen gjør stålet litt mykere, så de indre spenningene «slipper taket». Ingen ny struktur."}
 ];
 let glI = 0, glId = {v:0};
 makeBtns("glTabs", GL.map(g=>g.n), 0, i => { glI = i; glShow(); }, "");
@@ -1431,15 +1417,14 @@ stDraw(4); redrawers.push(() => stDraw(+$("stT").value));
 })();
 
 /* ---------- Del 8: quiz ---------- */
-const QOPT = ["Herding + lav anløping","Seigherding","Normalisering","Bløtgløding","Spenningsfriglødning","Rekrystallisering","Settherding"];
+const QOPT = ["Herding + lav anløping","Seigherding","Normalisering","Bløtgløding","Spenningsfriglødning","Settherding"];
 const QZ = [
   ["Et sveist stativ skal fres nøyaktig og må ikke slå seg.", 4, "Restspenninger fra sveisingen må fjernes før fresing."],
   ["En aksel i 42CrMo4 skal tåle store laster og støt.", 1, "Herding + høy anløping gir sterkt og seigt stål."],
   ["En stanse skal være så hard som mulig uten å knekke.", 0, "Hardhet fra herding, litt seighet fra lav anløping (ca. 200–250 °C)."],
   ["Et smidd emne har grove, ujevne korn.", 2, "Normalisering gir nye, fine korn."],
   ["Rundstål av C60 er for hardt å dreie.", 3, "Bløtgløding gjør stålet så mykt som mulig."],
-  ["En kaldbøyd plate har blitt hard og sprekker ved neste bøying.", 5, "Kaldherdingen fjernes – nye, myke korn."],
-  ["Et kjedehjul trenger slitesterk overflate og seig kjerne.", 6, "Karbon i overflaten, så herding. Induksjonsherding er også et godt svar."]
+  ["Et kjedehjul trenger slitesterk overflate og seig kjerne.", 5, "Karbon i overflaten, så herding. Induksjonsherding er også et godt svar."]
 ];
 const qAns = new Array(QZ.length).fill(null);
 QZ.forEach(([q, a, why], i) => { const c = document.createElement("div"); c.className = "qcard"; c.innerHTML = `<div class="qq">${i+1}. ${q}</div><div class="opts"></div><div class="fb"></div>`;
