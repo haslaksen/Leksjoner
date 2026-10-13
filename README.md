@@ -13,11 +13,13 @@ vg2/<emne>/leksjon-N-<navn>.html
 | Trinn | Emne | Leksjoner |
 |---|---|---|
 | Vg1 | Elektro | 1 Spenning, strøm og motstand · 2 Repetisjon og effekt |
+| Vg1 | YFF | 1 Hva er YFF? |
 | Vg2 | Elektro | 1 Strøm, spenning og resistans · 2 Måling med multimeter · 3 Motorstyring |
 | Vg2 | HMS | 1 Grunnleggende HMS · 2 Risikovurdering og SJA |
 | Vg2 | Materiallære | 1 Grunnleggende · 2 Stål og jern · 3 Mekanisk prøving · 4 Varmebehandling |
 | Vg2 | Pneumatikk | 1 Grunnleggende pneumatikk · 2 Styring og fart |
 | Vg2 | Vedlikehold | 1 Vedlikeholdssystemer · 2 Sikker jobb – lås og merk · 3 Smøring |
+| Vg2 | YFF | 1 Veien til læreplass |
 
 ## Ny leksjon
 
