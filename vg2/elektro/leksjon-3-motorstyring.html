@@ -11,7 +11,7 @@
   --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
   --purple:#7048e8; --purple-soft:#efebff; --yellow:#fab005; --yellow-soft:#fff6d6;
   --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
-  --copper:#c0703a; --lead:#495057;
+  --copper:#c0703a; --lead:#495057; --water:#a5d8ff;
   --radius:14px; --scale:1;
 }
 :root[data-theme="dark"]{
@@ -20,7 +20,7 @@
   --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
   --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
   --steel:#6b7785; --steel-dark:#c4ccd5; --steel-soft:#262e37;
-  --copper:#e0915a; --lead:#868e96;
+  --copper:#e0915a; --lead:#868e96; --water:#1f4d75;
 }
 *{box-sizing:border-box}
 html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
@@ -52,11 +52,15 @@ svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-s
 .btn[hidden]{display:none}
 
 .slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:2.6rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
-.wrap{max-width:1300px; width:100%; margin:0 auto}
+.wrap{max-width:1400px; width:100%; margin:0 auto}
 .kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
-.lead{font-size:1.15rem; color:var(--muted); max-width:70ch}
+.lead{font-size:1.3rem; color:var(--muted); max-width:62ch}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
 .grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
-.grid2.wide-left{grid-template-columns:1.6fr 1fr}
+.grid2.wide-left{grid-template-columns:1.8fr 1fr}
 .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
 .grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
 .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem 1.15rem}
@@ -102,7 +106,7 @@ table.t th{background:var(--steel-soft)}
 .log span.hi{background:var(--orange-soft); color:var(--orange)}
 .log span.lo{background:var(--blue-soft); color:var(--blue)}
 .mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
-.mini3 .card{padding:.7rem .9rem; font-size:.9rem}
+.mini3 .card{padding:.8rem 1rem; font-size:1.05rem}
 .mini3 .card h3{font-size:1.05rem}
 .big{font-size:1.6rem; font-weight:800; color:var(--orange)}
 
@@ -176,18 +180,33 @@ table.t th{background:var(--steel-soft)}
     <div>
       <div class="kicker">Vg2 industriteknologi · Elektro</div>
       <h1>Leksjon 3<br>Motorstyring</h1>
-      <p class="lead">Et lite trykk på en knapp – og en motor på flere kilowatt starter. Slik styrer en svak 24 V-krets en kraftig 400 V-krets, og slik beskyttes både motoren og deg.</p>
-      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <p class="lead">Et lite trykk på 24 V – og en motor på 400 V starter.</p>
       <ol class="goals">
-        <li>forklare forskjellen på <b>hovedstrøm</b> og <b>styrestrøm</b></li>
-        <li>forklare hvordan en <b>kontaktor</b> virker</li>
-        <li>lese et skjema for <b>direktestart med selvhold</b> og nødstopp</li>
-        <li>forklare hva <b>motorvernet</b> gjør, og stille det inn etter merkeskiltet</li>
-        <li>forklare hvordan en motor <b>snus</b>, og hvorfor kontaktorene må <b>forrigles</b></li>
-        <li>sammenligne <b>startmetoder</b> og <b>feilsøke</b> i en styrekrets</li>
+        <li><b>Hovedstrøm</b> og <b>styrestrøm</b></li>
+        <li><b>Kontaktoren</b> og <b>selvhold</b></li>
+        <li><b>Motorvern</b> og <b>forrigling</b></li>
+        <li><b>Startmetoder</b> og <b>feilsøking</b></li>
       </ol>
     </div>
     <div>
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 300" role="img" aria-label="Startknapp på 24 V styrer en kontaktor som starter en motor på 400 V">
+          <path d="M90 150 H200" style="stroke:var(--orange);stroke-width:6;stroke-dasharray:14 10"><animate attributeName="stroke-dashoffset" from="0" to="-48" dur="1s" repeatCount="indefinite"/></path>
+          <path d="M290 150 H360" style="stroke:var(--red);stroke-width:10;stroke-dasharray:18 12"><animate attributeName="stroke-dashoffset" from="0" to="-60" dur=".6s" repeatCount="indefinite"/></path>
+          <circle cx="60" cy="150" r="40" style="fill:var(--green);stroke:#1b5e2a;stroke-width:4"/>
+          <text x="60" y="157" text-anchor="middle" style="font-size:17px;font-weight:800;fill:#fff">START</text>
+          <rect x="200" y="96" width="90" height="108" rx="10" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:4"/>
+          <text x="245" y="132" text-anchor="middle" style="font-size:22px;font-weight:800;fill:var(--ink)">Q1</text>
+          <rect x="216" y="146" width="58" height="40" rx="5" style="fill:var(--copper)"/>
+          <rect x="360" y="100" width="110" height="100" rx="14" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:4"/>
+          <path d="M378 106 v88 M396 106 v88 M414 106 v88 M432 106 v88 M450 106 v88" style="stroke:var(--steel-dark);stroke-width:3"/>
+          <g><animateTransform attributeName="transform" type="rotate" from="0 490 150" to="360 490 150" dur=".8s" repeatCount="indefinite"/>
+            <circle cx="490" cy="150" r="26" style="fill:var(--orange)"/><path d="M490 126 V174 M466 150 H514" style="stroke:#a63c04;stroke-width:4"/></g>
+          <g style="font-size:20px;font-weight:800;text-anchor:middle"><text x="145" y="128" style="fill:var(--orange)">24 V</text><text x="325" y="128" style="fill:var(--red)">400 V</text></g>
+          <g style="font-size:15px;text-anchor:middle;fill:var(--muted)"><text x="60" y="222">knapp</text><text x="245" y="232">kontaktor</text><text x="415" y="232">motor</text></g>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
       <div class="card">
         <h3>Kompetansemål (PIN02-03)</h3>
         <p style="margin-bottom:.4rem"><b>Teknologi:</b> <i>«montere, sette i drift og feilsøke maskiner og utstyr i en produksjonsprosess»</i></p>
@@ -213,6 +232,7 @@ table.t th{background:var(--steel-soft)}
         </table>
       </div>
       <div class="tip" style="margin-bottom:0"><b>Fra leksjon 1 og 2:</b> 24 V DC i styringen · 400 V mellom to faser i TN-nett · motoren har tre like viklinger · strøm måles med tang · feilsøking: følg spenningen, mål i midten.</div>
+      </details>
     </div>
   </div>
 </section>
@@ -222,7 +242,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 1 · ca. 5 min</div>
     <h2>To kretser: hovedstrøm og styrestrøm</h2>
-    <p class="lead">Knappene på panelet kobler <b>ikke</b> motoren. De styrer en <b>kontaktor</b> i elskapet – og kontaktoren kobler motoren.</p>
+    <p class="lead">Knappen styrer <b>kontaktoren</b>. Kontaktoren kobler motoren.</p>
     <div class="fig">
       <svg id="d1Svg" viewBox="0 0 1000 430" role="img" aria-label="Betjeningspanel, elskap med kontaktor og motor som driver et transportbånd"></svg>
       <div class="controls">
@@ -234,9 +254,9 @@ table.t th{background:var(--steel-soft)}
       <div class="legend"><span><i style="background:var(--red)"></i>Hovedstrøm 400 V – stor strøm til motoren</span><span><i style="background:var(--orange)"></i>Styrestrøm +24 V – liten strøm til knapper og spole</span><span><i style="background:var(--blue)"></i>0 V</span></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>Hovedstrøm</h3>400 V · 8 A for en 4 kW motor. Farlig – kun elektrofagfolk.</div>
-      <div class="card"><h3>Styrestrøm</h3>24 V DC · ca. 0,1 A. Ufarlig spenning ved knappene.</div>
-      <div class="card"><h3>Kontaktoren</h3>Bindeleddet: liten strøm i spolen → kraftige kontakter lukker.</div>
+      <div class="card"><h3>Hovedstrøm</h3>400 V · stor strøm · farlig</div>
+      <div class="card"><h3>Styrestrøm</h3>24 V DC · liten strøm · trygg</div>
+      <div class="card"><h3>Kontaktoren</h3>Liten strøm styrer stor strøm</div>
     </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Spør først: «Hvorfor går ikke 400 V rett gjennom startknappen?» Svar: tykke kabler og store kontakter til panelet, farlig spenning ved operatøren og lysbue i knappen. Med styrestrøm kan knappene sitte langt unna, og PLS (leksjon senere) kan styre de samme spolene.</details>
   </div>
@@ -247,7 +267,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 2 · ca. 8 min</div>
     <h2>Kontaktoren – en bryter som styres av en magnet</h2>
-    <p class="lead">Gi spolen 24 V. Se ankeret bli trukket ned – og alle kontaktene flytte seg samtidig.</p>
+    <p class="lead">Gi spolen 24 V – alle kontaktene flytter seg samtidig.</p>
     <div class="fig">
       <svg id="d2Svg" viewBox="0 0 1000 470" role="img" aria-label="Snitt av en kontaktor med spole, jernkjerne, anker, fjær og kontakter, og tilhørende symboler"></svg>
       <div class="controls">
@@ -257,11 +277,11 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="d2Msg"></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>Spole (A1–A2)</h3><b>Spole</b> = kobbertråd viklet rundt en jernkjerne. Strøm i tråden gjør jernet til en <b>elektromagnet</b>.</div>
-      <div class="card"><h3>Sluttekontakt NO</h3><b>NO</b> = normalt åpen (<i>normally open</i>). Lukker når spolen trekker. Hovedkontakter 1–6 og hjelpekontakt 13–14.</div>
-      <div class="card"><h3>Brytekontakt NC</h3><b>NC</b> = normalt lukket (<i>normally closed</i>). Åpner når spolen trekker. Hjelpekontakt 21–22.</div>
+      <div class="card"><h3>Spole A1–A2</h3>Strøm gir en <b>elektromagnet</b></div>
+      <div class="card"><h3>NO – normalt åpen</h3>Lukker når spolen trekker</div>
+      <div class="card"><h3>NC – normalt lukket</h3>Åpner når spolen trekker</div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Andre siffer forteller funksjonen: x3–x4 = NO, x1–x2 = NC. Første siffer er løpenummer (1 = første hjelpekontakt, 2 = andre …). Fjæra er viktig: uten spenning trykker fjæra kontaktoren tilbake. Derfor faller kontaktoren ut ved strømbrudd, og maskinen stopper av seg selv. Betegnelse: nyere norm (IEC 81346-2) bruker Q for kontaktor, eldre tegninger bruker K. Verkstedhåndboka bruker Q1.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Andre siffer forteller funksjonen: x3–x4 = NO, x1–x2 = NC. Første siffer er løpenummer (1 = første hjelpekontakt, 2 = andre …). Fjæra er viktig: uten spenning trykker fjæra kontaktoren tilbake. Derfor faller kontaktoren ut ved strømbrudd, og maskinen stopper av seg selv. Betegnelse: nyere norm (IEC 81346-2) bruker Q for kontaktor, eldre tegninger bruker K. Verkstedhåndboka bruker Q1. Spolen er kobbertråd viklet rundt en jernkjerne. NO (normally open, sluttekontakt): hovedkontakter 1–6 og hjelpekontakt 13–14. NC (normally closed, brytekontakt): hjelpekontakt 21–22.</details>
   </div>
 </section>
 
@@ -270,7 +290,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 3 · ca. 15 min</div>
     <h2>Direktestart med selvhold</h2>
-    <p class="lead">Trykk START og slipp. Hvorfor fortsetter motoren å gå? Prøv også STOPP, nødstopp, overlast og strømbrudd.</p>
+    <p class="lead">Trykk START og slipp. Hvorfor går motoren fortsatt?</p>
     <div class="fig">
       <svg id="d3Svg" viewBox="0 0 1000 560" role="img" aria-label="Fullt skjema: hovedstrøm med sikring, kontaktor, motorvern og motor, og styrestrøm med nødstopp, stopp, start, selvhold, motorvern og spole"></svg>
       <div class="controls">
@@ -291,9 +311,9 @@ table.t th{background:var(--steel-soft)}
       <div class="legend"><span><i style="background:var(--red)"></i>400 V</span><span><i style="background:var(--orange)"></i>+24 V</span><span><i style="background:var(--blue)"></i>0 V</span><span><i style="background:var(--steel)"></i>ingen spenning</span><span>● prikker = strøm går</span></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>Selvhold</h3>Q1 13–14 ligger <b>parallelt</b> med START. Når Q1 trekker, «holder den seg selv» inne.</div>
-      <div class="card"><h3>Stopp = brytekontakt</h3>STOPP og nødstopp er <b>NC i serie</b>. Ryker en ledning, stopper maskinen. Det er sikkert.</div>
-      <div class="card"><h3>Ingen automatisk start</h3>Etter strømbrudd eller nødstopp må du trykke START igjen. Selvholdet sørger for det.</div>
+      <div class="card"><h3>Selvhold</h3>Q1 13–14 <b>parallelt</b> med START</div>
+      <div class="card"><h3>Stopp</h3><b>NC i serie</b> – brudd stopper maskinen</div>
+      <div class="card"><h3>Ingen automatisk start</h3>Etter strømbrudd: trykk START igjen</div>
     </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Kjør i denne rekkefølgen: Start → slipp (selvhold) → Stopp → Start → Nødstopp (vis at Start ikke virker) → tilbakestill → Strømbrudd (motoren starter ikke igjen av seg selv: krav i maskinforskriften / NEK EN 60204-1). Overbelast: strømtanga viser at strømmen øker fra 8 A, F2 løser ut, 95–96 åpner og P2 lyser via 97–98. Legg merke til startstrømmen på tanga: ca. 6–7 ganger merkestrømmen i et kort øyeblikk. Skjemaet er prinsipielt; i ekte anlegg skal nødstopp ofte gå via sikkerhetsrelé.</details>
   </div>
@@ -304,7 +324,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 4 · ca. 6 min</div>
     <h2>Motorvernet F2 – passer på at motoren ikke blir for varm</h2>
-    <p class="lead">Motorstrømmen varmer opp tre <b>bimetall</b>. Blir strømmen for stor for lenge, bøyer de seg så mye at vernet løser ut.</p>
+    <p class="lead">For stor strøm for lenge → <b>bimetallet</b> bøyer seg → vernet løser ut.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <svg id="d4Svg" viewBox="0 0 760 400" role="img" aria-label="Termisk motorvern med tre bimetall, utløserstang, innstillingsratt og kontakter 95–96 og 97–98"></svg>
@@ -319,16 +339,16 @@ table.t th{background:var(--steel-soft)}
         <div class="card">
           <h3>Merkeskiltet bestemmer</h3>
           <svg id="d4Plate" viewBox="0 0 380 170" style="display:block;width:100%;height:auto" aria-label="Merkeskilt 4 kW motor"></svg>
-          <p style="margin:.5rem 0 0">Motoren går i <b>stjerne (Y)</b> på 400 V. Still F2 på merkestrømmen: <span class="big">8,0 A</span></p>
+          <p style="margin:.5rem 0 0">Still F2 på merkestrømmen: <span class="big">8,0 A</span></p>
         </div>
         <div class="grid2" style="gap:.8rem; margin-top:.8rem">
-          <div class="card"><h3>F1 sikring</h3>Kortslutning: <b>enorm strøm</b> – bryter på millisekunder. Beskytter kabelen.</div>
-          <div class="card"><h3>F2 motorvern</h3>Overlast: <b>litt for stor strøm</b> over tid. Beskytter motoren.</div>
+          <div class="card"><h3>F1 sikring</h3><b>Kortslutning</b> – lynraskt</div>
+          <div class="card"><h3>F2 motorvern</h3><b>Overlast</b> – over tid</div>
         </div>
-        <div class="tip o" style="margin-bottom:0"><b>Bimetall</b> = to metaller valset sammen. Det ene utvider seg mer enn det andre når det blir varmt, så stripa bøyer seg.</div>
+        
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Prøv: (1) 8 A / 8 A = normal drift, bimetallet blir varmt, men løser ikke ut. (2) 12 A / 8 A = løser ut etter en stund. (3) Still F2 til 12 A og la motoren gå på 11 A: vernet løser ikke ut, men viklingen blir for varm – feil innstilling ødelegger motoren. Tiden er kraftig forkortet: i virkeligheten tar det minutter ved liten overlast (utløseklasse 10: under 10 s ved 7,2 × innstilt strøm). Motorvernbryter (Q1 i mange anlegg) har både termisk og magnetisk utløser og kan erstatte F1 + F2. Etter utløsning: finn årsaken (fastkjørt last, manglende fase, feil innstilling) og la motoren kjøle seg ned.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Bimetall = to metaller valset sammen; det ene utvider seg mer enn det andre når det blir varmt, så stripa bøyer seg. Motoren på skiltet går i stjerne (Y) på 400 V. F1 beskytter kabelen, F2 beskytter motoren. Prøv: (1) 8 A / 8 A = normal drift, bimetallet blir varmt, men løser ikke ut. (2) 12 A / 8 A = løser ut etter en stund. (3) Still F2 til 12 A og la motoren gå på 11 A: vernet løser ikke ut, men viklingen blir for varm – feil innstilling ødelegger motoren. Tiden er kraftig forkortet: i virkeligheten tar det minutter ved liten overlast (utløseklasse 10: under 10 s ved 7,2 × innstilt strøm). Motorvernbryter (Q1 i mange anlegg) har både termisk og magnetisk utløser og kan erstatte F1 + F2. Etter utløsning: finn årsaken (fastkjørt last, manglende fase, feil innstilling) og la motoren kjøle seg ned.</details>
   </div>
 </section>
 
@@ -337,7 +357,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 5 · ca. 9 min</div>
     <h2>Snu motoren – og forrigling</h2>
-    <p class="lead">Bytt to faser, og dreiefeltet roterer motsatt vei. Q2 bytter <b>L1 og L3</b>. Q1 og Q2 må aldri være inne samtidig.</p>
+    <p class="lead">Bytt to faser – motoren går motsatt vei. Q1 og Q2 må <b>aldri</b> være inne samtidig.</p>
     <div class="fig">
       <svg id="d5Svg" viewBox="0 0 1000 600" role="img" aria-label="Fullt skjema for dreieretningsvending med to kontaktorer og elektrisk forrigling"></svg>
       <div class="controls">
@@ -350,11 +370,11 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="d5Msg"></div>
     </div>
     <div class="mini3">
-      <div class="card"><h3>Forrigling</h3>Q2 21–22 (NC) står i Q1 sin spolekrets, og Q1 21–22 i Q2 sin. Er den ene inne, kan den andre ikke trekke.</div>
-      <div class="card"><h3>Uten forrigling</h3>Q1 + Q2 inne = <b>kortslutning mellom L1 og L3</b>. Lysbue, sveisede kontakter, F1 løser ut.</div>
-      <div class="card"><h3>Stopp før bytte</h3>Med forrigling må du trykke STOPP før du kan kjøre motsatt vei.</div>
+      <div class="card"><h3>Forrigling</h3>Er den ene inne, kan den andre ikke trekke</div>
+      <div class="card"><h3>Uten forrigling</h3><b>Kortslutning</b> mellom L1 og L3</div>
+      <div class="card"><h3>Stopp før bytte</h3>STOPP først, så motsatt vei</div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Kjør Fram → prøv Bak (ingenting skjer) → Stopp → Bak. Slå så av forriglingen og gjør det samme: kortslutning. Mange kontaktorer har i tillegg mekanisk forrigling (en vippe mellom Q1 og Q2). Motoren bremses kraftig hvis den reverseres i full fart (motstrømsbremsing) – derfor stopp først. Dreiefeltet: se Verkstedhåndboka 9.12 for animasjon av statorfeltet.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Q2 bytter L1 og L3. Forrigling: Q2 21–22 (NC) står i Q1 sin spolekrets, og Q1 21–22 i Q2 sin. Uten forrigling: lysbue, sveisede kontakter, F1 løser ut. Kjør Fram → prøv Bak (ingenting skjer) → Stopp → Bak. Slå så av forriglingen og gjør det samme: kortslutning. Mange kontaktorer har i tillegg mekanisk forrigling (en vippe mellom Q1 og Q2). Motoren bremses kraftig hvis den reverseres i full fart (motstrømsbremsing) – derfor stopp først. Dreiefeltet: se Verkstedhåndboka 9.12 for animasjon av statorfeltet.</details>
   </div>
 </section>
 
@@ -363,7 +383,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 6 · ca. 6 min</div>
     <h2>Startmetoder – hvor stor blir startstrømmen?</h2>
-    <p class="lead">Direktestart trekker <b>6–8 ganger</b> merkestrømmen (I<sub>n</sub>). Store motorer startes derfor mykere.</p>
+    <p class="lead">Direktestart trekker <b>6–8 ganger</b> vanlig strøm. Store motorer startes mykere.</p>
     <div class="fig">
       <svg id="d6Svg" viewBox="0 0 1000 380" role="img" aria-label="Startstrøm og turtall over tid for fire startmetoder"></svg>
       <div class="controls"><span class="chips" id="d6M"></span><button class="btn primary" id="d6Go">▶ Start motoren</button></div>
@@ -392,7 +412,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 7 · ca. 6 min</div>
     <h2>Feilsøking: motoren starter ikke</h2>
-    <p class="lead">Q1 trekker ikke når START trykkes. En medelev <b>holder START inne</b>. Svart probe står på <b>0 V</b>. Trykk på målepunktene.</p>
+    <p class="lead">Motoren starter ikke. Hold START inne og trykk på målepunktene.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <svg id="fsSvg" viewBox="0 0 960 420" role="img" aria-label="Styrekrets med 24 V-forsyning, sikring, nødstopp, stopp, start, selvhold, motorvern og spole, med målepunkter"></svg>
@@ -410,7 +430,7 @@ table.t th{background:var(--steel-soft)}
             <button class="btn" id="fsShow">Vis svaret</button>
           </div>
         </div>
-        <div class="tip o" style="margin-bottom:0"><b>Se før du måler:</b> Lyser P2 (motorvern utløst)? Er nødstoppen inne? Lyset på 24 V-forsyningen?</div>
+        <div class="tip o" style="margin-bottom:0"><b>Se før du måler:</b> P2? Nødstopp? 24 V-lyset?</div>
       </div>
     </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Samme metode som leksjon 2, nå i en ekte styrekrets. Spesialtilfeller: 24 V på TP6 og 0 V på TP7, men Q1 trekker ikke → spolen er defekt (full spenning over den). 24 V også på TP7 → brudd i 0 V-lederen. Feil i S1 finnes bare mens S1 holdes inne. Måling i styrekretsen på 24 V kan gjøres av elevene; i elskapet finnes det også 400 V – det er elektrofagarbeid, og anlegget skal være låst og merket ved arbeid.</details>
@@ -444,7 +464,7 @@ table.t th{background:var(--steel-soft)}
         <div class="tip">Stopp og nødstopp er <b>NC i serie</b>. Start og selvhold er <b>NO i parallell</b>. Forrigling er <b>NC fra den andre kontaktoren</b>.</div>
         <div class="card">
           <h3>Neste leksjon</h3>
-          <p style="margin:0"><b>Leksjon 4 – Serie og parallell:</b> hvorfor stoppknappene står i serie og startknappene i parallell – regnet og målt.</p>
+          <p style="margin:0"><b>Neste:</b> hvorfor stoppknappene står i serie og startknappene i parallell – regnet og målt.</p>
         </div>
         <p class="caption">Mer: <a href="https://verkstedhandboka.vercel.app/#motorstyring" target="_blank" rel="noopener">Verkstedhåndboka 9.12 Motorstyring</a> · <a href="https://verkstedhandboka.vercel.app/#el9-stjerne" target="_blank" rel="noopener">9.11 Stjerne og trekant</a></p>
       </div>

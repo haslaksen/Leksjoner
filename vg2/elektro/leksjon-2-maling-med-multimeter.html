@@ -11,7 +11,7 @@
   --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
   --purple:#7048e8; --purple-soft:#efebff; --yellow:#fab005; --yellow-soft:#fff6d6;
   --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
-  --copper:#c0703a; --lead:#495057;
+  --copper:#c0703a; --lead:#495057; --water:#a5d8ff;
   --radius:14px; --scale:1;
 }
 :root[data-theme="dark"]{
@@ -20,7 +20,7 @@
   --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
   --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
   --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
-  --copper:#e0915a; --lead:#868e96;
+  --copper:#e0915a; --lead:#868e96; --water:#1f4d75;
 }
 *{box-sizing:border-box}
 html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
@@ -50,11 +50,16 @@ svg text{font-family:inherit}
 .btn.red.on{background:var(--red); color:#fff}
 
 .slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
-.wrap{max-width:1250px; width:100%; margin:0 auto}
+.wrap{max-width:1400px; width:100%; margin:0 auto}
 .kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
-.lead{font-size:1.2rem; color:var(--muted); max-width:62ch}
+.lead{font-size:1.3rem; color:var(--muted); max-width:62ch}
+.fig.big{padding:1.2rem 1.4rem}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
 .grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
-.grid2.wide-left{grid-template-columns:1.45fr 1fr}
+.grid2.wide-left{grid-template-columns:1.8fr 1fr}
 .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
 .grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
 .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
@@ -167,7 +172,7 @@ table.t th{background:var(--steel-soft)}
 /* Variabler og stiler for animasjonene fra Verkstedhåndboka */
 :root{--paper:var(--bg); --sheet:var(--panel); --ink-2:var(--muted); --accent:var(--orange); --bad:var(--red); --ok:var(--green);
   --mono:"Cascadia Mono",Consolas,ui-monospace,monospace; --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
-.hbwrap{display:grid; grid-template-columns:1.75fr 1fr; gap:1.6rem; align-items:start}
+.hbwrap{display:grid; grid-template-columns:2fr 1fr; gap:1.6rem; align-items:start}
 .hbfig{margin:0; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
 .hbfig svg{display:block; width:100%; height:auto}
 .ctrl{display:flex; flex-wrap:wrap; gap:.4rem; align-items:center; margin-top:.6rem}
@@ -186,6 +191,14 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
 .cols{display:grid; grid-template-columns:1fr 1fr; gap:.35rem .8rem; font-size:.95rem}
 .sw{display:inline-block; width:2.2rem; height:.7rem; border-radius:3px; margin-right:.5rem; vertical-align:middle}
 @media (max-width:900px){ .hbwrap{grid-template-columns:1fr} }
+
+/* Vannkraftverket */
+.hp-n{font-size:19px; font-weight:800; fill:var(--ink)}
+.hp-s{font-size:14px; fill:var(--muted)}
+.hp-focus > *{fill:none; stroke:var(--orange); stroke-width:5; stroke-dasharray:14 9; opacity:0; transition:opacity .4s}
+.hp-focus > .on{opacity:1; animation:hpDash 1.2s linear infinite}
+@keyframes hpDash{to{stroke-dashoffset:-46}}
+.hp-txt{font-size:1.1rem}
 </style>
 </head>
 <body>
@@ -206,18 +219,36 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
     <div>
       <div class="kicker">Vg2 industriteknologi · Elektro</div>
       <h1>Leksjon 2<br>Måling med multimeter</h1>
-      <p class="lead">Likestrøm i styringen, vekselstrøm i nettet. Med riktig innstilling og riktig kobling finner du feilen – uten å ødelegge måleren eller deg selv.</p>
-      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <p class="lead">Riktig innstilling, riktig kobling – og hvor strømmen kommer fra.</p>
       <ol class="goals">
-        <li>velge riktig <b>innstilling og kontakt</b> på multimeteret</li>
-        <li>måle <b>spenning, strøm, motstand og kontinuitet</b> i en likestrømkrets</li>
-        <li><b>finne en feil</b> ved å måle spenning punkt for punkt</li>
-        <li>forklare hvilke spenninger du skal finne i <b>TN- og IT-nett</b></li>
-        <li>forklare hva en <b>strømtang</b> viser, og hvorfor 230/400 V aldri måles med måleren i serie</li>
-        <li>forklare hvordan en motor sjekkes <b>spenningsløst</b> og hvordan spenningsløshet kontrolleres</li>
+        <li>Velg riktig <b>innstilling og kontakt</b></li>
+        <li>Mål <b>V, A, Ω</b> og <b>kontinuitet</b></li>
+        <li><b>Finn feilen</b> punkt for punkt</li>
+        <li>Slik lages <b>3-fase strøm</b> i et vannkraftverk</li>
+        <li><b>TN- og IT-nett</b>, strømtang og spenningsløshet</li>
       </ol>
     </div>
     <div>
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Multimeter som viser skiftende måleverdier">
+          <path d="M150 250 C 150 300, 300 310, 380 300" style="fill:none;stroke:#e03131;stroke-width:7;stroke-linecap:round"/>
+          <path d="M210 250 C 210 290, 330 270, 430 250" style="fill:none;stroke:#222;stroke-width:7;stroke-linecap:round"/>
+          <path d="M380 300 l60 -6" style="stroke:#e03131;stroke-width:12;stroke-linecap:round"/><path d="M430 250 l60 -10" style="stroke:#343a40;stroke-width:12;stroke-linecap:round"/>
+          <rect x="90" y="20" width="180" height="250" rx="22" style="fill:#fab005;stroke:#e67700;stroke-width:4"/>
+          <rect x="110" y="40" width="140" height="64" rx="6" style="fill:#d8f5a2;stroke:#5c940d;stroke-width:2"/>
+          <g style="font-family:Consolas,monospace;font-size:32px;font-weight:800;fill:#222;text-anchor:middle">
+            <text x="180" y="84" opacity="0">24,0 V<animate attributeName="opacity" values="1;1;0;0;0;0" keyTimes="0;.33;.33;.66;.66;1" dur="6s" repeatCount="indefinite"/></text>
+            <text x="180" y="84" opacity="0">230 V<animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.33;.33;.66;.66;1" dur="6s" repeatCount="indefinite"/></text>
+            <text x="180" y="84" opacity="0">48 Ω<animate attributeName="opacity" values="0;0;0;0;1;1" keyTimes="0;.33;.33;.66;.66;1" dur="6s" repeatCount="indefinite"/></text>
+          </g>
+          <circle cx="180" cy="170" r="42" style="fill:#343a40"/>
+          <g><animateTransform attributeName="transform" type="rotate" values="-40 180 170;-40 180 170;30 180 170;30 180 170;100 180 170;100 180 170;320 180 170" keyTimes="0;.3;.33;.63;.66;.96;1" dur="6s" repeatCount="indefinite"/>
+            <rect x="174" y="128" width="12" height="40" rx="5" style="fill:#e8590c"/></g>
+          <circle cx="130" cy="240" r="10" style="fill:#e03131"/><circle cx="180" cy="240" r="10" style="fill:#222"/><circle cx="230" cy="240" r="10" style="fill:#495057"/>
+          <g style="font-size:22px;font-weight:800;text-anchor:middle;fill:var(--muted)"><text x="400" y="80">V</text><text x="440" y="130">A</text><text x="400" y="180">Ω</text></g>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
       <div class="card">
         <h3>Kompetansemål (PIN02-03)</h3>
         <p style="margin-bottom:.4rem"><b>Teknologi:</b> <i>«bruke og velge målemetode og måleutstyr …»</i></p>
@@ -234,15 +265,17 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <tr><td>22–30 min</td><td>Del 3: feilsøking i 24 V-krets</td></tr>
           <tr><td>30–45 min</td><td>Oppgave 1 og 2</td></tr>
           <tr><th colspan="2">Time 2 · Vekselstrøm (AC)</th></tr>
-          <tr><td>0–6 min</td><td>Del 4: nettet – TN og IT</td></tr>
-          <tr><td>6–16 min</td><td>Del 5: spenning i 1-, 2- og 3-fas</td></tr>
-          <tr><td>16–24 min</td><td>Del 6: strømtang</td></tr>
-          <tr><td>24–32 min</td><td>Del 7: motorviklinger og spenningsløshet</td></tr>
-          <tr><td>32–43 min</td><td>Oppgave 3, 4 og 5</td></tr>
+          <tr><td>0–8 min</td><td>Del 4: vannkraftverket – slik lages 3-fase</td></tr>
+          <tr><td>8–13 min</td><td>Del 5: nettet – TN og IT</td></tr>
+          <tr><td>13–21 min</td><td>Del 6: spenning i 1-, 2- og 3-fas</td></tr>
+          <tr><td>21–27 min</td><td>Del 7: strømtang</td></tr>
+          <tr><td>27–33 min</td><td>Del 8: motorviklinger og spenningsløshet</td></tr>
+          <tr><td>33–43 min</td><td>Oppgave 3, 4 og 5</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
       <div class="tip" style="margin-bottom:0"><b>Fra leksjon 1:</b> U = R · I · likestrøm går én vei · vekselstrøm skifter retning 50 ganger i sekundet · 230 V er effektivverdien, toppen er 325 V.</div>
+      </details>
     </div>
   </div>
 </section>
@@ -264,12 +297,12 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <div class="mmrow"><div>Brukes til</div><div id="mmHva"></div><div>Rød ledning i</div><div id="mmJack" style="font-weight:700"></div><div>Svart ledning i</div><div style="font-weight:700">COM (felles)</div><div>Slik kobler du</div><div id="mmKob" style="font-weight:700"></div></div>
         </div>
         <div class="grid2" style="gap:1rem; margin-top:1rem">
-          <div class="card"><h3>⎓ og ~</h3><p style="margin:0"><b>⎓</b> = likestrøm (DC), f.eks. 24 V styrestrøm. <b>~</b> = vekselstrøm (AC), f.eks. 230 V. Feil valg gir 0 eller «hoppende» tall.</p></div>
-          <div class="card"><h3>OL på displayet</h3><p style="margin:0">«Over limit» – utenfor området. På Ω betyr det <b>brudd</b>: uendelig stor motstand.</p></div>
+          <div class="card"><h3>⎓ og ~</h3><p class="short"><b>⎓</b> likestrøm · <b>~</b> vekselstrøm</p></div>
+          <div class="card"><h3>OL</h3><p class="short">Utenfor området. På Ω: <b>brudd</b>.</p></div>
         </div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Svart ledning står nesten alltid i COM. Rød ledning flyttes bare ved strømmåling – og må flyttes tilbake etterpå. En ledning som er glemt i A-kontakten, er den vanligste årsaken til ødelagte målere og lysbuer. Har dere multimetre i verkstedet, kan elevene finne de samme symbolene på dem.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Svart ledning står nesten alltid i COM. Rød ledning flyttes bare ved strømmåling – og må flyttes tilbake etterpå. En ledning som er glemt i A-kontakten, er den vanligste årsaken til ødelagte målere og lysbuer. Har dere multimetre i verkstedet, kan elevene finne de samme symbolene på dem. ⎓ = likestrøm (f.eks. 24 V styrestrøm), ~ = vekselstrøm (f.eks. 230 V); feil valg gir 0 eller «hoppende» tall. OL = «over limit».</details>
   </div>
 </section>
 
@@ -278,7 +311,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
   <div class="wrap">
     <div class="kicker">Del 2 · ca. 14 min · Likestrøm</div>
     <h2>Fem målinger i en likestrømkrets</h2>
-    <p class="lead">Velg måling. Se bryteren dreie, den røde ledningen flytte seg og probene finne plassen sin. Trykk <b>«Vis vanlig feil»</b> etterpå.</p>
+    <p class="lead">Velg måling. Trykk <b>«Vis vanlig feil»</b> etterpå.</p>
     <div class="hbwrap">
       <figure class="hbfig">
         <svg id="mm-svg" viewBox="0 0 640 360" role="img" aria-label="Multimeter koblet til en krets med batteri, sikring, bryter og lampe"></svg>
@@ -303,7 +336,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
   <div class="wrap">
     <div class="kicker">Del 3 · ca. 8 min · Likestrøm</div>
     <h2>Feilsøking: følg spenningen</h2>
-    <p class="lead">Lampa H1 på maskinen lyser ikke. Svart probe står fast på <b>0 V</b>. Trykk på de oransje <b>målepunktene</b> (testpunkt, TP) med den røde proben.</p>
+    <p class="lead">Lampa lyser ikke. Trykk på de oransje <b>målepunktene</b>.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <svg id="fsSvg" viewBox="0 0 780 400" role="img" aria-label="Koblingsskjema med strømforsyning, sikring, bryter, klemme, kabel og lampe"></svg>
@@ -311,11 +344,11 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         <div class="log" id="fsLog"></div>
       </div>
       <div>
-        <div class="tip g" style="margin-top:0"><b>Regelen:</b> Der du har <b>24 V</b>, er veien fra + hel. Feilen sitter mellom siste punkt med <b>24 V</b> og første punkt med <b>0 V</b>.</div>
+        <div class="tip g" style="margin-top:0"><b>Regelen:</b> Feilen sitter mellom siste <b>24 V</b> og første <b>0 V</b>.</div>
         <div class="card" style="margin-bottom:.8rem">
           <h3>Halveringsmetoden</h3>
           <svg viewBox="0 0 320 70" style="display:block;width:100%;height:auto" aria-label="Halveringsmetoden"><g id="halv"></g></svg>
-          <p style="margin:.3rem 0 0;font-size:.9rem">Mål <b>i midten</b> først. Da vet du hvilken halvdel feilen er i – og halverer igjen.</p>
+          <p class="short" style="margin-top:.3rem">Mål <b>i midten</b> først.</p>
         </div>
         <div class="card">
           <h3>Hvor er feilen?</h3>
@@ -332,12 +365,93 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
   </div>
 </section>
 
-<!-- DEL 4 -->
-<section class="slide" id="nett" data-nav="4 Nettet (AC)">
+<!-- DEL 4: VANNKRAFTVERKET -->
+<section class="slide" id="kraftverk" data-nav="4 Vannkraftverket">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 6 min · Vekselstrøm</div>
+    <div class="kicker">Del 4 · ca. 8 min · Vekselstrøm</div>
+    <h2>Hvor kommer 3-fase strøm fra?</h2>
+    <p class="lead">Nesten all strøm i Norge lages i vannkraftverk. Følg vannet fra fjellet til fabrikken.</p>
+    <div class="fig big">
+      <svg id="hpSvg" viewBox="0 0 1200 790" role="img" aria-label="Vannkraftverk: magasin, dam, trykkrør, turbin, generator, transformator, kraftlinje og fabrikk. Under: generatoren forstørret med roterende magnet og tre spoler, og en graf over de tre fasene.">
+        <!-- landskap -->
+        <path d="M0 140 L60 60 L120 92 L190 40 L270 100 L300 140 Z" style="fill:var(--steel-soft)"/>
+        <path d="M150 58 L190 40 L222 64 L205 70 L190 58 L172 68 Z" style="fill:var(--panel);opacity:.9"/>
+        <path d="M0 70 H262 L268 140 H0 Z" style="fill:var(--water)"/>
+        <path id="hpWave" d="M0 74 q15 -6 30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0 t30 0" style="fill:none;stroke:var(--blue);stroke-width:2;opacity:.6"/>
+        <path d="M0 360 V140 H300 L520 300 L540 360 Z" style="fill:var(--steel);opacity:.55"/>
+        <path d="M258 46 H278 L300 150 H262 Z" style="fill:var(--steel-dark)"/>
+        <path id="hpPipe" d="M240 128 L300 150 L506 304 L556 318" style="fill:none;stroke:var(--steel-dark);stroke-width:24;stroke-linejoin:round"/>
+        <path d="M240 128 L300 150 L506 304 L556 318" style="fill:none;stroke:var(--water);stroke-width:14;stroke-linejoin:round"/>
+        <g id="hpWater" style="fill:var(--blue)"></g>
+        <path d="M0 360 H1200" style="stroke:var(--line);stroke-width:2"/>
+        <path d="M600 346 H1200 V360 H600 Z" style="fill:var(--water)"/>
+        <g id="hpRiver" style="fill:var(--blue)"></g>
+        <!-- kraftstasjon -->
+        <path d="M520 230 L600 196 L680 230 Z" style="fill:var(--steel-dark)"/>
+        <rect x="520" y="230" width="160" height="116" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:3"/>
+        <line x1="590" y1="262" x2="590" y2="318" style="stroke:var(--steel-dark);stroke-width:8"/>
+        <rect x="556" y="238" width="68" height="48" rx="8" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
+        <g id="hpGenSmall"><rect x="582" y="244" width="16" height="36" rx="3" style="fill:var(--red)"/><rect x="582" y="262" width="16" height="18" rx="3" style="fill:var(--blue)"/></g>
+        <circle cx="590" cy="318" r="24" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
+        <g id="hpTurb"><path d="M590 298 Q600 308 590 318 Q580 328 590 338 M570 318 Q580 308 590 318 Q600 328 610 318 M576 304 Q590 306 590 318 Q590 330 604 332 M604 304 Q590 306 590 318 Q590 330 576 332" style="fill:none;stroke:var(--blue);stroke-width:4;stroke-linecap:round"/></g>
+        <path d="M600 336 Q620 346 640 348" style="fill:none;stroke:var(--water);stroke-width:10"/>
+        <!-- transformator og linjer -->
+        <path d="M624 262 H712" style="stroke:var(--ink);stroke-width:4"/>
+        <rect x="712" y="230" width="52" height="66" rx="6" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
+        <circle cx="730" cy="263" r="12" style="fill:none;stroke:var(--copper);stroke-width:4"/><circle cx="746" cy="263" r="12" style="fill:none;stroke:var(--copper);stroke-width:4"/>
+        <path d="M720 296 V346 M756 296 V346" style="stroke:var(--steel-dark);stroke-width:4"/>
+        <g style="fill:none;stroke:var(--steel-dark);stroke-width:4">
+          <path d="M836 360 L858 112 L880 360 M842 290 H874 M846 220 H870 M840 290 L870 220 M876 290 L846 220 M830 128 H886"/>
+          <path d="M1006 360 L1028 112 L1050 360 M1012 290 H1044 M1016 220 H1040 M1010 290 L1040 220 M1046 290 L1016 220 M1000 128 H1056"/>
+        </g>
+        <g id="hpLines"></g>
+        <!-- fabrikk -->
+        <rect x="1150" y="268" width="26" height="30" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2.5"/>
+        <path d="M1086 360 V280 L1110 262 V280 L1134 262 V280 L1158 262 V300 H1196 V360 Z" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
+        <rect x="1100" y="300" width="16" height="20" style="fill:var(--yellow)"/><rect x="1126" y="300" width="16" height="20" style="fill:var(--yellow)"/><rect x="1166" y="312" width="16" height="20" style="fill:var(--yellow)"/>
+        <!-- navn -->
+        <text x="110" y="122" class="hp-n">Magasin</text>
+        <text x="380" y="178" class="hp-n" text-anchor="start">Trykkrør</text>
+        <text x="600" y="186" class="hp-n" text-anchor="middle">Kraftstasjon</text>
+        <text x="738" y="384" class="hp-s" text-anchor="middle">transformator</text>
+        <text x="940" y="96" class="hp-n" text-anchor="middle">Kraftlinje</text>
+        <text x="940" y="118" class="hp-s" text-anchor="middle">132 000 V</text>
+        <text x="1136" y="384" class="hp-s" text-anchor="middle">fabrikk · 400 V</text>
+        <!-- fokus -->
+        <g id="hpFocus" class="hp-focus">
+          <ellipse data-f="1" cx="132" cy="102" rx="150" ry="52"/>
+          <ellipse data-f="2" cx="430" cy="240" rx="200" ry="112"/>
+          <ellipse data-f="3" cx="590" cy="290" rx="78" ry="70"/>
+          <rect data-f="4" x="14" y="398" width="1172" height="384" rx="18"/>
+          <rect data-f="5" x="700" y="80" width="496" height="290" rx="18"/>
+        </g>
+        <!-- zoom -->
+        <path d="M556 270 L330 440 M624 270 L392 452" style="stroke:var(--muted);stroke-width:1.5;stroke-dasharray:6 6;fill:none"/>
+        <g id="hpGen"></g>
+        <g id="hpGraph"></g>
+      </svg>
+      <div class="controls no-print" id="hpSteps">
+        <button class="btn on" data-s="1">1 Magasinet</button>
+        <button class="btn" data-s="2">2 Turbinen</button>
+        <button class="btn" data-s="3">3 Generatoren</button>
+        <button class="btn" data-s="4">4 Tre faser</button>
+        <button class="btn" data-s="5">5 Til fabrikken</button>
+        <span style="flex:1"></span>
+        <button class="btn" id="hpPause">⏸ Pause</button>
+        <label for="hpSpeed">Fart:</label><input type="range" id="hpSpeed" min="0.05" max="0.8" step="0.05" value="0.25" style="width:140px">
+      </div>
+      <div class="status info hp-txt" id="hpTxt"></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Animasjonen er forenklet og i sakte film. En ekte generator har mange magnetpoler og går ganske sakte (f.eks. 300–500 o/min), men gir likevel 50 Hz. Magneten i rotoren er en elektromagnet som får likestrøm (magnetisering). Generatorspenningen er typisk 10–20 kV; transformatoren øker til f.eks. 132 kV eller 420 kV fordi høy spenning gir liten strøm og små tap i linjene. Kobling til neste del: de tre spolene i transformatoren i bygget ditt er koblet i stjerne – stjernepunktet blir N i et TN-nett. Spør: Hvorfor er det tre ledninger i toppen av en kraftlinje?</details>
+  </div>
+</section>
+
+<!-- DEL 4 -->
+<section class="slide" id="nett" data-nav="5 Nettet (AC)">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 5 min · Vekselstrøm</div>
     <h2>Hvilket nett står du i?</h2>
-    <p class="lead">Nettet avgjør hvilke spenninger du skal finne. I Norge finnes både <b>TN-nett</b> (230/400 V, nyere anlegg) og <b>IT-nett</b> (230 V, eldre anlegg).</p>
+    <p class="lead"><b>TN-nett:</b> 230/400 V, nyere. <b>IT-nett:</b> 230 V, eldre.</p>
     <div class="hbwrap">
       <figure class="hbfig">
         <svg id="mmac-net" viewBox="0 0 640 250" role="img" aria-label="Transformatorens sekundærside i TN-nett og IT-nett, med faser, nøytral og jord"></svg>
@@ -346,10 +460,10 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         <div class="card" style="margin-bottom:.8rem">
           <h3>Ordene</h3>
           <div class="mmrow" style="grid-template-columns:3.2rem 1fr">
-            <div><b>L1–L3</b></div><div><b>Fase</b> – lederne som har spenning.</div>
-            <div><b>N</b></div><div><b>Nøytralleder</b> – returleder koblet til jordet stjernepunkt. Bare i TN.</div>
-            <div><b>PE</b></div><div><b>Beskyttelsesjord</b> – skal aldri føre strøm i normal drift.</div>
-            <div><b>2-fas</b></div><div>En 230 V-kurs i IT-nett: to faser og jord, ingen N.</div>
+            <div><b>L1–L3</b></div><div><b>Fase</b> – har spenning</div>
+            <div><b>N</b></div><div><b>Nøytral</b> – retur, bare i TN</div>
+            <div><b>PE</b></div><div><b>Jord</b> – fører ikke strøm</div>
+            <div><b>2-fas</b></div><div>To faser og jord (IT)</div>
           </div>
         </div>
         <div class="card">
@@ -361,21 +475,21 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
             <div><span class="sw" style="background:#1e6fd9"></span>N blå</div>
             <div><span class="sw" style="background:repeating-linear-gradient(90deg,#3a9a3a 0 6px,#e8c51a 6px 12px)"></span>PE gul/grønn</div>
           </div>
-          <p class="caption" style="margin-bottom:0">Eldre anlegg kan ha andre farger. <b>Mål alltid</b> – stol ikke på fargen.</p>
+          <p class="caption" style="margin-bottom:0"><b>Mål alltid</b> – stol ikke på fargen.</p>
         </div>
       </div>
     </div>
-    <div class="tip r"><b>Sikkerhet:</b> Arbeid på anlegg over 50 V AC krever kompetanse etter forskrift om sikkerhet ved arbeid i og drift av elektriske anlegg (FSE). Du skal forstå målingene og kunne lese av riktig verdi – målingen på 230/400 V gjør elektrofagfolk.</div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Transformatoren har tre spoler (én per fase). I TN er stjernepunktet (der spolene møtes) jordet og ført ut som N. I IT er ingenting jordet. Spør klassen: Hvilket nett har vi i verkstedet? Hvis dere vet det, bruk det som eksempel resten av timen.</details>
+    <div class="tip r"><b>Over 50 V AC måler elektrofagfolk.</b> Du skal forstå målingene.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Arbeid på anlegg over 50 V AC krever kompetanse etter forskrift om sikkerhet ved arbeid i og drift av elektriske anlegg (FSE). Eldre anlegg kan ha andre lederfarger. Transformatoren har tre spoler (én per fase). I TN er stjernepunktet (der spolene møtes) jordet og ført ut som N. I IT er ingenting jordet. Spør klassen: Hvilket nett har vi i verkstedet? Hvis dere vet det, bruk det som eksempel resten av timen.</details>
   </div>
 </section>
 
 <!-- DEL 5 -->
-<section class="slide" id="acv" data-nav="5 Spenning AC">
+<section class="slide" id="acv" data-nav="6 Spenning AC">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 10 min · Vekselstrøm</div>
+    <div class="kicker">Del 6 · ca. 8 min · Vekselstrøm</div>
     <h2>Spenning i 1-, 2- og 3-fas</h2>
-    <p class="lead">Bryteren på <b>V~</b>, rød i <b>VΩ</b>, svart i <b>COM</b>. Velg nett og hvilke to punkter du måler mellom.</p>
+    <p class="lead">Velg nett og to punkter å måle mellom.</p>
     <div class="hbwrap">
       <figure class="hbfig">
         <svg id="mmac-v" viewBox="0 0 640 420" role="img" aria-label="Multimeter som måler vekselspenning mellom to ledere, med viserdiagram og spenningskurver"></svg>
@@ -386,11 +500,11 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
       <div>
         <div class="card" style="margin-bottom:.8rem">
           <h3>Viserdiagram</h3>
-          <p style="margin:0">Hver fase er en <b>pil som snurrer</b> 50 ganger i sekundet (her i sakte film). Måleren viser lengden av den <b style="color:var(--orange)">stiplede pila</b> mellom de to punktene – forskjellen mellom dem.</p>
+          <p class="short">Hver fase er en <b>pil som snurrer</b>. Måleren viser den <b style="color:var(--orange)">stiplede pila</b>.</p>
         </div>
         <div class="card" style="margin-bottom:.8rem">
           <h3>Hvorfor 400 V og ikke 460 V?</h3>
-          <p style="margin:0">Fasene ligger 120° fra hverandre. Forskjellen blir √3 · 230 ≈ <b>400 V</b>, ikke 230 + 230.</p>
+          <p class="short">Fasene ligger 120° fra hverandre: √3 · 230 ≈ <b>400 V</b>.</p>
         </div>
         <table class="t">
           <tr><th>Måling</th><th>TN 230/400</th><th>IT 230</th></tr>
@@ -407,11 +521,11 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
 </section>
 
 <!-- DEL 6 -->
-<section class="slide" id="tang" data-nav="6 Strømtang">
+<section class="slide" id="tang" data-nav="7 Strømtang">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 8 min · Vekselstrøm</div>
+    <div class="kicker">Del 7 · ca. 6 min · Vekselstrøm</div>
     <h2>Strøm på 230/400 V: alltid med tang</h2>
-    <p class="lead">Tanga måler <b>magnetfeltet</b> rundt lederne i kjeften – du trenger ikke bryte kretsen. Den viser <b>summen</b> av strømmene den omslutter.</p>
+    <p class="lead">Tanga måler <b>magnetfeltet</b> rundt lederen. Du bryter ikke kretsen.</p>
     <div class="hbwrap">
       <figure class="hbfig">
         <svg id="mmac-i" viewBox="0 0 640 370" role="img" aria-label="Strømtang rundt én eller flere ledere i en kabel til en last"></svg>
@@ -425,25 +539,25 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <tr><th>Tang rundt …</th><th>viser</th></tr>
           <tr><td><b>én fase</b></td><td>strømmen i den fasen</td></tr>
           <tr><td><b>alle faser</b>, symmetrisk motor</td><td><b>0 A</b> – strømmene opphever hverandre</td></tr>
-          <tr><td><b>alle faser + N</b></td><td>lekkasjen til jord – slik måler en jordfeilbryter</td></tr>
+          <tr><td><b>alle faser + N</b></td><td>lekkasjen til jord</td></tr>
           <tr><td><b>hele kabelen med PE</b></td><td>alltid <b>0 A</b></td></tr>
         </table>
         <div class="tip"><b>Husk:</b> Velg A~. Legg én leder midt i kjeften og lukk den helt.</div>
-        <div class="tip r" style="margin-bottom:0"><b>Aldri</b> multimeteret i serie på 230/400 V. Et brudd i kretsen under last kan gi lysbue.</div>
+        <div class="tip r" style="margin-bottom:0"><b>Aldri</b> multimeteret i serie på 230/400 V.</div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Start med «1-fas last 230 V (TN)» og tang rundt L: 10 A. Flytt tanga rundt L + N: 0 A – strømmen går ut i L og tilbake i N. Slå på jordfeil: nå viser L + N 0,5 A. En jordfeilbryter for personvern løser ut ved 30 mA (L1). Bytt til «3-fas motor, symmetrisk» og tang rundt alle faser: 0 A. DC-strøm krever en tang med Hall-sensor (AC/DC-tang).</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Start med «1-fas last 230 V (TN)» og tang rundt L: 10 A. Flytt tanga rundt L + N: 0 A – strømmen går ut i L og tilbake i N. Slå på jordfeil: nå viser L + N 0,5 A. En jordfeilbryter for personvern løser ut ved 30 mA (L1). Bytt til «3-fas motor, symmetrisk» og tang rundt alle faser: 0 A. DC-strøm krever en tang med Hall-sensor (AC/DC-tang). Tanga viser summen av strømmene den omslutter – slik måler også en jordfeilbryter. Et brudd i kretsen under last kan gi lysbue, derfor aldri multimeter i serie på 230/400 V.</details>
   </div>
 </section>
 
-<!-- DEL 7 -->
-<section class="slide" id="motor" data-nav="7 Motor og spenningsløst">
+<!-- DEL 8 -->
+<section class="slide" id="motor" data-nav="8 Motor og spenningsløst">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 8 min · Spenningsløst</div>
+    <div class="kicker">Del 8 · ca. 6 min · Spenningsløst</div>
     <h2>Motorviklinger og kontroll av spenningsløshet</h2>
     <div class="grid2">
       <div>
-        <p class="lead" style="margin-bottom:.6rem">En trefasemotor har tre like <b>viklinger</b> (spoler av kobbertråd). Spenningsløs, laskene fjernet: alle tre skal ha <b>lik motstand</b>.</p>
+        <p class="lead" style="margin-bottom:.6rem">Tre like <b>viklinger</b> = lik motstand.</p>
         <figure class="hbfig">
           <svg id="mmac-r" viewBox="0 0 640 300" role="img" aria-label="Klemmebrett på trefasemotor med laskene fjernet og multimeter som måler viklingsmotstand"></svg>
           <div class="ctrl"><span class="chips2" id="mmac-rpair"></span><button class="chip" type="button" id="mmac-rfault">Vis motor med viklingsfeil</button></div>
@@ -451,7 +565,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         </figure>
       </div>
       <div>
-        <p class="lead" style="margin-bottom:.6rem">Før arbeid: test prøveren på kjent kilde, mål <b>alle faser mot hverandre og mot jord</b>, test prøveren igjen.</p>
+        <p class="lead" style="margin-bottom:.6rem">Test prøveren – mål alt – test igjen.</p>
         <figure class="hbfig">
           <svg id="sl-svg" viewBox="0 0 600 300" role="img" aria-label="Spenningsprøver som måler mellom faser og jord i rekkefølge"></svg>
           <div class="ctrl"><button class="chip play" type="button" id="sl-pp"></button><button class="chip" type="button" id="sl-next">Neste steg →</button></div>
@@ -460,11 +574,11 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
       </div>
     </div>
     <div class="grid3" style="margin-top:1rem">
-      <div class="card"><h3>Lasker</h3><p style="margin:0">Metallbitene på klemmebrettet som kobler viklingene i stjerne eller trekant. Fjernes for å måle hver vikling for seg.</p></div>
-      <div class="card"><h3>Hvorfor teste prøveren to ganger?</h3><p style="margin:0">En ødelagt prøver viser 0 V – akkurat som et spenningsløst anlegg. Test før og etter.</p></div>
-      <div class="card"><h3>Målekategori (CAT)</h3><p style="margin:0"><b>CAT II</b> stikkontakt · <b>CAT III</b> fordeling, maskin · <b>CAT IV</b> inntak. Måleren må ha minst riktig CAT og spenning.</p></div>
+      <div class="card"><h3>Lasker</h3><p class="short">Fjernes før du måler.</p></div>
+      <div class="card"><h3>Test to ganger</h3><p class="short">En ødelagt prøver viser også 0 V.</p></div>
+      <div class="card"><h3>CAT</h3><p class="short"><b>II</b> stikkontakt · <b>III</b> maskin · <b>IV</b> inntak</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Kobling til L1: dette er regel 3 i de fem sikkerhetsreglene – kontroller at det er spenningsløst. Vis viklingsfeilen: V-viklingen viser 1,62 Ω mot 2,40 Ω – kortslutning mellom vindinger. 0L mot jord betyr bare at det ikke er kortslutning; isolasjonen skal sjekkes med isolasjonsmåler (500 V) av elektrofagperson.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kobling til L1: dette er regel 3 i de fem sikkerhetsreglene – kontroller at det er spenningsløst. Vis viklingsfeilen: V-viklingen viser 1,62 Ω mot 2,40 Ω – kortslutning mellom vindinger. Laskene er metallbitene på klemmebrettet som kobler viklingene i stjerne eller trekant. Måleren må ha minst riktig CAT og spenning. 0L mot jord betyr bare at det ikke er kortslutning; isolasjonen skal sjekkes med isolasjonsmåler (500 V) av elektrofagperson.</details>
   </div>
 </section>
 
@@ -484,16 +598,17 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <tr><td><b>Motstand</b></td><td>Ω</td><td>VΩ</td><td>spenningsløst, frakoblet</td></tr>
           <tr><td><b>Kontinuitet</b></td><td>•)))</td><td>VΩ</td><td>spenningsløst</td></tr>
         </table>
+        <div class="tip"><b>3-fase:</b> generatoren har tre spoler. Fasene kommer 120° etter hverandre.</div>
         <div class="tip" style="margin-bottom:0"><b>TN:</b> 400 V fase–fase, 230 V fase–N og fase–PE. <b>IT:</b> 230 V fase–fase.</div>
       </div>
       <div>
         <div class="card">
           <h3>Nøkkelord</h3>
-          <div class="chips"><span>V⎓ / V~</span><span>COM</span><span>VΩ</span><span>OL</span><span>kontinuitet</span><span>shunt</span><span>målepunkt (TP)</span><span>halveringsmetoden</span><span>TN-nett</span><span>IT-nett</span><span>fase</span><span>N</span><span>PE</span><span>viserdiagram</span><span>strømtang</span><span>vikling</span><span>CAT</span><span>spenningsløshet</span></div>
+          <div class="chips"><span>V⎓ / V~</span><span>COM</span><span>VΩ</span><span>OL</span><span>kontinuitet</span><span>shunt</span><span>målepunkt (TP)</span><span>halveringsmetoden</span><span>generator</span><span>turbin</span><span>3-fase</span><span>TN-nett</span><span>IT-nett</span><span>fase</span><span>N</span><span>PE</span><span>viserdiagram</span><span>strømtang</span><span>vikling</span><span>CAT</span><span>spenningsløshet</span></div>
         </div>
         <div class="card" style="margin-top:1rem">
           <h3>Neste leksjon</h3>
-          <p style="margin:0"><b>Leksjon 3 – Serie og parallell:</b> hvorfor én pære kan slukke alle – og hvordan du bruker målingene fra i dag til å regne og feilsøke i kretser med flere komponenter.</p>
+          <p style="margin:0"><b>Leksjon 3 – Motorstyring:</b> kontaktor, selvhold og motorvern – slik starter og stopper du en trefasemotor.</p>
         </div>
         <p class="caption">Animasjonene er fra <a href="https://verkstedhandboka.vercel.app/#el9-maling" target="_blank" rel="noopener">Verkstedhåndboka 9.15 Måling med multimeter</a>.</p>
       </div>
@@ -558,7 +673,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 3 – Spenning i vekselstrømnett <small>Time 2 · 4 min</small></h3>
+        <h3>Oppgave 3 – Spenning i vekselstrømnett <small>Time 2 · 5 min</small></h3>
         <p>a) Hvilken verdi forventer du? Skriv «–» hvis målingen ikke finnes.</p>
         <table class="ot c">
           <tr><th>Måling</th><th>3-fas TN 230/400 V</th><th>2-fas IT 230 V</th></tr>
@@ -569,7 +684,8 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         </table>
         <p>b) Hvorfor blir det 400 V og ikke 460 V mellom to faser i TN-nett?</p><div class="svar"></div>
         <p>c) Multimeteret står på <b>V⎓</b> når det måles i en stikkontakt. Hva viser det?</p><div class="svar"></div>
-        <div class="fasit" hidden><b>Fasit:</b> a) TN: 400 V – 230 V – 230 V – 0–2 V. IT: 230 V – (ingen N) – ca. 133 V (flytende) – (ingen N). b) Fasene ligger 120° fra hverandre. Forskjellen er √3 · 230 ≈ 400 V. c) Ca. 0 V eller tall som hopper – feil innstilling.</div>
+        <p>d) Hvorfor har en kraftlinje tre ledere? Hvor kommer de tre fasene fra?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) TN: 400 V – 230 V – 230 V – 0–2 V. IT: 230 V – (ingen N) – ca. 133 V (flytende) – (ingen N). b) Fasene ligger 120° fra hverandre. Forskjellen er √3 · 230 ≈ 400 V. c) Ca. 0 V eller tall som hopper – feil innstilling. d) Én leder per fase. Generatoren i kraftverket har tre spoler rundt en roterende magnet. Når magneten passerer en spole, blir det spenning i den – spolene sitter 120° fra hverandre, så fasene kommer etter hverandre.</div>
       </div>
 
       <div class="oppgave">
@@ -702,7 +818,7 @@ let scale = 1;
 $("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
 $("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
 
-/* ---------- Del 4: multimeteret ---------- */
+/* ---------- Del 1: multimeteret ---------- */
 const MM = [
   {k:"off", lbl:"OFF", ang:-135, read:"", unit:"", jack:null, name:"Av", hva:"Slå av måleren etter bruk – det sparer batteriet.", kob:"–"},
   {k:"vdc", lbl:"V⎓", ang:-90, read:"24.02", unit:"V DC", jack:"VΩ", name:"Spenning – likestrøm (V⎓)", hva:"Batterier og 24 V styrestrøm.", kob:"Parallelt – over komponenten."},
@@ -764,7 +880,7 @@ function mmSet(k){
 }
 mmSet("vdc");
 
-/* ---------- Del 6: feilsøking ---------- */
+/* ---------- Del 3: feilsøking ---------- */
 const fs = $("fsSvg");
 const TP = [[160,90],[270,90],[420,90],[480,90],[680,118],[680,212]];
 const FAULTS = [
@@ -1302,6 +1418,126 @@ requestAnimationFrame(loopTick);
   rchips();rgo(true);
 })();
 
+})();
+</script>
+<script>
+/* ---------- Del 4: vannkraftverket ---------- */
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const svg = $("hpSvg"); if (!svg) return;
+function el(tag, attrs, parent, text){ const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text !== undefined) e.textContent = text; if (parent) parent.appendChild(e); return e; }
+const COL = ["#a0522d", "var(--ink)", "#8c8c8c"], NAME = ["L1","L2","L3"];
+const rad = d => d*Math.PI/180;
+
+/* Vann i trykkrøret og elva */
+const pipe = $("hpPipe"), pL = pipe.getTotalLength();
+const wdots = Array.from({length:16}, (_,i) => ({s:i/16*pL, c:el("circle", {r:4.5}, $("hpWater"))}));
+const rdots = Array.from({length:12}, (_,i) => ({x:600 + i*50, c:el("circle", {r:3, cy:353}, $("hpRiver"))}));
+
+/* Kraftlinjer: tre ledere */
+const lines = [0,1,2].map(k => {
+  const dx = (k-1)*22, a = [738+dx*0.8, 230], b = [858+dx, 128], c = [1028+dx, 128], d = [1163+dx*0.4, 268];
+  const dd = `M${a[0]} ${a[1]} Q${(a[0]+b[0])/2} ${(a[1]+b[1])/2+26} ${b[0]} ${b[1]} Q${(b[0]+c[0])/2} ${b[1]+34} ${c[0]} ${c[1]} Q${(c[0]+d[0])/2} ${(c[1]+d[1])/2+26} ${d[0]} ${d[1]}`;
+  el("path", {d:dd, style:`fill:none;stroke:${COL[k]};stroke-width:3.5`}, $("hpLines"));
+  return el("path", {d:dd, style:"fill:none;stroke:var(--yellow);stroke-width:5;stroke-dasharray:10 22;stroke-linecap:round"}, $("hpLines"));
+});
+
+/* Generatoren forstørret */
+const G = $("hpGen"), cx = 250, cy = 588, RO = 150, RI = 100;
+el("circle", {cx, cy, r:RO, style:"fill:var(--steel);stroke:var(--steel-dark);stroke-width:3"}, G);
+el("circle", {cx, cy, r:RI, style:"fill:var(--panel);stroke:var(--steel-dark);stroke-width:3"}, G);
+const coils = [];
+for (let i=0;i<6;i++){
+  const a = i*60, k = [0,2,1,0,2,1][i];          // 0°=L1, 60°=L3−, 120°=L2, 180°=L1−, 240°=L3, 300°=L2−
+  const g = el("g", {transform:`rotate(${a} ${cx} ${cy})`}, G);
+  const glow = el("rect", {x:cx-34, y:cy-142, width:68, height:50, rx:12, style:"fill:var(--yellow);opacity:0"}, g);
+  el("rect", {x:cx-27, y:cy-136, width:54, height:36, rx:6, style:"fill:var(--copper);stroke:#7a3f17;stroke-width:2"}, g);
+  for (let j=0;j<6;j++) el("line", {x1:cx-24+j*9.6, x2:cx-24+j*9.6, y1:cy-134, y2:cy-102, style:"stroke:#7a3f17;stroke-width:2"}, g);
+  const lx = cx + 176*Math.sin(rad(a)), ly = cy - 176*Math.cos(rad(a));
+  el("text", {x:lx, y:ly+7, "text-anchor":"middle", style:`font-size:20px;font-weight:800;fill:${COL[k]};opacity:${i < 3 ? 1 : 1}`}, G, NAME[k]);
+  coils.push({k, a, glow});
+}
+const rotor = el("g", {}, G);
+el("rect", {x:cx-30, y:cy-90, width:60, height:90, rx:10, style:"fill:var(--red)"}, rotor);
+el("rect", {x:cx-30, y:cy, width:60, height:90, rx:10, style:"fill:var(--blue)"}, rotor);
+el("text", {x:cx, y:cy-58, "text-anchor":"middle", style:"font-size:30px;font-weight:800;fill:#fff"}, rotor, "N");
+el("text", {x:cx, y:cy+78, "text-anchor":"middle", style:"font-size:30px;font-weight:800;fill:#fff"}, rotor, "S");
+el("circle", {cx, cy, r:13, style:"fill:var(--steel-dark)"}, rotor);
+
+/* Graf over de tre fasene */
+const Gr = $("hpGraph"), X0 = 520, X1 = 1165, ZY = 585, A = 125;
+const xOf = th => X0 + th/720*(X1-X0);
+el("line", {x1:X0, x2:X0, y1:ZY-A-30, y2:ZY+A+20, style:"stroke:var(--ink);stroke-width:2"}, Gr);
+el("line", {x1:X0, x2:X1+10, y1:ZY, y2:ZY, style:"stroke:var(--ink);stroke-width:2"}, Gr);
+el("text", {x:X0+8, y:ZY-A-14, class:"hp-s"}, Gr, "spenning");
+el("text", {x:X0-8, y:ZY-A+5, "text-anchor":"end", class:"hp-s"}, Gr, "+");
+el("text", {x:X0-8, y:ZY+A+5, "text-anchor":"end", class:"hp-s"}, Gr, "−");
+[[360,"1 runde"],[720,"2 runder"]].forEach(([t,s]) => { el("line", {x1:xOf(t), x2:xOf(t), y1:ZY-A-10, y2:ZY+A+10, style:"stroke:var(--line);stroke-width:2;stroke-dasharray:5 5"}, Gr); el("text", {x:xOf(t), y:ZY+A+34, "text-anchor":"middle", class:"hp-s"}, Gr, s); });
+const full = [], live = [], heads = [];
+for (let k=0;k<3;k++){
+  let pts = []; for (let t=0;t<=720;t+=6) pts.push(`${xOf(t).toFixed(1)},${(ZY - A*Math.cos(rad(t-120*k))).toFixed(1)}`);
+  full.push(el("polyline", {points:pts.join(" "), style:`fill:none;stroke:${COL[k]};stroke-width:3;opacity:.18`}, Gr));
+}
+for (let k=0;k<3;k++) live.push(el("polyline", {points:"", style:`fill:none;stroke:${COL[k]};stroke-width:4.5;stroke-linejoin:round`}, Gr));
+const cur = el("line", {y1:ZY-A-24, y2:ZY+A+14, style:"stroke:var(--orange);stroke-width:2.5"}, Gr);
+for (let k=0;k<3;k++){ heads.push(el("circle", {r:8, style:`fill:${COL[k]};stroke:var(--panel);stroke-width:2.5`}, Gr)); }
+/* 120° mellom fasene */
+const by = ZY-A-40;
+el("path", {d:`M${xOf(360)} ${by+8} V${by} H${xOf(480)} V${by+8}`, style:"fill:none;stroke:var(--orange);stroke-width:2.5"}, Gr);
+el("text", {x:(xOf(360)+xOf(480))/2, y:by-8, "text-anchor":"middle", style:"font-size:17px;font-weight:800;fill:var(--orange)"}, Gr, "120°");
+for (let k=0;k<3;k++) el("text", {x:X1-130+k*48, y:ZY-A-14, style:`font-size:18px;font-weight:800;fill:${COL[k]}`}, Gr, NAME[k]);
+
+const TXT = {
+  1: "Vannet i magasinet ligger høyt oppe i fjellet. Det har stillingsenergi.",
+  2: "Vannet faller ned trykkrøret og treffer turbinen. Turbinen begynner å snurre.",
+  3: "Turbinen og generatoren sitter på samme aksel. Inne i generatoren snurrer en stor magnet.",
+  4: "Rundt magneten sitter spoler for tre faser. Når magneten passerer en spole, blir det spenning i den – først L1, så L2, så L3.",
+  5: "Transformatoren øker spenningen. Kraftlinjen har tre ledere – én per fase. Ved fabrikken blir spenningen satt ned til 400 V."
+};
+let step = 1, paused = false, th = 0;
+function setStep(s){
+  step = s;
+  document.querySelectorAll("#hpSteps [data-s]").forEach(b => b.classList.toggle("on", +b.dataset.s === s));
+  document.querySelectorAll("#hpFocus [data-f]").forEach(f => f.classList.toggle("on", +f.dataset.f === s));
+  $("hpTxt").textContent = TXT[s];
+}
+document.querySelectorAll("#hpSteps [data-s]").forEach(b => b.onclick = () => setStep(+b.dataset.s));
+$("hpPause").onclick = () => { paused = !paused; $("hpPause").textContent = paused ? "▶ Spill" : "⏸ Pause"; };
+setStep(1);
+
+let vis = false, last = performance.now(), dash = 0, wave = 0;
+new IntersectionObserver(es => es.forEach(e => vis = e.isIntersecting)).observe(svg);
+function frame(now){ const dt = Math.min(.05, (now-last)/1000); last = now; if (vis) tick(paused ? 0 : dt); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+
+function tick(dt){
+  const rps = +$("hpSpeed").value;
+  th += 360*rps*dt;
+  const t720 = th % 720, v = [0,1,2].map(k => Math.cos(rad(th - 120*k)));
+  /* vann */
+  const ws = 260*dt*(.4 + rps*2);
+  wdots.forEach(d => { d.s = (d.s + ws) % pL; const p = pipe.getPointAtLength(d.s); d.c.setAttribute("cx", p.x); d.c.setAttribute("cy", p.y); });
+  rdots.forEach(d => { d.x += ws*.35; if (d.x > 1200) d.x -= 600; d.c.setAttribute("cx", d.x.toFixed(1)); });
+  wave = (wave + 20*dt) % 60; $("hpWave").setAttribute("transform", `translate(${-wave} 0)`);
+  /* turbin og rotor */
+  $("hpTurb").setAttribute("transform", `rotate(${th % 360} 590 318)`);
+  $("hpGenSmall").setAttribute("transform", `rotate(${th % 360} 590 262)`);
+  rotor.setAttribute("transform", `rotate(${th % 360} ${cx} ${cy})`);
+  coils.forEach(c => c.glow.style.opacity = (Math.abs(Math.cos(rad(th - c.a))) ** 3).toFixed(3));
+  /* linjer */
+  dash -= 120*dt*(.4 + rps*2);
+  lines.forEach((l,k) => { l.style.strokeDashoffset = dash; l.style.opacity = Math.abs(v[k]).toFixed(3); });
+  /* graf */
+  for (let k=0;k<3;k++){
+    const pts = []; for (let t=0;t<=t720;t+=4) pts.push(`${xOf(t).toFixed(1)},${(ZY - A*Math.cos(rad(t-120*k))).toFixed(1)}`);
+    pts.push(`${xOf(t720).toFixed(1)},${(ZY - A*v[k]).toFixed(1)}`);
+    live[k].setAttribute("points", pts.join(" "));
+    heads[k].setAttribute("cx", xOf(t720)); heads[k].setAttribute("cy", ZY - A*v[k]);
+  }
+  cur.setAttribute("x1", xOf(t720)); cur.setAttribute("x2", xOf(t720));
+}
 })();
 </script>
 </body>

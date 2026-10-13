@@ -48,11 +48,16 @@ svg text{font-family:inherit}
 .btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
 
 .slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
-.wrap{max-width:1250px; width:100%; margin:0 auto}
+.wrap{max-width:1400px; width:100%; margin:0 auto}
 .kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
-.lead{font-size:1.2rem; color:var(--muted); max-width:62ch}
+.lead{font-size:1.3rem; color:var(--muted); max-width:62ch}
+.fig.big{padding:1.2rem 1.4rem}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
 .grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
-.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid2.wide-left{grid-template-columns:1.8fr 1fr}
 .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
 .grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
 .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
@@ -193,6 +198,25 @@ table.t th{background:var(--steel-soft)}
   h2{font-size:18pt}
   .minis{grid-template-columns:repeat(4,1fr)!important}
 }
+
+/* AC til DC */
+.ad-name{font-size:20px; font-weight:800; fill:var(--ink)}
+.ad-sub{font-size:15px; fill:var(--muted)}
+.ad-blk{transition:opacity .5s}
+.ad-blk.off{opacity:.18}
+.ad-mp circle{fill:var(--orange)} .ad-mp text{fill:#fff; font-size:15px; font-weight:800; text-anchor:middle; dominant-baseline:central}
+.ad-scope{transition:opacity .5s} .ad-scope.off{opacity:.2}
+.ad-scope .bx{fill:#0f1a14; stroke:var(--line); stroke-width:2}
+.ad-scope .gr{stroke:#2c4a38; stroke-width:1}
+.ad-scope .tt{font-size:16px; font-weight:800; fill:var(--ink)}
+.ad-scope .vv{font-size:15px; font-weight:800; fill:#8ce99a; font-variant-numeric:tabular-nums}
+.ad-scope .ax{font-size:12px; fill:#8fb39c}
+.ad-scope.cur .bx{stroke:var(--orange); stroke-width:4}
+.ad-txt{font-size:1.1rem}
+.ad-where{display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem; font-size:.85rem; text-align:center; color:var(--muted)}
+.ad-where svg{display:block; width:100%; max-width:90px; margin:0 auto .2rem; height:auto}
+.dio-tri{stroke:var(--ink); stroke-width:2.5; transition:fill .15s}
+.dio-on .dio-tri{fill:var(--orange)} .dio-off .dio-tri{fill:var(--panel)}
 </style>
 </head>
 <body>
@@ -214,19 +238,45 @@ table.t th{background:var(--steel-soft)}
     <div>
       <div class="kicker">Vg2 industriteknologi · Elektro</div>
       <h1>Leksjon 1<br>Strøm, spenning og resistans</h1>
-      <p class="lead">CNC-maskinen, plasmaskjæreren og sensorene i robotcella går på strøm. Før du kan vedlikeholde og feilsøke dem, må du vite hva strøm er – og hvorfor den er farlig.</p>
-      <h3 style="margin-top:1.2rem">Etter denne leksjonen skal du kunne</h3>
+      <p class="lead">Hva er strøm – og hvorfor er den farlig?</p>
       <ol class="goals">
-        <li>forklare <b>spenning, strøm og resistans</b> med symbol og enhet</li>
-        <li>forklare hvorfor en krets må være <b>lukket</b>, og hva en <b>sikring</b> gjør</li>
-        <li>forklare forskjellen på <b>likestrøm</b> og <b>vekselstrøm</b></li>
-        <li>regne med <b>Ohms lov</b>: U = R · I</li>
-        <li>regne ut <b>effekt</b> P = U · I og <b>energi</b> i kWh</li>
-        <li>forklare hvorfor <b>strøm gjennom kroppen</b> er farlig, og hva <b>lås og merk</b> betyr</li>
+        <li><b>U, I og R</b> – spenning, strøm og resistans</li>
+        <li>Lukket krets og <b>sikring</b></li>
+        <li><b>Likestrøm</b> og <b>vekselstrøm</b> – og fra AC til DC</li>
+        <li><b>Ohms lov</b> og <b>effekt</b></li>
+        <li>Strøm i kroppen og <b>lås og merk</b></li>
       </ol>
     </div>
     <div>
-      <div class="card">
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Batteri, bryter og lampe i en lukket krets der elektronene går rundt">
+          <circle cx="430" cy="165" r="78" style="fill:var(--yellow);opacity:.35"><animate attributeName="opacity" values=".25;.55;.25" dur="2s" repeatCount="indefinite"/></circle>
+          <path id="heroLoop" d="M70 165 V70 Q70 50 90 50 H410 Q430 50 430 70 V260 Q430 280 410 280 H90 Q70 280 70 260 Z" class="wire" style="stroke-width:6"/>
+          <g class="edot">
+            <circle r="7"><animateMotion dur="6s" repeatCount="indefinite"><mpath href="#heroLoop"/></animateMotion></circle>
+            <circle r="7"><animateMotion dur="6s" begin="-1s" repeatCount="indefinite"><mpath href="#heroLoop"/></animateMotion></circle>
+            <circle r="7"><animateMotion dur="6s" begin="-2s" repeatCount="indefinite"><mpath href="#heroLoop"/></animateMotion></circle>
+            <circle r="7"><animateMotion dur="6s" begin="-3s" repeatCount="indefinite"><mpath href="#heroLoop"/></animateMotion></circle>
+            <circle r="7"><animateMotion dur="6s" begin="-4s" repeatCount="indefinite"><mpath href="#heroLoop"/></animateMotion></circle>
+            <circle r="7"><animateMotion dur="6s" begin="-5s" repeatCount="indefinite"><mpath href="#heroLoop"/></animateMotion></circle>
+          </g>
+          <rect class="cut" x="36" y="140" width="68" height="50"/>
+          <line x1="36" y1="152" x2="104" y2="152" style="stroke:var(--ink);stroke-width:6"/>
+          <line x1="54" y1="176" x2="86" y2="176" style="stroke:var(--ink);stroke-width:12"/>
+          <circle cx="430" cy="165" r="34" class="cut" style="stroke:var(--ink);stroke-width:6"/>
+          <path d="M406 141 L454 189 M454 141 L406 189" style="stroke:var(--ink);stroke-width:5"/>
+          <g style="font-size:40px;font-weight:800;text-anchor:middle">
+            <text x="150" y="178" style="fill:var(--red)">U</text>
+            <text x="250" y="34" style="fill:var(--blue)">I</text>
+            <text x="350" y="178" style="fill:var(--green)">R</text>
+          </g>
+          <g style="font-size:15px;text-anchor:middle;fill:var(--muted)">
+            <text x="150" y="202">dytter</text><text x="250" y="82">flyter</text><text x="350" y="202">bremser</text>
+          </g>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <div class="card" style="margin-top:.6rem">
         <h3>Kompetansemål (PIN02-03)</h3>
         <p style="margin-bottom:.4rem"><b>Vedlikehold:</b> <i>«arbeide på elektriske og automatiserte systemer ved reparasjons- og vedlikeholdsarbeid etter instrukser»</i></p>
         <p style="margin-bottom:.4rem"><b>Vedlikehold:</b> <i>«bruke og reflektere over helse-, miljø- og sikkerhetskrav i rutiner for vedlikehold»</i></p>
@@ -237,17 +287,19 @@ table.t th{background:var(--steel-soft)}
         <table class="t plan">
           <tr><th colspan="2">Time 1</th></tr>
           <tr><td>0–5 min</td><td>Del 1: strøm i verkstedet</td></tr>
-          <tr><td>5–28 min</td><td>Del 2–4: vannmodellen, kretsen, likestrøm/vekselstrøm</td></tr>
-          <tr><td>28–45 min</td><td>Oppgave 1 og 2</td></tr>
+          <tr><td>5–25 min</td><td>Del 2–4: vannmodellen, kretsen, likestrøm/vekselstrøm</td></tr>
+          <tr><td>25–33 min</td><td>Del 5: fra AC til DC</td></tr>
+          <tr><td>33–45 min</td><td>Oppgave 1, 2 og 3</td></tr>
           <tr><th colspan="2">Time 2</th></tr>
-          <tr><td>0–10 min</td><td>Del 5: Ohms lov</td></tr>
-          <tr><td>10–20 min</td><td>Oppgave 3</td></tr>
-          <tr><td>20–32 min</td><td>Del 6: effekt og energi + oppgave 4</td></tr>
-          <tr><td>32–43 min</td><td>Del 7: sikkerhet + oppgave 5</td></tr>
+          <tr><td>0–10 min</td><td>Del 6: Ohms lov</td></tr>
+          <tr><td>10–20 min</td><td>Oppgave 4</td></tr>
+          <tr><td>20–32 min</td><td>Del 7: effekt og energi + oppgave 5</td></tr>
+          <tr><td>32–43 min</td><td>Del 8: sikkerhet + oppgave 6</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
-      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓. A+ gir større tekst på fremviser.</p>
     </div>
   </div>
 </section>
@@ -257,7 +309,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 1 · ca. 5 min</div>
     <h2>Strøm i verkstedet</h2>
-    <p class="lead">Nesten alt som beveger seg, lyser eller måler noe i verkstedet, bruker elektrisk strøm.</p>
+    <p class="lead">Alt som beveger seg, lyser eller måler, bruker strøm.</p>
     <div class="grid4" style="margin-top:1.4rem">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Elmotor som driver en reimskive">
@@ -273,7 +325,7 @@ table.t th{background:var(--steel-soft)}
           </g>
           <text x="100" y="114" text-anchor="middle" font-size="11" style="fill:var(--muted)">elmotor · 400 V</text>
         </svg>
-        <h3>Motorer</h3><p>Spindel og akser i CNC-maskinen drives av elmotorer.</p></div>
+        <h3>Motorer</h3><p class="short">CNC, kompressor, vifte.</p></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Plasmaskjærer med lysbue">
           <rect x="20" y="80" width="160" height="10" style="fill:var(--steel)"/>
@@ -289,7 +341,7 @@ table.t th{background:var(--steel-soft)}
           </g>
           <text x="100" y="118" text-anchor="middle" font-size="11" style="fill:var(--muted)">lysbue av strøm · over 100 A</text>
         </svg>
-        <h3>Plasmaskjærer</h3><p>Strømmen går gjennom luft og lager en lysbue som smelter metallet.</p></div>
+        <h3>Plasmaskjærer</h3><p class="short">Lysbue som smelter metall.</p></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Sensor som oppdager metallbiter på et transportbånd">
           <rect x="92" y="6" width="16" height="44" rx="3" style="fill:var(--steel-dark)"/>
@@ -301,7 +353,7 @@ table.t th{background:var(--steel-soft)}
           <rect x="-30" y="64" width="30" height="16" rx="2" style="fill:var(--steel)"><animateTransform attributeName="transform" type="translate" from="0 0" to="260 0" dur="4s" repeatCount="indefinite"/></rect>
           <text x="100" y="108" text-anchor="middle" font-size="11" style="fill:var(--muted)">sensor · 24 V styrestrøm</text>
         </svg>
-        <h3>Sensorer</h3><p>En <b>induktiv sensor</b> merker metall uten å røre det. Lyset tennes når en metallbit passerer.</p></div>
+        <h3>Sensorer</h3><p class="short">Merker metall uten å røre det.</p></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Batteridrill">
           <path d="M40 30 h80 a12 12 0 0 1 12 12 v10 a12 12 0 0 1 -12 12 h-46 l-8 30 h-22 l6 -30 h-10 a12 12 0 0 1 -12 -12 v-10 a12 12 0 0 1 12 -12z" style="fill:var(--orange)"/>
@@ -313,10 +365,10 @@ table.t th{background:var(--steel-soft)}
           <text x="64" y="107" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">18 V</text>
           <text x="100" y="18" text-anchor="middle" font-size="11" style="fill:var(--muted)">batteriverktøy</text>
         </svg>
-        <h3>Batteriverktøy</h3><p>Drill og muttertrekker går på batteri, ofte 18 V.</p></div>
+        <h3>Batteriverktøy</h3><p class="short">Drill og muttertrekker, 18 V.</p></div>
     </div>
-    <div class="tip o"><b>Oppstart (2 min med sidemannen):</b> Hvilke maskiner i verkstedet bruker strøm? Hva skjer i verkstedet hvis strømmen går?</div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Skriv svarene på tavla. Merk dem med «stor maskin» / «liten / batteri». Det brukes igjen i Del 4 (vekselstrøm/likestrøm) og Del 6 (effekt).</details>
+    <div class="tip o"><b>Snakk med sidemannen:</b> Hva stopper i verkstedet hvis strømmen går?</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Skriv svarene på tavla. Merk dem med «stor maskin» / «liten / batteri». Det brukes igjen i Del 4–5 (vekselstrøm/likestrøm) og Del 7 (effekt). Hvilke maskiner i verkstedet bruker strøm?</details>
   </div>
 </section>
 
@@ -325,7 +377,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 2 · ca. 10 min</div>
     <h2>Hva er strøm? Tenk på vann i et rør</h2>
-    <p class="lead">I metall finnes det <b>elektroner</b> – bitte små partikler som kan flytte seg fritt (husker du «elektronsjøen» fra Materiallære 1?). Når de flytter seg samme vei, har vi <b>strøm</b>.</p>
+    <p class="lead">Strøm = <b>elektroner</b> som flytter seg samme vei. Akkurat som vann i et rør.</p>
     <div class="grid2">
       <div class="fig">
         <div style="font-weight:650">Vannkrets</div>
@@ -391,11 +443,11 @@ table.t th{background:var(--steel-soft)}
     </div>
     <div class="status info" id="vmTxt"></div>
     <div class="grid3" style="margin-top:1rem">
-      <div class="card qty"><div class="sym" style="background:var(--red-soft);color:var(--red)">U</div><div class="nm">Spenning · volt (V)</div><div class="ds">«Trykket» som dytter elektronene rundt. Som pumpa.</div></div>
-      <div class="card qty"><div class="sym" style="background:var(--blue-soft);color:var(--blue)">I</div><div class="nm">Strøm · ampere (A)</div><div class="ds">Hvor mange elektroner som passerer per sekund. Som vannmengden.</div></div>
-      <div class="card qty"><div class="sym" style="background:var(--green-soft);color:var(--green)">R</div><div class="nm">Resistans · ohm (Ω)</div><div class="ds">Hvor vanskelig det er for strømmen å komme gjennom. Som et smalt rør.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--red-soft);color:var(--red)">U</div><div class="nm">Spenning · volt (V)</div><div class="ds">Trykket. Som pumpa.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--blue-soft);color:var(--blue)">I</div><div class="nm">Strøm · ampere (A)</div><div class="ds">Mengden. Som vannet som renner.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--green-soft);color:var(--green)">R</div><div class="nm">Resistans · ohm (Ω)</div><div class="ds">Bremsen. Som et smalt rør.</div></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Pek på at batteriet ikke «lager» elektroner – de er i ledningen hele tiden, akkurat som vannet i røret. Trykk «Vis elektronene»: elektronene går fra − til +, men i skjemaer tegner vi strømmen fra + til − (teknisk strømretning). Den ble bestemt før man kjente til elektronene, og vi har beholdt den.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Elektronene kan flytte seg fritt i metall («elektronsjøen» fra Materiallære 1). Pek på at batteriet ikke «lager» elektroner – de er i ledningen hele tiden, akkurat som vannet i røret. Trykk «Vis elektronene»: elektronene går fra − til +, men i skjemaer tegner vi strømmen fra + til − (teknisk strømretning). Den ble bestemt før man kjente til elektronene, og vi har beholdt den.</details>
   </div>
 </section>
 
@@ -404,7 +456,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 3 · ca. 8 min</div>
     <h2>Kretsen må være lukket</h2>
-    <p class="lead">Strøm går bare når det er en hel vei <b>rundt</b> – fra kilden, gjennom lampa og tilbake. Velg en situasjon og se hva som skjer.</p>
+    <p class="lead">Strøm går bare når veien er hel – <b>rundt</b> og tilbake.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <svg id="kSvg" viewBox="0 0 610 300" role="img" aria-label="Krets med batteri, sikring, bryter og lampe">
@@ -461,11 +513,11 @@ table.t th{background:var(--steel-soft)}
       <div>
         <div class="card" style="margin-bottom:.8rem">
           <h3>Sikring</h3>
-          <p style="margin:0">En tynn tråd som <b>smelter</b> (eller en bryter som slår ut) når strømmen blir for stor. Den beskytter ledningene mot å bli så varme at det begynner å brenne.</p>
+          <p class="short">Bryter kretsen når strømmen blir for stor. Hindrer brann.</p>
         </div>
         <div class="card" style="margin-bottom:.8rem">
           <h3>Kortslutning</h3>
-          <p style="margin:0">Strømmen finner en snarvei <b>utenom</b> lampa, nesten uten resistans. Da blir strømmen enorm – helt til sikringen går.</p>
+          <p class="short">En snarvei utenom lampa. Enorm strøm!</p>
         </div>
         <div class="card">
           <svg viewBox="0 0 300 120" style="display:block;width:100%;height:auto" role="img" aria-label="Tverrsnitt av kabel">
@@ -480,7 +532,7 @@ table.t th{background:var(--steel-soft)}
             <text x="156" y="96" style="font-size:15px;font-weight:700;fill:var(--ink)">plast: isolator</text>
             <text x="156" y="114" style="font-size:12px;fill:var(--muted)">elektronene sitter fast</text>
           </svg>
-          <p style="margin:.4rem 0 0; font-size:.9rem"><b>Leder</b> = slipper strøm gjennom (kobber, aluminium, stål). <b>Isolator</b> = stopper strøm (plast, gummi, glass).</p>
+          
         </div>
       </div>
     </div>
@@ -521,26 +573,130 @@ table.t th{background:var(--steel-soft)}
       <div>
         <div class="card" style="margin-bottom:.8rem; border-top:6px solid var(--blue)">
           <h3>⎓ Likestrøm (DC)</h3>
-          <p style="margin:0">Strømmen går <b>én vei</b> hele tiden. Kommer fra batterier og strømforsyninger.</p>
-          <p style="margin:.4rem 0 0; font-size:.9rem; color:var(--muted)">Eks: 24 V styrestrøm, sensorer, batteriverktøy.</p>
+          <p class="short">Går <b>én vei</b>. Batteri, 24 V styrestrøm.</p>
         </div>
         <div class="card" style="border-top:6px solid var(--red)">
           <h3>~ Vekselstrøm (AC)</h3>
-          <p style="margin:0">Strømmen skifter retning <b>50 ganger i sekundet</b> = 50 hertz (Hz). Kommer fra strømnettet.</p>
-          <p style="margin:.4rem 0 0; font-size:.9rem; color:var(--muted)">Eks: stikkontakten 230 V, maskiner og motorer 400 V.</p>
+          <p class="short">Snur <b>50 ganger i sekundet</b> (50 Hz). Stikkontakten 230 V.</p>
         </div>
-        <div class="tip"><b>230 V er ikke toppen.</b> Spenningen svinger helt opp til ca. 325 V. «230 V» er <b>effektivverdien</b>: den gir like mye varme som 230 V likestrøm.</div>
+        <div class="tip"><b>230 V er ikke toppen.</b> Toppen er 325 V. 230 V er <b>effektivverdien</b>.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DEL 5 -->
-<section class="slide" id="ohm" data-nav="5 Ohms lov">
+<!-- DEL 5: AC TIL DC -->
+<section class="slide" id="likeretter" data-nav="5 Fra AC til DC">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 10 min</div>
+    <div class="kicker">Del 5 · ca. 8 min</div>
+    <h2>Slik blir vekselstrøm til likestrøm</h2>
+    <p class="lead">Stikkontakten gir AC. Sensorer, styringer og batterier trenger DC. Trykk deg gjennom de fire stegene.</p>
+    <div class="fig big">
+      <svg id="adSvg" viewBox="0 0 1200 650" role="img" aria-label="Strømforsyning: stikkontakt, transformator, likeretter med fire dioder, kondensator og lampe, med et oscilloskopbilde under hvert steg">
+        <!-- 1 Stikkontakt -->
+        <g id="adB1" class="ad-blk">
+          <path class="wire" d="M90 156 V100 H230 V120 M90 224 V280 H230 V260"/>
+          <circle cx="90" cy="190" r="34" class="cut" style="stroke:var(--ink);stroke-width:4"/>
+          <path d="M70 192 q10 -16 20 0 t20 0" style="fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round"/>
+          <text x="90" y="364" text-anchor="middle" class="ad-name">Stikkontakt</text>
+          <text x="90" y="388" text-anchor="middle" class="ad-sub">230 V ~</text>
+          <g id="adDotsP"></g>
+        </g>
+        <!-- 2 Transformator -->
+        <g id="adB2" class="ad-blk">
+          <path d="M230 120 a14 14 0 0 1 0 28 a14 14 0 0 1 0 28 a14 14 0 0 1 0 28 a14 14 0 0 1 0 28 a14 14 0 0 1 0 28" style="fill:none;stroke:var(--copper);stroke-width:5"/>
+          <path d="M302 120 a14 14 0 0 0 0 28 a14 14 0 0 0 0 28 a14 14 0 0 0 0 28 a14 14 0 0 0 0 28 a14 14 0 0 0 0 28" style="fill:none;stroke:var(--copper);stroke-width:5"/>
+          <path d="M262 108 V272 M270 108 V272" style="stroke:var(--steel-dark);stroke-width:4"/>
+          <path class="wire" d="M302 120 V100 H420 V190 H470 M302 260 V325 H720 V190 H650"/>
+          <text x="266" y="364" text-anchor="middle" class="ad-name">Transformator</text>
+          <text x="266" y="388" text-anchor="middle" class="ad-sub">230 V ~ → 18 V ~</text>
+        </g>
+        <!-- 3 Likeretter -->
+        <g id="adB3" class="ad-blk">
+          <path class="wire" d="M470 190 L560 100 L650 190 L560 280 Z"/>
+          <path class="wire" d="M560 100 V50 H1080 V162 M560 280 V300 H710 A10 10 0 0 1 730 300 H1080 V218"/>
+          <circle cx="880" cy="50" r="6" style="fill:var(--ink)"/><circle cx="880" cy="300" r="6" style="fill:var(--ink)"/>
+          <g id="adDiodes"></g>
+          <text x="560" y="196" text-anchor="middle" style="font-size:15px;font-weight:700;fill:var(--muted)">4 dioder</text>
+          <text x="560" y="364" text-anchor="middle" class="ad-name">Likeretter</text>
+          <text x="560" y="388" text-anchor="middle" class="ad-sub">snur den negative halvdelen</text>
+        </g>
+        <!-- 4 Kondensator -->
+        <g id="adB4" class="ad-blk">
+          <path id="adCapWire" class="wire" d="M880 50 V166 M880 186 V300"/>
+          <rect x="852" y="164" width="56" height="24" class="cut"/>
+          <path d="M852 166 H908" style="stroke:var(--ink);stroke-width:6"/>
+          <path d="M852 186 H908" style="stroke:var(--ink);stroke-width:6"/>
+          <rect id="adCapFill" x="918" y="130" width="22" height="0" rx="3" style="fill:var(--green)"/>
+          <rect x="918" y="130" width="22" height="90" rx="3" style="fill:none;stroke:var(--line);stroke-width:2"/>
+          <text x="929" y="238" text-anchor="middle" class="lbls">lager</text>
+          <text x="842" y="160" text-anchor="end" class="lbl" style="fill:var(--red)">+</text>
+          <text x="880" y="364" text-anchor="middle" class="ad-name">Kondensator</text>
+          <text x="880" y="388" text-anchor="middle" class="ad-sub">glatter ut</text>
+        </g>
+        <!-- Lampe -->
+        <g id="adB5" class="ad-blk">
+          <circle id="adGlow" cx="1080" cy="190" r="64" style="fill:var(--yellow);opacity:0"/>
+          <circle cx="1080" cy="190" r="28" class="cut" style="stroke:var(--ink);stroke-width:4"/>
+          <path d="M1060 170 L1100 210 M1100 170 L1060 210" style="stroke:var(--ink);stroke-width:3"/>
+          <text x="1120" y="80" class="lbl" style="fill:var(--red)">+</text>
+          <text x="1120" y="300" class="lbl" style="fill:var(--blue)">−</text>
+          <text x="1080" y="364" text-anchor="middle" class="ad-name">Lampe</text>
+          <text x="1080" y="388" text-anchor="middle" class="ad-sub">24 V ⎓</text>
+        </g>
+        <g id="adDotsB"></g>
+        <g id="adDotsL"></g>
+        <!-- målepunkter -->
+        <g class="ad-mp"><circle cx="150" cy="190" r="14"/><text x="150" y="191">1</text></g>
+        <g class="ad-mp"><circle cx="360" cy="190" r="14"/><text x="360" y="191">2</text></g>
+        <g class="ad-mp"><circle cx="760" cy="24" r="14"/><text x="760" y="25">3</text></g>
+        <g class="ad-mp"><circle cx="990" cy="24" r="14"/><text x="990" y="25">4</text></g>
+        <!-- oscilloskop -->
+        <g id="adScopes"></g>
+      </svg>
+      <div class="controls no-print" id="adSteps">
+        <button class="btn on" data-s="1">1 Vekselstrøm</button>
+        <button class="btn" data-s="2">2 Transformator</button>
+        <button class="btn" data-s="3">3 Likeretter</button>
+        <button class="btn" data-s="4">4 Kondensator</button>
+        <span style="flex:1"></span>
+        <button class="btn" id="adPause">⏸ Pause</button>
+        <label for="adSpeed">Fart:</label><input type="range" id="adSpeed" min="0.15" max="1.2" step="0.05" value="0.45" style="width:140px">
+      </div>
+      <div class="status info ad-txt" id="adTxt"></div>
+    </div>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="card" style="display:grid;grid-template-columns:minmax(0,1.3fr) 1fr;gap:1rem;align-items:center">
+        <svg viewBox="0 0 300 130" role="img" aria-label="Dioden er som en enveisventil for vann" style="display:block;width:100%;height:auto">
+          <rect x="10" y="40" width="280" height="50" rx="8" style="fill:var(--water);stroke:var(--steel-dark);stroke-width:3"/>
+          <path d="M150 40 V90" style="stroke:var(--steel-dark);stroke-width:4"/>
+          <g id="adFlap"><path d="M150 44 L150 86" style="stroke:var(--orange);stroke-width:8;stroke-linecap:round"/></g>
+          <circle cx="150" cy="44" r="5" style="fill:var(--steel-dark)"/>
+          <g id="adVdots" style="fill:var(--blue)"></g>
+          <path id="adVarrow" d="M120 112 h60 l-10 -7 m10 7 l-10 7" style="fill:none;stroke:var(--green);stroke-width:4;stroke-linecap:round"/>
+          <g transform="translate(150 20)"><path d="M-14 -10 V10 L10 0 Z" style="fill:var(--ink)"/><path d="M10 -10 V10 M-34 0 H-14 M10 0 H34" style="stroke:var(--ink);stroke-width:3"/></g>
+        </svg>
+        <div><h3 style="margin-bottom:.2em">Dioden</h3><p style="margin:0">En enveisventil for strøm.</p></div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:.4em">Hvor finner du dette?</h3>
+        <div class="ad-where">
+          <div><svg viewBox="0 0 80 60" aria-hidden="true"><rect x="16" y="6" width="48" height="48" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/><path d="M28 18 h24 M28 28 h24 M28 38 h24" style="stroke:var(--steel-dark);stroke-width:3"/><text x="40" y="52" text-anchor="middle" font-size="9" font-weight="800" style="fill:var(--green)">24 V</text></svg>Strømforsyning i elskapet</div>
+          <div><svg viewBox="0 0 80 60" aria-hidden="true"><rect x="14" y="20" width="44" height="30" rx="4" style="fill:var(--orange)"/><rect x="58" y="28" width="8" height="14" style="fill:var(--steel-dark)"/><path d="M30 26 l-6 10 h8 l-6 10" style="fill:none;stroke:#fff;stroke-width:3"/></svg>Batterilader</div>
+          <div><svg viewBox="0 0 80 60" aria-hidden="true"><rect x="10" y="10" width="60" height="36" rx="3" style="fill:var(--steel-dark)"/><rect x="15" y="15" width="50" height="26" style="fill:var(--blue-soft)"/><path d="M32 46 v6 h16 v-6" style="fill:var(--steel)"/></svg>PC og skjerm</div>
+        </div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Animasjonen går i sakte film – i virkeligheten skifter retningen 50 ganger i sekundet. Pek på at strømmen gjennom lampa går <b>samme vei</b> i begge halvperiodene (steg 3), og at to og to dioder leder. Uten kondensator ville en lampe blinket 100 ganger i sekundet (for fort til å se, men en motor eller elektronikk merker det). Spenningen etter likeretteren er toppverdien: 18 V · 1,41 ≈ 25 V. En moderne strømforsyning (switch-mode) holder spenningen nøyaktig på 24 V med elektronikk, men prinsippet med likeretter og kondensator er det samme.</details>
+  </div>
+</section>
+
+<!-- DEL 6 -->
+<section class="slide" id="ohm" data-nav="6 Ohms lov">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 10 min</div>
     <h2>Ohms lov: U = R · I</h2>
-    <p class="lead">Spenning, strøm og resistans henger alltid sammen. Kjenner du to av dem, kan du regne ut den tredje.</p>
+    <p class="lead">Kjenner du to av U, I og R, kan du regne ut den tredje.</p>
     <div class="grid2">
       <div class="fig">
         <svg id="oSvg" viewBox="0 0 520 300" role="img" aria-label="Krets med spenningskilde, amperemeter, motstand og voltmeter">
@@ -572,11 +728,11 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="fig">
         <svg id="oGraf" viewBox="0 0 510 350" role="img" aria-label="Graf over strøm mot spenning for ulike resistanser"></svg>
-        <p class="caption">Rett linje = Ohms lov. Bratt linje = liten resistans (mye strøm). Slak linje = stor resistans.</p>
+        <p class="caption">Bratt linje = liten resistans. Slak linje = stor resistans.</p>
       </div>
     </div>
     <h3 style="margin-top:1.6rem">Hva kan en motstand være?</h3>
-    <p style="margin:0 0 .6rem">En <b>motstand</b> er noe strømmen må gjennom, og som bremser den. Noen ganger er det en egen liten komponent, men ofte er det selve utstyret. I skjema tegnes alt dette som et rektangel med R.</p>
+    <p style="margin:0 0 .6rem">Alt som bremser strømmen. I skjema: et rektangel med R.</p>
     <div class="grid3 mot">
       <div class="card">
         <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Motstandskomponent med fargeringer">
@@ -586,7 +742,7 @@ table.t th{background:var(--steel-soft)}
           <rect x="82" y="26" width="7" height="28" fill="#8b5a2b"/><rect x="101" y="26" width="5" height="28" fill="#c9a227"/>
           <text x="80" y="74" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--ink)">220 Ω</text>
         </svg>
-        <b>Motstands&shy;komponent</b><br><span style="font-size:.85rem;color:var(--muted)">Laget for én bestemt verdi. Begrenser f.eks. strømmen til en LED.</span></div>
+        <b>Motstands&shy;komponent</b><br><span style="font-size:.85rem;color:var(--muted)">Fast verdi.</span></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Lyspære med glødetråd">
           <circle cx="80" cy="34" r="30" style="fill:var(--yellow);opacity:.25"><animate attributeName="opacity" values=".15;.4;.15" dur="2s" repeatCount="indefinite"/></circle>
@@ -594,14 +750,14 @@ table.t th{background:var(--steel-soft)}
           <rect x="66" y="52" width="28" height="18" rx="3" style="fill:var(--steel)"/>
           <path d="M70 52 L70 34 l4 -6 l4 6 l4 -6 l4 6 l4 -6 l0 24" style="fill:none;stroke:var(--orange);stroke-width:2.5"/>
         </svg>
-        <b>Glødetråd i lampe</b><br><span style="font-size:.85rem;color:var(--muted)">Tynn tråd med stor resistans blir så varm at den lyser.</span></div>
+        <b>Glødetråd i lampe</b><br><span style="font-size:.85rem;color:var(--muted)">Blir så varm at den lyser.</span></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Varmeelement som gløder">
           <path d="M20 20 H140 V32 H20 V44 H140 V56 H20" style="fill:none;stroke-width:7;stroke-linejoin:round;stroke-linecap:round" stroke="#868e96">
             <animate attributeName="stroke" values="#868e96;#e8590c;#ff6b00;#e8590c;#868e96" dur="4s" repeatCount="indefinite"/></path>
           <text x="80" y="76" text-anchor="middle" font-size="11" style="fill:var(--muted)">varmeovn · loddebolt</text>
         </svg>
-        <b>Varmeelement</b><br><span style="font-size:.85rem;color:var(--muted)">Lages for å gjøre strøm om til varme.</span></div>
+        <b>Varmeelement</b><br><span style="font-size:.85rem;color:var(--muted)">Strøm blir varme.</span></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Spole viklet av kobbertråd">
           <rect x="44" y="14" width="72" height="44" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
@@ -609,7 +765,7 @@ table.t th{background:var(--steel-soft)}
           <path d="M8 36 H44 M116 36 H152" style="stroke:var(--steel-dark);stroke-width:3"/>
           <text x="80" y="76" text-anchor="middle" font-size="11" style="fill:var(--muted)">magnetventil · relé</text>
         </svg>
-        <b>Spole</b><br><span style="font-size:.85rem;color:var(--muted)">Lang, viklet kobbertråd. Har resistans, f.eks. 96 Ω i en ventilspole.</span></div>
+        <b>Spole</b><br><span style="font-size:.85rem;color:var(--muted)">Lang viklet kobbertråd.</span></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Elmotor som går rundt">
           <rect x="26" y="16" width="76" height="48" rx="8" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>
@@ -622,7 +778,7 @@ table.t th{background:var(--steel-soft)}
             <circle cx="132" cy="40" r="5" style="fill:var(--panel)"/></g>
           <text x="64" y="76" text-anchor="middle" font-size="11" style="fill:var(--muted)">CNC · kompressor · vifte</text>
         </svg>
-        <b>Motor</b><br><span style="font-size:.85rem;color:var(--muted)">Gjør strøm om til bevegelse. Trekker mye strøm i starten, mindre når den har fått opp farten.</span></div>
+        <b>Motor</b><br><span style="font-size:.85rem;color:var(--muted)">Strøm blir bevegelse.</span></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Potensiometer med dreieknapp">
           <path d="M40 66 A40 40 0 1 1 120 66" style="fill:none;stroke:var(--line);stroke-width:10;stroke-linecap:round"/>
@@ -632,7 +788,7 @@ table.t th{background:var(--steel-soft)}
           <line x1="80" y1="40" x2="80" y2="24" style="stroke:#fff;stroke-width:4;stroke-linecap:round">
             <animateTransform attributeName="transform" type="rotate" values="-130 80 40;130 80 40;-130 80 40" dur="4s" repeatCount="indefinite"/></line>
         </svg>
-        <b>Potensiometer</b><br><span style="font-size:.85rem;color:var(--muted)">Justerbar motstand, en dreieknapp. Eks: turtallsratt, lysdimmer.</span></div>
+        <b>Potensiometer</b><br><span style="font-size:.85rem;color:var(--muted)">Justerbar, en dreieknapp.</span></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Lang tynn ledning og kort tykk ledning">
           <path d="M10 22 C 40 6, 60 38, 90 22 S 140 6, 150 22" style="fill:none;stroke:var(--copper);stroke-width:2"/>
@@ -640,7 +796,7 @@ table.t th{background:var(--steel-soft)}
           <rect x="40" y="52" width="80" height="10" rx="5" style="fill:var(--copper)"/>
           <text x="80" y="76" text-anchor="middle" font-size="11" style="fill:var(--green)">kort og tykk = lite R</text>
         </svg>
-        <b>Ledningen – og kroppen</b><br><span style="font-size:.85rem;color:var(--muted)">Alt strømmen går gjennom har resistans. Også kroppen din (se Del 7).</span></div>
+        <b>Ledningen – og kroppen</b><br><span style="font-size:.85rem;color:var(--muted)">Også kroppen (Del 8).</span></div>
     </div>
     <div class="grid2" style="margin-top:1.2rem">
       <div class="card" style="display:grid; grid-template-columns:200px 1fr; gap:1rem; align-items:center">
@@ -652,7 +808,7 @@ table.t th{background:var(--steel-soft)}
           <g data-k="I"><path class="cov" d="M124 112 H180 L226 198 H124 Z"/><text x="160" y="160" style="fill:var(--blue)">I</text></g>
         </svg>
         <div>
-          <p style="margin:0 0 .3rem"><b>Trykk på det du vil finne.</b> Det som er igjen, er formelen:</p>
+          <p style="margin:0 0 .3rem"><b>Trykk på det du vil finne.</b></p>
           <div class="formula" id="uriF">I = U / R</div>
           <p style="margin:0; font-size:.85rem; color:var(--muted)">Ved siden av hverandre = gange. Over hverandre = dele.</p>
         </div>
@@ -670,17 +826,17 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 6 -->
-<section class="slide" id="effekt" data-nav="6 Effekt">
+<!-- DEL 7 -->
+<section class="slide" id="effekt" data-nav="7 Effekt">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 7 min</div>
+    <div class="kicker">Del 7 · ca. 7 min</div>
     <h2>Effekt og energi</h2>
-    <p class="lead"><b>Effekt</b> (P) er hvor mye energi utstyret bruker hvert sekund. Enhet: <b>watt (W)</b>. 1 kW = 1 000 W.</p>
+    <p class="lead"><b>Effekt</b> = hvor mye energi utstyret bruker hvert sekund. Watt (W).</p>
     <div class="grid2">
       <div class="fig">
         <div class="formula">P = U · I</div>
         <div style="font-weight:650">Én kurs i verkstedet: 230 V, sikring 16 A</div>
-        <p class="caption" style="margin-top:0">En <b>kurs</b> er én kabel fra sikringsskapet til en gruppe stikkontakter. Slå på utstyr:</p>
+        <p class="caption" style="margin-top:0">Slå på utstyr:</p>
         <svg id="kursSvg" viewBox="0 0 560 150" role="img" aria-label="Sikringsskap med en kurs og stikkontakter">
           <rect x="10" y="10" width="110" height="130" rx="8" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
           <rect x="40" y="36" width="50" height="80" rx="5" style="fill:var(--panel);stroke:var(--ink);stroke-width:2"/>
@@ -694,19 +850,19 @@ table.t th{background:var(--steel-soft)}
         <div class="meter"><div class="fill" id="kursFill"></div><div class="lim" style="left:80%"></div><div class="txt" id="kursTxtM">0 A</div></div>
         <div class="readout r3"><div><span>Effekt P</span><b id="kursP">0 W</b></div><div><span>Strøm I = P / U</span><b id="kursI">0,0 A</b></div><div><span>Grense</span><b>16 A</b></div></div>
         <div class="status info" id="kursTxt">Slå på utstyr. Rød strek = 16 A.</div>
-        <p class="caption">Forenklet: en ekte sikring tåler litt overlast en stund før den løser ut.</p>
+        
       </div>
       <div>
         <div class="card">
           <h3>Energi: E = P · t</h3>
-          <p>Strømregningen betaler du for <b>energi</b>, målt i <b>kilowattimer (kWh)</b>. 1 kWh = 1 000 W i 1 time.</p>
+          <p>Strømregningen måles i <b>kWh</b>.</p>
           <div class="calc" style="grid-template-columns:repeat(3,minmax(0,1fr))">
             <label>Effekt P (kW)<input id="eP" type="text" inputmode="decimal" value="5,5"></label>
             <label>Tid t (timer)<input id="eT" type="text" inputmode="decimal" value="8"></label>
             <label>Pris (kr/kWh)<input id="eK" type="text" inputmode="decimal" value="1,50"></label>
           </div>
           <div class="steps" id="eSteps"></div>
-          <p class="caption">Eksempel: en kompressor på 5,5 kW som går en hel arbeidsdag.</p>
+          <p class="caption">Kompressor 5,5 kW i en arbeidsdag.</p>
         </div>
         <div class="card" style="margin-top:1rem">
           <h3>Typisk effekt</h3>
@@ -717,12 +873,12 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 7 -->
-<section class="slide" id="sikkerhet" data-nav="7 Sikkerhet">
+<!-- DEL 8 -->
+<section class="slide" id="sikkerhet" data-nav="8 Sikkerhet">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 8 min</div>
+    <div class="kicker">Del 8 · ca. 8 min</div>
     <h2>Strøm gjennom kroppen</h2>
-    <p class="lead">Det er <b>strømmen</b> som skader deg. <b>Spenningen</b> bestemmer hvor stor strømmen blir – Ohms lov gjelder også for kroppen.</p>
+    <p class="lead">Det er <b>strømmen</b> som skader. Høyere spenning gir mer strøm.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <div style="display:grid; grid-template-columns:200px 1fr; gap:1rem; align-items:center">
@@ -763,21 +919,21 @@ table.t th{background:var(--steel-soft)}
         </div>
         <svg id="scaleSvg" viewBox="0 0 640 120" role="img" aria-label="Skala over virkning av strøm gjennom kroppen" style="margin-top:.6rem"></svg>
         <div class="status bad" id="bTxt"></div>
-        <p class="caption">Forenklede, typiske verdier for vekselstrøm fra hånd til føtter. Kroppens resistans varierer mye fra person til person og situasjon til situasjon.</p>
+        <p class="caption">Forenklede verdier, hånd til føtter.</p>
       </div>
       <div>
         <div class="card" style="margin-bottom:.8rem">
           <h3>Jordfeilbryter</h3>
-          <p style="margin:0">Merker om strøm <b>lekker ut</b> av kretsen – for eksempel gjennom deg og ned i gulvet – og slår av på en brøkdel av et sekund. Løser ut ved <b>30 mA</b>.</p>
+          <p class="short">Slår av lynraskt hvis strøm lekker ut – gjennom deg. <b>30 mA</b>.</p>
         </div>
         <div class="card">
           <h3>Spenningsnivåer</h3>
           <table class="t">
-            <tr><td style="white-space:nowrap"><b>24 V</b></td><td>Styrestrøm, sensorer. Regnes som ufarlig ved berøring under normale, tørre forhold.</td></tr>
+            <tr><td style="white-space:nowrap"><b>24 V</b></td><td>Styrestrøm. Ufarlig når det er tørt.</td></tr>
             <tr><td style="white-space:nowrap"><b>230 V</b></td><td>Stikkontakter. <span style="color:var(--red);font-weight:700">Livsfarlig.</span></td></tr>
             <tr><td style="white-space:nowrap"><b>400 V</b></td><td>Maskiner og motorer. <span style="color:var(--red);font-weight:700">Livsfarlig.</span></td></tr>
           </table>
-          <p style="margin:.6rem 0 0; font-size:.85rem; color:var(--muted)">230 V og 400 V kalles <b>lavspenning</b> – et ord som høres ufarlig ut, men ikke er det.</p>
+          
         </div>
       </div>
     </div>
@@ -838,7 +994,7 @@ table.t th{background:var(--steel-soft)}
           <li><span><b>Jorde og kortslutte</b> – der det kreves. Gjøres av elektrofagfolk.</span></li>
           <li><span><b>Avskjerme</b> deler i nærheten som fortsatt har spenning.</span></li>
         </ol>
-        <div class="tip r"><b>Bare den som har satt på låsen, tar den av.</b> Arbeid inne i elskap og på 230/400 V-anlegg gjøres av fagfolk med elektroutdanning. Du skal jobbe <b>etter instruks</b> og kunne «lås og merk».</div>
+        <div class="tip r"><b>Bare den som har satt på låsen, tar den av.</b> Elskap og 230/400 V: kun elektrofagfolk.</div>
       </div>
     </div>
   </div>
@@ -855,6 +1011,7 @@ table.t th{background:var(--steel-soft)}
           <li><b>U</b> spenning (V) dytter · <b>I</b> strøm (A) flyter · <b>R</b> resistans (Ω) bremser.</li>
           <li>Strøm går bare i en <b>lukket krets</b>. Sikringen bryter kretsen ved for stor strøm.</li>
           <li><b>Likestrøm</b> går én vei. <b>Vekselstrøm</b> skifter retning 50 ganger i sekundet.</li>
+          <li><b>Transformator → likeretter → kondensator</b> gjør 230 V AC om til 24 V DC.</li>
           <li><b>U = R · I</b> &nbsp;·&nbsp; <b>I = U / R</b> &nbsp;·&nbsp; <b>R = U / I</b></li>
           <li><b>P = U · I</b> (watt) &nbsp;·&nbsp; <b>E = P · t</b> (kWh)</li>
           <li>Strøm gjennom kroppen over ca. 30–50 mA kan stoppe hjertet. <b>Lås og merk</b> før arbeid.</li>
@@ -863,11 +1020,11 @@ table.t th{background:var(--steel-soft)}
       <div>
         <div class="card">
           <h3>Nøkkelord</h3>
-          <div class="chips"><span>elektron</span><span>spenning</span><span>strøm</span><span>resistans</span><span>motstand</span><span>potensiometer</span><span>volt</span><span>ampere</span><span>ohm</span><span>lukket krets</span><span>leder</span><span>isolator</span><span>sikring</span><span>kortslutning</span><span>likestrøm</span><span>vekselstrøm</span><span>hertz</span><span>Ohms lov</span><span>effekt</span><span>kWh</span><span>kurs</span><span>jordfeilbryter</span><span>lås og merk</span></div>
+          <div class="chips"><span>elektron</span><span>spenning</span><span>strøm</span><span>resistans</span><span>motstand</span><span>potensiometer</span><span>volt</span><span>ampere</span><span>ohm</span><span>lukket krets</span><span>leder</span><span>isolator</span><span>sikring</span><span>kortslutning</span><span>likestrøm</span><span>vekselstrøm</span><span>hertz</span><span>transformator</span><span>diode</span><span>likeretter</span><span>kondensator</span><span>Ohms lov</span><span>effekt</span><span>kWh</span><span>kurs</span><span>jordfeilbryter</span><span>lås og merk</span></div>
         </div>
         <div class="card" style="margin-top:1rem">
           <h3>Neste leksjon</h3>
-          <p style="margin:0"><b>Leksjon 2 – Serie, parallell og måling:</b> hvorfor lyset i hele rekka slukker når én pære går, og hvordan du måler spenning, strøm og resistans riktig med multimeter.</p>
+          <p style="margin:0"><b>Leksjon 2 – Måling med multimeter:</b> mål spenning, strøm og resistans riktig – og se hvordan 3-fase strøm lages i et vannkraftverk.</p>
         </div>
         <p class="caption">Slå opp mer i <a href="https://verkstedhandboka.vercel.app/#elektro" target="_blank" rel="noopener">Verkstedhåndboka, emne 9 Elektro</a>.</p>
       </div>
@@ -891,7 +1048,7 @@ table.t th{background:var(--steel-soft)}
       <div class="formelark"><b>Formler:</b> <span>U = R · I</span><span>I = U / R</span><span>R = U / I</span><span>P = U · I</span><span>E = P · t</span><span>1 mA = 0,001 A</span><span>1 kΩ = 1 000 Ω</span><span>1 kW = 1 000 W</span></div>
 
       <div class="oppgave">
-        <h3>Oppgave 1 – Størrelser og enheter <small>Time 1 · 8 min</small></h3>
+        <h3>Oppgave 1 – Størrelser og enheter <small>Time 1 · 4 min</small></h3>
         <table class="ot">
           <tr><th>Størrelse</th><th>Symbol</th><th>Enhet</th><th>Enhetssymbol</th><th>Hva tilsvarer det i vannmodellen?</th></tr>
           <tr><td>Spenning</td><td class="tom"></td><td></td><td></td><td></td></tr>
@@ -905,7 +1062,7 @@ table.t th{background:var(--steel-soft)}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 2 – Lyser lampa? <small>Time 1 · 9 min</small></h3>
+        <h3>Oppgave 2 – Lyser lampa? <small>Time 1 · 4 min</small></h3>
         <p>Alle kretsene har batteri (24 V), sikring, bryter og lampe. Skriv <b>Ja</b> eller <b>Nei</b> og begrunn kort.</p>
         <div class="minis" id="minis"></div>
         <table class="ot">
@@ -921,7 +1078,16 @@ table.t th{background:var(--steel-soft)}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 3 – Ohms lov <small>Time 2 · 10 min</small></h3>
+        <h3>Oppgave 3 – Fra AC til DC <small>Time 1 · 4 min</small></h3>
+        <p>a) Sett delene i en strømforsyning i riktig rekkefølge: <b>kondensator · stikkontakt · likeretter · transformator</b></p><div class="svar"></div>
+        <p>b) Hva gjør transformatoren?</p><div class="svar"></div>
+        <p>c) Hva gjør dioden? Sammenlign med en ventil.</p><div class="svar"></div>
+        <p>d) Hvorfor trenger vi kondensatoren?</p><div class="svar"></div>
+        <div class="fasit" hidden><b>Fasit:</b> a) Stikkontakt → transformator → likeretter → kondensator. b) Gjør spenningen lavere (f.eks. 230 V ~ til 18 V ~). Det er fortsatt vekselstrøm. c) Slipper strøm bare én vei, som en enveisventil (tilbakeslagsventil). d) Etter likeretteren pulserer spenningen. Kondensatoren lagrer energi på toppene og gir den fra seg mellom dem, så spenningen blir jevn.</div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Ohms lov <small>Time 2 · 10 min</small></h3>
         <p>Skriv formelen, sett inn tallene og svar med enhet.</p>
         <p>a) En lampe på 48 Ω er koblet til 24 V. Hvor stor er strømmen?</p><div class="svar"></div>
         <p>b) Spolen i en magnetventil (en elektromagnet som åpner en luftventil) trekker 0,25 A på 24 V. Hva er resistansen?</p><div class="svar"></div>
@@ -932,7 +1098,7 @@ table.t th{background:var(--steel-soft)}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 4 – Effekt og energi <small>Time 2 · 7 min</small></h3>
+        <h3>Oppgave 5 – Effekt og energi <small>Time 2 · 7 min</small></h3>
         <p>a) En vinkelsliper på 230 V trekker 9 A. Hvor stor effekt har den?</p><div class="svar"></div>
         <p>b) En kurs har 16 A sikring og 230 V. Hvor stor effekt kan kursen gi før sikringen går?</p><div class="svar"></div>
         <p>c) Kan du bruke vinkelsliperen og en varmeovn på 2 000 W på samme kurs samtidig? Vis utregning.</p><div class="svar"></div><div class="svar"></div>
@@ -941,7 +1107,7 @@ table.t th{background:var(--steel-soft)}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 5 – Sikkerhet <small>Time 2 · 6 min</small></h3>
+        <h3>Oppgave 6 – Sikkerhet <small>Time 2 · 6 min</small></h3>
         <p>a) En person med våt hud (ca. 1 000 Ω) tar på 230 V. Hvor stor blir strømmen i mA? Hva kan skje?</p><div class="svar"></div><div class="svar"></div>
         <p>b) Hvorfor bruker vi 24 V til sensorer og styring?</p><div class="svar"></div>
         <p>c) Sett de fem sikkerhetsreglene i riktig rekkefølge (1–5):</p>
@@ -957,7 +1123,7 @@ table.t th{background:var(--steel-soft)}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 6 – Les merkeskiltet <small>Ekstra</small></h3>
+        <h3>Oppgave 7 – Les merkeskiltet <small>Ekstra</small></h3>
         <div style="max-width:420px" id="skilt"></div>
         <p>a) Går maskinen på likestrøm eller vekselstrøm? Hvordan ser du det?</p><div class="svar"></div>
         <p>b) Hvor stor strøm trekker den ved full effekt?</p><div class="svar"></div>
@@ -1147,7 +1313,7 @@ addAnim($("acSvg"), dt => {
 $("btnDC").onclick = () => acMode("dc"); $("btnAC").onclick = () => acMode("ac");
 acMode("ac");
 
-/* ---------- Del 5: Ohms lov ---------- */
+/* ---------- Del 6: Ohms lov ---------- */
 const o = {U:12, R:24};
 const oPath = el("path",{d:"M60 150 V80 Q60 60 80 60 H400 Q420 60 420 80 V220 Q420 240 400 240 H80 Q60 240 60 220 Z", style:"fill:none;stroke:none"}, $("oSvg"));
 const oFlow = flow($("oDots"), oPath, 34, "cdot", 4.5);
@@ -1207,7 +1373,7 @@ $("uri").querySelectorAll("g[data-k]").forEach(g => g.onclick = () => uriSel(g.d
 ["inA","inB"].forEach(id => $(id).addEventListener("input", uriCalc));
 uriSel("I");
 
-/* ---------- Del 6: kurs og energi ---------- */
+/* ---------- Del 7: kurs og energi ---------- */
 const DEV = [["💡","LED-arbeidslampe",50],["🔋","Batterilader",150],["🧹","Støvsuger",1200],["⚙️","Vinkelsliper",2000],["🔥","Varmeovn",2000]];
 const kurs = {on:DEV.map(()=>false), tripped:false};
 const sockG = $("kursSockets");
@@ -1253,7 +1419,7 @@ const eb = $("effBars");
 eb.innerHTML = EFF.map(e => `<div style="display:grid;grid-template-columns:7.5rem 1fr 4.5rem;gap:.5rem;align-items:center;margin:.3rem 0;font-size:.9rem"><div>${e[0]}</div><div style="background:var(--steel-soft);border-radius:6px;height:1.2rem;overflow:hidden"><div class="ef" data-w="${Math.max(1.2, e[1]/11000*100)}" style="height:100%;width:0;background:var(--orange);border-radius:6px;transition:width 1.2s"></div></div><div style="text-align:right;font-weight:700;font-variant-numeric:tabular-nums">${e[1]>=1000 ? fmt(e[1]/1000, e[1]%1000?1:0)+" kW" : e[1]+" W"}</div></div>`).join("");
 onVisible(eb, () => eb.querySelectorAll(".ef").forEach((f,i) => setTimeout(() => f.style.width = f.dataset.w + "%", i*120)));
 
-/* ---------- Del 7: strøm gjennom kroppen ---------- */
+/* ---------- Del 8: strøm gjennom kroppen ---------- */
 const RB = {24:{t:10000, v:3000}, 230:{t:1500, v:1000}, 400:{t:1200, v:900}};
 const b7 = {U:230, h:"t", mA:0};
 const bFlow = flow($("bodyDots"), $("bodyPath"), 12, "cdot", 5);
@@ -1363,6 +1529,154 @@ $("btnCopy").onclick = async () => {
     toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
   }
 };
+})();
+</script>
+<script>
+/* ---------- Del 5: fra AC til DC ---------- */
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const svg = $("adSvg"); if (!svg) return;
+function el(tag, attrs, parent, text){ const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text !== undefined) e.textContent = text; if (parent) parent.appendChild(e); return e; }
+const fmt0 = x => Math.round(x).toLocaleString("nb-NO");
+
+/* Dioder: anode → katode */
+const C = {L:[470,190], T:[560,100], R:[650,190], B:[560,280]};
+const dio = [["L","T"],["R","T"],["B","L"],["B","R"]].map(([a,k]) => {
+  const [x1,y1] = C[a], [x2,y2] = C[k], mx = (x1+x2)/2, my = (y1+y2)/2, ang = Math.atan2(y2-y1, x2-x1)*180/Math.PI;
+  const g = el("g", {transform:`translate(${mx} ${my}) rotate(${ang})`, class:"dio-off"}, $("adDiodes"));
+  el("rect", {x:-16, y:-17, width:32, height:34, class:"cut"}, g);
+  el("path", {d:"M-14 -15 V15 L14 0 Z", class:"dio-tri"}, g);
+  el("path", {d:"M15 -15 V15", style:"stroke:var(--ink);stroke-width:4"}, g);
+  return g;
+});
+
+/* Skjulte stier for strømprikkene */
+const P = {
+  pri: "M90 156 V100 H230 V280 H90 V156",
+  posL: "M302 120 V100 H420 V190 H470 L560 100 V50 H1080 V300 H560 V280 L650 190 H720 V325 H302 V120",
+  negL: "M302 260 V325 H720 V190 H650 L560 100 V50 H1080 V300 H560 V280 L470 190 H420 V100 H302 V260",
+  load: "M880 50 H1080 V300 H880 V50"
+};
+P.posC = P.posL.replace(/1080/g, "880"); P.negC = P.negL.replace(/1080/g, "880");
+const paths = {};
+for (const k in P) paths[k] = el("path", {d:P[k], fill:"none", stroke:"none"}, svg);
+function dots(group, n, color){
+  const o = {g:group, path:null, L:1, s:0, n, c:Array.from({length:n}, () => el("circle", {r:6, style:`fill:${color}`}, group)),
+    use(p){ if (o.path !== p){ o.path = p; o.L = p.getTotalLength(); } },
+    move(ds){ o.s = ((o.s + ds) % o.L + o.L) % o.L; o.c.forEach((c,i) => { const pt = o.path.getPointAtLength((o.s + i*o.L/o.n) % o.L); c.setAttribute("cx", pt.x); c.setAttribute("cy", pt.y); }); }};
+  return o;
+}
+const dP = dots($("adDotsP"), 14, "var(--orange)");  dP.use(paths.pri);
+const dB = dots($("adDotsB"), 30, "var(--orange)");  dB.use(paths.posL);
+const dL = dots($("adDotsL"), 16, "var(--orange)");  dL.use(paths.load);
+
+/* Oscilloskop */
+const SC = [
+  {x:30,  t:"1 Stikkontakt",   max:"325 V", k:325, amp:80},
+  {x:325, t:"2 Transformator", max:"25 V",  k:25,  amp:62},
+  {x:620, t:"3 Likerettet",    max:"25 V",  k:25,  amp:62},
+  {x:915, t:"4 Glattet",       max:"25 V",  k:25,  amp:62}
+];
+const Y0 = 412, W = 255, H = 228, ZY = Y0 + 140;
+SC.forEach(s => {
+  s.g = el("g", {class:"ad-scope"}, $("adScopes"));
+  el("text", {x:s.x+4, y:Y0+20, class:"tt"}, s.g, s.t);
+  el("rect", {x:s.x, y:Y0+32, width:W, height:H-32, rx:10, class:"bx"}, s.g);
+  for (let i=1;i<5;i++) el("line", {x1:s.x+i*W/5, x2:s.x+i*W/5, y1:Y0+40, y2:Y0+H-8, class:"gr"}, s.g);
+  el("line", {x1:s.x+8, x2:s.x+W-8, y1:ZY-s.amp, y2:ZY-s.amp, class:"gr", "stroke-dasharray":"4 4"}, s.g);
+  el("line", {x1:s.x+8, x2:s.x+W-8, y1:ZY+s.amp, y2:ZY+s.amp, class:"gr", "stroke-dasharray":"4 4"}, s.g);
+  el("line", {x1:s.x+8, x2:s.x+W-8, y1:ZY, y2:ZY, style:"stroke:#8fb39c;stroke-width:1.5"}, s.g);
+  el("text", {x:s.x+12, y:ZY-s.amp-6, class:"ax"}, s.g, "+" + s.max);
+  el("text", {x:s.x+12, y:ZY-6, class:"ax"}, s.g, "0");
+  s.dc = el("line", {x1:s.x+8, x2:s.x+W-8, y1:ZY, y2:ZY, style:"stroke:#ffd43b;stroke-width:2;display:none", "stroke-dasharray":"8 6"}, s.g);
+  s.pl = el("polyline", {points:"", style:"fill:none;stroke:#69db7c;stroke-width:3.5;stroke-linejoin:round"}, s.g);
+  s.v = el("text", {x:s.x+W-12, y:Y0+56, "text-anchor":"end", class:"vv"}, s.g, "0 V");
+});
+SC[3].dcT = el("text", {x:SC[3].x+12, y:Y0+H-14, style:"font-size:13px;font-weight:800;fill:#ffd43b"}, SC[3].g, "ca. 24 V ⎓");
+
+const TXT = {
+  1: "Stikkontakten gir vekselstrøm. Spenningen går opp og ned – og strømmen skifter retning.",
+  2: "Transformatoren gjør spenningen lavere: 230 V blir 18 V. Fortsatt vekselstrøm.",
+  3: "Diodene snur den negative halvdelen. Strømmen i lampa går alltid samme vei – men den pulserer.",
+  4: "Kondensatoren fylles på toppene og tømmes litt mellom dem. Nå er det jevn likestrøm."
+};
+let step = 1, phase = 0, paused = false, Vc = 0, prevR = 0, charging = false;
+const hist = [];
+function setStep(s){
+  step = s;
+  document.querySelectorAll("#adSteps [data-s]").forEach(b => b.classList.toggle("on", +b.dataset.s === s));
+  [1,2,3,4,3].forEach((need,i) => $("adB"+(i+1)).classList.toggle("off", s < need));
+  SC.forEach((sc,i) => { sc.g.classList.toggle("off", i+1 > s); sc.g.classList.toggle("cur", i+1 === s); });
+  $("adTxt").textContent = TXT[s];
+  if (s < 4) Vc = 0;
+}
+document.querySelectorAll("#adSteps [data-s]").forEach(b => b.onclick = () => setStep(+b.dataset.s));
+$("adPause").onclick = () => { paused = !paused; $("adPause").textContent = paused ? "▶ Spill" : "⏸ Pause"; };
+setStep(1);
+
+/* Ventilen */
+const vdots = Array.from({length:9}, (_,i) => ({x:20 + i*30, c:el("circle", {r:5, cy:65}, $("adVdots"))}));
+
+let vis = false, last = performance.now();
+new IntersectionObserver(es => es.forEach(e => vis = e.isIntersecting)).observe(svg);
+function frame(now){
+  const dt = Math.min(.05, (now-last)/1000); last = now;
+  if (vis) tick(paused ? 0 : dt);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+function tick(dt){
+  const f = +$("adSpeed").value, dp = f*dt;
+  phase += dp;
+  const s = Math.sin(2*Math.PI*phase), r = Math.abs(s), pos = s >= 0;
+  if (step >= 4){
+    if (r >= Vc){ Vc = r; charging = r > prevR; } else { Vc *= Math.exp(-dp/3.3); charging = false; }
+  } else charging = false;
+  prevR = r;
+  const out = step >= 4 ? Vc : r;
+
+  /* historikk for skopene: 2,5 perioder */
+  hist.push([phase, s, s, r, Vc]);
+  while (hist.length && hist[0][0] < phase - 2.5) hist.shift();
+  SC.forEach((sc,i) => {
+    if (i+1 > step){ sc.pl.setAttribute("points", ""); sc.v.textContent = ""; return; }
+    sc.pl.setAttribute("points", hist.map(h => `${(sc.x+8 + (h[0]-phase+2.5)/2.5*(W-16)).toFixed(1)},${(ZY - h[i+1]*sc.amp).toFixed(1)}`).join(" "));
+    const v = [s, s, r, Vc][i]*sc.k; sc.v.textContent = (v > 0.5 ? "+" : "") + fmt0(v) + " V";
+  });
+  SC[3].dc.style.display = step >= 4 ? "" : "none"; SC[3].dc.setAttribute("y1", ZY - .9*SC[3].amp); SC[3].dc.setAttribute("y2", ZY - .9*SC[3].amp);
+  SC[3].dcT.style.display = step >= 4 ? "" : "none";
+
+  /* strømprikker */
+  const sp = 260 * f / .45;
+  dP.move(s * sp * dt); dP.c.forEach(c => c.style.opacity = Math.min(1, r*1.6));
+  if (step >= 3){
+    $("adDotsB").style.display = "";
+    if (step === 3){ dB.use(pos ? paths.posL : paths.negL); dB.move(r * sp * dt); dB.c.forEach(c => c.style.opacity = Math.min(1, r*1.6)); }
+    else { dB.use(pos ? paths.posC : paths.negC); dB.move((charging ? 1.3 : 0) * sp * dt); dB.c.forEach(c => c.style.opacity = charging ? 1 : 0); }
+  } else $("adDotsB").style.display = "none";
+  $("adDotsL").style.display = step >= 4 ? "" : "none";
+  if (step >= 4) dL.move(Vc * sp * dt);
+
+  /* dioder */
+  const cond = step === 3 ? r > .05 : step >= 4 ? charging : false;
+  dio.forEach((g,i) => g.setAttribute("class", cond && ((pos && (i === 0 || i === 3)) || (!pos && (i === 1 || i === 2))) ? "dio-on" : "dio-off"));
+
+  /* kondensator og lampe */
+  const hgt = 90*Vc; $("adCapFill").setAttribute("y", 220 - hgt); $("adCapFill").setAttribute("height", hgt);
+  $("adGlow").style.opacity = step >= 3 ? (.9*out*out).toFixed(3) : 0;
+
+  /* ventil-analogi */
+  $("adFlap").setAttribute("transform", pos ? `rotate(${-75*Math.min(1, r*2)} 150 44)` : "");
+  $("adVarrow").style.stroke = pos ? "var(--green)" : "var(--red)";
+  $("adVarrow").setAttribute("transform", pos ? "" : "translate(300 0) scale(-1 1)");
+  vdots.forEach(d => {
+    if (pos) { d.x += 120*r*dt*f/.45; if (d.x > 285) d.x -= 270; }
+    d.c.setAttribute("cx", d.x.toFixed(1));
+  });
+}
 })();
 </script>
 </body>
