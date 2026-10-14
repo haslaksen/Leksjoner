@@ -96,6 +96,7 @@ table.t th{background:var(--steel-soft)}
 
 .readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
 .readout.r3{grid-template-columns:repeat(3,1fr)}
+.readout.r5{grid-template-columns:repeat(5,1fr)}
 .readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
 .readout span{display:block; font-size:.72rem; color:var(--muted)}
 .readout b{font-size:1.25rem; font-variant-numeric:tabular-nums}
@@ -184,7 +185,7 @@ table.t th{background:var(--steel-soft)}
   .minis{grid-template-columns:1fr 1fr}
   h1{font-size:2.2rem} h2{font-size:1.6rem}
   .top .brand{display:none}
-  .readout{grid-template-columns:1fr 1fr}
+  .readout,.readout.r5{grid-template-columns:1fr 1fr}
 }
 @media (max-width:600px){ .grid4,.grid3{grid-template-columns:1fr} .card{overflow-wrap:anywhere} }
 
@@ -978,7 +979,7 @@ table.t th{background:var(--steel-soft)}
   <div class="wrap">
     <div class="kicker">Del 8 · eksempel · ca. 5 min</div>
     <h2>Effekt i et sveiseapparat</h2>
-    <p class="lead">MIG/MAG med <b>rørtråd</b>. Effekten i lysbuen er også <b>P = U · I</b>.</p>
+    <p class="lead">MIG/MAG med <b>rørtråd</b>. <b>Lysbuen er motstanden</b> i kretsen. Ohms lov og P = U · I gjelder her også.</p>
     <div class="grid2 wide-left">
       <div class="fig">
         <svg id="swSvg" viewBox="0 0 640 300" role="img" aria-label="Sveiseapparat med trådmater, slange, sveisepistol og lysbue mot en stålplate">
@@ -1006,6 +1007,8 @@ table.t th{background:var(--steel-soft)}
           <text x="620" y="290" text-anchor="end" class="lbls">arbeidsstykke (stål)</text>
           <g id="swBead"></g>
           <g id="swTorch">
+            <path d="M-26 214 L-8 238" style="stroke:var(--purple);stroke-width:2"/>
+            <text x="-28" y="210" text-anchor="end" style="font-size:15px;font-weight:800;fill:var(--purple)">lysbue = R</text>
             <circle id="swGlow" cx="0" cy="246" r="20" style="fill:var(--yellow);opacity:.35"/>
             <circle id="swArc" cx="0" cy="246" r="7" style="fill:#fff;stroke:var(--yellow);stroke-width:3"/>
             <line id="swStick" x1="0" y1="226" x2="0" y2="240" style="stroke:var(--copper);stroke-width:3"/>
@@ -1027,26 +1030,31 @@ table.t th{background:var(--steel-soft)}
           <span style="white-space:nowrap;display:inline-flex;gap:.4rem;align-items:center"><label for="swV">Mating:</label><input type="range" id="swV" min="2" max="14" step="0.5" value="8" style="width:150px"></span>
           <span style="white-space:nowrap;display:inline-flex;gap:.4rem;align-items:center"><label for="swI">Strøm I:</label><input type="range" id="swI" min="80" max="320" step="10" value="200" style="width:150px"></span>
         </div>
-        <div class="readout">
+        <p class="caption" style="margin-top:.2rem">Lukket krets: apparat → tråd → <b>lysbue (R)</b> → plate → jordkabel → apparat.</p>
+        <div class="readout r5">
           <div><span>Spenning U</span><b id="swRU">24,0 V</b></div>
           <div><span>Strøm I</span><b id="swRI">200 A</b></div>
           <div><span>Mating</span><b id="swRV">8,0 m/min</b></div>
+          <div><span>Motstand R = U / I</span><b id="swRR" style="color:var(--purple)">0,120 Ω</b></div>
           <div><span>Effekt P = U · I</span><b id="swRP" style="color:var(--orange)">4,8 kW</b></div>
         </div>
         <div class="status ok" id="swTxt"></div>
       </div>
       <div>
         <div class="card">
-          <h3>Tre knapper</h3>
-          <p style="margin:.2em 0"><b style="color:var(--red)">U</b> – lengden på lysbuen.</p>
-          <p style="margin:.2em 0"><b style="color:var(--blue)">Mating</b> – hvor fort tråden går (m/min).</p>
-          <p style="margin:.2em 0"><b style="color:var(--blue)">I</b> – følger matingen. Mer tråd = mer strøm.</p>
+          <h3>Lysbuen er motstanden</h3>
+          <p>Strømmen går gjennom lysbuen. Den bremser strømmen, som lampen i Del 3.</p>
+          <div class="formula" style="font-size:1.25rem">R = U / I</div>
+          <p style="text-align:center;margin:0 0 .5rem;font-weight:650;font-variant-numeric:tabular-nums" id="swFR">24 V / 200 A = 0,12 Ω</p>
+          <div class="formula" style="font-size:1.25rem">P = U · I</div>
+          <p style="text-align:center;margin:0 0 .5rem;font-weight:650;font-variant-numeric:tabular-nums" id="swFP">24 V · 200 A = 4 800 W</p>
+          <p style="margin:0">Effekten blir <b>varme</b> i lysbuen. Den smelter tråden og stålet.</p>
         </div>
-        <div class="tip"><b>Prøv:</b> Skru opp matingen. Se strømmen, effekten og sveisen bli større.</div>
+        <div class="tip"><b style="color:var(--red)">U opp</b> → lengre lysbue → større R.<br><b style="color:var(--blue)">Mating opp</b> → mer strøm I → mer effekt P.</div>
         <div class="tip" style="border-color:var(--orange);background:var(--orange-soft)"><b id="swCmpP">4,8 kW</b> i en liten lysbue. Like mye som <b id="swCmpN">ca. 2</b> vinkelslipere (2 kW).</div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Et MIG/MAG-apparat har konstant spenning. Sveiseren stiller spenning og trådmating; strømmen blir det tråden trenger for å smelte, og følger derfor matingen (her ca. I = 40 + 20 · mating, typisk for 1,2 mm rørtråd). Derfor henger I- og mating-sliderne sammen. Grov tommelfingerregel for passe spenning: U ≈ 14 + 0,05 · I. Lav spenning: tråden «stanger» i smeltebadet. Høy spenning: lang og urolig lysbue med sprut. Rørtråd er et stålrør fylt med flussmiddel som gir slagg og beskyttelse.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Et MIG/MAG-apparat har konstant spenning. Sveiseren stiller spenning og trådmating; strømmen blir det tråden trenger for å smelte, og følger derfor matingen (her ca. I = 40 + 20 · mating, typisk for 1,2 mm rørtråd). Derfor henger I- og mating-sliderne sammen. Grov tommelfingerregel for passe spenning: U ≈ 14 + 0,05 · I. Lav spenning: tråden «stanger» i smeltebadet. Høy spenning: lang og urolig lysbue med sprut. Rørtråd er et stålrør fylt med flussmiddel som gir slagg og beskyttelse. Lysbuen er ionisert gass (plasma) som leder strøm. Motstanden er liten (ca. 0,1 Ω), men strømmen er stor, så effekten blir stor. Flinke elever: P = R · I² viser at strømmen betyr mest. Spørsmål til klassen: Hvorfor blir ikke ledningene like varme som lysbuen? (Kobberet har mye mindre R.)</details>
   </div>
 </section>
 
@@ -1279,6 +1287,7 @@ table.t th{background:var(--steel-soft)}
         <p>c) Kan du bruke vinkelsliperen og en varmeovn på 2 000 W på samme kurs samtidig? Vis utregning.</p><div class="svar"><span class="fasit" hidden>2 070 + 2 000 = 4 070 W, som er mer enn 3 680 W. I = 4 070 / 230 ≈ 17,7 A &gt; 16 A.</span></div><div class="svar"><span class="fasit" hidden><b>Nei</b>, sikringen løser ut.</span></div>
         <p>d) En CNC-maskin bruker 11 kW i 6 timer hver dag, 5 dager i uka. Hvor mange kWh blir det per uke? Hva koster det med 1,50 kr/kWh?</p><div class="svar"><span class="fasit" hidden>E = 11 kW · 6 h · 5 = <b>330 kWh</b></span></div><div class="svar"><span class="fasit" hidden>Pris: 330 · 1,50 = <b>495 kr</b></span></div>
         <p>e) Et sveiseapparat sveiser med 24 V og 200 A. Hvor stor effekt er det i lysbuen?</p><div class="svar"><span class="fasit" hidden>P = U · I = 24 · 200 = <b>4 800 W = 4,8 kW</b></span></div>
+        <p>f) Hva er motstanden i lysbuen i oppgave e)?</p><div class="svar"><span class="fasit" hidden>R = U / I = 24 / 200 = <b>0,12 Ω</b></span></div>
       </div>
 
       <div class="oppgave">
@@ -2000,14 +2009,18 @@ function show(){
   $("swRI").textContent = I + " A";
   $("swRV").textContent = f1(V) + " m/min";
   $("swRP").textContent = f1(P/1000) + " kW";
+  const R = U/I, f3 = x => x.toLocaleString("nb-NO", {minimumFractionDigits:3, maximumFractionDigits:3});
+  $("swRR").textContent = f3(R) + " Ω";
+  $("swFR").textContent = f1(U) + " V / " + I + " A = " + f3(R) + " Ω";
+  $("swFP").textContent = f1(U) + " V · " + I + " A = " + Math.round(P).toLocaleString("nb-NO") + " W";
   $("swDispU").textContent = f1(U) + " V";
   $("swDispI").textContent = I + " A";
   $("swCmpP").textContent = f1(P/1000) + " kW";
   $("swCmpN").textContent = "ca. " + Math.round(P/2000);
   const t = $("swTxt");
-  if (d < -2.5){ t.className = "status bad"; t.textContent = "For lav spenning: tråden stanger i platen. Mye sprut."; }
-  else if (d > 3){ t.className = "status warn"; t.textContent = "For høy spenning: lang og urolig lysbue. Sprut."; }
-  else { t.className = "status ok"; t.textContent = "Fin lysbue. Jevn sveis. Effekt " + f1(P/1000) + " kW."; }
+  if (d < -2.5){ t.className = "status bad"; t.textContent = "For lav spenning: kort lysbue, liten R. Tråden stanger i platen. Sprut."; }
+  else if (d > 3){ t.className = "status warn"; t.textContent = "For høy spenning: lang lysbue, stor R. Urolig lysbue og sprut."; }
+  else { t.className = "status ok"; t.textContent = "Fin lysbue. R = " + f3(R) + " Ω gir P = " + f1(P/1000) + " kW."; }
 }
 [sU].forEach(s => s.addEventListener("input", show));
 sV.addEventListener("input", fromV);
