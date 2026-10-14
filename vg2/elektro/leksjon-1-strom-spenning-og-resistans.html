@@ -311,7 +311,7 @@ table.t th{background:var(--steel-soft)}
           <tr><th colspan="2">Time 2</th></tr>
           <tr><td>0–10 min</td><td>Del 7: Ohms lov</td></tr>
           <tr><td>10–20 min</td><td>Oppgave 4</td></tr>
-          <tr><td>20–32 min</td><td>Del 8: effekt og energi + oppgave 5</td></tr>
+          <tr><td>20–32 min</td><td>Del 8: effekt, energi og sveiseapparatet + oppgave 5</td></tr>
           <tr><td>32–43 min</td><td>Del 9: sikkerhet + oppgave 6</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
@@ -973,6 +973,83 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
+<!-- DEL 8b -->
+<section class="slide" id="sveis" data-nav="8b Sveising">
+  <div class="wrap">
+    <div class="kicker">Del 8 · eksempel · ca. 5 min</div>
+    <h2>Effekt i et sveiseapparat</h2>
+    <p class="lead">MIG/MAG med <b>rørtråd</b>. Effekten i lysbuen er også <b>P = U · I</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="swSvg" viewBox="0 0 640 300" role="img" aria-label="Sveiseapparat med trådmater, slange, sveisepistol og lysbue mot en stålplate">
+          <path id="swJord" d="M170 236 C 200 285, 240 285, 262 262" style="fill:none;stroke:#343a40;stroke-width:6;stroke-linecap:round"/>
+          <rect x="250" y="252" width="22" height="14" rx="3" style="fill:var(--steel-dark)"/>
+          <text x="205" y="296" text-anchor="middle" class="lbls">jordkabel</text>
+          <rect x="20" y="40" width="150" height="210" rx="10" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <rect x="34" y="52" width="122" height="44" rx="6" style="fill:#1d2630"/>
+          <text id="swDispU" x="64" y="81" text-anchor="middle" style="font-size:17px;font-weight:800;fill:#ffd43b;font-variant-numeric:tabular-nums">24,0 V</text>
+          <text id="swDispI" x="126" y="81" text-anchor="middle" style="font-size:17px;font-weight:800;fill:#ffd43b;font-variant-numeric:tabular-nums">200 A</text>
+          <circle cx="78" cy="160" r="44" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:2"/>
+          <g id="swSpool">
+            <circle cx="78" cy="160" r="36" style="fill:none;stroke:var(--copper);stroke-width:14;opacity:.85"/>
+            <path d="M78 124 V196 M42 160 H114" style="stroke:var(--steel-dark);stroke-width:3"/>
+            <circle cx="78" cy="160" r="7" style="fill:var(--steel-dark)"/>
+          </g>
+          <circle id="swRoll1" cx="140" cy="186" r="9" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2;stroke-dasharray:4 3"/>
+          <circle id="swRoll2" cx="140" cy="206" r="9" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2;stroke-dasharray:4 3"/>
+          <path d="M108 180 Q 125 196 140 196 H170" style="fill:none;stroke:var(--copper);stroke-width:2.5"/>
+          <text x="95" y="240" text-anchor="middle" class="lbls">trådmater</text>
+          <path id="swHose" d="" style="fill:none;stroke:#343a40;stroke-width:12;stroke-linecap:round"/>
+          <path id="swHoseIn" d="" style="fill:none;stroke:#4a525c;stroke-width:6;stroke-linecap:round"/>
+          <g id="swWire"></g>
+          <rect x="262" y="252" width="370" height="20" rx="2" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:1.5"/>
+          <text x="620" y="290" text-anchor="end" class="lbls">arbeidsstykke (stål)</text>
+          <g id="swBead"></g>
+          <g id="swTorch">
+            <circle id="swGlow" cx="0" cy="246" r="20" style="fill:var(--yellow);opacity:.35"/>
+            <circle id="swArc" cx="0" cy="246" r="7" style="fill:#fff;stroke:var(--yellow);stroke-width:3"/>
+            <line id="swStick" x1="0" y1="226" x2="0" y2="240" style="stroke:var(--copper);stroke-width:3"/>
+            <path d="M-9 226 L-12 196 H12 L9 226 Z" style="fill:#d4a017;stroke:var(--steel-dark);stroke-width:1.5"/>
+            <path d="M-12 196 L-16 150 H16 L12 196 Z" style="fill:var(--steel-dark)"/>
+            <path d="M-16 150 L-46 92 L-26 82 L4 150 Z" style="fill:#343a40"/>
+            <g id="swSparks" style="stroke:var(--yellow);stroke-width:2.5;stroke-linecap:round"></g>
+          </g>
+          <g transform="translate(560 54)">
+            <circle r="22" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>
+            <circle r="14" style="fill:var(--yellow-soft);stroke:var(--steel-dark);stroke-width:1"/>
+            <g style="fill:#b08900"><circle cx="-5" cy="-4" r="2"/><circle cx="5" cy="-3" r="2"/><circle cx="0" cy="5" r="2"/><circle cx="-7" cy="5" r="1.6"/><circle cx="7" cy="6" r="1.6"/></g>
+            <text y="40" text-anchor="middle" class="lbl" style="font-size:13px">rørtråd</text>
+            <text y="56" text-anchor="middle" class="lbls" style="font-size:11px">stålrør med fluss inni</text>
+          </g>
+        </svg>
+        <div class="controls no-print">
+          <span style="white-space:nowrap;display:inline-flex;gap:.4rem;align-items:center"><label for="swU">Spenning U:</label><input type="range" id="swU" min="14" max="34" step="0.5" value="24" style="width:150px"></span>
+          <span style="white-space:nowrap;display:inline-flex;gap:.4rem;align-items:center"><label for="swV">Mating:</label><input type="range" id="swV" min="2" max="14" step="0.5" value="8" style="width:150px"></span>
+          <span style="white-space:nowrap;display:inline-flex;gap:.4rem;align-items:center"><label for="swI">Strøm I:</label><input type="range" id="swI" min="80" max="320" step="10" value="200" style="width:150px"></span>
+        </div>
+        <div class="readout">
+          <div><span>Spenning U</span><b id="swRU">24,0 V</b></div>
+          <div><span>Strøm I</span><b id="swRI">200 A</b></div>
+          <div><span>Mating</span><b id="swRV">8,0 m/min</b></div>
+          <div><span>Effekt P = U · I</span><b id="swRP" style="color:var(--orange)">4,8 kW</b></div>
+        </div>
+        <div class="status ok" id="swTxt"></div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Tre knapper</h3>
+          <p style="margin:.2em 0"><b style="color:var(--red)">U</b> – lengden på lysbuen.</p>
+          <p style="margin:.2em 0"><b style="color:var(--blue)">Mating</b> – hvor fort tråden går (m/min).</p>
+          <p style="margin:.2em 0"><b style="color:var(--blue)">I</b> – følger matingen. Mer tråd = mer strøm.</p>
+        </div>
+        <div class="tip"><b>Prøv:</b> Skru opp matingen. Se strømmen, effekten og sveisen bli større.</div>
+        <div class="tip" style="border-color:var(--orange);background:var(--orange-soft)"><b id="swCmpP">4,8 kW</b> i en liten lysbue. Like mye som <b id="swCmpN">ca. 2</b> vinkelslipere (2 kW).</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Et MIG/MAG-apparat har konstant spenning. Sveiseren stiller spenning og trådmating; strømmen blir det tråden trenger for å smelte, og følger derfor matingen (her ca. I = 40 + 20 · mating, typisk for 1,2 mm rørtråd). Derfor henger I- og mating-sliderne sammen. Grov tommelfingerregel for passe spenning: U ≈ 14 + 0,05 · I. Lav spenning: tråden «stanger» i smeltebadet. Høy spenning: lang og urolig lysbue med sprut. Rørtråd er et stålrør fylt med flussmiddel som gir slagg og beskyttelse.</details>
+  </div>
+</section>
+
 <!-- DEL 9 -->
 <section class="slide" id="sikkerhet" data-nav="9 Sikkerhet">
   <div class="wrap">
@@ -1201,6 +1278,7 @@ table.t th{background:var(--steel-soft)}
         <p>b) En kurs har 16 A sikring og 230 V. Hvor stor effekt kan kursen gi før sikringen går?</p><div class="svar"><span class="fasit" hidden>P = 230 · 16 = <b>3 680 W</b></span></div>
         <p>c) Kan du bruke vinkelsliperen og en varmeovn på 2 000 W på samme kurs samtidig? Vis utregning.</p><div class="svar"><span class="fasit" hidden>2 070 + 2 000 = 4 070 W, som er mer enn 3 680 W. I = 4 070 / 230 ≈ 17,7 A &gt; 16 A.</span></div><div class="svar"><span class="fasit" hidden><b>Nei</b>, sikringen løser ut.</span></div>
         <p>d) En CNC-maskin bruker 11 kW i 6 timer hver dag, 5 dager i uka. Hvor mange kWh blir det per uke? Hva koster det med 1,50 kr/kWh?</p><div class="svar"><span class="fasit" hidden>E = 11 kW · 6 h · 5 = <b>330 kWh</b></span></div><div class="svar"><span class="fasit" hidden>Pris: 330 · 1,50 = <b>495 kr</b></span></div>
+        <p>e) Et sveiseapparat sveiser med 24 V og 200 A. Hvor stor effekt er det i lysbuen?</p><div class="svar"><span class="fasit" hidden>P = U · I = 24 · 200 = <b>4 800 W = 4,8 kW</b></span></div>
       </div>
 
       <div class="oppgave">
@@ -1898,6 +1976,96 @@ function tick(dt){
   }
   cur.setAttribute("x1", xOf(t720)); cur.setAttribute("x2", xOf(t720));
 }
+})();
+</script>
+<script>
+/* ---------- Del 8b: effekt i sveiseapparat ---------- */
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+const svg = $("swSvg"); if (!svg) return;
+function el(tag, attrs, parent){ const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+const f1 = x => x.toLocaleString("nb-NO", {minimumFractionDigits:1, maximumFractionDigits:1});
+const sU = $("swU"), sV = $("swV"), sI = $("swI");
+let U = 24, I = 200, V = 8;
+
+/* Strømmen følger matingen: I ≈ 40 + 20 · mating */
+function fromV(){ V = +sV.value; I = Math.round((40 + 20*V)/10)*10; sI.value = I; show(); }
+function fromI(){ I = +sI.value; V = (I - 40)/20; sV.value = V; show(); }
+function show(){
+  U = +sU.value;
+  const P = U*I, uOk = 14 + 0.05*I, d = U - uOk;
+  $("swRU").textContent = f1(U) + " V";
+  $("swRI").textContent = I + " A";
+  $("swRV").textContent = f1(V) + " m/min";
+  $("swRP").textContent = f1(P/1000) + " kW";
+  $("swDispU").textContent = f1(U) + " V";
+  $("swDispI").textContent = I + " A";
+  $("swCmpP").textContent = f1(P/1000) + " kW";
+  $("swCmpN").textContent = "ca. " + Math.round(P/2000);
+  const t = $("swTxt");
+  if (d < -2.5){ t.className = "status bad"; t.textContent = "For lav spenning: tråden stanger i platen. Mye sprut."; }
+  else if (d > 3){ t.className = "status warn"; t.textContent = "For høy spenning: lang og urolig lysbue. Sprut."; }
+  else { t.className = "status ok"; t.textContent = "Fin lysbue. Jevn sveis. Effekt " + f1(P/1000) + " kW."; }
+}
+[sU].forEach(s => s.addEventListener("input", show));
+sV.addEventListener("input", fromV);
+sI.addEventListener("input", fromI);
+show();
+
+/* Animasjon */
+const hose = $("swHose"), hoseIn = $("swHoseIn"), torch = $("swTorch"), bead = $("swBead"), sparks = $("swSparks");
+const wire = Array.from({length:14}, (_,i) => ({s:i/14, c:el("circle", {r:2.6, style:"fill:var(--copper)"}, $("swWire"))}));
+const X0 = 290, X1 = 600;
+let tx = X0, rot = 0, roll = 0, lastBead = -99, beads = [], vis = false;
+new IntersectionObserver(es => es.forEach(e => vis = e.isIntersecting)).observe(svg);
+
+function frame(now, dt){
+  const P = U*I, d = U - (14 + 0.05*I);
+  /* Pistolen beveger seg langs platen */
+  tx += 26*dt;
+  if (tx > X1){ tx = X0; beads.forEach(b => b.g.remove()); beads = []; lastBead = -99; }
+  torch.setAttribute("transform", "translate(" + tx.toFixed(1) + " 0)");
+  /* Slangen følger pistolen */
+  const hd = "M170 196 C 230 196, " + (tx-150) + " 30, " + (tx-36).toFixed(1) + " 87";
+  hose.setAttribute("d", hd); hoseIn.setAttribute("d", hd);
+  /* Tråden går med matingen */
+  const L = hoseIn.getTotalLength();
+  wire.forEach(w => { w.s = (w.s + V*0.022*dt) % 1; const p = hoseIn.getPointAtLength(w.s*L); w.c.setAttribute("cx", p.x.toFixed(1)); w.c.setAttribute("cy", p.y.toFixed(1)); });
+  rot = (rot + V*14*dt) % 360; roll = (roll + V*60*dt) % 360;
+  $("swSpool").setAttribute("transform", "rotate(" + rot.toFixed(1) + " 78 160)");
+  $("swRoll1").style.strokeDashoffset = -roll/10; $("swRoll2").style.strokeDashoffset = roll/10;
+  /* Lysbuen: lengde fra spenningen, størrelse fra effekten */
+  const gap = Math.max(1, Math.min(16, 8 + d*1.6));
+  const tip = 252 - gap;
+  $("swStick").setAttribute("y2", tip.toFixed(1));
+  const flick = 0.85 + 0.3*Math.random();
+  const r = (4 + P/1000*1.6) * flick;
+  $("swGlow").setAttribute("r", (r*2.2).toFixed(1)); $("swGlow").setAttribute("cy", (tip+gap/2).toFixed(1));
+  $("swArc").setAttribute("r", (r*0.55).toFixed(1)); $("swArc").setAttribute("cy", (tip+gap/2).toFixed(1));
+  /* Sprut når spenningen ikke passer */
+  sparks.textContent = "";
+  const n = Math.abs(d) > 2.5 ? 6 : 1;
+  for (let k = 0; k < n; k++){
+    const a = Math.PI*(1.05 + Math.random()*0.9), len = 8 + Math.random()*(Math.abs(d) > 2.5 ? 30 : 10), r0 = 6;
+    const y = 250;
+    el("path", {d:"M" + (Math.cos(a)*r0).toFixed(1) + " " + (y+Math.sin(a)*r0).toFixed(1) + " l" + (Math.cos(a)*len).toFixed(1) + " " + (Math.sin(a)*len).toFixed(1)}, sparks);
+  }
+  /* Sveisen: bredere ved større effekt */
+  if (tx - lastBead >= 4){
+    lastBead = tx;
+    const h = 1.5 + P/1000*1.7;
+    const g = el("g", {}, bead);
+    el("ellipse", {cx:tx.toFixed(1), cy:252, rx:6, ry:h.toFixed(1), style:"fill:var(--steel-dark)"}, g);
+    const hot = el("ellipse", {cx:tx.toFixed(1), cy:252, rx:6, ry:h.toFixed(1), style:"fill:var(--orange)"}, g);
+    beads.push({g, hot, born:now});
+  }
+  beads.forEach(b => { const age = now - b.born; b.hot.setAttribute("opacity", Math.max(0, 1 - age/1.6).toFixed(2)); });
+}
+let last = performance.now();
+function loop(t){ const dt = Math.min(.05, (t-last)/1000); last = t; if (vis) frame(t/1000, dt); requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
 })();
 </script>
 </body>
