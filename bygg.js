@@ -69,6 +69,8 @@ function elevversjon(s) {
 
 // Lærersidene får et rødt felt øverst med lenke til elevversjonen.
 const FELT = 'style="background:#c92a2a;color:#fff;padding:10px 16px;text-align:center;font:500 15px/1.45 system-ui,sans-serif"';
+// Hjem-knapp til lærerforsiden (bare på lærersidene, elevene skal ikke få den).
+const HJEM = 'style="display:inline-block;margin-right:12px;padding:3px 12px;border-radius:99px;background:#fff;color:#c92a2a;font-weight:700;text-decoration:none"';
 const LENKE = 'style="color:#fff;font-weight:700;text-decoration:underline"';
 function laererversjon(s, fil) {
   s = s.replace(/<head>/i, '<head>\n<meta name="robots" content="noindex, nofollow">');
@@ -76,7 +78,7 @@ function laererversjon(s, fil) {
     ? `<b>Lærerversjon med fasit.</b> Ikke del denne adressen med elever.<br>` +
       `<a href="/" ${LENKE}>Gå til elevsiden</a>: samme leksjoner uten fasit og lærernotater. ` +
       `Når du har gått gjennom en leksjon, åpner du den på elevsiden og deler lenken med klassen i Teams eller OneNote.`
-    : `<b>Lærerversjon med fasit.</b> ` +
+    : `<a href="/${LAERER_STI}/" ${HJEM}>⌂ Hjem</a> <b>Lærerversjon med fasit.</b> ` +
       `<a href="/${fil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Elevversjon av denne leksjonen</a> (uten fasit, del denne med klassen).`;
   return s.replace(/<body([^>]*)>/i, `<body$1>\n<style>@media print{.laererfelt{display:none}}</style><div class="laererfelt" ${FELT}>${felt}</div>`);
 }
