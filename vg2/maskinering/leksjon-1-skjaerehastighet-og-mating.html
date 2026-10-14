@@ -1,0 +1,867 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maskinering 1 – Skjærehastighet, turtall og mating</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#e0a800; --yellow-soft:#fff8db;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:66ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2 > *, .hero > *{min-width:0}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg, .fig canvas{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.8rem; font-weight:600}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+details.laerer{margin-top:1.2rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+@media (prefers-reduced-motion: reduce){ .scene *, .hero-fig *{animation:none!important} }
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.75rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.legend{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin:.2rem 0 .3rem}
+.legend i{display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:.4rem}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem; line-height:1.7}
+.steps .res{color:var(--orange); font-weight:700; font-size:1.1rem}
+.formula{font-family:"Cascadia Mono", Consolas, monospace; font-size:1.5rem; font-weight:700; text-align:center; padding:.6rem; background:var(--bg); border-radius:10px; margin:.4rem 0}
+
+/* Repetisjon */
+.flip{cursor:pointer; text-align:left; font:inherit; color:inherit; width:100%; min-height:9rem; display:flex; flex-direction:column; justify-content:space-between}
+.flip .q{font-weight:650; font-size:1.05rem}
+.flip .a{display:none; color:var(--green); font-weight:600; margin-top:.6rem}
+.flip.show .a{display:block}
+.flip .hint{font-size:.75rem; color:var(--muted); margin-top:.6rem}
+.flip.show .hint{display:none}
+
+.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
+/* Tabs */
+.tabs{display:flex; gap:.4rem; flex-wrap:wrap}
+.tabs .btn{font-size:.9rem; padding:.5rem 1rem}
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.oppfig{max-width:620px; margin:.4rem 0; background:#fff; border:1px solid #999; border-radius:6px}
+.oppfig svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr 1fr}
+  .readout{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .paper{overflow-x:auto} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+
+/* Maskinering */
+.controls .btn.small.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Maskinering · <span>Leksjon 1</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- FORSIDE -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Maskinering</div>
+      <h1>Leksjon 1<br>Skjærehastighet, turtall og mating</h1>
+      <p class="lead">Hvor fort skal maskinen gå, og hvor fort skal verktøyet mates?</p>
+      <ol class="goals">
+        <li><b>Skjærehastighet</b> v<sub>c</sub> og turtall</li>
+        <li><b>Dreiebenk</b> og <b>fres</b>: hva roterer?</li>
+        <li><b>Mating</b> og overflate</li>
+        <li><b>Velg</b> skjærehastighet</li>
+        <li><b>Feil fart?</b> Se på sponet</li>
+      </ol>
+    </div>
+    <div>
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Dreiebenk: emnet roterer og dreiestålet mates langs emnet">
+          <defs>
+            <linearGradient id="hgStal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7783"/><stop offset=".4" stop-color="#e3e8ee"/><stop offset="1" stop-color="#5f6b78"/></linearGradient>
+            <clipPath id="hClip"><rect x="100" y="138" width="330" height="54"/></clipPath>
+            <marker id="hArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--orange)"/></marker>
+            <marker id="hArrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--blue)"/></marker>
+          </defs>
+          <!-- Chuck -->
+          <rect x="30" y="85" width="72" height="160" rx="6" style="fill:var(--steel-dark)"/>
+          <rect x="88" y="120" width="16" height="20" style="fill:var(--steel)"/>
+          <rect x="88" y="190" width="16" height="20" style="fill:var(--steel)"/>
+          <!-- Emne: ferdig dreid del -->
+          <rect x="100" y="138" width="330" height="54" style="fill:url(#hgStal)"/>
+          <g clip-path="url(#hClip)" style="stroke:#4a545e;stroke-width:1.2;opacity:.45">
+            <g>
+              <animateTransform attributeName="transform" type="translate" dur=".5s" repeatCount="indefinite" values="0 0;0 -12"/>
+              <path d="M100 140 H430 M100 152 H430 M100 164 H430 M100 176 H430 M100 188 H430 M100 200 H430"/>
+            </g>
+          </g>
+          <!-- Udreid lag som blir mindre -->
+          <rect x="100" y="128" width="330" height="74" style="fill:url(#hgStal);stroke:var(--steel-dark)">
+            <animate attributeName="width" dur="7s" repeatCount="indefinite" values="330;40;40" keyTimes="0;.85;1"/>
+          </rect>
+          <!-- Dreiestål og spon -->
+          <g>
+            <animateTransform attributeName="transform" type="translate" dur="7s" repeatCount="indefinite" values="0 0;-290 0;-290 0" keyTimes="0;.85;1"/>
+            <path d="M430 202 L444 226 L424 226 Z" style="fill:var(--orange)"/>
+            <rect x="414" y="226" width="50" height="40" rx="3" style="fill:var(--steel-dark)"/>
+            <g transform="translate(446 212)">
+              <path d="M0 0 c 10 -2 18 6 14 14 c -3 7 -13 6 -14 0 c -1 -5 5 -7 7 -3" style="fill:none;stroke:var(--orange);stroke-width:3;stroke-linecap:round">
+                <animateTransform attributeName="transform" type="rotate" dur=".6s" repeatCount="indefinite" values="0 7 7;360 7 7"/>
+              </path>
+            </g>
+          </g>
+          <!-- vc-pil -->
+          <path d="M455 128 A 24 40 0 0 1 455 202" style="fill:none;stroke:var(--blue);stroke-width:3" marker-end="url(#hArrB)"/>
+          <text x="470" y="172" font-size="24" font-weight="800" style="fill:var(--blue)">v<tspan font-size="15" dy="5">c</tspan></text>
+          <!-- f-pil -->
+          <path d="M330 292 H230" style="stroke:var(--orange);stroke-width:4" marker-end="url(#hArr)"/>
+          <text x="340" y="299" font-size="24" font-weight="800" style="fill:var(--orange)">f</text>
+          <text x="30" y="40" font-size="17" font-weight="700" style="fill:var(--blue)">v<tspan font-size="12" dy="4">c</tspan><tspan dy="-4"> = fart i skjæret (m/min)</tspan></text>
+          <text x="30" y="64" font-size="17" font-weight="700" style="fill:var(--orange)">f = mating (mm per omdreining)</text>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <p style="margin:.6rem 0">Innledning: Spør klassen: «Hvorfor går ikke dreiebenken alltid på full fart?» La dem gjette før dere starter.</p>
+      <div class="card" style="margin-top:.6rem">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p><i>«bruke maskiner og utstyr til å omarbeide aktuelle materialer i tråd med gjeldende HMS-rutiner»</i> (T1)</p>
+        <p><i>«forklare og bruke riktig tilarbeidingsmetode ut fra materiale, arbeidstegninger og spesifikasjoner»</i> (T7)</p>
+        <p><i>«programmere, simulere og drifte styrte produksjonsmaskiner»</i> (T8)</p>
+        <p><i>«vurdere og beskrive bruksområde, egenskaper og kombinasjoner for aktuelle materialer»</i> (T12)</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Første leksjon i emnet Maskinering. Læringsmål: forklare skjærehastighet v<sub>c</sub> og sammenhengen med diameter og turtall · kjenne forskjellen på dreiing og fresing (hva roterer, hva mates) · forklare mating f og f<sub>z</sub> og hvordan matingen påvirker overflaten og tiden · velge v<sub>c</sub> ut fra materiale og verktøy (HSS eller hardmetall) · kjenne igjen tegn på feil skjæredata · kjenne til G96, S og F i CNC-programmet. Formlene ligger i Ekstra-boksene.</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1</th></tr>
+          <tr><td>0–5 min</td><td>Repetisjon</td></tr>
+          <tr><td>5–17 min</td><td>Del 1: skjærehastighet og turtall</td></tr>
+          <tr><td>17–27 min</td><td>Del 2: dreiebenk og fres</td></tr>
+          <tr><td>27–45 min</td><td>Oppgave 1 og 2</td></tr>
+          <tr><th colspan="2">Time 2</th></tr>
+          <tr><td>0–10 min</td><td>Del 3: mating</td></tr>
+          <tr><td>10–20 min</td><td>Del 4–5: velg v<sub>c</sub>, feil fart</td></tr>
+          <tr><td>20–42 min</td><td>Oppgave 3–5 og Skjæredatasimulatoren</td></tr>
+          <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+        <p style="font-size:.85rem; color:var(--muted); margin:.5rem 0 0">Ta gjerne med spon fra verkstedet: fine spiralspon, blå spon og lange trådspon. Oppgave 6 er ekstra, med regning.</p>
+      </div>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REPETISJON -->
+<section class="slide" id="rep" data-nav="Repetisjon">
+  <div class="wrap">
+    <div class="kicker">Repetisjon · ca. 5 min</div>
+    <h2>Husker du?</h2>
+    <p class="lead">Svar med sidemannen – klikk for svar.</p>
+    <div class="grid4" style="margin-top:1.2rem">
+      <button class="card flip"><span class="q">Hva betyr o/min?</span><span class="a">Omdreininger per minutt. Hvor mange runder noe går på ett minutt.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva er HSS?</span><span class="a">Hurtigstål (High Speed Steel). Vanlig i bor og endefreser.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvilket er lettest å maskinere: aluminium eller rustfritt stål?</span><span class="a">Aluminium. Rustfritt er seigt og blir fort varmt.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Et hjul har stor diameter. Går kanten fortere eller saktere enn navet?</span><span class="a">Fortere. Kanten har lengre vei rundt på samme tid.</span><span class="hint">Klikk for svar</span></button>
+    </div>
+    <div class="tip o"><b>I dag:</b> Hvor fort skal maskinen gå, og hvor fort skal verktøyet mates?</div>
+  </div>
+</section>
+
+<!-- DEL 1 SKJÆREHASTIGHET -->
+<section class="slide" id="vc" data-nav="1 Skjærehastighet">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 12 min</div>
+    <h2>Skjærehastighet og turtall</h2>
+    <p class="lead"><b>Skjærehastighet v<sub>c</sub></b> er hvor fort overflaten suser forbi skjæret, i <b>meter per minutt</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div class="controls no-print" style="margin-top:0"><label>Diameter</label><span id="dBtns"></span></div>
+        <div class="controls no-print" style="margin-top:.4rem"><label>Skjærehastighet</label><span id="vcBtns"></span></div>
+        <svg id="vcSvg" viewBox="0 0 560 280" role="img" aria-label="Emne sett fra enden som roterer. Turtallet endrer seg med diameteren."></svg>
+        <div class="readout">
+          <div><span>Diameter D</span><b id="rD"></b></div>
+          <div><span>Skjærehastighet v<sub>c</sub></span><b id="rVc"></b></div>
+          <div style="grid-column:span 2"><span>Turtall n</span><b id="rN"></b></div>
+        </div>
+        <div class="status info" id="vcTxt"></div>
+      </div>
+      <div>
+        <h3>Slå opp turtallet</h3>
+        <table class="t" id="nTab" style="font-size:.95rem; text-align:right">
+          <tr><th>Ø (mm)</th><th>v<sub>c</sub> 25</th><th>v<sub>c</sub> 100</th><th>v<sub>c</sub> 200</th></tr>
+        </table>
+        <p class="caption">Turtall i o/min, avrundet. v<sub>c</sub> i m/min.</p>
+        <div class="tip"><b>Dobbel diameter → halvt turtall.</b><br>Stor diameter: lavt turtall. Liten diameter: høyt turtall.</div>
+        <details class="ekstra"><summary>Ekstra: formelen for turtall</summary>
+          <div class="formula">n = v<sub>c</sub> · 1000 / (π · D)</div>
+          <p style="margin:.3rem 0">1000 gjør meter om til millimeter. π · D er veien rundt emnet.</p>
+          <div class="steps">Ø40, v<sub>c</sub> 200 m/min:<br>n = 200 · 1000 / (3,14 · 40)<br>n = 200 000 / 125,6 ≈ <span class="res">1590 o/min</span></div>
+        </details>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Poenget: det er ikke turtallet som bestemmer om skjæret har det bra, men farten i skjæret. Den samme v<sub>c</sub> gir helt ulikt turtall på en tynn og en tykk aksel. Ved planing mot sentrum blir diameteren mindre og mindre. Med fast turtall faller v<sub>c</sub> mot null i sentrum. Derfor bruker CNC-dreiebenker konstant skjærehastighet (G96), med en øvre grense for turtallet (G50/G92 S…). På fresen er det freserens diameter som teller, ikke emnets.</details>
+  </div>
+</section>
+
+<!-- DEL 2 DREIEBENK OG FRES -->
+<section class="slide" id="maskiner" data-nav="2 Drei og fres">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 10 min</div>
+    <h2>Dreiebenk og fres</h2>
+    <p class="lead">Begge har en ting som <b>roterer</b> og en ting som <b>mates</b>. Men det er motsatt.</p>
+    <div class="grid2">
+      <div class="fig">
+        <h3>Dreiebenk</h3>
+        <svg viewBox="0 0 420 240" role="img" aria-label="Dreiing: emnet roterer, dreiestålet mates langs emnet">
+          <defs>
+            <linearGradient id="dgStal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7783"/><stop offset=".4" stop-color="#e3e8ee"/><stop offset="1" stop-color="#5f6b78"/></linearGradient>
+            <clipPath id="dClip"><rect x="70" y="80" width="300" height="50"/></clipPath>
+            <marker id="dArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--orange)"/></marker>
+            <marker id="dArrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--blue)"/></marker>
+          </defs>
+          <rect x="15" y="45" width="57" height="120" rx="5" style="fill:var(--steel-dark)"/>
+          <rect x="70" y="80" width="300" height="50" style="fill:url(#dgStal)"/>
+          <g clip-path="url(#dClip)" style="stroke:#4a545e;stroke-width:1.2;opacity:.45"><g>
+            <animateTransform attributeName="transform" type="translate" dur=".5s" repeatCount="indefinite" values="0 0;0 -10"/>
+            <path d="M70 82 H370 M70 92 H370 M70 102 H370 M70 112 H370 M70 122 H370 M70 132 H370"/>
+          </g></g>
+          <rect x="70" y="72" width="300" height="66" style="fill:url(#dgStal);stroke:var(--steel-dark)">
+            <animate attributeName="width" dur="6s" repeatCount="indefinite" values="300;30;30" keyTimes="0;.85;1"/>
+          </rect>
+          <g>
+            <animateTransform attributeName="transform" type="translate" dur="6s" repeatCount="indefinite" values="0 0;-270 0;-270 0" keyTimes="0;.85;1"/>
+            <path d="M370 138 L382 158 L364 158 Z" style="fill:var(--orange)"/>
+            <rect x="356" y="158" width="44" height="30" rx="3" style="fill:var(--steel-dark)"/>
+          </g>
+          <path d="M392 72 A 20 33 0 0 1 392 138" style="fill:none;stroke:var(--blue);stroke-width:3" marker-end="url(#dArrB)"/>
+          <path d="M300 215 H210" style="stroke:var(--orange);stroke-width:4" marker-end="url(#dArr)"/>
+          <text x="20" y="28" font-size="16" font-weight="700" style="fill:var(--blue)">↻ Emnet roterer</text>
+          <text x="310" y="221" font-size="16" font-weight="700" style="fill:var(--orange)">Stålet mates</text>
+        </svg>
+        <div class="status info">Mating <b>f</b> = mm per <b>omdreining</b> av emnet.</div>
+      </div>
+      <div class="fig">
+        <h3>Fres (sett ovenfra)</h3>
+        <svg viewBox="0 0 420 240" role="img" aria-label="Fresing sett ovenfra: fresen roterer, emnet mates under fresen og et spor blir frest">
+          <defs>
+            <marker id="fArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--orange)"/></marker>
+          </defs>
+          <g>
+            <animateTransform attributeName="transform" type="translate" dur="6s" repeatCount="indefinite" values="0 0;-200 0;-200 0" keyTimes="0;.85;1"/>
+            <rect x="120" y="60" width="300" height="110" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+            <rect x="150" y="90" width="0" height="50" style="fill:var(--steel)">
+              <animate attributeName="width" dur="6s" repeatCount="indefinite" values="0;200;200" keyTimes="0;.85;1"/>
+            </rect>
+          </g>
+          <g transform="translate(150 115)">
+            <circle r="25" style="fill:var(--steel-dark)"/>
+            <g>
+              <animateTransform attributeName="transform" type="rotate" dur=".8s" repeatCount="indefinite" values="0;-360"/>
+              <path d="M0 -25 L10 -22 L0 -15 Z M25 0 L22 10 L15 0 Z M0 25 L-10 22 L0 15 Z M-25 0 L-22 -10 L-15 0 Z" style="fill:var(--orange)"/>
+              <path d="M0 -15 V15 M-15 0 H15" style="stroke:var(--steel);stroke-width:3"/>
+            </g>
+          </g>
+          <path d="M330 205 H240" style="stroke:var(--orange);stroke-width:4" marker-end="url(#fArr)"/>
+          <text x="20" y="28" font-size="16" font-weight="700" style="fill:var(--blue)">↻ Fresen roterer</text>
+          <text x="340" y="211" font-size="16" font-weight="700" style="fill:var(--orange)">Emnet</text>
+          <text x="340" y="229" font-size="16" font-weight="700" style="fill:var(--orange)">mates</text>
+        </svg>
+        <div class="status info">Mating <b>f<sub>z</sub></b> = mm per <b>tann</b> på fresen.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>På dreiebenken er v<sub>c</sub> farten på emnets overflate, og D er emnets diameter. På fresen er v<sub>c</sub> farten i tennene, og D er fresens diameter. Matingen på fresen stilles inn som bordmating v<sub>f</sub> i mm/min, men verktøyleverandøren oppgir f<sub>z</sub> per tann. Bor og gjengetapper: borets diameter, som på fresen.</details>
+  </div>
+</section>
+
+<!-- DEL 3 MATING -->
+<section class="slide" id="mating" data-nav="3 Mating">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 10 min</div>
+    <h2>Mating og overflate</h2>
+    <p class="lead">Dreiestålet lager en skrueformet rille. Stor mating gir <b>grove riller</b>, men jobben går <b>fortere</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div class="controls no-print" style="margin-top:0"><label for="fSl">Mating f</label><input type="range" id="fSl" min="0.05" max="0.5" step="0.05" value="0.2"></div>
+        <svg id="fSvg" viewBox="0 0 560 230" role="img" aria-label="Overflaten under lupe. Rillene blir større når matingen øker."></svg>
+        <div class="readout">
+          <div><span>Mating f (mm/omdr)</span><b id="rF"></b></div>
+          <div><span>Rilledybde</span><b id="rRt"></b></div>
+          <div style="grid-column:span 2"><span>Tid for 100 mm (1000 o/min)</span><b id="rT"></b></div>
+        </div>
+        <div class="status" id="fTxt"></div>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Grov- og finbearbeiding</h3>
+          <table class="t">
+            <tr><th></th><th>Grov</th><th>Fin</th></tr>
+            <tr><td>Mål</td><td>Fjerne mye, fort</td><td>Fint mål og overflate</td></tr>
+            <tr><td>Mating f</td><td>0,2–0,4 mm</td><td>0,05–0,15 mm</td></tr>
+            <tr><td>Skjæredybde</td><td>Stor</td><td>Liten</td></tr>
+          </table>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Fres: mating per tann</h3>
+          <svg viewBox="0 0 300 120" role="img" aria-label="Fres med fire tenner. Hver tann tar en bit på 0,05 mm.">
+            <circle cx="70" cy="60" r="40" style="fill:var(--steel-dark)"/>
+            <path d="M70 20 l9 4 l-9 7 Z M110 60 l-4 9 l-7 -9 Z M70 100 l-9 -4 l9 -7 Z M30 60 l4 -9 l7 9 Z" style="fill:var(--orange)"/>
+            <text x="135" y="45" font-size="17" font-weight="700" style="fill:var(--ink)">4 tenner × 0,05 mm</text>
+            <text x="135" y="72" font-size="17" font-weight="700" style="fill:var(--orange)">= 0,2 mm per runde</text>
+            <text x="135" y="97" font-size="13" style="fill:var(--muted)">Flere tenner → mer mating</text>
+          </svg>
+        </div>
+        <details class="ekstra"><summary>Ekstra: bordmating på fresen</summary>
+          <div class="formula">v<sub>f</sub> = f<sub>z</sub> · z · n</div>
+          <p style="margin:.3rem 0">z = antall tenner. v<sub>f</sub> i mm/min.</p>
+          <div class="steps">f<sub>z</sub> 0,05 mm, 4 tenner, 3000 o/min:<br>v<sub>f</sub> = 0,05 · 4 · 3000 = <span class="res">600 mm/min</span></div>
+        </details>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Rilledybden (teoretisk R<sub>t</sub>) avhenger av matingen og neseradiusen på skjæret: R<sub>t</sub> ≈ f² / (8 · r). Her er neseradiusen 0,8 mm. Dobbel mating gir fire ganger så dype riller. Større neseradius gir finere overflate, men mer vibrasjoner. Ra er omtrent en firedel av R<sub>t</sub>.</details>
+  </div>
+</section>
+
+<!-- DEL 4 VELG vc -->
+<section class="slide" id="velg" data-nav="4 Velg vc">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 6 min</div>
+    <h2>Velg skjærehastighet</h2>
+    <p class="lead">v<sub>c</sub> bestemmes av to ting: <b>materialet</b> og <b>verktøyet</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div class="legend"><span><i style="border-color:var(--purple)"></i>HSS</span><span><i style="border-color:var(--orange)"></i>Hardmetall</span></div>
+        <svg id="vcBar" viewBox="0 0 560 262" role="img" aria-label="Søylediagram: skjærehastighet ved dreiing for aluminium, stål og rustfritt stål, med HSS og hardmetall"></svg>
+        <p class="caption">Dreiing, grovbearbeiding. Midt i anbefalt område.</p>
+      </div>
+      <div>
+        <table class="t" style="font-size:.88rem">
+          <tr><th>v<sub>c</sub> (m/min)</th><th>Dreiing<br>HSS</th><th>Dreiing<br>hardmetall</th><th>Endefres<br>HSS</th><th>Endefres<br>hardmetall</th></tr>
+          <tr><td><b>Aluminium</b></td><td>80–150</td><td>400–800</td><td>80–150</td><td>300–600</td></tr>
+          <tr><td><b>Stål</b> S235</td><td>25–35</td><td>180–250</td><td>20–30</td><td>120–180</td></tr>
+          <tr><td><b>Rustfritt</b></td><td>12–20</td><td>120–170</td><td>10–18</td><td>70–110</td></tr>
+        </table>
+        <p class="caption">Grovbearbeiding. Samme tall som i Skjæredatasimulatoren.</p>
+        <div class="chips" style="margin-top:.8rem"><span>Mykt materiale → høy v<sub>c</sub></span><span>Rustfritt → lav v<sub>c</sub></span><span>Hardmetall ≈ 7 × HSS</span></div>
+        <div class="tip o"><b>I verkstedet:</b> Bruk alltid tabellen fra verktøyleverandøren. Tallene står i katalogen eller på esken.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Hardmetall tåler mye høyere temperatur enn HSS (ca. 1000 °C mot ca. 600 °C) og kan derfor kjøre mye fortere. Rustfritt stål er seigt, leder varme dårlig og arbeidsherder, så varmen blir i skjæret. Aluminium er mykt og leder varme godt. Begrensningen der er ofte maskinens maks turtall. Tallene er veiledende og de samme som i Skjæredatasimulatoren.</details>
+  </div>
+</section>
+
+<!-- DEL 5 FEIL FART -->
+<section class="slide" id="feil" data-nav="5 Feil fart?">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 4 min</div>
+    <h2>Feil fart? Se på sponet</h2>
+    <div class="grid4" style="margin-top:1rem">
+      <div class="card">
+        <svg viewBox="0 0 200 110" role="img" aria-label="Blått spon og glødende skjær">
+          <path d="M40 90 L70 40 L100 90 Z" style="fill:var(--steel-dark)"/>
+          <circle cx="70" cy="44" r="9" style="fill:var(--red);opacity:.8"><animate attributeName="opacity" dur="1s" repeatCount="indefinite" values=".3;.9;.3"/></circle>
+          <path d="M105 45 c 25 -10 45 5 35 25 c -8 15 -30 10 -25 -5 c 3 -10 15 -8 15 0" style="fill:none;stroke:#2f6fd6;stroke-width:6;stroke-linecap:round"/>
+        </svg>
+        <h3 style="color:var(--red)">For høy v<sub>c</sub></h3>
+        <p class="short">Blå spon. Skjæret blir glødende og slites fort.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 200 110" role="img" aria-label="Løseegg: materiale kleber på eggen">
+          <path d="M40 90 L70 40 L100 90 Z" style="fill:var(--steel-dark)"/>
+          <path d="M62 44 q 8 -16 18 -4 q 6 8 -6 12 q -10 2 -12 -8 Z" style="fill:#b6bcc2;stroke:#555;stroke-width:1.5"/>
+          <path d="M120 70 l10 -8 l8 10 l10 -12 l8 14 l10 -10" style="fill:none;stroke:var(--muted);stroke-width:3"/>
+        </svg>
+        <h3 style="color:var(--orange)">For lav v<sub>c</sub></h3>
+        <p class="short">Materiale kleber på eggen (løseegg). Ru overflate. Tar lang tid.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 200 110" role="img" aria-label="Grov overflate med store riller">
+          <path d="M20 50 q 20 30 40 0 q 20 30 40 0 q 20 30 40 0 q 20 30 40 0 V100 H20 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>
+          <path d="M95 46 L110 14 L125 46 Z" style="fill:var(--orange)"/>
+        </svg>
+        <h3 style="color:var(--red)">For stor mating</h3>
+        <p class="short">Grove riller. Skjæret kan knekke.</p>
+      </div>
+      <div class="card">
+        <svg viewBox="0 0 200 110" role="img" aria-label="Lange trådspon som vikler seg rundt">
+          <path d="M20 80 c 30 -60 60 40 90 -10 s 40 -50 70 0 c -20 30 -60 -40 -90 10 s -40 20 -50 -20" style="fill:none;stroke:var(--steel-dark);stroke-width:2.5"/>
+          <path d="M30 30 c 40 10 50 50 90 30 s 30 -40 60 -10" style="fill:none;stroke:var(--steel-dark);stroke-width:2.5"/>
+        </svg>
+        <h3 style="color:var(--orange)">For liten mating</h3>
+        <p class="short">Lange trådspon. Skjæret gnir og blir varmt. Hvin og vibrasjoner.</p>
+      </div>
+    </div>
+    <div class="tip"><b>Gode spon</b> er korte spiraler eller «6-tall» og har vanlig metallfarge (på stål kan de være litt brune).</div>
+    <a class="simlink no-print" data-sim="skjaeredata"><span class="ico">⚙️</span><span><b>Prøv selv: Skjæredatasimulatoren</b><small>Velg materiale og verktøy. Still turtall og mating.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Løseegg (built-up edge) er materiale som sveiser seg fast på eggen ved lav skjærehastighet, særlig i seigt stål og aluminium. Det river av og gir ru overflate. Blå spon på stål betyr høy temperatur. Med belagt hardmetall kan svakt blå spon være normalt ved høy v<sub>c</sub>, men med HSS er det et klart tegn på for høy fart. Lange trådspon er farlige: de vikler seg rundt chucken. Bruk sponbryter eller øk matingen.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <ol style="font-size:1.08rem">
+          <li><b>v<sub>c</sub></b> = fart i skjæret, m/min. Velges ut fra materiale og verktøy.</li>
+          <li>Stor diameter → <b>lavt turtall</b>. Liten diameter → høyt turtall.</li>
+          <li><b>Dreiebenk</b>: emnet roterer, stålet mates (f i mm/omdr).</li>
+          <li><b>Fres</b>: fresen roterer, emnet mates (f<sub>z</sub> i mm/tann).</li>
+          <li>Stor mating: fort, men grov overflate. Liten mating: fin overflate.</li>
+          <li>Se på sponet: blått = for fort, løseegg = for sakte.</li>
+        </ol>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>skjærehastighet</span><span>turtall</span><span>o/min</span><span>mating</span><span>mm/omdr</span><span>mm/tann</span><span>HSS</span><span>hardmetall</span><span>løseegg</span><span>grov</span><span>fin</span></div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>I CNC-programmet</h3>
+          <p class="short"><b>G96 S200</b> = v<sub>c</sub> 200 m/min. Maskinen regner ut turtallet selv.<br><b>G95 F0.2</b> = mating 0,2 mm/omdr.</p>
+          <a class="simlink no-print" data-sim="cnc-dreiebenk" style="margin-top:.7rem"><span class="ico">🖥️</span><span><b>CNC-dreiebenk-simulatoren</b><small>Øv på betjeningspanelet.</small></span><span class="pil">→</span></a>
+        </div>
+        <p class="caption">Slå opp mer i <a href="https://verkstedhandboka.vercel.app/#maskinering" target="_blank" rel="noopener">Verkstedhåndboka, emne Maskinering</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 45 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Maskinering 1 – Skjærehastighet, turtall og mating · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <p style="font-size:.9rem">Du trenger bare penn. Kalkulator trengs bare til ekstraoppgaven.</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Dreiebenk eller fres? <small>Time 1 · 6 min</small></h3>
+        <table class="ot">
+          <tr><th style="width:40%"></th><th>Dreiebenk</th><th>Fres</th></tr>
+          <tr><td>Hva roterer?</td><td class="tom"><span class="fasit" hidden>Emnet</span></td><td class="tom"><span class="fasit" hidden>Fresen (verktøyet)</span></td></tr>
+          <tr><td>Hva mates?</td><td class="tom"><span class="fasit" hidden>Dreiestålet</span></td><td class="tom"><span class="fasit" hidden>Emnet (bordet)</span></td></tr>
+          <tr><td>Matingen måles i …</td><td class="tom"><span class="fasit" hidden>mm per omdreining</span></td><td class="tom"><span class="fasit" hidden>mm per tann</span></td></tr>
+          <tr><td>Diameteren D er diameteren til …</td><td class="tom"><span class="fasit" hidden>emnet</span></td><td class="tom"><span class="fasit" hidden>fresen</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Les turtallstabellen <small>Time 1 · 10 min</small></h3>
+        <table class="ot" style="max-width:460px">
+          <tr><th>Ø (mm)</th><th>v<sub>c</sub> 25</th><th>v<sub>c</sub> 100</th><th>v<sub>c</sub> 200</th></tr>
+          <tr><td>10</td><td>800</td><td>3180</td><td>6370</td></tr>
+          <tr><td>20</td><td>400</td><td>1590</td><td>3180</td></tr>
+          <tr><td>40</td><td>200</td><td>800</td><td>1590</td></tr>
+          <tr><td>80</td><td>100</td><td>400</td><td>800</td></tr>
+        </table>
+        <p style="font-size:.85rem">Turtall i o/min. v<sub>c</sub> i m/min.</p>
+        <p>a) Du dreier en aksel Ø40 med hardmetall, v<sub>c</sub> 200. Hvilket turtall?</p>
+        <div class="svar"><span class="fasit" hidden>1590 o/min</span></div>
+        <p>b) Du dreier en aksel Ø20 med HSS, v<sub>c</sub> 25. Hvilket turtall?</p>
+        <div class="svar"><span class="fasit" hidden>400 o/min</span></div>
+        <p>c) Akselen blir dobbelt så tykk. Hva skjer med turtallet?</p>
+        <div class="svar"><span class="fasit" hidden>Det blir halvparten.</span></div>
+        <p>d) Maskinen går maks 4000 o/min. Kan du dreie Ø10 med v<sub>c</sub> 200?</p>
+        <div class="svar"><span class="fasit" hidden>Nei, det trengs 6370 o/min. Kjør på 4000 o/min (lavere v<sub>c</sub>).</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Velg skjærehastighet <small>Time 2 · 6 min</small></h3>
+        <table class="ot" style="max-width:620px">
+          <tr><th>v<sub>c</sub> (m/min)</th><th>Dreiing HSS</th><th>Dreiing hardmetall</th><th>Endefres HSS</th><th>Endefres hardmetall</th></tr>
+          <tr><td>Aluminium</td><td>80–150</td><td>400–800</td><td>80–150</td><td>300–600</td></tr>
+          <tr><td>Stål S235</td><td>25–35</td><td>180–250</td><td>20–30</td><td>120–180</td></tr>
+          <tr><td>Rustfritt</td><td>12–20</td><td>120–170</td><td>10–18</td><td>70–110</td></tr>
+        </table>
+        <p>a) Dreie aluminium med hardmetall:</p>
+        <div class="svar"><span class="fasit" hidden>400–800 m/min</span></div>
+        <p>b) Frese rustfritt stål med HSS endefres:</p>
+        <div class="svar"><span class="fasit" hidden>10–18 m/min</span></div>
+        <p>c) Hvorfor er v<sub>c</sub> mye lavere i rustfritt stål enn i aluminium?</p>
+        <div class="svar"><span class="fasit" hidden>Rustfritt er seigt og hardt, og varmen blir i skjæret. Aluminium er mykt.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Hva er galt? <small>Time 2 · 6 min</small></h3>
+        <table class="ot">
+          <tr><th style="width:45%">Det du ser</th><th>Hva er feil, og hva gjør du?</th></tr>
+          <tr><td>Sponet blir blått, og skjæret slites fort.</td><td class="tom"><span class="fasit" hidden>For høy v<sub>c</sub>. Senk turtallet.</span></td></tr>
+          <tr><td>Grove, tydelige riller på overflaten.</td><td class="tom"><span class="fasit" hidden>For stor mating. Minsk f.</span></td></tr>
+          <tr><td>Materiale kleber på eggen, og overflaten blir revet.</td><td class="tom"><span class="fasit" hidden>For lav v<sub>c</sub> (løseegg). Øk turtallet.</span></td></tr>
+          <tr><td>Lange trådspon vikler seg rundt chucken.</td><td class="tom"><span class="fasit" hidden>For liten mating. Øk f, bruk sponbryter.</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Skjæredatasimulatoren <small>Time 2 · 12 min</small></h3>
+        <p>Åpne <a data-sim="skjaeredata">Skjæredatasimulatoren</a> og velg <b>Oppgave</b>.</p>
+        <p>a) Løs en dreieoppgave. Skriv materiale, verktøy, turtall og mating som ble godkjent.</p>
+        <div class="svar"><span class="fasit" hidden>For eksempel: konstruksjonsstål, hardmetall, Ø60 → ca. 1150 o/min, f 0,3 mm/omdr.</span></div>
+        <p>b) Løs en freseoppgave. Skriv materiale, verktøy, turtall og mating per tann som ble godkjent.</p>
+        <div class="svar"><span class="fasit" hidden>For eksempel: konstruksjonsstål, hardmetall endefres Ø12 → ca. 4000 o/min, f<sub>z</sub> 0,06 mm.</span></div>
+      </div>
+
+      <div class="oppgave" style="border-style:dashed">
+        <h3>Oppgave 6 – Ekstra: regn selv <small>Ekstra / hjemme · 8 min</small></h3>
+        <p>For deg som vil regne. n = v<sub>c</sub> · 1000 / (π · D) og v<sub>f</sub> = f<sub>z</sub> · z · n</p>
+        <p>a) Aksel Ø50, stål, hardmetall, v<sub>c</sub> 180 m/min. Hvilket turtall?</p>
+        <div class="svar"><span class="fasit" hidden>n = 180 · 1000 / (3,14 · 50) = 180 000 / 157 ≈ <b>1150 o/min</b></span></div>
+        <p>b) Endefres med 4 tenner, f<sub>z</sub> 0,05 mm, 3000 o/min. Hvilken bordmating?</p>
+        <div class="svar"><span class="fasit" hidden>v<sub>f</sub> = 0,05 · 4 · 3000 = <b>600 mm/min</b></span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 3 min</small></h3>
+        <p>1. Hva er skjærehastighet, og hvilken enhet har den?</p><div class="svar"><span class="fasit" hidden>Farten i skjæret, i m/min.</span></div>
+        <p>2. Stor diameter: høyt eller lavt turtall?</p><div class="svar"><span class="fasit" hidden>Lavt turtall.</span></div>
+        <p>3. Hva skjer med overflaten når matingen øker?</p><div class="svar"><span class="fasit" hidden>Den blir grovere (større riller).</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const fmtT = (x, d=2) => x.toLocaleString("nb-NO", {maximumFractionDigits:d});
+function el(tag, attrs, parent, text){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function setStatus(id, txt, cls){ const s=$(id); s.textContent=txt; s.className="status "+cls; }
+function sgrad(svg, id){ const defs=el("defs",{},svg); const g=el("linearGradient",{id,x1:"0",y1:"0",x2:"1",y2:"0"},defs);
+  el("stop",{offset:"0","stop-color":"#7d8894"},g); el("stop",{offset:".35","stop-color":"#dfe4ea"},g); el("stop",{offset:"1","stop-color":"#6c7783"},g); return defs; }
+function axes(svg, o){
+  const xmin = o.xmin||0, X = v => o.x0 + (v-xmin)/(o.xmax-xmin)*(o.x1-o.x0), Y = v => o.y0 - v/o.ymax*(o.y0-o.y1);
+  const g = el("g",{},svg);
+  o.yt.forEach(v => { el("line",{x1:o.x0,y1:Y(v),x2:o.x1,y2:Y(v),style:"stroke:var(--line)"},g); el("text",{x:o.x0-7,y:Y(v)+4,"text-anchor":"end","font-size":12,style:"fill:var(--muted)"},g,fmtT(v,2)); });
+  o.xt.forEach(v => { el("line",{x1:X(v),y1:o.y0,x2:X(v),y2:o.y0+5,style:"stroke:var(--ink)"},g); el("text",{x:X(v),y:o.y0+19,"text-anchor":"middle","font-size":12,style:"fill:var(--muted)"},g,fmtT(v,2)); });
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x1,y2:o.y0,style:"stroke:var(--ink);stroke-width:2"},g);
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x0,y2:o.y1-8,style:"stroke:var(--ink);stroke-width:2"},g);
+  el("text",{x:o.x1,y:o.y0+36,"text-anchor":"end","font-size":13,"font-weight":600,style:"fill:var(--ink)"},g,o.xl);
+  el("text",{x:o.x0+4,y:o.y1-14,"font-size":13,"font-weight":600,style:"fill:var(--ink)"},g,o.yl);
+  return {X, Y};
+}
+function arrowDefs(svg, id, color){ const d = el("defs",{},svg); const m = el("marker",{id, viewBox:"0 0 10 10", refX:"8", refY:"5", markerWidth:"5", markerHeight:"5", orient:"auto-start-reverse"}, d); el("path",{d:"M0 0 L10 5 L0 10 z", style:`fill:${color}`}, m); }
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName) && e.target.type!=="range") return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  const i = Math.max(0, Math.min(slides.length-1, currentIndex()+dir));
+  slides[i].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.classList.toggle("show"));
+const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+const nOf = (vc, D) => vc*1000/(Math.PI*D);
+const rund10 = x => Math.round(x/10)*10;
+
+/* ---------- Del 1: skjærehastighet og turtall ---------- */
+const DIAM = [10, 20, 40, 80], VCS = [{v:25, t:"25 (HSS)"}, {v:100, t:"100"}, {v:200, t:"200 (hardmetall)"}];
+const v1 = {D:40, vc:200, ang:0};
+(function lagTabell(){
+  const tab = $("nTab");
+  DIAM.forEach(D => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td><b>${D}</b></td>` + VCS.map(o => `<td data-d="${D}" data-v="${o.v}">${fmtT(rund10(nOf(o.v, D)),0)}</td>`).join("");
+    tab.appendChild(tr);
+  });
+})();
+function knapper(id, liste, key, label){
+  const box = $(id);
+  liste.forEach(x => {
+    const v = typeof x === "object" ? x.v : x;
+    const b = document.createElement("button"); b.className = "btn small"; b.textContent = label(x);
+    b.onclick = () => { v1[key] = v; tegnVc(); };
+    b.dataset.v = v; box.appendChild(b);
+  });
+}
+knapper("dBtns", DIAM, "D", d => "Ø" + d);
+knapper("vcBtns", VCS, "vc", o => o.t);
+const vcSvg = $("vcSvg");
+let disk, stang, nTekst;
+function tegnVc(){
+  const svg = vcSvg; svg.innerHTML = "";
+  const n = nOf(v1.vc, v1.D), r = 20 + v1.D*1.15, cx = 160, cy = 140;
+  arrowDefs(svg, "vcArr", "var(--blue)");
+  const defs = el("defs",{},svg); const g = el("radialGradient",{id:"vcGrad"},defs);
+  el("stop",{offset:"0","stop-color":"#eef1f4"},g); el("stop",{offset:"1","stop-color":"#8d99a6"},g);
+  el("text",{x:cx,y:22,"text-anchor":"middle","font-size":14,style:"fill:var(--muted)"},svg,"Emnet sett fra enden");
+  disk = el("g",{},svg);
+  el("circle",{cx,cy,r,style:"fill:url(#vcGrad);stroke:var(--steel-dark);stroke-width:2"},disk);
+  el("circle",{cx,cy,r:4,style:"fill:var(--steel-dark)"},disk);
+  for (let i=0;i<4;i++){ const a=i*Math.PI/2; el("line",{x1:cx,y1:cy,x2:cx+Math.cos(a)*(r-6),y2:cy+Math.sin(a)*(r-6),style:"stroke:var(--steel-dark);stroke-width:1.5;opacity:.5"},disk); }
+  el("circle",{cx:cx+r,cy,r:7,style:"fill:var(--red)"},disk);
+  // Pil for vc i kanten
+  el("path",{d:`M${cx+r+16} ${cy+30} A ${r+16} ${r+16} 0 0 0 ${cx+r+16} ${cy-30}`,style:"fill:none;stroke:var(--blue);stroke-width:3","marker-end":"url(#vcArr)"},svg);
+  el("text",{x:cx+r+26,y:cy+6,"font-size":17,"font-weight":700,style:"fill:var(--blue)"},svg,`${v1.vc} m/min`);
+  // Diameter
+  el("line",{x1:cx-r,y1:cy+r+18,x2:cx+r,y2:cy+r+18,style:"stroke:var(--ink);stroke-width:1.5"},svg);
+  el("text",{x:cx,y:cy+r+34,"text-anchor":"middle","font-size":14,"font-weight":600,style:"fill:var(--ink)"},svg,"Ø" + v1.D);
+  // Søyle for turtall
+  const x0 = 420, yb = 250, H = 210, h = Math.max(3, n/6400*H);
+  el("rect",{x:x0,y:yb-H,width:70,height:H,rx:6,style:"fill:var(--steel-soft);stroke:var(--line)"},svg);
+  el("rect",{x:x0,y:yb-h,width:70,height:h,rx:6,style:"fill:var(--orange)"},svg);
+  el("text",{x:x0+35,y:yb-h-8,"text-anchor":"middle","font-size":16,"font-weight":700,style:"fill:var(--ink)"},svg,fmtT(rund10(n),0));
+  el("text",{x:x0+35,y:yb+20,"text-anchor":"middle","font-size":13,style:"fill:var(--muted)"},svg,"Turtall o/min");
+  $("rD").textContent = "Ø" + v1.D + " mm";
+  $("rVc").textContent = v1.vc + " m/min";
+  $("rN").textContent = "ca. " + fmtT(rund10(n),0) + " o/min";
+  $("vcTxt").textContent = v1.D >= 40 ? "Stor diameter: kanten har lang vei rundt. Lavt turtall holder." : "Liten diameter: kort vei rundt. Emnet må gå mange runder for å nå samme fart.";
+  document.querySelectorAll("#dBtns .btn").forEach(b => b.classList.toggle("on", +b.dataset.v === v1.D));
+  document.querySelectorAll("#vcBtns .btn").forEach(b => b.classList.toggle("on", +b.dataset.v === v1.vc));
+  document.querySelectorAll("#nTab td[data-d]").forEach(td => { const on = +td.dataset.d === v1.D && +td.dataset.v === v1.vc; td.style.background = on ? "var(--orange-soft)" : ""; td.style.fontWeight = on ? "700" : ""; });
+  disk.dataset.cx = cx; disk.dataset.cy = cy;
+}
+tegnVc();
+let sist = performance.now();
+function snurr(t){
+  const dt = Math.min(0.1, (t - sist)/1000); sist = t;
+  if (disk && !reduceMotion){
+    const rps = nOf(v1.vc, v1.D)/1500;   // sakte film: 1500 o/min vises som én runde per sekund
+    v1.ang = (v1.ang + rps*360*dt) % 360;
+    disk.setAttribute("transform", `rotate(${v1.ang} ${disk.dataset.cx} ${disk.dataset.cy})`);
+  }
+  requestAnimationFrame(snurr);
+}
+requestAnimationFrame(snurr);
+
+/* ---------- Del 3: mating og overflate ---------- */
+function tegnMating(){
+  const f = +$("fSl").value, re = 0.8, svg = $("fSvg"); svg.innerHTML = "";
+  const rt = f*f/(8*re)*1000; // µm
+  const x0 = 30, x1 = 530, pxmm = 250, ytop = 90, ys = 2.2; // 1 µm = 2,2 px (forstørret)
+  el("text",{x:x0,y:22,"font-size":14,style:"fill:var(--muted)"},svg,"Overflaten under lupe (2 mm bred, høyden forstørret mye)");
+  const pts = [];
+  const p = f*pxmm;
+  for (let x = x0; x <= x1; x += 1){
+    const u = ((x - x0) % p) - p/2;           // avstand fra midten av rillen, i px
+    const um = (u/pxmm);                        // mm
+    const d = (um*um)/(2*re)*1000;              // µm over bunnen
+    pts.push(`${x},${(ytop + rt*ys - d*ys).toFixed(1)}`);
+  }
+  el("path",{d:`M${x0},200 L${pts.join(" L")} L${x1},200 Z`,style:"fill:var(--steel);stroke:var(--steel-dark);stroke-width:1.5"},svg);
+  // Skjæret i siste rille
+  const xs = x0 + Math.floor((x1 - x0)/p)*p - p/2;
+  el("path",{d:`M${xs} ${ytop+rt*ys-2} l-16 -60 h32 Z`,style:"fill:var(--orange);opacity:.9"},svg);
+  el("text",{x:x1,y:222,"text-anchor":"end","font-size":13,style:"fill:var(--muted)"},svg,`Avstand mellom rillene = f = ${fmt(f,2)} mm`);
+  const tid = 100/(f*1000)*60;
+  $("rF").textContent = fmt(f,2);
+  $("rRt").textContent = fmtT(rt, rt < 10 ? 1 : 0) + " µm";
+  $("rT").textContent = fmtT(tid, 0) + " s";
+  if (f <= 0.1) setStatus("fTxt","Fin overflate. Bra til finbearbeiding, men det tar lang tid.","ok");
+  else if (f <= 0.25) setStatus("fTxt","Middels overflate. Vanlig mating.","info");
+  else setStatus("fTxt","Grov overflate. Bra til grovbearbeiding: fjerner mye materiale fort.","warn");
+}
+$("fSl").oninput = tegnMating;
+tegnMating();
+
+/* ---------- Del 4: søylediagram for vc ---------- */
+(function(){
+  const svg = $("vcBar");
+  const data = [["Aluminium", 115, 600], ["Stål S235", 30, 215], ["Rustfritt", 16, 145]];
+  const x0 = 110, x1 = 530, max = 650, X = v => x0 + v/max*(x1-x0);
+  [0, 200, 400, 600].forEach(v => { el("line",{x1:X(v),y1:15,x2:X(v),y2:220,style:"stroke:var(--line)"},svg); el("text",{x:X(v),y:238,"text-anchor":"middle","font-size":12,style:"fill:var(--muted)"},svg,v); });
+  el("text",{x:x1,y:258,"text-anchor":"end","font-size":12,"font-weight":600,style:"fill:var(--ink)"},svg,"vc (m/min)");
+  data.forEach((d, i) => {
+    const y = 25 + i*68;
+    el("text",{x:x0-10,y:y+32,"text-anchor":"end","font-size":14,"font-weight":650,style:"fill:var(--ink)"},svg,d[0]);
+    el("rect",{x:x0,y,width:X(d[1])-x0,height:24,rx:4,style:"fill:var(--purple)"},svg);
+    el("text",{x:X(d[1])+6,y:y+17,"font-size":13,style:"fill:var(--ink)"},svg,d[1]);
+    el("rect",{x:x0,y:y+28,width:X(d[2])-x0,height:24,rx:4,style:"fill:var(--orange)"},svg);
+    el("text",{x:X(d[2])+6,y:y+45,"font-size":13,style:"fill:var(--ink)"},svg,d[2]);
+  });
+})();
+/* ---------- Oppgaver ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToImg(svg){
+  const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
+  const img = new Image(); await new Promise(r => { img.onload = r; img.onerror = r; img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str); });
+  const c = document.createElement("canvas"); c.width = vb.width*2; c.height = vb.height*2; const x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+  const im = document.createElement("img"); im.src = c.toDataURL("image/png"); im.width = vb.width; im.height = vb.height; return im;
+}
+$("btnCopy").onclick = async () => {
+  const orig = $("oppgavetekst"), clone = orig.cloneNode(true);
+  const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>
