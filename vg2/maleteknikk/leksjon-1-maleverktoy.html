@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Måleteknikk 1 – Måleverktøy</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#e0a800; --yellow-soft:#fff8db;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:66ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2 > *, .hero > *{min-width:0}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg, .fig canvas{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.8rem; font-weight:600}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+details.laerer{margin-top:1.2rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+@media (prefers-reduced-motion: reduce){ .scene *, .hero-fig *{animation:none!important} }
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.75rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.legend{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin:.2rem 0 .3rem}
+.legend i{display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:.4rem}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem; line-height:1.7}
+.steps .res{color:var(--orange); font-weight:700; font-size:1.1rem}
+.formula{font-family:"Cascadia Mono", Consolas, monospace; font-size:1.5rem; font-weight:700; text-align:center; padding:.6rem; background:var(--bg); border-radius:10px; margin:.4rem 0}
+
+/* Repetisjon */
+.flip{cursor:pointer; text-align:left; font:inherit; color:inherit; width:100%; min-height:9rem; display:flex; flex-direction:column; justify-content:space-between}
+.flip .q{font-weight:650; font-size:1.05rem}
+.flip .a{display:none; color:var(--green); font-weight:600; margin-top:.6rem}
+.flip.show .a{display:block}
+.flip .hint{font-size:.75rem; color:var(--muted); margin-top:.6rem}
+.flip.show .hint{display:none}
+
+.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
+/* Tabs */
+.tabs{display:flex; gap:.4rem; flex-wrap:wrap}
+.tabs .btn{font-size:.9rem; padding:.5rem 1rem}
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.oppfig{max-width:620px; margin:.4rem 0; background:#fff; border:1px solid #999; border-radius:6px}
+.oppfig svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr 1fr}
+  .readout{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .paper{overflow-x:auto} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+
+/* Måleteknikk */
+.controls .btn.small.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+#vgBtns .btn.on{background:var(--green); color:#fff; border-color:var(--green)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Måleteknikk · <span>Leksjon 1</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- FORSIDE -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Måleteknikk og kvalitet</div>
+      <h1>Leksjon 1<br>Måleverktøy</h1>
+      <p class="lead">Hvor nøyaktig må du måle, og hvilket verktøy tar du?</p>
+      <ol class="goals">
+        <li><b>Hvor fint</b> viser verktøyet?</li>
+        <li><b>Skyvelære</b>: fire måter å måle på</li>
+        <li><b>Mikrometer</b>: hundredeler</li>
+        <li><b>Måleur</b>: kast på en aksel</li>
+        <li><b>Velg</b> rett verktøy</li>
+        <li><b>Stell</b> av måleverktøy</li>
+      </ol>
+    </div>
+    <div>
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Skyvelære som lukkes rundt en aksel og viser 25,40 mm">
+          <!-- Aksel -->
+          <rect x="140" y="150" width="90" height="150" rx="6" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>
+          <ellipse cx="185" cy="150" rx="45" ry="12" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <!-- Skinne -->
+          <rect x="30" y="40" width="470" height="40" rx="4" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <g style="stroke:var(--steel-dark);stroke-width:1.5">
+            <path d="M150 40 v10 M170 40 v10 M190 40 v10 M210 40 v14 M230 40 v10 M250 40 v10 M270 40 v10 M290 40 v10 M310 40 v14 M330 40 v10 M350 40 v10 M370 40 v10 M390 40 v10 M410 40 v14 M430 40 v10 M450 40 v10 M470 40 v10"/>
+          </g>
+          <!-- Fast kjeft -->
+          <path d="M30 80 H140 V250 L128 270 L30 160 Z" style="fill:var(--steel-dark)"/>
+          <path d="M140 80 V250" style="stroke:var(--orange);stroke-width:4"/>
+          <!-- Glider -->
+          <g>
+            <animateTransform attributeName="transform" type="translate" dur="5s" repeatCount="indefinite" keyTimes="0;.45;.9;1" values="80 0;0 0;0 0;80 0"/>
+            <rect x="230" y="30" width="130" height="60" rx="6" style="fill:var(--steel-dark)"/>
+            <path d="M230 90 V250 L242 270 L300 160 V90 Z" style="fill:var(--steel-dark)"/>
+            <path d="M230 90 V250" style="stroke:var(--orange);stroke-width:4"/>
+            <rect x="250" y="40" width="90" height="34" rx="4" style="fill:#1d2a1f"/>
+            <text x="295" y="64" text-anchor="middle" font-size="19" font-weight="700" style="fill:#7cfc8a;font-family:'Cascadia Mono',Consolas,monospace" opacity="0">25,40
+              <animate attributeName="opacity" dur="5s" repeatCount="indefinite" keyTimes="0;.44;.45;.9;.91;1" values="0;0;1;1;0;0"/>
+            </text>
+          </g>
+          <!-- Målepil -->
+          <g opacity="0">
+            <animate attributeName="opacity" dur="5s" repeatCount="indefinite" keyTimes="0;.45;.5;.88;.9;1" values="0;0;1;1;0;0"/>
+            <path d="M146 312 H224" style="stroke:var(--orange);stroke-width:3"/>
+            <path d="M146 306 v12 M224 306 v12" style="stroke:var(--orange);stroke-width:3"/>
+            <text x="185" y="302" text-anchor="middle" font-size="15" font-weight="700" style="fill:var(--orange)">Ø25,40</text>
+          </g>
+          <text x="400" y="150" text-anchor="middle" font-size="40" font-weight="800" style="fill:var(--blue)">0,01</text>
+          <text x="400" y="176" text-anchor="middle" font-size="14" style="fill:var(--muted)">mm = en hundredel</text>
+          <text x="400" y="200" text-anchor="middle" font-size="14" style="fill:var(--muted)">Et hårstrå er ca. 0,07 mm</text>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <p style="margin:.6rem 0">Innledning: Hold opp en skyvelære og et mikrometer. «Begge måler diameter. Hvorfor har vi to?» Svaret er nøyaktighet, og det er hele leksjonen.</p>
+      <div class="card" style="margin-top:.6rem">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p><i>«bruke og velge målemetode og måleutstyr i samsvar med arbeidsoppgaver og vurdere måleresultat i samsvar med toleranser»</i> (Teknologi)</p>
+        <p><i>«velge og bruke riktig verktøy og utstyr til vedlikehold og reparasjoner»</i> (Vedlikehold)</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Første leksjon i emnet Måleteknikk og kvalitet. Leksjon 2 tar toleranser og pasninger, leksjon 4 målefeil og temperatur. Fulle læringsmål: kjenne oppløsningen til linjal, skyvelære, mikrometer og måleur · velge verktøy ut fra toleransen (helst 10 ganger finere) · bruke skyvelæra til utvendig, innvendig, dybde og trinn · lese av nonius 0,05 mm · lese av mikrometer med halvmillimeter · måle kast med måleur · kjenne til toleransetolk og passbiter · stelle måleverktøy riktig.</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1</th></tr>
+          <tr><td>0–5 min</td><td>Repetisjon</td></tr>
+          <tr><td>5–12 min</td><td>Del 1: hvor fint viser verktøyet?</td></tr>
+          <tr><td>12–30 min</td><td>Del 2: skyvelære, fire måter og nonius</td></tr>
+          <tr><td>30–45 min</td><td>Oppgave 1 og Skyvelære-simulatoren</td></tr>
+          <tr><th colspan="2">Time 2</th></tr>
+          <tr><td>0–12 min</td><td>Del 3: mikrometer</td></tr>
+          <tr><td>12–20 min</td><td>Oppgave 2</td></tr>
+          <tr><td>20–28 min</td><td>Del 4: måleur</td></tr>
+          <tr><td>28–34 min</td><td>Del 5–6: velg verktøy, stell</td></tr>
+          <tr><td>34–42 min</td><td>Oppgave 3–5</td></tr>
+          <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+        <p style="font-size:.85rem; color:var(--muted); margin:.5rem 0 0">Ta gjerne med ekte verktøy: skyvelære, mikrometer 0–25, måleur med magnetstativ og en dreid aksel.</p>
+      </div>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REPETISJON -->
+<section class="slide" id="rep" data-nav="Repetisjon">
+  <div class="wrap">
+    <div class="kicker">Repetisjon · ca. 5 min</div>
+    <h2>Husker du?</h2>
+    <p class="lead">Svar med sidemannen – klikk for svar.</p>
+    <div class="grid4" style="margin-top:1.2rem">
+      <button class="card flip"><span class="q">Hvor mange hundredeler er det i 1 mm?</span><span class="a">100. En hundredel = 0,01 mm.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva betyr Ø på en tegning?</span><span class="a">Diameter.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Tegningen sier 40 ± 0,1. Hvilke mål er godkjent?</span><span class="a">Fra 39,9 til 40,1 mm.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvor har du brukt skyvelære før?</span><span class="a">For eksempel i Vg1: kontroll av emner etter saging, dreiing eller fresing.</span><span class="hint">Klikk for svar</span></button>
+    </div>
+    <div class="tip o"><b>I dag:</b> Hvilket verktøy måler fint nok til jobben?</div>
+  </div>
+</section>
+
+<!-- DEL 1 OPPLØSNING -->
+<section class="slide" id="opplosning" data-nav="1 Hvor fint?">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 7 min</div>
+    <h2>Hvor fint viser verktøyet?</h2>
+    <p class="lead">Den minste streken verktøyet kan vise, kaller vi <b>oppløsningen</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div class="controls no-print" id="opBtns" style="margin-top:0"></div>
+        <svg id="opSvg" viewBox="0 0 560 230" role="img" aria-label="Én millimeter forstørret, delt opp etter verktøyets oppløsning"></svg>
+        <div class="status info" id="opTxt"></div>
+      </div>
+      <div>
+        <table class="t" style="font-size:.95rem">
+          <tr><th>Verktøy</th><th>Viser ned til</th></tr>
+          <tr><td>Stållinjal, målebånd</td><td>0,5–1 mm</td></tr>
+          <tr><td>Skyvelære</td><td>0,05 mm (digital 0,01)</td></tr>
+          <tr><td>Mikrometer</td><td>0,01 mm</td></tr>
+          <tr><td>Måleur</td><td>0,01 mm</td></tr>
+        </table>
+        <div class="tip"><b>Tommelfingerregel:</b> verktøyet skal vise <b>10 ganger finere</b> enn toleransen.</div>
+        <div class="grid2" style="gap:.6rem">
+          <div class="card"><b>± 0,5 mm</b><br>→ skyvelære</div>
+          <div class="card"><b>± 0,05 mm</b><br>→ mikrometer</div>
+        </div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Figuren viser én millimeter forstørret 500 ganger. Hårstrået er ca. 0,07 mm tykt. Skyvelæra deler millimeteren i 20 (0,05 mm), mikrometeret i 100 (0,01 mm). Regelen om 10 ganger finere gjelder hele toleransefeltet: ± 0,05 er et felt på 0,1 mm, og en tidel av det er 0,01 mm. Digitale skyvelærer viser 0,01, men er i praksis ikke mer nøyaktige enn ca. 0,02–0,03 mm.</details>
+  </div>
+</section>
+
+<!-- DEL 2 SKYVELÆRE -->
+<section class="slide" id="skyvelaere" data-nav="2 Skyvelære">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 8 min</div>
+    <h2>Skyvelæra måler på fire måter</h2>
+    <p class="lead">Velg måten og se hvilken del av skyvelæra som måler.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div class="controls no-print" id="svBtns" style="margin-top:0"></div>
+        <svg id="svSvg" viewBox="0 0 600 300" role="img" aria-label="Skyvelære med de målende flatene markert"></svg>
+      </div>
+      <div>
+        <div class="card" id="svCard" style="border-left:6px solid var(--orange)"></div>
+        <div class="tip o" style="margin-top:1rem"><b>Mål nær skinna.</b> Langt ute på kjeftene vipper glideren, og målet blir feil.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Utvendig: de store kjeftene. Innvendig: de små nebbene øverst, som går inn i hullet. Dybde: stanga som skyves ut bak, mens enden av skinna står på kanten. Trinn: bakkanten av glideren mot enden av den faste kjeften. Vis gjerne på en ekte skyvelære. Målet blir mest riktig nær skinna, fordi glideren har litt slark.</details>
+  </div>
+</section>
+
+<!-- DEL 2 NONIUS -->
+<section class="slide" id="nonius" data-nav="2 Nonius">
+  <div class="wrap">
+    <div class="kicker">Del 2 · Skyvelære · ca. 10 min</div>
+    <h2>Les av noniusen</h2>
+    <p class="lead">Hele millimeter på <b>hovedskalaen</b>. Hundredeler der en strek på <b>noniusen</b> <b>flukter</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="noSvg" viewBox="0 0 560 170" role="img" aria-label="Hovedskala og nonius 0,05 mm"></svg>
+        <div class="controls">
+          <label for="noV">Flytt glideren:</label><input type="range" id="noV" min="0" max="80" step="0.05" value="23.45">
+        </div>
+        <div class="controls no-print">
+          <button class="btn orange" id="noNy">🎲 Nytt mål</button>
+          <button class="btn" id="noVis">👁 Vis svaret</button>
+        </div>
+        <div class="steps" id="noSteps"></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem"><b>1</b> Finn <b>0</b> på noniusen. Les hele mm <b>til venstre</b> for den på hovedskalaen.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>2</b> Finn den ene noniusstreken som står <b>rett under</b> en strek på hovedskalaen. Den blir <span style="color:var(--green);font-weight:700">grønn</span> her.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>3</b> Hver strek på noniusen er <b>0,05 mm</b>. Legg sammen.</div>
+        <a class="simlink no-print" data-sim="skyvelaere"><span class="ico">📏</span><span><b>Prøv selv: Skyvelære-simulatoren</b><small>Les av mål og trykk Sjekk.</small></span><span class="pil">→</span></a>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Noniusen har 20 streker over 39 mm, så hver strek er 1,95 mm. Den er 0,05 mm kortere enn 2 mm på hovedskalaen. Tallene 0–10 på noniusen er tideler. Trykk «Nytt mål» og la elevene skrive svaret på mini-whiteboard før du trykker «Vis svaret». Mange skyvelærer har 0,02 mm nonius (50 streker); simulatoren har begge.</details>
+  </div>
+</section>
+
+<!-- DEL 3 MIKROMETER -->
+<section class="slide" id="mikrometer" data-nav="3 Mikrometer">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 12 min</div>
+    <h2>Mikrometeret måler hundredeler</h2>
+    <p class="lead">Én omdreining på trommelen = <b>0,5 mm</b>. Trommelen har <b>50</b> streker = 0,01 mm hver.</p>
+    <div class="grid2" style="grid-template-columns:1fr 1.25fr">
+      <div class="fig">
+        <svg viewBox="0 0 420 230" role="img" aria-label="Mikrometer med bøyle, ambolt, spindel, låsing, hylse, trommel og skralle">
+          <path d="M60 60 Q30 60 30 110 V160 Q30 200 80 200 H190 Q220 200 220 170 V106 H190 V165 Q190 175 180 175 H80 Q62 175 62 155 V110 Q62 85 85 85" style="fill:var(--blue);opacity:.85"/>
+          <rect x="60" y="80" width="28" height="22" style="fill:var(--steel-dark)"/>
+          <rect x="88" y="84" width="20" height="14" style="fill:var(--orange)" opacity=".35"/>
+          <rect x="108" y="84" width="90" height="14" style="fill:var(--steel)"/>
+          <rect x="190" y="76" width="30" height="30" rx="3" style="fill:var(--steel-dark)"/>
+          <rect x="220" y="80" width="80" height="22" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:1.5"/>
+          <path d="M220 91 H300" style="stroke:var(--ink);stroke-width:1.2"/>
+          <path d="M300 74 L312 70 H370 V112 H312 L300 108 Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:1.5"/>
+          <rect x="370" y="80" width="34" height="22" rx="3" style="fill:var(--steel-dark)"/>
+          <g font-size="12" font-weight="600" style="fill:var(--ink)" text-anchor="middle">
+            <text x="56" y="222">bøyle</text><path d="M56 210 V196" style="stroke:var(--muted)"/>
+            <text x="74" y="42">ambolt</text><path d="M74 46 V80" style="stroke:var(--muted)"/>
+            <text x="150" y="42">spindel</text><path d="M150 46 V84" style="stroke:var(--muted)"/>
+            <text x="262" y="140">låsing</text><path d="M222 100 L250 126" style="stroke:var(--muted)"/>
+            <text x="260" y="42">hylse</text><path d="M260 46 V80" style="stroke:var(--muted)"/>
+            <text x="340" y="140">trommel</text><path d="M340 128 V112" style="stroke:var(--muted)"/>
+            <text x="387" y="42">skralle</text><path d="M387 46 V80" style="stroke:var(--muted)"/>
+          </g>
+          <text x="98" y="122" text-anchor="middle" font-size="11" style="fill:var(--orange)">delen</text>
+        </svg>
+        <div class="tip" style="margin-bottom:0">Skru med <b>skralla</b> til den klikker. Da blir måletrykket likt hver gang.</div>
+      </div>
+      <div class="fig">
+        <svg id="miSvg" viewBox="0 0 560 200" role="img" aria-label="Hylse og trommel på mikrometer"></svg>
+        <div class="controls">
+          <label for="miV">Skru trommelen:</label><input type="range" id="miV" min="0" max="25" step="0.01" value="12.87">
+        </div>
+        <div class="controls no-print">
+          <button class="btn orange" id="miNy">🎲 Nytt mål</button>
+          <button class="btn" id="miVis">👁 Vis svaret</button>
+        </div>
+        <div class="steps" id="miSteps"></div>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card"><b>1</b> Hele mm <b>over</b> streken på hylsa.</div>
+      <div class="card"><b>2</b> Ser du en strek <b>under</b> linja etter siste hele mm? Legg til <b>0,5</b>.</div>
+      <div class="card"><b>3</b> Tallet på trommelen som står <b>på linja</b> = hundredeler.</div>
+    </div>
+    <a class="simlink no-print" data-sim="mikrometer"><span class="ico">🔩</span><span><b>Prøv selv: Mikrometer-simulatoren</b><small>Skru, les av og sjekk svaret.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Spindelen har gjenge med stigning 0,5 mm. Den vanligste feilen er å glemme halvmillimeteren. Et mikrometer måler bare 25 mm: 0–25, 25–50, 50–75 osv. Sjekk null før bruk: lukk 0–25-mikrometeret med skralla (eller mål på innstillingsstaven for større mikrometer). Låsingen holder målet når du tar mikrometeret av delen.</details>
+  </div>
+</section>
+
+<!-- DEL 4 MÅLEUR -->
+<section class="slide" id="maleur" data-nav="4 Måleur">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 8 min</div>
+    <h2>Måleuret viser hvor mye noe slingrer</h2>
+    <p class="lead">Måleuret måler <b>forskjeller</b>, ikke mål. Drei akselen og se viseren.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="muSvg" viewBox="0 0 560 300" role="img" aria-label="Aksel som roterer under et måleur"></svg>
+        <div class="controls">
+          <label for="muK">Hvor skjev er akselen?</label><input type="range" id="muK" min="0" max="0.2" step="0.01" value="0.06">
+          <span class="pill" id="muKv" style="background:var(--orange-soft);color:var(--orange);font-size:1rem">0,06 mm</span>
+        </div>
+        <div class="controls no-print"><button class="btn" id="muPause">⏸ Pause</button></div>
+        <div class="readout" style="grid-template-columns:repeat(3,1fr)">
+          <div><span>Største utslag</span><b id="muMax">0,00</b></div>
+          <div><span>Minste utslag</span><b id="muMin">0,00</b></div>
+          <div><span>Kast = største − minste</span><b id="muKast">0,00 mm</b></div>
+        </div>
+        <div class="status info" id="muTxt"></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem"><b>1</b> Fest måleuret i et <b>magnetstativ</b>. Spissen skal stå <b>vinkelrett</b> på akselen.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>2</b> Trykk spissen litt inn. Vri skiva så viseren står på <b>0</b>.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>3</b> Drei akselen én runde. Kast = største − minste utslag.</div>
+        <div class="tip">Én strek = <b>0,01 mm</b>. Én runde med viseren = 1 mm.</div>
+        <a class="simlink no-print" data-sim="maleur"><span class="ico">🔍</span><span><b>Prøv selv: Måleur-simulatoren</b><small>Mål kast og slark.</small></span><span class="pil">→</span></a>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kast (slingring) er hvor mye overflaten går opp og ned når delen roterer. Krav i dette eksempelet: maks 0,05 mm. Måleuret brukes også til å rette opp emner i chuck, sjekke slark i lagre og stille inn maskiner (vedlikehold). Spissen skal ha litt forspenning (ca. 0,2–0,5 mm inn) så den følger overflaten begge veier. Den lille viseren teller hele millimeter.</details>
+  </div>
+</section>
+
+<!-- DEL 5 VELG VERKTØY -->
+<section class="slide" id="velg" data-nav="5 Velg verktøy">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 4 min</div>
+    <h2>Velg rett verktøy</h2>
+    <p class="lead">Les oppgaven og toleransen. Hvilket verktøy tar du?</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:.85rem"><span id="vgNr"></span><span id="vgPoeng"></span></div>
+        <div id="vgOppg" style="font-size:1.35rem;font-weight:650;margin:.4rem 0 .8rem;min-height:4rem"></div>
+        <div class="controls" id="vgBtns" style="margin-top:0"></div>
+        <div class="status info" id="vgTxt">Velg et verktøy.</div>
+        <div class="controls no-print"><button class="btn orange" id="vgNeste">Neste oppgave →</button></div>
+      </div>
+      <div class="grid2" style="gap:.8rem">
+        <div class="card">
+          <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Toleransetolk med gå-side og ikke-gå-side">
+            <rect x="20" y="40" width="40" height="26" rx="3" style="fill:var(--green)"/>
+            <rect x="60" y="44" width="80" height="18" rx="4" style="fill:var(--steel-dark)"/>
+            <rect x="140" y="38" width="30" height="30" rx="3" style="fill:var(--red)"/>
+            <text x="40" y="88" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--green)">GÅ</text>
+            <text x="155" y="88" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--red)">IKKE GÅ</text>
+          </svg>
+          <h3>Toleransetolk</h3><p class="short">Ingen avlesning. Går den grønne inn, men ikke den røde? Godkjent.</p>
+        </div>
+        <div class="card">
+          <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Passbiter i forskjellige tykkelser">
+            <g style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:1.5">
+              <rect x="20" y="30" width="44" height="60" rx="2"/><rect x="72" y="30" width="22" height="60" rx="2"/><rect x="102" y="30" width="12" height="60" rx="2"/><rect x="122" y="30" width="6" height="60" rx="1"/>
+              <rect x="140" y="30" width="44" height="60" rx="2" style="fill:var(--blue-soft)"/>
+            </g>
+            <text x="162" y="64" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--blue)">50,00</text>
+          </svg>
+          <h3>Passbiter</h3><p class="short">Stålklosser med helt nøyaktige mål. Brukes til å <b>kontrollere</b> annet måleverktøy.</p>
+        </div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Toleransetolk (gå/ikke-gå) brukes når mange like deler skal kontrolleres raskt, for eksempel hull med H7. Grensetolken for hull kalles tolkdor, for aksler tolkring eller gaffeltolk. Passbiter er laget med nøyaktighet på tusendeler. De settes sammen til et mål og brukes til å sjekke skyvelærer og mikrometre. Det tar vi i leksjon 4 (målefeil og kalibrering).</details>
+  </div>
+</section>
+
+<!-- DEL 6 STELL -->
+<section class="slide" id="stell" data-nav="6 Stell">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 3 min</div>
+    <h2>Stell godt med måleverktøyet</h2>
+    <p class="lead">Et måleverktøy som har fått en smell, måler feil – og du ser det ikke.</p>
+    <div class="grid4" style="margin-top:1rem">
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Klut som tørker målflatene">
+          <rect x="40" y="20" width="16" height="70" style="fill:var(--steel-dark)"/><rect x="120" y="20" width="16" height="70" style="fill:var(--steel-dark)"/>
+          <rect x="62" y="40" width="34" height="30" rx="8" style="fill:var(--yellow)">
+            <animateTransform attributeName="transform" type="translate" values="0 -12;0 12;0 -12" dur="1.6s" repeatCount="indefinite"/>
+          </rect>
+        </svg>
+        <h3>Tørk av</h3><p class="short">Spon og olje mellom målflatene gir feil mål.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Display som viser 0,00">
+          <rect x="40" y="25" width="120" height="56" rx="8" style="fill:#1d2a1f"/>
+          <text x="100" y="64" text-anchor="middle" font-size="26" font-weight="700" style="fill:#7cfc8a;font-family:'Cascadia Mono',Consolas,monospace">0,00</text>
+        </svg>
+        <h3>Sjekk null</h3><p class="short">Lukk verktøyet før du måler. Står det 0?</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Lett trykk, ikke klem">
+          <circle cx="100" cy="55" r="26" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>
+          <path d="M40 55 H66 M160 55 H134" style="stroke:var(--orange);stroke-width:5"/>
+          <text x="100" y="104" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--orange)">lett trykk</text>
+        </svg>
+        <h3>Ikke klem</h3><p class="short">Hardt trykk bøyer kjeftene. Bruk skralla på mikrometeret.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Skyvelære i eske">
+          <rect x="30" y="35" width="140" height="50" rx="6" style="fill:var(--blue-soft);stroke:var(--blue);stroke-width:2"/>
+          <rect x="45" y="52" width="110" height="10" style="fill:var(--steel-dark)"/><rect x="55" y="62" width="10" height="16" style="fill:var(--steel-dark)"/>
+          <path d="M30 35 L46 15 H186 L170 35" style="fill:none;stroke:var(--blue);stroke-width:2"/>
+        </svg>
+        <h3>I esken</h3><p class="short">Ikke i lomma eller blant filer og hammere.</p></div>
+    </div>
+    <div class="tip o">En varm del fra maskinen er <b>større</b> enn når den er kald. Mål når delen har romtemperatur. Mer om det i leksjon 4.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Stål vokser ca. 0,012 mm per meter per grad. En aksel på Ø50 som er 30 °C varmere enn rommet, måler ca. 0,02 mm for mye. Det er nok til å vrake en del med toleranse k6. Ikke smør målflatene med fett; tørk av med en ren klut. Legg skyvelæra i esken litt åpen, så kjeftene ikke presses sammen.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <ol style="font-size:1.08rem">
+          <li>Verktøyet skal vise <b>10 ganger finere</b> enn toleransen.</li>
+          <li><b>Skyvelære</b>: utvendig, innvendig, dybde og trinn. Nonius 0,05 mm.</li>
+          <li><b>Mikrometer</b>: hele mm + kanskje 0,5 + trommelen. Bruk skralla.</li>
+          <li><b>Måleur</b>: kast = største − minste utslag.</li>
+          <li><b>Toleransetolk</b> for mange like deler. <b>Passbiter</b> for å kontrollere verktøy.</li>
+          <li>Tørk av, sjekk null, ikke klem, legg i esken.</li>
+        </ol>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>oppløsning</span><span>hundredel</span><span>skyvelære</span><span>nonius</span><span>mikrometer</span><span>skralle</span><span>måleur</span><span>kast</span><span>toleransetolk</span><span>passbit</span></div>
+        </div>
+        <div class="card" style="margin-top:1rem">
+          <h3>Neste leksjon</h3>
+          <p style="margin:0"><b>Leksjon 2 – Toleranser og pasninger:</b> øvre og nedre grensemål, H7/g6, klaring og presspasning.</p>
+        </div>
+        <p class="caption">Slå opp mer i <a href="https://verkstedhandboka.vercel.app/#toleranser" target="_blank" rel="noopener">Verkstedhåndboka, emne 2 Toleranser</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 35 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Måleteknikk 1 – Måleverktøy · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <p style="font-size:.9rem">Du trenger bare penn.</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Les skyvelæra <small>Time 1 · 8 min</small></h3>
+        <p>Noniusen viser 0,05 mm. Skriv målene.</p>
+        <p style="margin:.2rem 0"><b>a)</b></p><div class="oppfig"><svg id="o1a" viewBox="0 0 560 170" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <p style="margin:.2rem 0"><b>b)</b></p><div class="oppfig"><svg id="o1b" viewBox="0 0 560 170" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <p style="margin:.2rem 0"><b>c)</b></p><div class="oppfig"><svg id="o1c" viewBox="0 0 560 170" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <table class="ot">
+          <tr><th>a)</th><th>b)</th><th>c)</th></tr>
+          <tr><td class="tom"><span class="fasit" hidden>12,35 mm</span></td><td class="tom"><span class="fasit" hidden>31,70 mm</span></td><td class="tom"><span class="fasit" hidden>47,05 mm</span></td></tr>
+        </table>
+        <p>d) Les av tre mål i <a data-sim="skyvelaere">Skyvelære-simulatoren</a> med 0,05 nonius. Skriv målene du fikk riktig.</p>
+        <div class="svar"><span class="fasit" hidden>Tre mål som simulatoren godkjente, for eksempel 18,45 · 52,10 · 7,85 mm.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Les mikrometeret <small>Time 2 · 8 min</small></h3>
+        <p>Pass på halvmillimeteren under linja. Skriv målene.</p>
+        <p style="margin:.2rem 0"><b>a)</b></p><div class="oppfig"><svg id="o2a" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <p style="margin:.2rem 0"><b>b)</b></p><div class="oppfig"><svg id="o2b" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <p style="margin:.2rem 0"><b>c)</b></p><div class="oppfig"><svg id="o2c" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg"></svg></div>
+        <table class="ot">
+          <tr><th>a)</th><th>b)</th><th>c)</th></tr>
+          <tr><td class="tom"><span class="fasit" hidden>7,23 mm</span></td><td class="tom"><span class="fasit" hidden>14,68 mm</span></td><td class="tom"><span class="fasit" hidden>21,04 mm</span></td></tr>
+        </table>
+        <p>d) Hvorfor skal du skru med skralla og ikke med trommelen?</p>
+        <div class="svar"><span class="fasit" hidden>Skralla glipper ved samme kraft hver gang. Da blir måletrykket likt, og målet blir riktig.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Velg verktøy <small>Time 2 · 5 min</small></h3>
+        <p>Skriv stållinjal, skyvelære, mikrometer, måleur eller toleransetolk.</p>
+        <table class="ot">
+          <tr><th style="width:62%">Jobb</th><th>Verktøy</th></tr>
+          <tr><td>1. Kappe flatstål til 400 ± 1 mm</td><td class="tom"><span class="fasit" hidden>stållinjal eller målebånd</span></td></tr>
+          <tr><td>2. Dybden på et boret hull, 18 ± 0,2 mm</td><td class="tom"><span class="fasit" hidden>skyvelære (dybdestanga)</span></td></tr>
+          <tr><td>3. Lagersete på en aksel, Ø30 ± 0,01 mm</td><td class="tom"><span class="fasit" hidden>mikrometer</span></td></tr>
+          <tr><td>4. Sjekke om en aksel i dreiebenken slingrer</td><td class="tom"><span class="fasit" hidden>måleur</span></td></tr>
+          <tr><td>5. Kontrollere 300 like hull Ø10 H7 raskt</td><td class="tom"><span class="fasit" hidden>toleransetolk (gå/ikke-gå)</span></td></tr>
+          <tr><td>6. Innvendig diameter på et rør, Ø52 ± 0,3 mm</td><td class="tom"><span class="fasit" hidden>skyvelære (nebbene)</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Kast med måleur <small>Time 2 · 4 min</small></h3>
+        <p>Du dreier en aksel én runde og leser måleuret på fire steder. Kravet er kast maks 0,05 mm.</p>
+        <table class="ot">
+          <tr><th>0°</th><th>90°</th><th>180°</th><th>270°</th></tr>
+          <tr><td>0,00</td><td>+0,03</td><td>+0,05</td><td>−0,02</td></tr>
+        </table>
+        <p>a) Hva er kastet?</p>
+        <div class="svar"><span class="fasit" hidden>Kast = 0,05 − (−0,02) = <b>0,07 mm</b></span></div>
+        <p>b) Er akselen godkjent?</p>
+        <div class="svar"><span class="fasit" hidden>Nei. 0,07 mm er mer enn 0,05 mm.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Hva er galt? <small>Time 2 · 4 min</small></h3>
+        <p>a) Ali måler en aksel som kom rett fra dreiebenken. Den er varm. Målet er 0,02 mm for stort. Hvorfor?</p>
+        <div class="svar"><span class="fasit" hidden>Varmt stål utvider seg. Vent til delen har romtemperatur, og mål igjen.</span></div>
+        <p>b) Sara måler med skyvelæra langt ute på spissen av kjeftene og klemmer hardt. Hva bør hun gjøre?</p>
+        <div class="svar"><span class="fasit" hidden>Måle nær skinna og bruke lett trykk. Da vipper ikke glideren, og kjeftene bøyer seg ikke.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 3 min</small></h3>
+        <p>1. Hvor fint viser et mikrometer?</p><div class="svar"><span class="fasit" hidden>0,01 mm (en hundredel).</span></div>
+        <p>2. Hvilke fire ting kan skyvelæra måle?</p><div class="svar"><span class="fasit" hidden>Utvendig, innvendig, dybde og trinn.</span></div>
+        <p>3. Hva er kast, og hvilket verktøy måler det?</p><div class="svar"><span class="fasit" hidden>Hvor mye en roterende del slingrer. Måles med måleur.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const fmtT = (x, d=2) => x.toLocaleString("nb-NO", {maximumFractionDigits:d});
+function el(tag, attrs, parent, text){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function setStatus(id, txt, cls){ const s=$(id); s.textContent=txt; s.className="status "+cls; }
+function sgrad(svg, id){ const defs=el("defs",{},svg); const g=el("linearGradient",{id,x1:"0",y1:"0",x2:"1",y2:"0"},defs);
+  el("stop",{offset:"0","stop-color":"#7d8894"},g); el("stop",{offset:".35","stop-color":"#dfe4ea"},g); el("stop",{offset:"1","stop-color":"#6c7783"},g); return defs; }
+function axes(svg, o){
+  const xmin = o.xmin||0, X = v => o.x0 + (v-xmin)/(o.xmax-xmin)*(o.x1-o.x0), Y = v => o.y0 - v/o.ymax*(o.y0-o.y1);
+  const g = el("g",{},svg);
+  o.yt.forEach(v => { el("line",{x1:o.x0,y1:Y(v),x2:o.x1,y2:Y(v),style:"stroke:var(--line)"},g); el("text",{x:o.x0-7,y:Y(v)+4,"text-anchor":"end","font-size":12,style:"fill:var(--muted)"},g,fmtT(v,2)); });
+  o.xt.forEach(v => { el("line",{x1:X(v),y1:o.y0,x2:X(v),y2:o.y0+5,style:"stroke:var(--ink)"},g); el("text",{x:X(v),y:o.y0+19,"text-anchor":"middle","font-size":12,style:"fill:var(--muted)"},g,fmtT(v,2)); });
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x1,y2:o.y0,style:"stroke:var(--ink);stroke-width:2"},g);
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x0,y2:o.y1-8,style:"stroke:var(--ink);stroke-width:2"},g);
+  el("text",{x:o.x1,y:o.y0+36,"text-anchor":"end","font-size":13,"font-weight":600,style:"fill:var(--ink)"},g,o.xl);
+  el("text",{x:o.x0+4,y:o.y1-14,"font-size":13,"font-weight":600,style:"fill:var(--ink)"},g,o.yl);
+  return {X, Y};
+}
+function arrowDefs(svg, id, color){ const d = el("defs",{},svg); const m = el("marker",{id, viewBox:"0 0 10 10", refX:"8", refY:"5", markerWidth:"5", markerHeight:"5", orient:"auto-start-reverse"}, d); el("path",{d:"M0 0 L10 5 L0 10 z", style:`fill:${color}`}, m); }
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName) && e.target.type!=="range") return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  const i = Math.max(0, Math.min(slides.length-1, currentIndex()+dir));
+  slides[i].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.classList.toggle("show"));
+
+/* ---------- Farger: skjerm (følger lys/mørk) eller oppgavearket (alltid hvitt) ---------- */
+const SKJERM = {ink:"var(--ink)", muted:"var(--muted)", steel:"var(--steel)", steelSoft:"var(--steel-soft)", steelDark:"var(--steel-dark)", panel:"var(--panel)", orange:"var(--orange)", green:"var(--green)", blue:"var(--blue)", red:"var(--red)", line:"var(--line)"};
+const PAPIR = {ink:"#000", muted:"#444", steel:"#9aa5b1", steelSoft:"#eef1f4", steelDark:"#5f6b78", panel:"#fff", orange:"#000", green:"#000", blue:"#1c6fd1", red:"#c92a2a", line:"#999"};
+const komma = (x, d=2) => fmt(x, d);
+
+/* ---------- Del 1: oppløsning ---------- */
+const OPP = [
+  {n:"Stållinjal", d:0.5, txt:"Stållinjal: 0,5 mm. Millimeteren deles i to."},
+  {n:"Skyvelære", d:0.05, txt:"Skyvelære: 0,05 mm. Millimeteren deles i 20."},
+  {n:"Mikrometer", d:0.01, txt:"Mikrometer: 0,01 mm. Millimeteren deles i 100 – tynnere enn et hårstrå."},
+  {n:"Måleur", d:0.01, txt:"Måleur: 0,01 mm per strek. Viser hvor mye noe endrer seg."}
+];
+let opValgt = 1;
+OPP.forEach((o, i) => { const b = document.createElement("button"); b.className = "btn small"; b.textContent = o.n; b.onclick = () => { opValgt = i; drawOp(); }; $("opBtns").appendChild(b); });
+function drawOp(){
+  const s = $("opSvg"), o = OPP[opValgt], x0 = 30, W = 500;
+  [...$("opBtns").children].forEach((b, i) => b.classList.toggle("on", i===opValgt));
+  s.replaceChildren();
+  el("text",{x:x0, y:24, "font-size":14, "font-weight":700, style:"fill:var(--ink)"}, s, "1 mm, forstørret 500 ganger");
+  el("rect",{x:x0, y:40, width:W, height:70, rx:6, style:"fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"}, s);
+  const n = Math.round(1/o.d);
+  for (let i=0; i<=n; i++){
+    const x = x0 + i*W/n, lang = i===0 || i===n || (n>=20 && i%10===0) || (n===20 && i%5===0);
+    el("line",{x1:x, y1:40, x2:x, y2:40 + (lang ? 46 : 26), style:`stroke:${i===0||i===n ? "var(--ink)" : "var(--blue)"};stroke-width:${lang ? 2.5 : 1.5}`}, s);
+  }
+  el("text",{x:x0, y:130, "text-anchor":"middle", "font-size":13, style:"fill:var(--muted)"}, s, "0");
+  el("text",{x:x0+W, y:130, "text-anchor":"middle", "font-size":13, style:"fill:var(--muted)"}, s, "1 mm");
+  // Én strek uthevet
+  const w = W*o.d;
+  el("rect",{x:x0, y:40, width:w, height:70, style:"fill:var(--orange);opacity:.3"}, s);
+  el("path",{d:`M${x0} 150 H${x0+w} M${x0} 144 v12 M${x0+w} 144 v12`, style:"stroke:var(--orange);stroke-width:3"}, s);
+  el("text",{x:x0 + Math.max(w/2, 30), y:176, "text-anchor":"middle", "font-size":16, "font-weight":800, style:"fill:var(--orange)"}, s, komma(o.d) + " mm");
+  // Hårstrå til sammenlikning (0,07 mm)
+  const hr = W*0.07/2;
+  el("circle",{cx:x0+W-60, cy:180, r:hr, style:"fill:var(--ink)"}, s);
+  el("text",{x:x0+W-60, y:226, "text-anchor":"middle", "font-size":12, style:"fill:var(--muted)"}, s, "hårstrå 0,07 mm");
+  setStatus("opTxt", o.txt, "info");
+}
+drawOp();
+
+/* ---------- Del 2: skyvelæra måler på fire måter ---------- */
+const SV = {
+  ut:{n:"Utvendig", h:"Utvendig mål", t:"De store <b>kjeftene</b> rundt delen. Diameter på aksler, tykkelse på plater."},
+  inn:{n:"Innvendig", h:"Innvendig mål", t:"De små <b>nebbene</b> inn i hullet. Diameter på hull og rør."},
+  dyp:{n:"Dybde", h:"Dybde", t:"<b>Dybdestanga</b> bak. Enden av skinna står på kanten. Dybde på hull og spor."},
+  trinn:{n:"Trinn", h:"Trinn (avsats)", t:"<b>Bakkanten av glideren</b> mot den faste kjeften. Høyden på en avsats."}
+};
+let svValgt = "ut";
+Object.keys(SV).forEach(k => { const b = document.createElement("button"); b.className = "btn small"; b.textContent = SV[k].n; b.dataset.k = k; b.onclick = () => { svValgt = k; drawSv(); }; $("svBtns").appendChild(b); });
+function drawSv(){
+  const s = $("svSvg"), k = svValgt, O = "var(--orange)";
+  [...$("svBtns").children].forEach(b => b.classList.toggle("on", b.dataset.k===k));
+  s.replaceChildren(); arrowDefs(s, "svArr", css("--orange"));
+  const hl = id => id===k;
+  const mork = "fill:var(--steel-dark)";
+  // Arbeidsstykker (bak verktøyet)
+  if (k==="ut") el("circle",{cx:150, cy:175, r:50, style:"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"}, s);
+  if (k==="inn") el("path",{d:"M40 8 H260 V54 H244 V24 H56 V54 H40 Z", style:"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"}, s);
+  if (k==="dyp") el("path",{d:"M520 30 H600 V130 H520 V84 H590 V70 H520 Z", style:"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"}, s);
+  // Skinne
+  el("rect",{x:40, y:60, width:480, height:34, rx:3, style:"fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"}, s);
+  for (let i=0; i<=36; i++){ const x = 104 + i*11; el("line",{x1:x, y1:94, x2:x, y2:94-(i%5===0 ? 12 : 7), style:"stroke:var(--steel-dark);stroke-width:1.2"}, s); }
+  // Fast kjeft og nebb
+  el("path",{d:"M40 94 H100 V215 L92 232 L40 150 Z", style:mork}, s);
+  el("path",{d:"M56 60 V24 L76 14 H84 V60 Z", style:mork}, s);
+  // Glider med kjeft og nebb
+  el("rect",{x:200, y:52, width:90, height:50, rx:5, style:mork}, s);
+  el("path",{d:"M200 102 V215 L208 232 L240 150 V102 Z", style:mork}, s);
+  el("path",{d:"M228 52 V14 H236 L244 24 V52 Z", style:mork}, s);
+  el("rect",{x:212, y:62, width:66, height:28, rx:3, style:"fill:var(--steel-soft)"}, s);
+  // Dybdestang (stikker ut like langt som kjeftene er åpne: 100)
+  el("rect",{x:520, y:74, width:k==="dyp" ? 70 : 30, height:6, style:mork}, s);
+  // Uthevinger
+  const strek = d => el("path",{d, style:`stroke:${O};stroke-width:6;stroke-linecap:round`}, s);
+  const pil = (x1, y1, x2, y2, t, tx, ty) => {
+    el("line",{x1, y1, x2, y2, "marker-start":"url(#svArr)", "marker-end":"url(#svArr)", style:`stroke:${O};stroke-width:2.5`}, s);
+    el("text",{x:tx, y:ty, "text-anchor":"middle", "font-size":16, "font-weight":800, style:`fill:${O}`}, s, t);
+  };
+  if (k==="ut"){ strek("M100 110 V212"); strek("M200 110 V212"); pil(104, 250, 196, 250, "Ø", 150, 275); }
+  if (k==="inn"){ strek("M56 30 V58"); strek("M244 30 V58"); pil(60, 40, 240, 40, "hull", 150, 34); }
+  if (k==="dyp"){
+    // Skyvelæra står på kanten av hullet: dybden er stanga ut av skinna
+    strek("M520 62 V92"); strek("M590 72 V82");
+    pil(522, 160, 588, 160, "dybde", 555, 152);
+    el("text",{x:596, y:200, "text-anchor":"end", "font-size":12, style:"fill:var(--muted)"}, s, "skinna står mot kanten");
+  }
+  if (k==="trinn"){ strek("M100 62 V92"); strek("M200 54 V92"); pil(104, 46, 196, 46, "trinn", 150, 38); }
+  el("text",{x:40, y:292, "font-size":12, style:"fill:var(--muted)"}, s, k==="ut" ? "kjeftene" : k==="inn" ? "nebbene" : k==="dyp" ? "dybdestanga" : "bakkanten av glideren");
+  $("svCard").innerHTML = `<h3>${SV[k].h}</h3><p class="short">${SV[k].t}</p>`;
+}
+drawSv();
+
+/* ---------- Nonius 0,05 mm ---------- */
+function drawNonius(s, v, p, visSvar){
+  const px = 12, start = Math.floor(v) - 3, X = mm => 20 + (mm - start)*px;
+  const h = Math.round(v*100), mm = Math.floor(h/100), i0 = Math.round((h % 100)/5);
+  s.replaceChildren();
+  el("rect",{x:0, y:0, width:560, height:170, style:`fill:${p.panel}`}, s);
+  el("rect",{x:0, y:10, width:560, height:70, style:`fill:${p.steelSoft};stroke:${p.steelDark};stroke-width:1.5`}, s);
+  for (let m = Math.max(0, start); m <= start + 46; m++){
+    const L = m%10===0 ? 26 : m%5===0 ? 17 : 10;
+    el("line",{x1:X(m), y1:80, x2:X(m), y2:80-L, style:`stroke:${p.ink};stroke-width:${m%10===0 ? 2 : 1.3}`}, s);
+    if (m%10===0) el("text",{x:X(m), y:44, "text-anchor":"middle", "font-size":15, "font-weight":700, style:`fill:${p.ink}`}, s, String(m/10));
+  }
+  el("text",{x:552, y:28, "text-anchor":"end", "font-size":11, style:`fill:${p.muted}`}, s, "hovedskala (cm)");
+  const n0 = X(v);
+  el("rect",{x:n0-18, y:80, width:39*px+36, height:72, rx:4, style:`fill:${p.steel};stroke:${p.steelDark};stroke-width:1.5`}, s);
+  for (let i=0; i<=20; i++){
+    const x = n0 + i*1.95*px, flukt = visSvar && i===i0;
+    el("line",{x1:x, y1:80, x2:x, y2:80 + (i%2===0 ? 18 : 11), style:`stroke:${flukt ? p.green : i===0 ? p.orange : p.ink};stroke-width:${flukt || i===0 ? 3 : 1.3}`}, s);
+    if (i%2===0) el("text",{x, y:114, "text-anchor":"middle", "font-size":13, "font-weight":i===0 ? 800 : 600, style:`fill:${i===0 ? p.orange : p.ink}`}, s, String(i/2));
+  }
+  if (visSvar) el("line",{x1:X(mm + 2*i0), y1:54, x2:X(mm + 2*i0), y2:80, style:`stroke:${p.green};stroke-width:3`}, s);
+  el("text",{x:n0 + 10, y:142, "font-size":11, style:`fill:${p.ink}`}, s, "nonius 0,05 mm");
+  return {mm, i0};
+}
+let noVis = false;
+function drawNo(){
+  const v = +$("noV").value, r = drawNonius($("noSvg"), v, SKJERM, noVis);
+  $("noSteps").innerHTML = noVis
+    ? `Hovedskala: <b>${r.mm} mm</b> · Noniusstrek nr. ${r.i0} flukter: ${r.i0} · 0,05 = <b>${komma(r.i0*0.05)} mm</b><br>Mål = ${r.mm} + ${komma(r.i0*0.05)} = <span class="res">${komma(r.mm + r.i0*0.05)} mm</span>`
+    : "Hva viser skyvelæra? Skriv svaret ned før du trykker «Vis svaret».";
+  $("noVis").textContent = noVis ? "🙈 Skjul svaret" : "👁 Vis svaret";
+}
+$("noV").oninput = () => { noVis = true; drawNo(); };
+$("noVis").onclick = () => { noVis = !noVis; drawNo(); };
+$("noNy").onclick = () => { $("noV").value = (Math.round(Math.random()*1600)*0.05).toFixed(2); noVis = false; drawNo(); };
+drawNo();
+
+/* ---------- Mikrometer ---------- */
+function drawMikro(s, v, p, visSvar){
+  const h = Math.round(v*100), mm = Math.floor(h/100), halv = h % 100 >= 50, t = h % 50;
+  const px = 15, X = m => 40 + m*px, E = X(h/100), yl = 100;
+  s.replaceChildren();
+  el("rect",{x:0, y:0, width:560, height:200, style:`fill:${p.panel}`}, s);
+  // Hylse
+  el("rect",{x:10, y:76, width:E-10, height:48, style:`fill:${p.steelSoft};stroke:${p.steelDark};stroke-width:1.5`}, s);
+  el("line",{x1:10, y1:yl, x2:E, y2:yl, style:`stroke:${p.ink};stroke-width:1.5`}, s);
+  for (let m=0; m<=25; m++){
+    if (X(m) <= E + 0.5){
+      el("line",{x1:X(m), y1:yl, x2:X(m), y2:yl-(m%5===0 ? 16 : 11), style:`stroke:${p.ink};stroke-width:1.5`}, s);
+      if (m%5===0) el("text",{x:X(m), y:68, "text-anchor":"middle", "font-size":14, "font-weight":700, style:`fill:${p.ink}`}, s, String(m));
+    }
+    if (m < 25 && X(m+0.5) <= E + 0.5) el("line",{x1:X(m+0.5), y1:yl, x2:X(m+0.5), y2:yl+10, style:`stroke:${halv && m===mm && visSvar ? p.green : p.ink};stroke-width:${halv && m===mm && visSvar ? 3 : 1.5}`}, s);
+  }
+  // Trommel
+  el("path",{d:`M${E} 56 L${E+14} 46 H${E+150} V154 H${E+14} L${E} 144 Z`, style:`fill:${p.steel};stroke:${p.steelDark};stroke-width:1.5`}, s);
+  const sp = 8;
+  for (let k = t - 6; k <= t + 6; k++){
+    const yy = yl - (k - t)*sp;
+    if (yy < 50 || yy > 150) continue;
+    const kk = ((k % 50) + 50) % 50, lang = kk%5===0;
+    el("line",{x1:E, y1:yy, x2:E + (lang ? 20 : 12), y2:yy, style:`stroke:${visSvar && k===t ? p.green : p.ink};stroke-width:${visSvar && k===t ? 3 : 1.4}`}, s);
+    if (lang) el("text",{x:E+24, y:yy+5, "font-size":13, "font-weight":700, style:`fill:${p.ink}`}, s, String(kk));
+  }
+  el("rect",{x:E+150, y:70, width:40, height:60, rx:4, style:`fill:${p.steelDark}`}, s);
+  el("text",{x:14, y:192, "font-size":11, style:`fill:${p.muted}`}, s, "hylse: hele mm over linja, halve mm under");
+  el("text",{x:Math.min(E+20, 400), y:172, "font-size":11, style:`fill:${p.muted}`}, s, "trommel: 0,01 mm per strek");
+  return {mm, halv, t};
+}
+let miVis = false;
+function drawMi(){
+  const r = drawMikro($("miSvg"), +$("miV").value, SKJERM, miVis);
+  $("miSteps").innerHTML = miVis
+    ? `${r.mm} mm + ${r.halv ? "0,50" : "0,00"} mm + ${r.t} · 0,01 = <span class="res">${komma(r.mm + (r.halv ? 0.5 : 0) + r.t/100)} mm</span>`
+    : "Hva viser mikrometeret? Skriv svaret ned før du trykker «Vis svaret».";
+  $("miVis").textContent = miVis ? "🙈 Skjul svaret" : "👁 Vis svaret";
+}
+$("miV").oninput = () => { miVis = true; drawMi(); };
+$("miVis").onclick = () => { miVis = !miVis; drawMi(); };
+$("miNy").onclick = () => { $("miV").value = (Math.round(Math.random()*2400 + 50)/100).toFixed(2); miVis = false; drawMi(); };
+drawMi();
+
+/* ---------- Del 4: måleur ---------- */
+const mu = $("muSvg");
+let muVinkel = 0, muPause = false, muMax = 0, muMin = 0, muSist = 0;
+const MU = {cx:400, cy:110, r:86};
+(function lagUr(){
+  // Aksel
+  el("rect",{x:180, y:230, width:360, height:44, rx:6, style:"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"}, mu);
+  el("rect",{x:150, y:222, width:34, height:60, rx:3, style:"fill:var(--steel-dark)"}, mu);
+  el("path",{d:"M180 252 H540", style:"stroke:var(--steel-dark);stroke-dasharray:8 5"}, mu);
+  el("g",{id:"muMerke"}, mu);
+  // Spiss og stamme
+  el("rect",{x:395, y:196, width:10, height:30, id:"muStamme", style:"fill:var(--steel-dark)"}, mu);
+  el("circle",{cx:400, cy:230, r:5, id:"muSpiss", style:"fill:var(--red)"}, mu);
+  // Ur
+  el("circle",{cx:MU.cx, cy:MU.cy, r:MU.r+8, style:"fill:var(--steel-dark)"}, mu);
+  el("circle",{cx:MU.cx, cy:MU.cy, r:MU.r, style:"fill:var(--panel)"}, mu);
+  for (let i=0; i<100; i++){
+    const a = i*3.6*Math.PI/180, L = i%10===0 ? 14 : i%5===0 ? 10 : 6;
+    el("line",{x1:MU.cx + Math.sin(a)*MU.r, y1:MU.cy - Math.cos(a)*MU.r, x2:MU.cx + Math.sin(a)*(MU.r-L), y2:MU.cy - Math.cos(a)*(MU.r-L), style:`stroke:var(--ink);stroke-width:${i%10===0 ? 2 : 1}`}, mu);
+    if (i%10===0){ const tall = i<=50 ? i : 100-i; el("text",{x:MU.cx + Math.sin(a)*(MU.r-26), y:MU.cy - Math.cos(a)*(MU.r-26) + 4, "text-anchor":"middle", "font-size":11, style:"fill:var(--ink)"}, mu, String(tall)); }
+  }
+  el("text",{x:MU.cx, y:MU.cy+40, "text-anchor":"middle", "font-size":10, style:"fill:var(--muted)"}, mu, "0,01 mm");
+  el("line",{x1:MU.cx, y1:MU.cy+12, x2:MU.cx, y2:MU.cy-MU.r+10, id:"muViser", style:"stroke:var(--red);stroke-width:3;stroke-linecap:round"}, mu);
+  el("circle",{cx:MU.cx, cy:MU.cy, r:6, style:"fill:var(--ink)"}, mu);
+  el("text",{x:150, y:300, "font-size":12, style:"fill:var(--muted)"}, mu, "chuck · akselen dreies rundt");
+})();
+function muTegn(){
+  const k = +$("muK").value, utslag = k/2*Math.sin(muVinkel);
+  $("muViser").setAttribute("transform", `rotate(${utslag/0.01*3.6} ${MU.cx} ${MU.cy})`);
+  const dy = -utslag*150; // overdrevet bevegelse
+  $("muSpiss").setAttribute("cy", 230 + dy); $("muStamme").setAttribute("height", 30 + dy);
+  const g = $("muMerke"); g.replaceChildren();
+  const x = 360 + Math.cos(muVinkel)*160; el("rect",{x:x-3, y:232, width:6, height:40, rx:2, style:`fill:var(--orange);opacity:${0.4 + 0.6*Math.max(0, Math.sin(muVinkel+Math.PI/2))}`}, g);
+  muMax = Math.max(muMax, utslag); muMin = Math.min(muMin, utslag);
+  $("muMax").textContent = (muMax >= 0 ? "+" : "") + komma(muMax);
+  $("muMin").textContent = (muMin > 0 ? "+" : muMin < -0.0049 ? "−" : "") + komma(Math.abs(muMin));
+  const kast = muMax - muMin;
+  $("muKast").textContent = komma(kast) + " mm";
+}
+function muStatus(){
+  const k = +$("muK").value;
+  $("muKv").textContent = komma(k) + " mm";
+  if (k <= 0.05) setStatus("muTxt", `Kast ${komma(k)} mm. Krav maks 0,05 mm: godkjent.`, "ok");
+  else setStatus("muTxt", `Kast ${komma(k)} mm. Krav maks 0,05 mm: ikke godkjent – akselen må rettes eller byttes.`, "bad");
+}
+$("muK").oninput = () => { muMax = 0; muMin = 0; muStatus(); muTegn(); };
+$("muPause").onclick = () => { muPause = !muPause; $("muPause").textContent = muPause ? "▶ Fortsett" : "⏸ Pause"; };
+const roligAnim = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function muLoop(ts){
+  const dt = muSist ? Math.min(ts - muSist, 50) : 0; muSist = ts;
+  if (!muPause && !roligAnim) muVinkel += dt/1000*1.6;
+  muTegn(); requestAnimationFrame(muLoop);
+}
+muStatus();
+if (roligAnim){ muVinkel = Math.PI/2; muTegn(); muVinkel = -Math.PI/2; muTegn(); }
+requestAnimationFrame(muLoop);
+
+/* ---------- Del 5: velg verktøy ---------- */
+const VERKTOY = ["Stållinjal", "Skyvelære", "Mikrometer", "Måleur", "Toleransetolk"];
+const VG = [
+  {o:"Kappe et flatstål til 300 ± 1 mm", s:0, f:"± 1 mm er grovt. Stållinjal eller målebånd holder."},
+  {o:"Diameter på en aksel, Ø20 ± 0,2 mm", s:1, f:"Toleransen er 0,4 mm bred. Skyvelæra viser 0,05 – fint nok."},
+  {o:"Lagersete på en aksel, Ø25 ± 0,01 mm", s:2, f:"Bare 0,02 mm toleranse. Det trengs mikrometer."},
+  {o:"Dybden på et spor, 8 ± 0,1 mm", s:1, f:"Dybdestanga på skyvelæra."},
+  {o:"Slingrer akselen i dreiebenken? Maks 0,02 mm", s:3, f:"Kast måles med måleur mens akselen dreies."},
+  {o:"Kontrollere 500 like hull, Ø12 H7", s:4, f:"Toleransetolk: rask gå/ikke-gå-kontroll uten avlesning."},
+  {o:"Slark i et lager på en vifte", s:3, f:"Måleuret mot akselen, løft akselen opp og ned."},
+  {o:"Innvendig diameter på et rør, Ø40 ± 0,3 mm", s:1, f:"Nebbene på skyvelæra."}
+];
+let vgNr = 0, vgPoeng = 0, vgSvart = false;
+VERKTOY.forEach((v, i) => { const b = document.createElement("button"); b.className = "btn"; b.textContent = v; b.onclick = () => vgSvar(i); $("vgBtns").appendChild(b); });
+function vgVis(){
+  const q = VG[vgNr]; vgSvart = false;
+  $("vgNr").textContent = `Oppgave ${vgNr+1} av ${VG.length}`; $("vgPoeng").textContent = `Riktige: ${vgPoeng}`;
+  $("vgOppg").textContent = q.o;
+  [...$("vgBtns").children].forEach(b => { b.classList.remove("on"); b.disabled = false; });
+  setStatus("vgTxt", "Velg et verktøy.", "info");
+  $("vgNeste").textContent = vgNr === VG.length-1 ? "Start på nytt ↺" : "Neste oppgave →";
+}
+function vgSvar(i){
+  if (vgSvart) return; vgSvart = true;
+  const q = VG[vgNr], bs = [...$("vgBtns").children];
+  bs.forEach(b => b.disabled = true); bs[q.s].disabled = false; bs[q.s].classList.add("on");
+  if (i === q.s){ vgPoeng++; setStatus("vgTxt", "Riktig! " + q.f, "ok"); }
+  else setStatus("vgTxt", `Ikke helt. Svaret er ${VERKTOY[q.s].toLowerCase()}. ${q.f}`, "warn");
+  $("vgPoeng").textContent = `Riktige: ${vgPoeng}`;
+}
+$("vgNeste").onclick = () => { if (vgNr === VG.length-1){ vgNr = 0; vgPoeng = 0; } else vgNr++; vgVis(); };
+vgVis();
+
+/* ---------- Oppgavefigurer (svart-hvitt, uten fasit) ---------- */
+drawNonius($("o1a"), 12.35, PAPIR, false);
+drawNonius($("o1b"), 31.70, PAPIR, false);
+drawNonius($("o1c"), 47.05, PAPIR, false);
+drawMikro($("o2a"), 7.23, PAPIR, false);
+drawMikro($("o2b"), 14.68, PAPIR, false);
+drawMikro($("o2c"), 21.04, PAPIR, false);
+/* ---------- Oppgaver ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToImg(svg){
+  const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
+  const img = new Image(); await new Promise(r => { img.onload = r; img.onerror = r; img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str); });
+  const c = document.createElement("canvas"); c.width = vb.width*2; c.height = vb.height*2; const x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+  const im = document.createElement("img"); im.src = c.toDataURL("image/png"); im.width = vb.width; im.height = vb.height; return im;
+}
+$("btnCopy").onclick = async () => {
+  const orig = $("oppgavetekst"), clone = orig.cloneNode(true);
+  const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>
