@@ -2,6 +2,12 @@
   "buildCommand": "node bygg.js",
   "outputDirectory": "public",
   "cleanUrls": true,
+  "redirects": [
+    { "source": "/vg2/elektro/leksjon-2-maling-med-multimeter", "destination": "/vg2/elektro/leksjon-3-maling-med-multimeter", "permanent": false },
+    { "source": "/vg2/elektro/leksjon-3-motorstyring", "destination": "/vg2/elektro/leksjon-4-motorstyring", "permanent": false },
+    { "source": "/laerer-k7q4mz/vg2/elektro/leksjon-2-maling-med-multimeter", "destination": "/laerer-k7q4mz/vg2/elektro/leksjon-3-maling-med-multimeter", "permanent": false },
+    { "source": "/laerer-k7q4mz/vg2/elektro/leksjon-3-motorstyring", "destination": "/laerer-k7q4mz/vg2/elektro/leksjon-4-motorstyring", "permanent": false }
+  ],
   "headers": [
     { "source": "/(.*)", "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }] }
   ]
