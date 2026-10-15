@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maskinering 1 · Vg2 industriteknologi: Steg for steg</title>
+<style>
+/* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{font-size:clamp(18px,0.6vw + 13px,24px)}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 64px}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin:0}
+h2{font-size:1.3rem;margin:0;display:flex;align-items:center;gap:.6rem}
+p{margin:0}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.2rem 0}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+button{font:700 .9rem/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+.tools{display:flex;gap:.5rem}
+.navn{margin:.4rem 0 1.2rem}
+
+.oppg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,28px);display:grid;gap:16px;margin-top:18px;break-inside:avoid}
+.nr{display:inline-grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;flex:none}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body)}
+
+/* oppgave 1: bilde → navn og enhet */
+.tre{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kort{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;align-content:start;text-align:center}
+.kort svg{max-height:110px}
+.kort.U{border-top:8px solid var(--u)} .kort.I{border-top:8px solid var(--i)} .kort.R{border-top:8px solid var(--r)}
+.sym{font:800 2.6rem/1 var(--body)}
+.kort .valg{justify-content:center;flex-wrap:nowrap;gap:8px}
+.kort .valg>span{min-width:0;padding:.5rem .8rem}
+
+/* valg: sett ring rundt */
+.valg{display:flex;flex-wrap:wrap;gap:12px}
+.valg>span{position:relative;display:inline-grid;place-items:center;min-width:4.2rem;padding:.55rem 1rem;border:2px solid var(--line);border-radius:12px;font-weight:700;font-size:1.15rem}
+.valg>span:has(.fasit:not([hidden])){border-color:var(--r);background:var(--r-soft);box-shadow:0 0 0 4px var(--r)}
+.valg .fasit{position:absolute;top:-.8rem;right:-.6rem;background:var(--r);color:#fff;border-radius:50%;width:1.5rem;height:1.5rem;display:grid;place-items:center;font-size:.9rem}
+
+.to{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.to>div{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;justify-items:center}
+.to svg{max-height:160px}
+.bokstav{font:800 1.6rem/1 var(--body)}
+
+/* luker og svarruter */
+.luke{display:inline-block;min-width:5.5em;border-bottom:2px solid var(--ink);text-align:center;padding:0 .3em;margin:0 .2em}
+.fasit{color:var(--r);font-weight:700}
+.ordbank{display:flex;flex-wrap:wrap;gap:8px}
+.ordbank span{padding:.3rem .8rem;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700}
+.setning{font-size:1.15rem;line-height:2.4}
+
+.regn{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:20px;align-items:center}
+.linje{font:700 1.5rem/2.2 var(--mono)}
+.linje .luke{min-width:3em}
+
+.jn{width:100%;border-collapse:collapse;font-size:1.1rem}
+.jn td{border-bottom:1px solid var(--line);padding:10px 6px;vertical-align:middle}
+.jn td.ikon{width:3rem;font-size:1.8rem;text-align:center}
+.jn .valg{flex-wrap:nowrap;justify-content:flex-end}
+
+.flow{stroke-dasharray:4 14;animation:flow 1.1s linear infinite}
+.flow.fort{animation-duration:.5s}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.glod{animation:glod 2s ease-in-out infinite}
+@keyframes glod{50%{opacity:.6}}
+
+@media (max-width:620px){.tre,.to,.regn{grid-template-columns:1fr}}
+@media print{.tools{display:none}.oppg{border-color:#999}body{background:#fff}}
+@media (prefers-reduced-motion:reduce){.flow,.glod{animation:none}}
+
+/* felles for alle steg-for-steg-sider */
+.bilder{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.bilder .kort svg{max-height:130px}
+.kort.P{border-top:8px solid var(--orange)}
+.fig{background:var(--bg);border-radius:14px;padding:12px}
+.fig svg{max-height:260px}
+.svar{border-bottom:2px solid var(--ink);min-height:2.2em;padding-top:6px}
+.rekke{display:grid;gap:10px;padding:0;margin:0;list-style:none}
+.rekke li{display:grid;grid-template-columns:3rem 1fr;gap:12px;align-items:center;font-size:1.1rem}
+.rekke .luke{min-width:2.4em}
+.jn td .luke{min-width:7em}
+</style>
+</head>
+<body>
+<div class="wrap" id="oppgavetekst">
+
+<div class="top">
+  <div>
+    <p class="tag">Maskinering 1 · Vg2 industriteknologi</p>
+    <h1>Steg for steg: Skjærehastighet, turtall og mating</h1>
+  </div>
+  <div class="tools">
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <button type="button" onclick="print()">Skriv ut</button>
+  </div>
+</div>
+<p class="navn">Navn: ______________________</p>
+
+<div class="oppg">
+ <h2><span class="nr">1</span>Hva roterer? Sett ring rundt.</h2>
+  <div class="to">
+    <div><svg viewBox="0 0 200 110" aria-label="Dreiebenk: emnet roterer"><rect x="10" y="30" width="40" height="50" fill="var(--wire)"/><rect x="50" y="42" width="110" height="26" rx="4" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/><path d="M110 30 a14 8 0 1 1 -1 0" fill="none" stroke="var(--orange)" stroke-width="3"/><polygon points="120,90 140,70 160,90" fill="var(--muted)"/></svg><p class="bokstav">Dreiebenk</p><div class="valg"><span>emnet<span class="fasit" hidden>✓</span></span><span>verktøyet</span></div></div>
+    <div><svg viewBox="0 0 200 110" aria-label="Fres: fresen roterer"><rect x="85" y="5" width="30" height="50" fill="var(--wire)"/><rect x="90" y="55" width="20" height="20" fill="var(--muted)"/><path d="M80 40 a20 8 0 1 0 40 0" fill="none" stroke="var(--orange)" stroke-width="3"/><rect x="30" y="78" width="140" height="22" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/></svg><p class="bokstav">Fres</p><div class="valg"><span>emnet</span><span>verktøyet<span class="fasit" hidden>✓</span></span></div></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">2</span>Les turtallstabellen.</h2>
+  <div class="tablewrap"><table class="jn" style="text-align:center">
+    <tr><td><b>Ø (mm)</b></td><td><b>v<sub>c</sub> 25</b></td><td><b>v<sub>c</sub> 100</b></td><td><b>v<sub>c</sub> 200</b></td></tr>
+    <tr><td><b>10</b></td><td>800</td><td>3180</td><td>6370</td></tr>
+    <tr><td><b>20</b></td><td>400</td><td>1590</td><td>3180</td></tr>
+  </table></div>
+  <div class="linje">Ø20 og v<sub>c</sub> 100: n = <span class="luke"><span class="fasit" hidden>1590</span></span> o/min</div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">3</span>Tykt eller tynt emne? Fyll inn.</h2>
+  <div class="to">
+    <div><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="18" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="4"/></svg><b>Tynt</b><p><span class="luke"><span class="fasit" hidden>høyt</span></span> turtall</p></div>
+    <div><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="4"/></svg><b>Tykt</b><p><span class="luke"><span class="fasit" hidden>lavt</span></span> turtall</p></div>
+  </div>
+<div class="ordbank"><span>lavt</span><span>høyt</span></div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">4</span>Hva er galt? Sett ring rundt.</h2>
+  <table class="jn">
+    <tr><td class="ikon">🔥</td><td>Sponet blir blått, og skjæret slites fort.</td><td><div class="valg"><span>senk turtallet<span class="fasit" hidden>✓</span></span><span>øk turtallet</span></div></td></tr>
+    <tr><td class="ikon">〰️</td><td>Grove riller på overflaten.</td><td><div class="valg"><span>mindre mating<span class="fasit" hidden>✓</span></span><span>mer mating</span></div></td></tr>
+    <tr><td class="ikon">🌀</td><td>Lange spon vikler seg rundt chucken.</td><td><div class="valg"><span>mindre mating</span><span>mer mating<span class="fasit" hidden>✓</span></span></div></td></tr>
+  </table>
+</div>
+
+</div>
+
+<script>
+const fb = document.getElementById("fasitBtn");
+fb.addEventListener("click", () => {
+  const på = fb.getAttribute("aria-pressed") !== "true";
+  fb.setAttribute("aria-pressed", på);
+  fb.textContent = på ? "Skjul fasit" : "Vis fasit";
+  document.querySelectorAll(".fasit").forEach(e => e.hidden = !på);
+});
+</script>
+</body>
+</html>

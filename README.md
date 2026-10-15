@@ -43,6 +43,10 @@ Lærerne vedlikeholder bare filene i `vg1/` og `vg2/`. Ved hver publisering lage
 
 Ny fasit må stå i `<span class="fasit" hidden>…</span>` (eller `class="fasit-svg"` i SVG-figurer), og lærernotater i `<details class="laerer">`, ellers kommer de med i elevversjonen. Bygget stopper med feil hvis noe fasit-merket blir igjen.
 
+## Steg for steg (tilpassede oppgaver)
+
+Enklere oppgaver for elever som trenger mer støtte legges ved siden av leksjonen, med samme navn og `-steg-for-steg` til slutt, for eksempel `vg1/elektro/leksjon-1-spenning-strom-og-motstand-steg-for-steg.html`. Siden står ikke på forsiden. Læreren finner den via lenken «Steg for steg» i det røde feltet på lærerversjonen av leksjonen, og deler elevversjonen av siden direkte med eleven. Fasit merkes som i leksjonene.
+
 ## Deploy
 
 Vercel publiserer fra grenen `main`. Byggkommando og mappe står i `vercel.json`, så ingenting må stilles inn i Vercel. Prøv bygget lokalt med `node bygg.js`.

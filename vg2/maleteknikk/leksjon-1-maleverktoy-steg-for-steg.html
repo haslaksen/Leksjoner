@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Måleteknikk 1 · Vg2 industriteknologi: Steg for steg</title>
+<style>
+/* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{font-size:clamp(18px,0.6vw + 13px,24px)}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 64px}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin:0}
+h2{font-size:1.3rem;margin:0;display:flex;align-items:center;gap:.6rem}
+p{margin:0}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.2rem 0}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+button{font:700 .9rem/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+.tools{display:flex;gap:.5rem}
+.navn{margin:.4rem 0 1.2rem}
+
+.oppg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,28px);display:grid;gap:16px;margin-top:18px;break-inside:avoid}
+.nr{display:inline-grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;flex:none}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body)}
+
+/* oppgave 1: bilde → navn og enhet */
+.tre{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kort{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;align-content:start;text-align:center}
+.kort svg{max-height:110px}
+.kort.U{border-top:8px solid var(--u)} .kort.I{border-top:8px solid var(--i)} .kort.R{border-top:8px solid var(--r)}
+.sym{font:800 2.6rem/1 var(--body)}
+.kort .valg{justify-content:center;flex-wrap:nowrap;gap:8px}
+.kort .valg>span{min-width:0;padding:.5rem .8rem}
+
+/* valg: sett ring rundt */
+.valg{display:flex;flex-wrap:wrap;gap:12px}
+.valg>span{position:relative;display:inline-grid;place-items:center;min-width:4.2rem;padding:.55rem 1rem;border:2px solid var(--line);border-radius:12px;font-weight:700;font-size:1.15rem}
+.valg>span:has(.fasit:not([hidden])){border-color:var(--r);background:var(--r-soft);box-shadow:0 0 0 4px var(--r)}
+.valg .fasit{position:absolute;top:-.8rem;right:-.6rem;background:var(--r);color:#fff;border-radius:50%;width:1.5rem;height:1.5rem;display:grid;place-items:center;font-size:.9rem}
+
+.to{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.to>div{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;justify-items:center}
+.to svg{max-height:160px}
+.bokstav{font:800 1.6rem/1 var(--body)}
+
+/* luker og svarruter */
+.luke{display:inline-block;min-width:5.5em;border-bottom:2px solid var(--ink);text-align:center;padding:0 .3em;margin:0 .2em}
+.fasit{color:var(--r);font-weight:700}
+.ordbank{display:flex;flex-wrap:wrap;gap:8px}
+.ordbank span{padding:.3rem .8rem;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700}
+.setning{font-size:1.15rem;line-height:2.4}
+
+.regn{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:20px;align-items:center}
+.linje{font:700 1.5rem/2.2 var(--mono)}
+.linje .luke{min-width:3em}
+
+.jn{width:100%;border-collapse:collapse;font-size:1.1rem}
+.jn td{border-bottom:1px solid var(--line);padding:10px 6px;vertical-align:middle}
+.jn td.ikon{width:3rem;font-size:1.8rem;text-align:center}
+.jn .valg{flex-wrap:nowrap;justify-content:flex-end}
+
+.flow{stroke-dasharray:4 14;animation:flow 1.1s linear infinite}
+.flow.fort{animation-duration:.5s}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.glod{animation:glod 2s ease-in-out infinite}
+@keyframes glod{50%{opacity:.6}}
+
+@media (max-width:620px){.tre,.to,.regn{grid-template-columns:1fr}}
+@media print{.tools{display:none}.oppg{border-color:#999}body{background:#fff}}
+@media (prefers-reduced-motion:reduce){.flow,.glod{animation:none}}
+
+/* felles for alle steg-for-steg-sider */
+.bilder{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.bilder .kort svg{max-height:130px}
+.kort.P{border-top:8px solid var(--orange)}
+.fig{background:var(--bg);border-radius:14px;padding:12px}
+.fig svg{max-height:260px}
+.svar{border-bottom:2px solid var(--ink);min-height:2.2em;padding-top:6px}
+.rekke{display:grid;gap:10px;padding:0;margin:0;list-style:none}
+.rekke li{display:grid;grid-template-columns:3rem 1fr;gap:12px;align-items:center;font-size:1.1rem}
+.rekke .luke{min-width:2.4em}
+.jn td .luke{min-width:7em}
+</style>
+</head>
+<body>
+<div class="wrap" id="oppgavetekst">
+
+<div class="top">
+  <div>
+    <p class="tag">Måleteknikk 1 · Vg2 industriteknologi</p>
+    <h1>Steg for steg: Måleverktøy</h1>
+  </div>
+  <div class="tools">
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <button type="button" onclick="print()">Skriv ut</button>
+  </div>
+</div>
+<p class="navn">Navn: ______________________</p>
+
+<div class="oppg">
+ <h2><span class="nr">1</span>Hva heter verktøyet? Skriv ordet.</h2>
+  <div class="tre">
+    <div class="kort"><svg viewBox="0 0 160 90" aria-label="Skyvelære"><rect x="10" y="20" width="140" height="16" fill="var(--bg)" stroke="var(--wire)" stroke-width="3"/><path d="M10 20 V75 H24 V36" fill="var(--bg)" stroke="var(--wire)" stroke-width="3"/><path d="M60 14 H90 V42 H74 V75 H60 Z" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/></svg><span class="luke"><span class="fasit" hidden>skyvelære</span></span></div>
+    <div class="kort"><svg viewBox="0 0 160 90" aria-label="Mikrometer"><path d="M30 20 A40 40 0 0 0 30 80 H50" fill="none" stroke="var(--wire)" stroke-width="8"/><rect x="50" y="40" width="40" height="18" fill="var(--bg)" stroke="var(--wire)" stroke-width="3"/><rect x="90" y="36" width="40" height="26" rx="4" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/></svg><span class="luke"><span class="fasit" hidden>mikrometer</span></span></div>
+    <div class="kort"><svg viewBox="0 0 160 90" aria-label="Måleur"><circle cx="80" cy="42" r="34" fill="var(--surface)" stroke="var(--wire)" stroke-width="4"/><line x1="80" y1="42" x2="100" y2="22" stroke="var(--bad)" stroke-width="3"/><line x1="80" y1="76" x2="80" y2="90" stroke="var(--wire)" stroke-width="4"/></svg><span class="luke"><span class="fasit" hidden>måleur</span></span></div>
+  </div>
+<div class="ordbank"><span>måleur</span><span>skyvelære</span><span>mikrometer</span></div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">2</span>Hvor nøyaktig? Sett ring rundt.</h2>
+  <table class="jn">
+    <tr><td>Skyvelære</td><td><div class="valg"><span>1 mm</span><span>0,05 mm<span class="fasit" hidden>✓</span></span><span>0,01 mm</span></div></td></tr>
+    <tr><td>Mikrometer</td><td><div class="valg"><span>1 mm</span><span>0,05 mm</span><span>0,01 mm<span class="fasit" hidden>✓</span></span></div></td></tr>
+    <tr><td>Stållinjal</td><td><div class="valg"><span>1 mm<span class="fasit" hidden>✓</span></span><span>0,05 mm</span><span>0,01 mm</span></div></td></tr>
+  </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">3</span>Les av hele millimeter.</h2>
+  <div class="fig">
+    <svg viewBox="0 0 420 90" aria-label="Linjal med nullstreken på noniusen like etter 23 mm">
+      <rect x="10" y="10" width="400" height="36" fill="var(--surface)" stroke="var(--wire)" stroke-width="2"/>
+      <g stroke="var(--ink)" stroke-width="2">
+        <line x1="30" y1="46" x2="30" y2="20"/><line x1="130" y1="46" x2="130" y2="20"/><line x1="230" y1="46" x2="230" y2="20"/><line x1="330" y1="46" x2="330" y2="20"/>
+        <line x1="40" y1="46" x2="40" y2="34"/><line x1="50" y1="46" x2="50" y2="34"/><line x1="60" y1="46" x2="60" y2="34"/><line x1="70" y1="46" x2="70" y2="34"/><line x1="80" y1="46" x2="80" y2="28"/><line x1="90" y1="46" x2="90" y2="34"/><line x1="100" y1="46" x2="100" y2="34"/><line x1="110" y1="46" x2="110" y2="34"/><line x1="120" y1="46" x2="120" y2="34"/>
+        <line x1="140" y1="46" x2="140" y2="34"/><line x1="150" y1="46" x2="150" y2="34"/><line x1="160" y1="46" x2="160" y2="34"/><line x1="170" y1="46" x2="170" y2="34"/><line x1="180" y1="46" x2="180" y2="28"/><line x1="190" y1="46" x2="190" y2="34"/><line x1="200" y1="46" x2="200" y2="34"/><line x1="210" y1="46" x2="210" y2="34"/><line x1="220" y1="46" x2="220" y2="34"/>
+        <line x1="240" y1="46" x2="240" y2="34"/><line x1="250" y1="46" x2="250" y2="34"/><line x1="260" y1="46" x2="260" y2="34"/><line x1="270" y1="46" x2="270" y2="34"/><line x1="280" y1="46" x2="280" y2="28"/><line x1="290" y1="46" x2="290" y2="34"/><line x1="300" y1="46" x2="300" y2="34"/><line x1="310" y1="46" x2="310" y2="34"/><line x1="320" y1="46" x2="320" y2="34"/>
+      </g>
+      <text x="30" y="19" text-anchor="middle" font-size="11" fill="var(--ink)">0</text><text x="130" y="19" text-anchor="middle" font-size="11" fill="var(--ink)">10</text><text x="230" y="19" text-anchor="middle" font-size="11" fill="var(--ink)">20</text><text x="330" y="19" text-anchor="middle" font-size="11" fill="var(--ink)">30</text>
+      <rect x="250" y="46" width="120" height="34" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+      <line x1="263" y1="46" x2="263" y2="72" stroke="var(--bad)" stroke-width="3"/><text x="263" y="88" text-anchor="middle" font-size="11" font-weight="800" fill="var(--bad)">0</text>
+    </svg>
+  </div>
+  <p>Se på den røde nullstreken.</p>
+  <div class="linje">Hele millimeter: <span class="luke"><span class="fasit" hidden>23</span></span> mm</div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">4</span>Stemmer det? Sett ring rundt Ja eller Nei.</h2>
+  <table class="jn">
+    <tr><td class="ikon">🌡️</td><td>Jeg venter til delen er kald før jeg måler.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">✊</td><td>Jeg klemmer hardt med skyvelæra.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
+    <tr><td class="ikon">🔄</td><td>Jeg skrur mikrometeret med skralla.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+  </table>
+</div>
+
+</div>
+
+<script>
+const fb = document.getElementById("fasitBtn");
+fb.addEventListener("click", () => {
+  const på = fb.getAttribute("aria-pressed") !== "true";
+  fb.setAttribute("aria-pressed", på);
+  fb.textContent = på ? "Skjul fasit" : "Vis fasit";
+  document.querySelectorAll(".fasit").forEach(e => e.hidden = !på);
+});
+</script>
+</body>
+</html>
