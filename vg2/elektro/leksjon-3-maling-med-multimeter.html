@@ -141,11 +141,11 @@ table.t th{background:var(--steel-soft)}
 .minis figure{margin:0; border:1px solid var(--muted); border-radius:8px; padding:.4rem; background:#fff}
 .minis figcaption{font-weight:700; font-size:.9rem; color:#000}
 .minis svg{display:block; width:100%; height:auto}
-.kfig{display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin:.6rem 0}
+.kfig{display:grid; grid-template-columns:1fr; gap:.8rem; margin:.6rem 0; max-width:820px}
 .kfig figure{margin:0; border:1px solid var(--muted); border-radius:8px; padding:.4rem; background:#fff; break-inside:avoid}
 .kfig figcaption{font-weight:700; font-size:.9rem; color:#000}
 .kfig svg{display:block; width:100%; height:auto}
-#kab-svg svg{display:block; width:100%; height:auto}
+#krets-svg svg{display:block; width:100%; height:auto}
 .formelark{display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; font-size:.95rem; border:1px solid var(--muted); border-radius:8px; padding:.5rem .8rem; margin:.5rem 0 1rem}
 .toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
 .toast.show{opacity:1}
@@ -265,11 +265,11 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
       <div class="card" style="margin-top:1rem">
         <h3>Plan for to skoletimer</h3>
         <table class="t plan">
-          <tr><th colspan="2">Time 1 · Likestrøm (DC) og motstand</th></tr>
+          <tr><th colspan="2">Time 1 · Likestrøm (DC) og kretsen</th></tr>
           <tr><td>0–7 min</td><td>Del 1: bli kjent med multimeteret</td></tr>
           <tr><td>7–18 min</td><td>Del 2: slik måler du – fem målinger</td></tr>
           <tr><td>18–25 min</td><td>Del 3: feilsøking i 24 V-krets</td></tr>
-          <tr><td>25–31 min</td><td>Del 4: måling på kabler, pære og varmeelement</td></tr>
+          <tr><td>25–31 min</td><td>Del 4: en krets har flere ledere</td></tr>
           <tr><td>31–45 min</td><td>Oppgave 1, 2 og 3</td></tr>
           <tr><th colspan="2">Time 2 · Vekselstrøm (AC)</th></tr>
           <tr><td>0–6 min</td><td>Del 5: nettet – TN og IT</td></tr>
@@ -373,19 +373,19 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
 </section>
 
 <!-- DEL 4 -->
-<section class="slide" id="kabler" data-nav="4 Kabler og utstyr">
+<section class="slide" id="krets" data-nav="4 Flere ledere">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 6 min · Spenningsløst</div>
-    <h2>Mål på kabler, pære og varmeelement</h2>
-    <p class="lead">Spenningsløst og frakoblet. <b>0 Ω + pip</b> = hel · <b>OL</b> = brudd.</p>
-    <figure class="hbfig" style="max-width:920px;margin:0 auto">
-      <div id="kab-svg"></div>
-      <div class="ctrl"><span class="ctl-l">Velg</span><span class="chips2" id="kab-gj"></span></div>
-      <div class="ctrl"><span class="ctl-l">Mål mellom</span><span class="chips2" id="kab-p"></span></div>
-      <p id="kab-msg" class="hbmsg" aria-live="polite"></p>
+    <div class="kicker">Del 4 · ca. 6 min · Kretsen</div>
+    <h2>En krets har flere ledere</h2>
+    <p class="lead">Strømmen går <b>ut i brun (L)</b> og <b>tilbake i blå (N)</b>. Du måler alltid <b>mellom to ledere</b>.</p>
+    <figure class="hbfig" style="max-width:980px;margin:0 auto">
+      <div id="krets-svg"></div>
+      <div class="ctrl"><span class="ctl-l">Vis</span><span class="chips2" id="krets-modus"></span></div>
+      <div class="ctrl"><span class="ctl-l">Feil</span><span class="chips2" id="krets-feil"></span></div>
+      <p id="krets-msg" class="hbmsg" aria-live="polite"></p>
     </figure>
-    <p class="no-print" style="text-align:center;margin-top:.6rem">Øv selv på Ω og •))) i <a data-sim="multimeter">Multimeter-simulatoren</a>.</p>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Kontinuitet (•))) piper under ca. 30–50 Ω. Lampekabelen: brun leder har brudd. Mål brun–brun først (OL = brudd). Vis så at brun–blå gir OL på kabelsiden, men 72 Ω på lampesiden: målestrømmen fra multimeteret må gjennom pæra for å vise noe. En kald glødetråd har mye lavere motstand enn en varm (60 W-pære: ca. 70 Ω kald, ca. 880 Ω varm). Varmeelementet: 26,5 Ω gir 230² / 26,5 ≈ 2000 W (kobling til leksjon 2). OL mot røret betyr ingen direkte kontakt; full isolasjonskontroll gjøres med isolasjonsmåler (500 V) av elektrofagperson.</details>
+    <p class="no-print" style="text-align:center;margin-top:.6rem">Øv selv på V og Ω i <a data-sim="multimeter">Multimeter-simulatoren</a>.</p>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Hovedpoenget: én leder er ingen krets. Strømmen må ut i L og tilbake i N, og multimeteret måler alltid mellom to punkter. Start med «Lys på», så «Brudd i brun»: pæra slukker selv om bare én av lederne er brutt. Motstandsmåling gjøres spenningsløst fra kursen: målestrømmen fra multimeteret går ut i brun, gjennom glødetråden og tilbake i blå. 72 Ω er en kald 60 W-pære (varm ca. 880 Ω). OL = kretsen er ikke sluttet. Gulgrønn (PE) fører strøm bare ved feil. Spenningsmåling på 230 V gjøres av elektrofagperson; med brudd i én leder blir det 0 V mellom L og N ved lampa.</details>
   </div>
 </section>
 
@@ -615,19 +615,12 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 3 – Måling på kabler og utstyr <small>Time 1 · 5 min</small></h3>
-        <p>Alt er spenningsløst. Hva forteller målingen?</p>
+        <h3>Oppgave 3 – En krets har flere ledere <small>Time 1 · 5 min</small></h3>
         <div class="kfig" id="kfig"></div>
-        <table class="ot">
-          <tr><th style="width:3rem"></th><th>Hva forteller målingen?</th></tr>
-          <tr><td>a)</td><td class="tom"><span class="fasit" hidden><b>Brudd</b> i fasen (brun leder).</span></td></tr>
-          <tr><td>b)</td><td class="tom"><span class="fasit" hidden>Pæra er <b>hel</b> – målingen går gjennom glødetråden.</span></td></tr>
-          <tr><td>c)</td><td class="tom"><span class="fasit" hidden>Elementet er <b>helt</b>.</span></td></tr>
-          <tr><td>d)</td><td class="tom"><span class="fasit" hidden><b>Ingen kontakt</b> mellom leder og rør (ingen jordfeil).</span></td></tr>
-        </table>
-        <p>e) Du måler brun–brun gjennom klemma i en skjøt som er i orden. Hva viser måleren?</p><div class="svar"><span class="fasit" hidden>Ca. <b>0 Ω</b> og pip.</span></div>
-        <p>f) Brun–blå på kabelsiden av bruddet viser OL, selv om pæra er hel. Hvorfor?</p><div class="svar"><span class="fasit" hidden>Bruddet stopper målestrømmen, så den når ikke fram til pæra.</span></div>
-        <p><b>Ekstra</b> (leksjon 2): Elementet har 26,5 Ω. Hvor stor effekt gir det på 230 V?</p><div class="svar"><span class="fasit" hidden>P = U² / R = 230² / 26,5 ≈ <b>2000 W</b></span></div>
+        <p>a) Figur a: Hvor mange ledere går strømmen gjennom? Hvilke?</p><div class="svar"><span class="fasit" hidden><b>To:</b> ut i brun (L) og tilbake i blå (N).</span></div>
+        <p>b) Figur b er spenningsløs. Måleren viser 72 Ω. Hvilken vei går målestrømmen?</p><div class="svar"><span class="fasit" hidden>Ut i brun, gjennom pæra og tilbake i blå. Kretsen er hel.</span></div>
+        <p>c) Figur c viser OL. Hva betyr det?</p><div class="svar"><span class="fasit" hidden><b>Brudd</b>: målestrømmen kommer ikke rundt (her brudd i brun ved skjøten).</span></div>
+        <p>d) Hvorfor går det ingen strøm i gulgrønn leder?</p><div class="svar"><span class="fasit" hidden>Gulgrønn er <b>jord (PE)</b>. Den fører strøm bare ved feil.</span></div>
       </div>
 
       <div class="oppgave">
@@ -985,12 +978,11 @@ $("btnCopy").onclick = async () => {
   const src = $("oppgavetekst"), clone = src.cloneNode(true);
   const svgs = [...src.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
   for (let i=0;i<svgs.length;i++){
-    try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.round(w*(svgs[i].closest(".minis") ? .85 : svgs[i].closest(".kfig") ? .45 : 1.3)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
+    try { const [url, w] = await svgToPng(svgs[i]); const im = document.createElement("img"); im.src = url; im.width = Math.round(w*(svgs[i].closest(".minis") ? .85 : svgs[i].closest(".kfig") ? .65 : 1.3)); cs[i].replaceWith(im); } catch(e){ cs[i].remove(); }
   }
   clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
   clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
   clone.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "___"; });
-  clone.querySelectorAll(".kfig").forEach(m => { const t = document.createElement("table"); let tr; [...m.querySelectorAll("figure")].forEach((f,i) => { if (i%2===0) tr = t.insertRow(); const td = tr.insertCell(); td.innerHTML = f.innerHTML; td.style.padding = "4px"; }); m.replaceWith(t); });
   clone.querySelectorAll(".minis").forEach(m => { const t = document.createElement("table"); const tr = t.insertRow(); m.querySelectorAll("figure").forEach(f => { const td = tr.insertCell(); td.innerHTML = f.innerHTML; td.style.padding = "4px"; }); m.replaceWith(t); });
   clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="50px"; if (c.classList.contains("tom") && !c.textContent.trim()) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
   clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
@@ -1378,135 +1370,140 @@ requestAnimationFrame(loopTick);
 </script>
 <script>
 (function(){
-/* ---------- Del 4: naturtro kabler, klemmer, lyspære og varmeelement ---------- */
-const KAB = (function(){
-  const KC = {br:"#8b4a1c", sv:"#1d1d1d", gr:"#8f9499", bl:"#1f5fbf", pe:"#2f9a3c"};
-  const mm = (x,y,w=0) => `${x.toFixed?+x.toFixed(1):x} ${y.toFixed?+y.toFixed(1):y}`;
-  // grå kappe med lys stripe (gir rund form)
-  const kappe = (x1,x2,y,r=24) => `<rect x="${x1}" y="${y-r}" width="${x2-x1}" height="${2*r}" rx="6" fill="#6f747a"/><rect x="${x1}" y="${y-r+4}" width="${x2-x1}" height="${r*.7}" rx="4" fill="#8d9298"/><rect x="${x1}" y="${y-r+6}" width="${x2-x1}" height="4" rx="2" fill="#a9aeb3"/>`;
-  // leder med isolasjon (d = SVG-bane), PE får gule striper
-  const leder = (d,k) => `<path d="${d}" fill="none" stroke="#00000055" stroke-width="11" stroke-linecap="round"/><path d="${d}" fill="none" stroke="${KC[k]}" stroke-width="9" stroke-linecap="round"/>` +
-    (k==="pe" ? `<path d="${d}" fill="none" stroke="#f2c811" stroke-width="9" stroke-dasharray="9 9"/>` : "") +
-    `<path d="${d}" fill="none" stroke="#ffffff" stroke-opacity=".28" stroke-width="2.5" transform="translate(0 -2)"/>`;
-  // avisolert kobberende fra (x,y) i retning dir (+1 høyre, -1 venstre)
-  const kobber = (x,y,dir,len=16,frynset=false) => {
-    let s = `<line x1="${x}" y1="${y}" x2="${x+dir*len}" y2="${y}" stroke="#a85a22" stroke-width="7" stroke-linecap="${frynset?"butt":"round"}"/><line x1="${x}" y1="${y-1.5}" x2="${x+dir*len}" y2="${y-1.5}" stroke="#e7a46b" stroke-width="1.6"/>`;
-    if (frynset) for (let i=-2;i<=2;i++) s += `<line x1="${x+dir*len}" y1="${y+i*1.4}" x2="${x+dir*(len+5+Math.abs(i))}" y2="${y+i*2.6}" stroke="#c87533" stroke-width="1.3"/>`;
-    return s;
-  };
-  // rekkeklemme: n hull, sentrum x, rader ys
-  const klemme = (x,ys) => {
-    let s = `<rect x="${x-30}" y="${ys[0]-13}" width="60" height="${ys[ys.length-1]-ys[0]+26}" rx="3" fill="#e9ecef" stroke="#adb5bd" stroke-width="1.5"/>`;
-    ys.forEach(y => { s += `<rect x="${x-30}" y="${y-11}" width="60" height="22" fill="none" stroke="#ced4da"/><circle cx="${x}" cy="${y}" r="7.5" fill="#cfd4d9" stroke="#868e96" stroke-width="1.5"/><line x1="${x-5}" y1="${y+3}" x2="${x+5}" y2="${y-3}" stroke="#495057" stroke-width="2"/>`; });
-    return s;
-  };
-  // bane fra kappeende (sx,sy) til klemme (cx,y)
-  const bue = (sx,sy,cx,y) => `M${mm(sx,sy)} C${mm(sx+(cx-sx)*.45,sy)} ${mm(cx-(cx-sx)*.45,y)} ${mm(cx,y)}`;
+/* ---------- Del 4: en krets har flere ledere (naturtro kabel, skjøt og lampe) ---------- */
+const KRETS = (function(){
+  const F = {L:"#8b4a1c", N:"#1f5fbf", PE:"#2f9a3c"}, LED = ["L","N","PE"];
+  const Y = {L:100, N:126, PE:152}, C = {L:117, N:126, PE:135};   // y ved klemmer / inne i kabelen
+  const f1 = v => +v.toFixed(1);
+  // punkter langs en kubisk bezier
+  function bz(p0,p1,p2,p3,n=16){ const o=[]; for(let k=1;k<=n;k++){const u=k/n,v=1-u; o.push([v*v*v*p0[0]+3*v*v*u*p1[0]+3*v*u*u*p2[0]+u*u*u*p3[0], v*v*v*p0[1]+3*v*v*u*p1[1]+3*v*u*u*p2[1]+u*u*u*p3[1]]);} return o; }
+  const vifte = (x1,y1,x2,y2) => bz([x1,y1],[x1+(x2-x1)*.5,y1],[x2-(x2-x1)*.5,y2],[x2,y2]);
+  // lederbiter: B = kurs → skjøt, Cb = skjøt → lampe
+  const B = k => [[150,Y[k]], ...vifte(150,Y[k],205,C[k]), [370,C[k]], ...vifte(370,C[k],425,Y[k])];
+  const Cb = k => [[485,Y[k]], ...vifte(485,Y[k],540,C[k]), [690,C[k]], ...vifte(690,C[k],748,Y[k])];
+  const CbBrudd = k => [[524,Y[k]], ...vifte(524,Y[k],540,C[k]), [690,C[k]], ...vifte(690,C[k],748,Y[k])];
+  const GLOD = [[748,100],[770,100],[774,76],[773,40],[787,40],[786,76],[770,126],[748,126]]; // gjennom pæra
+  const d = pts => "M" + pts.map(p => f1(p[0])+" "+f1(p[1])).join(" L");
 
-  // målespiss: tip = [x,y], jack = [x,y] på måleren
+  const leder = (pts,k) => { const s = d(pts);
+    return `<path d="${s}" fill="none" stroke="#00000050" stroke-width="10" stroke-linejoin="round" stroke-linecap="round"/><path d="${s}" fill="none" stroke="${F[k]}" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>` +
+      (k==="PE" ? `<path d="${s}" fill="none" stroke="#f2c811" stroke-width="8" stroke-dasharray="8 8"/>` : "") +
+      `<path d="${s}" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="2" transform="translate(0 -2)"/>`; };
+  const kobber = (x,y,dir,len=14,frynset=false) => {
+    let s = `<line x1="${x}" y1="${y}" x2="${x+dir*len}" y2="${y}" stroke="#a85a22" stroke-width="6.5" stroke-linecap="butt"/><line x1="${x}" y1="${y-1.4}" x2="${x+dir*len}" y2="${y-1.4}" stroke="#e7a46b" stroke-width="1.5"/>`;
+    if (frynset) for (let i=-2;i<=2;i++) s += `<line x1="${x+dir*len}" y1="${y+i*1.3}" x2="${x+dir*(len+5+Math.abs(i))}" y2="${y+i*2.5}" stroke="#c87533" stroke-width="1.2"/>`;
+    return s; };
+  const klemme = (x, tom=[]) => { let s = `<rect x="${x-30}" y="87" width="60" height="78" rx="3" fill="#e9ecef" stroke="#adb5bd" stroke-width="1.5"/>`;
+    LED.forEach(k => { const y = Y[k]; s += `<rect x="${x-30}" y="${y-13}" width="60" height="26" fill="none" stroke="#ced4da"/><circle cx="${x}" cy="${y}" r="7.5" fill="#cfd4d9" stroke="#868e96" stroke-width="1.5"/><line x1="${x-5}" y1="${y+3}" x2="${x+5}" y2="${y-3}" stroke="#495057" stroke-width="2"/>`; });
+    return s; };
+  // grå kappe, litt gjennomsiktig så lederne kan anes
+  const kappe = (x1,x2) => `<rect x="${x1}" y="104" width="${x2-x1}" height="44" rx="6" fill="#6f747a" fill-opacity=".9"/><rect x="${x1}" y="108" width="${x2-x1}" height="13" rx="4" fill="#9298a0" fill-opacity=".8"/>`;
+  // tverrsnitt av kabelen
+  const snitt = (x,y) => `<line x1="${x}" y1="${y+24}" x2="${x}" y2="106" stroke="#868e96" stroke-dasharray="3 3"/><circle cx="${x}" cy="${y}" r="24" fill="#6f747a" stroke="#495057" stroke-width="2"/>` +
+    [["L",-9,-5],["N",9,-5],["PE",0,10]].map(([k,dx,dy]) => `<circle cx="${x+dx}" cy="${y+dy}" r="7.5" fill="${F[k]}" stroke="#222" stroke-width="1"/>` + (k==="PE" ? `<path d="M${x+dx-6} ${y+dy-4} l12 8" stroke="#f2c811" stroke-width="3"/>` : "") + `<circle cx="${x+dx}" cy="${y+dy}" r="2.6" fill="#c87533"/>`).join("") +
+    `<text x="${x+32}" y="${y+5}" font-size="13" font-weight="700" fill="#343a40">3 ledere i kabelen</text>`;
+
+  function lampe(lys){
+    return (lys ? `<circle cx="780" cy="34" r="56" fill="#ffd43b" fill-opacity=".35"/><circle cx="780" cy="34" r="36" fill="#ffe066" fill-opacity=".5"/>` : "") +
+      `<path d="M770 80 C748 62 742 38 754 18 C762 -4 798 -4 806 18 C818 38 812 62 790 80 Z" fill="${lys?"#fff9db":"#eef4fa"}" fill-opacity=".9" stroke="#9fb3c8" stroke-width="2"/>` +
+      `<path d="M774 78 L773 40 M786 78 L787 40 M773 40 l2 -8 l2 6 l2 -6 l2 6 l2 -6 l2 8" fill="none" stroke="${lys?"#f08c00":"#7a5c2e"}" stroke-width="${lys?2.5:1.5}"/>` +
+      `<rect x="764" y="76" width="32" height="14" rx="2" fill="#d9c27a" stroke="#a08a3c"/>` +
+      `<rect x="748" y="88" width="72" height="78" rx="9" fill="#f1f3f5" stroke="#adb5bd" stroke-width="2"/>` +
+      LED.map(k => `<circle cx="770" cy="${Y[k]}" r="6.5" fill="#d9c27a" stroke="#8a6e22" stroke-width="1.5"/><line x1="766" y1="${Y[k]+3}" x2="774" y2="${Y[k]-3}" stroke="#5c4a12" stroke-width="1.6"/>`).join("");
+  }
+  // målespiss og multimeter
   function probe(tip, jack, col){
     const [tx,ty] = tip, [jx,jy] = jack;
     let ux = Math.max(-.5, Math.min(.5, (jx-tx)/400)), uy = 1; const L = Math.hypot(ux,uy); ux/=L; uy/=L;
     const a = [tx+ux*9, ty+uy*9], b = [tx+ux*52, ty+uy*52];
-    return {
-      lead: `<path d="M${mm(...b)} C${mm(b[0]+ux*50,b[1]+uy*50)} ${mm(jx,jy-45)} ${mm(jx,jy)}" fill="none" stroke="${col}" stroke-width="3.5"/>`,
-      body: `<line x1="${tx}" y1="${ty}" x2="${a[0]}" y2="${a[1]}" stroke="#adb5bd" stroke-width="2.5"/>` +
-        `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${col}" stroke-width="9" stroke-linecap="round"/>` +
-        `<circle cx="${tx}" cy="${ty}" r="4" fill="none" stroke="#fab005" stroke-width="2"/>`
-    };
+    return { lead:`<path d="M${f1(b[0])} ${f1(b[1])} C${f1(b[0]+ux*50)} ${f1(b[1]+uy*50)} ${jx} ${jy-45} ${jx} ${jy}" fill="none" stroke="${col}" stroke-width="3.5"/>`,
+      body:`<line x1="${tx}" y1="${ty}" x2="${f1(a[0])}" y2="${f1(a[1])}" stroke="#adb5bd" stroke-width="2.5"/><line x1="${f1(a[0])}" y1="${f1(a[1])}" x2="${f1(b[0])}" y2="${f1(b[1])}" stroke="${col}" stroke-width="9" stroke-linecap="round"/>` };
   }
-  // multimeter nederst; returnerer {s, vo, com}
   function meter(x, y, disp, unit, dial){
-    const w = 200, h = 118, vo = [x+158, y+22], com = [x+186, y+22];
-    let s = `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="14" fill="#fab005" stroke="#e67700" stroke-width="2"/>` +
+    const vo = [x+158, y+22], com = [x+186, y+22];
+    return { vo, com, s:`<rect x="${x}" y="${y}" width="200" height="118" rx="14" fill="#fab005" stroke="#e67700" stroke-width="2"/>` +
       `<rect x="${x+12}" y="${y+28}" width="128" height="50" rx="5" fill="#d8f5a2" stroke="#5c940d" stroke-width="1.5"/>` +
       `<text x="${x+132}" y="${y+66}" font-family="Consolas,monospace" font-size="30" font-weight="800" text-anchor="end" fill="#111">${disp}</text>` +
       `<text x="${x+132}" y="${y+40}" font-family="Consolas,monospace" font-size="11" text-anchor="end" fill="#333">${unit}</text>` +
-      `<text x="${x+16}" y="${y+102}" font-size="13" font-weight="700" fill="#5c3d00">Bryter: ${dial}</text>`;
-    s += `<circle cx="${vo[0]}" cy="${vo[1]}" r="8" fill="#e03131"/><circle cx="${com[0]}" cy="${com[1]}" r="8" fill="#222"/>` +
-      `<text x="${vo[0]}" y="${vo[1]+22}" font-size="10" text-anchor="middle" fill="#5c3d00">VΩ</text><text x="${com[0]}" y="${com[1]+22}" font-size="10" text-anchor="middle" fill="#5c3d00">COM</text>`;
-    return {s, vo, com};
+      `<text x="${x+16}" y="${y+102}" font-size="13" font-weight="700" fill="#5c3d00">Bryter: ${dial}</text>` +
+      `<circle cx="${vo[0]}" cy="${vo[1]}" r="8" fill="#e03131"/><circle cx="${com[0]}" cy="${com[1]}" r="8" fill="#222"/>` +
+      `<text x="${vo[0]}" y="${vo[1]+22}" font-size="10" text-anchor="middle" fill="#5c3d00">VΩ</text><text x="${com[0]}" y="${com[1]+22}" font-size="10" text-anchor="middle" fill="#5c3d00">COM</text>` };
   }
 
-  // ----- de tre gjenstandene -----
-  function skjot(){
-    const ys = [70,92,114,136,158], ks = ["br","sv","gr","bl","pe"];
-    let s = kappe(10,150,114,30) + kappe(570,710,114,30);
-    ks.forEach((k,i) => { const sy = 114+(i-2)*9;
-      s += leder(bue(148,sy,312,ys[i]),k) + kobber(312,ys[i],1,18);
-      s += leder(bue(572,sy,408,ys[i]),k) + kobber(408,ys[i],-1,18); });
-    return s + klemme(360,ys);
+  // strømveien som punktliste (fra L-start, rundt, til N-start), avkortet ved brudd
+  function vei(brudd){
+    let p = B("L");
+    if (brudd === "L") return p;
+    p = p.concat(Cb("L"), GLOD, Cb("N").slice().reverse());
+    if (brudd === "N") return p;
+    return p.concat(B("N").slice().reverse());
   }
-  function lampe(){
-    let s = kappe(10,150,114,26) + kappe(520,640,114,26);
-    s += leder(bue(148,122,312,120),"bl") + kobber(312,120,1,18) + leder(bue(522,122,408,120),"bl") + kobber(408,120,-1,18);
-    s += leder(bue(148,134,312,145),"pe") + kobber(312,145,1,18) + leder(bue(522,134,408,145),"pe") + kobber(408,145,-1,18);
-    s += klemme(360,[120,145]);
-    s += leder("M148 103 C210 103 240 74 284 72","br") + kobber(284,72,1,12,true);
-    s += leder("M522 103 C470 103 470 74 436 72","br") + kobber(436,72,-1,12,true);
-    // lampeholder og pære
-    s += `<rect x="636" y="86" width="72" height="58" rx="10" fill="#f1f3f5" stroke="#adb5bd" stroke-width="2"/><rect x="652" y="70" width="40" height="18" rx="3" fill="#ced4da" stroke="#868e96"/>` +
-      `<path d="M656 70 v-8 h32 v8 M656 62 v-6 h32 v6" fill="#d9c27a" stroke="#a08a3c"/>` +
-      `<path d="M660 56 C640 40 630 20 645 2 C655 -12 690 -12 700 2 C714 20 704 40 684 56 Z" fill="#eef4fa" fill-opacity=".85" stroke="#9fb3c8" stroke-width="2"/>` +
-      `<path d="M666 54 L668 26 M678 54 L676 26 M668 26 l2 -4 l2 4 l2 -4 l2 4" fill="none" stroke="#7a5c2e" stroke-width="1.5"/>`;
+  // modus: "lys" | "ohm" | "volt"; brudd: "" | "L" | "N"
+  function tilstand(modus, brudd){
+    const hel = !brudd;
+    if (modus === "lys") return {lys:hel, flyt:hel, m: hel ? "Strømmen går ut i brun (L), gjennom pæra og tilbake i blå (N). En krets trenger to ledere. Gulgrønn (PE) er jord og fører ingen strøm." : `Brudd i ${brudd==="L"?"brun":"blå"} leder: strømmen kommer ikke rundt. Pæra lyser ikke.`};
+    if (modus === "ohm") return {lys:false, flyt:true, disp: hel?"72":"OL", unit: hel?"Ω":"", dial:"Ω", tips:[[152,Y.L],[152,Y.N]], mx:180,
+      m: hel ? "Spenningsløst. Måleren sender en liten strøm ut i brun, gjennom pæra og tilbake i blå. 72 Ω = kretsen er hel." : "OL: målestrømmen kommer ikke rundt. Det er brudd i en av lederne."};
+    return {lys:hel, flyt:hel, disp: hel?"230":"0", unit:"V~", dial:"V~", tips:[[770,Y.L],[770,Y.N]], mx:560,
+      m: hel ? "Spenning på (fagperson måler): 230 V mellom L og N ved lampa." : "0 V ved lampa: spenningen kommer ikke fram, fordi én leder er brutt."};
+  }
+  // tegn hele figuren (uten strømprikker); prikkene legges i <g class="flyt">
+  function svg(modus, brudd, id="", kort=false){
+    const t = tilstand(modus, brudd);
+    let s = `<svg viewBox="0 -20 900 ${kort && t.disp === undefined ? 210 : 410}" font-family="Segoe UI, system-ui, Arial, sans-serif" role="img" aria-label="Kabel med tre ledere fra kursen, skjøt i rekkeklemme og lampe.${t.disp?" Multimeteret viser "+t.disp+" "+t.unit+".":""}"${id?` id="${id}"`:""}>`;
+    s += `<text x="20" y="74" font-size="13" font-weight="700" fill="#343a40">Fra sikringen</text>`;
+    LED.forEach(k => { s += leder([[20,Y[k]],[96,Y[k]]],k) + `<text x="14" y="${Y[k]+4}" font-size="11" font-weight="700" text-anchor="end" fill="${F[k]}">${k}</text>`; });
+    // glød langs strømveien
+    if (t.flyt) s += `<path d="${d(vei(brudd))}" fill="none" stroke="#ffd43b" stroke-opacity=".6" stroke-width="15" stroke-linejoin="round" stroke-linecap="round"/>`;
+    LED.forEach(k => {
+      s += leder(B(k),k) + kobber(411,Y[k],1,14);
+      if (brudd === k) s += leder(CbBrudd(k),k) + kobber(524,Y[k],-1,10,true);
+      else s += leder(Cb(k),k) + kobber(499,Y[k],-1,14);
+      s += kobber(136,Y[k],1,14);
+    });
+    s += klemme(120) + klemme(455) + kappe(200,375) + kappe(535,695) + lampe(t.lys) + snitt(290,30);
+    s += `<text x="455" y="76" font-size="13" font-weight="700" text-anchor="middle" fill="#343a40">Skjøt</text>`;
+    if (brudd) s += `<text x="510" y="${Y[brudd]===100?82:178}" text-anchor="middle" font-size="13" font-weight="800" fill="#c92a2a">brudd</text>`;
+    s += `<g class="flyt"></g>`;
+    if (t.disp !== undefined){
+      const m = meter(t.mx, 262, t.disp, t.unit, t.dial), pr = probe(t.tips[0], m.vo, "#e03131"), pb = probe(t.tips[1], m.com, "#222");
+      s += m.s + pb.lead + pr.lead + pb.body + pr.body;
+    }
+    return s + `</svg>`;
+  }
+  // strømprikker langs veien; off = forskyvning i px
+  function prikker(brudd, off){
+    const p = vei(brudd), L = [0]; for (let i=1;i<p.length;i++) L.push(L[i-1] + Math.hypot(p[i][0]-p[i-1][0], p[i][1]-p[i-1][1]));
+    const tot = L[L.length-1]; let s = "";
+    for (let x = off % 26; x < tot; x += 26){ let i = 1; while (i < L.length-1 && L[i] < x) i++; const q = (x-L[i-1])/((L[i]-L[i-1])||1);
+      s += `<circle cx="${f1(p[i-1][0]+(p[i][0]-p[i-1][0])*q)}" cy="${f1(p[i-1][1]+(p[i][1]-p[i-1][1])*q)}" r="3.5" fill="#e8590c" stroke="#fff" stroke-width="1"/>`; }
     return s;
   }
-  function element(){
-    let s = kappe(10,200,125,24);
-    s += leder("M198 116 C250 116 260 85 304 85","br") + kobber(304,85,1,10);
-    s += leder("M198 134 C250 134 260 165 304 165","bl") + kobber(304,165,1,10);
-    // tilkoblingsbolter
-    [85,165].forEach(y => { s += `<rect x="312" y="${y-5}" width="30" height="10" fill="#adb5bd" stroke="#495057"/><rect x="316" y="${y-9}" width="9" height="18" rx="2" fill="#ced4da" stroke="#495057"/>`; });
-    // flens og pakning
-    s += `<rect x="340" y="58" width="12" height="134" rx="3" fill="#ced4da" stroke="#495057" stroke-width="1.5"/><rect x="352" y="64" width="16" height="122" rx="3" fill="#2b2b2b"/>`;
-    const d = "M368 85 H700 A13.5 13.5 0 0 1 700 112 H440 A13 13 0 0 0 440 138 H700 A13.5 13.5 0 0 1 700 165 H368";
-    s += `<path d="${d}" fill="none" stroke="#6c757d" stroke-width="15"/><path d="${d}" fill="none" stroke="#c4cad0" stroke-width="11"/><path d="${d}" fill="none" stroke="#f1f3f5" stroke-width="3" transform="translate(0 -2.5)"/>`;
-    return s;
-  }
-  const GJ = {skjot, lampe, element};
-
-  // ----- målingene -----
-  const P = {
-    skjot: [
-      {k:"Brun – brun", r:[322,70], b:[398,70], d:"0,1", u:"Ω  •)))", dial:"•)))", m:"0,1 Ω og pip: lederen er hel gjennom klemma."},
-      {k:"Brun – svart", r:[322,70], b:[322,92], d:"OL", u:"", dial:"•)))", m:"OL: ingen kontakt mellom to ledere. Bra – ingen kortslutning."},
-      {k:"Gulgrønn – gulgrønn", r:[322,158], b:[398,158], d:"0,1", u:"Ω  •)))", dial:"•)))", m:"0,1 Ω og pip: jordlederen er hel."}
-    ],
-    lampe: [
-      {k:"Brun – brun", r:[296,72], b:[424,72], d:"OL", u:"", dial:"•)))", m:"OL: brudd i fasen (brun). Pæra får ikke strøm."},
-      {k:"Blå – blå", r:[322,120], b:[398,120], d:"0,1", u:"Ω  •)))", dial:"•)))", m:"0,1 Ω og pip: nøytralen (blå) er hel."},
-      {k:"Brun – blå før bruddet", r:[296,72], b:[322,120], d:"OL", u:"", dial:"Ω", m:"OL: bruddet stopper målingen. Du «ser» ikke pæra herfra."},
-      {k:"Brun – blå etter bruddet", r:[424,72], b:[398,120], d:"72", u:"Ω", dial:"Ω", m:"72 Ω: målingen går gjennom pæra. Pæra er hel."}
-    ],
-    element: [
-      {k:"Brun – blå", r:[320,85], b:[320,165], d:"26,5", u:"Ω", dial:"Ω", m:"26,5 Ω: elementet er helt (ca. 2000 W på 230 V)."},
-      {k:"Brun – rør", r:[320,85], b:[580,165], d:"OL", u:"", dial:"Ω", m:"OL mot røret: ingen kontakt til jord. Bra."}
-    ]
-  };
-  // tegn hele figuren; vis = true viser verdien, ellers «?»
-  function svg(gj, i, vis=true){
-    const p = P[gj][i], m = meter(290, 244, vis ? p.d : "?", vis ? p.u : "", p.dial);
-    const pb = probe(p.b, m.com, "#222"), pr = probe(p.r, m.vo, "#e03131");
-    return `<svg viewBox="0 -14 760 382" font-family="Segoe UI, system-ui, Arial, sans-serif" role="img" aria-label="${p.k}: multimeteret viser ${vis ? p.d+" "+p.u : "?"}">${GJ[gj]()}${m.s}${pb.lead}${pr.lead}${pb.body}${pr.body}</svg>`;
-  }
-  return {P, svg};
+  return {svg, prikker, tilstand};
 })();
 
-  /* Del 4: velg gjenstand og måling */
-  const NAVN = {skjot:"Kabelskjøt (5 ledere)", lampe:"Lampekabel med brudd", element:"Varmeelement"};
-  let gj = "skjot", pi = 0;
+  /* Del 4: velg visning og feil */
+  const MODUS = {lys:"💡 Lys på", ohm:"Ω Mål motstand (spenningsløst)", volt:"V~ Mål spenning ved lampa"};
+  const FEIL = {"":"Ingen feil", L:"Brudd i brun", N:"Brudd i blå"};
+  let modus = "lys", brudd = "", off = 0, synlig = false;
   const q = id => document.getElementById(id);
+  const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
   function tegn(){
-    q("kab-gj").innerHTML = Object.keys(NAVN).map(k => `<button class="chip" type="button" data-g="${k}" aria-pressed="${k===gj}">${NAVN[k]}</button>`).join("");
-    q("kab-p").innerHTML = KAB.P[gj].map((p,i) => `<button class="chip" type="button" data-i="${i}" aria-pressed="${i===pi}">${p.k}</button>`).join("");
-    q("kab-svg").innerHTML = KAB.svg(gj, pi);
-    q("kab-msg").textContent = KAB.P[gj][pi].m;
+    q("krets-modus").innerHTML = Object.keys(MODUS).map(k => `<button class="chip" type="button" data-m="${k}" aria-pressed="${k===modus}">${MODUS[k]}</button>`).join("");
+    q("krets-feil").innerHTML = Object.keys(FEIL).map(k => `<button class="chip" type="button" data-f="${k}" aria-pressed="${k===brudd}">${FEIL[k]}</button>`).join("");
+    q("krets-svg").innerHTML = KRETS.svg(modus, brudd);
+    q("krets-msg").textContent = KRETS.tilstand(modus, brudd).m;
+    prikk();
   }
-  q("kab-gj").onclick = e => { const b = e.target.closest("[data-g]"); if (!b) return; gj = b.dataset.g; pi = 0; tegn(); };
-  q("kab-p").onclick = e => { const b = e.target.closest("[data-i]"); if (!b) return; pi = +b.dataset.i; tegn(); };
-  tegn();
-  /* Oppgave 3: fire målinger */
-  q("kfig").innerHTML = [["a","lampe",0],["b","lampe",3],["c","element",0],["d","element",1]].map(([t,g,i]) => `<figure><figcaption>${t}) ${NAVN[g]}: ${KAB.P[g][i].k.toLowerCase()}</figcaption>${KAB.svg(g,i)}</figure>`).join("");
+  function prikk(){ const g = q("krets-svg").querySelector(".flyt"); if (g) g.innerHTML = KRETS.tilstand(modus, brudd).flyt ? KRETS.prikker(brudd, off) : ""; }
+  q("krets-modus").onclick = e => { const b = e.target.closest("[data-m]"); if (!b) return; modus = b.dataset.m; tegn(); };
+  q("krets-feil").onclick = e => { const b = e.target.closest("[data-f]"); if (!b) return; brudd = b.dataset.f; tegn(); };
+  new IntersectionObserver(es => es.forEach(e => synlig = e.isIntersecting)).observe(q("krets-svg"));
+  let sist = 0;
+  function loop(ts){ if (synlig && !RM){ off += Math.min(50, ts - (sist||ts)) * .04; prikk(); } sist = ts; requestAnimationFrame(loop); }
+  tegn(); requestAnimationFrame(loop);
+  /* Oppgave 3: tre figurer med strømveien markert */
+  q("kfig").innerHTML = [["a","lys",""],["b","ohm",""],["c","ohm","L"]].map(([t,m,b]) => `<figure><figcaption>${t})</figcaption>${KRETS.svg(m,b,"",true).replace('<g class="flyt"></g>', KRETS.tilstand(m,b).flyt ? '<g>'+KRETS.prikker(b,0)+'</g>' : '')}</figure>`).join("");
 })();
 </script>
 <script>
