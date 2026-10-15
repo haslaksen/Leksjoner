@@ -72,14 +72,18 @@ const FELT = 'style="background:#c92a2a;color:#fff;padding:10px 16px;text-align:
 // Hjem-knapp til lærerforsiden (bare på lærersidene, elevene skal ikke få den).
 const HJEM = 'style="display:inline-block;margin-right:12px;padding:3px 12px;border-radius:99px;background:#fff;color:#c92a2a;font-weight:700;text-decoration:none"';
 const LENKE = 'style="color:#fff;font-weight:700;text-decoration:underline"';
+// Tilpassede oppgaver for elever som trenger mer støtte ligger ved siden av leksjonen: leksjon-N-<navn>-steg-for-steg.html
+const STEG = "-steg-for-steg.html";
 function laererversjon(s, fil) {
+  const steg = fil.endsWith(STEG), stegFil = fil.replace(/\.html$/, STEG);
   s = s.replace(/<head>/i, '<head>\n<meta name="robots" content="noindex, nofollow">');
   const felt = fil === "index.html"
     ? `<b>Lærerversjon med fasit.</b> Ikke del denne adressen med elever.<br>` +
       `<a href="/" ${LENKE}>Gå til elevsiden</a>: samme leksjoner uten fasit og lærernotater. ` +
       `Når du har gått gjennom en leksjon, åpner du den på elevsiden og deler lenken med klassen i Teams eller OneNote.`
     : `<a href="/${LAERER_STI}/" ${HJEM}>⌂ Hjem</a> <b>Lærerversjon med fasit.</b> ` +
-      `<a href="/${fil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Elevversjon av denne leksjonen</a> (uten fasit, del denne med klassen).`;
+      `<a href="/${fil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Elevversjon av denne ${steg ? "siden" : "leksjonen"}</a> (uten fasit, del denne med ${steg ? "eleven" : "klassen"}).` +
+      (filer.includes(stegFil) ? ` · <a href="/${LAERER_STI}/${stegFil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Steg for steg</a> (tilpassede oppgaver)` : "");
   return s.replace(/<body([^>]*)>/i, `<body$1>\n<style>@media print{.laererfelt{display:none}}</style><div class="laererfelt" ${FELT}>${felt}</div>`);
 }
 
