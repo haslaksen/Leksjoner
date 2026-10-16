@@ -184,6 +184,10 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 .tegn{stroke-dasharray:600;stroke-dashoffset:600;animation:tegn 5s ease-in-out infinite}
 .tegn.b{animation-delay:.5s}.tegn.c{animation-delay:1s}.tegn.d{animation-delay:1.5s}
 @keyframes tegn{40%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:0}}
+/* Stiplede linjer: tegnes ved å strekkes ut, så mønsteret (stiplet, strek-prikk) beholdes */
+.strek{transform-box:fill-box;transform-origin:left center;transform:scaleX(0);animation:strek 5s ease-in-out infinite}
+.strek.b{animation-delay:.5s}.strek.c{animation-delay:1s}.strek.d{animation-delay:1.5s}
+@keyframes strek{40%,100%{transform:scaleX(1)}}
 .regler.fire svg{width:100%;height:auto;max-height:30px}
 .mal{opacity:0;animation:malinn 8s ease-in-out infinite}
 .mal.b{animation-delay:1s}.mal.c{animation-delay:2s}.mal.d{animation-delay:3s}
@@ -193,7 +197,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 .vis-fasit .fasit-svg{display:inline}
 .regler.fire{grid-template-columns:repeat(4,1fr)}
 @media (max-width:860px){.regler.fire{grid-template-columns:1fr 1fr}}
-@media (prefers-reduced-motion:reduce){.tegn{animation:none;stroke-dashoffset:0}.mal{animation:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.tegn{animation:none;stroke-dashoffset:0}.strek{animation:none;transform:none}.mal{animation:none;opacity:1}}
 </style>
 
 </head>
@@ -326,7 +330,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
       <path d="M40 150 H160 V210 H40 Z M100 150 V210" class="tegn b"/>
       <path d="M220 40 H280 V120 H220 Z" class="tegn c"/>
     </g>
-    <path d="M220 80 H280" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 5" class="tegn c"/>
+    <path d="M220 80 H280" stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 5" class="strek c"/>
     <g font-weight="700" font-size="15" text-anchor="middle">
       <text x="100" y="30" fill="var(--u)">Forfra</text>
       <text x="100" y="235" fill="var(--i)">Ovenfra</text>
@@ -347,8 +351,8 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
   <h2>Hver linje betyr noe</h2>
   <div class="regler fire">
     <div><svg viewBox="0 0 160 30" aria-hidden="true"><path d="M5 15 H155" stroke="var(--ink)" stroke-width="5" class="tegn"/></svg><b>Tykk heltrukket</b><span>Kanter du <b>ser</b>.</span></div>
-    <div><svg viewBox="0 0 160 30" aria-hidden="true"><path d="M5 15 H155" stroke="var(--ink)" stroke-width="3" stroke-dasharray="12 7" class="tegn b"/></svg><b>Stiplet</b><span>Kanter som er <b>skjult</b>.</span></div>
-    <div><svg viewBox="0 0 160 30" aria-hidden="true"><path d="M5 15 H155" stroke="var(--r)" stroke-width="2" stroke-dasharray="24 5 3 5" class="tegn c"/></svg><b>Strek-prikk</b><span><b>Senterlinje</b> i hull og symmetri.</span></div>
+    <div><svg viewBox="0 0 160 30" aria-hidden="true"><path d="M5 15 H155" stroke="var(--ink)" stroke-width="3" stroke-dasharray="12 7" class="strek b"/></svg><b>Stiplet</b><span>Kanter som er <b>skjult</b>.</span></div>
+    <div><svg viewBox="0 0 160 30" aria-hidden="true"><path d="M5 15 H155" stroke="var(--r)" stroke-width="2" stroke-dasharray="24 5 3 5" class="strek c"/></svg><b>Strek-prikk</b><span><b>Senterlinje</b> i hull og symmetri.</span></div>
     <div><svg viewBox="0 0 160 30" aria-hidden="true"><path d="M5 15 H155" stroke="var(--i)" stroke-width="1.5" class="tegn d"/><path d="M5 15 l10 -5 v10 Z M155 15 l-10 -5 v10 Z" fill="var(--i)"/></svg><b>Tynn heltrukket</b><span><b>Mållinjer</b> og hjelpelinjer.</span></div>
   </div>
   <div class="fig" style="max-width:560px">
