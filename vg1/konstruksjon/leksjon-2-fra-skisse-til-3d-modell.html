@@ -184,6 +184,10 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 .tegn{stroke-dasharray:600;stroke-dashoffset:600;animation:tegn 5s ease-in-out infinite}
 .tegn.b{animation-delay:.5s}.tegn.c{animation-delay:1s}.tegn.d{animation-delay:1.5s}
 @keyframes tegn{40%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:0}}
+/* Stiplede linjer: tegnes ved å strekkes ut, så mønsteret (stiplet, strek-prikk) beholdes */
+.strek{transform-box:fill-box;transform-origin:left center;transform:scaleX(0);animation:strek 5s ease-in-out infinite}
+.strek.b{animation-delay:.5s}.strek.c{animation-delay:1s}.strek.d{animation-delay:1.5s}
+@keyframes strek{40%,100%{transform:scaleX(1)}}
 .regler.fire svg{width:100%;height:auto;max-height:30px}
 .mal{opacity:0;animation:malinn 8s ease-in-out infinite}
 .mal.b{animation-delay:1s}.mal.c{animation-delay:2s}.mal.d{animation-delay:3s}
@@ -193,7 +197,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 .vis-fasit .fasit-svg{display:inline}
 .regler.fire{grid-template-columns:repeat(4,1fr)}
 @media (max-width:860px){.regler.fire{grid-template-columns:1fr 1fr}}
-@media (prefers-reduced-motion:reduce){.tegn{animation:none;stroke-dashoffset:0}.mal{animation:none;opacity:1}}
+@media (prefers-reduced-motion:reduce){.tegn{animation:none;stroke-dashoffset:0}.strek{animation:none;transform:none}.mal{animation:none;opacity:1}}
 input[type=range]{accent-color:var(--orange)}
 </style>
 
@@ -323,7 +327,7 @@ input[type=range]{accent-color:var(--orange)}
       <path d="M360 132 H450 V177 H360 Z M405 132 V177" class="tegn b"/>
       <path d="M480 50 H525 V110 H480 Z" class="tegn c"/>
     </g>
-    <path d="M480 80 H525" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="6 4" class="tegn c"/>
+    <path d="M480 80 H525" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="6 4" class="strek c"/>
     <g font-size="12" fill="var(--ink)">
       <rect x="570" y="170" width="170" height="60" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
       <path d="M570 190 H740 M655 190 V230" stroke="var(--ink)" stroke-width="1"/>
