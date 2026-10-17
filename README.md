@@ -49,7 +49,7 @@ Enklere oppgaver for elever som trenger mer støtte legges ved siden av leksjone
 
 ## Bilder og filer under figurene
 
-Hvert emne har en mappe `filer/` (for eksempel `vg2/materiallaere/filer/`). Last opp med **Add file → Upload files** på GitHub. Filnavnet bestemmer hvor filen vises: `leksjon-4-herding-herdekar.jpg` havner nederst i delen `<section id="herding">` i leksjon 4, med teksten «herdekar». Lærersiden viser en stiplet boks i hver del med navnet filene skal starte med.
+Hvert emne har en mappe `filer/` (for eksempel `vg2/materiallaere/filer/`). Last opp med **Add file → Upload files** på GitHub. Filnavnet bestemmer hvor filen vises: `leksjon-4-herding-herdekar.jpg` havner nederst i delen `<section id="herding">` i leksjon 4, med teksten «herdekar». Knappen «Vis/skjul plass for filer» i det røde feltet på lærersiden viser en stiplet boks i hver del med navnet filene skal starte med. Boksene er skjult ellers, så de ikke vises på fremviseren.
 
 - Bilder og video vises på siden. Andre filer (PDF, Word …) blir en nedlastingslenke.
 - Filer som starter med `laerer-` vises og publiseres bare på lærersiden.

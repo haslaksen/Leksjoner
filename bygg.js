@@ -84,8 +84,9 @@ function laererversjon(s, fil) {
       `Når du har gått gjennom en leksjon, åpner du den på elevsiden og deler lenken med klassen i Teams eller OneNote.`
     : `<a href="/${LAERER_STI}/" ${HJEM}>⌂ Hjem</a> <b>Lærerversjon med fasit.</b> ` +
       `<a href="/${fil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Elevversjon av denne ${steg ? "siden" : "leksjonen"}</a> (uten fasit, del denne med ${steg ? "eleven" : "klassen"}).` +
+      (/^leksjon-\d+-/.test(path.basename(fil)) && !steg ? ` · <button onclick="document.body.classList.toggle('vis-filplass')" style="font:inherit;color:#fff;background:none;border:1px solid #fff;border-radius:99px;padding:1px 10px;cursor:pointer">📎 Vis/skjul plass for filer</button>` : "") +
       (filer.includes(stegFil) ? ` · <a href="/${LAERER_STI}/${stegFil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Steg for steg</a> (tilpassede oppgaver)` : "");
-  return s.replace(/<body([^>]*)>/i, `<body$1>\n<style>@media print{.laererfelt{display:none}}</style><div class="laererfelt" ${FELT}>${felt}</div>`);
+  return s.replace(/<body([^>]*)>/i, `<body$1>\n<style>@media print{.laererfelt{display:none}} body:not(.vis-filplass) .filplass{display:none!important}</style><div class="laererfelt" ${FELT}>${felt}</div>`);
 }
 
 // Bilder og vedlegg: <emne>/filer/leksjon-N-<del>-<tekst>.<type> vises nederst i delen
@@ -113,9 +114,9 @@ function vedlegg(s, fil, laerer) {
       if (VIDEO.test(f)) return `<figure style="margin:0;flex:1 1 260px;max-width:520px"><video src="${url}" controls preload="metadata" style="width:100%;border-radius:10px"></video>${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
       return `<a href="${url}" download style="flex:0 0 auto;display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--line,#d9dfe6);border-radius:10px;background:var(--panel,#fff);color:var(--ink,#14181d);font:600 15px/1.3 system-ui,sans-serif;text-decoration:none">📎 ${navn || esc(f)}${merke}</a>`;
     });
-    if (laerer) deler.push(`<div class="no-print" style="flex:1 1 100%;${TEKST};border:2px dashed var(--line,#d9dfe6);border-radius:10px;padding:8px 12px">📎 Plass for bilder og filer. Last opp til mappen <b>${esc(path.dirname(fil).replace(/\\/g, "/"))}/${FILER}</b> med navn som starter med <b>${prefiks}</b>, for eksempel <b>${prefiks}bilde.jpg</b>. Start med <b>laerer-</b> for å vise filen bare her.</div>`);
+    if (laerer) deler.push(`<div class="filplass no-print" style="flex:1 1 100%;${TEKST};border:2px dashed var(--line,#d9dfe6);border-radius:10px;padding:8px 12px">📎 Plass for bilder og filer. Last opp til mappen <b>${esc(path.dirname(fil).replace(/\\/g, "/"))}/${FILER}</b> med navn som starter med <b>${prefiks}</b>, for eksempel <b>${prefiks}bilde.jpg</b>. Start med <b>laerer-</b> for å vise filen bare her.</div>`);
     // Boksen legges nederst i delen, under figurene.
-    const boks = `<div class="vedlegg" style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;width:100%;max-width:1250px;margin:1.2rem auto 0;box-sizing:border-box">${deler.join("")}</div>`;
+    const boks = `<div class="vedlegg${her.length ? "" : " filplass"}" style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;width:100%;max-width:1250px;margin:1.2rem auto 0;box-sizing:border-box">${deler.join("")}</div>`;
     innsett.push([s.indexOf("</section>", pos), boks]);
   }
   for (const [i, t] of innsett.reverse()) s = s.slice(0, i) + t + "\n" + s.slice(i);
