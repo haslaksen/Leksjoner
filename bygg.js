@@ -8,11 +8,12 @@ const path = require("path");
 const LAERER_STI = "laerer-k7q4mz";
 const UT = path.join(__dirname, "public");
 
+const FILER = "filer"; // Bilder og vedlegg lastet opp av lærerne, én mappe per emne.
 const leksjoner = [];
 function finn(dir) {
   for (const e of fs.readdirSync(path.join(__dirname, dir), { withFileTypes: true })) {
     const rel = path.join(dir, e.name);
-    if (e.isDirectory()) finn(rel);
+    if (e.isDirectory()) { if (e.name !== FILER) finn(rel); }
     else if (e.name.endsWith(".html")) leksjoner.push(rel);
   }
 }
@@ -83,14 +84,64 @@ function laererversjon(s, fil) {
       `Når du har gått gjennom en leksjon, åpner du den på elevsiden og deler lenken med klassen i Teams eller OneNote.`
     : `<a href="/${LAERER_STI}/" ${HJEM}>⌂ Hjem</a> <b>Lærerversjon med fasit.</b> ` +
       `<a href="/${fil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Elevversjon av denne ${steg ? "siden" : "leksjonen"}</a> (uten fasit, del denne med ${steg ? "eleven" : "klassen"}).` +
+      (/^leksjon-\d+-/.test(path.basename(fil)) && !steg ? ` · <button onclick="document.body.classList.toggle('vis-filplass')" style="font:inherit;color:#fff;background:none;border:1px solid #fff;border-radius:99px;padding:1px 10px;cursor:pointer">📎 Vis/skjul plass for filer</button>` : "") +
       (filer.includes(stegFil) ? ` · <a href="/${LAERER_STI}/${stegFil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Steg for steg</a> (tilpassede oppgaver)` : "");
-  return s.replace(/<body([^>]*)>/i, `<body$1>\n<style>@media print{.laererfelt{display:none}}</style><div class="laererfelt" ${FELT}>${felt}</div>`);
+  return s.replace(/<body([^>]*)>/i, `<body$1>\n<style>@media print{.laererfelt{display:none}} body:not(.vis-filplass) .filplass{display:none!important}</style><div class="laererfelt" ${FELT}>${felt}</div>`);
+}
+
+// Bilder og vedlegg: <emne>/filer/leksjon-N-<del>-<tekst>.<type> vises nederst i delen
+// <section id="<del>"> i leksjon N. Filer som starter med «laerer-» vises bare på lærersiden.
+// Lærersiden viser en stiplet boks i hver del med navnet filene skal ha.
+const BILDE = /\.(jpe?g|png|gif|webp|svg)$/i, VIDEO = /\.(mp4|webm)$/i;
+const esc = t => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const TEKST = "color:var(--muted,#56606c);font:500 14px/1.45 system-ui,sans-serif";
+function vedlegg(s, fil, laerer) {
+  const nr = path.basename(fil).match(/^(leksjon-\d+)-/);
+  if (!nr || fil.endsWith(STEG)) return s;
+  const mappe = path.join(__dirname, path.dirname(fil), FILER);
+  const alle = fs.existsSync(mappe) ? fs.readdirSync(mappe).filter(f => !f.startsWith(".") && f !== "README.md")
+    .sort((a, b) => a.replace(/^laerer-/, "").localeCompare(b.replace(/^laerer-/, ""))) : [];
+  const innsett = [];
+  for (const { 0: åpning, 1: id, index: pos } of s.matchAll(/<section\b[^>]*\bid="([^"]+)"[^>]*>/g)) {
+    const prefiks = `${nr[1]}-${id}-`;
+    const her = alle.filter(f => (f.startsWith(prefiks) || (laerer && f.startsWith("laerer-" + prefiks))));
+    if (!her.length && !laerer) continue;
+    const deler = her.map(f => {
+      const url = `${FILER}/${encodeURIComponent(f)}`;
+      const navn = esc(f.replace(/^laerer-/, "").slice(prefiks.length).replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim());
+      const merke = f.startsWith("laerer-") ? " <b>(bare lærer)</b>" : "";
+      if (BILDE.test(f)) return `<figure style="margin:0;flex:1 1 260px;max-width:520px"><img src="${url}" alt="${navn}" loading="lazy" style="width:100%;height:auto;border-radius:10px;border:1px solid var(--line,#d9dfe6)">${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
+      if (VIDEO.test(f)) return `<figure style="margin:0;flex:1 1 260px;max-width:520px"><video src="${url}" controls preload="metadata" style="width:100%;border-radius:10px"></video>${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
+      return `<a href="${url}" download style="flex:0 0 auto;display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--line,#d9dfe6);border-radius:10px;background:var(--panel,#fff);color:var(--ink,#14181d);font:600 15px/1.3 system-ui,sans-serif;text-decoration:none">📎 ${navn || esc(f)}${merke}</a>`;
+    });
+    if (laerer) deler.push(`<div class="filplass no-print" style="flex:1 1 100%;${TEKST};border:2px dashed var(--line,#d9dfe6);border-radius:10px;padding:8px 12px">📎 Plass for bilder og filer. Last opp til mappen <b>${esc(path.dirname(fil).replace(/\\/g, "/"))}/${FILER}</b> med navn som starter med <b>${prefiks}</b>, for eksempel <b>${prefiks}bilde.jpg</b>. Start med <b>laerer-</b> for å vise filen bare her.</div>`);
+    // Boksen legges nederst i delen, under figurene.
+    const boks = `<div class="vedlegg${her.length ? "" : " filplass"}" style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;width:100%;max-width:1250px;margin:1.2rem auto 0;box-sizing:border-box">${deler.join("")}</div>`;
+    innsett.push([s.indexOf("</section>", pos), boks]);
+  }
+  for (const [i, t] of innsett.reverse()) s = s.slice(0, i) + t + "\n" + s.slice(i);
+  return s;
+}
+
+function kopierFiler(dir, laerer) {
+  for (const e of fs.readdirSync(path.join(__dirname, dir), { withFileTypes: true })) {
+    const rel = path.join(dir, e.name);
+    if (!e.isDirectory()) continue;
+    if (e.name !== FILER) { kopierFiler(rel, laerer); continue; }
+    for (const f of fs.readdirSync(path.join(__dirname, rel))) {
+      if (f.startsWith(".") || f === "README.md" || (!laerer && f.startsWith("laerer-"))) continue;
+      const mål = path.join(laerer ? path.join(UT, LAERER_STI) : UT, rel, f);
+      fs.mkdirSync(path.dirname(mål), { recursive: true });
+      fs.copyFileSync(path.join(__dirname, rel, f), mål);
+    }
+  }
 }
 
 fs.rmSync(UT, { recursive: true, force: true });
+for (const trinn of ["vg1", "vg2"]) { kopierFiler(trinn, false); kopierFiler(trinn, true); }
 for (const fil of filer) {
   const s = fs.readFileSync(path.join(__dirname, fil), "utf8");
-  for (const [mappe, innhold] of [[UT, elevversjon(s)], [path.join(UT, LAERER_STI), laererversjon(s, fil)]]) {
+  for (const [mappe, innhold] of [[UT, vedlegg(elevversjon(s), fil, false)], [path.join(UT, LAERER_STI), vedlegg(laererversjon(s, fil), fil, true)]]) {
     const mål = path.join(mappe, fil);
     fs.mkdirSync(path.dirname(mål), { recursive: true });
     fs.writeFileSync(mål, innhold);
