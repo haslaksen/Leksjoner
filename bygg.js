@@ -95,6 +95,19 @@ function laererversjon(s, fil) {
 // Lærersiden viser en stiplet boks i hver del med navnet filene skal ha.
 const BILDE = /\.(jpe?g|png|gif|webp|svg)$/i, VIDEO = /\.(mp4|webm)$/i;
 const esc = t => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const FULLSKJERM = `(function () {
+  const v = document.createElement("div");
+  v.style.cssText = "position:fixed;inset:0;z-index:9999;background:#000;display:none;align-items:center;justify-content:center;cursor:zoom-out";
+  v.innerHTML = '<img style="max-width:100vw;max-height:100vh;object-fit:contain"><button aria-label="Lukk" style="position:fixed;top:12px;right:12px;font:700 22px system-ui;width:44px;height:44px;border-radius:50%;border:0;background:#fff;cursor:pointer">✕</button>';
+  document.body.appendChild(v);
+  const lukk = () => { v.style.display = "none"; };
+  v.onclick = lukk;
+  addEventListener("keydown", e => { if (e.key === "Escape") lukk(); });
+  document.querySelectorAll("img[data-fullskjerm]").forEach(img => img.addEventListener("click", () => {
+    v.firstChild.src = img.src; v.firstChild.alt = img.alt; v.style.display = "flex";
+  }));
+})();
+`;
 const ADMIN = fs.readFileSync(path.join(__dirname, "admin-opplasting.js"), "utf8");
 const TEKST = "color:var(--muted,#56606c);font:500 14px/1.45 system-ui,sans-serif";
 function vedlegg(s, fil, laerer) {
@@ -114,7 +127,7 @@ function vedlegg(s, fil, laerer) {
       const merke = f.startsWith("laerer-") ? " <b>(bare lærer)</b>" : "";
       // Lærersiden får en slett-knapp per fil (admin-opplasting.js), derfor data-sti.
       const sti = laerer ? ` data-sti="${esc(path.dirname(fil).replace(/\\/g, "/"))}/${FILER}/${esc(f)}"` : "";
-      if (BILDE.test(f)) return `<figure${sti} style="margin:0;flex:1 1 260px;max-width:520px"><img src="${url}" alt="${navn}" loading="lazy" style="width:100%;height:auto;border-radius:10px;border:1px solid var(--line,#d9dfe6)">${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
+      if (BILDE.test(f)) return `<figure${sti} style="margin:0;flex:1 1 260px;max-width:520px"><img data-fullskjerm src="${url}" alt="${navn}" loading="lazy" decoding="async" style="cursor:zoom-in;width:100%;height:auto;border-radius:10px;border:1px solid var(--line,#d9dfe6)">${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
       if (VIDEO.test(f)) return `<figure${sti} style="margin:0;flex:1 1 260px;max-width:520px"><video src="${url}" controls preload="metadata" style="width:100%;border-radius:10px"></video>${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
       return `<a${sti} href="${url}" download style="flex:0 0 auto;display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--line,#d9dfe6);border-radius:10px;background:var(--panel,#fff);color:var(--ink,#14181d);font:600 15px/1.3 system-ui,sans-serif;text-decoration:none">📎 ${navn || esc(f)}${merke}</a>`;
     });
@@ -124,6 +137,8 @@ function vedlegg(s, fil, laerer) {
     innsett.push([s.indexOf("</section>", pos), boks]);
   }
   for (const [i, t] of innsett.reverse()) s = s.slice(0, i) + t + "\n" + s.slice(i);
+  // Trykk på et bilde for å se det i fullskjerm (fungerer også på mobil og fremviser).
+  if (/<img data-fullskjerm/.test(s)) s = s.replace(/<\/body>/i, () => `<script>\n${FULLSKJERM}</script>\n</body>`);
   // Admin kan laste opp fra lærersiden, se admin-opplasting.js og api/last-opp.js.
   if (laerer) s = s.replace(/<\/body>/i, () => `<script>\n${ADMIN}</script>\n</body>`);
   return s;

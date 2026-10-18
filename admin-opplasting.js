@@ -19,18 +19,18 @@
   const f = d.querySelector("form"), melding = d.querySelector(".melding");
   let boks;
 
-  // Store bilder gjøres mindre i nettleseren, så de kommer under grensen på 3 MB.
+  // Bilder over 400 kB gjøres om til JPEG på høyst 1600 px, så sidene lastes raskt (mobilbilder er ofte 3–5 MB).
   const lesFil = fil => new Promise((ok, feil) => {
     const r = new FileReader();
     r.onerror = feil;
     r.onload = () => {
-      if (!/^image\/(jpeg|png|webp)$/.test(fil.type) || fil.size < 2.5e6) return ok({ innhold: r.result.split(",")[1], filnavn: fil.name });
+      if (!/^image\/(jpeg|png|webp|heic)$/.test(fil.type) || fil.size < 4e5) return ok({ innhold: r.result.split(",")[1], filnavn: fil.name });
       const img = new Image();
       img.onload = () => {
-        const s = Math.min(1, 2000 / Math.max(img.width, img.height)), c = document.createElement("canvas");
+        const s = Math.min(1, 1600 / Math.max(img.width, img.height)), c = document.createElement("canvas");
         c.width = img.width * s; c.height = img.height * s;
         c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-        ok({ innhold: c.toDataURL("image/jpeg", 0.85).split(",")[1], filnavn: fil.name.replace(/\.[^.]+$/, "") + ".jpg" });
+        ok({ innhold: c.toDataURL("image/jpeg", 0.82).split(",")[1], filnavn: fil.name.replace(/\.[^.]+$/, "") + ".jpg" });
       };
       img.onerror = feil;
       img.src = r.result;
