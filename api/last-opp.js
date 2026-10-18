@@ -30,6 +30,7 @@ async function hentFraNett(adresse) {
 module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ feil: "Bruk POST" });
   const { passord, mappe, prefiks, tekst, bareLaerer, filnavn, innhold, adresse } = req.body || {};
+  if ((process.env.ADMIN_PASSORD || "").length < 8) return res.status(500).json({ feil: "ADMIN_PASSORD mangler i Vercel (eller er kortere enn 8 tegn)" });
   if (!riktigPassord(passord)) return res.status(401).json({ feil: "Feil passord" });
   if (!process.env.GITHUB_TOKEN) return res.status(500).json({ feil: "GITHUB_TOKEN mangler i Vercel" });
   if (!/^vg[12]\/[a-z0-9-]+$/.test(mappe || "") || !/^leksjon-\d+-[A-Za-z0-9_-]+-$/.test(prefiks || ""))
