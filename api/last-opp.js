@@ -32,11 +32,30 @@ async function hentFraNett(adresse) {
   return { data, navn };
 }
 
+const github = (sti, metode, body) => fetch(`https://api.github.com/repos/${REPO}/contents/${sti}`, {
+  method: metode,
+  headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN.trim()}`, Accept: "application/vnd.github+json", "User-Agent": "leksjoner-admin" },
+  body: body && JSON.stringify(body),
+});
+
+// Sletter en fil i en filer/-mappe. GitHub krever filens sha, så den hentes først.
+async function slettFil(sti, res) {
+  if (!/^vg[12]\/[a-z0-9-]+\/filer\/[A-Za-z0-9_.-]+$/.test(sti) || sti.includes(".."))
+    return res.status(400).json({ feil: "Ugyldig fil" });
+  const finnes = await github(sti, "GET");
+  if (!finnes.ok) return res.status(404).json({ feil: "Fant ikke filen. Den er kanskje slettet allerede." });
+  const { sha } = await finnes.json();
+  const svar = await github(sti, "DELETE", { message: `Slett ${sti} fra lærersiden`, sha, branch: GREN });
+  if (!svar.ok) return res.status(400).json({ feil: `GitHub sa nei (${svar.status}).` });
+  res.json({ ok: true });
+}
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ feil: "Bruk POST" });
-  const { mappe, prefiks, tekst, bareLaerer, filnavn, innhold, adresse } = req.body || {};
+  const { slett, mappe, prefiks, tekst, bareLaerer, filnavn, innhold, adresse } = req.body || {};
   if (!innlogget(req)) return res.status(401).json({ feil: "Du må være logget inn på lærersiden. Last inn siden på nytt og logg inn." });
   if (!(process.env.GITHUB_TOKEN || "").trim()) return res.status(500).json({ feil: "GITHUB_TOKEN mangler i Vercel" });
+  if (slett) return slettFil(slett, res);
   if (!/^vg[12]\/[a-z0-9-]+$/.test(mappe || "") || !/^leksjon-\d+-[A-Za-z0-9_-]+-$/.test(prefiks || ""))
     return res.status(400).json({ feil: "Ugyldig mappe eller del" });
 
@@ -53,11 +72,7 @@ module.exports = async (req, res) => {
     const navn = (bareLaerer ? "laerer-" : "") + prefiks + rent + type;
     const sti = `${mappe}/filer/${navn}`;
 
-    const gh = (metode, body) => fetch(`https://api.github.com/repos/${REPO}/contents/${sti}`, {
-      method: metode,
-      headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN.trim()}`, Accept: "application/vnd.github+json", "User-Agent": "leksjoner-admin" },
-      body: body && JSON.stringify(body),
-    });
+    const gh = (metode, body) => github(sti, metode, body);
     if ((await gh("GET")).ok) throw new Error(`Det finnes allerede en fil med navnet ${navn}. Velg en annen tekst.`);
     const svar = await gh("PUT", { message: `Last opp ${sti} fra lærersiden`, content: fil.data.toString("base64"), branch: GREN });
     if (!svar.ok) throw new Error(`GitHub sa nei (${svar.status}). ${svar.status === 401 ? "GITHUB_TOKEN er feil eller utløpt. Lag en ny nøkkel og lim den inn i Vercel." : "Sjekk at GITHUB_TOKEN har Contents: Read and write for Leksjoner."}`);

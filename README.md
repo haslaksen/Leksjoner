@@ -57,7 +57,7 @@ Hvert emne har en mappe `filer/` (for eksempel `vg2/materiallaere/filer/`). Last
 
 ### Last opp fra lærersiden
 
-Knappen **⬆ Last opp** i hver stiplet boks åpner et vindu der læreren velger en fil fra PC-en eller limer inn en nettadresse. Bare den som er logget inn med lærerpassordet kan laste opp. Filen lagres i riktig `filer/`-mappe med riktig navn (`api/last-opp.js`), og siden publiseres på nytt av seg selv. Store bilder gjøres mindre i nettleseren; andre filer kan være opptil 3 MB (større filer lastes opp på GitHub som før).
+Knappen **⬆ Last opp** i hver stiplet boks åpner et vindu der læreren velger en fil fra PC-en eller limer inn en nettadresse. Bare den som er logget inn med lærerpassordet kan laste opp. Når plassboksene vises, har hver fil også en knapp **🗑 Slett**. Filen lagres i riktig `filer/`-mappe med riktig navn (`api/last-opp.js`), og siden publiseres på nytt av seg selv. Store bilder gjøres mindre i nettleseren; andre filer kan være opptil 3 MB (større filer lastes opp på GitHub som før).
 
 Dette krever to hemmeligheter i Vercel (for Production) (**Settings → Environment Variables**), som aldri skal stå i repoet:
 
