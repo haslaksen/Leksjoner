@@ -11,7 +11,7 @@ const TYPER = /\.(jpe?g|png|gif|webp|svg|mp4|webm|pdf|docx?|xlsx?|pptx?|txt|zip|
 const MIME = { "image/jpeg": ".jpg", "image/png": ".png", "image/gif": ".gif", "image/webp": ".webp", "image/svg+xml": ".svg", "application/pdf": ".pdf", "video/mp4": ".mp4" };
 
 function riktigPassord(p) {
-  const a = Buffer.from(String(p || "")), b = Buffer.from(process.env.ADMIN_PASSORD || "");
+  const a = Buffer.from(String(p || "").trim()), b = Buffer.from((process.env.ADMIN_PASSORD || "").trim());
   return b.length >= 8 && a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
   const { passord, mappe, prefiks, tekst, bareLaerer, filnavn, innhold, adresse } = req.body || {};
   if ((process.env.ADMIN_PASSORD || "").length < 8) return res.status(500).json({ feil: "ADMIN_PASSORD mangler i Vercel (eller er kortere enn 8 tegn)" });
   if (!riktigPassord(passord)) return res.status(401).json({ feil: "Feil passord" });
-  if (!process.env.GITHUB_TOKEN) return res.status(500).json({ feil: "GITHUB_TOKEN mangler i Vercel" });
+  if (!(process.env.GITHUB_TOKEN || "").trim()) return res.status(500).json({ feil: "GITHUB_TOKEN mangler i Vercel" });
   if (!/^vg[12]\/[a-z0-9-]+$/.test(mappe || "") || !/^leksjon-\d+-[A-Za-z0-9_-]+-$/.test(prefiks || ""))
     return res.status(400).json({ feil: "Ugyldig mappe eller del" });
 
@@ -51,12 +51,12 @@ module.exports = async (req, res) => {
 
     const gh = (metode, body) => fetch(`https://api.github.com/repos/${REPO}/contents/${sti}`, {
       method: metode,
-      headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN}`, Accept: "application/vnd.github+json", "User-Agent": "leksjoner-admin" },
+      headers: { Authorization: `Bearer ${process.env.GITHUB_TOKEN.trim()}`, Accept: "application/vnd.github+json", "User-Agent": "leksjoner-admin" },
       body: body && JSON.stringify(body),
     });
     if ((await gh("GET")).ok) throw new Error(`Det finnes allerede en fil med navnet ${navn}. Velg en annen tekst.`);
     const svar = await gh("PUT", { message: `Last opp ${sti} fra lærersiden`, content: fil.data.toString("base64"), branch: GREN });
-    if (!svar.ok) throw new Error(`GitHub sa nei (${svar.status}). Sjekk GITHUB_TOKEN i Vercel.`);
+    if (!svar.ok) throw new Error(`GitHub sa nei (${svar.status}). ${svar.status === 401 ? "GITHUB_TOKEN er feil eller utløpt. Lag en ny nøkkel og lim den inn i Vercel." : "Sjekk at GITHUB_TOKEN har Contents: Read and write for Leksjoner."}`);
     res.json({ ok: true, navn });
   } catch (e) {
     res.status(400).json({ feil: e.message });

@@ -10,7 +10,7 @@
     <label>…eller nettadresse<br><input name="adresse" type="url" placeholder="https://…" style="width:100%"></label>
     <label>Tekst under (valgfritt)<br><input name="tekst" placeholder="for eksempel herdekar" style="width:100%"></label>
     <label><input name="bareLaerer" type="checkbox"> Bare på lærersiden</label>
-    <label>Adminpassord<br><input name="passord" type="password" required style="width:100%"></label>
+    <label>Adminpassord<br><input name="passord" type="password" autocomplete="off" autocapitalize="off" required style="width:100%"></label>
     <div class="melding" style="min-height:1.4em;color:#56606c"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button value="avbryt" formnovalidate>Lukk</button>
