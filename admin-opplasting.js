@@ -1,6 +1,6 @@
 // Opplasting fra lærersiden (bygg.js legger dette inn på lærerversjonen av leksjonene).
 // Knappen «Last opp» i de stiplede boksene åpner et vindu der admin velger en fil fra PC-en
-// eller limer inn en nettadresse. Filen sendes til api/last-opp.js, som krever adminpassordet.
+// eller limer inn en nettadresse. Filen sendes til api/last-opp.js, som bare godtar innloggede lærere (lærerpassordet).
 (function () {
   const d = document.createElement("dialog");
   d.style.cssText = "max-width:440px;width:92vw;border:0;border-radius:14px;padding:18px 20px;font:500 15px/1.45 system-ui,sans-serif;color:#14181d";
@@ -10,7 +10,6 @@
     <label>…eller nettadresse<br><input name="adresse" type="url" placeholder="https://…" style="width:100%"></label>
     <label>Tekst under (valgfritt)<br><input name="tekst" placeholder="for eksempel herdekar" style="width:100%"></label>
     <label><input name="bareLaerer" type="checkbox"> Bare på lærersiden</label>
-    <label>Adminpassord<br><input name="passord" type="password" autocomplete="off" autocapitalize="off" required style="width:100%"></label>
     <div class="melding" style="min-height:1.4em;color:#56606c"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button value="avbryt" formnovalidate>Lukk</button>
@@ -19,7 +18,6 @@
   document.body.appendChild(d);
   const f = d.querySelector("form"), melding = d.querySelector(".melding");
   let boks;
-  try { f.passord.value = sessionStorage.getItem("adminpassord") || ""; } catch (e) {}
 
   // Store bilder gjøres mindre i nettleseren, så de kommer under grensen på 3 MB.
   const lesFil = fil => new Promise((ok, feil) => {
@@ -48,16 +46,15 @@
     melding.textContent = "Laster opp …";
     f.querySelector(".send").disabled = true;
     try {
-      const svar = await fetch("/api/last-opp", {
+      const svar = await fetch("/laerer-k7q4mz/api/last-opp", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify(Object.assign({
-          passord: f.passord.value, mappe: boks.dataset.mappe, prefiks: boks.dataset.prefiks,
+          mappe: boks.dataset.mappe, prefiks: boks.dataset.prefiks,
           tekst: f.tekst.value, bareLaerer: f.bareLaerer.checked,
         }, fil ? await lesFil(fil) : { adresse })),
       });
       const data = await svar.json().catch(() => ({ feil: `Noe gikk galt (${svar.status})` }));
       if (!svar.ok) throw new Error(data.feil);
-      try { sessionStorage.setItem("adminpassord", f.passord.value); } catch (e) {}
       melding.innerHTML = `✅ Lastet opp som <b>${data.navn}</b>. Siden publiseres på nytt nå. Last inn siden på nytt om et par minutter for å se den.`;
       f.fil.value = f.adresse.value = f.tekst.value = "";
     } catch (err) {

@@ -2,6 +2,7 @@
   "buildCommand": "node bygg.js",
   "outputDirectory": "public",
   "cleanUrls": true,
+  "rewrites": [{ "source": "/laerer-k7q4mz/api/last-opp", "destination": "/api/last-opp" }],
   "redirects": [
     { "source": "/vg2/elektro/leksjon-2-maling-med-multimeter", "destination": "/vg2/elektro/leksjon-3-maling-med-multimeter", "permanent": false },
     { "source": "/vg2/elektro/leksjon-3-motorstyring", "destination": "/vg2/elektro/leksjon-4-motorstyring", "permanent": false },
