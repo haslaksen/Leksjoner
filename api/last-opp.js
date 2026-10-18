@@ -1,7 +1,7 @@
 // Laster opp et bilde eller en fil fra lærersiden til mappen <trinn>/<emne>/filer/ i GitHub-repoet.
 // Vercel publiserer siden på nytt når filen er lagt inn, og bygg.js viser den i riktig del.
 // Hemmeligheter som legges inn i Vercel (Settings → Environment Variables):
-//   ADMIN_PASSORD  Passordet admin skriver på lærersiden.
+//   LAERER_PASSORD Lærerpassordet (samme som i middleware.js). Nettleseren sender det med når læreren er logget inn.
 //   GITHUB_TOKEN   GitHub-nøkkel med skrivetilgang (Contents) til bare dette repoet.
 const crypto = require("crypto");
 
@@ -10,9 +10,14 @@ const MAKS = 3 * 1024 * 1024; // Vercel tar imot opptil 4,5 MB per forespørsel 
 const TYPER = /\.(jpe?g|png|gif|webp|svg|mp4|webm|pdf|docx?|xlsx?|pptx?|txt|zip|stl|step|stp|dxf|dwg)$/i;
 const MIME = { "image/jpeg": ".jpg", "image/png": ".png", "image/gif": ".gif", "image/webp": ".webp", "image/svg+xml": ".svg", "application/pdf": ".pdf", "video/mp4": ".mp4" };
 
-function riktigPassord(p) {
-  const a = Buffer.from(String(p || "").trim()), b = Buffer.from((process.env.ADMIN_PASSORD || "").trim());
-  return b.length >= 8 && a.length === b.length && crypto.timingSafeEqual(a, b);
+// Nettleseren sender lærerinnloggingen med, fordi adressen ligger under /laerer-k7q4mz/ (se vercel.json).
+function innlogget(req) {
+  const passord = (process.env.LAERER_PASSORD || "").trim();
+  const [type, verdi] = String(req.headers.authorization || "").split(" ");
+  if (!passord || type !== "Basic" || !verdi) return false;
+  const tekst = Buffer.from(verdi, "base64").toString("utf8");
+  const a = Buffer.from(tekst.slice(tekst.indexOf(":") + 1).trim()), b = Buffer.from(passord);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
 async function hentFraNett(adresse) {
@@ -29,9 +34,8 @@ async function hentFraNett(adresse) {
 
 module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ feil: "Bruk POST" });
-  const { passord, mappe, prefiks, tekst, bareLaerer, filnavn, innhold, adresse } = req.body || {};
-  if ((process.env.ADMIN_PASSORD || "").length < 8) return res.status(500).json({ feil: "ADMIN_PASSORD mangler i Vercel (eller er kortere enn 8 tegn)" });
-  if (!riktigPassord(passord)) return res.status(401).json({ feil: "Feil passord" });
+  const { mappe, prefiks, tekst, bareLaerer, filnavn, innhold, adresse } = req.body || {};
+  if (!innlogget(req)) return res.status(401).json({ feil: "Du må være logget inn på lærersiden. Last inn siden på nytt og logg inn." });
   if (!(process.env.GITHUB_TOKEN || "").trim()) return res.status(500).json({ feil: "GITHUB_TOKEN mangler i Vercel" });
   if (!/^vg[12]\/[a-z0-9-]+$/.test(mappe || "") || !/^leksjon-\d+-[A-Za-z0-9_-]+-$/.test(prefiks || ""))
     return res.status(400).json({ feil: "Ugyldig mappe eller del" });
