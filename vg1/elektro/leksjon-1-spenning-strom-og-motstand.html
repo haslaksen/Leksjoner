@@ -147,6 +147,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visi
 .rule2>div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 16px;display:grid;gap:2px}
 .rule2 svg{width:100%;max-width:260px;height:auto}
 @media (max-width:600px){.rule2{grid-template-columns:1fr}}
+.mmh{margin-top:10px}
+.mm{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;grid-template-columns:1.5fr 1fr;gap:16px 28px;align-items:center}
+.mm>*{min-width:0}
+.mm svg{width:100%;height:auto;display:block}
+.mmvalg{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap}
+.mmb.U[aria-pressed="true"]{background:var(--u);border-color:var(--u);color:#fff}
+.mmb.I[aria-pressed="true"]{background:var(--i);border-color:var(--i);color:#fff}
+.mmb.R[aria-pressed="true"]{background:var(--r);border-color:var(--r);color:#fff}
+.mm .jack{fill:var(--bg);transition:fill .3s}
+.mm .jack.on{fill:var(--bad)}
+.mm .mmlbl.on{fill:var(--orange)}
+.mmvis{transform-origin:110px 172px;transition:transform .5s}
+.mmsteg{margin:0;padding-left:1.3em;display:grid;gap:12px;font-size:1.15rem}
+@media (max-width:860px){.mm{grid-template-columns:1fr}}
 .spark{animation:spark .35s steps(2) infinite}
 @keyframes spark{50%{opacity:0}}
 .fast{stroke-dasharray:3 9;animation:flow .25s linear infinite}
@@ -273,7 +287,7 @@ details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
         <dt>0–10</dt><dd>Start: vis animasjonen og spør «Hva skjer når du slår på lyset?»</dd>
         <dt>10–25</dt><dd>Tre størrelser, eksempler på motstand og vannkretsen. Elevene gjør Del A.</dd>
         <dt>25–45</dt><dd>Kretslab på storskjerm eller elevenes PC. Elevene gjør Del B.</dd>
-        <dt>45–55</dt><dd>Måle riktig: klassen stemmer på krets A, B og C før svaret vises. Vis multimeter-simulatoren. Del D.</dd>
+        <dt>45–55</dt><dd>Måle riktig: klassen stemmer på krets A, B og C før svaret vises. Multimeteret: trykk V, A og Ω og se bryter og ledninger. Vis multimeter-simulatoren. Del D.</dd>
         <dt>55–65</dt><dd>Pause</dd>
         <dt>65–75</dt><dd>Ohms lov med trekanten og kalkulatoren. Regn oppgave C1 i fellesskap.</dd>
         <dt>75–85</dt><dd>Del C. De som blir ferdige, lager egne oppgaver i Kretslab til sidemannen.</dd>
@@ -467,6 +481,74 @@ details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
     <div><svg viewBox="0 0 200 90" aria-hidden="true"><line x1="10" y1="50" x2="190" y2="50" stroke="var(--wire)" stroke-width="4"/><line x1="10" y1="50" x2="190" y2="50" stroke="var(--i)" stroke-width="4" class="flow"/><rect x="120" y="38" width="56" height="24" fill="var(--r-soft)" stroke="var(--r)" stroke-width="3"/><circle cx="64" cy="50" r="16" fill="var(--surface)" stroke="var(--i)" stroke-width="3"/><text x="64" y="56" text-anchor="middle" fill="var(--i)" font-weight="700" font-size="16">A</text></svg>
       <b class="i">Amperemeter</b><span>i serie, strømmen går <b>gjennom</b></span></div>
   </div>
+  <h3 class="mmh">Multimeteret: still inn, så mål</h3>
+  <div class="mm" id="mm">
+    <div class="mmvalg" role="group" aria-label="Hva vil du måle?">
+      <button type="button" class="mmb U" data-m="V" aria-pressed="true">Spenning <b>V</b></button>
+      <button type="button" class="mmb I" data-m="A" aria-pressed="false">Strøm <b>A</b></button>
+      <button type="button" class="mmb R" data-m="O" aria-pressed="false">Motstand <b>Ω</b></button>
+    </div>
+    <svg viewBox="0 0 520 360" role="img" aria-label="Multimeter med dreiebryter, tre kontakter og to ledninger koblet til en krets" data-mode="V">
+      <!-- måleren -->
+      <rect x="10" y="10" width="200" height="300" rx="20" fill="var(--glow)" stroke="var(--wire)" stroke-width="3"/>
+      <rect x="22" y="22" width="176" height="276" rx="12" fill="var(--surface)"/>
+      <rect x="34" y="34" width="152" height="58" rx="6" fill="#c9dcc3" stroke="var(--wire)" stroke-width="2"/>
+      <text id="mmTall" x="150" y="76" text-anchor="end" font-family="var(--mono)" font-weight="700" font-size="30" fill="#14181d">12,0</text>
+      <text id="mmEnh" x="156" y="76" font-family="var(--mono)" font-weight="700" font-size="20" fill="#14181d">V</text>
+      <!-- dreiebryter -->
+      <g font-weight="800" font-size="17" text-anchor="middle" fill="var(--ink)">
+        <text x="48" y="177" font-size="12" fill="var(--muted)">AV</text>
+        <text x="67" y="137" class="mmlbl" data-m="V~">V~</text>
+        <text x="110" y="122" class="mmlbl" data-m="V">V⎓</text>
+        <text x="153" y="137" class="mmlbl" data-m="O">Ω</text>
+        <text x="172" y="178" class="mmlbl" data-m="A">A</text>
+      </g>
+      <circle cx="110" cy="172" r="40" fill="var(--bg)" stroke="var(--wire)" stroke-width="3"/>
+      <g id="mmVis" class="mmvis"><rect x="104" y="138" width="12" height="40" rx="6" fill="var(--wire)"/><circle cx="110" cy="142" r="3.5" fill="var(--glow)"/></g>
+      <!-- kontakter -->
+      <g text-anchor="middle" font-weight="800" font-size="13">
+        <circle class="jack" data-j="A" cx="50" cy="264" r="12" stroke="var(--bad)" stroke-width="4"/>
+        <circle class="jack" cx="110" cy="264" r="12" stroke="var(--ink)" stroke-width="4"/>
+        <circle class="jack" data-j="VO" cx="170" cy="264" r="12" stroke="var(--bad)" stroke-width="4"/>
+        <text x="50" y="240" fill="var(--ink)">A</text><text x="110" y="240" fill="var(--ink)">COM</text><text x="170" y="240" fill="var(--ink)">VΩ</text>
+      </g>
+      <!-- spenning: parallelt over lampa -->
+      <g class="mmk" data-k="V">
+        <path d="M300 120 H500 V230 H300 Z" fill="none" stroke="var(--wire)" stroke-width="4"/>
+        <path d="M300 120 H500 V230 H300 Z" fill="none" stroke="var(--i)" stroke-width="4" class="flow"/>
+        <rect x="286" y="160" width="28" height="30" fill="var(--surface)"/><line x1="284" y1="164" x2="316" y2="164" stroke="var(--u)" stroke-width="4"/><line x1="292" y1="184" x2="308" y2="184" stroke="var(--u)" stroke-width="7"/>
+        <text x="270" y="180" text-anchor="end" font-weight="700" font-size="15" fill="var(--u)">12 V</text>
+        <circle cx="400" cy="230" r="15" fill="var(--glow)" stroke="var(--ink)" stroke-width="3"/><path d="M390 220 L410 240 M410 220 L390 240" stroke="var(--ink)" stroke-width="3"/>
+        <circle cx="360" cy="230" r="5" fill="var(--bad)"/><circle cx="440" cy="230" r="5" fill="var(--ink)"/>
+        <path d="M170 270 V320 C170 342 360 342 360 235" fill="none" stroke="var(--bad)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M110 270 V325 C110 354 440 354 440 235" fill="none" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/>
+        <text x="400" y="100" text-anchor="middle" font-weight="800" font-size="18" fill="var(--u)">Parallelt, over lampa</text>
+      </g>
+      <!-- strøm: i serie, kretsen åpnes -->
+      <g class="mmk" data-k="A" hidden>
+        <path d="M420 230 H300 V120 H500 V230 H470" fill="none" stroke="var(--wire)" stroke-width="4"/>
+        <path d="M420 230 H300 V120 H500 V230 H470" fill="none" stroke="var(--i)" stroke-width="4" class="flow"/>
+        <rect x="286" y="160" width="28" height="30" fill="var(--surface)"/><line x1="284" y1="164" x2="316" y2="164" stroke="var(--u)" stroke-width="4"/><line x1="292" y1="184" x2="308" y2="184" stroke="var(--u)" stroke-width="7"/>
+        <text x="270" y="180" text-anchor="end" font-weight="700" font-size="15" fill="var(--u)">12 V</text>
+        <circle cx="370" cy="230" r="15" fill="var(--glow)" stroke="var(--ink)" stroke-width="3"/><path d="M360 220 L380 240 M380 220 L360 240" stroke="var(--ink)" stroke-width="3"/>
+        <circle cx="420" cy="230" r="5" fill="var(--bad)"/><circle cx="470" cy="230" r="5" fill="var(--ink)"/>
+        <path d="M50 270 V320 C50 346 420 346 420 235" fill="none" stroke="var(--bad)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M110 270 V325 C110 354 470 354 470 235" fill="none" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/>
+        <text x="400" y="100" text-anchor="middle" font-weight="800" font-size="18" fill="var(--i)">I serie, gjennom måleren</text>
+      </g>
+      <!-- motstand: uten spenning -->
+      <g class="mmk" data-k="O" hidden>
+        <line x1="330" y1="200" x2="470" y2="200" stroke="var(--wire)" stroke-width="4"/>
+        <rect x="360" y="186" width="80" height="28" rx="6" fill="var(--r-soft)" stroke="var(--r)" stroke-width="3"/>
+        <rect x="375" y="186" width="6" height="28" fill="var(--bad)"/><rect x="390" y="186" width="6" height="28" fill="var(--bad)"/><rect x="405" y="186" width="6" height="28" fill="var(--i)"/>
+        <circle cx="330" cy="200" r="5" fill="var(--bad)"/><circle cx="470" cy="200" r="5" fill="var(--ink)"/>
+        <path d="M170 270 V320 C170 342 330 342 330 205" fill="none" stroke="var(--bad)" stroke-width="5" stroke-linecap="round"/>
+        <path d="M110 270 V325 C110 354 470 354 470 205" fill="none" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/>
+        <text x="400" y="150" text-anchor="middle" font-weight="800" font-size="18" fill="var(--r)">Slå av strømmen først</text>
+      </g>
+    </svg>
+    <ol class="mmsteg" id="mmSteg"></ol>
+  </div>
   <a class="simlink no-print" data-sim="multimeter"><span class="ico">🧪</span><span><b>Prøv selv: Multimeter-simulatoren</b><small>Mål spenning, strøm og motstand.</small></span><span class="pil">→</span></a>
   <details class="laerer no-print"><summary>Lærernotat</summary>Vi måler bare på lav spenning (batteri, 12–24 V) i denne leksjonen, aldri på 230 V. Amperemeteret har nesten ingen motstand. Kobles det rett over batteriet (krets C), blir det kortslutning, og sikringen i multimeteret ryker. La klassen stemme på A, B og C før du viser svaret.</details>
 </section>
@@ -584,6 +666,16 @@ details.teacher summary{cursor:pointer;font:700 22px/2 var(--display)}
           Måler 1 er et <span class="luke"><span class="fasit" hidden>voltmeter (parallelt over lampa)</span></span>. Måler 2 er et <span class="luke"><span class="fasit" hidden>amperemeter (i serie)</span></span>.</li>
         <li>Bruk <a data-sim="multimeter">Multimeter-simulatoren</a>. Mål spenning og strøm. Kobler du måleren i serie eller parallelt?<div class="svar"><span class="fasit" hidden>Spenning: parallelt (over komponenten). Strøm: i serie (strømmen går gjennom måleren)</span></div></li>
         <li>Amperemeteret kobles rett over batteriet. Hvorfor ryker sikringen i multimeteret?<span class="hint">Tenk: hvor stor motstand har et amperemeter?</span><div class="svar"><span class="fasit" hidden>Amperemeteret har nesten ingen motstand. Det blir kortslutning og svært stor strøm</span></div></li>
+        <li>Du skal måle spenningen på et 12 V-batteri med multimeteret.
+          <svg class="oppfig" viewBox="0 0 220 230" role="img" aria-label="Multimeter med dreiebryter (AV, V~, V likespenning, Ω, A) og kontaktene A, COM og VΩ">
+            <rect x="10" y="10" width="200" height="210" rx="18" fill="none" stroke="currentColor" stroke-width="3"/>
+            <rect x="34" y="26" width="152" height="40" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+            <g font-weight="800" font-size="16" text-anchor="middle" fill="currentColor"><text x="48" y="137" font-size="12">AV</text><text x="67" y="97">V~</text><text x="110" y="82">V⎓</text><text x="153" y="97">Ω</text><text x="172" y="138">A</text></g>
+            <circle cx="110" cy="132" r="32" fill="none" stroke="currentColor" stroke-width="3"/>
+            <g text-anchor="middle" font-weight="800" font-size="12" fill="currentColor"><circle cx="50" cy="186" r="10" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="110" cy="186" r="10" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="170" cy="186" r="10" fill="none" stroke="currentColor" stroke-width="3"/><text x="50" y="212">A</text><text x="110" y="212">COM</text><text x="170" y="212">VΩ</text></g>
+          </svg>
+          Bryteren settes på <span class="luke"><span class="fasit" hidden>V⎓ (likespenning)</span></span>. Rød ledning i <span class="luke"><span class="fasit" hidden>VΩ</span></span>, svart i <span class="luke"><span class="fasit" hidden>COM</span></span>.</li>
+        <li>Du skal måle motstanden i en lampe. Hva må du gjøre før du måler?<div class="svar"><span class="fasit" hidden>Slå av strømmen (ta lampa ut av kretsen). Motstand måles uten spenning</span></div></li>
       </ol>
     </div>
 
@@ -680,6 +772,23 @@ document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.
   document.querySelectorAll('.mcard').forEach(c=>c.addEventListener('click',()=>{
     c.dataset.shown=c.dataset.ans; c.querySelector('.verdict').textContent=c.dataset.txt;
   }));
+
+  // ---------- multimeter: still inn ----------
+  const MM={V:{vis:0,jack:'VO',tall:'12,0',enh:'V',steg:['Bryteren på <b>V⎓</b> (batteri). V~ er for vekselspenning.','Rød i <b>VΩ</b>, svart i <b>COM</b>.','Mål <b>parallelt</b>, over komponenten.']},
+            A:{vis:90,jack:'A',tall:'0,50',enh:'A',steg:['Bryteren på <b>A</b>.','Rød i <b>A</b>, svart i <b>COM</b>.','Åpne kretsen. Mål <b>i serie</b>.','Etterpå: flytt rød tilbake til VΩ.']},
+            O:{vis:45,jack:'VO',tall:'220',enh:'Ω',steg:['Bryteren på <b>Ω</b>.','Rød i <b>VΩ</b>, svart i <b>COM</b>.','<b>Slå av strømmen.</b> Mål over komponenten alene.']}};
+  function mmVelg(m){
+    const d=MM[m];
+    document.querySelectorAll('.mmb').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));
+    $('mmVis').style.transform='rotate('+d.vis+'deg)';
+    document.querySelectorAll('#mm .jack[data-j]').forEach(j=>j.classList.toggle('on',j.dataset.j===d.jack));
+    document.querySelectorAll('#mm .mmlbl').forEach(t=>t.classList.toggle('on',t.dataset.m===m));
+    document.querySelectorAll('#mm .mmk').forEach(g=>g.toggleAttribute('hidden',g.dataset.k!==m));
+    $('mmTall').textContent=d.tall; $('mmEnh').textContent=d.enh;
+    $('mmSteg').innerHTML=d.steg.map(t=>'<li>'+t+'</li>').join('');
+  }
+  document.querySelectorAll('.mmb').forEach(b=>b.addEventListener('click',()=>mmVelg(b.dataset.m)));
+  mmVelg('V');
 
   // ---------- URI triangle ----------
   const F={U:'<span class="u">U</span> = <span class="r">R</span> × <span class="i">I</span>',
