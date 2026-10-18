@@ -64,6 +64,10 @@ details.mal li{display:grid; grid-template-columns:2.4rem 1fr; padding:.1rem .3r
 details.mal li b{color:var(--orange)}
 details.mal li.vist{background:var(--orange-soft); border-radius:6px}
 details.mal .kilde{font-size:.75rem; color:var(--muted); padding:0 1rem .7rem; margin:0}
+details.mal li em{grid-column:2; font-style:normal; font-size:.75rem; color:var(--muted)}
+.dk{font-style:normal; font-weight:700; border-radius:99px; padding:0 .5rem; margin-right:.3rem}
+.dk.d{color:var(--green); background:var(--green-soft)} .dk.h{color:#a86b00; background:#fff4d6} .dk.m{color:#c92a2a; background:#fde8e8} .dk.p{color:var(--blue); background:var(--blue-soft)}
+:root[data-theme="dark"] .dk.h{color:#ffc94d; background:#3a2f12} :root[data-theme="dark"] .dk.m{color:#ff7b7b; background:#3a1a1a}
 .mal-yff{color:var(--muted); margin-top:.6rem; font-size:.85rem}
 .merker{margin-top:.8rem; padding-top:.7rem; border-top:1px dashed var(--line); font-size:.8rem; color:var(--muted)}
 .mal-merke{font:inherit; font-size:.75rem; font-weight:700; cursor:pointer; margin:.15rem .3rem 0 0; padding:.1rem .55rem; border-radius:99px; border:1px solid var(--blue); color:var(--blue); background:var(--blue-soft)}
@@ -104,16 +108,16 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
     <div class="fag">
       <h3 class="fag-tittel">Konstruksjons- og styringsteknikk</h3>
       <details class="laerer mal">
-        <summary>Kompetansemål (8)</summary>
+        <summary>Kompetansemål (8) · 1 dekket · 2 delvis · 5 mangler</summary>
         <ul>
-          <li data-mal="KST1"><b>1</b> <span>Forklare og bruke HMS-regelverk og krav for elektriske, hydrauliske og pneumatiske anlegg</span></li>
-          <li data-mal="KST2"><b>2</b> <span>Utvikle og beskrive skjemaer med grunnleggende komponenter i elektriske, hydrauliske og pneumatiske anlegg</span></li>
-          <li data-mal="KST3"><b>3</b> <span>Utføre og bruke grunnleggende beregninger innenfor elektriske, hydrauliske og pneumatiske anlegg</span></li>
-          <li data-mal="KST4"><b>4</b> <span>Bruke simuleringsverktøy til å dokumentere, designe og teste styringssystemer</span></li>
-          <li data-mal="KST5"><b>5</b> <span>Koble opp, teste og feilsøke automatiske og manuelle styringssystemer, og gjøre relevante målinger</span></li>
-          <li data-mal="KST6"><b>6</b> <span>Tolke og forklare sammenhengen mellom målinger og beregnede størrelser innenfor elektro, hydraulikk og pneumatikk</span></li>
-          <li data-mal="KST7"><b>7</b> <span>Bruke DAK (2D og 3D) og DAP til enkel tegning og dokumentasjon</span></li>
-          <li data-mal="KST8"><b>8</b> <span>Bruke grunnleggende programmering av styringssystemer innenfor robotisering, automatisering og CNC</span></li>
+          <li data-mal="KST1" class="m"><b>1</b> <span>Forklare og bruke HMS-regelverk og krav for elektriske, hydrauliske og pneumatiske anlegg</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="KST2" class="m"><b>2</b> <span>Utvikle og beskrive skjemaer med grunnleggende komponenter i elektriske, hydrauliske og pneumatiske anlegg</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="KST3" class="h"><b>3</b> <span>Utføre og bruke grunnleggende beregninger innenfor elektriske, hydrauliske og pneumatiske anlegg</span> <em><i class="dk h">Delvis</i> <small>Elektro 1–2 (bare elektro)</small></em></li>
+          <li data-mal="KST4" class="m"><b>4</b> <span>Bruke simuleringsverktøy til å dokumentere, designe og teste styringssystemer</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="KST5" class="m"><b>5</b> <span>Koble opp, teste og feilsøke automatiske og manuelle styringssystemer, og gjøre relevante målinger</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="KST6" class="h"><b>6</b> <span>Tolke og forklare sammenhengen mellom målinger og beregnede størrelser innenfor elektro, hydraulikk og pneumatikk</span> <em><i class="dk h">Delvis</i> <small>Elektro 1–2 (bare elektro)</small></em></li>
+          <li data-mal="KST7" class="d"><b>7</b> <span>Bruke DAK (2D og 3D) og DAP til enkel tegning og dokumentasjon</span> <em><i class="dk d">Dekket</i> <small>Tegning og DAK 1–2</small></em></li>
+          <li data-mal="KST8" class="m"><b>8</b> <span>Bruke grunnleggende programmering av styringssystemer innenfor robotisering, automatisering og CNC</span> <em><i class="dk m">Mangler</i></em></li>
         </ul>
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/tip01-03">læreplan TIP01-03 på udir.no</a></p>
       </details>
@@ -125,7 +129,7 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg1/elektro/leksjon-2-repetisjon-og-effekt.html">Repetisjon og effekt</a></li>
           </ol>
           <div class="sims">Simulator: <a data-sim="multimeter">Multimeter</a></div>
-          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="KST3">Mål 3</button><button class="mal-merke" data-mal="KST5">Mål 5</button><button class="mal-merke" data-mal="KST6">Mål 6</button><p class="mal-tekst" aria-live="polite"></p></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="KST3">Mål 3</button><button class="mal-merke" data-mal="KST6">Mål 6</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
         <div class="card">
           <h3>Tegning og DAK</h3>
@@ -141,21 +145,21 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
     <div class="fag">
       <h3 class="fag-tittel">Produksjon og tjenester</h3>
       <details class="laerer mal">
-        <summary>Kompetansemål (13)</summary>
+        <summary>Kompetansemål (13) · 0 dekket · 0 delvis · 13 mangler</summary>
         <ul>
-          <li data-mal="PT1"><b>1</b> <span>Bruke materialer, teknikker og utstyr i samsvar med gjeldende regelverk for helse, miljø og sikkerhet</span></li>
-          <li data-mal="PT2"><b>2</b> <span>Bruke ergonomisk riktige teknikker og reflektere over sammenhengen mellom folkehelse, effektivitet og samfunnsøkonomi</span></li>
-          <li data-mal="PT3"><b>3</b> <span>Bruke håndverktøy, måleverktøy og maskiner til å bearbeide materialer, og lese av måleresultater ut fra arbeidstegninger</span></li>
-          <li data-mal="PT4"><b>4</b> <span>Planlegge, utføre og dokumentere praktisk arbeid med produksjon og vedlikehold av maskiner og utstyr</span></li>
-          <li data-mal="PT5"><b>5</b> <span>Demontere og montere maskinelementer i relevante arbeidsoppgaver</span></li>
-          <li data-mal="PT6"><b>6</b> <span>Beskrive arbeidsoppgaver innenfor produksjon og tjenester basert på tegningsunderlag og prosedyrer</span></li>
-          <li data-mal="PT7"><b>7</b> <span>Beskrive egenskapene ved ulike materialer og hvordan de kan påvirke det ytre miljøet</span></li>
-          <li data-mal="PT8"><b>8</b> <span>Forklare hvordan kjemiske stoffers egenskaper påvirker bruk, gjenbruk og sikker lagring av materialer</span></li>
-          <li data-mal="PT9"><b>9</b> <span>Gjennomføre og gjøre rede for termiske, kjemiske og mekaniske sammenføyingsmetoder</span></li>
-          <li data-mal="PT10"><b>10</b> <span>Bruke sikkerhetsdatablad og gjennomføre risikovurdering av kjemikalier på arbeidsplassen</span></li>
-          <li data-mal="PT11"><b>11</b> <span>Bruke digitale hjelpemidler og tabeller til å hente ut informasjon for å løse arbeidsoppgaver</span></li>
-          <li data-mal="PT12"><b>12</b> <span>Beskrive arbeidsgangen i en praktisk arbeidsoppgave fra idé til sluttprodukt</span></li>
-          <li data-mal="PT13"><b>13</b> <span>Beskrive betydningen av bærekraftig utvikling av produkter og tjenester</span></li>
+          <li data-mal="PT1" class="m"><b>1</b> <span>Bruke materialer, teknikker og utstyr i samsvar med gjeldende regelverk for helse, miljø og sikkerhet</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT2" class="m"><b>2</b> <span>Bruke ergonomisk riktige teknikker og reflektere over sammenhengen mellom folkehelse, effektivitet og samfunnsøkonomi</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT3" class="m"><b>3</b> <span>Bruke håndverktøy, måleverktøy og maskiner til å bearbeide materialer, og lese av måleresultater ut fra arbeidstegninger</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT4" class="m"><b>4</b> <span>Planlegge, utføre og dokumentere praktisk arbeid med produksjon og vedlikehold av maskiner og utstyr</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT5" class="m"><b>5</b> <span>Demontere og montere maskinelementer i relevante arbeidsoppgaver</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT6" class="m"><b>6</b> <span>Beskrive arbeidsoppgaver innenfor produksjon og tjenester basert på tegningsunderlag og prosedyrer</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT7" class="m"><b>7</b> <span>Beskrive egenskapene ved ulike materialer og hvordan de kan påvirke det ytre miljøet</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT8" class="m"><b>8</b> <span>Forklare hvordan kjemiske stoffers egenskaper påvirker bruk, gjenbruk og sikker lagring av materialer</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT9" class="m"><b>9</b> <span>Gjennomføre og gjøre rede for termiske, kjemiske og mekaniske sammenføyingsmetoder</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT10" class="m"><b>10</b> <span>Bruke sikkerhetsdatablad og gjennomføre risikovurdering av kjemikalier på arbeidsplassen</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT11" class="m"><b>11</b> <span>Bruke digitale hjelpemidler og tabeller til å hente ut informasjon for å løse arbeidsoppgaver</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT12" class="m"><b>12</b> <span>Beskrive arbeidsgangen i en praktisk arbeidsoppgave fra idé til sluttprodukt</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PT13" class="m"><b>13</b> <span>Beskrive betydningen av bærekraftig utvikling av produkter og tjenester</span> <em><i class="dk m">Mangler</i></em></li>
         </ul>
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/tip01-03">læreplan TIP01-03 på udir.no</a></p>
       </details>
@@ -164,17 +168,17 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
     <div class="fag">
       <h3 class="fag-tittel">Produktivitet og kvalitetsstyring</h3>
       <details class="laerer mal">
-        <summary>Kompetansemål (9)</summary>
+        <summary>Kompetansemål (9) · 0 dekket · 0 delvis · 9 mangler</summary>
         <ul>
-          <li data-mal="PK1"><b>1</b> <span>Gjennomføre og dokumentere arbeid i samsvar med gjeldende regelverk for helse, miljø og sikkerhet</span></li>
-          <li data-mal="PK2"><b>2</b> <span>Beskrive risikovurderinger og sikker jobb-analyse og kjenne til rapporteringskrav for arbeidsoppgaver</span></li>
-          <li data-mal="PK3"><b>3</b> <span>Bruke og forklare håndverktøy og diagnoseutstyr ved service og reparasjon, og tolke måleresultater</span></li>
-          <li data-mal="PK4"><b>4</b> <span>Bruke metoder og teknikker for overflatebehandling av ulike materialer</span></li>
-          <li data-mal="PK5"><b>5</b> <span>Anvende og gjøre rede for bearbeiding av relevante materialer</span></li>
-          <li data-mal="PK6"><b>6</b> <span>Beregne kostnader ved arbeidsoppgaver og lage forslag til effektiviseringstiltak</span></li>
-          <li data-mal="PK7"><b>7</b> <span>Beskrive og reflektere over logistikken fra innkjøp til gjenvinning av et produkt</span></li>
-          <li data-mal="PK8"><b>8</b> <span>Kommunisere og formidle budskap tilpasset ulike målgrupper</span></li>
-          <li data-mal="PK9"><b>9</b> <span>Gjøre rede for og vurdere hvordan partene i arbeidslivet samarbeider for å utvikle et bedre arbeidsliv</span></li>
+          <li data-mal="PK1" class="m"><b>1</b> <span>Gjennomføre og dokumentere arbeid i samsvar med gjeldende regelverk for helse, miljø og sikkerhet</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PK2" class="m"><b>2</b> <span>Beskrive risikovurderinger og sikker jobb-analyse og kjenne til rapporteringskrav for arbeidsoppgaver</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PK3" class="m"><b>3</b> <span>Bruke og forklare håndverktøy og diagnoseutstyr ved service og reparasjon, og tolke måleresultater</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PK4" class="m"><b>4</b> <span>Bruke metoder og teknikker for overflatebehandling av ulike materialer</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PK5" class="m"><b>5</b> <span>Anvende og gjøre rede for bearbeiding av relevante materialer</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PK6" class="m"><b>6</b> <span>Beregne kostnader ved arbeidsoppgaver og lage forslag til effektiviseringstiltak</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PK7" class="m"><b>7</b> <span>Beskrive og reflektere over logistikken fra innkjøp til gjenvinning av et produkt</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PK8" class="m"><b>8</b> <span>Kommunisere og formidle budskap tilpasset ulike målgrupper</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="PK9" class="m"><b>9</b> <span>Gjøre rede for og vurdere hvordan partene i arbeidslivet samarbeider for å utvikle et bedre arbeidsliv</span> <em><i class="dk m">Mangler</i></em></li>
         </ul>
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/tip01-03">læreplan TIP01-03 på udir.no</a></p>
       </details>
@@ -202,26 +206,26 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
     <div class="fag">
       <h3 class="fag-tittel">Teknologi</h3>
       <details class="laerer mal">
-        <summary>Kompetansemål (18)</summary>
+        <summary>Kompetansemål (18) · 1 dekket · 8 delvis · 8 mangler</summary>
         <ul>
-          <li data-mal="T1"><b>T1</b> <span>Bruke maskiner og utstyr til å bearbeide materialer i tråd med HMS-rutiner, og sørge for orden og renhold på arbeidsplassen</span></li>
-          <li data-mal="T2"><b>T2</b> <span>Montere, sette i drift og feilsøke automatiserte hydraulikk- og pneumatikkanlegg etter spesifikasjoner</span></li>
-          <li data-mal="T3"><b>T3</b> <span>Montere, sette i drift og feilsøke maskiner og utstyr i en produksjonsprosess</span></li>
-          <li data-mal="T4"><b>T4</b> <span>Velge og bruke målemetode og måleutstyr, og vurdere måleresultater i henhold til toleranser</span></li>
-          <li data-mal="T5"><b>T5</b> <span>Planlegge og gjennomføre praktiske arbeidsoppgaver i både kjente og ukjente sammenhenger</span></li>
-          <li data-mal="T6"><b>T6</b> <span>Bruke digitale verktøy til modeller, tegninger, skjemaer og arbeidsbeskrivelser, og kvalitetssikringssystemer i planlegging og produksjon</span></li>
-          <li data-mal="T7"><b>T7</b> <span>Forklare og bruke riktig bearbeidingsmetode ut fra materialer, arbeidstegninger og spesifikasjoner</span></li>
-          <li data-mal="T8"><b>T8</b> <span>Programmere, simulere og drifte styrte produksjonsmaskiner</span></li>
-          <li data-mal="T9"><b>T9</b> <span>Forklare og bruke ulike metoder og teknikker for overflatebehandling</span></li>
-          <li data-mal="T10"><b>T10</b> <span>Anvende sammenføyningsmetoder etter instruksjoner og arbeidsbeskrivelser</span></li>
-          <li data-mal="T11"><b>T11</b> <span>Håndtere gasser og kjemikalier i henhold til sikkerhetsdatablader</span></li>
-          <li data-mal="T12"><b>T12</b> <span>Vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer</span></li>
-          <li data-mal="T13"><b>T13</b> <span>Utarbeide rapporter og skjemaer knyttet til arbeidsoppgaver og vurdere resultatet av eget arbeid</span></li>
-          <li data-mal="T14"><b>T14</b> <span>Anvende program for simulering og styring av robot og automasjon</span></li>
-          <li data-mal="T15"><b>T15</b> <span>Bruke additiv tilvirkning for å løse læringsoppdrag</span></li>
-          <li data-mal="T16"><b>T16</b> <span>Beskrive og reflektere over betydningen av resirkulering og materialgjenvinning</span></li>
-          <li data-mal="T17"><b>T17</b> <span>Samarbeide med elever, kunder, leverandører og medarbeidere om arbeidsoppdrag</span></li>
-          <li data-mal="T18"><b>T18</b> <span>Drøfte krav til et likeverdig og inkluderende yrkesfellesskap, og beskrive plikter og rettigheter for arbeidsgiver og arbeidstaker</span></li>
+          <li data-mal="T1" class="h"><b>T1</b> <span>Bruke maskiner og utstyr til å bearbeide materialer i tråd med HMS-rutiner, og sørge for orden og renhold på arbeidsplassen</span> <em><i class="dk h">Delvis</i> <small>HMS 1, Maskinering 1</small></em></li>
+          <li data-mal="T2" class="h"><b>T2</b> <span>Montere, sette i drift og feilsøke automatiserte hydraulikk- og pneumatikkanlegg etter spesifikasjoner</span> <em><i class="dk h">Delvis</i> <small>Pneumatikk 1–2 (hydraulikk mangler)</small></em></li>
+          <li data-mal="T3" class="h"><b>T3</b> <span>Montere, sette i drift og feilsøke maskiner og utstyr i en produksjonsprosess</span> <em><i class="dk h">Delvis</i> <small>Vedlikehold 1–3</small></em></li>
+          <li data-mal="T4" class="h"><b>T4</b> <span>Velge og bruke målemetode og måleutstyr, og vurdere måleresultater i henhold til toleranser</span> <em><i class="dk h">Delvis</i> <small>Måleteknikk 1 (toleranser mangler)</small></em></li>
+          <li data-mal="T5" class="p"><b>T5</b> <span>Planlegge og gjennomføre praktiske arbeidsoppgaver i både kjente og ukjente sammenhenger</span> <em><i class="dk p">Praktisk</i> <small>Praktisk arbeid i verkstedet</small></em></li>
+          <li data-mal="T6" class="m"><b>T6</b> <span>Bruke digitale verktøy til modeller, tegninger, skjemaer og arbeidsbeskrivelser, og kvalitetssikringssystemer i planlegging og produksjon</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="T7" class="h"><b>T7</b> <span>Forklare og bruke riktig bearbeidingsmetode ut fra materialer, arbeidstegninger og spesifikasjoner</span> <em><i class="dk h">Delvis</i> <small>Maskinering 1, Materiallære</small></em></li>
+          <li data-mal="T8" class="m"><b>T8</b> <span>Programmere, simulere og drifte styrte produksjonsmaskiner</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="T9" class="m"><b>T9</b> <span>Forklare og bruke ulike metoder og teknikker for overflatebehandling</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="T10" class="m"><b>T10</b> <span>Anvende sammenføyningsmetoder etter instruksjoner og arbeidsbeskrivelser</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="T11" class="h"><b>T11</b> <span>Håndtere gasser og kjemikalier i henhold til sikkerhetsdatablader</span> <em><i class="dk h">Delvis</i> <small>Nevnt i HMS 1</small></em></li>
+          <li data-mal="T12" class="d"><b>T12</b> <span>Vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer</span> <em><i class="dk d">Dekket</i> <small>Materiallære 1–4</small></em></li>
+          <li data-mal="T13" class="m"><b>T13</b> <span>Utarbeide rapporter og skjemaer knyttet til arbeidsoppgaver og vurdere resultatet av eget arbeid</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="T14" class="m"><b>T14</b> <span>Anvende program for simulering og styring av robot og automasjon</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="T15" class="m"><b>T15</b> <span>Bruke additiv tilvirkning for å løse læringsoppdrag</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="T16" class="h"><b>T16</b> <span>Beskrive og reflektere over betydningen av resirkulering og materialgjenvinning</span> <em><i class="dk h">Delvis</i> <small>Nevnt i Materiallære 1</small></em></li>
+          <li data-mal="T17" class="h"><b>T17</b> <span>Samarbeide med elever, kunder, leverandører og medarbeidere om arbeidsoppdrag</span> <em><i class="dk h">Delvis</i> <small>YFF</small></em></li>
+          <li data-mal="T18" class="m"><b>T18</b> <span>Drøfte krav til et likeverdig og inkluderende yrkesfellesskap, og beskrive plikter og rettigheter for arbeidsgiver og arbeidstaker</span> <em><i class="dk m">Mangler</i></em></li>
         </ul>
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/pin02-03">læreplan PIN02-03 på udir.no</a></p>
       </details>
@@ -235,7 +239,7 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg2/materiallaere/leksjon-4-varmebehandling.html">Varmebehandling</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="strekkprove">Strekkprøve</a><a data-sim="charpy">Charpy</a><a data-sim="bjelke">Bjelke</a></div>
-          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T12">T12</button><button class="mal-merke" data-mal="T7">T7</button><p class="mal-tekst" aria-live="polite"></p></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T12">T12</button><button class="mal-merke" data-mal="T7">T7</button><button class="mal-merke" data-mal="T16">T16</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
         <div class="card">
           <h3>Maskinering</h3>
@@ -267,16 +271,16 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
     <div class="fag">
       <h3 class="fag-tittel">Vedlikehold</h3>
       <details class="laerer mal">
-        <summary>Kompetansemål (8)</summary>
+        <summary>Kompetansemål (8) · 5 dekket · 2 delvis · 1 mangler</summary>
         <ul>
-          <li data-mal="V1"><b>V1</b> <span>Bruke og reflektere over helse-, miljø- og sikkerhetskrav i rutiner for vedlikehold</span></li>
-          <li data-mal="V2"><b>V2</b> <span>Utarbeide og følge sikker jobb-analyser ved farlige operasjoner i henhold til gjeldende forskrifter</span></li>
-          <li data-mal="V3"><b>V3</b> <span>Vedlikeholde, feilsøke og reparere maskiner og utstyr etter spesifikasjoner i samhandling med andre</span></li>
-          <li data-mal="V4"><b>V4</b> <span>Velge og bruke riktig verktøy og utstyr til vedlikehold og reparasjoner</span></li>
-          <li data-mal="V5"><b>V5</b> <span>Arbeide på elektriske og automatiserte systemer ved reparasjon og vedlikehold, etter instrukser og forskrifter</span></li>
-          <li data-mal="V6"><b>V6</b> <span>Beskrive hvordan blandet virkelighet (AR/VR) kan brukes i vedlikehold, og hvordan den kan bedre kvalitet, effektivitet og sikkerhet</span></li>
-          <li data-mal="V7"><b>V7</b> <span>Gjennomføre forebyggende vedlikehold og sørge for maskinsikkerhet etter en vedlikeholdsplan</span></li>
-          <li data-mal="V8"><b>V8</b> <span>Beskrive og reflektere over hvordan kostnader, drift og vedlikehold henger sammen med bærekraftig utvikling</span></li>
+          <li data-mal="V1" class="d"><b>V1</b> <span>Bruke og reflektere over helse-, miljø- og sikkerhetskrav i rutiner for vedlikehold</span> <em><i class="dk d">Dekket</i> <small>HMS 1, Vedlikehold 2</small></em></li>
+          <li data-mal="V2" class="d"><b>V2</b> <span>Utarbeide og følge sikker jobb-analyser ved farlige operasjoner i henhold til gjeldende forskrifter</span> <em><i class="dk d">Dekket</i> <small>HMS 2, Vedlikehold 2</small></em></li>
+          <li data-mal="V3" class="d"><b>V3</b> <span>Vedlikeholde, feilsøke og reparere maskiner og utstyr etter spesifikasjoner i samhandling med andre</span> <em><i class="dk d">Dekket</i> <small>Vedlikehold 1–3</small></em></li>
+          <li data-mal="V4" class="h"><b>V4</b> <span>Velge og bruke riktig verktøy og utstyr til vedlikehold og reparasjoner</span> <em><i class="dk h">Delvis</i> <small>Måleteknikk 1, Vedlikehold 3</small></em></li>
+          <li data-mal="V5" class="d"><b>V5</b> <span>Arbeide på elektriske og automatiserte systemer ved reparasjon og vedlikehold, etter instrukser og forskrifter</span> <em><i class="dk d">Dekket</i> <small>Elektro 1–4</small></em></li>
+          <li data-mal="V6" class="m"><b>V6</b> <span>Beskrive hvordan blandet virkelighet (AR/VR) kan brukes i vedlikehold, og hvordan den kan bedre kvalitet, effektivitet og sikkerhet</span> <em><i class="dk m">Mangler</i></em></li>
+          <li data-mal="V7" class="d"><b>V7</b> <span>Gjennomføre forebyggende vedlikehold og sørge for maskinsikkerhet etter en vedlikeholdsplan</span> <em><i class="dk d">Dekket</i> <small>Vedlikehold 1 og 3</small></em></li>
+          <li data-mal="V8" class="h"><b>V8</b> <span>Beskrive og reflektere over hvordan kostnader, drift og vedlikehold henger sammen med bærekraftig utvikling</span> <em><i class="dk h">Delvis</i> <small>Nevnt i Vedlikehold 1</small></em></li>
         </ul>
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/pin02-03">læreplan PIN02-03 på udir.no</a></p>
       </details>
@@ -289,7 +293,7 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg2/vedlikehold/leksjon-3-smoring.html">Smøring</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="momentnokkel">Momentnøkkel</a><a data-sim="maleur">Måleur</a></div>
-          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="V3">V3</button><button class="mal-merke" data-mal="V7">V7</button><button class="mal-merke" data-mal="V2">V2</button><button class="mal-merke" data-mal="V4">V4</button><p class="mal-tekst" aria-live="polite"></p></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="V3">V3</button><button class="mal-merke" data-mal="V7">V7</button><button class="mal-merke" data-mal="V2">V2</button><button class="mal-merke" data-mal="V4">V4</button><button class="mal-merke" data-mal="T3">T3</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
         <div class="card">
           <h3>HMS</h3>
@@ -360,7 +364,7 @@ document.querySelectorAll(".mal-merke").forEach(b => {
   b.onclick = () => {
     const li = document.querySelector(`details.mal li[data-mal="${b.dataset.mal}"]`);
     const ut = b.closest(".merker").querySelector(".mal-tekst");
-    const tekst = b.textContent + ": " + li.querySelector("span").textContent;
+    const tekst = b.textContent + ": " + li.querySelector("span").textContent + " (" + li.querySelector("i").textContent.toLowerCase() + ")";
     ut.textContent = ut.textContent === tekst ? "" : tekst;
   };
 });
