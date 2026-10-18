@@ -39,7 +39,7 @@ vg2/<emne>/leksjon-N-<navn>.html
 Lærerne vedlikeholder bare filene i `vg1/` og `vg2/`. Ved hver publisering lager `bygg.js` to versjoner i mappen `public/`:
 
 - **Elevversjon** på hovedadressen (`https://leksjoner.vercel.app/`). Fasit, «Vis fasit»-knappen og lærernotater (`<details class="laerer">`) er fjernet fra filene, ikke bare skjult. Lenker til enkeltleksjoner herfra kan deles med elevene.
-- **Lærerversjon** med fasit under en skjult adresse: `https://leksjoner.vercel.app/laerer-k7q4mz/`. Ikke del den med elever. Lærersidene krever lærerpassordet (`LAERER_PASSORD` i Vercel, se `middleware.js`). Nettleseren spør om brukernavn og passord; brukernavnet kan være hva som helst. Uten `LAERER_PASSORD` er lærersidene åpne. Et rødt felt øverst på hver lærerside lenker til elevversjonen av samme side.
+- **Lærerversjon** med fasit under en skjult adresse: `https://leksjoner.vercel.app/laerer-k7q4mz/`. Ikke del den med elever. Lærersidene krever lærerpassordet (`LAERER_PASSORD` i Vercel, se `middleware.js`). Man logger inn på en egen side og forblir innlogget i 7 dager, eller til man trykker **Logg ut** i det røde feltet. Uten `LAERER_PASSORD` er lærersidene åpne. Et rødt felt øverst på hver lærerside lenker til elevversjonen av samme side.
 
 Ny fasit må stå i `<span class="fasit" hidden>…</span>` (eller `class="fasit-svg"` i SVG-figurer), og lærernotater i `<details class="laerer">`, ellers kommer de med i elevversjonen. Bygget stopper med feil hvis noe fasit-merket blir igjen.
 

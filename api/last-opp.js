@@ -1,7 +1,7 @@
 // Laster opp et bilde eller en fil fra lærersiden til mappen <trinn>/<emne>/filer/ i GitHub-repoet.
 // Vercel publiserer siden på nytt når filen er lagt inn, og bygg.js viser den i riktig del.
 // Hemmeligheter som legges inn i Vercel (Settings → Environment Variables):
-//   LAERER_PASSORD Lærerpassordet (samme som i middleware.js). Nettleseren sender det med når læreren er logget inn.
+//   LAERER_PASSORD Lærerpassordet (samme som i middleware.js).
 //   GITHUB_TOKEN   GitHub-nøkkel med skrivetilgang (Contents) til bare dette repoet.
 const crypto = require("crypto");
 
@@ -10,13 +10,13 @@ const MAKS = 3 * 1024 * 1024; // Vercel tar imot opptil 4,5 MB per forespørsel 
 const TYPER = /\.(jpe?g|png|gif|webp|svg|mp4|webm|pdf|docx?|xlsx?|pptx?|txt|zip|stl|step|stp|dxf|dwg)$/i;
 const MIME = { "image/jpeg": ".jpg", "image/png": ".png", "image/gif": ".gif", "image/webp": ".webp", "image/svg+xml": ".svg", "application/pdf": ".pdf", "video/mp4": ".mp4" };
 
-// Nettleseren sender lærerinnloggingen med, fordi adressen ligger under /laerer-k7q4mz/ (se vercel.json).
+// Bare innloggede lærere: samme informasjonskapsel som middleware.js setter ved innlogging.
 function innlogget(req) {
   const passord = (process.env.LAERER_PASSORD || "").trim();
-  const [type, verdi] = String(req.headers.authorization || "").split(" ");
-  if (!passord || type !== "Basic" || !verdi) return false;
-  const tekst = Buffer.from(verdi, "base64").toString("utf8");
-  const a = Buffer.from(tekst.slice(tekst.indexOf(":") + 1).trim()), b = Buffer.from(passord);
+  if (!passord) return false;
+  const riktig = crypto.createHash("sha256").update("leksjoner:" + passord).digest("hex");
+  const kake = String(req.headers.cookie || "").split(/;\s*/).find(c => c.startsWith("laerer=")) || "";
+  const a = Buffer.from(kake.slice(7)), b = Buffer.from(riktig);
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
