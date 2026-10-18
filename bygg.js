@@ -59,6 +59,7 @@ function fjernAns(s) {
 function elevversjon(s) {
   s = fjernElement(s, "span", "fasit");
   s = fjernElement(s, "details", "laerer"); // Lærernotater
+  s = fjernElement(s, "div", "laerer"); // Kompetansemål-merker på forsiden
   // Linjer i skriptene som tegner fasit i SVG-figurer.
   s = s.split("\n").filter(l => !l.includes('class="fasit-svg"')).join("\n");
   s = fjernAns(s);
