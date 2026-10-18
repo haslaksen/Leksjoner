@@ -94,6 +94,7 @@ function laererversjon(s, fil) {
 // Lærersiden viser en stiplet boks i hver del med navnet filene skal ha.
 const BILDE = /\.(jpe?g|png|gif|webp|svg)$/i, VIDEO = /\.(mp4|webm)$/i;
 const esc = t => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const ADMIN = fs.readFileSync(path.join(__dirname, "admin-opplasting.js"), "utf8");
 const TEKST = "color:var(--muted,#56606c);font:500 14px/1.45 system-ui,sans-serif";
 function vedlegg(s, fil, laerer) {
   const nr = path.basename(fil).match(/^(leksjon-\d+)-/);
@@ -114,12 +115,14 @@ function vedlegg(s, fil, laerer) {
       if (VIDEO.test(f)) return `<figure style="margin:0;flex:1 1 260px;max-width:520px"><video src="${url}" controls preload="metadata" style="width:100%;border-radius:10px"></video>${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
       return `<a href="${url}" download style="flex:0 0 auto;display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--line,#d9dfe6);border-radius:10px;background:var(--panel,#fff);color:var(--ink,#14181d);font:600 15px/1.3 system-ui,sans-serif;text-decoration:none">📎 ${navn || esc(f)}${merke}</a>`;
     });
-    if (laerer) deler.push(`<div class="filplass no-print" style="flex:1 1 100%;${TEKST};border:2px dashed var(--line,#d9dfe6);border-radius:10px;padding:8px 12px">📎 Plass for bilder og filer. Last opp til mappen <b>${esc(path.dirname(fil).replace(/\\/g, "/"))}/${FILER}</b> med navn som starter med <b>${prefiks}</b>, for eksempel <b>${prefiks}bilde.jpg</b>. Start med <b>laerer-</b> for å vise filen bare her.</div>`);
+    if (laerer) deler.push(`<div class="filplass no-print" data-mappe="${esc(path.dirname(fil).replace(/\\/g, "/"))}" data-prefiks="${esc(prefiks)}" style="flex:1 1 100%;${TEKST};border:2px dashed var(--line,#d9dfe6);border-radius:10px;padding:8px 12px">📎 Plass for bilder og filer. Last opp til mappen <b>${esc(path.dirname(fil).replace(/\\/g, "/"))}/${FILER}</b> med navn som starter med <b>${prefiks}</b>, for eksempel <b>${prefiks}bilde.jpg</b>. Start med <b>laerer-</b> for å vise filen bare her.</div>`);
     // Boksen legges nederst i delen, under figurene.
     const boks = `<div class="vedlegg${her.length ? "" : " filplass"}" style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:12px;width:100%;max-width:1250px;margin:1.2rem auto 0;box-sizing:border-box">${deler.join("")}</div>`;
     innsett.push([s.indexOf("</section>", pos), boks]);
   }
   for (const [i, t] of innsett.reverse()) s = s.slice(0, i) + t + "\n" + s.slice(i);
+  // Admin kan laste opp fra lærersiden, se admin-opplasting.js og api/last-opp.js.
+  if (laerer) s = s.replace(/<\/body>/i, () => `<script>\n${ADMIN}</script>\n</body>`);
   return s;
 }
 
