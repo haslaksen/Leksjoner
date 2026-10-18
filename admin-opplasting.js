@@ -63,6 +63,31 @@
     f.querySelector(".send").disabled = false;
   });
 
+  // Slett-knapp ved hver fil. Vises bare når «Vis/skjul plass for filer» er slått på.
+  document.querySelectorAll("[data-sti]").forEach(el => {
+    const knapp = document.createElement("button");
+    knapp.className = "filplass no-print";
+    knapp.textContent = "🗑 Slett";
+    knapp.style.cssText = "display:block;margin-top:4px;font:700 13px system-ui,sans-serif;padding:2px 10px;border-radius:99px;border:1px solid #c92a2a;background:#fff;color:#c92a2a;cursor:pointer";
+    knapp.onclick = async () => {
+      if (!confirm("Slette denne filen fra leksjonen?")) return;
+      knapp.disabled = true;
+      try {
+        const svar = await fetch("/laerer-k7q4mz/api/last-opp", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ slett: el.dataset.sti }),
+        });
+        const data = await svar.json().catch(() => ({ feil: `Noe gikk galt (${svar.status})` }));
+        if (!svar.ok) throw new Error(data.feil);
+        el.style.opacity = ".3";
+        knapp.textContent = "Slettet. Forsvinner om et par minutter.";
+      } catch (err) {
+        alert("❌ " + err.message);
+        knapp.disabled = false;
+      }
+    };
+    if (el.tagName === "A") el.after(knapp); else el.appendChild(knapp);
+  });
+
   document.querySelectorAll(".filplass[data-prefiks]").forEach(b => {
     const knapp = document.createElement("button");
     knapp.textContent = "⬆ Last opp";

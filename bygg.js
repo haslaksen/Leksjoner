@@ -86,7 +86,8 @@ function laererversjon(s, fil) {
       `<a href="/${fil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Elevversjon av denne ${steg ? "siden" : "leksjonen"}</a> (uten fasit, del denne med ${steg ? "eleven" : "klassen"}).` +
       (/^leksjon-\d+-/.test(path.basename(fil)) && !steg ? ` · <button onclick="document.body.classList.toggle('vis-filplass')" style="font:inherit;color:#fff;background:none;border:1px solid #fff;border-radius:99px;padding:1px 10px;cursor:pointer">📎 Vis/skjul plass for filer</button>` : "") +
       (filer.includes(stegFil) ? ` · <a href="/${LAERER_STI}/${stegFil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Steg for steg</a> (tilpassede oppgaver)` : "");
-  return s.replace(/<body([^>]*)>/i, `<body$1>\n<style>@media print{.laererfelt{display:none}} body:not(.vis-filplass) .filplass{display:none!important}</style><div class="laererfelt" ${FELT}>${felt}</div>`);
+  const ut = ` · <a href="/${LAERER_STI}/logg-ut" ${LENKE}>Logg ut</a>`;
+  return s.replace(/<body([^>]*)>/i, () => `<body$1>\n<style>@media print{.laererfelt{display:none}} body:not(.vis-filplass) .filplass{display:none!important}</style><div class="laererfelt" ${FELT}>${felt}${ut}</div>`);
 }
 
 // Bilder og vedlegg: <emne>/filer/leksjon-N-<del>-<tekst>.<type> vises nederst i delen
@@ -111,9 +112,11 @@ function vedlegg(s, fil, laerer) {
       const url = `${FILER}/${encodeURIComponent(f)}`;
       const navn = esc(f.replace(/^laerer-/, "").slice(prefiks.length).replace(/\.[^.]+$/, "").replace(/[-_]+/g, " ").trim());
       const merke = f.startsWith("laerer-") ? " <b>(bare lærer)</b>" : "";
-      if (BILDE.test(f)) return `<figure style="margin:0;flex:1 1 260px;max-width:520px"><img src="${url}" alt="${navn}" loading="lazy" style="width:100%;height:auto;border-radius:10px;border:1px solid var(--line,#d9dfe6)">${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
-      if (VIDEO.test(f)) return `<figure style="margin:0;flex:1 1 260px;max-width:520px"><video src="${url}" controls preload="metadata" style="width:100%;border-radius:10px"></video>${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
-      return `<a href="${url}" download style="flex:0 0 auto;display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--line,#d9dfe6);border-radius:10px;background:var(--panel,#fff);color:var(--ink,#14181d);font:600 15px/1.3 system-ui,sans-serif;text-decoration:none">📎 ${navn || esc(f)}${merke}</a>`;
+      // Lærersiden får en slett-knapp per fil (admin-opplasting.js), derfor data-sti.
+      const sti = laerer ? ` data-sti="${esc(path.dirname(fil).replace(/\\/g, "/"))}/${FILER}/${esc(f)}"` : "";
+      if (BILDE.test(f)) return `<figure${sti} style="margin:0;flex:1 1 260px;max-width:520px"><img src="${url}" alt="${navn}" loading="lazy" style="width:100%;height:auto;border-radius:10px;border:1px solid var(--line,#d9dfe6)">${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
+      if (VIDEO.test(f)) return `<figure${sti} style="margin:0;flex:1 1 260px;max-width:520px"><video src="${url}" controls preload="metadata" style="width:100%;border-radius:10px"></video>${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
+      return `<a${sti} href="${url}" download style="flex:0 0 auto;display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--line,#d9dfe6);border-radius:10px;background:var(--panel,#fff);color:var(--ink,#14181d);font:600 15px/1.3 system-ui,sans-serif;text-decoration:none">📎 ${navn || esc(f)}${merke}</a>`;
     });
     if (laerer) deler.push(`<div class="filplass no-print" data-mappe="${esc(path.dirname(fil).replace(/\\/g, "/"))}" data-prefiks="${esc(prefiks)}" style="flex:1 1 100%;${TEKST};border:2px dashed var(--line,#d9dfe6);border-radius:10px;padding:8px 12px">📎 Plass for bilder og filer. Last opp til mappen <b>${esc(path.dirname(fil).replace(/\\/g, "/"))}/${FILER}</b> med navn som starter med <b>${prefiks}</b>, for eksempel <b>${prefiks}bilde.jpg</b>. Start med <b>laerer-</b> for å vise filen bare her.</div>`);
     // Boksen legges nederst i delen, under figurene.
