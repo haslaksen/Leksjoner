@@ -11,7 +11,7 @@ const TYPER = /\.(jpe?g|png|gif|webp|svg|mp4|webm|pdf|docx?|xlsx?|pptx?|txt|zip|
 const MIME = { "image/jpeg": ".jpg", "image/png": ".png", "image/gif": ".gif", "image/webp": ".webp", "image/svg+xml": ".svg", "application/pdf": ".pdf", "video/mp4": ".mp4" };
 
 function riktigPassord(p) {
-  const a = Buffer.from(String(p || "")), b = Buffer.from(process.env.ADMIN_PASSORD || "");
+  const a = Buffer.from(String(p || "").trim()), b = Buffer.from((process.env.ADMIN_PASSORD || "").trim());
   return b.length >= 8 && a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
