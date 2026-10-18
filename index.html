@@ -56,6 +56,19 @@ ol.lessons a:hover{border-color:var(--blue); background:var(--blue-soft)}
 .sims a{display:inline-block; margin:.15rem .3rem 0 0; padding:.15rem .6rem; border-radius:99px; border:1px solid var(--line); text-decoration:none; font-weight:600; font-size:.8rem}
 .sims a:hover{border-color:var(--blue); background:var(--blue-soft)}
 .tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1.2rem 0 0}
+/* Kompetansemål: bare på lærersiden (bygg.js fjerner dem fra elevsiden) */
+details.mal{background:var(--panel); border:1px solid var(--line); border-radius:12px; margin-top:.8rem; max-width:900px}
+details.mal summary{cursor:pointer; padding:.55rem .9rem; font-weight:600; color:var(--blue)}
+details.mal ul{list-style:none; margin:0; padding:0 1rem .6rem; display:grid; gap:.3rem; font-size:.85rem}
+details.mal li{display:grid; grid-template-columns:2.4rem 1fr; padding:.1rem .3rem}
+details.mal li b{color:var(--orange)}
+details.mal li.vist{background:var(--orange-soft); border-radius:6px}
+details.mal .kilde{font-size:.75rem; color:var(--muted); padding:0 1rem .7rem; margin:0}
+.mal-yff{color:var(--muted); margin-top:.6rem; font-size:.85rem}
+.merker{margin-top:.8rem; padding-top:.7rem; border-top:1px dashed var(--line); font-size:.8rem; color:var(--muted)}
+.mal-merke{font:inherit; font-size:.75rem; font-weight:700; cursor:pointer; margin:.15rem .3rem 0 0; padding:.1rem .55rem; border-radius:99px; border:1px solid var(--blue); color:var(--blue); background:var(--blue-soft)}
+.mal-tekst{margin:.4rem 0 0; color:var(--ink)}
+.mal-tekst:empty{display:none}
 footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
 @media (max-width:700px){ section{padding:2rem 1rem} h1{font-size:2.2rem} h2{font-size:1.6rem} .top nav{display:none} }
 </style>
@@ -90,6 +103,20 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
     <h2>Vg1 Teknologi- og industrifag (TIF)</h2>
     <div class="fag">
       <h3 class="fag-tittel">Konstruksjons- og styringsteknikk</h3>
+      <details class="laerer mal">
+        <summary>Kompetansemål (8)</summary>
+        <ul>
+          <li data-mal="KST1"><b>1</b> <span>Forklare og bruke HMS-regelverk og krav for elektriske, hydrauliske og pneumatiske anlegg</span></li>
+          <li data-mal="KST2"><b>2</b> <span>Utvikle og beskrive skjemaer med grunnleggende komponenter i elektriske, hydrauliske og pneumatiske anlegg</span></li>
+          <li data-mal="KST3"><b>3</b> <span>Utføre og bruke grunnleggende beregninger innenfor elektriske, hydrauliske og pneumatiske anlegg</span></li>
+          <li data-mal="KST4"><b>4</b> <span>Bruke simuleringsverktøy til å dokumentere, designe og teste styringssystemer</span></li>
+          <li data-mal="KST5"><b>5</b> <span>Koble opp, teste og feilsøke automatiske og manuelle styringssystemer, og gjøre relevante målinger</span></li>
+          <li data-mal="KST6"><b>6</b> <span>Tolke og forklare sammenhengen mellom målinger og beregnede størrelser innenfor elektro, hydraulikk og pneumatikk</span></li>
+          <li data-mal="KST7"><b>7</b> <span>Bruke DAK (2D og 3D) og DAP til enkel tegning og dokumentasjon</span></li>
+          <li data-mal="KST8"><b>8</b> <span>Bruke grunnleggende programmering av styringssystemer innenfor robotisering, automatisering og CNC</span></li>
+        </ul>
+        <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/tip01-03">læreplan TIP01-03 på udir.no</a></p>
+      </details>
       <div class="grid">
         <div class="card">
           <h3>Elektro</h3>
@@ -98,6 +125,7 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg1/elektro/leksjon-2-repetisjon-og-effekt.html">Repetisjon og effekt</a></li>
           </ol>
           <div class="sims">Simulator: <a data-sim="multimeter">Multimeter</a></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="KST3">Mål 3</button><button class="mal-merke" data-mal="KST5">Mål 5</button><button class="mal-merke" data-mal="KST6">Mål 6</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
         <div class="card">
           <h3>Tegning og DAK</h3>
@@ -106,19 +134,55 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg1/konstruksjon/leksjon-2-fra-skisse-til-3d-modell.html">Fra skisse til 3D-modell</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="toleranser">Toleranser</a><a data-sim="cnc-dreiebenk">CNC-dreiebenk</a></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="KST7">Mål 7</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
       </div>
     </div>
     <div class="fag">
       <h3 class="fag-tittel">Produksjon og tjenester</h3>
+      <details class="laerer mal">
+        <summary>Kompetansemål (13)</summary>
+        <ul>
+          <li data-mal="PT1"><b>1</b> <span>Bruke materialer, teknikker og utstyr i samsvar med gjeldende regelverk for helse, miljø og sikkerhet</span></li>
+          <li data-mal="PT2"><b>2</b> <span>Bruke ergonomisk riktige teknikker og reflektere over sammenhengen mellom folkehelse, effektivitet og samfunnsøkonomi</span></li>
+          <li data-mal="PT3"><b>3</b> <span>Bruke håndverktøy, måleverktøy og maskiner til å bearbeide materialer, og lese av måleresultater ut fra arbeidstegninger</span></li>
+          <li data-mal="PT4"><b>4</b> <span>Planlegge, utføre og dokumentere praktisk arbeid med produksjon og vedlikehold av maskiner og utstyr</span></li>
+          <li data-mal="PT5"><b>5</b> <span>Demontere og montere maskinelementer i relevante arbeidsoppgaver</span></li>
+          <li data-mal="PT6"><b>6</b> <span>Beskrive arbeidsoppgaver innenfor produksjon og tjenester basert på tegningsunderlag og prosedyrer</span></li>
+          <li data-mal="PT7"><b>7</b> <span>Beskrive egenskapene ved ulike materialer og hvordan de kan påvirke det ytre miljøet</span></li>
+          <li data-mal="PT8"><b>8</b> <span>Forklare hvordan kjemiske stoffers egenskaper påvirker bruk, gjenbruk og sikker lagring av materialer</span></li>
+          <li data-mal="PT9"><b>9</b> <span>Gjennomføre og gjøre rede for termiske, kjemiske og mekaniske sammenføyingsmetoder</span></li>
+          <li data-mal="PT10"><b>10</b> <span>Bruke sikkerhetsdatablad og gjennomføre risikovurdering av kjemikalier på arbeidsplassen</span></li>
+          <li data-mal="PT11"><b>11</b> <span>Bruke digitale hjelpemidler og tabeller til å hente ut informasjon for å løse arbeidsoppgaver</span></li>
+          <li data-mal="PT12"><b>12</b> <span>Beskrive arbeidsgangen i en praktisk arbeidsoppgave fra idé til sluttprodukt</span></li>
+          <li data-mal="PT13"><b>13</b> <span>Beskrive betydningen av bærekraftig utvikling av produkter og tjenester</span></li>
+        </ul>
+        <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/tip01-03">læreplan TIP01-03 på udir.no</a></p>
+      </details>
       <p class="tom">Ingen emner ennå.</p>
     </div>
     <div class="fag">
       <h3 class="fag-tittel">Produktivitet og kvalitetsstyring</h3>
+      <details class="laerer mal">
+        <summary>Kompetansemål (9)</summary>
+        <ul>
+          <li data-mal="PK1"><b>1</b> <span>Gjennomføre og dokumentere arbeid i samsvar med gjeldende regelverk for helse, miljø og sikkerhet</span></li>
+          <li data-mal="PK2"><b>2</b> <span>Beskrive risikovurderinger og sikker jobb-analyse og kjenne til rapporteringskrav for arbeidsoppgaver</span></li>
+          <li data-mal="PK3"><b>3</b> <span>Bruke og forklare håndverktøy og diagnoseutstyr ved service og reparasjon, og tolke måleresultater</span></li>
+          <li data-mal="PK4"><b>4</b> <span>Bruke metoder og teknikker for overflatebehandling av ulike materialer</span></li>
+          <li data-mal="PK5"><b>5</b> <span>Anvende og gjøre rede for bearbeiding av relevante materialer</span></li>
+          <li data-mal="PK6"><b>6</b> <span>Beregne kostnader ved arbeidsoppgaver og lage forslag til effektiviseringstiltak</span></li>
+          <li data-mal="PK7"><b>7</b> <span>Beskrive og reflektere over logistikken fra innkjøp til gjenvinning av et produkt</span></li>
+          <li data-mal="PK8"><b>8</b> <span>Kommunisere og formidle budskap tilpasset ulike målgrupper</span></li>
+          <li data-mal="PK9"><b>9</b> <span>Gjøre rede for og vurdere hvordan partene i arbeidslivet samarbeider for å utvikle et bedre arbeidsliv</span></li>
+        </ul>
+        <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/tip01-03">læreplan TIP01-03 på udir.no</a></p>
+      </details>
       <p class="tom">Ingen emner ennå.</p>
     </div>
     <div class="fag">
       <h3 class="fag-tittel">YFF</h3>
+      <div class="laerer mal-yff">YFF har ingen egne kompetansemål. Faget bygger på målene i programfagene.</div>
       <div class="grid">
         <div class="card">
           <h3>YFF</h3>
@@ -137,6 +201,30 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
     <h2>Vg2 Industriteknologi</h2>
     <div class="fag">
       <h3 class="fag-tittel">Teknologi</h3>
+      <details class="laerer mal">
+        <summary>Kompetansemål (18)</summary>
+        <ul>
+          <li data-mal="T1"><b>T1</b> <span>Bruke maskiner og utstyr til å bearbeide materialer i tråd med HMS-rutiner, og sørge for orden og renhold på arbeidsplassen</span></li>
+          <li data-mal="T2"><b>T2</b> <span>Montere, sette i drift og feilsøke automatiserte hydraulikk- og pneumatikkanlegg etter spesifikasjoner</span></li>
+          <li data-mal="T3"><b>T3</b> <span>Montere, sette i drift og feilsøke maskiner og utstyr i en produksjonsprosess</span></li>
+          <li data-mal="T4"><b>T4</b> <span>Velge og bruke målemetode og måleutstyr, og vurdere måleresultater i henhold til toleranser</span></li>
+          <li data-mal="T5"><b>T5</b> <span>Planlegge og gjennomføre praktiske arbeidsoppgaver i både kjente og ukjente sammenhenger</span></li>
+          <li data-mal="T6"><b>T6</b> <span>Bruke digitale verktøy til modeller, tegninger, skjemaer og arbeidsbeskrivelser, og kvalitetssikringssystemer i planlegging og produksjon</span></li>
+          <li data-mal="T7"><b>T7</b> <span>Forklare og bruke riktig bearbeidingsmetode ut fra materialer, arbeidstegninger og spesifikasjoner</span></li>
+          <li data-mal="T8"><b>T8</b> <span>Programmere, simulere og drifte styrte produksjonsmaskiner</span></li>
+          <li data-mal="T9"><b>T9</b> <span>Forklare og bruke ulike metoder og teknikker for overflatebehandling</span></li>
+          <li data-mal="T10"><b>T10</b> <span>Anvende sammenføyningsmetoder etter instruksjoner og arbeidsbeskrivelser</span></li>
+          <li data-mal="T11"><b>T11</b> <span>Håndtere gasser og kjemikalier i henhold til sikkerhetsdatablader</span></li>
+          <li data-mal="T12"><b>T12</b> <span>Vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer</span></li>
+          <li data-mal="T13"><b>T13</b> <span>Utarbeide rapporter og skjemaer knyttet til arbeidsoppgaver og vurdere resultatet av eget arbeid</span></li>
+          <li data-mal="T14"><b>T14</b> <span>Anvende program for simulering og styring av robot og automasjon</span></li>
+          <li data-mal="T15"><b>T15</b> <span>Bruke additiv tilvirkning for å løse læringsoppdrag</span></li>
+          <li data-mal="T16"><b>T16</b> <span>Beskrive og reflektere over betydningen av resirkulering og materialgjenvinning</span></li>
+          <li data-mal="T17"><b>T17</b> <span>Samarbeide med elever, kunder, leverandører og medarbeidere om arbeidsoppdrag</span></li>
+          <li data-mal="T18"><b>T18</b> <span>Drøfte krav til et likeverdig og inkluderende yrkesfellesskap, og beskrive plikter og rettigheter for arbeidsgiver og arbeidstaker</span></li>
+        </ul>
+        <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/pin02-03">læreplan PIN02-03 på udir.no</a></p>
+      </details>
       <div class="grid">
         <div class="card">
           <h3>Materiallære</h3>
@@ -147,6 +235,7 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg2/materiallaere/leksjon-4-varmebehandling.html">Varmebehandling</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="strekkprove">Strekkprøve</a><a data-sim="charpy">Charpy</a><a data-sim="bjelke">Bjelke</a></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T12">T12</button><button class="mal-merke" data-mal="T7">T7</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
         <div class="card">
           <h3>Maskinering</h3>
@@ -154,6 +243,7 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg2/maskinering/leksjon-1-skjaerehastighet-og-mating.html">Skjærehastighet, turtall og mating</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="skjaeredata">Skjæredata</a><a data-sim="cnc-dreiebenk">CNC-dreiebenk</a></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T1">T1</button><button class="mal-merke" data-mal="T7">T7</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
         <div class="card">
           <h3>Måleteknikk og kvalitet</h3>
@@ -161,6 +251,7 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg2/maleteknikk/leksjon-1-maleverktoy.html">Måleverktøy</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="mikrometer">Mikrometer</a><a data-sim="maleur">Måleur</a><a data-sim="toleranser">Toleranser</a></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T4">T4</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
         <div class="card">
           <h3>Pneumatikk</h3>
@@ -169,11 +260,26 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg2/pneumatikk/leksjon-2-styring-og-fart.html">Styring og fart</a></li>
           </ol>
           <div class="sims">Simulator: <a data-sim="pneumatikk">Pneumatikk og hydraulikk</a></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T2">T2</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
       </div>
     </div>
     <div class="fag">
       <h3 class="fag-tittel">Vedlikehold</h3>
+      <details class="laerer mal">
+        <summary>Kompetansemål (8)</summary>
+        <ul>
+          <li data-mal="V1"><b>V1</b> <span>Bruke og reflektere over helse-, miljø- og sikkerhetskrav i rutiner for vedlikehold</span></li>
+          <li data-mal="V2"><b>V2</b> <span>Utarbeide og følge sikker jobb-analyser ved farlige operasjoner i henhold til gjeldende forskrifter</span></li>
+          <li data-mal="V3"><b>V3</b> <span>Vedlikeholde, feilsøke og reparere maskiner og utstyr etter spesifikasjoner i samhandling med andre</span></li>
+          <li data-mal="V4"><b>V4</b> <span>Velge og bruke riktig verktøy og utstyr til vedlikehold og reparasjoner</span></li>
+          <li data-mal="V5"><b>V5</b> <span>Arbeide på elektriske og automatiserte systemer ved reparasjon og vedlikehold, etter instrukser og forskrifter</span></li>
+          <li data-mal="V6"><b>V6</b> <span>Beskrive hvordan blandet virkelighet (AR/VR) kan brukes i vedlikehold, og hvordan den kan bedre kvalitet, effektivitet og sikkerhet</span></li>
+          <li data-mal="V7"><b>V7</b> <span>Gjennomføre forebyggende vedlikehold og sørge for maskinsikkerhet etter en vedlikeholdsplan</span></li>
+          <li data-mal="V8"><b>V8</b> <span>Beskrive og reflektere over hvordan kostnader, drift og vedlikehold henger sammen med bærekraftig utvikling</span></li>
+        </ul>
+        <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/pin02-03">læreplan PIN02-03 på udir.no</a></p>
+      </details>
       <div class="grid">
         <div class="card">
           <h3>Vedlikehold</h3>
@@ -183,6 +289,7 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg2/vedlikehold/leksjon-3-smoring.html">Smøring</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="momentnokkel">Momentnøkkel</a><a data-sim="maleur">Måleur</a></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="V3">V3</button><button class="mal-merke" data-mal="V7">V7</button><button class="mal-merke" data-mal="V2">V2</button><button class="mal-merke" data-mal="V4">V4</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
         <div class="card">
           <h3>HMS</h3>
@@ -190,6 +297,7 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg2/hms/leksjon-1-grunnleggende-hms.html">Grunnleggende HMS</a></li>
             <li><a href="vg2/hms/leksjon-2-risikovurdering-og-sja.html">Risikovurdering og SJA</a></li>
           </ol>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="V1">V1</button><button class="mal-merke" data-mal="V2">V2</button><button class="mal-merke" data-mal="T1">T1</button><button class="mal-merke" data-mal="T11">T11</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
         <div class="card">
           <h3>Elektro</h3>
@@ -200,11 +308,13 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
             <li><a href="vg2/elektro/leksjon-4-motorstyring.html">Motorstyring</a></li>
           </ol>
           <div class="sims">Simulator: <a data-sim="multimeter">Multimeter</a></div>
+          <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="V5">V5</button><p class="mal-tekst" aria-live="polite"></p></div>
         </div>
       </div>
     </div>
     <div class="fag">
       <h3 class="fag-tittel">YFF</h3>
+      <div class="laerer mal-yff">YFF har ingen egne kompetansemål. Faget bygger på målene i programfagene.</div>
       <div class="grid">
         <div class="card">
           <h3>YFF</h3>
@@ -244,6 +354,15 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
 const SIMULATORER = "https://simulatorer.vercel.app/";
 document.querySelectorAll("[data-sim]").forEach(a => {
   a.href = SIMULATORER + (a.dataset.sim ? a.dataset.sim + ".html" : "");
+});
+// Kompetansemål (bare lærersiden): trykk på et merke for å lese målet.
+document.querySelectorAll(".mal-merke").forEach(b => {
+  b.onclick = () => {
+    const li = document.querySelector(`details.mal li[data-mal="${b.dataset.mal}"]`);
+    const ut = b.closest(".merker").querySelector(".mal-tekst");
+    const tekst = b.textContent + ": " + li.querySelector("span").textContent;
+    ut.textContent = ut.textContent === tekst ? "" : tekst;
+  };
 });
 let scale = 1;
 document.getElementById("btnSize").onclick = e => {
