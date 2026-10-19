@@ -235,7 +235,10 @@ $("copyBtn").addEventListener("click", async () => {
   });
   kl.querySelectorAll("table").forEach(t => { t.setAttribute("border", "1"); t.style.borderCollapse = "collapse"; t.querySelectorAll("td").forEach(c => { c.style.border = "1px solid #999"; c.style.padding = "4px 8px"; }); });
   kl.querySelectorAll("[class]").forEach(e => e.removeAttribute("class"));
-  const html = "<h2>" + document.querySelector("h1").textContent + "</h2><p>Navn: ______________________</p>" + kl.innerHTML, text = kl.innerText;
+  // Lenke til elevversjonen av denne siden (også når den kopieres fra lærersiden).
+  const lenke = location.origin + location.pathname.replace(/^\/laerer-[^/]+\//, "/").replace(/\.html$/, "");
+  const html = "<h2>" + document.querySelector("h1").textContent + "</h2><p>Navn: ______________________</p>" + kl.innerHTML +
+    '<p>Oppgavene på nett: <a href="' + lenke + '">' + lenke + "</a></p>", text = kl.innerText;
   try {
     await navigator.clipboard.write([new ClipboardItem({ "text/html": new Blob([html], { type: "text/html" }), "text/plain": new Blob([text], { type: "text/plain" }) })]);
     msg.textContent = "Kopiert! Lim inn i OneNote med Ctrl+V";
