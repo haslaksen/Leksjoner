@@ -7,7 +7,11 @@
     { "source": "/vg2/elektro/leksjon-2-maling-med-multimeter", "destination": "/vg2/elektro/leksjon-3-maling-med-multimeter", "permanent": false },
     { "source": "/vg2/elektro/leksjon-3-motorstyring", "destination": "/vg2/elektro/leksjon-4-motorstyring", "permanent": false },
     { "source": "/laerer-k7q4mz/vg2/elektro/leksjon-2-maling-med-multimeter", "destination": "/laerer-k7q4mz/vg2/elektro/leksjon-3-maling-med-multimeter", "permanent": false },
-    { "source": "/laerer-k7q4mz/vg2/elektro/leksjon-3-motorstyring", "destination": "/laerer-k7q4mz/vg2/elektro/leksjon-4-motorstyring", "permanent": false }
+    { "source": "/laerer-k7q4mz/vg2/elektro/leksjon-3-motorstyring", "destination": "/laerer-k7q4mz/vg2/elektro/leksjon-4-motorstyring", "permanent": false },
+    { "source": "/vg2/tegning/leksjon-1-geometriske-toleranser", "destination": "/vg2/tegning/leksjon-4-geometriske-toleranser", "permanent": false },
+    { "source": "/vg2/tegning/leksjon-1-geometriske-toleranser-steg-for-steg", "destination": "/vg2/tegning/leksjon-4-geometriske-toleranser-steg-for-steg", "permanent": false },
+    { "source": "/laerer-k7q4mz/vg2/tegning/leksjon-1-geometriske-toleranser", "destination": "/laerer-k7q4mz/vg2/tegning/leksjon-4-geometriske-toleranser", "permanent": false },
+    { "source": "/laerer-k7q4mz/vg2/tegning/leksjon-1-geometriske-toleranser-steg-for-steg", "destination": "/laerer-k7q4mz/vg2/tegning/leksjon-4-geometriske-toleranser-steg-for-steg", "permanent": false }
   ],
   "headers": [
     { "source": "/(.*)", "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }] }
