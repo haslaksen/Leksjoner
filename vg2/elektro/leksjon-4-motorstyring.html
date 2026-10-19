@@ -113,6 +113,7 @@ table.t th{background:var(--steel-soft)}
 /* Oppgaver */
 #oppgaver{justify-content:flex-start}
 .taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave.ekstra{border-style:dashed}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
@@ -228,9 +229,9 @@ table.t th{background:var(--steel-soft)}
           <tr><th colspan="2">Time 2 · Vern, retning, start og feilsøking</th></tr>
           <tr><td>0–6 min</td><td>Del 4: motorvernet</td></tr>
           <tr><td>6–15 min</td><td>Del 5: snu motoren – forrigling</td></tr>
-          <tr><td>15–21 min</td><td>Del 6: startmetoder</td></tr>
-          <tr><td>21–27 min</td><td>Del 7: feilsøking i styrekretsen</td></tr>
-          <tr><td>27–43 min</td><td>Oppgave 3–6</td></tr>
+          <tr><td>15–21 min</td><td>Del 7: feilsøking i styrekretsen</td></tr>
+          <tr><td>21–43 min</td><td>Oppgave 3, 4 og 5</td></tr>
+          <tr><td>Ekstra</td><td>Del 6: startmetoder og oppgave 6, hvis klassen har tid</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
@@ -261,7 +262,7 @@ table.t th{background:var(--steel-soft)}
       <div class="card"><h3>Styrestrøm</h3>24 V DC · liten strøm · trygg</div>
       <div class="card"><h3>Kontaktoren</h3>Liten strøm styrer stor strøm</div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Spør først: «Hvorfor går ikke 400 V rett gjennom startknappen?» Svar: tykke kabler og store kontakter til panelet, farlig spenning ved operatøren og lysbue i knappen. Med styrestrøm kan knappene sitte langt unna, og PLS (leksjon senere) kan styre de samme spolene.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Spør først: «Hvorfor går ikke 400 V rett gjennom startknappen?» Svar: tykke kabler og store kontakter til panelet, farlig spenning ved operatøren og lysbue i knappen. Med styrestrøm kan knappene sitte langt unna, og en PLS kan styre de samme spolene.</details>
   </div>
 </section>
 
@@ -384,7 +385,7 @@ table.t th{background:var(--steel-soft)}
 <!-- DEL 6 -->
 <section class="slide" id="start-metoder" data-nav="6 Startmetoder">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 6 min</div>
+    <div class="kicker">Del 6 · Ekstra</div>
     <h2>Startmetoder – hvor stor blir startstrømmen?</h2>
     <p class="lead">Direktestart trekker <b>6–8 ganger</b> vanlig strøm. Store motorer startes mykere.</p>
     <div class="fig">
@@ -406,7 +407,7 @@ table.t th{background:var(--steel-soft)}
         <tr><td><b>Frekvensomformer</b></td><td>ca. 1–1,5 × I<sub>n</sub></td><td>fullt</td><td>varierende turtall: vifter, bånd, spindler</td></tr>
       </table>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Stjerne-trekant: hver vikling får 230 V i stjerne i stedet for 400 V. Strømmen og momentet blir 1/3 (spenning / √3 og kobling / √3). Derfor kan ikke motoren starte under full last i stjerne. Krav: motoren må gå i trekant på nettet, altså 400/690 V Δ/Y på 400 V-nett. En motor merket 230/400 V Δ/Y skal gå i stjerne på 400 V og kan ikke stjerne-trekant-startes der. Mykstarter senker spenningen med tyristorer (elektroniske brytere) og øker den langsomt. Frekvensomformer endrer både spenning og frekvens – kommer i egen leksjon.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Stjerne-trekant: hver vikling får 230 V i stjerne i stedet for 400 V. Strømmen og momentet blir 1/3 (spenning / √3 og kobling / √3). Derfor kan ikke motoren starte under full last i stjerne. Krav: motoren må gå i trekant på nettet, altså 400/690 V Δ/Y på 400 V-nett. En motor merket 230/400 V Δ/Y skal gå i stjerne på 400 V og kan ikke stjerne-trekant-startes der. Mykstarter senker spenningen med tyristorer (elektroniske brytere) og øker den langsomt. Frekvensomformer endrer både spenning og frekvens, slik at turtallet kan styres.</details>
   </div>
 </section>
 
@@ -466,8 +467,8 @@ table.t th{background:var(--steel-soft)}
         </div>
         <div class="tip">Stopp og nødstopp er <b>NC i serie</b>. Start og selvhold er <b>NO i parallell</b>. Forrigling er <b>NC fra den andre kontaktoren</b>.</div>
         <div class="card">
-          <h3>Neste leksjon</h3>
-          <p style="margin:0"><b>Neste:</b> hvorfor stoppknappene står i serie og startknappene i parallell – regnet og målt.</p>
+          <h3>Repeter</h3>
+          <p style="margin:0">Dette er siste leksjon i Elektro. Prøv skjemaene i Del 3 og Del 5 en gang til, og les mer i Verkstedhåndboka.</p>
         </div>
         <p class="caption">Mer: <a href="https://verkstedhandboka.vercel.app/#motorstyring" target="_blank" rel="noopener">Verkstedhåndboka 9.12 Motorstyring</a> · <a href="https://verkstedhandboka.vercel.app/#el9-stjerne" target="_blank" rel="noopener">9.11 Stjerne og trekant</a></p>
       </div>
@@ -478,7 +479,7 @@ table.t th{background:var(--steel-soft)}
 <!-- OPPGAVER -->
 <section class="slide" id="oppgaver" data-nav="Oppgaver">
   <div class="wrap">
-    <div class="kicker no-print">Oppgaver · ca. 33 min totalt</div>
+    <div class="kicker no-print">Oppgaver · ca. 40 min totalt</div>
     <div class="taskbar no-print">
       <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
       <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
@@ -525,7 +526,7 @@ table.t th{background:var(--steel-soft)}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 3 – Motorvern <small>Time 2 · 4 min</small></h3>
+        <h3>Oppgave 3 – Motorvern <small>Time 2 · 7 min</small></h3>
         <div class="ofig" style="max-width:420px" id="o3fig"></div>
         <p>a) Nettet er TN 400 V. Hvilken kobling skal motoren ha, og hva stiller du F2 på?</p><div class="svar"><span class="fasit" hidden><b>Stjerne (Y)</b> – viklingene er laget for 230 V. F2 = <b>8,0 A</b>.</span></div>
         <p>b) En kollega stiller F2 på 12 A «så den ikke løser ut så ofte». Hva kan skje?</p><div class="svar"><span class="fasit" hidden>F2 løser ikke ut ved moderat overlast (f.eks. 11 A). Viklingen blir for varm, isolasjonen ødelegges og motoren kan brenne.</span></div>
@@ -539,7 +540,7 @@ table.t th{background:var(--steel-soft)}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 4 – Snu motoren <small>Time 2 · 4 min</small></h3>
+        <h3>Oppgave 4 – Snu motoren <small>Time 2 · 8 min</small></h3>
         <div class="ofig" id="o4fig"></div>
         <p>a) Hvilke to faser bytter Q2?</p><div class="svar"><span class="fasit" hidden><b>L1 og L3</b></span></div>
         <p>b) Fyll ut:</p>
@@ -555,7 +556,21 @@ table.t th{background:var(--steel-soft)}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 5 – Startmetoder <small>Time 2 · 4 min</small></h3>
+        <h3>Oppgave 5 – Feilsøking <small>Time 2 · 6 min</small></h3>
+        <p>Q1 trekker ikke. S1 holdes inne. Svart probe på 0 V. Hvor er feilen?</p>
+        <div class="ofig" id="o6fig"></div>
+        <table class="ot c">
+          <tr><th>Tilfelle</th><th>TP1</th><th>TP2</th><th>TP3</th><th>TP4</th><th>TP5</th><th>TP6</th><th>TP7</th><th style="width:30%">Feilen er …</th></tr>
+          <tr><td>A</td><td>24</td><td>24</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden><b>S0 stopp</b> (24 V før, 0 V etter)</span></td></tr>
+          <tr><td>B</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden><b>F2 95–96</b> – motorvernet har løst ut</span></td></tr>
+          <tr><td>C</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td class="tom"><span class="fasit" hidden><b>Spolen Q1</b> er defekt: 24 V over den, men den trekker ikke</span></td></tr>
+          <tr><td>D</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden><b>F3</b> er gått</span></td></tr>
+        </table>
+        <p>b) I tilfelle B lyser P2. Hva gjør du før du tilbakestiller?</p><div class="svar"><span class="fasit" hidden>Finn årsaken til overlasten (fastkjørt last, feil innstilling, fasebrudd) og la motoren kjøle seg ned.</span></div>
+      </div>
+
+      <div class="oppgave ekstra">
+        <h3>Oppgave 6 – Startmetoder <small>Ekstra</small></h3>
         <p>a) En 15 kW motor har merkestrøm I<sub>n</sub> = 28 A. Regn ut omtrentlig startstrøm:</p>
         <table class="ot c" style="width:auto; min-width:60%">
           <tr><th>Startmetode</th><th style="width:8rem">Startstrøm</th></tr>
@@ -572,20 +587,6 @@ table.t th{background:var(--steel-soft)}
           <tr><td>Stor vifte 22 kW, motor 400/690 V Δ/Y, starter uten last</td><td class="tom"><span class="fasit" hidden>Stjerne-trekant</span></td></tr>
         </table>
         <p>c) Kan motoren i oppgave 3 (230/400 V Δ/Y) stjerne-trekant-startes på 400 V? Hvorfor?</p><div class="svar"><span class="fasit" hidden><b>Nei.</b> Den skal gå i stjerne på 400 V. I trekant ville hver vikling fått 400 V i stedet for 230 V og brent.</span></div>
-      </div>
-
-      <div class="oppgave">
-        <h3>Oppgave 6 – Feilsøking <small>Time 2 · 4 min</small></h3>
-        <p>Q1 trekker ikke. S1 holdes inne. Svart probe på 0 V. Hvor er feilen?</p>
-        <div class="ofig" id="o6fig"></div>
-        <table class="ot c">
-          <tr><th>Tilfelle</th><th>TP1</th><th>TP2</th><th>TP3</th><th>TP4</th><th>TP5</th><th>TP6</th><th>TP7</th><th style="width:30%">Feilen er …</th></tr>
-          <tr><td>A</td><td>24</td><td>24</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden><b>S0 stopp</b> (24 V før, 0 V etter)</span></td></tr>
-          <tr><td>B</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden><b>F2 95–96</b> – motorvernet har løst ut</span></td></tr>
-          <tr><td>C</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td class="tom"><span class="fasit" hidden><b>Spolen Q1</b> er defekt: 24 V over den, men den trekker ikke</span></td></tr>
-          <tr><td>D</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden><b>F3</b> er gått</span></td></tr>
-        </table>
-        <p>b) I tilfelle B lyser P2. Hva gjør du før du tilbakestiller?</p><div class="svar"><span class="fasit" hidden>Finn årsaken til overlasten (fastkjørt last, feil innstilling, fasebrudd) og la motoren kjøle seg ned.</span></div>
       </div>
 
       <div class="oppgave">
