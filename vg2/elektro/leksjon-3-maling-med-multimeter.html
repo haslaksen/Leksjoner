@@ -120,6 +120,9 @@ table.t th{background:var(--steel-soft)}
 /* Oppgaver */
 #oppgaver{justify-content:flex-start}
 .taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+details.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+details.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
+.oppgave.ekstra{border-style:dashed}
 .oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
 .oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
 .oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
@@ -266,11 +269,11 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <tr><td>22–30 min</td><td>Del 3: feilsøking i 24 V-krets</td></tr>
           <tr><td>30–45 min</td><td>Oppgave 1 og 2</td></tr>
           <tr><th colspan="2">Time 2 · Vekselstrøm (AC)</th></tr>
-          <tr><td>0–6 min</td><td>Del 4: nettet – TN og IT</td></tr>
-          <tr><td>6–16 min</td><td>Del 5: spenning i 1-, 2- og 3-fas</td></tr>
-          <tr><td>16–24 min</td><td>Del 6: strømtang</td></tr>
-          <tr><td>24–32 min</td><td>Del 7: motorviklinger og spenningsløshet</td></tr>
-          <tr><td>32–43 min</td><td>Oppgave 3, 4 og 5</td></tr>
+          <tr><td>0–5 min</td><td>Del 4: nettet – TN og IT</td></tr>
+          <tr><td>5–12 min</td><td>Del 5: spenning i 1-, 2- og 3-fas</td></tr>
+          <tr><td>12–19 min</td><td>Del 6: strømtang</td></tr>
+          <tr><td>19–26 min</td><td>Del 7: motorviklinger og spenningsløshet</td></tr>
+          <tr><td>26–43 min</td><td>Oppgave 3, 4 og 5 · Oppgave 6 er ekstra</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
@@ -369,7 +372,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
 <!-- DEL 4 -->
 <section class="slide" id="nett" data-nav="4 Nettet (AC)">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 6 min · Vekselstrøm</div>
+    <div class="kicker">Del 4 · ca. 5 min · Vekselstrøm</div>
     <h2>Hvilket nett står du i?</h2>
     <p class="lead"><b>TN-nett:</b> 230/400 V, nyere. <b>IT-nett:</b> 230 V, eldre.</p>
     <div class="hbwrap">
@@ -407,7 +410,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
 <!-- DEL 5 -->
 <section class="slide" id="acv" data-nav="5 Spenning AC">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 10 min · Vekselstrøm</div>
+    <div class="kicker">Del 5 · ca. 7 min · Vekselstrøm</div>
     <h2>Spenning i 1-, 2- og 3-fas</h2>
     <p class="lead">Velg nett og to punkter å måle mellom.</p>
     <div class="hbwrap">
@@ -422,10 +425,6 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <h3>Viserdiagram</h3>
           <p class="short">Hver fase er en <b>pil som snurrer</b>. Måleren viser den <b style="color:var(--orange)">stiplede pila</b>.</p>
         </div>
-        <div class="card" style="margin-bottom:.8rem">
-          <h3>Hvorfor 400 V og ikke 460 V?</h3>
-          <p class="short">Fasene ligger 120° fra hverandre: √3 · 230 ≈ <b>400 V</b>.</p>
-        </div>
         <table class="t">
           <tr><th>Måling</th><th>TN 230/400</th><th>IT 230</th></tr>
           <tr><td>Fase–fase</td><td><b>400 V</b></td><td><b>230 V</b></td></tr>
@@ -434,6 +433,9 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <tr><td>N–PE</td><td><b>0–2 V</b></td><td>–</td></tr>
         </table>
         <p class="caption">* «Flytende» verdi i IT-nett. Mål alltid mellom fasene også.</p>
+        <details class="ekstra"><summary>Ekstra: Hvorfor 400 V og ikke 460 V?</summary>
+          <p class="short" style="margin:.5rem 0 0">Fasene ligger 120° fra hverandre. Da blir spenningen mellom to faser √3 · 230 ≈ <b>400 V</b>, ikke 230 + 230.</p>
+        </details>
       </div>
     </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Kobling til L1: måleren viser effektivverdien (RMS). Toppverdien er √2 større: 230 V → 325 V, 400 V → 566 V. Derfor må måleren og probene tåle minst 600 V CAT III i en fordeling. Et True RMS-multimeter (TRMS) viser riktig også når kurven ikke er en ren sinus, f.eks. bak en frekvensomformer. Vanlig feil: står måleren på V⎓ på et vekselspenningsnett, viser den ca. 0 V eller hoppende tall.</details>
@@ -443,7 +445,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
 <!-- DEL 6 -->
 <section class="slide" id="tang" data-nav="6 Strømtang">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 8 min · Vekselstrøm</div>
+    <div class="kicker">Del 6 · ca. 7 min · Vekselstrøm</div>
     <h2>Strøm på 230/400 V: alltid med tang</h2>
     <p class="lead">Tanga måler <b>magnetfeltet</b> rundt lederen. Du bryter ikke kretsen.</p>
     <div class="hbwrap">
@@ -473,7 +475,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
 <!-- DEL 7 -->
 <section class="slide" id="motor" data-nav="7 Motor og spenningsløst">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 8 min · Spenningsløst</div>
+    <div class="kicker">Del 7 · ca. 7 min · Spenningsløst</div>
     <h2>Motorviklinger og kontroll av spenningsløshet</h2>
     <div class="grid2">
       <div>
@@ -539,7 +541,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
 <!-- OPPGAVER -->
 <section class="slide" id="oppgaver" data-nav="Oppgaver">
   <div class="wrap">
-    <div class="kicker no-print">Oppgaver · ca. 30 min totalt</div>
+    <div class="kicker no-print">Oppgaver · ca. 35 min totalt</div>
     <div class="taskbar no-print">
       <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
       <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
@@ -553,7 +555,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
 
       <div class="oppgave">
         <h3>Oppgave 1 – Riktig kobling og innstilling <small>Time 1 · 8 min</small></h3>
-        <p>a) Er målingen riktig eller feil? Begrunn kort.</p>
+        <p>a) Riktig eller feil? Hvorfor?</p>
         <div class="minis" id="minis"></div>
         <table class="ot">
           <tr><th style="width:3rem"></th><th style="width:7rem">Riktig/feil</th><th>Hvorfor?</th></tr>
@@ -564,20 +566,20 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         </table>
         <p>b) Fyll ut. Innstillinger: <b>V⎓ &nbsp; V~ &nbsp; Ω &nbsp; •))) &nbsp; mA &nbsp; A⎓ &nbsp; tang A~</b>. Kontakter: <b>VΩ &nbsp; mA &nbsp; 10A</b>.</p>
         <table class="ot">
-          <tr><th>Du skal måle …</th><th style="width:7rem">Innstilling</th><th style="width:7rem">Rød ledning i</th><th style="width:9rem">Parallelt / i serie / spenningsløst / tang</th></tr>
-          <tr><td>1. Spenningen på et drillbatteri (18 V)</td><td class="tom"><span class="fasit" hidden>V⎓</span></td><td><span class="fasit" hidden>VΩ</span></td><td><span class="fasit" hidden>parallelt</span></td></tr>
-          <tr><td>2. Strømmen til en 24 V-sensor (ca. 10 mA)</td><td class="tom"><span class="fasit" hidden>mA</span></td><td><span class="fasit" hidden>mA</span></td><td><span class="fasit" hidden>i serie</span></td></tr>
-          <tr><td>3. Om en sikring er hel</td><td class="tom"><span class="fasit" hidden>•))) eller Ω</span></td><td><span class="fasit" hidden>VΩ</span></td><td><span class="fasit" hidden>spenningsløst</span></td></tr>
-          <tr><td>4. Spenningen i en stikkontakt (fagperson måler)</td><td class="tom"><span class="fasit" hidden>V~</span></td><td><span class="fasit" hidden>VΩ</span></td><td><span class="fasit" hidden>parallelt</span></td></tr>
-          <tr><td>5. Strømmen til en 400 V-motor</td><td class="tom"><span class="fasit" hidden>tang A~</span></td><td><span class="fasit" hidden>(ingen)</span></td><td><span class="fasit" hidden>tang rundt én fase</span></td></tr>
+          <tr><th>Du skal måle …</th><th style="width:7rem">Innstilling</th><th style="width:7rem">Rød ledning i</th><th style="width:9rem">Kobling</th></tr>
+          <tr><td>1. Drillbatteri 18 V</td><td class="tom"><span class="fasit" hidden>V⎓</span></td><td><span class="fasit" hidden>VΩ</span></td><td><span class="fasit" hidden>parallelt</span></td></tr>
+          <tr><td>2. Strøm til sensor, ca. 10 mA</td><td class="tom"><span class="fasit" hidden>mA</span></td><td><span class="fasit" hidden>mA</span></td><td><span class="fasit" hidden>i serie</span></td></tr>
+          <tr><td>3. Er sikringen hel?</td><td class="tom"><span class="fasit" hidden>•))) eller Ω</span></td><td><span class="fasit" hidden>VΩ</span></td><td><span class="fasit" hidden>spenningsløst</span></td></tr>
+          <tr><td>4. Stikkontakt (fagperson måler)</td><td class="tom"><span class="fasit" hidden>V~</span></td><td><span class="fasit" hidden>VΩ</span></td><td><span class="fasit" hidden>parallelt</span></td></tr>
+          <tr><td>5. Strøm til 400 V-motor</td><td class="tom"><span class="fasit" hidden>tang A~</span></td><td><span class="fasit" hidden>(ingen)</span></td><td><span class="fasit" hidden>tang rundt én fase</span></td></tr>
         </table>
-        <p>c) Du måler over en sikring på Ω, og displayet viser <b>OL</b>. Hva betyr det?</p><div class="svar"><span class="fasit" hidden>Uendelig stor motstand = <b>brudd</b>. Sikringen er gått.</span></div>
+        <p>c) Sikringen viser <b>OL</b> på Ω. Hva betyr det?</p><div class="svar"><span class="fasit" hidden>Uendelig stor motstand = <b>brudd</b>. Sikringen er gått.</span></div>
         <p class="no-print">Øv mer: mål spenning, strøm og motstand i <a data-sim="multimeter">Multimeter-simulatoren</a>.</p>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 2 – Feilsøking i 24 V-krets <small>Time 1 · 7 min</small></h3>
-        <p>Lampa H1 lyser ikke. Svart probe står på 0 V. Tabellen viser hva den røde proben målte.</p>
+        <p>Lampa lyser ikke. Svart probe på 0 V. Hvor er feilen?</p>
         <div class="ofig" style="max-width:620px" id="fig5"></div>
         <table class="ot c">
           <tr><th>Tilfelle</th><th>TP1</th><th>TP2</th><th>TP3</th><th>TP4</th><th>TP5</th><th>TP6</th><th style="width:34%">Feilen er …</th></tr>
@@ -587,13 +589,13 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <tr><td>D</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td>24 V</td><td class="tom"><span class="fasit" hidden><b>Brudd i 0 V-lederen</b> fra lampa (TP6 – 0 V)</span></td></tr>
           <tr><td>E</td><td>24 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td class="tom"><span class="fasit" hidden><b>Sikringen F1</b> er gått</span></td></tr>
         </table>
-        <p>b) Hvilket punkt måler du først med halveringsmetoden? Hvorfor?</p><div class="svar"><span class="fasit" hidden><b>TP3 eller TP4</b> – i midten. Én måling forteller hvilken halvdel feilen er i.</span></div>
-        <p>c) I tilfelle E: Hvorfor skal du finne årsaken før du bytter sikringen?</p><div class="svar"><span class="fasit" hidden>Sikringen gikk fordi strømmen ble for stor (f.eks. kortslutning). Byttes den uten å fjerne feilen, går den igjen – eller det oppstår varme og brann.</span></div>
+        <p>b) Hvor måler du først? Hvorfor?</p><div class="svar"><span class="fasit" hidden><b>TP3 eller TP4</b> – i midten. Én måling forteller hvilken halvdel feilen er i.</span></div>
+        <p>c) Tilfelle E: Hvorfor finne årsaken før du bytter sikring?</p><div class="svar"><span class="fasit" hidden>Sikringen gikk fordi strømmen ble for stor (f.eks. kortslutning). Byttes den uten å fjerne feilen, går den igjen – eller det oppstår varme og brann.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Spenning i vekselstrømnett <small>Time 2 · 5 min</small></h3>
-        <p>a) Hvilken verdi forventer du? Skriv «–» hvis målingen ikke finnes.</p>
+        <p>a) Hva viser måleren? Skriv «–» hvis målingen ikke finnes.</p>
         <table class="ot c">
           <tr><th>Måling</th><th>3-fas TN 230/400 V</th><th>2-fas IT 230 V</th></tr>
           <tr><td>L1–L2</td><td class="tom"><span class="fasit" hidden>400 V</span></td><td><span class="fasit" hidden>230 V</span></td></tr>
@@ -601,37 +603,40 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <tr><td>L1–PE</td><td class="tom"><span class="fasit" hidden>230 V</span></td><td><span class="fasit" hidden>ca. 133 V (flytende)</span></td></tr>
           <tr><td>N–PE</td><td class="tom"><span class="fasit" hidden>0–2 V</span></td><td><span class="fasit" hidden>– (ingen N)</span></td></tr>
         </table>
-        <p>b) Hvorfor blir det 400 V og ikke 460 V mellom to faser i TN-nett?</p><div class="svar"><span class="fasit" hidden>Fasene ligger 120° fra hverandre. Forskjellen er √3 · 230 ≈ 400 V.</span></div>
-        <p>c) Multimeteret står på <b>V⎓</b> når det måles i en stikkontakt. Hva viser det?</p><div class="svar"><span class="fasit" hidden>Ca. 0 V eller tall som hopper – feil innstilling.</span></div>
+        <p>b) Måleren står på <b>V⎓</b> i en stikkontakt. Hva viser den?</p><div class="svar"><span class="fasit" hidden>Ca. 0 V eller tall som hopper – feil innstilling.</span></div>
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 4 – Strømtang <small>Time 2 · 4 min</small></h3>
-        <p>En symmetrisk 3-fas motor trekker 10 A i hver fase. Hva viser tanga?</p>
+        <h3>Oppgave 4 – Strømtang <small>Time 2 · 6 min</small></h3>
+        <p>3-fas motor, 10 A i hver fase. Hva viser tanga?</p>
         <div class="ofig" style="max-width:560px" id="figTang"></div>
         <table class="ot c">
           <tr><th>Tang</th><th>a) rundt L1</th><th>b) rundt L1, L2 og L3</th><th>c) rundt hele kabelen</th></tr>
           <tr><td>Viser</td><td class="tom"><span class="fasit" hidden><b>10 A</b></span></td><td><span class="fasit" hidden><b>0 A</b> – strømmene er forskjøvet 120° og opphever hverandre</span></td><td><span class="fasit" hidden><b>0 A</b></span></td></tr>
         </table>
-        <p>d) Hvorfor måler vi ikke strømmen på 400 V med multimeteret i serie?</p><div class="svar"><span class="fasit" hidden>Kretsen må brytes under spenning, det kan gi lysbue, og måleren kan kortslutte fasene. Tanga måler uten å bryte.</span></div>
-        <p>e) På en 1-fas varmeovn viser tanga rundt L + N <b>0,5 A</b>. Hva betyr det? Ville en jordfeilbryter på 30 mA løst ut?</p><div class="svar"><span class="fasit" hidden>0,5 A lekker til jord (jordfeil). 0,5 A = 500 mA &gt; 30 mA, så <b>ja</b>, jordfeilbryteren løser ut.</span></div>
+        <p>d) Hvorfor ikke multimeter i serie på 400 V?</p><div class="svar"><span class="fasit" hidden>Kretsen må brytes under spenning, det kan gi lysbue, og måleren kan kortslutte fasene. Tanga måler uten å bryte.</span></div>
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 5 – Motor og spenningsløshet <small>Time 2 · 4 min</small></h3>
-        <p>a) Målinger på en 3-fas motor, spenningsløs og med laskene fjernet:</p>
+        <h3>Oppgave 5 – Motor og spenningsløshet <small>Time 2 · 6 min</small></h3>
+        <p>a) Motoren er spenningsløs, og laskene er fjernet.</p>
         <table class="ot c">
           <tr><th>U1–U2</th><th>V1–V2</th><th>W1–W2</th><th>U1–V1</th><th>U1–PE</th></tr>
           <tr><td>2,40 Ω</td><td>1,62 Ω</td><td>2,39 Ω</td><td>OL</td><td>OL</td></tr>
         </table>
-        <p>Er motoren i orden? Hvilken vikling er det eventuelt feil på?</p><div class="svar"><span class="fasit" hidden><b>Ikke i orden.</b> V-viklingen (V1–V2) har 1,62 Ω mot ca. 2,40 Ω på de andre – kortslutning mellom vindinger. OL mellom U1–V1 og mot PE er riktig (ingen forbindelse).</span></div>
-        <p>b) Sett stegene for kontroll av spenningsløshet i riktig rekkefølge (1–4):</p>
+        <p>Er motoren i orden? Hvilken vikling er feil?</p><div class="svar"><span class="fasit" hidden><b>Ikke i orden.</b> V-viklingen (V1–V2) har 1,62 Ω mot ca. 2,40 Ω på de andre – kortslutning mellom vindinger. OL mellom U1–V1 og mot PE er riktig (ingen forbindelse).</span></div>
+        <p>b) Sett i rekkefølge (1–4):</p>
         <table class="ot" style="width:auto">
-          <tr><td style="width:3rem"><span class="fasit" hidden><b>3</b></span></td><td>Mål mellom alle faser og mellom hver fase og jord</td></tr>
+          <tr><td style="width:3rem"><span class="fasit" hidden><b>3</b></span></td><td>Mål mellom alle faser og mot jord</td></tr>
           <tr><td><span class="fasit" hidden><b>2</b></span></td><td>Test prøveren på en kjent spenningskilde</td></tr>
           <tr><td><span class="fasit" hidden><b>1</b></span></td><td>Koble fra, lås og merk</td></tr>
           <tr><td><span class="fasit" hidden><b>4</b></span></td><td>Test prøveren på kjent kilde igjen</td></tr>
         </table>
+      </div>
+
+      <div class="oppgave ekstra">
+        <h3>Oppgave 6 – 400 V eller 460 V? <small>Ekstra</small></h3>
+        <p>Hvorfor blir det 400 V og ikke 460 V mellom to faser i TN-nett?</p><div class="svar"><span class="fasit" hidden>Fasene ligger 120° fra hverandre. Spenningen mellom to faser blir √3 · 230 ≈ 400 V.</span></div>
       </div>
 
       <div class="oppgave">
@@ -1171,7 +1176,7 @@ requestAnimationFrame(loopTick);
   const tipOf=k=>[termX(k),TY+30];
   function vexplain(){
     const sy=VSYS[vs],[a,b]=pa,isL=k=>k[0]==="L",U=abs(sub(sy.V[a],sy.V[b]));
-    if(isL(a)&&isL(b))return sy.it?`To faser i IT-nett: linjespenningen er ${Math.round(U)} V. Det er den eneste spenningen som ligger fast i IT-nett.`:`To faser i TN-nett: linjespenning √3 · 231 V ≈ ${Math.round(U)} V. Pilene står 120° fra hverandre, så forskjellen er lengre enn hver av dem.`;
+    if(isL(a)&&isL(b))return sy.it?`To faser i IT-nett: linjespenningen er ${Math.round(U)} V. Det er den eneste spenningen som ligger fast i IT-nett.`:`To faser i TN-nett: linjespenningen er ${Math.round(U)} V. Pilene står 120° fra hverandre, så forskjellen er lengre enn hver av dem.`;
     if(isL(a)&&b==="N")return `Fase mot N: fasespenning ${Math.round(U)} V. N er koblet til det jordede stjernepunktet, så den står i sentrum av viserdiagrammet.`;
     if(isL(a)&&b==="PE")return sy.it?`Fase mot jord i IT-nett: ca. ${Math.round(U)} V, men verdien er flytende. Den avhenger av kapasitansen mot jord og kan variere mye. Ved jordfeil på en fase blir den 0 V for den fasen og 230 V for de andre. Mål derfor alltid mellom fasene også.`:`Fase mot PE i TN-nett: ${Math.round(U)} V, siden PE og N er koblet sammen i stjernepunktet.`;
     if(a==="N"&&b==="PE")return `N mot PE: nær 0 V. N og PE er koblet sammen ved inntaket. Flere volt her tyder på stor last på kursen eller en dårlig N-forbindelse.`;

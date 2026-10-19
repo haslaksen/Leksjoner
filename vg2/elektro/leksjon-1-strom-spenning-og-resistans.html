@@ -315,6 +315,7 @@ table.t th{background:var(--steel-soft)}
           <tr><td>35–42 min</td><td>Oppgave 6 (ekstra) eller Multimeter-simulatoren</td></tr>
           <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
         </table>
+      <div class="tip" style="margin:.8rem 0 0"><b>Repetisjon fra Vg1:</b> Har klassen hatt Vg1 Elektro 1–2 (U, I, R og Ohms lov), kan dere ta Del 1–3 og Del 7 raskt som repetisjon og bruke tiden på oppgavene.</div>
       </div>
       </details>
       <p class="caption no-print">Bla med piltastene ↑ ↓. A+ gir større tekst på fremviser.</p>
@@ -977,18 +978,18 @@ table.t th{background:var(--steel-soft)}
       <div class="oppgave">
         <h3>Oppgave 1 – Størrelser og enheter <small>Time 1 · 4 min</small></h3>
         <table class="ot">
-          <tr><th>Størrelse</th><th>Symbol</th><th>Enhet</th><th>Enhetssymbol</th><th>Hva tilsvarer det i vannmodellen?</th></tr>
+          <tr><th>Størrelse</th><th>Symbol</th><th>Enhet</th><th>Enhetssymbol</th><th>I vannmodellen</th></tr>
           <tr><td>Spenning</td><td class="tom"><span class="fasit" hidden>U</span></td><td><span class="fasit" hidden>volt</span></td><td><span class="fasit" hidden>V</span></td><td><span class="fasit" hidden>Trykket fra pumpa</span></td></tr>
           <tr><td>Strøm</td><td class="tom"><span class="fasit" hidden>I</span></td><td><span class="fasit" hidden>ampere</span></td><td><span class="fasit" hidden>A</span></td><td><span class="fasit" hidden>Vannmengden som strømmer</span></td></tr>
           <tr><td>Resistans</td><td class="tom"><span class="fasit" hidden>R</span></td><td><span class="fasit" hidden>ohm</span></td><td><span class="fasit" hidden>Ω</span></td><td><span class="fasit" hidden>Smalt rør</span></td></tr>
         </table>
-        <p>Hvilke av disse er <b>ledere</b>, og hvilke er <b>isolatorer</b>? Skriv L eller I.</p>
+        <p><b>Leder</b> (L) eller <b>isolator</b> (I)?</p>
         <p>kobber <span class="luke"><span class="fasit" hidden>L</span></span> &nbsp; plast <span class="luke"><span class="fasit" hidden>I</span></span> &nbsp; stål <span class="luke"><span class="fasit" hidden>L</span></span> &nbsp; gummi <span class="luke"><span class="fasit" hidden>I</span></span> &nbsp; aluminium <span class="luke"><span class="fasit" hidden>L</span></span> &nbsp; glass <span class="luke"><span class="fasit" hidden>I</span></span></p>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 2 – Lyser lampa? <small>Time 1 · 4 min</small></h3>
-        <p>Alle kretsene har batteri (24 V), sikring, bryter og lampe. Skriv <b>Ja</b> eller <b>Nei</b> og begrunn kort.</p>
+        <p>Skriv <b>Ja</b> eller <b>Nei</b> og hvorfor.</p>
         <div class="minis" id="minis"></div>
         <table class="ot">
           <tr><th style="width:3rem"></th><th style="width:6rem">Lyser?</th><th>Fordi …</th></tr>
@@ -997,32 +998,28 @@ table.t th{background:var(--steel-soft)}
           <tr><td>c)</td><td class="tom"><span class="fasit" hidden>Nei</span></td><td><span class="fasit" hidden>Brudd i ledningen, ingen hel vei rundt.</span></td></tr>
           <tr><td>d)</td><td class="tom"><span class="fasit" hidden>Nei</span></td><td><span class="fasit" hidden>Kortslutning: strømmen tar snarveien utenom lampa, strømmen blir svært stor og sikringen går.</span></td></tr>
         </table>
-        <p>Hva er en sikring, og hvorfor trenger vi den?</p>
-        <div class="svar"><span class="fasit" hidden>Sikringen er en tråd som smelter (eller en bryter som løser ut) når strømmen blir for stor.</span></div><div class="svar"><span class="fasit" hidden>Den hindrer at ledningene blir så varme at det begynner å brenne.</span></div>
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 3 – Fra kraftverk til likestrøm <small>Time 1 · 4 min</small></h3>
-        <p>a) Sett delene i en strømforsyning i riktig rekkefølge: <b>kondensator · stikkontakt · likeretter · transformator</b></p><div class="svar"><span class="fasit" hidden>Stikkontakt → transformator → likeretter → kondensator</span></div>
-        <p>b) Hva gjør transformatoren?</p><div class="svar"><span class="fasit" hidden>Gjør spenningen lavere (f.eks. 230 V ~ til 18 V ~). Det er fortsatt vekselstrøm.</span></div>
-        <p>c) Hva gjør dioden? Sammenlign med en ventil.</p><div class="svar"><span class="fasit" hidden>Slipper strøm bare én vei, som en enveisventil (tilbakeslagsventil).</span></div>
-        <p>d) Hvorfor trenger vi kondensatoren?</p><div class="svar"><span class="fasit" hidden>Etter likeretteren pulserer spenningen. Kondensatoren lagrer energi på toppene og gir den fra seg mellom dem, så spenningen blir jevn.</span></div>
-        <p>e) Hvorfor har en kraftlinje tre ledere? Hvor kommer de tre fasene fra?</p><div class="svar"><span class="fasit" hidden>Én leder per fase. Generatoren i kraftverket har tre spoler rundt en roterende magnet. Når magneten passerer en spole, blir det spenning i den – spolene sitter 120° fra hverandre, så fasene kommer etter hverandre.</span></div>
+        <h3>Oppgave 3 – Fra AC til DC <small>Time 1 · 4 min</small></h3>
+        <p>a) Sett i riktig rekkefølge: <b>kondensator · stikkontakt · likeretter · transformator</b></p><div class="svar"><span class="fasit" hidden>Stikkontakt → transformator → likeretter → kondensator</span></div>
+        <p>b) Hva gjør dioden?</p><div class="svar"><span class="fasit" hidden>Slipper strøm bare én vei, som en enveisventil (tilbakeslagsventil).</span></div>
+        <p>c) Hva gjør kondensatoren?</p><div class="svar"><span class="fasit" hidden>Etter likeretteren pulserer spenningen. Kondensatoren lagrer energi på toppene og gir den fra seg mellom dem, så spenningen blir jevn.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 4 – Ohms lov <small>Time 2 · 10 min</small></h3>
-        <p>Skriv formelen, sett inn tallene og svar med enhet.</p>
-        <p>a) En lampe på 48 Ω er koblet til 24 V. Hvor stor er strømmen?</p><div class="svar"><span class="fasit" hidden>I = U / R = 24 / 48 = <b>0,5 A</b></span></div>
-        <p>b) Spolen i en magnetventil (en elektromagnet som åpner en luftventil) trekker 0,25 A på 24 V. Hva er resistansen?</p><div class="svar"><span class="fasit" hidden>R = U / I = 24 / 0,25 = <b>96 Ω</b></span></div>
-        <p>c) Det går 0,1 A gjennom en motstand på 220 Ω. Hva er spenningen over motstanden?</p><div class="svar"><span class="fasit" hidden>U = R · I = 220 · 0,1 = <b>22 V</b></span></div>
-        <p>d) En sensor på 24 V trekker 12 mA. Hva er resistansen? Svar i Ω og i kΩ.</p><div class="svar"><span class="fasit" hidden>12 mA = 0,012 A</span></div><div class="svar"><span class="fasit" hidden>R = 24 / 0,012 = <b>2 000 Ω = 2 kΩ</b></span></div>
-        <p>e) Resistansen er den samme, men spenningen dobles. Hva skjer med strømmen?</p><div class="svar"><span class="fasit" hidden>Strømmen <b>dobles</b> også.</span></div>
+        <p>Formel, tall og enhet.</p>
+        <p>a) Lampe: 24 V og 48 Ω. Finn I.</p><div class="svar"><span class="fasit" hidden>I = U / R = 24 / 48 = <b>0,5 A</b></span></div>
+        <p>b) Magnetventil: 24 V og 0,25 A. Finn R.</p><div class="svar"><span class="fasit" hidden>R = U / I = 24 / 0,25 = <b>96 Ω</b></span></div>
+        <p>c) Motstand: 220 Ω og 0,1 A. Finn U.</p><div class="svar"><span class="fasit" hidden>U = R · I = 220 · 0,1 = <b>22 V</b></span></div>
+        <p>d) Sensor: 24 V og 12 mA. Finn R i Ω og kΩ.</p><div class="svar"><span class="fasit" hidden>12 mA = 0,012 A</span></div><div class="svar"><span class="fasit" hidden>R = 24 / 0,012 = <b>2 000 Ω = 2 kΩ</b></span></div>
+        <p>e) R er lik, U dobles. Hva skjer med I?</p><div class="svar"><span class="fasit" hidden>Strømmen <b>dobles</b> også.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 5 – Fyll ut tabellen <small>Time 2 · 10 min</small></h3>
-        <p>Bruk Ohms lov og finn tallet som mangler. Husk enheten.</p>
+        <p>Finn tallet som mangler.</p>
         <table class="ot">
           <tr><th>Komponent</th><th>Spenning U</th><th>Resistans R</th><th>Strøm I</th></tr>
           <tr><td>a) LED-arbeidslampe</td><td>24 V</td><td class="tom"><span class="fasit" hidden>24 / 0,2 = 120 Ω</span></td><td>0,2 A</td></tr>
@@ -1030,14 +1027,13 @@ table.t th{background:var(--steel-soft)}
           <tr><td>c) Spole i et relé</td><td class="tom"><span class="fasit" hidden>240 · 0,1 = 24 V</span></td><td>240 Ω</td><td>0,1 A</td></tr>
           <tr><td>d) Induktiv sensor</td><td>24 V</td><td class="tom"><span class="fasit" hidden>24 / 0,008 = 3 000 Ω = 3 kΩ</span></td><td>8 mA</td></tr>
         </table>
-        <p>e) Se på grafen i Del 7. Hvilken linje er brattest: 6 Ω eller 96 Ω? Hvorfor?</p><div class="svar"><span class="fasit" hidden>6 Ω. Liten resistans gir mye strøm for hver volt.</span></div>
       </div>
 
       <div class="oppgave ekstra">
         <h3>Oppgave 6 – Kortslutning <small>Ekstra</small></h3>
-        <p>To ledninger blir klemt sammen, så de får kontakt. Resistansen i kortslutningen er bare 0,05 Ω. Spenningen er 24 V.</p>
-        <p>a) Hvor stor blir strømmen?</p><div class="svar"><span class="fasit" hidden>I = U / R = 24 / 0,05 = <b>480 A</b></span></div>
-        <p>b) Hvorfor må det være en sikring i kretsen?</p><div class="svar"><span class="fasit" hidden>Så stor strøm gjør ledningene glødende varme, og det kan begynne å brenne. Sikringen bryter kretsen.</span></div>
+        <p>Kortslutning: 24 V og bare 0,05 Ω.</p>
+        <p>a) Finn I.</p><div class="svar"><span class="fasit" hidden>I = U / R = 24 / 0,05 = <b>480 A</b></span></div>
+        <p>b) Hvorfor trenger vi sikring?</p><div class="svar"><span class="fasit" hidden>Så stor strøm gjør ledningene glødende varme, og det kan begynne å brenne. Sikringen bryter kretsen.</span></div>
       </div>
 
 
