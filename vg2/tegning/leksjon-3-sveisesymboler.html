@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tegning og DAK 3 – Sveisesymboler</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#e0a800; --yellow-soft:#fff8db;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:66ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2 > *, .hero > *{min-width:0}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg, .fig canvas{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.8rem; font-weight:600}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+details.laerer{margin-top:1.2rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+@media (prefers-reduced-motion: reduce){ .scene *, .hero-fig *{animation:none!important} }
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.75rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.legend{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin:.2rem 0 .3rem}
+.legend i{display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:.4rem}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem; line-height:1.7}
+.steps .res{color:var(--orange); font-weight:700; font-size:1.1rem}
+.formula{font-family:"Cascadia Mono", Consolas, monospace; font-size:1.5rem; font-weight:700; text-align:center; padding:.6rem; background:var(--bg); border-radius:10px; margin:.4rem 0}
+
+/* Repetisjon */
+.flip{cursor:pointer; text-align:left; font:inherit; color:inherit; width:100%; min-height:9rem; display:flex; flex-direction:column; justify-content:space-between}
+.flip .q{font-weight:650; font-size:1.05rem}
+.flip .a{display:none; color:var(--green); font-weight:600; margin-top:.6rem}
+.flip.show .a{display:block}
+.flip .hint{font-size:.75rem; color:var(--muted); margin-top:.6rem}
+.flip.show .hint{display:none}
+
+.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
+/* Tabs */
+.tabs{display:flex; gap:.4rem; flex-wrap:wrap}
+.tabs .btn{font-size:.9rem; padding:.5rem 1rem}
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.oppfig{max-width:620px; margin:.4rem 0; background:#fff; border:1px solid #999; border-radius:6px}
+.oppfig svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr 1fr}
+  .readout{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .paper{overflow-x:auto} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+
+/* Måleteknikk */
+.controls .btn.small.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+#vgBtns .btn.on{background:var(--green); color:#fff; border-color:var(--green)}
+/* Tegning og DAK */
+.vb .btn.on, .tabs .btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+.del{cursor:pointer}
+.del.on .hl{fill:var(--orange-soft)!important}
+.del:hover .hl{stroke:var(--orange)!important}
+.oppfig svg text{font-family:"Segoe UI", system-ui, Arial, sans-serif}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Tegning og DAK · <span>Leksjon 3</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+<main>
+
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Tegning og DAK</div>
+      <h1>Leksjon 3<br>Sveisesymboler</h1>
+      <p class="lead">Et lite symbol på tegningen sier hvor du skal sveise, hvilken sveis og hvor stor.</p>
+      <ol class="goals">
+        <li><b>Delene</b> i sveisesymbolet</li>
+        <li><b>Grunnsymbolene</b></li>
+        <li><b>Pilsiden</b> eller andre siden?</li>
+        <li><b>a-mål</b> og lengde</li>
+        <li><b>Rundt</b>, montasje og metode</li>
+      </ol>
+    </div>
+    <div>
+      <div class="hero-fig"><svg viewBox="0 0 560 260" role="img" aria-label="Sveisesymbol som peker på en T-skjøt med kilsveis">
+  <rect x="250" y="200" width="260" height="30" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/><rect x="370" y="80" width="26" height="120" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/><path d="M370 200 V176 L346 200 Z" style="fill:var(--orange);stroke:var(--steel-dark);stroke-width:1"><animate attributeName="opacity" dur="2.5s" repeatCount="indefinite" values="0;1;1;0" keyTimes="0;.3;.85;1"/></path><path d="M370 186 L240 70 H40" style="fill:none;stroke:var(--ink);stroke-width:2"/><polygon points="370,186 361.4,171.6 354.7,179.1" style="fill:var(--ink)"/><path d="M40 78 H226" style="stroke:var(--ink);stroke-width:1.6;stroke-dasharray:7 4"/><path d="M130 70 V54 L146 70 Z" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"/><text x="124" y="67" text-anchor="end" font-size="15" font-weight="700" style="fill:var(--ink)">a5</text><text x="154" y="67" font-size="15" font-weight="700" style="fill:var(--ink)">200</text><path d="M40 70 L28 60 M40 70 L28 80" style="stroke:var(--ink);stroke-width:2"/>
+  <g><circle cx="352" cy="194" r="5" style="fill:#ffd43b"><animate attributeName="opacity" dur=".25s" repeatCount="indefinite" values="1;.2;1"/></circle></g>
+</svg></div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <p style="margin:.6rem 0">Vis en ekte sveiset del og tegningen av den. «Hvordan visste sveiseren hvor og hvor mye det skulle sveises?»</p>
+      <div class="card" style="margin-top:.6rem">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p><i>«anvende sammenføyningsmetoder etter instruksjoner og arbeidsbeskrivelser»</i> (T10)</p><p><i>«forklare og bruke riktig bearbeidingsmetode ut fra materialer, arbeidstegninger og spesifikasjoner»</i> (T7)</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Tredje leksjon i Vg2 Tegning og DAK. Fulle læringsmål: kjenne pil, referanselinje, stiplet linje og hale · kjenne grunnsymbolene for kilsveis, I-, V-, halv V- og X-fuge · avgjøre om sveisen er på pilsiden eller andre siden (ISO 2553, system A) · lese a-mål og lengde, og vite at a er halsmålet · lese tegn for rundtsveis, montasjesveis og sveisemetode (111, 135, 141).</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan"><tr><th colspan="2">Time 1</th></tr><tr><td>0–5 min</td><td>Repetisjon</td></tr><tr><td>5–12 min</td><td>Del 1: delene i symbolet</td></tr><tr><td>12–25 min</td><td>Del 2: grunnsymbolene</td></tr><tr><td>25–35 min</td><td>Del 3: pilsiden eller andre siden</td></tr><tr><td>35–45 min</td><td>Oppgave 1–2</td></tr><tr><th colspan="2">Time 2</th></tr><tr><td>0–12 min</td><td>Del 4: a-mål og lengde</td></tr><tr><td>12–20 min</td><td>Del 5: rundt, montasje, metode</td></tr><tr><td>20–40 min</td><td>Oppgave 3–5</td></tr><tr><td>40–45 min</td><td>Exit-lapp</td></tr></table>
+        <p style="font-size:.85rem; color:var(--muted); margin:.5rem 0 0">Ta med sveisede prøvestykker (T-skjøt og buttskjøt) og en kilsveislære for a-mål.</p>
+      </div>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="rep" data-nav="Repetisjon">
+  <div class="wrap">
+    <div class="kicker">Repetisjon · ca. 5 min</div>
+    <h2>Husker du?</h2>
+    <p class="lead">Svar med sidemannen – klikk for svar.</p>
+    <div class="grid4" style="margin-top:1.2rem"><button class="card flip"><span class="q">Hva er en T-skjøt?</span><span class="a">To plater som står i 90° på hverandre, som en T.</span><span class="hint">Klikk for svar</span></button><button class="card flip"><span class="q">Hva er en buttskjøt?</span><span class="a">To plater kant mot kant.</span><span class="hint">Klikk for svar</span></button><button class="card flip"><span class="q">Hva betyr MAG?</span><span class="a">Sveising med tråd og aktiv beskyttelsesgass.</span><span class="hint">Klikk for svar</span></button><button class="card flip"><span class="q">Hva står i tegningshodet?</span><span class="a">Navn, materiale, målestokk, toleranser, tegningsnummer.</span><span class="hint">Klikk for svar</span></button></div>
+    <div class="tip o"><b>I dag:</b> Les sveisesymboler slik sveiseren gjør.</div>
+  </div>
+</section>
+
+<section class="slide" id="deler" data-nav="1 Delene">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 7 min</div>
+    <h2>Delene i sveisesymbolet</h2>
+    <p class="lead">Pila peker på skjøten. Resten forteller <b>hva</b> og <b>hvor mye</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig"><svg id="deSvg" viewBox="0 0 560 230" role="img" aria-label="Sveisesymbolets deler">
+  <g class="del" data-del="pil"><rect class="hl" x="200" y="60" width="150" height="150" rx="8" style="fill:transparent"/>
+    <path d="M330 190 L230 80" style="stroke:var(--ink);stroke-width:2.5"/><polygon points="330,190 317,180 324,174" style="fill:var(--ink)"/></g>
+  <g class="del" data-del="ref"><rect class="hl" x="20" y="64" width="215" height="24" rx="6" style="fill:transparent"/><path d="M30 80 H230" style="stroke:var(--ink);stroke-width:2.5"/></g>
+  <g class="del" data-del="stiplet"><rect class="hl" x="20" y="88" width="215" height="18" rx="6" style="fill:transparent"/><path d="M30 96 H216" style="stroke:var(--ink);stroke-width:2;stroke-dasharray:8 5"/></g>
+  <g class="del" data-del="sym"><rect class="hl" x="100" y="50" width="40" height="32" rx="6" style="fill:transparent"/><path d="M112 80 V64 L128 80 Z" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"/></g>
+  <g class="del" data-del="mal"><rect class="hl" x="64" y="52" width="44" height="28" rx="6" style="fill:transparent"/><text x="104" y="77" text-anchor="end" font-size="17" font-weight="700" style="fill:var(--ink)">a5</text>
+    <rect class="hl" x="134" y="52" width="44" height="28" rx="6" style="fill:transparent"/><text x="138" y="77" font-size="17" font-weight="700" style="fill:var(--ink)">200</text></g>
+  <g class="del" data-del="hale"><rect class="hl" x="0" y="56" width="64" height="48" rx="6" style="fill:transparent"/><path d="M30 80 L16 68 M30 80 L16 92" style="stroke:var(--ink);stroke-width:2.5"/><text x="12" y="120" font-size="15" font-weight="700" style="fill:var(--ink)">135</text></g>
+  <rect x="320" y="200" width="200" height="22" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/><rect x="330" y="120" width="20" height="80" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>
+  <text x="420" y="110" font-size="13" style="fill:var(--muted)">Trykk på en del</text>
+</svg></div>
+      <div>
+        <div class="card" id="deCard" style="border-left:6px solid var(--orange)"><b>Trykk på en del</b> av symbolet.</div>
+        <div class="tip" style="margin-top:1rem">Symbolet følger standarden <b>ISO 2553</b>.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Referanselinja tegnes parallelt med tegningskanten. Den stiplede linja (identifikasjonslinje) kan stå over eller under den hele linja. Her står den alltid under, slik det er mest vanlig. Halen kan sløyfes når det ikke står noe i den.</details>
+  </div>
+</section>
+
+<section class="slide" id="grunnsymboler" data-nav="2 Grunnsymboler">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 13 min</div>
+    <h2>Symbolet ligner på sveisen</h2>
+    <p class="lead">Grunnsymbolet viser formen på fugen sett fra enden.</p>
+    <div class="controls no-print vb" id="syBtns" style="margin-top:.4rem"><button class="btn small sy-btn" data-k="kil"><svg viewBox="0 0 24 20" width="24" height="20"><path d="M3 18 V2 L19 18 Z" style="fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round"/></svg> Kilsveis</button><button class="btn small sy-btn" data-k="I"><svg viewBox="0 0 24 20" width="24" height="20"><path d="M6 18 V2 M15 18 V2" style="fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round"/></svg> I-fuge</button><button class="btn small sy-btn" data-k="V"><svg viewBox="0 0 24 20" width="24" height="20"><path d="M3 2 L12 18 L21 2" style="fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round"/></svg> V-fuge</button><button class="btn small sy-btn" data-k="halvV"><svg viewBox="0 0 24 20" width="24" height="20"><path d="M6 18 V2 M6 18 L19 2" style="fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round"/></svg> Halv V-fuge</button><button class="btn small sy-btn" data-k="X"><svg viewBox="0 0 24 20" width="24" height="20"><path d="M3 2 L12 18 L21 2" style="fill:none;stroke:currentColor;stroke-width:2.2;stroke-linejoin:round"/></svg> X-fuge</button></div>
+    <div class="grid2 wide-left" style="margin-top:1rem">
+      <div class="fig"><svg id="sySvg" viewBox="0 0 560 250" role="img" aria-label="Sveisesymbol og skjøten i snitt"></svg></div>
+      <div><div class="card" id="syCard" style="border-left:6px solid var(--orange)"></div></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kilsveis er den vanligste sveisen i verkstedet (T-skjøt, hjørneskjøt, overlapp). I-fuge brukes på tynne plater uten fuge-forberedelse. V-, halv V- og X-fuge brukes på tykkere plater, der kanten må fases for å få full gjennomsveising. X-fuge sveises fra begge sider og gir mindre vridning. Fasing gjøres med kantfreser, sliper eller skjærebrenner.</details>
+  </div>
+</section>
+
+<section class="slide" id="side" data-nav="3 Hvilken side?">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 10 min</div>
+    <h2>Pilsiden eller andre siden?</h2>
+    <p class="lead">Symbol på den <b>hele</b> linja = <b>pilsiden</b>. Symbol på den <b>stiplede</b> linja = <b>andre siden</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div class="controls no-print tabs" style="margin-top:0">
+          <button class="btn small si-btn on" data-k="pil">Hel linje</button>
+          <button class="btn small si-btn" data-k="andre">Stiplet linje</button>
+          <button class="btn small si-btn" data-k="begge">Begge sider</button>
+        </div>
+        <svg id="siSvg" viewBox="0 0 560 250" role="img" aria-label="T-skjøt med kilsveis på pilsiden eller andre siden"></svg>
+        <div class="status" id="siTxt"></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem"><b>Pilsiden</b> = siden pila peker på.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>Andre siden</b> = baksiden av skjøten.</div>
+        <div class="card"><b>Begge sider:</b> symbol over og under. Da trengs ingen stiplet linje.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Dette er system A i ISO 2553 (Europa). I system B (USA/Asia) brukes ikke stiplet linje; der betyr symbol under linja pilsiden. Sjekk alltid hvilket system tegningen bruker. Huskeregel: «Hel linje, her. Stiplet, der.»</details>
+  </div>
+</section>
+
+<section class="slide" id="amal" data-nav="4 a-mål">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 12 min</div>
+    <h2>a-mål: hvor tykk er kilsveisen?</h2>
+    <p class="lead"><b>a</b> er halsmålet: den korteste veien fra roten til overflaten av sveisen.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="amSvg" viewBox="0 0 560 270" role="img" aria-label="Kilsveis i snitt med a-mål"></svg>
+        <div class="controls"><label for="amA" style="min-width:4em">a-mål:</label><input type="range" id="amA" min="3" max="8" step="1" value="5"></div>
+        <div class="status" id="amTxt"></div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem"><b>a5</b> = halsmål 5 mm.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>200</b> etter symbolet = sveisen skal være 200 mm lang.</div>
+        <div class="tip o"><b>Regel:</b> a er ofte ca. <b>0,7 × tynneste plate</b>. Platene her er 8 mm.</div>
+        <details class="ekstra"><summary>Ekstra: a-mål og z-mål</summary>
+          <p style="margin:.5rem 0 0">Noen tegninger bruker <b>z</b> (beinlengde) i stedet for a. For en vanlig 45°-kilsveis er <b>z ≈ 1,4 × a</b>. a5 gir altså z ≈ 7 mm.</p>
+        </details>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>a-målet kontrolleres med kilsveislære. For store a-mål gir mer varme, mer vridning og mer tid, uten at sveisen blir sterkere enn platen. For små a-mål gir for svak sveis. Tallet 0,7 er en tommelfingerregel for full styrke i stål. Lengden kan også stå som 4 × 50 (100): fire sveiser på 50 mm med 100 mm mellomrom (stykkevis sveis).</details>
+  </div>
+</section>
+
+<section class="slide" id="tillegg" data-nav="5 Rundt og metode">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 8 min</div>
+    <h2>Små tegn med stor betydning</h2>
+    <p class="lead">Disse tegnene sitter der pila møter referanselinja, eller i halen.</p>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card"><svg viewBox="0 0 200 110" class="scene"><path d="M30 80 L80 40 H180" style="stroke:var(--ink);stroke-width:2.5;fill:none"/><circle cx="80" cy="40" r="9" style="fill:none;stroke:var(--orange);stroke-width:3"/>
+        <rect x="120" y="60" width="60" height="40" rx="4" style="fill:var(--steel)"/><rect x="118" y="58" width="64" height="44" rx="6" style="fill:none;stroke:var(--orange);stroke-width:3;stroke-dasharray:240;stroke-dashoffset:240"><animate attributeName="stroke-dashoffset" dur="3s" repeatCount="indefinite" values="240;0;0" keyTimes="0;.7;1"/></rect></svg>
+        <h3>Sirkel = rundtsveis</h3><p class="short">Sveis hele veien rundt.</p></div>
+      <div class="card"><svg viewBox="0 0 200 110" class="scene"><path d="M30 80 L80 40 H180" style="stroke:var(--ink);stroke-width:2.5;fill:none"/><path d="M80 40 V10" style="stroke:var(--orange);stroke-width:3"/><path d="M80 10 L104 18 L80 26 Z" style="fill:var(--orange)"><animateTransform attributeName="transform" type="skewY" dur="1.2s" repeatCount="indefinite" values="0;-6;0" additive="sum"/></path></svg>
+        <h3>Flagg = montasjesveis</h3><p class="short">Sveises der delen monteres, ikke i verkstedet.</p></div>
+      <div class="card"><svg viewBox="0 0 200 110" class="scene"><path d="M20 40 H150" style="stroke:var(--ink);stroke-width:2.5"/><path d="M150 40 L164 28 M150 40 L164 52" style="stroke:var(--orange);stroke-width:3"/><text x="168" y="46" font-size="17" font-weight="700" style="fill:var(--orange)">135</text></svg>
+        <h3>Hale = metode</h3><p class="short"><b>111</b> elektrode (MMA) · <b>135</b> MAG · <b>141</b> TIG</p></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Metodenumrene står i ISO 4063. Andre vanlige: 136 (MAG med rørtråd), 131 (MIG), 15 (plasma). Halen kan også henvise til en sveiseprosedyre (WPS), for eksempel «WPS 12».</details>
+  </div>
+</section>
+
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <ol style="font-size:1.08rem">
+        <li><b>Pila</b> peker på skjøten. <b>Referanselinja</b> bærer symbolet.</li>
+        <li><b>Grunnsymbolet</b> ligner på fugen: kil, I, V, halv V, X.</li>
+        <li><b>Hel linje</b> = pilsiden. <b>Stiplet</b> = andre siden.</li>
+        <li><b>a5 ◺ 200</b> = kilsveis, halsmål 5, lengde 200.</li>
+        <li><b>Sirkel</b> = rundt. <b>Flagg</b> = montasje. <b>Hale</b> = metode.</li>
+      </ol>
+      <div>
+        <div class="card"><h3>Nøkkelord</h3>
+          <div class="chips"><span>referanselinje</span><span>pilsiden</span><span>andre siden</span><span>kilsveis</span><span>V-fuge</span><span>a-mål</span><span>rundtsveis</span><span>montasjesveis</span><span>135 MAG</span></div></div>
+        <div class="card" style="margin-top:1rem"><h3>Neste leksjon</h3><p style="margin:0"><b>Leksjon 4 – Geometriske toleranser:</b> hvor rett, plan og rund skal delen være?</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 30 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+    <div id="oppgavetekst">
+      <h2>Tegning og DAK 3 – Sveisesymboler · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <p style="font-size:.9rem">Du trenger bare penn.</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Hva heter symbolet? <small>Time 1 · 5 min</small></h3>
+        <p>Ord: kilsveis · I-fuge · V-fuge · halv V-fuge · X-fuge</p>
+        <table class="ot"><tr><th>a)</th><th>b)</th><th>c)</th><th>d)</th><th>e)</th></tr><tr><td style="text-align:center"><svg viewBox="0 0 60 50" width="70" height="58"><path d="M5 25 H55" style="stroke:#000;stroke-width:2"/><path d="M21 9 L30 25 L39 9" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/></svg></td><td style="text-align:center"><svg viewBox="0 0 60 50" width="70" height="58"><path d="M5 25 H55" style="stroke:#000;stroke-width:2"/><path d="M21 25 V9 L37 25 Z" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/></svg></td><td style="text-align:center"><svg viewBox="0 0 60 50" width="70" height="58"><path d="M5 25 H55" style="stroke:#000;stroke-width:2"/><path d="M24 25 V9 M33 25 V9" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/></svg></td><td style="text-align:center"><svg viewBox="0 0 60 50" width="70" height="58"><path d="M5 25 H55" style="stroke:#000;stroke-width:2"/><path d="M21 9 L30 25 L39 9" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/><path d="M21 41 L30 25 L39 41" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/></svg></td><td style="text-align:center"><svg viewBox="0 0 60 50" width="70" height="58"><path d="M5 25 H55" style="stroke:#000;stroke-width:2"/><path d="M24 25 V9 M24 25 L37 9" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/></svg></td></tr><tr><td class="tom"><span class="fasit" hidden>V-fuge</span></td><td class="tom"><span class="fasit" hidden>kilsveis</span></td><td class="tom"><span class="fasit" hidden>I-fuge</span></td><td class="tom"><span class="fasit" hidden>X-fuge</span></td><td class="tom"><span class="fasit" hidden>Halv V-fuge</span></td></tr></table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Hvilken side? <small>Time 1 · 5 min</small></h3>
+        <p>Skriv pilsiden, andre siden eller begge sider.</p>
+        <table class="ot">
+          <tr><th>a)</th><th>b)</th><th>c)</th></tr>
+          <tr><td><div class="oppfig" style="max-width:300px"><svg viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg"><path d="M330 120 L240 70 H40" style="fill:none;stroke:#000;stroke-width:2"/><polygon points="330,120 318.4,107.9 313.6,116.6" style="fill:#000"/><path d="M40 78 H226" style="stroke:#000;stroke-width:1.6;stroke-dasharray:7 4"/><path d="M130 78 V94 L146 78 Z" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/><path d="M300 120 H390 M330 60 V120" style="stroke:#888;stroke-width:6"/></svg></div></td><td><div class="oppfig" style="max-width:300px"><svg viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg"><path d="M330 120 L240 70 H40" style="fill:none;stroke:#000;stroke-width:2"/><polygon points="330,120 318.4,107.9 313.6,116.6" style="fill:#000"/><path d="M40 78 H226" style="stroke:#000;stroke-width:1.6;stroke-dasharray:7 4"/><path d="M130 70 V54 L146 70 Z" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/><path d="M300 120 H390 M330 60 V120" style="stroke:#888;stroke-width:6"/></svg></div></td><td><div class="oppfig" style="max-width:300px"><svg viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg"><path d="M330 120 L240 70 H40" style="fill:none;stroke:#000;stroke-width:2"/><polygon points="330,120 318.4,107.9 313.6,116.6" style="fill:#000"/><path d="M130 70 V54 L146 70 Z" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/><path d="M130 70 V86 L146 70 Z" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/><path d="M300 120 H390 M330 60 V120" style="stroke:#888;stroke-width:6"/></svg></div></td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>andre siden</span></td><td class="tom"><span class="fasit" hidden>pilsiden</span></td><td class="tom"><span class="fasit" hidden>begge sider</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Les symbolet <small>Time 2 · 8 min</small></h3>
+        <div class="oppfig" style="max-width:520px"><svg viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg"><path d="M330 130 L240 70 H40" style="fill:none;stroke:#000;stroke-width:2"/><polygon points="330,130 319.5,117.0 313.9,125.3" style="fill:#000"/><path d="M40 78 H226" style="stroke:#000;stroke-width:1.6;stroke-dasharray:7 4"/><path d="M130 70 V54 L146 70 Z" style="fill:none;stroke:#000;stroke-width:2.2;stroke-linejoin:round"/><text x="124" y="67" text-anchor="end" font-size="15" font-weight="700" style="fill:#000">a4</text><text x="154" y="67" font-size="15" font-weight="700" style="fill:#000">150</text><path d="M40 70 L28 60 M40 70 L28 80" style="stroke:#000;stroke-width:2"/><circle cx="240" cy="70" r="6" style="fill:none;stroke:#000;stroke-width:2"/><text x="6" y="75" font-size="15" font-weight="700" fill="#000">135</text><path d="M300 130 H390 M330 80 V130" style="stroke:#888;stroke-width:6"/></svg></div>
+        <table class="ot">
+          <tr><th style="width:55%">Spørsmål</th><th>Svar</th></tr>
+          <tr><td>a) Hvilken type sveis?</td><td class="tom"><span class="fasit" hidden>kilsveis</span></td></tr>
+          <tr><td>b) Hvilken side?</td><td class="tom"><span class="fasit" hidden>pilsiden</span></td></tr>
+          <tr><td>c) Hvor stort er a-målet?</td><td class="tom"><span class="fasit" hidden>4 mm</span></td></tr>
+          <tr><td>d) Hvor lang er sveisen?</td><td class="tom"><span class="fasit" hidden>150 mm</span></td></tr>
+          <tr><td>e) Hva betyr sirkelen?</td><td class="tom"><span class="fasit" hidden>sveis hele veien rundt</span></td></tr>
+          <tr><td>f) Hvilken sveisemetode?</td><td class="tom"><span class="fasit" hidden>135 = MAG</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – a-mål <small>Time 2 · 5 min</small></h3>
+        <p>Du skal kilsveise to plater som er 6 mm og 10 mm tykke. Bruk regelen a ≈ 0,7 × tynneste plate.</p>
+        <p>a) Hvilken plate bruker du i regelen?</p><div class="svar"><span class="fasit" hidden>Den tynneste: 6 mm</span></div>
+        <p>b) Regn ut a-målet. Rund ned til helt tall.</p><div class="svar"><span class="fasit" hidden>0,7 × 6 = 4,2 → a4</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Tegn symbolet <small>Time 2 · 7 min</small></h3>
+        <p>Tegn sveisesymbolet: <b>Kilsveis på andre siden, a3, 80 mm lang, sveises med TIG.</b></p>
+        <div class="svar" style="min-height:6rem"><span class="fasit" hidden>Pil til skjøten, hel referanselinje med stiplet linje under. Kilsveis-trekant under den stiplede linja, a3 til venstre og 80 til høyre. Hale med 141.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 3 min</small></h3>
+        <p>1. Symbolet står på den stiplede linja. Hvor sveiser du?</p><div class="svar"><span class="fasit" hidden>På andre siden av skjøten.</span></div>
+        <p>2. Hva betyr a5?</p><div class="svar"><span class="fasit" hidden>Halsmålet på kilsveisen er 5 mm.</span></div>
+        <p>3. Hva betyr 135 i halen?</p><div class="svar"><span class="fasit" hidden>MAG-sveising.</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const fmtT = (x, d=2) => x.toLocaleString("nb-NO", {maximumFractionDigits:d});
+function el(tag, attrs, parent, text){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function setStatus(id, txt, cls){ const s=$(id); s.textContent=txt; s.className="status "+cls; }
+function sgrad(svg, id){ const defs=el("defs",{},svg); const g=el("linearGradient",{id,x1:"0",y1:"0",x2:"1",y2:"0"},defs);
+  el("stop",{offset:"0","stop-color":"#7d8894"},g); el("stop",{offset:".35","stop-color":"#dfe4ea"},g); el("stop",{offset:"1","stop-color":"#6c7783"},g); return defs; }
+function axes(svg, o){
+  const xmin = o.xmin||0, X = v => o.x0 + (v-xmin)/(o.xmax-xmin)*(o.x1-o.x0), Y = v => o.y0 - v/o.ymax*(o.y0-o.y1);
+  const g = el("g",{},svg);
+  o.yt.forEach(v => { el("line",{x1:o.x0,y1:Y(v),x2:o.x1,y2:Y(v),style:"stroke:var(--line)"},g); el("text",{x:o.x0-7,y:Y(v)+4,"text-anchor":"end","font-size":12,style:"fill:var(--muted)"},g,fmtT(v,2)); });
+  o.xt.forEach(v => { el("line",{x1:X(v),y1:o.y0,x2:X(v),y2:o.y0+5,style:"stroke:var(--ink)"},g); el("text",{x:X(v),y:o.y0+19,"text-anchor":"middle","font-size":12,style:"fill:var(--muted)"},g,fmtT(v,2)); });
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x1,y2:o.y0,style:"stroke:var(--ink);stroke-width:2"},g);
+  el("line",{x1:o.x0,y1:o.y0,x2:o.x0,y2:o.y1-8,style:"stroke:var(--ink);stroke-width:2"},g);
+  el("text",{x:o.x1,y:o.y0+36,"text-anchor":"end","font-size":13,"font-weight":600,style:"fill:var(--ink)"},g,o.xl);
+  el("text",{x:o.x0+4,y:o.y1-14,"font-size":13,"font-weight":600,style:"fill:var(--ink)"},g,o.yl);
+  return {X, Y};
+}
+function arrowDefs(svg, id, color){ const d = el("defs",{},svg); const m = el("marker",{id, viewBox:"0 0 10 10", refX:"8", refY:"5", markerWidth:"5", markerHeight:"5", orient:"auto-start-reverse"}, d); el("path",{d:"M0 0 L10 5 L0 10 z", style:`fill:${color}`}, m); }
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName) && e.target.type!=="range") return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  const i = Math.max(0, Math.min(slides.length-1, currentIndex()+dir));
+  slides[i].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.classList.toggle("show"));
+
+
+const VAR = {"kil|pil": "<rect x=\"250\" y=\"200\" width=\"260\" height=\"30\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><rect x=\"370\" y=\"80\" width=\"26\" height=\"120\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M370 200 V176 L346 200 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M370 186 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"370,186 361.4,171.6 354.7,179.1\" style=\"fill:var(--ink)\"/><path d=\"M40 78 H226\" style=\"stroke:var(--ink);stroke-width:1.6;stroke-dasharray:7 4\"/><path d=\"M130 70 V54 L146 70 Z\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "kil|andre": "<rect x=\"250\" y=\"200\" width=\"260\" height=\"30\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><rect x=\"370\" y=\"80\" width=\"26\" height=\"120\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M396 200 V176 L420 200 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M370 186 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"370,186 361.4,171.6 354.7,179.1\" style=\"fill:var(--ink)\"/><path d=\"M40 78 H226\" style=\"stroke:var(--ink);stroke-width:1.6;stroke-dasharray:7 4\"/><path d=\"M130 78 V94 L146 78 Z\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "kil|begge": "<rect x=\"250\" y=\"200\" width=\"260\" height=\"30\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><rect x=\"370\" y=\"80\" width=\"26\" height=\"120\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M370 200 V176 L346 200 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M396 200 V176 L420 200 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M370 186 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"370,186 361.4,171.6 354.7,179.1\" style=\"fill:var(--ink)\"/><path d=\"M130 70 V54 L146 70 Z\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/><path d=\"M130 70 V86 L146 70 Z\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "I|pil": "<rect x=\"250\" y=\"150\" width=\"128\" height=\"40\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><rect x=\"384\" y=\"150\" width=\"128\" height=\"40\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M376 150 H386 V190 H376 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M374 150 Q381 140 388 150 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M381 146 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"381,146 369.3,134.0 364.5,142.8\" style=\"fill:var(--ink)\"/><path d=\"M40 78 H226\" style=\"stroke:var(--ink);stroke-width:1.6;stroke-dasharray:7 4\"/><path d=\"M133 70 V54 M142 70 V54\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "I|andre": "<rect x=\"250\" y=\"150\" width=\"128\" height=\"40\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><rect x=\"384\" y=\"150\" width=\"128\" height=\"40\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M376 150 H386 V190 H376 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M374 150 Q381 140 388 150 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M381 146 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"381,146 369.3,134.0 364.5,142.8\" style=\"fill:var(--ink)\"/><path d=\"M40 78 H226\" style=\"stroke:var(--ink);stroke-width:1.6;stroke-dasharray:7 4\"/><path d=\"M133 78 V94 M142 78 V94\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "I|begge": "<rect x=\"250\" y=\"150\" width=\"128\" height=\"40\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><rect x=\"384\" y=\"150\" width=\"128\" height=\"40\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M376 150 H386 V190 H376 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M374 150 Q381 140 388 150 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M381 146 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"381,146 369.3,134.0 364.5,142.8\" style=\"fill:var(--ink)\"/><path d=\"M133 70 V54 M142 70 V54\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/><path d=\"M133 70 V86 M142 70 V86\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "V|pil": "<path d=\"M250 150 H366 L378 190 H250 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M512 150 H396 L384 190 H512 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M366 150 L378 190 H384 L396 150 Q381 138 366 150 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M381 142 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"381,142 369.0,130.3 364.5,139.2\" style=\"fill:var(--ink)\"/><path d=\"M40 78 H226\" style=\"stroke:var(--ink);stroke-width:1.6;stroke-dasharray:7 4\"/><path d=\"M130 54 L139 70 L148 54\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "V|andre": "<path d=\"M250 150 H366 L378 190 H250 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M512 150 H396 L384 190 H512 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M366 150 L378 190 H384 L396 150 Q381 138 366 150 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M381 142 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"381,142 369.0,130.3 364.5,139.2\" style=\"fill:var(--ink)\"/><path d=\"M40 78 H226\" style=\"stroke:var(--ink);stroke-width:1.6;stroke-dasharray:7 4\"/><path d=\"M130 94 L139 78 L148 94\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "V|begge": "<path d=\"M250 150 H366 L378 190 H250 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M512 150 H396 L384 190 H512 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M366 150 L378 190 H384 L396 150 Q381 138 366 150 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M381 142 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"381,142 369.0,130.3 364.5,139.2\" style=\"fill:var(--ink)\"/><path d=\"M130 54 L139 70 L148 54\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/><path d=\"M130 86 L139 70 L148 86\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "halvV|pil": "<path d=\"M250 150 H364 L380 190 H250 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M512 150 H384 V190 H512 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M364 150 L380 190 H384 V150 Q374 140 364 150 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M376 144 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"376,144 364.3,132.0 359.6,140.7\" style=\"fill:var(--ink)\"/><path d=\"M40 78 H226\" style=\"stroke:var(--ink);stroke-width:1.6;stroke-dasharray:7 4\"/><path d=\"M133 70 V54 M133 70 L146 54\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "halvV|andre": "<path d=\"M250 150 H364 L380 190 H250 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M512 150 H384 V190 H512 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M364 150 L380 190 H384 V150 Q374 140 364 150 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M376 144 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"376,144 364.3,132.0 359.6,140.7\" style=\"fill:var(--ink)\"/><path d=\"M40 78 H226\" style=\"stroke:var(--ink);stroke-width:1.6;stroke-dasharray:7 4\"/><path d=\"M133 78 V94 M133 78 L146 94\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "halvV|begge": "<path d=\"M250 150 H364 L380 190 H250 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M512 150 H384 V190 H512 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M364 150 L380 190 H384 V150 Q374 140 364 150 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M376 144 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"376,144 364.3,132.0 359.6,140.7\" style=\"fill:var(--ink)\"/><path d=\"M133 70 V54 M133 70 L146 54\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/><path d=\"M133 70 V86 M133 70 L146 86\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "X|pil": "<path d=\"M250 140 H368 L378 170 L368 200 H250 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M512 140 H394 L384 170 L394 200 H512 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M368 140 L378 170 H384 L394 140 Q381 130 368 140 Z M368 200 L378 170 H384 L394 200 Q381 210 368 200 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M381 134 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"381,134 368.5,122.8 364.4,131.9\" style=\"fill:var(--ink)\"/><path d=\"M130 54 L139 70 L148 54\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/><path d=\"M130 86 L139 70 L148 86\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "X|andre": "<path d=\"M250 140 H368 L378 170 L368 200 H250 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M512 140 H394 L384 170 L394 200 H512 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M368 140 L378 170 H384 L394 140 Q381 130 368 140 Z M368 200 L378 170 H384 L394 200 Q381 210 368 200 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M381 134 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"381,134 368.5,122.8 364.4,131.9\" style=\"fill:var(--ink)\"/><path d=\"M130 54 L139 70 L148 54\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/><path d=\"M130 86 L139 70 L148 86\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>", "X|begge": "<path d=\"M250 140 H368 L378 170 L368 200 H250 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M512 140 H394 L384 170 L394 200 H512 Z\" style=\"fill:var(--steel);stroke:var(--steel-dark);stroke-width:2\"/><path d=\"M368 140 L378 170 H384 L394 140 Q381 130 368 140 Z M368 200 L378 170 H384 L394 200 Q381 210 368 200 Z\" style=\"fill:var(--orange);stroke:var(--steel-dark);stroke-width:1\"><animate attributeName=\"opacity\" dur=\"2.5s\" repeatCount=\"indefinite\" values=\"0;1;1;0\" keyTimes=\"0;.3;.85;1\"/></path><path d=\"M381 134 L240 70 H40\" style=\"fill:none;stroke:var(--ink);stroke-width:2\"/><polygon points=\"381,134 368.5,122.8 364.4,131.9\" style=\"fill:var(--ink)\"/><path d=\"M130 54 L139 70 L148 54\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/><path d=\"M130 86 L139 70 L148 86\" style=\"fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round\"/>"};
+/* ---------- Del 1: delene ---------- */
+const DE = {
+  pil:"<b>Pila</b> peker på skjøten som skal sveises.",
+  ref:"<b>Referanselinja</b> (hel linje). Symbolet står på den når sveisen er på pilsiden.",
+  stiplet:"<b>Stiplet linje.</b> Symbol her betyr at sveisen er på andre siden.",
+  sym:"<b>Grunnsymbolet</b> viser typen sveis. Trekanten er kilsveis.",
+  mal:"<b>Mål:</b> a5 til venstre = halsmål 5 mm. 200 til høyre = lengde 200 mm.",
+  hale:"<b>Halen</b> viser sveisemetode. 135 = MAG.",
+};
+document.querySelectorAll("#deSvg .del").forEach(g => g.onclick = () => {
+  document.querySelectorAll("#deSvg .del").forEach(x => x.classList.toggle("on", x===g));
+  $("deCard").innerHTML = DE[g.dataset.del];
+});
+
+/* ---------- Del 2: grunnsymboler ---------- */
+const SY = {
+  kil:["Kilsveis","T-skjøt, hjørne og overlapp. Den vanligste sveisen.","Ingen fasing"],
+  I:["I-fuge","Tynne plater kant mot kant.","Ingen fasing, liten spalte"],
+  V:["V-fuge","Tykkere plater. Begge kantene fases.","Fas på begge plater"],
+  halvV:["Halv V-fuge","Bare den ene kanten fases.","Fas på én plate"],
+  X:["X-fuge","Tykke plater. Sveises fra begge sider.","Fas fra begge sider"],
+};
+function syVis(k){
+  [...$("syBtns").children].forEach(b => b.classList.toggle("on", b.dataset.k===k));
+  $("sySvg").innerHTML = VAR[k + "|pil"];
+  const s = SY[k];
+  $("syCard").innerHTML = `<h3 style="margin:.2rem 0">${s[0]}</h3><p class="short">${s[1]}</p><p class="short" style="margin-top:.4rem"><span class="pill" style="background:var(--orange-soft);color:var(--orange)">${s[2]}</span></p>`;
+}
+[...$("syBtns").children].forEach(b => b.onclick = () => syVis(b.dataset.k));
+syVis("kil");
+
+/* ---------- Del 3: side ---------- */
+function siVis(k){
+  document.querySelectorAll(".si-btn").forEach(b => b.classList.toggle("on", b.dataset.k===k));
+  $("siSvg").innerHTML = VAR["kil|" + k] + `<text x="330" y="250" font-size="13" style="fill:var(--muted)">pilsiden</text><text x="410" y="250" font-size="13" style="fill:var(--muted)">andre siden</text>`;
+  const t = {pil:"Symbol på hel linje: sveis på pilsiden.", andre:"Symbol på stiplet linje: sveis på andre siden.", begge:"Symbol på begge sider: sveis på begge sider."}[k];
+  setStatus("siTxt", t, "ok");
+}
+document.querySelectorAll(".si-btn").forEach(b => b.onclick = () => siVis(b.dataset.k));
+siVis("pil");
+
+/* ---------- Del 4: a-mål ---------- */
+function amTegn(){
+  const a = +$("amA").value, sk = 12, t = 8, x0 = 300, y0 = 200, z = a*Math.SQRT2;
+  const amax = Math.floor(0.7*t);
+  let s = `<rect x="${x0-220}" y="${y0}" width="440" height="${t*sk/2}" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>`
+    + `<rect x="${x0}" y="20" width="${t*sk/2}" height="${y0-20}" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>`
+    + `<path d="M${x0} ${y0} V${y0-z*sk} L${x0-z*sk} ${y0} Z" style="fill:var(--orange);opacity:.85;stroke:var(--steel-dark);stroke-width:1"/>`;
+  const mx = x0 - z*sk/2, my = y0 - z*sk/2;
+  s += `<path d="M${x0} ${y0} L${mx} ${my}" style="stroke:var(--blue);stroke-width:3"/><circle cx="${mx}" cy="${my}" r="3" style="fill:var(--blue)"/>`
+    + `<text x="${mx-12}" y="${my-6}" text-anchor="end" font-size="18" font-weight="700" style="fill:var(--blue)">a = ${a}</text>`
+    + `<text x="${x0+60}" y="${y0-90}" font-size="13" style="fill:var(--muted)">plate 8 mm</text>`;
+  s += `<g transform="translate(40 40)"><path d="M0 20 H180" style="stroke:var(--ink);stroke-width:2"/><path d="M90 20 V4 L106 20 Z" style="fill:none;stroke:var(--ink);stroke-width:2.2"/>`
+    + `<text x="84" y="17" text-anchor="end" font-size="16" font-weight="700" style="fill:var(--ink)">a${a}</text><text x="112" y="17" font-size="16" font-weight="700" style="fill:var(--ink)">200</text></g>`;
+  $("amSvg").innerHTML = s;
+  const ok = a <= amax && a >= 3;
+  setStatus("amTxt", a > amax ? `a${a} er mer enn nødvendig for 8 mm plate (ca. a${amax}). Mer varme og vridning.` : `a${a}: halsmål ${a} mm. Beinlengden z blir ca. ${fmtT(z,1)} mm.`, a > amax ? "warn" : "ok");
+}
+$("amA").oninput = amTegn; amTegn();
+
+/* ---------- Oppgaver ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToImg(svg){
+  const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
+  const img = new Image(); await new Promise(r => { img.onload = r; img.onerror = r; img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str); });
+  const c = document.createElement("canvas"); c.width = vb.width*2; c.height = vb.height*2; const x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+  const im = document.createElement("img"); im.src = c.toDataURL("image/png"); im.width = vb.width; im.height = vb.height; return im;
+}
+$("btnCopy").onclick = async () => {
+  const orig = $("oppgavetekst"), clone = orig.cloneNode(true);
+  const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>
+
