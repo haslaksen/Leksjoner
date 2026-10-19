@@ -493,7 +493,7 @@ table.t th{background:var(--steel-soft)}
 
       <div class="oppgave">
         <h3>Oppgave 1 – Symboler <small>Time 1 · 6 min</small></h3>
-        <p>Skriv navnet på symbolet og bokstavkoden. Velg blant: <b>start, stopp, nødstopp, kontaktorspole, hovedkontakter, motorvern (95–96), sikring, motor</b>.</p>
+        <p>Navn og kode. Velg blant: <b>start, stopp, nødstopp, kontaktorspole, hovedkontakter, motorvern (95–96), sikring, motor</b>.</p>
         <div class="minis" id="o1minis"></div>
         <table class="ot">
           <tr><th style="width:3rem">Nr.</th><th>Navn</th><th style="width:9rem">Kode (f.eks. S1)</th><th style="width:9rem">NO / NC / –</th></tr>
@@ -510,32 +510,31 @@ table.t th{background:var(--steel-soft)}
 
       <div class="oppgave">
         <h3>Oppgave 2 – Selvhold <small>Time 1 · 10 min</small></h3>
-        <p>Bruk skjemaet. Fyll ut tabellen hendelse for hendelse.</p>
+        <p>Fyll ut tabellen.</p>
         <div class="ofig" id="o2fig"></div>
         <table class="ot c">
           <tr><th>Hendelse</th><th style="width:7rem">Q1 spole<br>(på/av)</th><th style="width:7rem">Motor<br>(går/står)</th><th style="width:7rem">P1 drift<br>(lyser?)</th><th style="width:7rem">P2 feil<br>(lyser?)</th></tr>
           <tr><td>1. Trykk S1</td><td class="tom"><span class="fasit" hidden>på</span></td><td><span class="fasit" hidden>går</span></td><td><span class="fasit" hidden>lyser</span></td><td><span class="fasit" hidden>nei</span></td></tr>
           <tr><td>2. Slipp S1</td><td class="tom"><span class="fasit" hidden>på</span></td><td><span class="fasit" hidden>går</span></td><td><span class="fasit" hidden>lyser</span></td><td><span class="fasit" hidden>nei (selvhold)</span></td></tr>
           <tr><td>3. Trykk S0, slipp</td><td class="tom"><span class="fasit" hidden>av</span></td><td><span class="fasit" hidden>står</span></td><td><span class="fasit" hidden>nei</span></td><td><span class="fasit" hidden>nei</span></td></tr>
-          <tr><td>4. Trykk S1, slipp. Motoren blir overbelastet til F2 løser ut</td><td class="tom"><span class="fasit" hidden>av</span></td><td><span class="fasit" hidden>står</span></td><td><span class="fasit" hidden>nei</span></td><td><span class="fasit" hidden><b>lyser</b> (97–98 lukker)</span></td></tr>
-          <tr><td>5. Trykk S1 (F2 er ikke tilbakestilt)</td><td class="tom"><span class="fasit" hidden>av</span></td><td><span class="fasit" hidden>står</span></td><td><span class="fasit" hidden>nei</span></td><td><span class="fasit" hidden>lyser: 95–96 er åpen, spolen kan ikke få spenning</span></td></tr>
+          <tr><td>4. Start, så overlast: F2 løser ut</td><td class="tom"><span class="fasit" hidden>av</span></td><td><span class="fasit" hidden>står</span></td><td><span class="fasit" hidden>nei</span></td><td><span class="fasit" hidden><b>lyser</b> (97–98 lukker)</span></td></tr>
+          <tr><td>5. Trykk S1 igjen (F2 ikke tilbakestilt)</td><td class="tom"><span class="fasit" hidden>av</span></td><td><span class="fasit" hidden>står</span></td><td><span class="fasit" hidden>nei</span></td><td><span class="fasit" hidden>lyser: 95–96 er åpen, spolen kan ikke få spenning</span></td></tr>
         </table>
         <p>b) Hva er oppgaven til Q1 13–14?</p><div class="svar"><span class="fasit" hidden>Holder spolen inne etter at S1 slippes (selvhold).</span></div>
-        <p>c) Ledningen til Q1 13–14 løsner. Hva skjer når du trykker og slipper S1?</p><div class="svar"><span class="fasit" hidden>Motoren går bare så lenge S1 holdes inne («tipp-drift»).</span></div>
-        <p>d) Hvorfor er stoppknappen en brytekontakt (NC) og ikke en sluttekontakt (NO)?</p><div class="svar"><span class="fasit" hidden>Et kabelbrudd eller en dårlig kobling stopper maskinen. Med NO ville et brudd gjort at maskinen ikke kunne stoppes.</span></div>
+        <p>c) Hvorfor er stopp NC og ikke NO?</p><div class="svar"><span class="fasit" hidden>Et kabelbrudd eller en dårlig kobling stopper maskinen. Med NO ville et brudd gjort at maskinen ikke kunne stoppes.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 3 – Motorvern <small>Time 2 · 7 min</small></h3>
         <div class="ofig" style="max-width:420px" id="o3fig"></div>
-        <p>a) Nettet er TN 400 V. Hvilken kobling skal motoren ha, og hva stiller du F2 på?</p><div class="svar"><span class="fasit" hidden><b>Stjerne (Y)</b> – viklingene er laget for 230 V. F2 = <b>8,0 A</b>.</span></div>
-        <p>b) En kollega stiller F2 på 12 A «så den ikke løser ut så ofte». Hva kan skje?</p><div class="svar"><span class="fasit" hidden>F2 løser ikke ut ved moderat overlast (f.eks. 11 A). Viklingen blir for varm, isolasjonen ødelegges og motoren kan brenne.</span></div>
-        <p>c) Sett kryss: hvem beskytter mot hva?</p>
+        <p>a) TN 400 V: stjerne eller trekant? Hva stiller du F2 på?</p><div class="svar"><span class="fasit" hidden><b>Stjerne (Y)</b> – viklingene er laget for 230 V. F2 = <b>8,0 A</b>.</span></div>
+        <p>b) F2 står på 12 A. Hva kan skje?</p><div class="svar"><span class="fasit" hidden>F2 løser ikke ut ved moderat overlast (f.eks. 11 A). Viklingen blir for varm, isolasjonen ødelegges og motoren kan brenne.</span></div>
+        <p>c) Hvem beskytter? Sett kryss.</p>
         <table class="ot c" style="width:auto; min-width:60%">
           <tr><th>Feil</th><th style="width:7rem">F1 sikring</th><th style="width:7rem">F2 motorvern</th></tr>
           <tr><td>Kortslutning i motorkabelen</td><td class="tom"><span class="fasit" hidden><b>✗</b></span></td><td></td></tr>
-          <tr><td>Transportbåndet kjører seg fast, strømmen blir 11 A</td><td class="tom"></td><td><span class="fasit" hidden><b>✗</b></span></td></tr>
-          <tr><td>En fase faller ut, strømmen i de to andre øker</td><td class="tom"></td><td><span class="fasit" hidden><b>✗</b> (mange motorvern har egen fasebruddsvakt)</span></td></tr>
+          <tr><td>Båndet kjører seg fast (11 A)</td><td class="tom"></td><td><span class="fasit" hidden><b>✗</b></span></td></tr>
+          <tr><td>En fase faller ut</td><td class="tom"></td><td><span class="fasit" hidden><b>✗</b> (mange motorvern har egen fasebruddsvakt)</span></td></tr>
         </table>
       </div>
 
@@ -551,13 +550,13 @@ table.t th{background:var(--steel-soft)}
           <tr><td>ute</td><td>inne</td><td class="tom"><span class="fasit" hidden>Går bak</span></td></tr>
           <tr><td>inne</td><td>inne</td><td class="tom"><span class="fasit" hidden><b>Kortslutning mellom L1 og L3</b>, F1 løser ut</span></td></tr>
         </table>
-        <p>c) Hvilke kontakter sørger for forriglingen i skjemaet?</p><div class="svar"><span class="fasit" hidden><b>Q2 21–22</b> i spolekretsen til Q1 og <b>Q1 21–22</b> i spolekretsen til Q2.</span></div>
-        <p>d) Motoren går fram. Operatøren trykker BAK. Hva skjer?</p><div class="svar"><span class="fasit" hidden>Ingenting: Q1 21–22 er åpen, så Q2 kan ikke trekke. Motoren går fram til STOPP trykkes.</span></div>
+        <p>c) Hvilke kontakter gir forrigling?</p><div class="svar"><span class="fasit" hidden><b>Q2 21–22</b> i spolekretsen til Q1 og <b>Q1 21–22</b> i spolekretsen til Q2.</span></div>
+        <p>d) Motoren går fram. Du trykker BAK. Hva skjer?</p><div class="svar"><span class="fasit" hidden>Ingenting: Q1 21–22 er åpen, så Q2 kan ikke trekke. Motoren går fram til STOPP trykkes.</span></div>
       </div>
 
       <div class="oppgave">
         <h3>Oppgave 5 – Feilsøking <small>Time 2 · 6 min</small></h3>
-        <p>Q1 trekker ikke. S1 holdes inne. Svart probe på 0 V. Hvor er feilen?</p>
+        <p>Q1 trekker ikke. S1 holdes inne. Hvor er feilen?</p>
         <div class="ofig" id="o6fig"></div>
         <table class="ot c">
           <tr><th>Tilfelle</th><th>TP1</th><th>TP2</th><th>TP3</th><th>TP4</th><th>TP5</th><th>TP6</th><th>TP7</th><th style="width:30%">Feilen er …</th></tr>
@@ -566,7 +565,7 @@ table.t th{background:var(--steel-soft)}
           <tr><td>C</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>24</td><td>0</td><td class="tom"><span class="fasit" hidden><b>Spolen Q1</b> er defekt: 24 V over den, men den trekker ikke</span></td></tr>
           <tr><td>D</td><td>24</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td class="tom"><span class="fasit" hidden><b>F3</b> er gått</span></td></tr>
         </table>
-        <p>b) I tilfelle B lyser P2. Hva gjør du før du tilbakestiller?</p><div class="svar"><span class="fasit" hidden>Finn årsaken til overlasten (fastkjørt last, feil innstilling, fasebrudd) og la motoren kjøle seg ned.</span></div>
+        <p>b) Tilfelle B: Hva gjør du før du tilbakestiller F2?</p><div class="svar"><span class="fasit" hidden>Finn årsaken til overlasten (fastkjørt last, feil innstilling, fasebrudd) og la motoren kjøle seg ned.</span></div>
       </div>
 
       <div class="oppgave ekstra">
