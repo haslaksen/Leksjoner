@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DAP og CNC Vg1 · Leksjon 1: Koordinatsystemet</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+/* koordinater */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.5rem/1.3 var(--mono)}
+.punkt{opacity:.35;transition:opacity .3s}
+.punkt.paa{opacity:1}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font:700 1.1rem/1 var(--mono);padding:12px 18px}
+.svar-knapper button.ok{background:var(--r-soft);border-color:var(--r);color:var(--r)}
+.svar-knapper button.feil{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.oppgfig{display:block;max-width:460px;width:100%;height:auto;margin:8px 0}
+.xk{color:var(--bad)} .yk{color:var(--r)} .zk{color:var(--u)}
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse{animation:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">DAP og CNC Vg1 · <span>Leksjon 1</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#punkt">Et punkt</a><a href="#fres">Fres</a><a href="#dreiebenk">Dreiebenk</a><a href="#regel">Huskeregel</a><a href="#finn">Finn punktet</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Konstruksjon og styringsteknikk Vg1 · DAP og CNC · Leksjon 1</div>
+    <h1 style="margin-top:10px">Koordinat&shy;systemet</h1>
+    <p class="lead" style="margin-top:12px">Maskinen må vite <b>hvor</b> verktøyet skal. Det sier vi med tall.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Et punkt = <b>X</b> og <b>Y</b></span></li>
+      <li><span class="n i">2</span><span>Fresen: <b>X, Y og Z</b></span></li>
+      <li><span class="n r">3</span><span>Dreiebenken: <b>X og Z</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span><b>Nullpunktet</b>: her starter vi å telle</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 260" role="img" aria-label="Animasjon: et punkt flytter seg på et rutenett, og X og Y vises">
+      <g id="heroGrid"></g>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (TIP01-03, Konstruksjons- og styringsteknikk)</h3>
+      <p><b>Mål 8 (delvis):</b> «anvende grunnleggende programmering av styringssystemer innenfor robotisering, automatisering og CNC». Koordinatsystemet er grunnlaget for CNC-programmering (leksjon 2) og DAP (leksjon 3 og 4). Dette er en innføring, ikke et kurs.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: «Hvordan forteller du en venn hvor du står på en fotballbane?»</dd>
+        <dt>10–20</dt><dd>Et punkt = X og Y. La elevene trykke på rutenettet. Del A.</dd>
+        <dt>20–35</dt><dd>Fresen og dreiebenken. Vis gjerne aksene på maskinene i verkstedet.</dd>
+        <dt>35–45</dt><dd>Huskeregel og «Finn punktet» i fellesskap.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–85</dt><dd>Oppgavene B–E.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="punkt">
+  <div class="tag">Del 1 · Et punkt har to tall</div>
+  <h2>Først <span class="xk">X</span> bortover. Så <span class="yk">Y</span> opp.</h2>
+  <div class="benk">
+    <svg id="gridFig" viewBox="0 0 430 260" role="img" aria-label="Rutenett med nullpunkt nede til venstre. Trykk for å sette et punkt." style="cursor:crosshair;touch-action:manipulation"></svg>
+    <div style="display:grid;gap:14px">
+      <p style="font-size:1.15rem"><b>Trykk</b> et sted på rutenettet.</p>
+      <div class="teller" id="gridVerdi">X? Y?</div>
+      <p style="color:var(--muted)">Én rute = 10 mm. Vi teller fra <b>nullpunktet</b> ⊕.</p>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Som et kart: først bortover, så opp. Negative tall (minus) betyr motsatt vei av pila. Det trenger vi for Z.</details>
+</section>
+
+<section id="fres">
+  <div class="tag">Del 2 · Fresen</div>
+  <h2>Fresen har tre akser: <span class="xk">X</span>, <span class="yk">Y</span> og <span class="zk">Z</span></h2>
+  <div class="benk">
+    <svg id="fresFig" viewBox="0 20 420 280" role="img" aria-label="Emne på fresebordet med X-, Y- og Z-akse og verktøyet over"></svg>
+    <div style="display:grid;gap:14px">
+      <div class="valgknapper" id="fresKnapper" role="group" aria-label="Flytt verktøyet"></div>
+      <div class="teller" id="fresVerdi"></div>
+      <p id="fresTekst" style="font-size:1.1rem"></p>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>På mange freser er det bordet som beveger seg i X og Y, mens spindelen beveger seg i Z. I programmet tenker vi alltid at verktøyet beveger seg. Nullpunktet legges ofte på et hjørne av emnet, på toppen. Da betyr Z minus å gå ned i materialet.</details>
+</section>
+
+<section id="dreiebenk">
+  <div class="tag">Del 3 · Dreiebenken</div>
+  <h2>Dreiebenken har to akser: <span class="xk">X</span> og <span class="zk">Z</span></h2>
+  <div class="benk">
+    <svg id="akseFig" viewBox="40 36 420 248" role="img" aria-label="Aksel i chucken med Z-akse langs senter, X-akse opp og nullpunkt midt på endeflaten"></svg>
+    <div style="display:grid;gap:14px">
+      <ul class="goals" style="margin:0;font-size:1.05rem">
+        <li><span class="n zk">Z</span><span>langs <b>senterlinja</b>. Minus inn mot chucken.</span></li>
+        <li><span class="n xk">X</span><span>er <b>diameteren</b>.</span></li>
+        <li><span class="n r">⊕</span><span><b>Nullpunkt</b>: midt på endeflaten.</span></li>
+      </ul>
+      <div class="valgknapper" id="punktKnapper" role="group" aria-label="Velg punkt"></div>
+      <div class="teller" id="punktVerdi">Velg et punkt</div>
+    </div>
+  </div>
+  <a class="simlink no-print" data-sim="cnc-dreiebenk"><span class="ico">⚙️</span><span><b>Prøv selv: CNC-dreiebenk</b><small>Se X og Z på skjermen mens maskinen kjører.</small></span><span class="pil">→</span></a>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Hvorfor diameter? Fordi vi måler diameter med skyvelære og mikrometer. Står det X30, blir akselen Ø30. Y trengs ikke på en vanlig dreiebenk.</details>
+</section>
+
+<section id="regel">
+  <div class="tag">Del 4 · Huskeregel</div>
+  <h2>Z er alltid spindelen</h2>
+  <div class="to">
+    <div class="q U">
+      <svg viewBox="0 0 200 120" aria-hidden="true"><rect x="40" y="80" width="120" height="26" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2"/><rect x="88" y="10" width="24" height="44" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/><rect x="95" y="54" width="10" height="22" fill="var(--wire)"/><path d="M150 72 V22" stroke="var(--u)" stroke-width="4"/><path d="M150 18 l-7 12 h14 z" fill="var(--u)"/><text x="160" y="34" font-size="18" font-weight="800" fill="var(--u)">Z</text></svg>
+      <h3>Fres</h3>
+      <p>Spindelen står <b>loddrett</b>. Z går <b>opp og ned</b>.</p>
+    </div>
+    <div class="q U">
+      <svg viewBox="0 0 200 120" aria-hidden="true"><rect x="10" y="30" width="30" height="60" rx="4" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/><rect x="40" y="45" width="90" height="30" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2"/><path d="M130 60 H180" stroke="var(--u)" stroke-width="4"/><path d="M184 60 l-12 -7 v14 z" fill="var(--u)"/><text x="168" y="90" font-size="18" font-weight="800" fill="var(--u)">Z</text></svg>
+      <h3>Dreiebenk</h3>
+      <p>Spindelen ligger <b>vannrett</b>. Z går <b>langs</b> arbeidsstykket.</p>
+    </div>
+  </div>
+  <p class="regel"><b>Z minus</b> = inn i materialet. Ned i fresen, inn mot chucken i dreiebenken.</p>
+</section>
+
+<section id="finn">
+  <div class="tag">Del 5 · Finn punktet</div>
+  <h2>Hvor er verktøyet?</h2>
+  <div class="benk">
+    <svg id="finnFig" viewBox="0 0 430 260" role="img" aria-label="Rutenett med et punkt. Velg riktige koordinater."></svg>
+    <div style="display:grid;gap:14px">
+      <p style="font-size:1.15rem">Velg riktig svar.</p>
+      <div class="svar-knapper" id="finnSvar"></div>
+      <p id="finnTekst" style="font-size:1.1rem;min-height:1.6em"></p>
+      <button type="button" id="finnNeste">Nytt punkt ▶</button>
+    </div>
+  </div>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 1: Koordinatsystemet</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p>Fresen har tre akser: X, Y og <span class="luke"><span class="fasit" hidden>Z</span></span>.</p>
+      <p>Dreiebenken har to akser: <span class="luke"><span class="fasit" hidden>X</span></span> og Z.</p>
+      <p>Vi begynner å telle fra <span class="luke"><span class="fasit" hidden>nullpunktet</span></span>.</p>
+      <p>På dreiebenken er X lik <span class="luke"><span class="fasit" hidden>diameteren</span></span>.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Les av X og Y</h3>
+      <p>Én rute = 10 mm.</p>
+      <svg class="oppgfig" viewBox="0 0 430 260" role="img" aria-label="Rutenett med punktene A, B og C">
+        <g id="oppgB"></g>
+      </svg>
+      <div class="tablewrap"><table>
+        <tr><th>Punkt</th><th>X</th><th>Y</th></tr>
+        <tr><td>A</td><td class="blank"><span class="fasit" hidden>20</span></td><td class="blank"><span class="fasit" hidden>10</span></td></tr>
+        <tr><td>B</td><td class="blank"><span class="fasit" hidden>50</span></td><td class="blank"><span class="fasit" hidden>40</span></td></tr>
+        <tr><td>C</td><td class="blank"><span class="fasit" hidden>90</span></td><td class="blank"><span class="fasit" hidden>20</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Tegn inn punktene</h3>
+      <p>Sett et kryss og skriv bokstaven: <b>D</b> = X30 Y50, <b>E</b> = X70 Y10, <b>F</b> = X100 Y30.</p>
+      <svg class="oppgfig" viewBox="0 0 430 260" role="img" aria-label="Tomt rutenett">
+        <g id="oppgC"></g>
+        <g class="fasit-svg" fill="var(--r)" font-weight="800" font-size="16"><circle cx="140" cy="70" r="6"/><text x="148" y="64">D</text><circle cx="260" cy="190" r="6"/><text x="268" y="184">E</text><circle cx="350" cy="130" r="6"/><text x="358" y="124">F</text></g>
+      </svg>
+    </div>
+
+    <div>
+      <h3>Del D · Fres eller dreiebenk?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Fres</th><th>Dreiebenk</th></tr>
+        <tr><td>Har tre akser: X, Y og Z</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>X er diameteren</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Z går opp og ned</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Z minus = inn mot chucken</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del E · Riktig eller galt</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Z går alltid langs spindelen.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Z−5 i fresen betyr 5 mm ned i emnet.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Vi skriver Y først, så X.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>X30 på dreiebenken gir en aksel med Ø30.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hvorfor trenger CNC-maskinen et nullpunkt?<div class="svar"><span class="fasit" hidden>Den må vite hvor den skal begynne å telle fra, ellers vet den ikke hvor verktøyet er</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const ROLIG = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  const NULL = (x,y) => '<g><circle cx="'+x+'" cy="'+y+'" r="9" fill="var(--surface)" stroke="var(--orange)" stroke-width="2.5"/><path d="M'+x+' '+(y-9)+' A9 9 0 0 1 '+(x+9)+' '+y+' H'+x+' Z M'+x+' '+(y+9)+' A9 9 0 0 1 '+(x-9)+' '+y+' H'+x+' Z" fill="var(--orange)"/></g>';
+
+  // ---------- rutenett: 3 px per mm, nullpunkt (50, 220), 0–110 × 0–60 mm ----------
+  const GX = 50, GY = 220, S = 3;
+  const gx = x => GX + x*S, gy = y => GY - y*S;
+  function rutenett(tall){
+    let h = '';
+    for (let x=0; x<=110; x+=10) h += '<path d="M'+gx(x)+' '+gy(0)+' V'+gy(60)+'" stroke="var(--line)" stroke-width="1.5"/>';
+    for (let y=0; y<=60; y+=10) h += '<path d="M'+gx(0)+' '+gy(y)+' H'+gx(110)+'" stroke="var(--line)" stroke-width="1.5"/>';
+    h += '<path d="M'+gx(0)+' '+gy(0)+' H'+(gx(110)+22)+'" stroke="var(--bad)" stroke-width="3"/><path d="M'+(gx(110)+26)+' '+gy(0)+' l-12 -7 v14 z" fill="var(--bad)"/><text x="'+(gx(110)+14)+'" y="'+(gy(0)+24)+'" font-size="18" font-weight="800" fill="var(--bad)">X</text>';
+    h += '<path d="M'+gx(0)+' '+gy(0)+' V'+(gy(60)-22)+'" stroke="var(--r)" stroke-width="3"/><path d="M'+gx(0)+' '+(gy(60)-26)+' l-7 12 h14 z" fill="var(--r)"/><text x="'+(gx(0)+10)+'" y="'+(gy(60)-14)+'" font-size="18" font-weight="800" fill="var(--r)">Y</text>';
+    if (tall) { for (let x=20; x<=100; x+=20) h += '<text x="'+gx(x)+'" y="'+(gy(0)+18)+'" text-anchor="middle" font-size="12" fill="var(--muted)">'+x+'</text>';
+      for (let y=20; y<=60; y+=20) h += '<text x="'+(gx(0)-8)+'" y="'+(gy(y)+4)+'" text-anchor="end" font-size="12" fill="var(--muted)">'+y+'</text>'; }
+    return h + NULL(gx(0), gy(0));
+  }
+  const prikk = (x,y,navn,farge) => '<path d="M'+gx(0)+' '+gy(y)+' H'+gx(x)+' V'+gy(0)+'" fill="none" stroke="'+(farge||'var(--orange)')+'" stroke-width="2" stroke-dasharray="5 4"/><circle cx="'+gx(x)+'" cy="'+gy(y)+'" r="7" fill="'+(farge||'var(--orange)')+'"/>'+(navn?'<text x="'+(gx(x)+10)+'" y="'+(gy(y)-8)+'" font-size="16" font-weight="800" fill="'+(farge||'var(--orange)')+'">'+navn+'</text>':'');
+
+  // hero: punktet hopper rundt
+  const heroG = $('heroGrid'), HP = [[30,20],[80,40],[100,10],[50,50]];
+  const heroTegn = i => { const [x,y] = HP[i]; heroG.innerHTML = rutenett(false) + prikk(x,y) + '<text x="'+(gx(x)+12)+'" y="'+(gy(y)-12)+'" font-size="17" font-weight="800" font-family="ui-monospace,Consolas,monospace" fill="var(--ink)">X'+x+' Y'+y+'</text>'; fixVars(heroG); };
+  heroTegn(0); if (!ROLIG) { let i = 0; setInterval(() => { i = (i+1)%HP.length; heroTegn(i); }, 2200); }
+
+  // del 1: trykk på rutenettet
+  const gf = $('gridFig');
+  const gTegn = (x,y) => { gf.innerHTML = rutenett(true) + (x==null ? '' : prikk(x,y)); fixVars(gf); };
+  gTegn();
+  gf.addEventListener('click', e => {
+    const p = gf.createSVGPoint(); p.x = e.clientX; p.y = e.clientY;
+    const q = p.matrixTransform(gf.getScreenCTM().inverse());
+    const x = Math.max(0, Math.min(110, Math.round((q.x-GX)/S/10)*10)), y = Math.max(0, Math.min(60, Math.round((GY-q.y)/S/10)*10));
+    gTegn(x,y); $('gridVerdi').innerHTML = '<span class="xk">X'+x+'</span>  <span class="yk">Y'+y+'</span>';
+  });
+
+  // ---------- fres: isometrisk, emne 100 × 60 × 30 mm, nullpunkt øverst foran til venstre ----------
+  const FO = [120, 190], FS = 1.7;
+  const P = (x,y,z) => [FO[0] + (x*0.866 - y*0.866*0.6)*FS, FO[1] + (-x*0.5*0.35 - y*0.5*0.9 - z)*FS];
+  const pt = (x,y,z) => P(x,y,z).map(v => v.toFixed(1)).join(',');
+  const poly = (pts, fill) => '<polygon points="'+pts.map(p => pt(...p)).join(' ')+'" fill="'+fill+'" stroke="var(--wire)" stroke-width="2" stroke-linejoin="round"/>';
+  function pil(fra, til, farge, navn){
+    const [a,b] = [P(...fra), P(...til)], v = Math.atan2(b[1]-a[1], b[0]-a[0])*180/Math.PI;
+    return '<path d="M'+a[0]+' '+a[1]+' L'+b[0]+' '+b[1]+'" stroke="'+farge+'" stroke-width="3.5"/><path d="M0 0 l-12 -7 v14 z" fill="'+farge+'" transform="translate('+b[0]+' '+b[1]+') rotate('+v+')"/><text x="'+(b[0]+6)+'" y="'+(b[1]-6)+'" font-size="18" font-weight="800" fill="'+farge+'">'+navn+'</text>';
+  }
+  const fresG = $('fresFig'); let fresPos = [0,0,20];
+  function fresTegn(){
+    const [x,y,z] = fresPos;
+    let h = poly([[-20,-15,-30],[120,-15,-30],[120,80,-30],[-20,80,-30]],'var(--line)');
+    h += poly([[0,0,0],[100,0,0],[100,60,0],[0,60,0]],'var(--i-soft)') + poly([[0,0,0],[100,0,0],[100,0,-30],[0,0,-30]],'var(--surface)') + poly([[100,0,0],[100,60,0],[100,60,-30],[100,0,-30]],'var(--r-soft)');
+    if (z < 0) { const [a,b] = P(x,y,0); h += '<ellipse cx="'+a+'" cy="'+b+'" rx="9" ry="4" fill="var(--wire)" opacity=".5"/>'; }
+    h += pil([0,0,0],[125,0,0],'var(--bad)','X') + pil([0,0,0],[0,85,0],'var(--r)','Y') + pil([0,0,0],[0,0,62],'var(--u)','Z');
+    const [tx,ty] = P(x,y,z), top = P(x,y,z+45)[1];
+    h += '<rect x="'+(tx-5)+'" y="'+top+'" width="10" height="'+(ty-top)+'" fill="var(--wire)"/><rect x="'+(tx-18)+'" y="'+(top-40)+'" width="36" height="40" rx="4" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/>';
+    h += '<circle cx="'+tx+'" cy="'+ty+'" r="4" fill="var(--orange)"/>';
+    const [nx,ny] = P(0,0,0); h += NULL(nx, ny);
+    fresG.innerHTML = h; fixVars(fresG);
+    $('fresVerdi').innerHTML = '<span class="xk">X'+Math.round(x)+'</span> <span class="yk">Y'+Math.round(y)+'</span> <span class="zk">Z'+Math.round(z)+'</span>';
+  }
+  const FRES = [
+    { k:'Nullpunkt', p:[0,0,20], t:'Over nullpunktet. Z20 = 20 mm over emnet.' },
+    { k:'X+', p:[100,0,20], t:'X100: 100 mm til høyre.' },
+    { k:'Y+', p:[100,60,20], t:'Y60: 60 mm bakover.' },
+    { k:'Z−', p:[100,60,-5], t:'Z−5: 5 mm ned i emnet. Minus = ned.' },
+    { k:'Hjem', p:[0,0,20], t:'Tilbake over nullpunktet.' }
+  ];
+  let fresAnim = null;
+  function fresGaa(i){
+    [...$('fresKnapper').children].forEach((b,k) => b.setAttribute('aria-pressed', k===i));
+    $('fresTekst').textContent = FRES[i].t;
+    const fra = fresPos.slice(), til = FRES[i].p, t0 = performance.now();
+    cancelAnimationFrame(fresAnim);
+    const steg = t => { const f = ROLIG ? 1 : Math.min(1,(t-t0)/900); fresPos = fra.map((v,k) => v + (til[k]-v)*f); fresTegn(); if (f<1) fresAnim = requestAnimationFrame(steg); };
+    fresAnim = requestAnimationFrame(steg);
+  }
+  FRES.forEach((f,i) => { const b=document.createElement('button'); b.type='button'; b.textContent=(i+1)+' '+f.k; b.setAttribute('aria-pressed','false'); b.onclick=()=>fresGaa(i); $('fresKnapper').appendChild(b); });
+  fresTegn(); $('fresTekst').textContent = 'Trykk på knappene, én om gangen.';
+
+  // ---------- dreiebenk: 4 px per mm, Z0 (endeflaten) x=390 ----------
+  const DEL = 'M110 70 H190 V90 H310 V110 H390 V190 H310 V210 H190 V230 H110 Z';
+  const PKT = [ {n:'A', x:390, y:110, X:20, Z:0}, {n:'B', x:310, y:90, X:30, Z:-20}, {n:'C', x:190, y:70, X:40, Z:-50} ];
+  const akse = $('akseFig');
+  akse.innerHTML = '<rect x="60" y="50" width="50" height="45" rx="4" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/>'+
+    '<rect x="60" y="205" width="50" height="45" rx="4" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/>'+
+    '<text x="85" y="275" text-anchor="middle" font-size="13" fill="var(--muted)">Chuck</text>'+
+    '<path d="'+DEL+'" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2.5" stroke-linejoin="round"/>'+
+    '<path d="M50 150 H440" stroke="var(--wire)" stroke-width="1.5" stroke-dasharray="14 4 3 4"/>'+
+    '<g stroke="var(--u)" stroke-width="3.5" fill="var(--u)"><path d="M390 150 H452"/><path d="M452 150 l-12 -7 v14 z"/></g><text x="440" y="176" font-size="18" font-weight="800" fill="var(--u)">Z+</text>'+
+    '<path d="M390 150 H130" stroke="var(--u)" stroke-width="2" stroke-dasharray="4 5"/><text x="128" y="172" font-size="15" font-weight="700" fill="var(--u)">Z−</text>'+
+    '<g stroke="var(--bad)" stroke-width="3.5" fill="var(--bad)"><path d="M390 150 V46"/><path d="M390 46 l-7 12 h14 z"/></g><text x="400" y="60" font-size="18" font-weight="800" fill="var(--bad)">X</text>'+
+    NULL(390,150)+
+    '<g font-size="13" fill="var(--muted)"><text x="335" y="104">Ø20</text><text x="235" y="84">Ø30</text><text x="128" y="64">Ø40</text></g>'+
+    PKT.map(p => '<g class="punkt"><circle cx="'+p.x+'" cy="'+p.y+'" r="7" fill="var(--orange)"/><text x="'+(p.x+8)+'" y="'+(p.y-10)+'" font-size="17" font-weight="800" fill="var(--orange)">'+p.n+'</text></g>').join('');
+  fixVars(akse);
+  PKT.forEach((p,i) => { const b=document.createElement('button'); b.type='button'; b.textContent='Punkt '+p.n; b.setAttribute('aria-pressed','false'); b.onclick=()=>{
+    [...$('punktKnapper').children].forEach((c,k) => c.setAttribute('aria-pressed', k===i));
+    akse.querySelectorAll('.punkt').forEach((g,k) => g.classList.toggle('paa', k===i));
+    $('punktVerdi').innerHTML = p.n+': <span class="xk">X'+p.X+'</span> <span class="zk">Z'+p.Z+'</span>';
+  }; $('punktKnapper').appendChild(b); });
+
+  // ---------- finn punktet ----------
+  const FINN = [[40,30],[90,10],[20,50],[70,40],[100,20],[30,10]];
+  let fi = -1;
+  function finnNy(){
+    fi = (fi+1) % FINN.length; const [x,y] = FINN[fi];
+    const fig = $('finnFig'); fig.innerHTML = rutenett(true) + '<circle cx="'+gx(x)+'" cy="'+gy(y)+'" r="8" fill="var(--orange)"/>'; fixVars(fig);
+    const valg = [[x,y],[y,x],[x+10,y]].filter((v,k,a) => k===0 || (v[0]!==x || v[1]!==y)).filter(v => v[0]<=110);
+    while (valg.length < 3) valg.push([x, y+10>60 ? y-10 : y+10]);
+    valg.sort((a,b) => (a[0]*7+a[1]*3+fi)%5 - (b[0]*7+b[1]*3+fi)%5);
+    $('finnTekst').textContent = '';
+    $('finnSvar').innerHTML = '';
+    valg.forEach(v => { const b=document.createElement('button'); b.type='button'; b.textContent='X'+v[0]+' Y'+v[1];
+      b.onclick = () => { const ok = v[0]===x && v[1]===y; b.classList.add(ok?'ok':'feil');
+        $('finnTekst').textContent = ok ? 'Riktig! Først X bortover, så Y opp.' : (v[0]===y && v[1]===x ? 'Du har byttet om X og Y. Først X bortover.' : 'Ikke helt. Tell rutene en gang til.');
+        if (ok) [...$('finnSvar').children].forEach(c => c.disabled = true); };
+      $('finnSvar').appendChild(b); });
+  }
+  $('finnNeste').onclick = finnNy; finnNy();
+
+  // oppgaver: rutenett med punkter (B) og tomt rutenett (C)
+  $('oppgB').innerHTML = rutenett(true) + [[20,10,'A'],[50,40,'B'],[90,20,'C']].map(([x,y,n]) => '<circle cx="'+gx(x)+'" cy="'+gy(y)+'" r="6" fill="var(--orange)"/><text x="'+(gx(x)+9)+'" y="'+(gy(y)-8)+'" font-size="16" font-weight="800" fill="var(--orange)">'+n+'</text>').join('');
+  $('oppgC').innerHTML = rutenett(true);
+
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
