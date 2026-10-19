@@ -255,12 +255,11 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
       <dl class="plan2">
-        <dt>0–10</dt><dd>Start: vis en dreid aksel. «Hvordan vet maskinen hvor den skal kjøre?»</dd>
-        <dt>10–20</dt><dd>Akser og nullpunkt. Del A og C.</dd>
-        <dt>20–35</dt><dd>«I Fusion, steg for steg» på storskjerm. Elevene følger med i Fusion. Del B, D og E.</dd>
-        <dt>35–45</dt><dd>G-kode og CNC-simulatoren. Del F.</dd>
-        <dt>45–55</dt><dd>Pause</dd>
-        <dt>55–88</dt><dd>Del G i Fusion: elevene lager akselen og dreieprogrammet selv, steg for steg.</dd>
+        <dt>0–5</dt><dd>Kort repetisjon fra leksjon 1 og 2: X er diameteren, Z0 på endeflaten, G0 og G1. Del A og C.</dd>
+        <dt>5–30</dt><dd>«I Fusion, steg for steg» på storskjerm. Elevene gjør det samme i Fusion. Del B og D.</dd>
+        <dt>30–40</dt><dd>Simulate og Post Process. Se G-koden Fusion lager og kjenn igjen G0 og G1. Del E.</dd>
+        <dt>40–50</dt><dd>Pause</dd>
+        <dt>50–88</dt><dd>Del F i Fusion: elevene lager akselen og dreieprogrammet selv, steg for steg. Raske elever tar Ekstra-oppgaven.</dd>
         <dt>88–90</dt><dd>Exit-lapp.</dd>
       </dl>
     </div>
@@ -434,18 +433,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     </div>
 
     <div>
-      <h3>Del E · Hvor i Fusion stiller du det inn?</h3>
-      <div class="tablewrap"><table>
-        <tr><th>Dette vil jeg stille inn</th><th>Fane og felt</th></tr>
-        <tr><td>Emnet er Ø40 × 70 mm</td><td class="blank"><span class="fasit" hidden>Setup, fanen Stock (Diameter og Length)</span></td></tr>
-        <tr><td>Nullpunktet midt på endeflaten</td><td class="blank"><span class="fasit" hidden>Setup, fanen Setup (Origin: Model front)</span></td></tr>
-        <tr><td>Skjærehastighet 180 m/min</td><td class="blank"><span class="fasit" hidden>Fanen Tool (Surface speed)</span></td></tr>
-        <tr><td>La 0,3 mm være igjen til finish</td><td class="blank"><span class="fasit" hidden>Fanen Passes (Radial stock to leave)</span></td></tr>
-      </table></div>
-    </div>
-
-    <div>
-      <h3>Del F · Riktig eller galt</h3>
+      <h3>Del E · Riktig eller galt</h3>
       <div class="tablewrap"><table>
         <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
         <tr><td>Z-verdiene på delen blir negative når Z0 er på endeflaten.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
@@ -456,7 +444,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     </div>
 
     <div>
-      <h3>Del G · Lag dreieprogrammet i Fusion</h3>
+      <h3>Del F · Lag dreieprogrammet i Fusion</h3>
       <p>Lag akselen: Ø20 × 20, Ø30 × 30 og Ø40 × 5. Emne Ø40 × 70. Kryss av.</p>
       <div class="tablewrap"><table>
         <tr><th>Jeg har …</th><th>✓</th></tr>
@@ -468,6 +456,17 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
       </table></div>
       <p style="margin-top:8px">Hvor lang er den ferdige delen?</p>
       <div class="svar"><span class="fasit" hidden>55 mm (20 + 30 + 5)</span></div>
+    </div>
+
+    <div style="border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem">
+      <h3>Ekstra · Hvor i Fusion stiller du det inn?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Dette vil jeg stille inn</th><th>Fane og felt</th></tr>
+        <tr><td>Emnet er Ø40 × 70 mm</td><td class="blank"><span class="fasit" hidden>Setup, fanen Stock (Diameter og Length)</span></td></tr>
+        <tr><td>Nullpunktet midt på endeflaten</td><td class="blank"><span class="fasit" hidden>Setup, fanen Setup (Origin: Model front)</span></td></tr>
+        <tr><td>Skjærehastighet 180 m/min</td><td class="blank"><span class="fasit" hidden>Fanen Tool (Surface speed)</span></td></tr>
+        <tr><td>La 0,3 mm være igjen til finish</td><td class="blank"><span class="fasit" hidden>Fanen Passes (Radial stock to leave)</span></td></tr>
+      </table></div>
     </div>
 
     <div>

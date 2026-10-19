@@ -260,7 +260,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     <div class="q"><b class="k">G0</b><svg viewBox="0 0 200 90" aria-hidden="true"><path d="M20 70 L180 20" stroke="var(--u)" stroke-width="4" stroke-dasharray="10 8" class="flow"/><circle r="7" fill="var(--orange)"><animateMotion dur="1.2s" repeatCount="indefinite" path="M20 70 L180 20"/></circle></svg><p><b>Ilgang</b>: raskt, i lufta. Skjærer ikke.</p></div>
     <div class="q"><b class="k">G1</b><svg viewBox="0 0 200 90" aria-hidden="true"><path d="M20 70 H180" stroke="var(--orange)" stroke-width="5"/><circle r="7" fill="var(--wire)"><animateMotion dur="4s" repeatCount="indefinite" path="M20 70 H180"/></circle></svg><p><b>Rett linje</b> med mating. Skjærer.</p></div>
     <div class="q"><b class="k">G2 / G3</b><svg viewBox="0 0 200 90" aria-hidden="true"><path d="M30 75 A50 50 0 0 1 100 25" fill="none" stroke="var(--orange)" stroke-width="5"/><path d="M170 75 A50 50 0 0 0 100 25" fill="none" stroke="var(--r)" stroke-width="5"/><text x="40" y="45" font-size="13" font-weight="700" fill="var(--orange)">G2 ↻</text><text x="130" y="45" font-size="13" font-weight="700" fill="var(--r)">G3 ↺</text></svg><p><b>Bue</b>. G2 med klokka, G3 mot klokka.</p></div>
-    <div class="q"><b class="k">M3</b><svg viewBox="0 0 200 90" aria-hidden="true"><g class="spinn"><circle cx="100" cy="45" r="28" fill="none" stroke="var(--r)" stroke-width="8" stroke-dasharray="10 7"/></g></svg><p><b>Spindel på</b>. (M5 = spindel av.)</p></div>
+    <div class="q"><b class="k">M3 S</b><svg viewBox="0 0 200 90" aria-hidden="true"><g class="spinn"><circle cx="100" cy="45" r="28" fill="none" stroke="var(--r)" stroke-width="8" stroke-dasharray="10 7"/></g></svg><p><b>Spindel på</b>. <b>S</b> = turtall: S1000 = 1000 omdreininger i minuttet. (M5 = spindel av.)</p></div>
     <div class="q"><b class="k">F</b><svg viewBox="0 0 200 90" aria-hidden="true"><path d="M30 60 A70 70 0 0 1 170 60" fill="none" stroke="var(--line)" stroke-width="10"/><path d="M100 60 L140 30" stroke="var(--i)" stroke-width="5" stroke-linecap="round"/><circle cx="100" cy="60" r="7" fill="var(--i)"/></svg><p><b>Mating</b>: hvor fort verktøyet skjærer.</p></div>
     <div class="q"><b class="k">M30</b><svg viewBox="0 0 200 90" aria-hidden="true"><rect x="70" y="15" width="60" height="60" rx="8" fill="var(--bad-soft)" stroke="var(--bad)" stroke-width="5"/><rect x="88" y="33" width="24" height="24" fill="var(--bad)"/></svg><p><b>Slutt</b> på programmet.</p></div>
   </div>
@@ -284,8 +284,38 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
   <details class="laerer no-print"><summary>Lærernotat</summary>La elevene si hvor verktøyet skal <b>før</b> dere trykker «Neste linje». G90 (absolutte mål) og G21 (mm) er utelatt for å holde det enkelt. Nevn at de står i starten av ekte programmer.</details>
 </section>
 
+<section id="dreie">
+  <div class="tag">Del 5 · Samme koder på dreiebenken</div>
+  <h2>Bare aksene er <span style="color:var(--r)">X</span> og <span style="color:var(--u)">Z</span></h2>
+  <div class="benk">
+    <svg viewBox="10 40 420 190" role="img" aria-label="Dreiebenk sett fra siden. Verktøyet dreier akselen ned til diameter 30 på 20 mm lengde.">
+      <rect x="20" y="70" width="50" height="120" rx="6" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/>
+      <rect x="70" y="90" width="260" height="80" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2"/>
+      <rect x="290" y="90" width="40" height="10" fill="var(--orange)" opacity=".75"/>
+      <rect x="290" y="160" width="40" height="10" fill="var(--orange)" opacity=".75"/>
+      <path d="M60 130 H400" stroke="var(--wire)" stroke-dasharray="12 5 3 5"/>
+      <path d="M330 130 H410" stroke="var(--u)" stroke-width="3"/><path d="M414 130 l-11 -6 v12 z" fill="var(--u)"/><text x="400" y="152" font-size="15" font-weight="800" fill="var(--u)">Z</text>
+      <path d="M330 130 V54" stroke="var(--r)" stroke-width="3"/><path d="M330 50 l-6 11 h12 z" fill="var(--r)"/><text x="340" y="62" font-size="15" font-weight="800" fill="var(--r)">X</text>
+      <circle cx="330" cy="130" r="7" fill="#fff" stroke="var(--orange)" stroke-width="3"/>
+      <path d="M290 160 V196 M330 160 V196" stroke="var(--muted)"/><path d="M290 190 H330" stroke="var(--muted)"/><text x="292" y="212" font-size="12" fill="var(--muted)">Z-20</text>
+      <text x="294" y="124" font-size="13" font-weight="700" fill="var(--wire)">Ø30</text><text x="150" y="124" font-size="13" font-weight="700" fill="var(--muted)">Ø40</text>
+      <path d="M340 70 L340 100 L290 100 L290 76" fill="none" stroke="var(--orange)" stroke-width="3" stroke-dasharray="4 5" opacity=".6"/>
+      <g><path d="M0 0 l14 -16 h18 v-10 h-32 z" fill="var(--wire)"/><animateMotion dur="6s" repeatCount="indefinite" keyPoints="0;0.2;0.75;1;1" keyTimes="0;0.15;0.7;0.85;1" calcMode="linear" path="M340 70 L340 100 L290 100 L290 76"/></g>
+    </svg>
+    <div style="display:grid;gap:12px;align-content:start">
+      <div class="prog">
+        <div><b>G0 X30 Z2</b><small>I lufta, rett foran emnet.</small></div>
+        <div><b>G1 Z-20 F0.2</b><small>Dreier 20 mm inn mot chucken.</small></div>
+        <div><b>G1 X42</b><small>Ut av emnet.</small></div>
+      </div>
+      <p class="regel" style="margin:0"><b style="color:var(--r)">X30</b> = <b>diameter</b> 30 mm. Ikke radius!</p>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Samme G0 og G1 som på fresen. Peke på at Z går negativt inn mot chucken (leksjon 1). F0.2 er mm per omdreining på dreiebenken. Dette er broen til leksjon 3, der Fusion lager slike linjer.</details>
+</section>
+
 <section id="maskin">
-  <div class="tag">Del 5 · Ved maskinen</div>
+  <div class="tag">Del 6 · Ved maskinen</div>
   <h2>Før du trykker start</h2>
   <div class="regler">
     <div><span class="ico">🖥️</span><b>Simuler først</b><p>Se programmet på skjermen.</p></div>
@@ -357,6 +387,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
       <div class="tablewrap"><table>
         <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
         <tr><td><span class="kode">G0 Z-5</span> er en trygg måte å gå ned i emnet på.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>På dreiebenken gir <span class="kode">G1 X30</span> en diameter på 30 mm.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
         <tr><td><span class="kode">G1 X50 F200</span> skjærer i rett linje til X50.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
         <tr><td>Står det ikke Y på linja, blir Y som før.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
         <tr><td>Vi kjører programmet i full fart første gang.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
