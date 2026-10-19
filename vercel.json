@@ -11,7 +11,11 @@
     { "source": "/vg2/tegning/leksjon-1-geometriske-toleranser", "destination": "/vg2/tegning/leksjon-4-geometriske-toleranser", "permanent": false },
     { "source": "/vg2/tegning/leksjon-1-geometriske-toleranser-steg-for-steg", "destination": "/vg2/tegning/leksjon-4-geometriske-toleranser-steg-for-steg", "permanent": false },
     { "source": "/laerer-k7q4mz/vg2/tegning/leksjon-1-geometriske-toleranser", "destination": "/laerer-k7q4mz/vg2/tegning/leksjon-4-geometriske-toleranser", "permanent": false },
-    { "source": "/laerer-k7q4mz/vg2/tegning/leksjon-1-geometriske-toleranser-steg-for-steg", "destination": "/laerer-k7q4mz/vg2/tegning/leksjon-4-geometriske-toleranser-steg-for-steg", "permanent": false }
+    { "source": "/laerer-k7q4mz/vg2/tegning/leksjon-1-geometriske-toleranser-steg-for-steg", "destination": "/laerer-k7q4mz/vg2/tegning/leksjon-4-geometriske-toleranser-steg-for-steg", "permanent": false },
+    { "source": "/vg1/dap/leksjon-1-fusion-dap-dreiing", "destination": "/vg1/dap/leksjon-3-fusion-dap-dreiing", "permanent": false },
+    { "source": "/vg1/dap/leksjon-1-fusion-dap-dreiing-steg-for-steg", "destination": "/vg1/dap/leksjon-3-fusion-dap-dreiing-steg-for-steg", "permanent": false },
+    { "source": "/laerer-k7q4mz/vg1/dap/leksjon-1-fusion-dap-dreiing", "destination": "/laerer-k7q4mz/vg1/dap/leksjon-3-fusion-dap-dreiing", "permanent": false },
+    { "source": "/laerer-k7q4mz/vg1/dap/leksjon-1-fusion-dap-dreiing-steg-for-steg", "destination": "/laerer-k7q4mz/vg1/dap/leksjon-3-fusion-dap-dreiing-steg-for-steg", "permanent": false }
   ],
   "headers": [
     { "source": "/(.*)", "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }] }
