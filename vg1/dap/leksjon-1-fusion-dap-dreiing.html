@@ -155,13 +155,73 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 }
 .spinn{transform-box:fill-box;transform-origin:center;animation:spinn 4s linear infinite}
 @keyframes spinn{to{transform:rotate(360deg)}}
+
+/* Fusion-vinduet: faste lyse farger som i Fusion, også i mørk modus */
+.fx{min-width:780px;background:#fff;color:#3c3c3c;border:1px solid #b9c0c8;border-radius:10px;overflow:hidden;font:13px/1.3 "Segoe UI","Artifakt Element",system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.fx-top{display:flex;align-items:stretch;background:#f2f3f4;border-bottom:1px solid #d6dadf;height:34px}
+.fx-ws{position:relative;display:flex;align-items:center;gap:6px;padding:0 12px;font-weight:700;border-right:1px solid #d6dadf;background:#fff;cursor:default;min-width:170px}
+.fx-ws-ico{width:18px;height:18px;border-radius:3px;background:linear-gradient(135deg,#2b78c5,#5aa2e6)}
+.fx-ws.man .fx-ws-ico{background:linear-gradient(135deg,#7a45c8,#a77be8)}
+.fx-meny{display:none;position:absolute;top:33px;left:0;z-index:5;background:#fff;border:1px solid #b9c0c8;box-shadow:0 4px 12px rgba(0,0,0,.15);min-width:190px}
+.fx-meny div{padding:6px 12px;font-weight:600}
+.fx-meny .valgt{background:#e5f1fb;color:#0a6ebd}
+.fx-ws.apen .fx-meny{display:block}
+.fx-tabs{display:flex}
+.fx-tabs span{display:flex;align-items:center;padding:0 12px;font-weight:600;font-size:12px;color:#555;border-bottom:3px solid transparent}
+.fx-tabs span.aktiv{color:#0a6ebd;border-bottom-color:#0696d7;background:#fff}
+.fx-ribbon{display:flex;gap:0;background:#fff;border-bottom:1px solid #d6dadf;height:66px;padding:4px 6px}
+.fx-grp{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:0 8px;border-right:1px solid #e3e6ea}
+.fx-grp .ikoner{display:flex;gap:4px}
+.fx-grp .navn{font-size:10.5px;font-weight:700;color:#666;letter-spacing:.02em}
+.fx-btn{position:relative;width:34px;height:34px;border-radius:4px;display:grid;place-items:center}
+.fx-btn svg{width:28px;height:28px}
+.fx-hl{outline:3px solid #e8590c;outline-offset:1px;animation:fxpuls 1.2s ease-in-out infinite}
+@keyframes fxpuls{50%{outline-color:#ffb380}}
+.fx-tips{position:absolute;top:40px;left:50%;transform:translateX(-50%);z-index:6;background:#2d2d2d;color:#fff;font-size:12px;font-weight:600;white-space:nowrap;padding:4px 8px;border-radius:4px}
+.fx-main{display:grid;grid-template-columns:190px 1fr;position:relative;height:380px}
+.fx-tree{border-right:1px solid #d6dadf;background:#fafafa;padding:8px 6px;font-size:12px;overflow:hidden}
+.fx-tree .tt{font-weight:700;color:#666;font-size:11px;letter-spacing:.04em;margin-bottom:6px}
+.fx-tree div.rr{padding:2px 4px;white-space:nowrap;border-radius:3px}
+.fx-tree div.rr.ny{background:#e5f1fb;color:#0a6ebd;font-weight:700}
+.fx-tree i{font-style:normal;display:inline-block;width:14px;height:12px;margin-right:4px;vertical-align:-1px;border-radius:2px}
+.fx-canvas{position:relative;background:linear-gradient(#ffffff,#dde4ec)}
+.fx-canvas svg{display:block;width:100%;height:380px}
+.fx-play{position:absolute;left:16px;right:16px;bottom:10px;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #c9ced6;border-radius:6px;padding:4px 10px;font-weight:700}
+.fx-play i{flex:1;height:6px;background:#dde3ea;border-radius:3px;overflow:hidden}
+.fx-play b{display:block;height:100%;width:0;background:#0696d7}
+.fx-dialog{position:absolute;right:10px;top:10px;width:290px;background:#fff;border:1px solid #b9c0c8;box-shadow:0 6px 18px rgba(0,0,0,.18);border-radius:4px;font-size:12px}
+.fx-dialog .hd{background:#f2f3f4;padding:6px 10px;font-weight:700;letter-spacing:.04em;border-bottom:1px solid #d6dadf}
+.fx-dialog .faner{display:flex;border-bottom:1px solid #d6dadf}
+.fx-dialog .faner span{padding:5px 8px;font-size:11px;color:#666;border-bottom:2px solid transparent}
+.fx-dialog .faner span.aktiv{color:#0a6ebd;border-bottom-color:#0696d7;font-weight:700}
+.fx-dialog .sek{padding:6px 10px 0;font-weight:700;color:#555}
+.fx-dialog .rad{display:grid;grid-template-columns:1fr 132px;gap:6px;align-items:center;padding:4px 10px}
+.fx-dialog .felt{border:1px solid #c3c9d0;border-radius:3px;padding:2px 6px;background:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx-dialog .rad.hl{background:#fff0e5}
+.fx-dialog .rad.hl .felt{border-color:#e8590c;box-shadow:0 0 0 2px #ffd2b3}
+.fx-dialog .ft{display:flex;justify-content:flex-end;gap:6px;padding:8px 10px;border-top:1px solid #e3e6ea;margin-top:6px}
+.fx-dialog .ft span{padding:3px 12px;border-radius:3px;border:1px solid #b9c0c8;font-weight:600}
+.fx-dialog .ft span.ok{background:#0696d7;border-color:#0696d7;color:#fff}
+.fx-nc{margin:0 10px 8px;background:#1e1e1e;color:#d4d4d4;font:11px/1.45 ui-monospace,Consolas,monospace;padding:6px 8px;border-radius:3px;white-space:pre}
+.fx-nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fx-prikker{display:flex;gap:6px;flex-wrap:wrap;flex:1;justify-content:center}
+.fx-prikker button{width:2.2rem;height:2.2rem;padding:0;border-radius:50%;font-size:.85rem}
+.fx-prikker button[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:#fff}
+.fx-prikker button.ferdig{border-color:var(--r);color:var(--r)}
+.fx-forklar{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:start;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--orange);border-radius:14px;padding:16px 20px}
+.fx-nr{font:800 2.4rem/1 var(--display);color:var(--orange);min-width:1.4em;text-align:center}
+.fx-forklar h3{margin-bottom:6px}
+.fx-gjor{font-size:1.15rem;margin-top:4px}
+.fx-hvorfor{color:var(--muted);margin-top:6px}
+.fx-forklar .k{font-family:var(--mono);font-weight:700;background:var(--blue-soft);color:var(--blue);border-radius:6px;padding:0 .35em;white-space:nowrap}
+@media (prefers-reduced-motion:reduce){.fx-hl{animation:none}}
 </style>
 
 </head>
 <body>
 <header class="top">
   <div class="brand">DAP og CNC Vg1 · <span>Leksjon 1</span></div>
-  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#akser">Akser</a><a href="#gang">Arbeidsgang</a><a href="#operasjoner">Operasjoner</a><a href="#maskin">Til maskin</a><a href="#oppgaver">Oppgaver</a></nav>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#akser">Akser</a><a href="#fusion">I Fusion</a><a href="#maskin">Til maskin</a><a href="#oppgaver">Oppgaver</a></nav>
   <div class="tools no-print">
     <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
     <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
@@ -197,10 +257,10 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
       <dl class="plan2">
         <dt>0–10</dt><dd>Start: vis en dreid aksel. «Hvordan vet maskinen hvor den skal kjøre?»</dd>
         <dt>10–20</dt><dd>Akser og nullpunkt. Del A og C.</dd>
-        <dt>20–35</dt><dd>Arbeidsgang og operasjoner. Del B og D.</dd>
-        <dt>35–45</dt><dd>Simuler og G-kode. Del E. Prøv CNC-simulatoren.</dd>
+        <dt>20–35</dt><dd>«I Fusion, steg for steg» på storskjerm. Elevene følger med i Fusion. Del B, D og E.</dd>
+        <dt>35–45</dt><dd>G-kode og CNC-simulatoren. Del F.</dd>
         <dt>45–55</dt><dd>Pause</dd>
-        <dt>55–88</dt><dd>Del F i Fusion: lag akselen og dreieprogrammet. Vis på storskjerm først.</dd>
+        <dt>55–88</dt><dd>Del G i Fusion: elevene lager akselen og dreieprogrammet selv, steg for steg.</dd>
         <dt>88–90</dt><dd>Exit-lapp.</dd>
       </dl>
     </div>
@@ -216,7 +276,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     <div style="display:grid;gap:14px">
       <ul class="goals" style="margin:0;font-size:1.05rem">
         <li><span class="n u">Z</span><span>langs <b>senterlinja</b>. Minus inn mot chucken.</span></li>
-        <li><span class="n i">X</span><span>er <b>diameteren</b>.</span></li>
+        <li><span class="n" style="color:var(--bad)">X</span><span>er <b>diameteren</b>.</span></li>
         <li><span class="n r">⊕</span><span><b>Nullpunkt</b>: midt på endeflaten.</span></li>
       </ul>
       <div class="valgknapper" id="punktKnapper" role="group" aria-label="Velg punkt"></div>
@@ -226,39 +286,45 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
   <details class="laerer no-print"><summary>Lærernotat</summary>De fleste dreiebenker programmeres med X som diameter. Z0 legges vanligvis på den ferdige endeflaten, så alle Z-verdier på delen blir negative. I Fusion settes nullpunktet i Setup (WCS), for eksempel «Stock front» eller «Model front».</details>
 </section>
 
-<section id="gang">
-  <div class="tag">Del 2 · Arbeidsgang i Fusion</div>
-  <h2>Seks steg fra modell til G-kode</h2>
-  <div class="stepper" id="stepper" role="group" aria-label="Velg steg"></div>
-  <div class="bar" aria-hidden="true"><i id="stegBar"></i></div>
-  <div class="steg">
-    <svg id="stegFig" viewBox="0 0 200 160" aria-hidden="true"></svg>
+<section id="fusion">
+  <div class="tag">Del 2 · I Fusion, steg for steg</div>
+  <h2>Slik ser det ut i Fusion</h2>
+  <p class="lead">Ett steg om gangen. Gjør det samme på din PC.</p>
+  <div class="tablewrap"><div class="fx" id="fx" aria-label="Tegning av Fusion-vinduet i Manufacture">
+    <div class="fx-top">
+      <div class="fx-ws" data-k="ws"><span class="fx-ws-ico"></span><span id="fxWsNavn">DESIGN</span> ▾
+        <div class="fx-meny" id="fxMeny"><div>DESIGN</div><div>GENERATIVE DESIGN</div><div>RENDER</div><div>ANIMATION</div><div>SIMULATION</div><div class="valgt">MANUFACTURE</div><div>DRAWING</div></div>
+      </div>
+      <div class="fx-tabs" id="fxTabs"></div>
+    </div>
+    <div class="fx-ribbon" id="fxRibbon"></div>
+    <div class="fx-main">
+      <div class="fx-tree" id="fxTre"></div>
+      <div class="fx-canvas">
+        <svg id="fxCanvas" viewBox="60 30 600 250" preserveAspectRatio="xMinYMid meet" role="img" aria-label="Arbeidsflaten i Fusion med akselen"></svg>
+        <div class="fx-play" id="fxPlay" hidden><span>▶</span><i><b id="fxPlayBar"></b></i><span>2:41</span></div>
+      </div>
+      <div class="fx-dialog" id="fxDialog" hidden></div>
+    </div>
+  </div></div>
+  <div class="fx-nav no-print">
+    <button type="button" id="fxForrige">◀ Forrige</button>
+    <div class="fx-prikker" id="fxPrikker" role="group" aria-label="Velg steg"></div>
+    <button type="button" id="fxNeste">Neste ▶</button>
+  </div>
+  <div class="fx-forklar">
+    <div class="fx-nr" id="fxNr">1</div>
     <div>
-      <h3 id="stegTittel"></h3>
-      <ul id="stegListe"></ul>
+      <h3 id="fxTittel"></h3>
+      <p class="fx-gjor"><b>Gjør dette:</b> <span id="fxGjor"></span></p>
+      <p class="fx-hvorfor"><b>Hvorfor?</b> <span id="fxHvorfor"></span></p>
     </div>
   </div>
-  <a class="simlink no-print" href="../konstruksjon/leksjon-2-fra-skisse-til-3d-modell.html"><span class="ico">🧊</span><span><b>Repeter: Fra skisse til 3D-modell</b><small>Tegning og DAK, leksjon 2</small></span><span class="pil">→</span></a>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Fusion er gratis for skoler (utdanningslisens). Menyene er på engelsk; navnene kan variere litt mellom versjoner. Nyere versjoner har også «Turning Roughing» i stedet for «Turning Profile Roughing». Velg postprosessor for skolens maskin i Post Process.</details>
-</section>
-
-<section id="operasjoner">
-  <div class="tag">Del 3 · Operasjoner</div>
-  <h2>Fire operasjoner lager akselen</h2>
-  <div class="benk">
-    <svg id="opFig" viewBox="40 40 410 245" role="img" aria-label="Verktøybanen for valgt operasjon"></svg>
-    <div style="display:grid;gap:14px">
-      <div class="valgknapper" id="opKnapper" role="group" aria-label="Velg operasjon"></div>
-      <h3 id="opTittel"></h3>
-      <p class="opnavn" id="opFusion"></p>
-      <p id="opTekst" style="font-size:1.1rem"></p>
-    </div>
-  </div>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Grovdreiing lar igjen litt materiale (for eksempel 0,3–0,5 mm) som finishen tar. Finish følger profilen i ett kutt og gir mål og overflate. Spor og gjenger (Turning Groove, Turning Thread) tar vi senere.</details>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Tegningen er forenklet. Knappene ligger på samme sted som i Fusion, men utseendet varierer litt mellom versjoner (nyere versjoner har for eksempel «Turning Roughing»). Hold musa over en knapp i Fusion for å se navnet. Last gjerne opp egne skjermbilder fra skolens PC-er her med «Vis/skjul plass for filer». Velg postprosessor for skolens maskin i Post Process.</details>
 </section>
 
 <section id="maskin">
-  <div class="tag">Del 4 · Til maskinen</div>
+  <div class="tag">Del 3 · Til maskinen</div>
   <h2>Simuler først. Så G-kode.</h2>
   <div class="trio">
     <div class="q U">
@@ -321,15 +387,16 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     </div>
 
     <div>
-      <h3>Del B · Sett stegene i riktig rekkefølge</h3>
+      <h3>Del B · Sett knappene i riktig rekkefølge</h3>
       <div class="tablewrap"><table>
-        <tr><th>Steg</th><th>Nr.</th></tr>
-        <tr><td>Simuler (Simulate)</td><td class="blank x"><span class="fasit" hidden>5</span></td></tr>
-        <tr><td>Lag 3D-modell i Design</td><td class="blank x"><span class="fasit" hidden>1</span></td></tr>
-        <tr><td>Lag G-kode (Post Process)</td><td class="blank x"><span class="fasit" hidden>6</span></td></tr>
-        <tr><td>Lag oppsett: emne og nullpunkt (Setup)</td><td class="blank x"><span class="fasit" hidden>2</span></td></tr>
-        <tr><td>Lag operasjonene</td><td class="blank x"><span class="fasit" hidden>4</span></td></tr>
-        <tr><td>Velg verktøy og skjæredata</td><td class="blank x"><span class="fasit" hidden>3</span></td></tr>
+        <tr><th>Knapp i Fusion</th><th>Nr.</th></tr>
+        <tr><td>Simulate</td><td class="blank x"><span class="fasit" hidden>6</span></td></tr>
+        <tr><td>New Setup</td><td class="blank x"><span class="fasit" hidden>1</span></td></tr>
+        <tr><td>Post Process</td><td class="blank x"><span class="fasit" hidden>7</span></td></tr>
+        <tr><td>Profile Finishing</td><td class="blank x"><span class="fasit" hidden>4</span></td></tr>
+        <tr><td>Face</td><td class="blank x"><span class="fasit" hidden>2</span></td></tr>
+        <tr><td>Part</td><td class="blank x"><span class="fasit" hidden>5</span></td></tr>
+        <tr><td>Profile Roughing</td><td class="blank x"><span class="fasit" hidden>3</span></td></tr>
       </table></div>
     </div>
 
@@ -355,18 +422,29 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     </div>
 
     <div>
-      <h3>Del D · Hvilken operasjon?</h3>
+      <h3>Del D · Hvilken knapp i Fusion?</h3>
       <div class="tablewrap"><table>
-        <tr><th>Hva skjer?</th><th>Operasjon</th></tr>
-        <tr><td>Kapper den ferdige delen løs</td><td class="blank"><span class="fasit" hidden>Avstikking</span></td></tr>
-        <tr><td>Gjør endeflaten plan</td><td class="blank"><span class="fasit" hidden>Plandreiing</span></td></tr>
-        <tr><td>Siste tynne kutt: riktig mål og fin overflate</td><td class="blank"><span class="fasit" hidden>Finishdreiing</span></td></tr>
-        <tr><td>Fjerner mest mulig materiale raskt</td><td class="blank"><span class="fasit" hidden>Grovdreiing</span></td></tr>
+        <tr><th>Hva skjer?</th><th>Knapp</th></tr>
+        <tr><td>Kapper den ferdige delen løs</td><td class="blank"><span class="fasit" hidden>Part (avstikking)</span></td></tr>
+        <tr><td>Gjør endeflaten plan</td><td class="blank"><span class="fasit" hidden>Face (plandreiing)</span></td></tr>
+        <tr><td>Siste tynne kutt: riktig mål og fin overflate</td><td class="blank"><span class="fasit" hidden>Profile Finishing (finishdreiing)</span></td></tr>
+        <tr><td>Fjerner mest mulig materiale raskt</td><td class="blank"><span class="fasit" hidden>Profile Roughing (grovdreiing)</span></td></tr>
       </table></div>
     </div>
 
     <div>
-      <h3>Del E · Riktig eller galt</h3>
+      <h3>Del E · Hvor i Fusion stiller du det inn?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Dette vil jeg stille inn</th><th>Fane og felt</th></tr>
+        <tr><td>Emnet er Ø40 × 70 mm</td><td class="blank"><span class="fasit" hidden>Setup, fanen Stock (Diameter og Length)</span></td></tr>
+        <tr><td>Nullpunktet midt på endeflaten</td><td class="blank"><span class="fasit" hidden>Setup, fanen Setup (Origin: Model front)</span></td></tr>
+        <tr><td>Skjærehastighet 180 m/min</td><td class="blank"><span class="fasit" hidden>Fanen Tool (Surface speed)</span></td></tr>
+        <tr><td>La 0,3 mm være igjen til finish</td><td class="blank"><span class="fasit" hidden>Fanen Passes (Radial stock to leave)</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del F · Riktig eller galt</h3>
       <div class="tablewrap"><table>
         <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
         <tr><td>Z-verdiene på delen blir negative når Z0 er på endeflaten.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
@@ -377,14 +455,14 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     </div>
 
     <div>
-      <h3>Del F · Lag dreieprogrammet i Fusion</h3>
+      <h3>Del G · Lag dreieprogrammet i Fusion</h3>
       <p>Lag akselen: Ø20 × 20, Ø30 × 30 og Ø40 × 5. Emne Ø40 × 70. Kryss av.</p>
       <div class="tablewrap"><table>
         <tr><th>Jeg har …</th><th>✓</th></tr>
         <tr><td>laget akselen med <b>Revolve</b> i Design</td><td class="blank x"></td></tr>
         <tr><td>laget <b>Setup</b> for dreiing, med emne og nullpunkt på endeflaten</td><td class="blank x"></td></tr>
-        <tr><td>laget plan, grov, finish og avstikk</td><td class="blank x"></td></tr>
-        <tr><td>simulert uten rødt (ingen kollisjon)</td><td class="blank x"></td></tr>
+        <tr><td>laget <b>Face</b>, <b>Profile Roughing</b>, <b>Profile Finishing</b> og <b>Part</b></td><td class="blank x"></td></tr>
+        <tr><td>trykket <b>Simulate</b> og sett at ingenting blir rødt</td><td class="blank x"></td></tr>
         <tr><td>laget G-kode med <b>Post Process</b></td><td class="blank x"></td></tr>
       </table></div>
       <p style="margin-top:8px">Hvor lang er den ferdige delen?</p>
@@ -474,25 +552,13 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
   const hero = $('heroBenk');
   (function heroLoop(i){ $('heroOp').textContent = (i+1)+' · '+OP[i].t+' ('+OP[i].f+')'; kjor(hero, i, () => heroLoop((i+1)%OP.length)); })(0);
 
-  // operasjoner: velg én, den gjentas
-  const opK = $('opKnapper'), opFig = $('opFig'); let stoppOp = () => {};
-  function visOp(i){
-    stoppOp();
-    [...opK.children].forEach((b,k) => b.setAttribute('aria-pressed', k===i));
-    $('opTittel').textContent = (i+1)+' · '+OP[i].t; $('opFusion').textContent = 'Fusion: '+OP[i].f; $('opTekst').textContent = OP[i].x;
-    const gang = () => { stoppOp = kjor(opFig, i, gang); };
-    gang();
-  }
-  OP.forEach((o,i) => { const b=document.createElement('button'); b.type='button'; b.textContent=(i+1)+' '+o.k; b.onclick=()=>visOp(i); opK.appendChild(b); });
-  visOp(0);
-
   // ---------- akser og nullpunkt ----------
   const PKT = [ {n:'A', x:390, y:110, X:20, Z:0}, {n:'B', x:310, y:90, X:30, Z:-20}, {n:'C', x:190, y:70, X:40, Z:-50} ];
   const akse = $('akseFig');
   akse.innerHTML = benk(false).replace(/<g class="rotasjon">.*?<\/g>/,'') +
     '<g stroke="var(--u)" stroke-width="3.5" fill="var(--u)"><path d="M390 150 H452"/><path d="M452 150 l-12 -7 v14 z"/></g><text x="440" y="176" font-size="18" font-weight="800" fill="var(--u)">Z+</text>'+
     '<path d="M390 150 H130" stroke="var(--u)" stroke-width="2" stroke-dasharray="4 5"/><text x="128" y="172" font-size="15" font-weight="700" fill="var(--u)">Z−</text>'+
-    '<g stroke="var(--i)" stroke-width="3.5" fill="var(--i)"><path d="M390 150 V46"/><path d="M390 46 l-7 12 h14 z"/></g><text x="400" y="60" font-size="18" font-weight="800" fill="var(--i)">X</text>'+
+    '<g stroke="var(--bad)" stroke-width="3.5" fill="var(--bad)"><path d="M390 150 V46"/><path d="M390 46 l-7 12 h14 z"/></g><text x="400" y="60" font-size="18" font-weight="800" fill="var(--bad)">X</text>'+
     '<g class="pulse"><circle cx="390" cy="150" r="11" fill="var(--surface)" stroke="var(--r)" stroke-width="3"/><path d="M390 139 A11 11 0 0 1 401 150 H390 Z M390 161 A11 11 0 0 1 379 150 H390 Z" fill="var(--r)"/></g>'+
     '<g font-size="13" fill="var(--muted)"><text x="335" y="104">Ø20</text><text x="235" y="84">Ø30</text><text x="128" y="64">Ø40</text></g>'+
     PKT.map((p,i) => '<g class="punkt" data-i="'+i+'"><circle cx="'+p.x+'" cy="'+p.y+'" r="7" fill="var(--orange)"/><text x="'+(p.x+8)+'" y="'+(p.y-10)+'" font-size="17" font-weight="800" fill="var(--orange)">'+p.n+'</text></g>').join('');
@@ -504,31 +570,153 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     $('punktVerdi').textContent = p.n+':  X'+p.X+'  Z'+p.Z;
   }; pK.appendChild(b); });
 
-  // ---------- arbeidsgang i Fusion ----------
-  const STEG = [
-    { t:"1 · Modell (Design)", fig:'<path d="M30 120 H170" stroke="var(--wire)" stroke-width="1.5" stroke-dasharray="10 3 2 3"/><path d="M40 120 V60 H70 V80 H120 V95 H165 V120" fill="var(--u-soft)" stroke="var(--u)" stroke-width="4" stroke-linejoin="round"/><path d="M175 85 a10 30 0 1 1 0 60" fill="none" stroke="var(--orange)" stroke-width="4" class="flow"/>',
-      l:["Tegn halve profilen i en skisse","Bruk <span class=knapp>Revolve</span> rundt senterlinja","Da får du en rund aksel i 3D"] },
-    { t:"2 · Bytt til Manufacture", fig:'<rect x="25" y="30" width="150" height="36" rx="6" fill="var(--surface)" stroke="var(--wire)" stroke-width="2.5"/><text x="40" y="54" font-size="15" font-weight="700" fill="var(--ink)">DESIGN ▾</text><rect x="25" y="74" width="150" height="36" rx="6" fill="var(--orange-soft)" stroke="var(--orange)" stroke-width="3" class="pulse"/><text x="40" y="98" font-size="15" font-weight="700" fill="var(--orange)">MANUFACTURE</text><rect x="25" y="118" width="70" height="26" rx="5" fill="var(--blue-soft)"/><text x="33" y="136" font-size="13" font-weight="700" fill="var(--blue)">TURNING</text>',
-      l:["Øverst til venstre: bytt fra <span class=knapp>Design</span> til <span class=knapp>Manufacture</span>","Velg fanen <span class=knapp>Turning</span> (dreiing)"] },
-    { t:"3 · Oppsett (Setup)", fig:'<rect x="30" y="50" width="140" height="70" fill="var(--line)" fill-opacity=".6" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 4"/><path d="M20 85 H185" stroke="var(--wire)" stroke-width="1.5" stroke-dasharray="10 3 2 3"/><g class="pulse"><circle cx="170" cy="85" r="9" fill="var(--surface)" stroke="var(--r)" stroke-width="3"/><path d="M170 76 A9 9 0 0 1 179 85 H170 Z M170 94 A9 9 0 0 1 161 85 H170 Z" fill="var(--r)"/></g><text x="100" y="40" text-anchor="middle" font-size="14" font-weight="700" fill="var(--muted)">Emne Ø40 × 70</text>',
-      l:["<span class=knapp>Setup</span> → <span class=knapp>New Setup</span>, type <b>Turning</b>","<b>Stock</b> (emne): Ø40 × 70","<b>WCS</b> (nullpunkt): midt på endeflaten"] },
-    { t:"4 · Verktøy og skjæredata", fig:'<polygon points="70,110 95,60 140,70 115,120" fill="var(--glow)" stroke="var(--wire)" stroke-width="3"/><circle cx="105" cy="90" r="7" fill="var(--surface)" stroke="var(--wire)" stroke-width="2"/><text x="100" y="148" text-anchor="middle" font-size="14" font-weight="700" fill="var(--muted)">Vendeskjær</text>',
-      l:["Velg dreiestål i <span class=knapp>Tool Library</span>","Sett <b>skjærehastighet</b> (m/min) og <b>mating</b> (mm/omdr)","Bruk tabell eller Skjæredata-simulatoren"] },
-    { t:"5 · Operasjoner", fig:'<rect x="20" y="40" width="160" height="80" fill="var(--line)" fill-opacity=".5"/><path d="M25 120 V80 H90 V100 H180 V120" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/><g stroke="var(--orange)" stroke-width="3" fill="none"><path d="M185 30 V120" class="flow"/><path d="M185 50 H25 M185 65 H25 M185 80 H90 M185 92 H90" class="flow"/></g>',
-      l:["Plan → grov → finish → avstikk","Velg kantene på modellen som skal dreies","Fusion lager <b>verktøybanen</b>"] },
-    { t:"6 · Simuler og lag G-kode", fig:'<rect x="20" y="20" width="90" height="70" rx="6" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/><path d="M52 40 v30 l24 -15 z" fill="var(--u)"/><path d="M115 55 H135" stroke="var(--wire)" stroke-width="4" class="flow"/><rect x="138" y="20" width="50" height="120" rx="4" fill="var(--surface)" stroke="var(--i)" stroke-width="3"/><g stroke="var(--i)" stroke-width="4" stroke-linecap="round"><path d="M148 40 H178 M148 58 H172 M148 76 H180 M148 94 H168 M148 112 H176"/></g><text x="65" y="115" text-anchor="middle" font-size="14" font-weight="700" fill="var(--u)">Simulate</text>',
-      l:["<span class=knapp>Simulate</span>: se at ingenting kolliderer","<span class=knapp>Post Process</span>: velg maskinen og lagre G-koden","Overfør programmet til dreiebenken"] }
+
+  // ---------- Fusion-vinduet: gjennomgang steg for steg ----------
+  // Tegnet etter Fusion Manufacture (fanen TURNING). Faste farger som i Fusion.
+  const IKON = {
+    setup:'<rect x="4" y="9" width="15" height="11" fill="#cfd6de" stroke="#5b6470"/><path d="M4 9 l4 -4 h15 l-4 4 M19 20 l4 -4 V5" fill="none" stroke="#5b6470"/><path d="M8 16 V6" stroke="#d93025" stroke-width="2"/><path d="M8 16 H17" stroke="#1a73e8" stroke-width="2"/>',
+    face:'<rect x="3" y="7" width="14" height="12" fill="#cfd6de" stroke="#5b6470"/><path d="M20 3 V19" stroke="#1a73e8" stroke-width="2.5"/><path d="M17 16 l3 4 l3 -4" fill="#1a73e8"/>',
+    rough:'<path d="M3 21 V9 H11 V14 H22 V21 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M23 4 H5 M23 7 H5 M23 11 H12" stroke="#1a73e8" stroke-width="1.8"/>',
+    finish:'<path d="M3 21 V9 H11 V14 H22 V21 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M23 12 H12 V7 H2" fill="none" stroke="#1a73e8" stroke-width="2.2"/>',
+    groove:'<path d="M3 21 V8 H10 V13 H14 V8 H22 V21 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M12 2 V12" stroke="#1a73e8" stroke-width="2.5"/>',
+    thread:'<rect x="3" y="10" width="19" height="11" fill="#cfd6de" stroke="#5b6470"/><path d="M3 9 l2 -3 l2 3 l2 -3 l2 3 l2 -3 l2 3 l2 -3 l2 3 l2 -3 l1 3" fill="none" stroke="#1a73e8" stroke-width="1.6"/>',
+    part:'<rect x="3" y="8" width="19" height="13" fill="#cfd6de" stroke="#5b6470"/><path d="M14 2 V21" stroke="#1a73e8" stroke-width="2.5"/>',
+    drill:'<rect x="3" y="12" width="19" height="9" fill="#cfd6de" stroke="#5b6470"/><path d="M12 2 V15 l-2 -2 M12 15 l2 -2" stroke="#1a73e8" stroke-width="2.2" fill="none"/>',
+    sim:'<rect x="2" y="4" width="21" height="15" rx="2" fill="#e8f3fc" stroke="#5b6470"/><path d="M10 8 v7 l6 -3.5 z" fill="#1a73e8"/>',
+    post:'<path d="M5 2 H16 L21 7 V23 H5 Z" fill="#fff" stroke="#5b6470"/><text x="7" y="17" font-size="8" font-weight="700" fill="#1a73e8" font-family="Arial">G1</text>',
+    lib:'<rect x="3" y="4" width="6" height="17" fill="#cfd6de" stroke="#5b6470"/><rect x="10" y="4" width="6" height="17" fill="#e8f3fc" stroke="#5b6470"/><path d="M18 5 l4 15" stroke="#5b6470" stroke-width="3"/>',
+    grå:'<rect x="4" y="4" width="17" height="17" rx="3" fill="#e3e7ec" stroke="#b9c0c8"/>'
+  };
+  const btn = k => '<span class="fx-btn" data-k="'+k+'"><svg viewBox="0 0 25 25" aria-hidden="true">'+(IKON[k]||IKON.grå)+'</svg></span>';
+  const grp = (navn, ks) => '<div class="fx-grp"><div class="ikoner">'+ks.map(btn).join('')+'</div><div class="navn">'+navn+' ▾</div></div>';
+  const RIBBON = {
+    design: grp('CREATE',['grå','grå','grå','grå'])+grp('MODIFY',['grå','grå'])+grp('ASSEMBLE',['grå'])+grp('INSPECT',['grå']),
+    turn: grp('SETUP',['setup'])+grp('TURNING',['face','rough','finish','groove','thread','part'])+grp('DRILLING',['drill'])+grp('ACTIONS',['sim','post'])+grp('MANAGE',['lib'])
+  };
+  const TIPS = { ws:'Change Workspace', tab:'TURNING', setup:'New Setup', face:'Turning Face', rough:'Turning Profile Roughing', finish:'Turning Profile Finishing', part:'Turning Part', sim:'Simulate', post:'Post Process' };
+
+  // Dialogene: [etikett, verdi, uthevet?]
+  const dlg = (tittel, faner, aktiv, rader, ok, ekstra) => '<div class="hd">'+tittel+'</div>'+
+    (faner ? '<div class="faner">'+faner.map((f,i)=>'<span class="'+(i===aktiv?'aktiv':'')+'">'+f+'</span>').join('')+'</div>' : '')+
+    rader.map(r => typeof r==='string' ? '<div class="sek">'+r+'</div>' : '<div class="rad'+(r[2]?' hl':'')+'"><span>'+r[0]+'</span><span class="felt">'+r[1]+'</span></div>').join('')+
+    (ekstra||'')+'<div class="ft"><span class="ok">'+(ok||'OK')+'</span><span>Cancel</span></div>';
+  const OPF = ['Tool','Geometry','Radii','Passes','Linking'];
+  const NC = '%\nO1001 (AKSEL)\nG50 S3000\nT0101\nG96 S180 M3\nG0 X42 Z2\nG1 X0 F0.25\n...';
+
+  const TRE = n => {
+    const ops = [['Face1','#1a73e8'],['Profile Roughing1','#1a73e8'],['Profile Finishing1','#1a73e8'],['Part1','#1a73e8']];
+    let h = '<div class="tt">BROWSER</div><div class="rr">▾ <i style="background:#cfd6de"></i>Aksel v1</div><div class="rr">&nbsp;&nbsp;▸ <i style="background:#e3e7ec"></i>Models</div>';
+    if (n>=1) h += '<div class="rr'+(n===1?' ny':'')+'">&nbsp;&nbsp;▾ <i style="background:#f6c344"></i>Setups</div><div class="rr'+(n===1?' ny':'')+'">&nbsp;&nbsp;&nbsp;&nbsp;▾ <i style="background:#7a45c8"></i>Setup1</div>';
+    for (let i=0; i<Math.min(n-1,4); i++) h += '<div class="rr'+(i===n-2?' ny':'')+'">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i style="background:'+ops[i][1]+'"></i>'+ops[i][0]+'</div>';
+    return h;
+  };
+
+  const FX = [
+    { t:'Bytt til Manufacture', hl:'ws', meny:true, ws:'DESIGN', rib:'design', tab:-1, tre:0, c:'modell',
+      g:'Trykk på <span class="k">DESIGN ▾</span> øverst til venstre. Velg <span class="k">MANUFACTURE</span>.',
+      h:'Design er for å tegne. Manufacture (DAP) er for å lage verktøybaner til maskinen.' },
+    { t:'Velg fanen TURNING', hl:'tab', ws:'MANUFACTURE', rib:'turn', tab:1, tre:0, c:'modell',
+      g:'Trykk på fanen <span class="k">TURNING</span>.',
+      h:'Milling er fresing. Turning er dreiing. Nå ser du knappene for dreiebenken.' },
+    { t:'Lag et oppsett: New Setup', hl:'setup', rib:'turn', tab:1, tre:1, c:'wcs',
+      d: dlg('SETUP',['Setup','Stock','Post Process'],0,[['Operation Type','Turning or mill/turn ▾'],'Work Coordinate System (WCS)',['Orientation','Model orientation ▾'],['Origin','Model front ▾',1]]),
+      g:'Trykk <span class="k">New Setup</span>. Velg <span class="k">Turning</span>. Sett <span class="k">Origin</span> til <span class="k">Model front</span>.',
+      h:'Da blir nullpunktet midt på endeflaten, akkurat som på dreiebenken.' },
+    { t:'Emnet: fanen Stock', hl:'setup', rib:'turn', tab:1, tre:1, c:'stock',
+      d: dlg('SETUP',['Setup','Stock','Post Process'],1,[['Mode','Fixed size cylinder ▾'],['Diameter','40 mm',1],['Length','70 mm',1],['Offset from front','1 mm']]),
+      g:'Velg fanen <span class="k">Stock</span>. Skriv inn emnet: <span class="k">Ø40</span> og <span class="k">70 mm</span>. Trykk <span class="k">OK</span>.',
+      h:'Fusion må vite hvor stort emnet er, for å vite hvor mye som skal bort.' },
+    { t:'Plandreiing: Face', hl:'face', rib:'turn', tab:1, tre:2, c:'op', op:0,
+      d: dlg('FACE',OPF,0,[['Tool','T1 · CNMG 12 04 08',1],['Surface speed','180 m/min',1],['Max. spindle speed','3000 rpm'],['Feed per revolution','0.25 mm',1]]),
+      g:'Trykk <span class="k">Face</span>. Velg verktøy på fanen <span class="k">Tool</span>. Sjekk skjærehastighet og mating. Trykk <span class="k">OK</span>.',
+      h:'Endeflaten blir plan. Her blir Z0.' },
+    { t:'Grovdreiing: Profile Roughing', hl:'rough', rib:'turn', tab:1, tre:3, c:'op', op:1,
+      d: dlg('PROFILE ROUGHING',OPF,3,[['Max. roughing stepdown','2 mm',1],['Stock to leave','☑'],['Radial stock to leave','0.3 mm',1],['Axial stock to leave','0.1 mm']]),
+      g:'Trykk <span class="k">Profile Roughing</span>. Se på fanen <span class="k">Passes</span>: 2 mm per kutt, 0,3 mm igjen.',
+      h:'Grovdreiing tar mye materiale raskt. Litt blir igjen til finishen.' },
+    { t:'Finishdreiing: Profile Finishing', hl:'finish', rib:'turn', tab:1, tre:4, c:'op', op:2,
+      d: dlg('PROFILE FINISHING',OPF,0,[['Tool','T2 · VNMG 16 04 04',1],['Surface speed','220 m/min',1],['Max. spindle speed','3000 rpm'],['Feed per revolution','0.1 mm',1]]),
+      g:'Trykk <span class="k">Profile Finishing</span>. Velg finish-stålet. Høyere fart, lavere mating.',
+      h:'Ett kutt langs profilen gir riktig mål og fin overflate.' },
+    { t:'Avstikking: Part', hl:'part', rib:'turn', tab:1, tre:5, c:'op', op:3,
+      d: dlg('PART',OPF,0,[['Tool','T3 · Avstikkstål 3 mm',1],['Surface speed','100 m/min'],['Max. spindle speed','2000 rpm'],['Feed per revolution','0.05 mm',1]]),
+      g:'Trykk <span class="k">Part</span>. Velg avstikkstålet. Lav mating.',
+      h:'Delen kappes løs fra emnet. Sakte, så stålet ikke brekker.' },
+    { t:'Simuler: Simulate', hl:'sim', rib:'turn', tab:1, tre:5, c:'sim',
+      d: dlg('SIMULATION',null,0,[['Toolpath','☑ Show'],['Stock','☑ Show'],['Collisions','Stop on collision',1],['Machining time','2:41']],'Close'),
+      g:'Merk <span class="k">Setup1</span>. Trykk <span class="k">Simulate</span>. Trykk ▶ og se på.',
+      h:'Du ser feil på skjermen før du ser dem i maskinen. Rødt = kollisjon.' },
+    { t:'Lag G-kode: Post Process', hl:'post', rib:'turn', tab:1, tre:5, c:'stock', ferdig:true,
+      d: dlg('POST PROCESS',null,0,[['Post','Skolens maskin ▾',1],['Output folder','…\\NC-program'],['Program number','1001',1],['Program comment','Aksel']],'Post','<div class="fx-nc">'+NC+'</div>'),
+      g:'Merk <span class="k">Setup1</span>. Trykk <span class="k">Post Process</span>. Velg skolens maskin. Trykk <span class="k">Post</span>.',
+      h:'Postprosessoren oversetter verktøybanene til G-kode for akkurat din maskin.' }
   ];
-  const stepper = $('stepper');
-  STEG.forEach((s,i)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=s.t; b.setAttribute('aria-pressed','false'); b.onclick=()=>visSteg(i); stepper.appendChild(b); });
-  function visSteg(i){
-    [...stepper.children].forEach((b,k)=>b.setAttribute('aria-pressed', k===i));
-    $('stegTittel').textContent = STEG[i].t;
-    $('stegListe').innerHTML = STEG[i].l.map(x=>'<li>'+x+'</li>').join('');
-    $('stegFig').innerHTML = STEG[i].fig; fixVars($('stegFig'));
-    $('stegBar').style.width = ((i+1)/STEG.length*100)+'%';
+
+  // Arbeidsflaten (samme mål som dreiebenken over: 4 px per mm, Z0 ved x=390)
+  const MODELL = '<path d="'+DEL+'" fill="#c3c9d1" stroke="#5b6470" stroke-width="2" stroke-linejoin="round"/>';
+  const EMNE = '<rect x="110" y="70" width="284" height="160" fill="#7fa7d6" fill-opacity=".22" stroke="#4a78a8" stroke-width="1.5" stroke-dasharray="6 4"/>';
+  const SENTER = '<path d="M70 150 H600" stroke="#8a929c" stroke-width="1" stroke-dasharray="14 4 3 4"/>';
+  const TRIADE = '<g><path d="M390 150 H446" stroke="#1a73e8" stroke-width="3"/><path d="M446 150 l-10 -6 v12 z" fill="#1a73e8"/><text x="448" y="168" font-size="14" font-weight="700" fill="#1a73e8">Z</text>'+
+    '<path d="M390 150 V96" stroke="#d93025" stroke-width="3"/><path d="M390 96 l-6 10 h12 z" fill="#d93025"/><text x="398" y="104" font-size="14" font-weight="700" fill="#d93025">X</text><circle cx="390" cy="150" r="5" fill="#f6c344" stroke="#5b6470"/></g>';
+  const KUBE = '<g transform="translate(610 40)"><polygon points="0,8 18,0 36,8 18,16" fill="#eef1f5" stroke="#8a929c"/><polygon points="0,8 18,16 18,38 0,30" fill="#dfe4ea" stroke="#8a929c"/><polygon points="18,16 36,8 36,30 18,38" fill="#e8ecf1" stroke="#8a929c"/><text x="9" y="27" font-size="6" fill="#5b6470" font-family="Arial">FRONT</text></g>';
+
+  const fxSvg = $('fxCanvas'); let fxStopp = () => {};
+  function fxTegn(s){
+    fxStopp(); fxStopp = () => {};
+    const grunn = (s.c==='modell' || s.c==='wcs' ? '' : EMNE) + MODELL + SENTER + KUBE + (s.c==='modell' ? '' : TRIADE);
+    $('fxPlay').hidden = s.c!=='sim';
+    if (s.c!=='op' && s.c!=='sim'){ fxSvg.innerHTML = grunn; return; }
+    const ops = s.c==='sim' ? [0,1,2,3] : [s.op];
+    let k = 0, stopp = false;
+    fxStopp = () => { stopp = true; };
+    const kjørEn = () => {
+      if (stopp) return;
+      const op = OP[ops[k]];
+      fxSvg.innerHTML = grunn + '<path class="bane" d="'+op.d+'" fill="none" stroke="#1a73e8" stroke-width="2.5"/>' + STAAL;
+      fixVars(fxSvg);
+      const bane = fxSvg.querySelector('.bane'), staal = fxSvg.querySelector('.staal'), L = bane.getTotalLength();
+      bane.style.strokeDasharray = L;
+      const sett = d => { const p = bane.getPointAtLength(d); staal.setAttribute('transform','translate('+p.x.toFixed(1)+' '+p.y.toFixed(1)+')'); bane.style.strokeDashoffset = L-d; };
+      if (ROLIG){ sett(L); return; }
+      let t0 = null;
+      const steg = t => {
+        if (stopp) return;
+        if (t0===null) t0 = t;
+        const d = (t-t0)*0.18;
+        if (s.c==='sim') $('fxPlayBar').style.width = ((k + Math.min(d/L,1))/ops.length*100)+'%';
+        if (d < L){ sett(d); requestAnimationFrame(steg); }
+        else { sett(L); setTimeout(() => { k = (k+1)%ops.length; kjørEn(); }, 900); }
+      };
+      requestAnimationFrame(steg);
+    };
+    kjørEn();
   }
-  visSteg(0);
+
+  const fxPr = $('fxPrikker'); let fxI = 0;
+  FX.forEach((s,i) => { const b=document.createElement('button'); b.type='button'; b.textContent=i+1; b.title=s.t; b.onclick=()=>fxVis(i); fxPr.appendChild(b); });
+  function fxVis(i){
+    fxI = i; const s = FX[i];
+    [...fxPr.children].forEach((b,k) => { b.setAttribute('aria-pressed', k===i); b.classList.toggle('ferdig', k<i); });
+    const ws = document.querySelector('.fx-ws');
+    $('fxWsNavn').textContent = s.ws || 'MANUFACTURE';
+    ws.classList.toggle('man', (s.ws||'MANUFACTURE')==='MANUFACTURE'); ws.classList.toggle('apen', !!s.meny);
+    $('fxTabs').innerHTML = (s.rib==='design' ? ['SOLID','SURFACE','MESH','SHEET METAL','PLASTIC','UTILITIES'] : ['MILLING','TURNING','ADDITIVE','PROBING','FABRICATION','UTILITIES'])
+      .map((t,k) => '<span class="'+(k===(s.rib==='design'?0:s.tab)?'aktiv':'')+'" data-k="'+(t==='TURNING'?'tab':'')+'">'+t+'</span>').join('');
+    $('fxRibbon').innerHTML = RIBBON[s.rib];
+    $('fxTre').innerHTML = TRE(s.tre);
+    const dl = $('fxDialog'); dl.hidden = !s.d; dl.innerHTML = s.d || '';
+    document.querySelectorAll('#fx .fx-hl').forEach(e => e.classList.remove('fx-hl'));
+    document.querySelectorAll('#fx .fx-tips').forEach(e => e.remove());
+    const mål = document.querySelector('#fx [data-k="'+s.hl+'"]');
+    if (mål){ mål.classList.add('fx-hl'); if (s.hl!=='ws' && s.hl!=='tab'){ const tip=document.createElement('span'); tip.className='fx-tips'; tip.textContent=TIPS[s.hl]; mål.appendChild(tip); } }
+    $('fxNr').textContent = i+1; $('fxTittel').textContent = s.t;
+    $('fxGjor').innerHTML = s.g; $('fxHvorfor').textContent = s.h;
+    $('fxForrige').disabled = i===0; $('fxNeste').textContent = i===FX.length-1 ? 'Ferdig ✓' : 'Neste ▶';
+    fxTegn(s);
+  }
+  $('fxForrige').onclick = () => fxI>0 && fxVis(fxI-1);
+  $('fxNeste').onclick = () => fxI<FX.length-1 ? fxVis(fxI+1) : location.hash = '#maskin';
+  fxVis(0);
 
   // Adressen til simulatorene (samme som SIMULATORER i index.html)
   const SIMULATORER = "https://simulatorer.vercel.app/";
