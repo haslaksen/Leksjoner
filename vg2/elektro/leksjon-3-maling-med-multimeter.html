@@ -1177,7 +1177,7 @@ requestAnimationFrame(loopTick);
   const tipOf=k=>[termX(k),TY+30];
   function vexplain(){
     const sy=VSYS[vs],[a,b]=pa,isL=k=>k[0]==="L",U=abs(sub(sy.V[a],sy.V[b]));
-    if(isL(a)&&isL(b))return sy.it?`To faser i IT-nett: linjespenningen er ${Math.round(U)} V. Det er den eneste spenningen som ligger fast i IT-nett.`:`To faser i TN-nett: linjespenning √3 · 231 V ≈ ${Math.round(U)} V. Pilene står 120° fra hverandre, så forskjellen er lengre enn hver av dem.`;
+    if(isL(a)&&isL(b))return sy.it?`To faser i IT-nett: linjespenningen er ${Math.round(U)} V. Det er den eneste spenningen som ligger fast i IT-nett.`:`To faser i TN-nett: linjespenningen er ${Math.round(U)} V. Pilene står 120° fra hverandre, så forskjellen er lengre enn hver av dem.`;
     if(isL(a)&&b==="N")return `Fase mot N: fasespenning ${Math.round(U)} V. N er koblet til det jordede stjernepunktet, så den står i sentrum av viserdiagrammet.`;
     if(isL(a)&&b==="PE")return sy.it?`Fase mot jord i IT-nett: ca. ${Math.round(U)} V, men verdien er flytende. Den avhenger av kapasitansen mot jord og kan variere mye. Ved jordfeil på en fase blir den 0 V for den fasen og 230 V for de andre. Mål derfor alltid mellom fasene også.`:`Fase mot PE i TN-nett: ${Math.round(U)} V, siden PE og N er koblet sammen i stjernepunktet.`;
     if(a==="N"&&b==="PE")return `N mot PE: nær 0 V. N og PE er koblet sammen ved inntaket. Flere volt her tyder på stor last på kursen eller en dårlig N-forbindelse.`;
