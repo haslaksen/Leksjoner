@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elektro Vg1 · Leksjon 3: Enkle styringer</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+.spin{animation:spin 1s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.multi{display:inline-grid;gap:4px;background:var(--ink);color:var(--surface);border-radius:14px;padding:12px 18px;min-width:9em;text-align:center}
+.multi b{font:700 2rem/1.1 var(--mono);color:var(--glow)}
+.multi span{font-size:.85rem;opacity:.8}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Elektro Vg1 · <span>Leksjon 3</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#bryter">Bryteren</a><a href="#symboler">Symboler</a><a href="#rele">Releet</a><a href="#koble">Koble opp</a><a href="#feilsok">Feilsøk</a><a href="#hms">HMS</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Elektro Vg1 · Leksjon 3</div>
+    <h1 style="margin-top:10px">Enkle styringer</h1>
+    <p class="lead" style="margin-top:12px">Med en bryter <b>styrer</b> vi lampa og motoren: på eller av.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span><b>Bryteren</b> åpner og lukker kretsen</span></li>
+      <li><span class="n i">2</span><span>Skjema med <b>symboler</b></span></li>
+      <li><span class="n r">3</span><span><b>Releet</b>: liten strøm styrer stor</span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span>Koble opp og <b>feilsøke</b></span></li>
+      <li><span class="n" style="color:var(--bad)">5</span><span>Trygt med strøm</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 240" role="img" aria-label="Animasjon: en bryter slås på og av, og lampa lyser når bryteren er lukket">
+      <path id="heroLoop" d="M60 110 V40 H370 V200 H60 V130" fill="none" stroke="var(--wire)" stroke-width="4"/>
+      <rect x="350" y="90" width="40" height="60" fill="var(--surface)"/>
+      <g><animateTransform attributeName="transform" type="rotate" values="-35 370 150;-35 370 150;0 370 150;0 370 150;-35 370 150" keyTimes="0;.2;.3;.8;.9" dur="5s" repeatCount="indefinite"/><path d="M370 150 V92" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/></g>
+      <circle cx="370" cy="150" r="5" fill="var(--ink)"/><circle cx="370" cy="90" r="5" fill="var(--ink)"/>
+      <g fill="var(--glow)" stroke="var(--i)" stroke-width="1.5" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.29;.3;.8;.81" dur="5s" repeatCount="indefinite"/>
+        <circle r="6"><animateMotion dur="3s" repeatCount="indefinite"><mpath href="#heroLoop"/></animateMotion></circle>
+        <circle r="6"><animateMotion dur="3s" begin="-1s" repeatCount="indefinite"><mpath href="#heroLoop"/></animateMotion></circle>
+        <circle r="6"><animateMotion dur="3s" begin="-2s" repeatCount="indefinite"><mpath href="#heroLoop"/></animateMotion></circle>
+      </g>
+      <rect x="36" y="110" width="48" height="20" fill="var(--surface)"/>
+      <path d="M32 112 H88" stroke="var(--u)" stroke-width="5"/><path d="M46 128 H74" stroke="var(--u)" stroke-width="10"/>
+      <circle cx="215" cy="40" r="50" fill="var(--glow)" opacity="0"><animate attributeName="opacity" values="0;0;.7;.7;0" keyTimes="0;.29;.3;.8;.81" dur="5s" repeatCount="indefinite"/></circle>
+      <circle cx="215" cy="40" r="22" fill="var(--surface)" stroke="var(--ink)" stroke-width="4"/><path d="M200 25 L230 55 M230 25 L200 55" stroke="var(--ink)" stroke-width="4"/>
+      <text x="380" y="126" font-size="14" fill="var(--muted)">bryter</text><text x="215" y="90" text-anchor="middle" font-size="14" fill="var(--muted)">lampe</text><text x="96" y="125" font-size="14" fill="var(--muted)">batteri</text>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (TIP01-03, Konstruksjons- og styringsteknikk)</h3>
+      <p><b>Mål 1 (delvis):</b> HMS for elektriske anlegg (Del 4 og 6).</p>
+      <p><b>Mål 2 (delvis):</b> «utvikle og beskrive skjemaer med grunnleggende komponenter …» (Del 2–3).</p>
+      <p><b>Mål 5 (delvis):</b> «koble opp, teste og feilsøke på automatiserte og manuelle styringssystemer … og utføre målinger» (Del 3–5).</p>
+      <p><b>Mål 6 (delvis):</b> «tolke og forklare sammenhengen mellom utførte målinger og beregnede størrelser» (Del 5). Bygger på <a href="leksjon-1-spenning-strom-og-motstand.html">leksjon 1</a> og <a href="leksjon-2-repetisjon-og-effekt.html">leksjon 2</a>.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: «Hva skjer inni lysbryteren når du slår på lyset?»</dd>
+        <dt>10–25</dt><dd>Del 1–2: bryteren og symbolene. Quiz i fellesskap.</dd>
+        <dt>25–40</dt><dd>Del 3: releet. Vis gjerne et ekte relé og hør at det klikker.</dd>
+        <dt>40–45</dt><dd>Del 4: koble opp i riktig rekkefølge.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–70</dt><dd>Del 5: feilsøk. La elevene finne feilen i par. Gjerne med ekte multimeter og 12 V-krets.</dd>
+        <dt>70–75</dt><dd>Del 6: HMS.</dd>
+        <dt>75–88</dt><dd>Oppgavene A–D. Ekstra-oppgaven for de som blir ferdige.</dd>
+        <dt>88–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="bryter">
+  <div class="tag">Del 1 · Bryteren</div>
+  <h2>Lukket bryter = strøm. Åpen bryter = stopp.</h2>
+  <div class="benk">
+    <svg id="bryterFig" viewBox="0 0 520 290" role="img" aria-label="Krets med batteri, lampe og bryter. Trykk for å åpne og lukke bryteren." style="cursor:pointer"></svg>
+    <div style="display:grid;gap:14px">
+      <button type="button" id="bryterBtn" class="stor">👆 Slå på</button>
+      <p class="status" id="bryterTekst">Bryteren er åpen. Lampa er av.</p>
+    </div>
+  </div>
+  <p class="regel">Strømmen må gå <b>hele veien rundt</b>. Et brudd et sted, og alt stopper.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Bryteren lager eller bryter kretsen. Lukket bryter: kretsen er hel, strømmen går. Åpen bryter: luftgapet stopper strømmen. Ordene er motsatt av en dør: «lukket» betyr at strømmen kommer gjennom. Det forvirrer mange elever, så si det høyt.</details>
+</section>
+
+<section id="symboler">
+  <div class="tag">Del 2 · Symboler</div>
+  <h2>Skjemaet tegner vi med symboler</h2>
+  <div class="symboler" id="symbolKort"></div>
+  <div class="benk">
+    <svg id="quizFig" viewBox="0 0 160 120" role="img" aria-label="Et symbol. Hva er det?" style="max-height:220px"></svg>
+    <div style="display:grid;gap:14px">
+      <p class="stor"><b>Hva er dette?</b></p>
+      <div class="svar-knapper" id="quizSvar"></div>
+      <p class="status" id="quizTekst"></p>
+      <button type="button" id="quizNeste">Neste symbol ▶</button>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Symbolene følger IEC 60617. Bryteren tegnes alltid i hvilestilling (uten strøm og uten at noen trykker). En trykknapp går tilbake av seg selv når du slipper, en bryter blir stående.</details>
+</section>
+
+<section id="rele">
+  <div class="tag">Del 3 · Releet</div>
+  <h2>Liten strøm styrer stor strøm</h2>
+  <div class="benk">
+    <svg id="releFig" viewBox="0 0 660 320" role="img" aria-label="Styrekrets med trykknapp og relé-spole til venstre, hovedkrets med relé-kontakt og motor til høyre"></svg>
+    <div style="display:grid;gap:14px">
+      <button type="button" id="releBtn" class="stor">👆 Hold inne knappen</button>
+      <p class="status" id="releTekst">Hold inne trykknappen.</p>
+    </div>
+  </div>
+  <ul class="goals" style="font-size:1.05rem">
+    <li><span class="n u">1</span><span>Du trykker. Litt strøm går i <b>spolen</b>.</span></li>
+    <li><span class="n" style="color:var(--orange)">2</span><span>Spolen blir en <b>magnet</b> og drar kontakten igjen.</span></li>
+    <li><span class="n r">3</span><span>Kontakten lukker. <b>Motoren</b> går.</span></li>
+  </ul>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Releet skiller styrestrømmen (her 24 V, liten strøm i knappen) fra hovedstrømmen (stor strøm til motoren). Da kan knappen være liten og trygg, mens motoren får mye strøm. Stiplet linje i skjemaet betyr at spole og kontakt henger sammen mekanisk. Store releer kalles kontaktorer (Vg2 Elektro 4). Relé-kontakten får samme navn som spolen, her K1.</details>
+</section>
+
+<section id="koble">
+  <div class="tag">Del 4 · Koble opp</div>
+  <h2>Koble først. Slå på til slutt.</h2>
+  <div class="benk">
+    <svg id="kobleFig" viewBox="0 0 520 290" role="img" aria-label="Krets med tre ledninger som mangler"></svg>
+    <div style="display:grid;gap:14px">
+      <div class="valgknapper" id="kobleKnapper" role="group" aria-label="Koble ledningene"></div>
+      <button type="button" id="kobleStrom" class="stor">⚡ Slå på strømmen</button>
+      <p class="status" id="kobleTekst">Koble de tre ledningene.</p>
+    </div>
+  </div>
+  <p class="regel">Kobler du om? <b>Slå av strømmen først.</b></p>
+</section>
+
+<section id="feilsok">
+  <div class="tag">Del 5 · Feilsøk</div>
+  <h2>Lampa lyser ikke. Hvor er feilen?</h2>
+  <div class="benk">
+    <svg id="feilFig" viewBox="0 0 520 296" role="img" aria-label="Krets med batteri, bryter, ledning og lampe. Mål med voltmeteret."></svg>
+    <div style="display:grid;gap:14px">
+      <p style="font-weight:600">1 · Mål spenningen over:</p>
+      <div class="valgknapper" id="maalKnapper" role="group" aria-label="Velg hvor du måler"></div>
+      <div class="multi" aria-live="polite"><span>Voltmeter</span><b id="maalVerdi">– V</b></div>
+      <p style="font-weight:600">2 · Hvor er feilen?</p>
+      <div class="svar-knapper" id="feilSvar"></div>
+      <p class="status" id="feilTekst"></p>
+      <button type="button" id="feilNy">🎲 Ny feil</button>
+    </div>
+  </div>
+  <p class="regel">Måler du <b>hele spenningen (12 V)</b> over en bryter eller ledning? <b>Der er bruddet.</b></p>
+  <a class="simlink no-print" data-sim="multimeter"><span class="ico">🧪</span><span><b>Prøv selv: Multimeter-simulatoren</b><small>Mål spenning over delene i en krets.</small></span><span class="pil">→</span></a>
+  <details class="laerer no-print"><summary>Lærernotat</summary>I en hel krets ligger all spenningen over lampa (12 V), og nesten 0 V over bryter og ledninger. Ved et brudd går det ingen strøm. Da blir det ingen spenning over lampa, og hele spenningen havner over bruddet. Forventet verdi (beregning) sammenlignet med målt verdi er kjernen i mål 6. Er batteriet tomt, er det 0 V overalt. Mål alltid batteriet først. Lampa kan også være røket, men det ser du ikke med voltmeter (da er det 12 V over lampa som vanlig). Den finner du med ohmmeter uten strøm.</details>
+</section>
+
+<section id="hms">
+  <div class="tag">Del 6 · HMS</div>
+  <h2>Trygt med strøm: riktig eller galt?</h2>
+  <p class="lead">Trykk på kortene.</p>
+  <div class="hms" id="hmsKort"></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>På skolen øver vi med lav spenning (12–24 V). Arbeid på det faste anlegget (230 V) skal gjøres av en registrert elektrovirksomhet. Elever kan bytte sikring og lyspære, og koble til ledninger og apparater med støpsel. Bruk riktig verktøy, sjekk utstyret før bruk og meld fra om skader. Strøm gjennom kroppen kan være livsfarlig: søk lege etter strømulykker selv om du føler deg fin.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 3: Enkle styringer</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p><i>Ord: åpen · symboler · lukket · releet · av</i></p>
+      <p>Når bryteren er <span class="luke"><span class="fasit" hidden>lukket</span></span>, går det strøm.</p>
+      <p>Når bryteren er <span class="luke"><span class="fasit" hidden>åpen</span></span>, stopper strømmen.</p>
+      <p>I et skjema tegner vi delene med <span class="luke"><span class="fasit" hidden>symboler</span></span>.</p>
+      <p>Med <span class="luke"><span class="fasit" hidden>releet</span></span> kan en liten strøm styre en stor strøm.</p>
+      <p>Før du kobler, slår du strømmen <span class="luke"><span class="fasit" hidden>av</span></span>.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Hva heter symbolene?</h3>
+      <p><i>Ord: lampe · motor · batteri · trykknapp</i></p>
+      <svg class="oppgfig" viewBox="0 0 640 140" role="img" aria-label="Fire symboler merket A, B, C og D"><g id="oppgB"></g></svg>
+      <div class="tablewrap"><table>
+        <tr><th>Symbol</th><th>Navn</th></tr>
+        <tr><td>A</td><td class="blank"><span class="fasit" hidden>batteri</span></td></tr>
+        <tr><td>B</td><td class="blank"><span class="fasit" hidden>lampe</span></td></tr>
+        <tr><td>C</td><td class="blank"><span class="fasit" hidden>trykknapp</span></td></tr>
+        <tr><td>D</td><td class="blank"><span class="fasit" hidden>motor</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Feilsøk</h3>
+      <p>Lampa lyser ikke. Du måler spenningen over delene. Hvor er bruddet?</p>
+      <div class="tablewrap"><table>
+        <tr><th></th><th>Batteri</th><th>Bryter</th><th>Ledning</th><th>Lampe</th><th>Bruddet er i</th></tr>
+        <tr><td>1</td><td>12 V</td><td>12 V</td><td>0 V</td><td>0 V</td><td class="blank"><span class="fasit" hidden>bryteren</span></td></tr>
+        <tr><td>2</td><td>12 V</td><td>0 V</td><td>12 V</td><td>0 V</td><td class="blank"><span class="fasit" hidden>ledningen</span></td></tr>
+        <tr><td>3</td><td>0 V</td><td>0 V</td><td>0 V</td><td>0 V</td><td class="blank"><span class="fasit" hidden>batteriet (tomt)</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · HMS: riktig eller galt?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Jeg kobler om mens strømmen er på.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Vi øver med lav spenning, for eksempel 12 V.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>En kabel med skadet isolasjon tar vi ut av bruk.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Det er greit å jobbe med strøm med våte hender.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div class="ekstra-oppg">
+      <h3>Ekstra · Releet og effekt</h3>
+      <ol>
+        <li>Hvorfor bruker vi et relé når en liten knapp skal styre en stor motor?<div class="svar"><span class="fasit" hidden>Knappen tåler bare liten strøm. Releet lar den lille strømmen i knappen styre den store strømmen til motoren. Det er også tryggere.</span></div></li>
+        <li>Lampa får 12 V og 0,5 A. Hva er effekten? (P = U × I)<div class="svar"><span class="fasit" hidden>P = 12 V × 0,5 A = 6 W</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hvordan finner du bruddet i en krets med et voltmeter?<div class="svar"><span class="fasit" hidden>Mål over hver del. Der du måler hele spenningen (12 V), er bruddet.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const ROLIG = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  const tegn = (svg, h) => { svg.innerHTML = h; fixVars(svg); };
+
+  // ---------- symboler (IEC 60617), tegnet i en boks på 120 × 100 ----------
+  const ST = 'stroke="var(--ink)" stroke-width="3" fill="none"';
+  const SYM = {
+    batteri: () => '<path d="M10 50 H52 M68 50 H110" '+ST+'/><path d="M52 28 V72" stroke="var(--ink)" stroke-width="3"/><path d="M68 38 V62" stroke="var(--ink)" stroke-width="8"/><text x="40" y="26" font-size="18" font-weight="800" fill="var(--ink)">+</text><text x="76" y="30" font-size="20" font-weight="800" fill="var(--ink)">−</text>',
+    bryter: () => '<path d="M10 50 H40 M80 50 H110 M40 50 L78 30" '+ST+' stroke-linecap="round"/><circle cx="40" cy="50" r="3.5" fill="var(--ink)"/><circle cx="80" cy="50" r="3.5" fill="var(--ink)"/>',
+    trykknapp: () => '<path d="M10 50 H40 M80 50 H110 M36 38 H84" '+ST+' stroke-linecap="round"/><path d="M60 38 V16 M50 16 H70" stroke="var(--r)" stroke-width="3.5"/><circle cx="40" cy="50" r="3.5" fill="var(--ink)"/><circle cx="80" cy="50" r="3.5" fill="var(--ink)"/>',
+    lampe: () => '<path d="M10 50 H38 M82 50 H110" '+ST+'/><circle cx="60" cy="50" r="22" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/><path d="M45 35 L75 65 M75 35 L45 65" '+ST+'/>',
+    motor: () => '<path d="M10 50 H38 M82 50 H110" '+ST+'/><circle cx="60" cy="50" r="22" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/><text x="60" y="59" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">M</text>',
+    rele: () => '<path d="M10 50 H40 M80 50 H110" '+ST+'/><rect x="40" y="34" width="40" height="32" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/><text x="60" y="26" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">K1</text>'
+  };
+  const sym = (navn, x, y, s) => '<g transform="translate('+x+' '+y+') scale('+(s||1)+')">'+SYM[navn]()+'</g>';
+
+  // ---------- felles krets: batteri til venstre, lampe øverst, bryter til høyre ----------
+  const BAT = '<rect x="40" y="130" width="60" height="30" fill="var(--surface)"/><path d="M40 135 H100" stroke="var(--u)" stroke-width="5"/><path d="M55 155 H85" stroke="var(--u)" stroke-width="11"/><text x="24" y="141" font-size="20" font-weight="800" fill="var(--u)">+</text><text x="24" y="166" font-size="24" font-weight="800" fill="var(--u)">−</text>';
+  const LAMPE = lys => (lys ? '<circle cx="260" cy="50" r="52" fill="var(--glow)" opacity=".75"/>' : '') + '<circle cx="260" cy="50" r="24" fill="var(--surface)" stroke="var(--ink)" stroke-width="4"/><path d="M243 33 L277 67 M277 33 L243 67" stroke="var(--ink)" stroke-width="4"/>';
+  const BRYTER = lukket => '<path d="M450 175 L'+(lukket?'450 118':'416 126')+'" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><circle cx="450" cy="175" r="5" fill="var(--ink)"/><circle cx="450" cy="115" r="5" fill="var(--ink)"/>';
+  const ledning = (d, farge) => '<path d="'+d+'" fill="none" stroke="'+(farge||'var(--wire)')+'" stroke-width="4" stroke-linejoin="round"/>';
+  const strom = d => '<path d="'+d+'" fill="none" stroke="var(--glow)" stroke-width="3" class="flow"/>';
+  const KRETS = { s1:'M70 135 V50 H236', s2:'M284 50 H450 V115', s3:'M450 175 V250 H70 V155' };
+
+  // ---------- del 1: bryteren ----------
+  let lukket = false;
+  function bryterTegn(){
+    let h = ledning(KRETS.s1) + ledning(KRETS.s2) + ledning(KRETS.s3);
+    if (lukket) h += strom(KRETS.s1) + strom(KRETS.s2) + strom(KRETS.s3) + strom('M450 175 V115');
+    h += BAT + LAMPE(lukket) + BRYTER(lukket);
+    h += '<g font-size="15" fill="var(--muted)"><text x="110" y="150">batteri</text><text x="260" y="100" text-anchor="middle">lampe</text><text x="462" y="150">bryter</text></g>';
+    h += '<text x="260" y="280" text-anchor="middle" font-size="17" font-weight="800" fill="'+(lukket?'var(--r)':'var(--bad)')+'">'+(lukket?'Lukket: strømmen går rundt':'Åpen: ingen strøm')+'</text>';
+    tegn($('bryterFig'), h);
+    $('bryterBtn').textContent = lukket ? '✋ Slå av' : '👆 Slå på';
+    $('bryterTekst').textContent = lukket ? 'Bryteren er lukket. Lampa lyser.' : 'Bryteren er åpen. Lampa er av.';
+  }
+  const bytt = () => { lukket = !lukket; bryterTegn(); };
+  $('bryterBtn').onclick = bytt; $('bryterFig').onclick = bytt; bryterTegn();
+
+  // ---------- del 2: symboler ----------
+  const SYMLISTE = [
+    ['batteri','Batteri','Lang strek = pluss.'],
+    ['bryter','Bryter','Blir stående på eller av.'],
+    ['trykknapp','Trykknapp','På bare når du holder inne.'],
+    ['lampe','Lampe','Lyser når det går strøm.'],
+    ['motor','Motor','M = motor.'],
+    ['rele','Relé (spole)','Blir en magnet med strøm.']
+  ];
+  SYMLISTE.forEach(([s, navn, tekst]) => { const k = document.createElement('div'); k.className = 'q';
+    k.innerHTML = '<svg viewBox="0 0 120 100" aria-hidden="true">'+sym(s,0,0)+'</svg><h3>'+navn+'</h3><p>'+tekst+'</p>'; fixVars(k); $('symbolKort').appendChild(k); });
+  let qi = -1;
+  function quizNy(){
+    qi = (qi + 1) % SYMLISTE.length;
+    tegn($('quizFig'), sym(SYMLISTE[qi][0], 20, 10));
+    $('quizTekst').textContent = ''; $('quizSvar').innerHTML = '';
+    [3,0,5,1,4,2].map(k => SYMLISTE[(k+qi)%6]).forEach(([s, navn]) => { const b = document.createElement('button'); b.type='button'; b.textContent = navn;
+      b.onclick = () => { const ok = s === SYMLISTE[qi][0]; b.classList.add(ok?'ok':'feil'); $('quizTekst').textContent = ok ? 'Riktig!' : 'Ikke helt. Se på formen.'; if (ok) [...$('quizSvar').children].forEach(c => c.disabled = true); };
+      $('quizSvar').appendChild(b); });
+  }
+  $('quizNeste').onclick = quizNy; quizNy();
+
+  // ---------- del 3: releet ----------
+  let releP = false;
+  function releTegn(){
+    const p = releP;
+    const S1 = 'M40 150 V60 H118', S2 = 'M182 60 H260 V130', S3 = 'M260 190 V260 H40 V170';
+    const H1 = 'M400 130 V60 H620 V140', H2 = 'M620 160 V260 H536', H3 = 'M484 260 H400 V190';
+    let h = '<text x="150" y="20" text-anchor="middle" font-size="15" font-weight="800" fill="var(--u)">Styrestrøm (liten)</text><text x="510" y="20" text-anchor="middle" font-size="15" font-weight="800" fill="var(--i)">Hovedstrøm (stor)</text>';
+    h += [S1,S2,S3,H1,H2,H3].map(d => ledning(d)).join('');
+    if (p) h += [S1,S2,S3,'M118 60 H182','M260 130 V190'].map(strom).join('') + [H1,H2,H3,'M400 190 V130'].map(d => '<path d="'+d+'" fill="none" stroke="var(--glow)" stroke-width="6" class="flow"/>').join('');
+    // batteri 24 V og kraftforsyning
+    h += '<rect x="20" y="146" width="40" height="28" fill="var(--surface)"/><path d="M18 150 H62" stroke="var(--u)" stroke-width="4"/><path d="M28 170 H52" stroke="var(--u)" stroke-width="9"/><text x="66" y="166" font-size="14" font-weight="700" fill="var(--u)">24 V</text>';
+    h += '<rect x="596" y="136" width="48" height="28" fill="var(--surface)"/><path d="M594 140 H646" stroke="var(--i)" stroke-width="5"/><path d="M606 160 H634" stroke="var(--i)" stroke-width="11"/>';
+    // trykknapp
+    const ky = p ? 60 : 44;
+    h += '<circle cx="118" cy="60" r="4" fill="var(--ink)"/><circle cx="182" cy="60" r="4" fill="var(--ink)"/><path d="M112 '+ky+' H188" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><path d="M150 '+ky+' V'+(ky-22)+' M138 '+(ky-22)+' H162" stroke="var(--r)" stroke-width="4"/><text x="150" y="88" text-anchor="middle" font-size="13" fill="var(--muted)">trykknapp</text>';
+    // spole
+    h += '<rect x="240" y="130" width="40" height="60" fill="'+(p?'var(--orange-soft)':'var(--surface)')+'" stroke="'+(p?'var(--orange)':'var(--ink)')+'" stroke-width="3.5"/><text x="292" y="142" font-size="15" font-weight="800" fill="var(--ink)">K1</text><text x="260" y="210" text-anchor="middle" font-size="13" fill="var(--muted)">spole</text>';
+    if (p) h += '<text x="260" y="166" text-anchor="middle" font-size="22" class="pulse">🧲</text>';
+    // mekanisk kobling og kontakt
+    h += '<path d="M280 '+(p?150:160)+' H'+(p?400:388)+'" stroke="var(--orange)" stroke-width="2.5" stroke-dasharray="7 5"/>';
+    h += '<circle cx="400" cy="190" r="4.5" fill="var(--ink)"/><circle cx="400" cy="130" r="4.5" fill="var(--ink)"/><path d="M400 190 L'+(p?'400 133':'372 140')+'" stroke="var(--ink)" stroke-width="5" stroke-linecap="round"/><text x="410" y="200" font-size="13" fill="var(--muted)">kontakt K1</text>';
+    // motor
+    h += '<circle cx="510" cy="260" r="26" fill="var(--surface)" stroke="var(--ink)" stroke-width="3.5"/><text x="510" y="269" text-anchor="middle" font-size="24" font-weight="800" fill="var(--ink)">M</text>';
+    if (p) h += '<g class="spin"><circle cx="510" cy="260" r="40" fill="none" stroke="none"/><path d="M510 222 A38 38 0 0 1 548 260" fill="none" stroke="var(--r)" stroke-width="4"/><path d="M548 268 l-8 -12 h16 z" fill="var(--r)"/></g>';
+    h += '<text x="510" y="312" text-anchor="middle" font-size="13" fill="var(--muted)">motor</text>';
+    tegn($('releFig'), h);
+    $('releTekst').textContent = p ? 'Spolen blir en magnet. Kontakten lukker, og motoren går.' : 'Slipp: magneten slipper, kontakten åpner, og motoren stopper.';
+  }
+  const rb = $('releBtn');
+  const releSett = på => { if (på !== releP) { releP = på; releTegn(); } };
+  rb.addEventListener('pointerdown', e => { e.preventDefault(); releSett(true); });
+  ['pointerup','pointerleave','pointercancel'].forEach(t => rb.addEventListener(t, () => releSett(false)));
+  rb.addEventListener('keydown', e => { if ((e.key===' '||e.key==='Enter') && !e.repeat) { e.preventDefault(); releSett(true); } });
+  rb.addEventListener('keyup', e => { if (e.key===' '||e.key==='Enter') releSett(false); });
+  releTegn(); $('releTekst').textContent = 'Hold inne trykknappen.';
+
+  // ---------- del 4: koble opp ----------
+  const KOBLE = [ {d:'M70 135 V50 H236', lx:150, ly:40}, {d:'M284 50 H450 V250', lx:466, ly:150}, {d:'M450 250 H70 V155', lx:260, ly:240} ];
+  const koblet = [false,false,false]; let paa = false;
+  function kobleTegn(){
+    const hel = koblet.every(Boolean), lys = hel && paa;
+    let h = KOBLE.map((k,i) => koblet[i] ? ledning(k.d) + (lys ? strom(k.d) : '') : '<path d="'+k.d+'" fill="none" stroke="var(--line)" stroke-width="4" stroke-dasharray="8 8"/><circle cx="'+k.lx+'" cy="'+k.ly+'" r="15" fill="var(--orange)"/><text x="'+k.lx+'" y="'+(k.ly+6)+'" text-anchor="middle" font-size="17" font-weight="800" fill="#fff">'+(i+1)+'</text>').join('');
+    h += BAT + LAMPE(lys);
+    h += '<rect x="108" y="128" width="78" height="34" rx="17" fill="'+(paa?'var(--r-soft)':'var(--bad-soft)')+'" stroke="'+(paa?'var(--r)':'var(--bad)')+'" stroke-width="2"/><text x="147" y="151" text-anchor="middle" font-size="15" font-weight="800" fill="'+(paa?'var(--r)':'var(--bad)')+'">'+(paa?'PÅ':'AV')+'</text>';
+    tegn($('kobleFig'), h);
+    [...$('kobleKnapper').children].forEach((b,i) => b.setAttribute('aria-pressed', koblet[i]));
+    $('kobleStrom').textContent = paa ? '⭘ Slå av strømmen' : '⚡ Slå på strømmen';
+  }
+  KOBLE.forEach((k,i) => { const b = document.createElement('button'); b.type='button'; b.textContent='🔌 Ledning '+(i+1);
+    b.onclick = () => {
+      if (paa) { $('kobleTekst').innerHTML = '<span style="color:var(--bad)">⚠️ Stopp! Slå av strømmen før du kobler.</span>'; return; }
+      koblet[i] = !koblet[i]; kobleTegn();
+      $('kobleTekst').textContent = koblet.every(Boolean) ? 'Alt er koblet. Nå kan du slå på strømmen.' : 'Koble resten av ledningene.';
+    }; $('kobleKnapper').appendChild(b); });
+  $('kobleStrom').onclick = () => {
+    paa = !paa; kobleTegn();
+    $('kobleTekst').textContent = !paa ? 'Strømmen er av. Nå er det trygt å koble.' : koblet.every(Boolean) ? 'Lampa lyser! Riktig rekkefølge. 🎉' : 'Lampa lyser ikke. Kretsen er ikke hel. Slå av, og koble resten.';
+  };
+  kobleTegn();
+
+  // ---------- del 5: feilsøk med voltmeter ----------
+  const MAAL = { batteri:{n:'Batteri', a:[70,128], b:[70,162], vx:28, vy:205}, bryter:{n:'Bryter', a:[450,115], b:[450,175], vx:494, vy:145}, ledning:{n:'Ledning', a:[450,250], b:[70,250], vx:260, vy:272}, lampe:{n:'Lampe', a:[236,50], b:[284,50], vx:260, vy:106} };
+  const FEIL = [
+    {k:'bryter', v:{batteri:12, bryter:12, ledning:0, lampe:0}, t:'Riktig! Hele spenningen ligger over bryteren. Bryteren er ødelagt.', x:[450,145]},
+    {k:'ledning', v:{batteri:12, bryter:0, ledning:12, lampe:0}, t:'Riktig! Hele spenningen ligger over ledningen. Den er røket.', x:[300,250]},
+    {k:'batteri', v:{batteri:0, bryter:0, ledning:0, lampe:0}, t:'Riktig! 0 V overalt, også over batteriet. Batteriet er tomt.', x:[70,145]}
+  ];
+  let fi = 1, maalt = null, funnet = false;
+  function feilTegn(){
+    let h = ledning(KRETS.s1) + ledning(KRETS.s2) + ledning(KRETS.s3) + BAT + LAMPE(false) + BRYTER(true);
+    h += '<g font-size="15" fill="var(--muted)"><text x="110" y="150">batteri</text><text x="462" y="150">bryter</text><text x="150" y="240">ledning</text></g>';
+    if (maalt) { const m = MAAL[maalt];
+      h += '<path d="M'+m.a[0]+' '+m.a[1]+' L'+m.vx+' '+m.vy+' L'+m.b[0]+' '+m.b[1]+'" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="4 4"/>';
+      h += '<circle cx="'+m.a[0]+'" cy="'+m.a[1]+'" r="7" fill="var(--bad)"/><circle cx="'+m.b[0]+'" cy="'+m.b[1]+'" r="7" fill="var(--ink)"/>';
+      h += '<circle cx="'+m.vx+'" cy="'+m.vy+'" r="15" fill="var(--surface)" stroke="var(--u)" stroke-width="3"/><text x="'+m.vx+'" y="'+(m.vy+6)+'" text-anchor="middle" font-size="17" font-weight="800" fill="var(--u)">V</text>'; }
+    if (funnet) { const [x,y] = FEIL[fi].x; h += '<path d="M'+(x-14)+' '+(y-14)+' L'+(x+14)+' '+(y+14)+' M'+(x+14)+' '+(y-14)+' L'+(x-14)+' '+(y+14)+'" stroke="var(--bad)" stroke-width="6" stroke-linecap="round"/>'; }
+    tegn($('feilFig'), h);
+  }
+  Object.entries(MAAL).forEach(([k,m]) => { const b = document.createElement('button'); b.type='button'; b.textContent = m.n;
+    b.onclick = () => { maalt = k; [...$('maalKnapper').children].forEach(c => c.setAttribute('aria-pressed', c===b)); $('maalVerdi').textContent = FEIL[fi].v[k] + ' V'; feilTegn(); }; $('maalKnapper').appendChild(b); });
+  [['bryter','Bryteren'],['ledning','Ledningen'],['batteri','Batteriet er tomt']].forEach(([k,t]) => { const b = document.createElement('button'); b.type='button'; b.textContent = t;
+    b.onclick = () => { const ok = k === FEIL[fi].k; b.classList.add(ok?'ok':'feil'); $('feilTekst').textContent = ok ? FEIL[fi].t : 'Ikke helt. Mål over flere deler.'; if (ok) { funnet = true; feilTegn(); [...$('feilSvar').children].forEach(c => c.disabled = true); } };
+    $('feilSvar').appendChild(b); });
+  function feilNy(){
+    fi = (fi + 1 + Math.floor(Math.random()*2)) % FEIL.length; maalt = null; funnet = false;
+    $('maalVerdi').textContent = '– V'; $('feilTekst').textContent = 'Mål først. Gjett etterpå.';
+    [...$('maalKnapper').children].forEach(c => c.setAttribute('aria-pressed', false));
+    [...$('feilSvar').children].forEach(c => { c.disabled = false; c.classList.remove('ok','feil'); });
+    feilTegn();
+  }
+  $('feilNy').onclick = feilNy; feilNy();
+
+  // ---------- del 6: HMS ----------
+  const HMS = [
+    ['🔌','Jeg kobler om mens strømmen er på.',false,'Galt! Slå alltid av strømmen før du kobler.'],
+    ['🔋','Vi øver med lav spenning, for eksempel 12 V.',true,'Riktig! Lav spenning er tryggere.'],
+    ['⚡','Jeg kan selv koble om stikkontakten hjemme (230 V).',false,'Galt! Det skal en elektriker gjøre.'],
+    ['💧','Jeg jobber med strøm med våte hender.',false,'Galt! Vann leder strøm. Tørk hendene.'],
+    ['✂️','En kabel med skadet isolasjon tar vi ut av bruk.',true,'Riktig! Meld fra til læreren.']
+  ];
+  HMS.forEach(([ikon, tekst, riktig, svar]) => { const b = document.createElement('button'); b.type='button';
+    b.innerHTML = '<span class="ikon" aria-hidden="true">'+ikon+'</span><span>'+tekst+'</span><span class="svar-hms">Trykk for svar</span>';
+    b.onclick = () => { b.classList.add(riktig?'ok':'feil'); b.querySelector('.svar-hms').textContent = svar; }; $('hmsKort').appendChild(b); });
+
+  // oppgave B: fire symboler
+  tegn($('oppgB'), [['batteri','A'],['lampe','B'],['trykknapp','C'],['motor','D']].map(([s,n],i) => sym(s, 20+i*160, 30) + '<text x="'+(10+i*160)+'" y="30" font-size="20" font-weight="800" fill="var(--orange)">'+n+'</text>').join(''));
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
