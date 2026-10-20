@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Styring og automasjon Vg1 · Leksjon 1: Simuler før du bygger</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+.spin{animation:spin 1s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.multi{display:inline-grid;gap:4px;background:var(--ink);color:var(--surface);border-radius:14px;padding:12px 18px;min-width:9em;text-align:center}
+.multi b{font:700 2rem/1.1 var(--mono);color:var(--glow)}
+.multi span{font-size:.85rem;opacity:.8}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+<style>
+.flyt{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.slot{display:grid;gap:8px;justify-items:center;text-align:center}
+.slot .valgknapper{justify-content:center}
+.oppdrag{display:grid;gap:12px;counter-reset:o;padding:0;margin:0;list-style:none}
+.oppdrag li{counter-increment:o;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--blue);border-radius:12px;padding:12px 16px;display:grid;grid-template-columns:2.4rem 1fr;gap:12px;align-items:center;font-size:1.05rem}
+.oppdrag li::before{content:counter(o);display:grid;place-items:center;width:2.2rem;height:2.2rem;border-radius:50%;background:var(--blue);color:#fff;font-weight:800}
+.merke3{display:flex;flex-wrap:wrap;gap:10px}
+.merke3 span{padding:.4rem 1rem;border-radius:99px;font-weight:700;background:var(--blue-soft);color:var(--blue)}
+@media (max-width:860px){.flyt{grid-template-columns:1fr 1fr}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Styring og automasjon Vg1 · <span>Leksjon 1</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hvorfor">Hvorfor</a><a href="#arbeidsgang">Arbeidsgangen</a><a href="#bygg">Bygg og test</a><a href="#oppdrag">Oppdrag</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Konstruksjon og styringsteknikk Vg1 · Styring og automasjon · Leksjon 1</div>
+    <h1 style="margin-top:10px">Simuler før du bygger</h1>
+    <p class="lead" style="margin-top:12px">Test styringen på <b>skjermen</b> først. Bygg den ekte etterpå.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Hvorfor <b>simulere</b>?</span></li>
+      <li><span class="n i">2</span><span>Tegn → test → rett → bygg</span></li>
+      <li><span class="n r">3</span><span>Bygg og test i en <b>mini-simulator</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span>Oppdrag i den <b>ekte simulatoren</b></span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 260" role="img" aria-label="Animasjon: en PC-skjerm med et skjema der en sylinder går ut og inn">
+      <rect x="40" y="16" width="350" height="200" rx="12" fill="var(--wire)"/>
+      <rect x="54" y="30" width="322" height="172" rx="4" fill="var(--surface)"/>
+      <rect x="180" y="216" width="70" height="22" fill="var(--wire)"/><rect x="140" y="236" width="150" height="10" rx="5" fill="var(--wire)"/>
+      <rect x="62" y="38" width="70" height="22" rx="5" fill="var(--r-soft)" stroke="var(--r)" stroke-width="1.5"/><text x="97" y="54" text-anchor="middle" font-size="13" font-weight="800" fill="var(--r)">▶ Test</text>
+      <circle cx="120" cy="160" r="20" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/><path d="M120 142 L113 153 H127 Z" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/>
+      <path d="M120 140 V120" stroke="var(--blue)" stroke-width="3"/>
+      <rect x="95" y="92" width="25" height="28" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/><rect x="120" y="92" width="25" height="28" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+      <path d="M132 92 V72 H200" stroke="var(--blue)" stroke-width="3" fill="none"/><path d="M132 92 V72 H200" stroke="var(--surface)" stroke-width="1.5" fill="none" class="flow"/>
+      <rect x="200" y="56" width="110" height="34" fill="var(--blue-soft)" stroke="var(--ink)" stroke-width="2.5"/>
+      <g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;50 0;50 0;0 0" keyTimes="0;.2;.45;.75;1" dur="4s" repeatCount="indefinite"/>
+        <rect x="206" y="58" width="7" height="30" fill="var(--ink)"/><rect x="213" y="69" width="110" height="8" fill="var(--ink)"/></g>
+      <g opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.45;.5;.75;.8" dur="4s" repeatCount="indefinite"/><circle cx="330" cy="160" r="22" fill="var(--r)"/><path d="M319 160 l8 8 l15 -16" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/></g>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (TIP01-03, Konstruksjons- og styringsteknikk)</h3>
+      <p><b>Mål 4 (delvis):</b> «bruke relevante simuleringsprogrammer for dokumentasjon, design og testing av styringssystemer innenfor elektro, hydraulikk, pneumatikk og kjemiske prosesser». Kjemiske prosesser er ikke med her.</p>
+      <p><b>Mål 5 (delvis):</b> «koble opp, teste og feilsøke …» (Del 3–4, i simulator). Bygger på Elektro 3 og Pneumatikk og hydraulikk 1.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: «Hvorfor tester piloter i en flysimulator først?»</dd>
+        <dt>10–20</dt><dd>Del 1–2: hvorfor simulere, og arbeidsgangen.</dd>
+        <dt>20–35</dt><dd>Del 3: mini-simulatoren. Prøv gjerne feil med vilje.</dd>
+        <dt>35–45</dt><dd>Oppgavene A–C.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–85</dt><dd>Del 4: oppdrag i Pneumatikk- og hydraulikksimulatoren. Elevene skriver svar i oppgave D og tar skjermbilde.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="hvorfor">
+  <div class="tag">Del 1 · Hvorfor simulere?</div>
+  <h2>En simulator er en maskin inni PC-en</h2>
+  <div class="trio">
+    <div class="q R"><span style="font-size:2.4rem">🛡️</span><h3>Trygt</h3><p>Ingen kan bli skadet.</p></div>
+    <div class="q U"><span style="font-size:2.4rem">💰</span><h3>Billig</h3><p>Ingenting går i stykker.</p></div>
+    <div class="q I"><span style="font-size:2.4rem">🔁</span><h3>Raskt</h3><p>Prøv igjen og igjen.</p></div>
+  </div>
+  <p class="regel">Med simulatoren kan du <b>tegne</b>, <b>teste</b> og <b>lagre</b> styringen.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Tre ord fra læreplanen: design (tegne skjemaet), testing (kjøre det og se om det virker) og dokumentasjon (lagre eller skrive ut skjemaet, ta skjermbilde). I industrien testes nye anlegg ofte i simulator før de bygges, for eksempel med FluidSIM, Automation Studio eller en «digital tvilling».</details>
+</section>
+
+<section id="arbeidsgang">
+  <div class="tag">Del 2 · Arbeidsgangen</div>
+  <h2>Tegn → test → rett → bygg</h2>
+  <div class="benk">
+    <svg id="flytFig" viewBox="0 0 560 260" role="img" aria-label="Flytskjema: tegn skjemaet, test i simulatoren, virker det? Nei: rett feilen og test igjen. Ja: bygg ekte."></svg>
+    <div style="display:grid;gap:14px">
+      <button type="button" id="flytBtn" class="stor">Neste steg ▶</button>
+      <p class="status" id="flytTekst">Trykk for å gå gjennom stegene.</p>
+    </div>
+  </div>
+</section>
+
+<section id="bygg">
+  <div class="tag">Del 3 · Bygg og test</div>
+  <h2>Velg delene. Trykk ▶ Test.</h2>
+  <div class="benk" style="grid-template-columns:1fr">
+    <svg id="simFig" style="max-height:260px" viewBox="0 0 640 220" role="img" aria-label="Mini-simulator med tre deler: kilde, styring og utgang"></svg>
+    <div class="trio" id="slots"></div>
+    <div class="toolbar">
+      <button type="button" id="simStart" class="stor">▶ Test</button>
+      <button type="button" id="simTrykk" class="stor" disabled>👆 Hold inne knappen</button>
+    </div>
+    <p class="status" id="simTekst">Velg én del i hver boks.</p>
+  </div>
+  <p class="regel">Alle delene må passe sammen: <b>elektro</b> med elektro, <b>luft</b> med luft.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Riktige kombinasjoner: batteri + bryter + lampe, og kompressor + ventil + sylinder. Blandes de, melder simulatoren feil, akkurat som et ekte simuleringsprogram som ikke lar deg koble en luftslange til en ledning. La elevene prøve feil med vilje: det er billig i simulatoren. (I virkeligheten kan en elektrisk magnetventil koble elektro og luft, men det kommer senere.)</details>
+</section>
+
+<section id="oppdrag">
+  <div class="tag">Del 4 · Oppdrag</div>
+  <h2>Prøv den ekte simulatoren</h2>
+  <ol class="oppdrag">
+    <li><span><b>Bygg:</b> kompressor → 3/2-ventil med knapp → enkeltvirkende sylinder. Test.</span></li>
+    <li><span><b>Bytt:</b> 5/2-ventil og dobbeltvirkende sylinder. Test igjen.</span></li>
+    <li><span><b>Endre:</b> skru trykket ned til 2 bar. Hva skjer?</span></li>
+    <li><span><b>Lagre:</b> ta et skjermbilde av skjemaet. Det er dokumentasjonen din.</span></li>
+  </ol>
+  <a class="simlink no-print" data-sim="pneumatikk-og-hydraulikk"><span class="ico">🧪</span><span><b>Åpne Pneumatikk- og hydraulikksimulatoren</b><small>Gjør oppdragene og skriv svarene i oppgave D.</small></span><span class="pil">→</span></a>
+  <div class="merke3"><span>✏️ Design = tegne</span><span>▶ Testing = kjøre</span><span>📸 Dokumentasjon = lagre</span></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Oppdrag 3: sylinderen går saktere og har mindre kraft. Får den last på seg, kan den stoppe. Kobling til «Trykk gir kraft» i Pneumatikk og hydraulikk 1. Har dere Multimeter-simulatoren åpen, kan elevene gjøre det samme med en elektrisk krets fra Elektro 3.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 1: Simuler før du bygger</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p><i>Ord: ekte · trygt · simulator · feilen · skjemaet</i></p>
+      <p>En <span class="luke"><span class="fasit" hidden>simulator</span></span> er en maskin inni PC-en.</p>
+      <p>Det er <span class="luke"><span class="fasit" hidden>trygt</span></span> å teste i simulatoren. Ingen blir skadet.</p>
+      <p>Først tegner vi <span class="luke"><span class="fasit" hidden>skjemaet</span></span>.</p>
+      <p>Virker det ikke, retter vi <span class="luke"><span class="fasit" hidden>feilen</span></span> og tester igjen.</p>
+      <p>Til slutt bygger vi det <span class="luke"><span class="fasit" hidden>ekte</span></span>.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Sett stegene i riktig rekkefølge (1–4)</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Steg</th><th>Nr</th></tr>
+        <tr><td>Bygg og test det ekte anlegget</td><td class="blank x"><span class="fasit" hidden>4</span></td></tr>
+        <tr><td>Tegn skjemaet</td><td class="blank x"><span class="fasit" hidden>1</span></td></tr>
+        <tr><td>Rett feilen</td><td class="blank x"><span class="fasit" hidden>3</span></td></tr>
+        <tr><td>Test i simulatoren</td><td class="blank x"><span class="fasit" hidden>2</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Passer delene sammen?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Kilde</th><th>Styring</th><th>Utgang</th><th>Ja</th><th>Nei</th></tr>
+        <tr><td>Batteri</td><td>Bryter</td><td>Lampe</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Kompressor</td><td>Bryter</td><td>Sylinder</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Kompressor</td><td>Ventil</td><td>Sylinder</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Batteri</td><td>Ventil</td><td>Lampe</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Oppdrag i simulatoren</h3>
+      <ol>
+        <li>Oppdrag 1: Hva skjer når du trykker på knappen?<div class="svar"><span class="fasit" hidden>Sylinderen går ut. Når jeg slipper, går den inn igjen (fjær).</span></div></li>
+        <li>Oppdrag 2: Hva er forskjellen med 5/2-ventil og dobbeltvirkende sylinder?<div class="svar"><span class="fasit" hidden>Lufta skyver sylinderen både ut og inn. Det er ingen fjær.</span></div></li>
+        <li>Oppdrag 3: Hva skjer når trykket er 2 bar?<div class="svar"><span class="fasit" hidden>Sylinderen går saktere og har mindre kraft.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Nevn én grunn til å simulere før du bygger.<div class="svar"><span class="fasit" hidden>Det er trygt, billig og raskt. Vi finner feilene før vi bygger.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  const tegn = (svg, h) => { svg.innerHTML = h; fixVars(svg); };
+
+  // ---------- del 2: flytskjema ----------
+  const BOKS = {
+    tegn:  {x:14,  y:96,  w:118, h:60, t:['1 Tegn','skjemaet']},
+    test:  {x:160, y:96,  w:128, h:60, t:['2 Test i','simulatoren']},
+    rett:  {x:290, y:196, w:120, h:46, t:['3 Rett feilen']},
+    bygg:  {x:432, y:96,  w:118, h:60, t:['4 Bygg det','ekte']}
+  };
+  const STEG = [
+    ['tegn','Tegn skjemaet i simulatoren.'], ['test','Trykk ▶ og se om det virker.'], ['sporsmal','Virker det? Nei, sylinderen står stille.'],
+    ['rett','Finn og rett feilen på skjermen. Det koster ingenting.'], ['test','Test igjen.'], ['sporsmal','Virker det? Ja!'], ['bygg','Nå bygger vi det ekte. Det virker med en gang. 🎉']
+  ];
+  let fs = -1;
+  function flytTegn(){
+    const aktiv = fs >= 0 ? STEG[fs][0] : null, nei = fs === 2 || fs === 3, ja = fs >= 5;
+    const pil = (d, farge) => '<path d="'+d+'" fill="none" stroke="'+(farge||'var(--muted)')+'" stroke-width="3"/>';
+    const spiss = (x, y, rot, farge) => '<path d="M0 0 l-11 -6 v12 z" fill="'+(farge||'var(--muted)')+'" transform="translate('+x+' '+y+') rotate('+rot+')"/>';
+    let h = pil('M132 126 H154') + spiss(158,126,0) + pil('M288 126 H304') + spiss(308,126,0);
+    h += pil('M410 126 H426', ja?'var(--r)':null) + spiss(430,126,0, ja?'var(--r)':null) + '<text x="418" y="116" text-anchor="middle" font-size="14" font-weight="800" fill="var(--r)">Ja</text>';
+    h += pil('M360 166 V190', nei?'var(--bad)':null) + spiss(360,194,90, nei?'var(--bad)':null) + '<text x="372" y="184" font-size="14" font-weight="800" fill="var(--bad)">Nei</text>';
+    h += pil('M290 219 H224 V162', fs===3||fs===4?'var(--orange)':null) + spiss(224,158,-90, fs===3||fs===4?'var(--orange)':null);
+    Object.entries(BOKS).forEach(([k,b]) => { const on = aktiv === k;
+      h += '<rect x="'+b.x+'" y="'+b.y+'" width="'+b.w+'" height="'+b.h+'" rx="10" fill="'+(on?'var(--orange-soft)':'var(--surface)')+'" stroke="'+(on?'var(--orange)':'var(--line)')+'" stroke-width="'+(on?4:2)+'"/>';
+      b.t.forEach((t,i) => h += '<text x="'+(b.x+b.w/2)+'" y="'+(b.y+b.h/2+6+(i-(b.t.length-1)/2)*20)+'" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink)">'+t+'</text>'); });
+    const on = aktiv === 'sporsmal';
+    h += '<path d="M360 86 L410 126 L360 166 L310 126 Z" fill="'+(on?'var(--orange-soft)':'var(--surface)')+'" stroke="'+(on?'var(--orange)':'var(--line)')+'" stroke-width="'+(on?4:2)+'"/><text x="360" y="122" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">Virker</text><text x="360" y="140" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">det?</text>';
+    h += '<text x="280" y="40" text-anchor="middle" font-size="15" fill="var(--muted)">Feilene finner vi på skjermen, ikke i verkstedet.</text>';
+    tegn($('flytFig'), h);
+  }
+  $('flytBtn').onclick = () => { fs = (fs + 1) % STEG.length; $('flytTekst').textContent = STEG[fs][1]; $('flytBtn').textContent = fs === STEG.length-1 ? 'Start på nytt ↺' : 'Neste steg ▶'; flytTegn(); };
+  flytTegn();
+
+  // ---------- del 3: mini-simulator ----------
+  const DEL = {
+    batteri:   {n:'Batteri', f:'el'},   kompressor:{n:'Kompressor', f:'luft'},
+    bryter:    {n:'Bryter', f:'el'},    ventil:    {n:'Ventil', f:'luft'},
+    lampe:     {n:'Lampe', f:'el'},     sylinder:  {n:'Sylinder', f:'luft'}
+  };
+  const SLOTS = [ ['1 Kilde',['batteri','kompressor']], ['2 Styring',['bryter','ventil']], ['3 Utgang',['lampe','sylinder']] ];
+  const CX = [110, 320, 530];
+  const valg = [null,null,null]; let testet = false, ok = false, trykk = false;
+  const BILDE = {
+    batteri: () => '<rect x="-40" y="-25" width="80" height="50" rx="6" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/><text x="0" y="8" text-anchor="middle" font-size="22" font-weight="800" fill="var(--u)">+ −</text>',
+    kompressor: () => '<rect x="-50" y="-12" width="100" height="40" rx="18" fill="var(--line)" stroke="var(--wire)" stroke-width="2.5"/><rect x="-32" y="-34" width="40" height="24" rx="3" fill="var(--wire)"/><circle cx="30" cy="-22" r="11" fill="var(--surface)" stroke="var(--wire)" stroke-width="2.5"/>',
+    bryter: p => '<path d="M-60 0 H-22 M22 0 H60 M-22 0 L22 '+(p?-3:-24)+'" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><circle cx="-22" cy="0" r="4.5" fill="var(--ink)"/><circle cx="22" cy="0" r="4.5" fill="var(--ink)"/>',
+    ventil: p => '<rect x="-40" y="-25" width="80" height="50" rx="6" fill="var(--line)" stroke="var(--wire)" stroke-width="2.5"/><rect x="'+(p?-50:-62)+'" y="-12" width="22" height="24" rx="6" fill="var(--r)"/><text x="0" y="6" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">ventil</text>',
+    lampe: p => (p ? '<circle r="44" fill="var(--glow)" opacity=".8"/>' : '') + '<circle r="24" fill="var(--surface)" stroke="var(--ink)" stroke-width="4"/><path d="M-17 -17 L17 17 M17 -17 L-17 17" stroke="var(--ink)" stroke-width="4"/>',
+    sylinder: p => { const o = p ? 36 : 0; return '<rect x="-56" y="-18" width="84" height="36" rx="4" fill="var(--blue-soft)" stroke="var(--wire)" stroke-width="2.5"/><rect x="'+(-52+o)+'" y="-16" width="7" height="32" fill="var(--wire)"/><rect x="'+(-45+o)+'" y="-4" width="96" height="8" fill="var(--wire)"/>'; }
+  };
+  function simTegn(){
+    let h = '';
+    for (let i=0; i<2; i++) {
+      const a = valg[i], b = valg[i+1], x1 = CX[i]+62, x2 = CX[i+1]-62;
+      if (!a || !b) { h += '<path d="M'+x1+' 110 H'+x2+'" stroke="var(--line)" stroke-width="4" stroke-dasharray="6 6"/>'; continue; }
+      const feil = testet && DEL[a].f !== DEL[b].f, luft = DEL[a].f === 'luft' && DEL[b].f === 'luft';
+      h += '<path d="M'+x1+' 110 H'+x2+'" stroke="'+(feil?'var(--bad)':luft?'var(--blue)':'var(--wire)')+'" stroke-width="'+(luft?7:4)+'"'+(feil?' stroke-dasharray="8 6"':'')+'/>';
+      if (ok && trykk) h += '<path d="M'+x1+' 110 H'+x2+'" stroke="'+(luft?'var(--surface)':'var(--glow)')+'" stroke-width="3" class="flow"/>';
+      if (feil) { const m = (x1+x2)/2; h += '<circle cx="'+m+'" cy="110" r="16" fill="var(--bad)"/><path d="M'+(m-7)+' 103 l14 14 M'+(m+7)+' 103 l-14 14" stroke="#fff" stroke-width="3.5"/>'; }
+    }
+    valg.forEach((v,i) => {
+      if (!v) { h += '<rect x="'+(CX[i]-55)+'" y="70" width="110" height="80" rx="10" fill="none" stroke="var(--line)" stroke-width="2.5" stroke-dasharray="6 6"/><text x="'+CX[i]+'" y="117" text-anchor="middle" font-size="30" fill="var(--muted)">?</text>'; }
+      else h += '<g transform="translate('+CX[i]+' 110)">'+BILDE[v](ok && trykk)+'</g><text x="'+CX[i]+'" y="186" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">'+DEL[v].n+'</text>';
+    });
+    tegn($('simFig'), h);
+  }
+  SLOTS.forEach(([tittel, alt], i) => { const k = document.createElement('div'); k.className = 'q slot';
+    k.innerHTML = '<b>'+tittel+'</b><div class="valgknapper" role="group" aria-label="'+tittel+'"></div>';
+    alt.forEach(a => { const b = document.createElement('button'); b.type='button'; b.textContent = DEL[a].n; b.setAttribute('aria-pressed','false');
+      b.onclick = () => { valg[i] = a; [...b.parentNode.children].forEach(c => c.setAttribute('aria-pressed', c===b)); testet = ok = false; $('simTrykk').disabled = true; $('simTekst').textContent = valg.every(Boolean) ? 'Trykk ▶ Test.' : 'Velg én del i hver boks.'; simTegn(); };
+      k.querySelector('.valgknapper').appendChild(b); });
+    $('slots').appendChild(k); });
+  $('simStart').onclick = () => {
+    if (!valg.every(Boolean)) { $('simTekst').textContent = 'Velg én del i hver boks først.'; return; }
+    testet = true; ok = valg.every(v => DEL[v].f === DEL[valg[0]].f);
+    $('simTrykk').disabled = !ok;
+    if (ok) $('simTekst').innerHTML = '<span class="r">✔ Simuleringen virker.</span> Hold inne knappen.';
+    else { const i = DEL[valg[0]].f !== DEL[valg[1]].f ? 0 : 1; $('simTekst').innerHTML = '<span style="color:var(--bad)">✖ Feil:</span> '+DEL[valg[i]].n+' passer ikke med '+DEL[valg[i+1]].n.toLowerCase()+'. Rett feilen og test igjen.'; }
+    simTegn();
+  };
+  const tb = $('simTrykk');
+  const settTrykk = p => { if (p !== trykk && ok) { trykk = p; simTegn(); $('simTekst').innerHTML = p ? (DEL[valg[2]].f === 'el' ? 'Lampa lyser!' : 'Sylinderen går ut!') : '<span class="r">✔ Simuleringen virker.</span> Hold inne knappen.'; } };
+  tb.addEventListener('pointerdown', e => { e.preventDefault(); settTrykk(true); });
+  ['pointerup','pointerleave','pointercancel'].forEach(t => tb.addEventListener(t, () => settTrykk(false)));
+  tb.addEventListener('keydown', e => { if ((e.key===' '||e.key==='Enter') && !e.repeat) { e.preventDefault(); settTrykk(true); } });
+  tb.addEventListener('keyup', e => { if (e.key===' '||e.key==='Enter') settTrykk(false); });
+  simTegn();
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
