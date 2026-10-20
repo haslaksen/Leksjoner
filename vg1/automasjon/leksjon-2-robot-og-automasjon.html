@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Styring og automasjon Vg1 · Leksjon 2: Robot og automasjon</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+.spin{animation:spin 1s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+.multi{display:inline-grid;gap:4px;background:var(--ink);color:var(--surface);border-radius:14px;padding:12px 18px;min-width:9em;text-align:center}
+.multi b{font:700 2rem/1.1 var(--mono);color:var(--glow)}
+.multi span{font-size:.85rem;opacity:.8}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+</style>
+<style>
+.prog{list-style:none;margin:0;padding:0;display:grid;gap:4px;counter-reset:p;min-height:3em;font:600 1rem/1.3 var(--mono);max-height:320px;overflow:auto}
+.prog li{counter-increment:p;padding:4px 10px;border-radius:8px;background:var(--bg);border:1px solid var(--line)}
+.prog li::before{content:counter(p) ". ";color:var(--muted)}
+.prog li.naa{background:var(--orange-soft);border-color:var(--orange)}
+.prog li.ok{background:var(--r-soft);border-color:var(--r)}
+.prog li.feil{background:var(--bad-soft);border-color:var(--bad)}
+.regelrad{display:flex;flex-wrap:wrap;gap:10px;align-items:center;font-size:1.15rem;font-weight:700}
+.regelrad select{font:600 1rem var(--body);padding:8px 10px;border-radius:10px;border:2px solid var(--line);background:var(--surface);color:var(--ink)}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Styring og automasjon Vg1 · <span>Leksjon 2</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#tre">Sanse, tenke, gjøre</a><a href="#sorter">Sorteringsanlegg</a><a href="#robot">Programmer roboten</a><a href="#hms">Sikkerhet</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Konstruksjon og styringsteknikk Vg1 · Styring og automasjon · Leksjon 2</div>
+    <h1 style="margin-top:10px">Robot og automasjon</h1>
+    <p class="lead" style="margin-top:12px">Maskinen gjør jobben <b>selv</b>, fordi noen har laget et <b>program</b>.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span><b>Sensor</b> → <b>PLS</b> → <b>aktuator</b></span></li>
+      <li><span class="n i">2</span><span><b>HVIS</b> … <b>SÅ</b> …</span></li>
+      <li><span class="n r">3</span><span>Et program = steg i <b>rekkefølge</b></span></li>
+      <li><span class="n" style="color:var(--bad)">4</span><span>Trygt rundt roboter</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 230" role="img" aria-label="Animasjon: en boks kjører på et transportbånd, en sensor ser den, og en sylinder skyver den av">
+      <rect x="10" y="90" width="410" height="70" rx="10" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/>
+      <path d="M10 125 H420" stroke="var(--surface)" stroke-width="2" stroke-dasharray="10 10" class="flow"/>
+      <rect x="226" y="66" width="18" height="16" rx="3" fill="var(--wire)"/><rect x="226" y="168" width="18" height="16" rx="3" fill="var(--wire)"/>
+      <path d="M235 82 V168" stroke="var(--bad)" stroke-width="2.5" stroke-dasharray="5 4" opacity=".7"/>
+      <text x="252" y="78" font-size="13" fill="var(--muted)">sensor</text>
+      <rect x="300" y="14" width="44" height="40" rx="4" fill="var(--blue-soft)" stroke="var(--wire)" stroke-width="2.5"/>
+      <g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 52;0 0;0 0" keyTimes="0;.5;.6;.7;1" dur="4s" repeatCount="indefinite"/><rect x="316" y="54" width="12" height="40" fill="var(--wire)"/><rect x="302" y="88" width="40" height="8" rx="2" fill="var(--wire)"/></g>
+      <text x="352" y="38" font-size="13" fill="var(--muted)">sylinder</text>
+      <rect x="290" y="188" width="64" height="38" rx="4" fill="none" stroke="var(--wire)" stroke-width="2.5" stroke-dasharray="6 4"/>
+      <g><animateTransform attributeName="transform" type="translate" values="0 0;300 0;300 0;300 90;300 90" keyTimes="0;.5;.6;.7;1" dur="4s" repeatCount="indefinite"/>
+        <rect x="0" y="104" width="44" height="42" rx="4" fill="var(--bad-soft)" stroke="var(--bad)" stroke-width="3"/></g>
+      <rect x="374" y="172" width="54" height="50" rx="6" fill="var(--wire)"/><circle cx="388" cy="186" r="4" fill="var(--r)"/><circle cx="400" cy="186" r="4" fill="var(--glow)"/><text x="401" y="212" text-anchor="middle" font-size="12" font-weight="800" fill="var(--surface)">PLS</text>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (TIP01-03, Konstruksjons- og styringsteknikk)</h3>
+      <p><b>Mål 8 (delvis):</b> «anvende grunnleggende programmering av styringssystemer innenfor robotisering, automatisering og CNC». Her: automatisering (HVIS–SÅ, PLS) og robot (program med steg). CNC er dekket i DAP og CNC 1–4.</p>
+      <p><b>Mål 1 (delvis):</b> sikkerhet rundt automatiserte anlegg (Del 4).</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: «Hvordan vet automatdøra at du kommer?»</dd>
+        <dt>10–15</dt><dd>Del 1: sensor, PLS og aktuator.</dd>
+        <dt>15–30</dt><dd>Del 2: sorteringsanlegget. Finn to regler som virker.</dd>
+        <dt>30–45</dt><dd>Del 3: programmer roboten. La elevene feile, det er lov.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–60</dt><dd>Del 4: sikkerhet.</dd>
+        <dt>60–85</dt><dd>Oppgavene A–D, deretter Robotlab-simulatoren for de som blir ferdige.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="tre">
+  <div class="tag">Del 1 · Sanse, tenke, gjøre</div>
+  <h2>Alle automatiske anlegg har tre deler</h2>
+  <div class="trio">
+    <div class="q U"><svg viewBox="0 0 200 110" aria-hidden="true"><rect x="20" y="40" width="30" height="30" rx="4" fill="var(--wire)"/><circle cx="50" cy="55" r="6" fill="var(--bad)"/><path d="M56 55 H170" stroke="var(--bad)" stroke-width="3" stroke-dasharray="6 5" class="flow"/><rect x="170" y="40" width="20" height="30" rx="4" fill="var(--wire)"/></svg><h3>👁️ Sensor</h3><p>Merker noe. Som <b>øynene</b>.</p><p class="caption">Fotocelle, trykknapp, endebryter</p></div>
+    <div class="q I"><svg viewBox="0 0 200 110" aria-hidden="true"><rect x="50" y="20" width="100" height="74" rx="8" fill="var(--wire)"/><g class="pulse"><circle cx="72" cy="40" r="6" fill="var(--r)"/><circle cx="92" cy="40" r="6" fill="var(--glow)"/><circle cx="112" cy="40" r="6" fill="var(--r)"/></g><text x="100" y="80" text-anchor="middle" font-size="20" font-weight="800" fill="var(--surface)">PLS</text></svg><h3>🧠 Styring</h3><p>Bestemmer. Som <b>hjernen</b>.</p><p class="caption">PLS eller datamaskin med program</p></div>
+    <div class="q R"><svg viewBox="0 0 200 110" aria-hidden="true"><rect x="20" y="38" width="100" height="34" rx="4" fill="var(--blue-soft)" stroke="var(--wire)" stroke-width="2.5"/><g><animateTransform attributeName="transform" type="translate" values="0 0;40 0;0 0" dur="2s" repeatCount="indefinite"/><rect x="26" y="40" width="7" height="30" fill="var(--wire)"/><rect x="33" y="50" width="110" height="10" fill="var(--wire)"/></g></svg><h3>💪 Aktuator</h3><p>Gjør jobben. Som <b>musklene</b>.</p><p class="caption">Sylinder, motor, lampe</p></div>
+  </div>
+  <p class="regel"><b>Sensor</b> merker → <b>PLS</b> bestemmer → <b>aktuator</b> gjør.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>PLS = programmerbar logisk styring. Den har innganger (sensorer, knapper) og utganger (ventiler, motorer, lamper). Programmet bestemmer hvilke utganger som slås på ut fra inngangene. Eksempler fra hverdagen: automatdør, bevegelsesmelder i gangen, oppvaskmaskin.</details>
+</section>
+
+<section id="sorter">
+  <div class="tag">Del 2 · Sorteringsanlegg</div>
+  <h2>Skyv ut alle de <span style="color:var(--bad)">røde</span> boksene</h2>
+  <div class="benk" style="grid-template-columns:1fr">
+    <svg id="sortFig" style="max-height:300px" viewBox="0 0 640 270" role="img" aria-label="Transportbånd sett ovenfra med sensor, sylinder og kasse"></svg>
+    <div class="regelrad">
+      <span>HVIS</span>
+      <select id="hvis" aria-label="Hvis"><option value="r">boksen er rød</option><option value="b">boksen er blå</option><option value="alle">sensoren ser en boks</option></select>
+      <span>SÅ</span>
+      <select id="saa" aria-label="Så"><option value="ut">skyv ut</option><option value="gaa">la den gå videre</option></select>
+      <button type="button" id="sortStart">▶ Start båndet</button>
+    </div>
+    <p class="status" id="sortTekst">Lag regelen. Trykk ▶ Start båndet.</p>
+  </div>
+  <p class="regel">PLS-en følger regelen <b>hver gang</b>. Er regelen feil, blir det feil hver gang.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Det er to regler som virker: «HVIS rød SÅ skyv ut» og «HVIS blå SÅ la den gå» (da blir de andre, de røde, skjøvet ut). Programmet gjør det motsatte når regelen ikke stemmer (ELLERS). «HVIS sensoren ser en boks SÅ skyv ut» skyver ut alt. Spør: hvilken sensor trenger vi for å se fargen? (Fargesensor.)</details>
+</section>
+
+<section id="robot">
+  <div class="tag">Del 3 · Programmer roboten</div>
+  <h2>Flytt delen fra A til kassa B</h2>
+  <div class="benk">
+    <svg id="robotFig" viewBox="0 0 520 280" role="img" aria-label="Robot på skinne over et bord med en del på A og en kasse på B"></svg>
+    <div style="display:grid;gap:12px">
+      <div class="valgknapper" id="kommandoer" role="group" aria-label="Legg til kommando"></div>
+      <ol class="prog" id="prog"></ol>
+      <div class="toolbar"><button type="button" id="robotKjor">▶ Kjør</button><button type="button" id="robotAngre">⌫ Slett siste</button><button type="button" id="robotTom">🗑 Tøm</button></div>
+      <p class="status" id="robotTekst">Trykk på kommandoene for å lage programmet.</p>
+    </div>
+  </div>
+  <p class="regel">Roboten gjør <b>nøyaktig</b> det du skriver. Ikke mer, ikke mindre.</p>
+  <a class="simlink no-print" data-sim="robotlab"><span class="ico">🤖</span><span><b>Prøv selv: Robotlab</b><small>Programmer en robot med blokker og løs oppdrag.</small></span><span class="pil">→</span></a>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Et riktig program: Flytt til A, Kjør ned, Lukk griper, Kjør opp, Flytt til B, Kjør ned, Åpne griper, Kjør opp (8 steg, det siste er valgfritt). Vanlige feil: flytte mens griperen er nede (krasj), åpne griperen oppe (delen faller), glemme å kjøre ned. Industriroboter programmeres på samme måte, med punkter og kommandoer. CNC-programmet i <a href="../dap/leksjon-2-cnc-og-g-kode.html">DAP og CNC 2</a> er også steg i rekkefølge.</details>
+</section>
+
+<section id="hms">
+  <div class="tag">Del 4 · Sikkerhet</div>
+  <h2>Trygt rundt roboter: riktig eller galt?</h2>
+  <p class="lead">Trykk på kortene.</p>
+  <div class="hms" id="hmsKort"></div>
+  <p class="regel">En robot som står stille, kan <b>starte når som helst</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Industriroboter er raske og sterke, og de ser ikke mennesker. Derfor står de bak gjerder med dørbryter eller lysgardin. Ved service: stopp, lås og merk (Vg2 Vedlikehold 2). Samarbeidende roboter (cobots) har lav kraft og fart, men skal også risikovurderes.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 2: Robot og automasjon</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p><i>Ord: program · aktuator · nødstopp · sensor · PLS</i></p>
+      <p>En <span class="luke"><span class="fasit" hidden>sensor</span></span> merker at noe skjer.</p>
+      <p>En <span class="luke"><span class="fasit" hidden>PLS</span></span> bestemmer hva som skal skje.</p>
+      <p>En <span class="luke"><span class="fasit" hidden>aktuator</span></span> gjør jobben, for eksempel en sylinder.</p>
+      <p>Et <span class="luke"><span class="fasit" hidden>program</span></span> er steg i riktig rekkefølge.</p>
+      <p>Med <span class="luke"><span class="fasit" hidden>nødstopp</span></span> stopper roboten med en gang.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Sensor, styring eller aktuator?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Del</th><th>Sensor</th><th>Styring</th><th>Aktuator</th></tr>
+        <tr><td>Fotocelle</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
+        <tr><td>Sylinder</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>PLS</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Motor</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Trykknapp</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Skriv programmet</h3>
+      <p>Roboten skal flytte delen fra A til kassa B. Skriv 1–8 i riktig rekkefølge.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Kommando</th><th>Nr</th></tr>
+        <tr><td>Flytt til B</td><td class="blank x"><span class="fasit" hidden>5</span></td></tr>
+        <tr><td>Lukk griperen</td><td class="blank x"><span class="fasit" hidden>3</span></td></tr>
+        <tr><td>Flytt til A</td><td class="blank x"><span class="fasit" hidden>1</span></td></tr>
+        <tr><td>Åpne griperen</td><td class="blank x"><span class="fasit" hidden>7</span></td></tr>
+        <tr><td>Kjør ned ved A</td><td class="blank x"><span class="fasit" hidden>2</span></td></tr>
+        <tr><td>Kjør opp igjen ved B</td><td class="blank x"><span class="fasit" hidden>8</span></td></tr>
+        <tr><td>Kjør opp ved A</td><td class="blank x"><span class="fasit" hidden>4</span></td></tr>
+        <tr><td>Kjør ned ved B</td><td class="blank x"><span class="fasit" hidden>6</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · HVIS … SÅ …</h3>
+      <ol>
+        <li>Automatdøra på butikken: HVIS … SÅ …<div class="svar"><span class="fasit" hidden>HVIS sensoren ser en person, SÅ åpner døra.</span></div></li>
+        <li>Lyset i gangen på skolen: HVIS … SÅ …<div class="svar"><span class="fasit" hidden>HVIS bevegelsesmelderen merker noen, SÅ slås lyset på.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hva gjør en sensor, og hva gjør en aktuator?<div class="svar"><span class="fasit" hidden>Sensoren merker noe (for eksempel en boks). Aktuatoren gjør jobben (for eksempel en sylinder som skyver).</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const ROLIG = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  const tegn = (svg, h) => { svg.innerHTML = h; fixVars(svg); };
+
+  // ---------- del 2: sorteringsanlegg (sett ovenfra) ----------
+  const FARGER = ['r','b','b','r','b','r'];
+  let bokser = [], ext = 0, gaar = false;
+  function sortTegn(){
+    const ser = bokser.some(b => b.s === 'belt' && Math.abs(b.x - 250) < 22);
+    let h = '<rect x="10" y="90" width="620" height="80" rx="8" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/>';
+    h += '<path d="M10 130 H630" stroke="var(--surface)" stroke-width="2" stroke-dasharray="12 12"'+(gaar?' class="flow"':'')+'/>';
+    h += '<rect x="360" y="182" width="80" height="80" rx="6" fill="none" stroke="var(--wire)" stroke-width="2.5" stroke-dasharray="6 4"/><text x="400" y="256" text-anchor="middle" font-size="14" font-weight="700" fill="var(--muted)">Ut</text>';
+    h += '<text x="626" y="80" text-anchor="end" font-size="14" font-weight="700" fill="var(--muted)">Videre →</text>';
+    bokser.forEach(b => { if (b.x > -20 && b.x < 660) h += '<rect x="'+(b.x-20)+'" y="'+(b.y-20)+'" width="40" height="40" rx="5" fill="'+(b.f==='r'?'var(--bad-soft)':'var(--u-soft)')+'" stroke="'+(b.f==='r'?'var(--bad)':'var(--u)')+'" stroke-width="3"/>'; });
+    h += '<rect x="242" y="66" width="16" height="20" rx="3" fill="var(--wire)"/><rect x="242" y="174" width="16" height="20" rx="3" fill="var(--wire)"/>';
+    h += '<path d="M250 86 V174" stroke="var(--bad)" stroke-width="2.5" stroke-dasharray="5 4" opacity="'+(ser?0.2:0.8)+'"/>';
+    h += '<circle cx="270" cy="72" r="7" fill="'+(ser?'var(--glow)':'var(--surface)')+'" stroke="var(--wire)" stroke-width="2"/><text x="282" y="60" font-size="13" fill="var(--muted)">sensor</text>';
+    h += '<rect x="378" y="8" width="44" height="46" rx="4" fill="var(--blue-soft)" stroke="var(--wire)" stroke-width="2.5"/><rect x="394" y="54" width="12" height="'+(10+ext)+'" fill="var(--wire)"/><rect x="380" y="'+(60+ext)+'" width="40" height="8" rx="2" fill="var(--wire)"/><text x="430" y="34" font-size="13" fill="var(--muted)">sylinder</text>';
+    tegn($('sortFig'), h);
+  }
+  function sortStart(){
+    if (gaar) return;
+    const hvis = $('hvis').value, saa = $('saa').value;
+    bokser = FARGER.map((f,i) => ({f, x:-30 - i*120, y:130, s:'belt'}));
+    gaar = true; $('sortStart').disabled = true; $('sortTekst').textContent = 'Båndet går …';
+    let t0 = performance.now();
+    const steg = t => {
+      const dt = Math.min(50, t - t0)/1000; t0 = t;
+      bokser.forEach(b => {
+        if (b.s === 'belt') { b.x += 180*dt;
+          if (b.x >= 400 && !b.bestemt) { b.bestemt = true; const treff = hvis === 'alle' || b.f === hvis; if ((saa === 'ut') === treff) { b.s = 'push'; b.p = 0; b.x = 400; } }
+          if (b.x > 660) b.s = 'videre'; }
+        else if (b.s === 'push') { b.p += dt/0.4; b.y = 130 + 86*Math.min(1,b.p); if (b.p >= 1) b.s = 'ut'; }
+      });
+      const p = bokser.find(b => b.s === 'push'); ext = p ? 70*Math.min(1, p.p*1.5) : Math.max(0, ext - 300*dt);
+      sortTegn();
+      if (bokser.every(b => b.s === 'ut' || b.s === 'videre') && ext === 0) {
+        gaar = false; $('sortStart').disabled = false; sortTegn();
+        const riktig = bokser.filter(b => (b.f === 'r') === (b.s === 'ut')).length;
+        $('sortTekst').innerHTML = riktig === 6 ? '<span class="r">🎉 Alle 6 er riktig sortert!</span> Finnes det en regel til som virker?' : 'Riktig sortert: <b>'+riktig+' av 6</b>. Endre regelen og prøv igjen.';
+        return;
+      }
+      requestAnimationFrame(steg);
+    };
+    requestAnimationFrame(steg);
+  }
+  $('sortStart').onclick = sortStart; sortTegn();
+
+  // ---------- del 3: programmer roboten ----------
+  const KOM = { A:'Flytt til A', B:'Flytt til B', ned:'Kjør ned', opp:'Kjør opp', lukk:'Lukk griper', apne:'Åpne griper' };
+  const X = { hjem:80, A:220, B:400 }, Z = { opp:110, ned:198 };
+  let prog = [], kjorer = false, R;
+  const nyR = () => ({ x:X.hjem, y:Z.opp, z:'opp', grep:false, del:'A', dx:220 });
+  R = nyR();
+  function robotTegn(){
+    let h = '<path d="M20 262 H500" stroke="var(--wire)" stroke-width="3"/>';
+    h += '<rect x="170" y="230" width="100" height="14" rx="3" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/><path d="M182 244 V262 M258 244 V262" stroke="var(--wire)" stroke-width="5"/>';
+    h += '<path d="M370 196 V246 H430 V196" fill="var(--i-soft)" stroke="var(--i)" stroke-width="3" stroke-linejoin="round"/>';
+    h += '<g font-size="18" font-weight="800"><text x="220" y="282" text-anchor="middle" fill="var(--orange)">A</text><text x="400" y="282" text-anchor="middle" fill="var(--i)">B</text></g>';
+    h += '<rect x="30" y="30" width="460" height="12" rx="4" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/>';
+    h += '<rect x="'+(R.x-26)+'" y="20" width="52" height="32" rx="5" fill="var(--wire)"/><rect x="'+(R.x-6)+'" y="52" width="12" height="'+(R.y-52)+'" fill="var(--wire)"/>';
+    const f = R.grep ? 22 : 30;
+    h += '<rect x="'+(R.x-32)+'" y="'+R.y+'" width="64" height="8" rx="2" fill="var(--wire)"/><path d="M'+(R.x-f)+' '+(R.y+8)+' V'+(R.y+32)+' M'+(R.x+f)+' '+(R.y+8)+' V'+(R.y+32)+'" stroke="var(--wire)" stroke-width="6" stroke-linecap="round"/>';
+    let px, py;
+    if (R.del === 'A') { px = 220; py = 200; } else if (R.del === 'grip') { px = R.x; py = R.y + 2; } else if (R.del === 'B') { px = 400; py = 214; } else { px = R.dx; py = 232; }
+    h += '<rect x="'+(px-20)+'" y="'+py+'" width="40" height="30" rx="4" fill="var(--orange-soft)" stroke="var(--orange)" stroke-width="3"/>';
+    tegn($('robotFig'), h);
+  }
+  const progTegn = (naa, klasse) => { $('prog').innerHTML = prog.map((k,i) => '<li class="'+(i===naa?klasse:i<naa?'ok':'')+'">'+KOM[k]+'</li>').join('') || '<li style="list-style:none;color:var(--muted)">Tomt program</li>'; const l = $('prog').children[naa]; if (l) l.scrollIntoView({block:'nearest'}); };
+  const tween = (prop, til) => new Promise(ok => { const fra = R[prop], t0 = performance.now();
+    const s = t => { const f = ROLIG ? 1 : Math.min(1,(t-t0)/550); R[prop] = fra + (til-fra)*f; robotTegn(); if (f<1) requestAnimationFrame(s); else ok(); }; requestAnimationFrame(s); });
+  const vent = ms => new Promise(ok => setTimeout(ok, ROLIG ? 0 : ms));
+  async function kjor(){
+    if (kjorer || !prog.length) { if (!prog.length) $('robotTekst').textContent = 'Lag et program først.'; return; }
+    kjorer = true; R = nyR(); robotTegn(); $('robotTekst').textContent = 'Roboten kjører …';
+    let feil = null;
+    for (let i=0; i<prog.length && !feil; i++) {
+      progTegn(i, 'naa'); const k = prog[i];
+      if (k === 'A' || k === 'B') { if (R.z === 'ned') { feil = '💥 Krasj! Kjør opp før du flytter.'; } else await tween('x', X[k]); }
+      else if (k === 'ned' || k === 'opp') { R.z = k; await tween('y', Z[k]); }
+      else if (k === 'lukk') { R.grep = true; if (R.z === 'ned' && Math.abs(R.x - X.A) < 1 && R.del === 'A') R.del = 'grip'; robotTegn(); await vent(350); }
+      else if (k === 'apne') { R.grep = false;
+        if (R.del === 'grip') { if (R.z === 'ned' && Math.abs(R.x - X.B) < 1) R.del = 'B'; else if (R.z === 'ned' && Math.abs(R.x - X.A) < 1) R.del = 'A'; else { R.del = 'gulv'; R.dx = R.x; feil = 'Oi! Delen falt i gulvet. Kjør ned før du åpner.'; } }
+        robotTegn(); await vent(350); }
+      if (feil) progTegn(i, 'feil');
+    }
+    if (!feil) progTegn(prog.length, '');
+    $('robotTekst').innerHTML = feil ? '<span style="color:var(--bad)">'+feil+'</span>' : R.del === 'B' ? '<span class="r">🎉 Delen ligger i kassa B!</span>' : 'Delen er ikke i kassa. Se på programmet og prøv igjen.';
+    kjorer = false;
+  }
+  Object.entries(KOM).forEach(([k,t]) => { const b = document.createElement('button'); b.type='button'; b.textContent = t;
+    b.onclick = () => { if (kjorer) return; prog.push(k); progTegn(-1); }; $('kommandoer').appendChild(b); });
+  $('robotKjor').onclick = kjor;
+  $('robotAngre').onclick = () => { if (!kjorer) { prog.pop(); progTegn(-1); } };
+  $('robotTom').onclick = () => { if (!kjorer) { prog = []; R = nyR(); robotTegn(); progTegn(-1); $('robotTekst').textContent = 'Trykk på kommandoene for å lage programmet.'; } };
+  robotTegn(); progTegn(-1);
+
+  // ---------- del 4: sikkerhet ----------
+  const HMS = [
+    ['🛑','Nødstopp stopper roboten med en gang.',true,'Riktig! Vit alltid hvor nødstoppen er.'],
+    ['🚧','Jeg går inn i robotcella mens roboten går.',false,'Galt! Roboten er rask og sterk, og den ser deg ikke.'],
+    ['🔒','Ved service slår vi av, låser og merker.',true,'Riktig! Da kan ingen starte roboten.'],
+    ['👀','Står roboten stille, er den avslått.',false,'Galt! Den kan vente på et signal og starte når som helst.'],
+    ['🚦','Gjerde og lysgardin stopper roboten hvis noen går inn.',true,'Riktig! Det er sikkerhetsutstyr. Ikke koble det ut.']
+  ];
+  HMS.forEach(([ikon, tekst, riktig, svar]) => { const b = document.createElement('button'); b.type='button';
+    b.innerHTML = '<span class="ikon" aria-hidden="true">'+ikon+'</span><span>'+tekst+'</span><span class="svar-hms">Trykk for svar</span>';
+    b.onclick = () => { b.classList.add(riktig?'ok':'feil'); b.querySelector('.svar-hms').textContent = svar; }; $('hmsKort').appendChild(b); });
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
