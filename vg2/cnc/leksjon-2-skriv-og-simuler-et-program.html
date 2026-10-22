@@ -304,6 +304,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
       <button class="card flip"><span class="q">Hva gjør SINGLE BLOCK?</span><span class="a">Maskinen kjører én linje og stopper. Du trykker CYCLE START for neste.</span><span class="hint">Klikk for svar</span></button>
     </div>
     <div class="tip o"><b>I dag:</b> Vi leser og lager programmet som dreier denne akselen.</div>
+    <a class="simlink no-print" data-sim="cnc-koordinater"><span class="ico">🖥️</span><span><b>Varm opp: CNC-koordinater</b><small>Velg Dreiebenk og flytt verktøyet til punktene. Husk at X er diameter.</small></span><span class="pil">→</span></a>
   </div>
 </section>
 
@@ -573,6 +574,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <div class="chips"><span>G0</span><span>G1</span><span>G2</span><span>G3</span><span>M3</span><span>M5</span><span>M30</span><span>T0101</span><span>S</span><span>F</span><span>verktøybane</span><span>Simulate</span><span>Post Process</span><span>kollisjon</span></div>
         </div>
         <a class="simlink no-print" data-sim="cnc-dreiebenk"><span class="ico">🖥️</span><span><b>CNC-dreiebenk-simulatoren</b><small>Øv på betjeningspanelet og MDI.</small></span><span class="pil">→</span></a>
+        <a class="simlink no-print" data-sim="cnc-koordinater"><span class="ico">🖥️</span><span><b>CNC-koordinater</b><small>Øv på X og Z uten G-kode.</small></span><span class="pil">→</span></a>
         <p class="caption">Slå opp mer i <a href="https://verkstedhandboka.vercel.app/#maskinering" target="_blank" rel="noopener">Verkstedhåndboka, emne Maskinering</a>.</p>
       </div>
     </div>
@@ -643,7 +645,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
             </g>
           </svg>
         </div>
-        <p style="font-size:.85rem">Én rute = 5 mm. Husk at X er diameter.</p>
+        <p style="font-size:.85rem">Én rute = 5 mm. Husk at X er diameter. Usikker på X og Z? Øv først i <a data-sim="cnc-koordinater">CNC-koordinater-simulatoren</a>.</p>
         <p>A → B:</p><div class="svar"><span class="fasit" hidden>G1 Z-20 F0.15 (A er X20 Z0)</span></div>
         <p>B → C:</p><div class="svar"><span class="fasit" hidden>X30</span></div>
         <p>C → D:</p><div class="svar"><span class="fasit" hidden>Z-35</span></div>
