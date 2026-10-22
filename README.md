@@ -21,6 +21,7 @@ vg2/<emne>/leksjon-N-<navn>.html
 | Vg2 | Elektro | 1 Strøm, spenning og Ohms lov · 2 Effekt og energi · 3 Måling med multimeter · 4 Motorstyring |
 | Vg2 | HMS | 1 Grunnleggende HMS · 2 Risikovurdering og SJA |
 | Vg2 | Materiallære | 1 Grunnleggende · 2 Stål og jern · 3 Mekanisk prøving · 4 Varmebehandling |
+| Vg2 | Overflatebehandling | 1 Rust og overflatebehandling |
 | Vg2 | Maskinering | 1 Skjærehastighet, turtall og mating |
 | Vg2 | Måleteknikk og kvalitet | 1 Måleverktøy |
 | Vg2 | Tegning og DAK | 1 Arbeidstegninger · 2 Fra 3D-modell til arbeidstegning · 3 Sveisesymboler · 4 Geometriske toleranser |
