@@ -1,0 +1,1178 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Additiv tilvirkning 1 – Fra 3D-modell til ferdig print</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#e0a800; --yellow-soft:#fff8db;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:66ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2 > *, .hero > *{min-width:0}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg, .fig canvas{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.8rem; font-weight:600}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+details.laerer{margin-top:1.2rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+@media (prefers-reduced-motion: reduce){ .scene *, .hero-fig *{animation:none!important} }
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.75rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.legend{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin:.2rem 0 .3rem}
+.legend i{display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:.4rem}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem; line-height:1.7}
+.steps .res{color:var(--orange); font-weight:700; font-size:1.1rem}
+.formula{font-family:"Cascadia Mono", Consolas, monospace; font-size:1.5rem; font-weight:700; text-align:center; padding:.6rem; background:var(--bg); border-radius:10px; margin:.4rem 0}
+
+/* Repetisjon */
+.flip{cursor:pointer; text-align:left; font:inherit; color:inherit; width:100%; min-height:9rem; display:flex; flex-direction:column; justify-content:space-between}
+.flip .q{font-weight:650; font-size:1.05rem}
+.flip .a{display:none; color:var(--green); font-weight:600; margin-top:.6rem}
+.flip.show .a{display:block}
+.flip .hint{font-size:.75rem; color:var(--muted); margin-top:.6rem}
+.flip.show .hint{display:none}
+
+.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
+/* Tabs */
+.tabs{display:flex; gap:.4rem; flex-wrap:wrap}
+.tabs .btn{font-size:.9rem; padding:.5rem 1rem}
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.oppfig{max-width:620px; margin:.4rem 0; background:#fff; border:1px solid #999; border-radius:6px}
+.oppfig svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr 1fr}
+  .readout{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .paper{overflow-x:auto} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+
+
+
+/* Additiv */
+.lag-ok{fill:var(--orange)}
+.dryp{animation:dryp 1.6s ease-in-out infinite}
+@keyframes dryp{50%{transform:translateY(5px)}}
+.puls{animation:puls2 1.2s ease-in-out infinite}
+@keyframes puls2{50%{opacity:.35}}
+.trinn{list-style:none; padding:0; margin:0; counter-reset:t}
+.trinn li{counter-increment:t; display:flex; gap:.7rem; align-items:flex-start; padding:.55rem .7rem; border-radius:10px; margin-bottom:.35rem; border:1px solid var(--line); background:var(--panel); cursor:pointer; font-size:1rem}
+.trinn li::before{content:counter(t); flex:none; width:1.7rem; height:1.7rem; border-radius:50%; display:grid; place-items:center; font-weight:800; background:var(--steel-soft); color:var(--ink)}
+.trinn li.aktiv{border-color:var(--orange); background:var(--orange-soft)}
+.trinn li.aktiv::before{background:var(--orange); color:#fff}
+.fx-steg{display:none}
+.fx-steg.vis{display:inline}
+.bar{height:16px; border-radius:99px; background:var(--steel-soft); overflow:hidden; margin:.2rem 0 .6rem}
+.bar i{display:block; height:100%; background:var(--orange); border-radius:99px; transition:width .5s}
+.bar.b i{background:var(--blue)} .bar.g i{background:var(--green)}
+.mat h3{display:flex; align-items:center; gap:.5rem}
+.mat .spole{width:2.2rem; height:2.2rem; border-radius:50%; border:7px solid; flex:none}
+.sirkel{display:grid; grid-template-columns:repeat(4,1fr); gap:.8rem; align-items:stretch}
+.sirkel .card{text-align:center; transition:background .3s, border-color .3s}
+.sirkel .card.aktiv{border-color:var(--orange); background:var(--orange-soft)}
+.sirkel .ico{font-size:2.4rem; display:block}
+.krav li{margin:.35rem 0; font-size:1.05rem}
+@media (max-width:900px){ .sirkel{grid-template-columns:1fr 1fr} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Additiv tilvirkning · <span>Leksjon 1</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- FORSIDE -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Additiv tilvirkning</div>
+      <h1>Leksjon 1<br>Fra 3D-modell til ferdig print</h1>
+      <p class="lead">Hvordan blir en tegning i Fusion til en ekte del?</p>
+      <ol class="goals">
+        <li><b>Fjerne</b> eller <b>legge til</b> materiale?</li>
+        <li><b>Lag for lag</b>: slik virker 3D-printeren</li>
+        <li>Fra <b>Fusion</b> til <b>Bambu Studio</b></li>
+        <li><b>Lagtykkelse</b>, <b>fyll</b>, <b>overheng</b> og <b>støtte</b></li>
+        <li>Velg <b>plassering</b> og <b>materiale</b></li>
+        <li>Løs et <b>oppdrag</b>: tegn, print, test, forbedre</li>
+      </ol>
+    </div>
+    <div>
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="3D-printer bygger en del lag for lag">
+          <rect x="40" y="20" width="440" height="16" rx="4" style="fill:var(--steel-dark)"/>
+          <rect x="40" y="20" width="16" height="290" rx="4" style="fill:var(--steel-dark)"/>
+          <rect x="464" y="20" width="16" height="290" rx="4" style="fill:var(--steel-dark)"/>
+          <rect x="90" y="280" width="340" height="14" rx="3" style="fill:var(--steel)"/>
+          <g id="heroLag"></g>
+          <g id="heroDyse">
+            <rect x="-22" y="-70" width="44" height="46" rx="5" style="fill:var(--steel-dark)"/>
+            <rect x="-18" y="-24" width="36" height="12" style="fill:var(--red)"/>
+            <path d="M-8 -12 H8 L2 0 H-2 Z" style="fill:var(--yellow)"/>
+          </g>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <p style="margin:.6rem 0">Hver del er én visning med én ting. Bla videre når klassen har forstått den. Innledning: Ta med en 3D-printet del og en dreid eller frest del. Spør: «Hvordan er disse to laget?»</p>
+      <div class="card" style="margin-top:.6rem">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p><i>«bruke additiv tilvirkning for å løse læringsoppdrag»</i> (T15)</p>
+        <p><i>«bruke digitale verktøy til modeller, tegninger …»</i> (T6). Her: fra 3D-modell i Fusion til fil og slicer.</p>
+        <p><i>«forklare og bruke riktig bearbeidingsmetode ut fra materialer, arbeidstegninger og spesifikasjoner»</i> (T7). Her: printe eller maskinere?</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Første leksjon i emnet. Forutsetter ingen 3D-printing fra Vg1. Læringsmål: forklare forskjellen på additiv og subtraktiv tilvirkning · vite når 3D-print passer · kjenne delene på en FDM-printer · eksportere en modell fra Fusion og åpne den i sliceren · velge lagtykkelse, fyll, støtte og plassering · velge materiale · gjennomføre et læringsoppdrag: tegne, printe, teste og forbedre.</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1</th></tr>
+          <tr><td>0–5 min</td><td>Husker du?</td></tr>
+          <tr><td>5–25 min</td><td>Del 1–5: fjerne eller legge til, printe eller maskinere, lag for lag, printeren, fra Fusion til fil</td></tr>
+          <tr><td>25–45 min</td><td>Del 6–10: lagtykkelse, fyll, overheng, plassering, materialer</td></tr>
+          <tr><th colspan="2">Time 2</th></tr>
+          <tr><td>0–10 min</td><td>Del 11–12: oppdraget og eksempelet</td></tr>
+          <tr><td>10–40 min</td><td>Oppgave 1–6, så oppgave 7: planlegg eget oppdrag</td></tr>
+          <tr><td>40–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+        <p style="font-size:.85rem; color:var(--muted); margin:.5rem 0 0">Selve tegningen og printen gjøres i neste økt i verkstedet. En print tar ofte 1–3 timer; start printene før lunsj eller etter skoletid.</p>
+      </div>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HUSKER DU -->
+<section class="slide" id="rep" data-nav="Husker du?">
+  <div class="wrap">
+    <div class="kicker">Oppstart · ca. 5 min</div>
+    <h2>Husker du?</h2>
+    <p class="lead">Svar med sidemannen – klikk for svar.</p>
+    <div class="grid4" style="margin-top:1.2rem">
+      <button class="card flip"><span class="q">Hva er en 3D-modell?</span><span class="a">En tegning av delen i tre dimensjoner på PC-en: lengde, bredde og høyde.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvilket program tegner vi 3D i på skolen?</span><span class="a">Autodesk Fusion.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">I Fusion: hva gjør «Extrude»?</span><span class="a">Drar en flat skisse ut, så den blir en 3D-kropp.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva gjør fresen og dreiebenken med materialet?</span><span class="a">Fjerner materiale. De skjærer bort spon til delen er ferdig.</span><span class="hint">Klikk for svar</span></button>
+    </div>
+    <div class="tip o"><b>I dag:</b> En maskin som gjør det motsatte – den <b>legger til</b> materiale.</div>
+  </div>
+</section>
+
+<!-- DEL 1 FJERNE ELLER LEGGE TIL -->
+<section class="slide" id="subadd" data-nav="1 Fjerne eller legge til">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 4 min</div>
+    <h2>Fjerne eller legge til?</h2>
+    <p class="lead"><b>Subtraktiv</b>: start med en kloss, ta bort. <b>Additiv</b>: start med ingenting, legg til.</p>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="fig">
+        <svg viewBox="0 0 300 220" role="img" aria-label="Fres tar bort materiale fra en kloss, spon flyr">
+          <rect x="40" y="190" width="220" height="12" style="fill:var(--steel-dark)"/>
+          <rect x="70" y="90" width="160" height="100" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>
+          <rect x="70" y="90" width="160" height="0" style="fill:var(--panel)">
+            <animate attributeName="height" dur="6s" repeatCount="indefinite" values="0;0;40;40" keyTimes="0;.1;.8;1"/>
+          </rect>
+          <g>
+            <animateTransform attributeName="transform" type="translate" dur="6s" repeatCount="indefinite" values="0 -10;0 0;0 40;0 40" keyTimes="0;.1;.8;1"/>
+            <rect x="135" y="10" width="30" height="50" style="fill:var(--steel-dark)"/>
+            <rect x="141" y="60" width="18" height="32" style="fill:var(--orange)"/>
+          </g>
+          <g style="fill:var(--steel-dark)">
+            <path d="M175 95 q8 -10 14 -2" style="fill:none;stroke:var(--steel-dark);stroke-width:3"><animateTransform attributeName="transform" type="translate" dur="1s" repeatCount="indefinite" values="0 0;30 -30"/><animate attributeName="opacity" dur="1s" repeatCount="indefinite" values="1;0"/></path>
+            <path d="M125 95 q-8 -10 -14 -2" style="fill:none;stroke:var(--steel-dark);stroke-width:3"><animateTransform attributeName="transform" type="translate" dur="1.3s" repeatCount="indefinite" values="0 0;-30 -25"/><animate attributeName="opacity" dur="1.3s" repeatCount="indefinite" values="1;0"/></path>
+          </g>
+        </svg>
+        <h3 style="text-align:center">Subtraktiv · fres og dreiebenk</h3>
+        <p class="short" style="text-align:center">Spon blir til overs.</p>
+      </div>
+      <div class="fig">
+        <svg viewBox="0 0 300 220" role="img" aria-label="3D-printer legger lag på lag">
+          <rect x="40" y="190" width="220" height="12" style="fill:var(--steel)"/>
+          <g id="addLag"></g>
+          <g id="addDyse">
+            <rect x="-15" y="-46" width="30" height="34" rx="4" style="fill:var(--steel-dark)"/>
+            <path d="M-6 -12 H6 L2 -2 H-2 Z" style="fill:var(--yellow)"/>
+          </g>
+        </svg>
+        <h3 style="text-align:center">Additiv · 3D-printer</h3>
+        <p class="short" style="text-align:center">Nesten ingenting blir til overs.</p>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>«Additiv tilvirkning» er det faglige ordet for 3D-printing (engelsk: additive manufacturing, AM). Skolens Bambu Lab-printere er FDM-printere som smelter plasttråd. I industrien finnes også printere for metall (laser smelter metallpulver) og harpiks (lys herder væske). Spør: «Hva skjer med sponet fra fresen?»</details>
+  </div>
+</section>
+
+<!-- DEL 2 PRINTE ELLER MASKINERE -->
+<section class="slide" id="velg" data-nav="2 Printe eller maskinere?">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 4 min</div>
+    <h2>Printe eller maskinere?</h2>
+    <p class="lead">Klikk på en del. Hvilken metode passer?</p>
+    <div class="grid4" style="margin-top:1rem" id="velgKort">
+      <button class="card flip" data-m="p"><span class="q">🧩 Holder til skyvelæren, 1 stk, plast</span><span class="a">Print! Én del, rar form, plast holder.</span><span class="hint">Klikk</span></button>
+      <button class="card flip" data-m="m"><span class="q">⚙️ Aksel til en pumpe, stål, Ø20 h7</span><span class="a">Maskiner! Må tåle mye og ha nøyaktig mål.</span><span class="hint">Klikk</span></button>
+      <button class="card flip" data-m="p"><span class="q">🔧 Prototype av et håndtak, for å teste formen</span><span class="a">Print! Rask å lage og lett å endre.</span><span class="hint">Klikk</span></button>
+      <button class="card flip" data-m="m"><span class="q">🔩 500 like bolter i stål</span><span class="a">Maskiner! Mange like deler og sterkt materiale.</span><span class="hint">Klikk</span></button>
+    </div>
+    <div class="grid2" style="margin-top:1.2rem">
+      <div class="card" style="border-color:var(--green)"><h3 style="color:var(--green)">🖨️ Print når …</h3><p class="short">få deler · rare former · plast er sterkt nok · du vil teste en idé</p></div>
+      <div class="card" style="border-color:var(--blue)"><h3 style="color:var(--blue)">⚙️ Maskiner når …</h3><p class="short">metall · stor kraft · nøyaktige mål · mange like deler</p></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kobling til T7 (riktig bearbeidingsmetode). En FDM-print i plast har typisk ±0,2–0,3 mm nøyaktighet. Trenger delen pasning (f.eks. h7), må den maskineres, eller printes med overmål og etterbearbeides. I industrien brukes 3D-print mye til jigger, holdere og prototyper.</details>
+  </div>
+</section>
+
+<!-- DEL 3 LAG FOR LAG -->
+<section class="slide" id="lag" data-nav="3 Lag for lag">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 3 min</div>
+    <h2>Lag for lag</h2>
+    <p class="lead">Printeren tegner ett tynt lag. Så flytter den seg <b>ett lag opp</b>. Om igjen og om igjen.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="lagSvg" viewBox="0 0 600 320" role="img" aria-label="En kopp bygges lag for lag. Dysen går fram og tilbake på det øverste laget."></svg>
+        <div class="controls no-print">
+          <label for="lagR">Lag</label><input type="range" id="lagR" min="1" max="24" value="8">
+          <button class="btn small" id="lagPlay">▶ Print</button>
+        </div>
+      </div>
+      <div>
+        <div class="readout" style="grid-template-columns:1fr 1fr">
+          <div><span>Lag</span><b id="lagN"></b></div>
+          <div><span>Høyde</span><b id="lagH"></b></div>
+        </div>
+        <div class="tip">Ett lag er ofte <b>0,2 mm</b>. En del som er 2 cm høy har <b>100 lag</b>.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Lagene i figuren er forstørret: 24 lag × 0,2 mm = 4,8 mm. Vis gjerne en ekte print i sakte film (time-lapse på YouTube), eller la klassen se på printeren de første minuttene.</details>
+  </div>
+</section>
+
+<!-- DEL 4 PRINTEREN -->
+<section class="slide" id="printer" data-nav="4 Printeren">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 4 min</div>
+    <h2>Delene på printeren</h2>
+    <p class="lead">Plasttråden smeltes i dysen og legges ut som en tynn pølse.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg viewBox="0 0 600 340" role="img" aria-label="FDM-printer: filamentspole, mater, varm dyse og byggeplate">
+          <!-- ramme -->
+          <rect x="120" y="30" width="420" height="14" rx="4" style="fill:var(--steel-dark)"/>
+          <rect x="120" y="30" width="14" height="290" rx="4" style="fill:var(--steel-dark)"/>
+          <rect x="526" y="30" width="14" height="290" rx="4" style="fill:var(--steel-dark)"/>
+          <!-- spole -->
+          <circle cx="60" cy="110" r="46" style="fill:var(--green);opacity:.85"/>
+          <circle cx="60" cy="110" r="14" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:3"/>
+          <path d="M100 90 C170 70 250 70 290 110" style="fill:none;stroke:var(--green);stroke-width:4"/>
+          <path d="M100 90 C170 70 250 70 290 110" style="fill:none;stroke:#fff;stroke-width:2;stroke-dasharray:4 14;opacity:.7"><animate attributeName="stroke-dashoffset" dur="1s" repeatCount="indefinite" values="0;-18"/></path>
+          <!-- byggeplate -->
+          <rect x="180" y="270" width="300" height="14" rx="3" style="fill:var(--steel);stroke:var(--steel-dark)"/>
+          <rect x="190" y="284" width="280" height="6" style="fill:var(--red);opacity:.5"/>
+          <!-- del -->
+          <rect x="260" y="230" width="140" height="40" style="fill:var(--green)"/>
+          <!-- skrivehode -->
+          <g>
+            <animateTransform attributeName="transform" type="translate" dur="4s" repeatCount="indefinite" values="-40 0;40 0;-40 0"/>
+            <rect x="290" y="110" width="80" height="70" rx="6" style="fill:var(--steel-dark)"/>
+            <circle cx="330" cy="140" r="16" style="fill:var(--steel-soft)"><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" values="0 330 140;360 330 140"/></circle>
+            <rect x="314" y="180" width="32" height="22" style="fill:var(--red)"/>
+            <path d="M322 202 H338 L332 222 H328 Z" style="fill:var(--yellow)"/>
+            <path d="M330 222 V230" style="stroke:var(--green);stroke-width:5"/>
+          </g>
+          <!-- merker -->
+          <g font-size="17" font-weight="800">
+            <text x="10" y="185" style="fill:var(--green)">Filament</text>
+            <text x="385" y="100" style="fill:var(--ink)">Mater (motor)</text>
+            <text x="400" y="200" style="fill:var(--red)">Dyse ca. 220 °C</text>
+            <text x="190" y="318" style="fill:var(--ink)">Byggeplate ca. 60 °C</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <table class="t">
+          <tr><th>Del</th><th>Gjør</th></tr>
+          <tr><td><b>Filament</b></td><td>Plasttråd på spole, ofte 1,75 mm</td></tr>
+          <tr><td><b>Mater</b></td><td>Skyver tråden inn i dysen</td></tr>
+          <tr><td><b>Dyse</b></td><td>Smelter plasten, hull på 0,4 mm</td></tr>
+          <tr><td><b>Byggeplate</b></td><td>Varm plate delen bygges på</td></tr>
+        </table>
+        <div class="status bad">🔥 Dysen og platen er varme. Ikke ta på mens printeren går.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>FDM = Fused Deposition Modeling (også kalt FFF). Dysen flyttes i X og Y; platen eller hodet flyttes i Z. HMS: varme flater, bevegelige deler, og plastdamp. Plasser printeren i et rom med god lufting, og ikke la den stå uten tilsyn de første lagene. Last gjerne opp et bilde av skolens printer med «Vis/skjul plass for filer».</details>
+  </div>
+</section>
+
+<!-- DEL 5 FRA FUSION TIL FIL -->
+<section class="slide" id="fil" data-nav="5 Fra Fusion til fil">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 5 min</div>
+    <h2>Fra Fusion til sliceren</h2>
+    <p class="lead">Klikk på stegene.</p>
+    <div class="grid2 wide-left">
+      <div class="fig" style="padding:.5rem">
+        <svg id="fxSvg" viewBox="0 0 640 360" role="img" aria-label="Fusion-vinduet: høyreklikk på kroppen og lagre som mesh">
+          <!-- vindu -->
+          <rect x="0" y="0" width="640" height="360" rx="8" fill="#ffffff" stroke="#b9c0c8"/>
+          <rect x="0" y="0" width="640" height="34" rx="8" fill="#f2f3f4"/>
+          <rect x="8" y="7" width="20" height="20" rx="3" fill="#2b78c5"/>
+          <text x="34" y="22" font-size="13" font-weight="700" fill="#3c3c3c">DESIGN ▾</text>
+          <text x="120" y="22" font-size="12" font-weight="700" fill="#0a6ebd">SOLID</text>
+          <rect x="114" y="31" width="46" height="3" fill="#0696d7"/>
+          <text x="174" y="22" font-size="12" font-weight="600" fill="#666">SURFACE</text>
+          <text x="248" y="22" font-size="12" font-weight="600" fill="#666">UTILITIES</text>
+          <!-- browser -->
+          <rect x="8" y="44" width="170" height="160" rx="4" fill="#fafafa" stroke="#d6dadf"/>
+          <text x="16" y="62" font-size="12" font-weight="700" fill="#555">BROWSER</text>
+          <text x="18" y="84" font-size="12" fill="#3c3c3c">▾ ◻ Holder v1</text>
+          <text x="30" y="104" font-size="12" fill="#3c3c3c">▸ 📁 Origin</text>
+          <text x="30" y="124" font-size="12" fill="#3c3c3c">▾ 📁 Bodies</text>
+          <rect x="40" y="132" width="126" height="20" rx="3" fill="#e5f1fb" class="fx-steg s1 s2"/>
+          <text x="46" y="146" font-size="12" fill="#0a6ebd" font-weight="700">◼ Body1</text>
+          <text x="30" y="168" font-size="12" fill="#3c3c3c">▸ 📁 Sketches</text>
+          <!-- modell -->
+          <g transform="translate(330 200)">
+            <path d="M-110 30 L0 85 L120 25 L10 -30 Z" fill="#c9d3dc" stroke="#7d8b99" stroke-width="2"/>
+            <path d="M-110 30 L-110 0 L0 55 L0 85 Z" fill="#9fb0c0" stroke="#7d8b99" stroke-width="2"/>
+            <path d="M0 85 L0 55 L120 -5 L120 25 Z" fill="#b3c2d0" stroke="#7d8b99" stroke-width="2"/>
+            <path d="M-110 0 L0 55 L120 -5 L10 -60 Z" fill="#dfe6ec" stroke="#7d8b99" stroke-width="2"/>
+            <path d="M-40 -5 L20 25 L60 5 L0 -25 Z" fill="#7d8b99" opacity=".6"/>
+            <g class="fx-steg s3 s4" stroke="#e8590c" stroke-width="1.3" fill="none">
+              <path d="M-110 0 L120 -5 M-55 27 L65 -32 M10 -60 L0 55 M-110 0 L0 -25 M120 -5 L20 25 M0 55 L60 5"/>
+            </g>
+          </g>
+          <!-- høyreklikkmeny -->
+          <g class="fx-steg s2">
+            <rect x="150" y="140" width="170" height="122" rx="4" fill="#ffffff" stroke="#b9c0c8"/>
+            <text x="162" y="162" font-size="12" fill="#3c3c3c">Move/Copy</text>
+            <text x="162" y="184" font-size="12" fill="#3c3c3c">Create Components</text>
+            <rect x="152" y="194" width="166" height="22" fill="#e5f1fb"/>
+            <text x="162" y="210" font-size="12" font-weight="700" fill="#0a6ebd">Save As Mesh</text>
+            <text x="162" y="232" font-size="12" fill="#3c3c3c">Rename</text>
+            <text x="162" y="252" font-size="12" fill="#3c3c3c">Delete</text>
+          </g>
+          <!-- dialog -->
+          <g class="fx-steg s3">
+            <rect x="400" y="50" width="225" height="160" rx="6" fill="#ffffff" stroke="#b9c0c8"/>
+            <rect x="400" y="50" width="225" height="28" rx="6" fill="#f2f3f4"/>
+            <text x="412" y="69" font-size="12" font-weight="700" fill="#3c3c3c">SAVE AS MESH</text>
+            <text x="412" y="102" font-size="12" fill="#3c3c3c">Format</text>
+            <rect x="490" y="88" width="120" height="20" rx="3" fill="#e5f1fb" stroke="#0696d7"/><text x="498" y="102" font-size="12" font-weight="700" fill="#0a6ebd">3MF ▾</text>
+            <text x="412" y="132" font-size="12" fill="#3c3c3c">Unit Type</text>
+            <rect x="490" y="118" width="120" height="20" rx="3" fill="#e5f1fb" stroke="#0696d7"/><text x="498" y="132" font-size="12" font-weight="700" fill="#0a6ebd">Millimeter ▾</text>
+            <text x="412" y="162" font-size="12" fill="#3c3c3c">Refinement</text>
+            <rect x="490" y="148" width="120" height="20" rx="3" fill="#fff" stroke="#c9cfd6"/><text x="498" y="162" font-size="12" fill="#3c3c3c">Medium ▾</text>
+            <rect x="545" y="180" width="64" height="22" rx="3" fill="#0696d7"/><text x="561" y="195" font-size="12" font-weight="700" fill="#fff">OK</text>
+          </g>
+          <!-- slicer: Bambu Studio -->
+          <g class="fx-steg s4">
+            <rect x="380" y="44" width="252" height="190" rx="6" fill="#f7f7f7" stroke="#b9c0c8"/>
+            <rect x="380" y="44" width="252" height="28" rx="6" fill="#ffffff"/>
+            <text x="390" y="63" font-size="12" font-weight="700" fill="#00ae42">Bambu Studio</text>
+            <text x="490" y="63" font-size="12" font-weight="700" fill="#262e30">Prepare</text>
+            <rect x="488" y="69" width="48" height="3" fill="#00ae42"/>
+            <text x="548" y="63" font-size="12" fill="#6b6b6b">Preview</text>
+            <text x="390" y="92" font-size="11" fill="#6b6b6b">holder.3mf</text>
+            <path d="M400 205 L500 225 L615 200 L520 182 Z" fill="#c9cdd1" stroke="#9aa0a6"/>
+            <rect x="478" y="168" width="64" height="32" fill="#00ae42"/>
+            <path d="M478 168 L496 158 L560 158 L542 168 Z" fill="#4fd17f"/>
+            <path d="M542 168 L560 158 L560 190 L542 200 Z" fill="#008a35"/>
+            <rect x="520" y="82" width="104" height="22" rx="11" fill="#00ae42"/><text x="536" y="97" font-size="12" font-weight="700" fill="#fff">Slice plate</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <ol class="trinn" id="fxTrinn">
+          <li data-s="1" class="aktiv"><span>Finn kroppen under <b>Bodies</b> i Browser.</span></li>
+          <li data-s="2"><span>Høyreklikk og velg <b>Save As Mesh</b>.</span></li>
+          <li data-s="3"><span>Velg <b>3MF</b> (eller STL) og <b>Millimeter</b>. Trykk OK.</span></li>
+          <li data-s="4"><span>Åpne filen i <b>Bambu Studio</b> og trykk <b>Slice plate</b>.</span></li>
+        </ol>
+        <div class="tip"><b>Sliceren</b> (Bambu Studio) kutter modellen i tynne lag og lager koden printeren følger. Akkurat som Fusion lager G-kode til CNC.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>En mesh-fil (3MF eller STL) beskriver overflaten med små trekanter (oransje strek). 3MF er nyere og tar med enhet og farge; STL fungerer i alle slicere. Sjekk alltid at målene er riktige når filen åpnes i sliceren (mm, ikke tommer). I Fusion kan du også bruke Utilities → Make → 3D Print, som kan sende modellen rett til Bambu Studio. Tegningen er forenklet; knappene kan se litt annerledes ut i deres versjon.</details>
+  </div>
+</section>
+
+<!-- DEL 6 LAGTYKKELSE -->
+<section class="slide" id="tykkelse" data-nav="6 Lagtykkelse">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 4 min</div>
+    <h2>Tynne lag = glatt, men tregt</h2>
+    <p class="lead">Velg lagtykkelse. Se på den runde kanten.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="tykkSvg" viewBox="0 0 600 300" role="img" aria-label="En rund kant printet med lag. Tykke lag gir trappetrinn."></svg>
+        <p class="caption">Lagene er forstørret.</p>
+      </div>
+      <div>
+        <div class="tabs no-print" id="tykkTabs">
+          <button class="btn" data-h="0.1">0,1 mm</button>
+          <button class="btn on" data-h="0.2">0,2 mm</button>
+          <button class="btn" data-h="0.3">0,3 mm</button>
+        </div>
+        <div class="readout" style="grid-template-columns:1fr 1fr; margin-top:1rem">
+          <div><span>Lag (20 mm høy del)</span><b id="tykkLag"></b></div>
+          <div><span>Tid</span><b id="tykkTid"></b></div>
+        </div>
+        <div class="status info" id="tykkTxt"></div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>I Bambu Studio velges lagtykkelsen i profilen øverst (for eksempel «0.20mm Standard») eller under Quality → Layer height. 0,2 mm er standard med 0,4 mm dyse. Tidene er eksempler for en liten del; sliceren regner ut tiden for hver del. Spør: «Hva velger du til en prototype du bare skal teste formen på?» (0,3 mm, raskt).</details>
+  </div>
+</section>
+
+<!-- DEL 7 VEGGER OG FYLL -->
+<section class="slide" id="fyll" data-nav="7 Vegger og fyll">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 4 min</div>
+    <h2>Delen er ikke helt fylt inni</h2>
+    <p class="lead">Sterke <b>vegger</b> utenpå. Et <b>rutenett</b> (fyll) inni. Velg hvor mye fyll.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="fyllSvg" viewBox="0 0 600 300" role="img" aria-label="Snitt av en printet kloss: vegger rundt og rutenett inni"></svg>
+      </div>
+      <div>
+        <div class="tabs no-print" id="fyllTabs">
+          <button class="btn" data-f="0">0 %</button>
+          <button class="btn on" data-f="15">15 %</button>
+          <button class="btn" data-f="40">40 %</button>
+          <button class="btn" data-f="100">100 %</button>
+        </div>
+        <div style="margin-top:1rem">
+          <span>Styrke</span><div class="bar g"><i id="fyllS"></i></div>
+          <span>Tid</span><div class="bar"><i id="fyllT"></i></div>
+          <span>Plast</span><div class="bar b"><i id="fyllP"></i></div>
+        </div>
+        <div class="status info" id="fyllTxt"></div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>I Bambu Studio: Strength → Sparse infill density (fyll) og Wall loops (antall vegger). Standard er 15 % og 2 vegger. 15–20 % holder til det meste. Flere vegger (perimeters/walls) gjør ofte delen sterkere enn mer fyll. 100 % brukes sjelden: tregt og mye plast.</details>
+  </div>
+</section>
+
+<!-- DEL 8 OVERHENG -->
+<section class="slide" id="overheng" data-nav="8 Overheng og støtte">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 5 min</div>
+    <h2>Printeren kan ikke printe i lufta</h2>
+    <p class="lead">Hvert lag må ligge på laget under. Opp til <b>45°</b> går det fint.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="overSvg" viewBox="0 0 600 320" role="img" aria-label="En vegg som lener seg. Over 45 grader henger lagene i lufta og synker."></svg>
+        <div class="controls no-print">
+          <label for="overR">Vinkel</label><input type="range" id="overR" min="0" max="75" step="5" value="30">
+          <button class="btn small" id="overStotte">Støtte: av</button>
+        </div>
+      </div>
+      <div>
+        <div class="readout" style="grid-template-columns:1fr"><div><span>Vinkel fra loddrett</span><b id="overV"></b></div></div>
+        <div class="status" id="overTxt"></div>
+        <div class="tip o"><b>Støtte</b> er ekstra plast under overhenget. Du brekker den av etterpå.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>45°-regelen er en tommelfingerregel. Korte broer (rett over et hull) går ofte fint uten støtte. I Bambu Studio: Support → Enable support. «Tree» (tre-støtte) er lett å brekke av. I Preview ser du støtten i grønt/grått før du printer. Støtte gir mer tid, mer plast og en ruere flate der den satt.</details>
+  </div>
+</section>
+
+<!-- DEL 9 PLASSERING -->
+<section class="slide" id="plassering" data-nav="9 Plassering">
+  <div class="wrap">
+    <div class="kicker">Del 9 · ca. 4 min</div>
+    <h2>Hvordan skal delen ligge?</h2>
+    <p class="lead">Lagene slipper lettest <b>mellom</b> lagene. Velg plassering.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="plassSvg" viewBox="0 0 600 300" role="img" aria-label="En krok printet liggende eller stående. Kraften drar i kroken."></svg>
+      </div>
+      <div>
+        <div class="tabs no-print" id="plassTabs">
+          <button class="btn on" data-p="ligg">Liggende</button>
+          <button class="btn" data-p="sta">Stående</button>
+        </div>
+        <div class="status" id="plassTxt"></div>
+        <div class="tip"><b>Huskeregel:</b> Stor, flat side ned på platen. Kraften skal gå <b>langs</b> lagene, ikke dra dem fra hverandre.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>En FDM-print er mye svakere i Z-retning (mellom lagene) enn i X og Y. Vis gjerne med en printet stav: den brekker lett langs lagene. Kroken skrus fast øverst og bærer noe på armen. Liggende: lagene går gjennom hele profilen. Stående: lagene ligger tvers over stanga, og bøyingen i hjørnet drar dem fra hverandre.</details>
+  </div>
+</section>
+
+<!-- DEL 10 MATERIALER -->
+<section class="slide" id="materialer" data-nav="10 Materialer">
+  <div class="wrap">
+    <div class="kicker">Del 10 · ca. 4 min</div>
+    <h2>Velg plast</h2>
+    <p class="lead">Start med <b>PLA</b>. Bytt bare når delen trenger det.</p>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card mat"><h3><span class="spole" style="border-color:var(--green)"></span>PLA</h3>
+        <span>Lett å printe</span><div class="bar g"><i style="width:95%"></i></div>
+        <span>Tåler varme</span><div class="bar"><i style="width:30%"></i></div>
+        <span>Seig, bøyer seg</span><div class="bar b"><i style="width:25%"></i></div>
+        <p class="short">Holdere, modeller, prototyper. Mykner i en varm bil.</p></div>
+      <div class="card mat"><h3><span class="spole" style="border-color:var(--blue)"></span>PETG</h3>
+        <span>Lett å printe</span><div class="bar g"><i style="width:70%"></i></div>
+        <span>Tåler varme</span><div class="bar"><i style="width:60%"></i></div>
+        <span>Seig, bøyer seg</span><div class="bar b"><i style="width:60%"></i></div>
+        <p class="short">Deler i verkstedet, tåler olje og vann bedre.</p></div>
+      <div class="card mat"><h3><span class="spole" style="border-color:var(--purple)"></span>TPU</h3>
+        <span>Lett å printe</span><div class="bar g"><i style="width:40%"></i></div>
+        <span>Tåler varme</span><div class="bar"><i style="width:50%"></i></div>
+        <span>Seig, bøyer seg</span><div class="bar b"><i style="width:100%"></i></div>
+        <p class="short">Gummiaktig: føtter, pakninger, demper.</p></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kobling til Materiallære (T12). PLA mykner rundt 55–60 °C. PETG rundt 75–80 °C. ABS/ASA tåler mer varme, men gir mer plastdamp og trenger lukket printer og god lufting – ikke anbefalt i klasserommet. PLA og PETG kan samles og leveres til plastgjenvinning der det finnes ordning (T16).</details>
+  </div>
+</section>
+
+<!-- DEL 11 OPPDRAGET -->
+<section class="slide" id="oppdrag" data-nav="11 Oppdraget">
+  <div class="wrap">
+    <div class="kicker">Del 11 · ca. 4 min</div>
+    <h2>Tegn – print – test – forbedre</h2>
+    <p class="lead">Den første printen blir sjelden perfekt. Det er helt vanlig.</p>
+    <div class="sirkel" id="sirkel" style="margin-top:1.2rem">
+      <div class="card"><span class="ico">✏️</span><h3>1 · Tegn</h3><p class="short">Modell i Fusion. Mål fra kravet.</p></div>
+      <div class="card"><span class="ico">🍰</span><h3>2 · Slice</h3><p class="short">Lag, fyll, støtte og plassering.</p></div>
+      <div class="card"><span class="ico">🖨️</span><h3>3 · Print</h3><p class="short">Se på de første lagene.</p></div>
+      <div class="card"><span class="ico">📏</span><h3>4 · Test og mål</h3><p class="short">Passer den? Holder den? Skriv ned.</p></div>
+    </div>
+    <div class="status warn" style="margin-top:1rem; text-align:center">↻ Passer den ikke? Endre tegningen og print igjen.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Dette er kjernen i T15: å bruke 3D-print for å løse et oppdrag. La elevene dokumentere hver runde (bilde, mål, hva de endret). Det gir også stoff til rapport og egenvurdering (T13). Begrens til to runder per elev for å spare tid og plast.</details>
+  </div>
+</section>
+
+<!-- DEL 12 EKSEMPEL -->
+<section class="slide" id="eksempel" data-nav="12 Eksempel">
+  <div class="wrap">
+    <div class="kicker">Del 12 · ca. 5 min</div>
+    <h2>Eksempel: holder til skyvelæren</h2>
+    <p class="lead">Oppdrag: Skyvelæren ligger og slenger. Lag en holder som kan skrus på veggen.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg viewBox="0 0 600 340" role="img" aria-label="Holder med spor. Første print var for trang, andre passet.">
+          <g transform="translate(40 60)">
+            <text x="110" y="250" text-anchor="middle" font-size="17" font-weight="800" style="fill:var(--red)">Runde 1: spor 3,0 mm</text>
+            <rect x="20" y="20" width="180" height="200" rx="10" style="fill:var(--green);opacity:.85"/>
+            <rect x="96" y="20" width="28" height="140" style="fill:var(--panel)"/>
+            <rect x="95" y="-50" width="30" height="70" rx="2" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"><animate attributeName="y" dur="3s" repeatCount="indefinite" values="-60;-50;-50;-60" keyTimes="0;.3;.7;1"/></rect>
+            <text x="110" y="274" text-anchor="middle" font-size="16" font-weight="700" style="fill:var(--red)">For trang ✗</text>
+            <circle cx="60" cy="190" r="7" style="fill:var(--panel)"/><circle cx="160" cy="190" r="7" style="fill:var(--panel)"/>
+          </g>
+          <path d="M275 170 h40" style="stroke:var(--orange);stroke-width:5"/><path d="M315 170 l-12 -8 v16 z" style="fill:var(--orange)"/>
+          <text x="295" y="155" text-anchor="middle" font-size="14" font-weight="700" style="fill:var(--orange)">+0,4 mm</text>
+          <g transform="translate(340 60)">
+            <text x="110" y="250" text-anchor="middle" font-size="17" font-weight="800" style="fill:var(--green)">Runde 2: spor 3,4 mm</text>
+            <rect x="20" y="20" width="180" height="200" rx="10" style="fill:var(--green);opacity:.85"/>
+            <rect x="94" y="20" width="32" height="140" style="fill:var(--panel)"/>
+            <rect x="99" y="-50" width="22" height="70" rx="2" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"><animate attributeName="y" dur="3s" repeatCount="indefinite" values="-60;85;85;-60" keyTimes="0;.3;.7;1"/></rect>
+            <text x="110" y="274" text-anchor="middle" font-size="16" font-weight="700" style="fill:var(--green)">Passer ✓</text>
+            <circle cx="60" cy="190" r="7" style="fill:var(--panel)"/><circle cx="160" cy="190" r="7" style="fill:var(--panel)"/>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Krav</h3>
+          <ul class="krav">
+            <li>Skyvelæren skal gli lett ned i sporet</li>
+            <li>To skruehull, Ø4,5 mm</li>
+            <li>Print uten støtte</li>
+          </ul>
+        </div>
+        <div class="tip">Hull og spor blir ofte litt <b>for trange</b>. Gi ca. <b>0,2–0,4 mm</b> klaring.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Andre oppdrag som passer: krok til verneutstyr, holder til bor eller unbrakonøkler, distanse eller skive, jigg for å holde et emne, deksel eller knott til en maskin. Mål delen eller stedet den skal passe først (kobling til T4). Mål den printede delen med skyvelære etterpå.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <ol style="font-size:1.08rem">
+          <li><b>Additiv</b> = legge til lag for lag. <b>Subtraktiv</b> = ta bort.</li>
+          <li><b>Print</b> få deler i plast og rare former. <b>Maskiner</b> metall og nøyaktige mål.</li>
+          <li>Fusion → <b>Save As Mesh</b> (3MF) → <b>Bambu Studio</b> → printer.</li>
+          <li><b>0,2 mm</b> lag og <b>15 %</b> fyll holder til det meste.</li>
+          <li>Over <b>45°</b> overheng: <b>støtte</b>.</li>
+          <li>Flat side ned. Kraften <b>langs</b> lagene.</li>
+          <li>Start med <b>PLA</b>.</li>
+          <li><b>Tegn – print – test – forbedre.</b></li>
+        </ol>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>additiv</span><span>subtraktiv</span><span>FDM</span><span>filament</span><span>dyse</span><span>byggeplate</span><span>mesh</span><span>3MF</span><span>STL</span><span>slicer</span><span>Bambu Studio</span><span>lagtykkelse</span><span>vegger</span><span>fyll</span><span>overheng</span><span>støtte</span><span>PLA</span><span>PETG</span><span>TPU</span><span>klaring</span></div>
+        </div>
+        <div class="status bad" style="margin-top:1rem">🔥 Varm dyse og plate. God lufting.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 30 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Additiv tilvirkning 1 – Fra 3D-modell til ferdig print · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Fjerne eller legge til? <small>4 min</small></h3>
+        <p>Sett kryss.</p>
+        <table class="ot" style="max-width:560px">
+          <tr><th>Maskin</th><th>Fjerner (subtraktiv)</th><th>Legger til (additiv)</th></tr>
+          <tr><td>Dreiebenk</td><td class="tom"><span class="fasit" hidden>✗</span></td><td class="tom"></td></tr>
+          <tr><td>3D-printer</td><td class="tom"></td><td class="tom"><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>Fres</td><td class="tom"><span class="fasit" hidden>✗</span></td><td class="tom"></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Printe eller maskinere? <small>4 min</small></h3>
+        <table class="ot">
+          <tr><th>Del</th><th style="width:22%">Print eller maskiner?</th><th style="width:40%">Hvorfor?</th></tr>
+          <tr><td>Krok til hørselvern, 1 stk</td><td class="tom"><span class="fasit" hidden>Print</span></td><td class="tom"><span class="fasit" hidden>Én del, plast holder.</span></td></tr>
+          <tr><td>Lagersete i stål, Ø30 H7</td><td class="tom"><span class="fasit" hidden>Maskiner</span></td><td class="tom"><span class="fasit" hidden>Metall og nøyaktig mål.</span></td></tr>
+          <tr><td>Modell av en ny knott for å teste formen</td><td class="tom"><span class="fasit" hidden>Print</span></td><td class="tom"><span class="fasit" hidden>Prototype: raskt og lett å endre.</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Delene på printeren <small>4 min</small></h3>
+        <p>Skriv riktig del ved bokstaven: <b>filament · dyse · byggeplate · mater</b></p>
+        <div class="oppfig">
+          <svg viewBox="0 0 520 260" role="img" aria-label="Printer med bokstavene A, B, C og D">
+            <rect x="120" y="20" width="360" height="12" style="fill:#5f6b78"/>
+            <rect x="120" y="20" width="12" height="220" style="fill:#5f6b78"/><rect x="468" y="20" width="12" height="220" style="fill:#5f6b78"/>
+            <circle cx="60" cy="90" r="38" style="fill:#2b8a3e;opacity:.85"/><circle cx="60" cy="90" r="11" style="fill:#fff;stroke:#5f6b78;stroke-width:3"/>
+            <path d="M95 75 C170 55 230 60 270 95" style="fill:none;stroke:#2b8a3e;stroke-width:4"/>
+            <rect x="260" y="95" width="70" height="56" rx="5" style="fill:#5f6b78"/>
+            <rect x="282" y="151" width="26" height="16" style="fill:#c92a2a"/><path d="M288 167 H302 L297 182 H293 Z" style="fill:#e0a800"/>
+            <rect x="190" y="210" width="240" height="12" style="fill:#9aa5b1;stroke:#5f6b78"/>
+            <rect x="240" y="185" width="110" height="25" style="fill:#2b8a3e"/>
+            <g font-size="20" font-weight="800" fill="#e8590c">
+              <text x="20" y="150">A</text><path d="M35 140 L50 125" style="stroke:#e8590c;stroke-width:2"/>
+              <text x="345" y="110">B</text>
+              <text x="320" y="186">C</text>
+              <text x="418" y="248">D</text><path d="M424 232 L415 222" style="stroke:#e8590c;stroke-width:2"/>
+            </g>
+            <g font-size="14" font-weight="700" class="fasit-svg" fill="#2b8a3e">
+              <text x="10" y="172">filament</text><text x="365" y="110">mater</text><text x="345" y="172">dyse</text><text x="436" y="248">byggeplate</text>
+            </g>
+          </svg>
+        </div>
+        <p>A = <span class="luke"><span class="fasit" hidden>filament</span></span> &nbsp; B = <span class="luke"><span class="fasit" hidden>mater</span></span> &nbsp; C = <span class="luke"><span class="fasit" hidden>dyse</span></span> &nbsp; D = <span class="luke"><span class="fasit" hidden>byggeplate</span></span></p>
+        <p>Hvorfor skal du ikke ta på C og D mens printeren går?</p>
+        <div class="svar"><span class="fasit" hidden>De er varme: dysen ca. 220 °C og platen ca. 60 °C.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Innstillinger i sliceren <small>5 min</small></h3>
+        <p>Fyll inn: <b>tynnere · tykkere · mer · mindre</b></p>
+        <p>a) Du vil ha en glatt, rund overflate. Velg <span class="luke"><span class="fasit" hidden>tynnere</span></span> lag.</p>
+        <p>b) Du vil printe en rask prototype. Velg <span class="luke"><span class="fasit" hidden>tykkere</span></span> lag.</p>
+        <p>c) Delen skal tåle mye. Velg <span class="luke"><span class="fasit" hidden>mer</span></span> fyll.</p>
+        <p>d) Du vil spare plast og tid. Velg <span class="luke"><span class="fasit" hidden>mindre</span></span> fyll.</p>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Trenger den støtte? <small>4 min</small></h3>
+        <div class="oppfig">
+          <svg viewBox="0 0 520 200" role="img" aria-label="Tre vegger med vinkel 20, 45 og 70 grader fra loddrett">
+            <g style="fill:#9aa5b1"><rect x="10" y="160" width="500" height="10"/></g>
+            <path d="M60 160 L100 160 L144 40 L104 40 Z" style="fill:#2b8a3e"/>
+            <path d="M210 160 L250 160 L370 40 L330 40 Z" style="fill:#2b8a3e"/>
+            <path d="M380 160 L420 160 L510 127 L470 127 Z" style="fill:#2b8a3e"/>
+            <g font-size="18" font-weight="800" fill="#14181d"><text x="80" y="188">A · 20°</text><text x="240" y="188">B · 45°</text><text x="400" y="188">C · 70°</text></g>
+          </svg>
+        </div>
+        <table class="ot" style="max-width:460px">
+          <tr><th>Vegg</th><th>Støtte? (ja/nei)</th></tr>
+          <tr><td>A · 20°</td><td class="tom"><span class="fasit" hidden>Nei</span></td></tr>
+          <tr><td>B · 45°</td><td class="tom"><span class="fasit" hidden>Nei, akkurat på grensen</span></td></tr>
+          <tr><td>C · 70°</td><td class="tom"><span class="fasit" hidden>Ja</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Fra Fusion til printer <small>4 min</small></h3>
+        <p>Sett stegene i riktig rekkefølge (1–4).</p>
+        <table class="ot" style="max-width:560px">
+          <tr><th>Steg</th><th style="width:20%">Nr.</th></tr>
+          <tr><td>Trykk Slice plate og send til printeren</td><td class="tom"><span class="fasit" hidden>4</span></td></tr>
+          <tr><td>Tegn delen i Fusion</td><td class="tom"><span class="fasit" hidden>1</span></td></tr>
+          <tr><td>Åpne filen i Bambu Studio og velg lag, fyll og støtte</td><td class="tom"><span class="fasit" hidden>3</span></td></tr>
+          <tr><td>Høyreklikk på kroppen: Save As Mesh (3MF)</td><td class="tom"><span class="fasit" hidden>2</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 7 – Planlegg ditt eget oppdrag <small>10 min</small></h3>
+        <p>Velg en del du trenger i verkstedet, eller få et oppdrag av læreren.</p>
+        <p>Hva skal du lage, og hva er kravet?</p>
+        <div class="svar"><span class="fasit" hidden>For eksempel: holder til skyvelæren. Skyvelæren skal gli ned i sporet, to skruehull Ø4,5.</span></div>
+        <p>Skisse med mål:</p>
+        <div style="border:1px solid var(--muted); border-radius:6px; height:9rem"></div>
+        <table class="ot">
+          <tr><th>Valg</th><th>Ditt valg</th><th>Hvorfor?</th></tr>
+          <tr><td>Materiale</td><td class="tom"><span class="fasit" hidden>PLA</span></td><td class="tom"><span class="fasit" hidden>Lett å printe, holder til en holder.</span></td></tr>
+          <tr><td>Lagtykkelse</td><td class="tom"><span class="fasit" hidden>0,2 mm</span></td><td class="tom"><span class="fasit" hidden>Standard, passe glatt og rask.</span></td></tr>
+          <tr><td>Fyll</td><td class="tom"><span class="fasit" hidden>15–20 %</span></td><td class="tom"><span class="fasit" hidden>Sterk nok, sparer plast.</span></td></tr>
+          <tr><td>Støtte</td><td class="tom"><span class="fasit" hidden>Nei</span></td><td class="tom"><span class="fasit" hidden>Ingen overheng over 45° når den ligger på ryggen.</span></td></tr>
+          <tr><td>Plassering</td><td class="tom"><span class="fasit" hidden>Flat bakside ned</span></td><td class="tom"><span class="fasit" hidden>Stor flate mot platen, ingen støtte.</span></td></tr>
+        </table>
+        <p>Hvordan tester du at delen er god nok?</p>
+        <div class="svar"><span class="fasit" hidden>Mål med skyvelære og prøv om skyvelæren passer i sporet. Skriv ned hva som må endres.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 3 min</small></h3>
+        <p>1. Hva betyr additiv tilvirkning?</p><div class="svar"><span class="fasit" hidden>Delen bygges ved å legge til materiale, lag for lag.</span></div>
+        <p>2. Hva gjør sliceren (Bambu Studio)?</p><div class="svar"><span class="fasit" hidden>Kutter modellen i lag og lager koden printeren følger.</span></div>
+        <p>3. Når trenger du støtte?</p><div class="svar"><span class="fasit" hidden>Når overhenget er mer enn ca. 45° fra loddrett.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const fmtT = (x, d=2) => x.toLocaleString("nb-NO", {maximumFractionDigits:d});
+function el(tag, attrs, parent, text){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function setStatus(id, txt, cls){ const s=$(id); s.textContent=txt; s.className="status "+cls; }
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName) && e.target.type!=="range") return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  const i = Math.max(0, Math.min(slides.length-1, currentIndex()+dir));
+  slides[i].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.classList.toggle("show"));
+const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+
+/* ---------- Forside og del 1: lag som bygges opp ---------- */
+function byggAnimasjon(lagG, dyse, x0, w, yBunn, h, n, farge, tid){
+  if (!lagG) return;
+  const rects = [];
+  for (let i = 0; i < n; i++) rects.push(el("rect",{x:x0, y:yBunn-(i+1)*h, width:0, height:h-1.5, rx:1.5, style:`fill:${farge(i)}`}, lagG));
+  let lag = 0, t0 = performance.now();
+  function steg(t){
+    const p = Math.min(1, (t - t0) / tid), fram = lag % 2 === 0;
+    const bredde = w * p, r = rects[lag];
+    r.setAttribute("width", bredde); r.setAttribute("x", fram ? x0 : x0 + w - bredde);
+    const dx = fram ? x0 + bredde : x0 + w - bredde;
+    dyse.setAttribute("transform", `translate(${dx} ${yBunn - (lag+1)*h})`);
+    if (p >= 1){ lag++; t0 = t;
+      if (lag >= n){ lag = 0; rects.forEach(r => r.setAttribute("width", 0)); }
+    }
+    requestAnimationFrame(steg);
+  }
+  if (reduceMotion){ rects.forEach(r => r.setAttribute("width", w)); dyse.setAttribute("transform", `translate(${x0+w} ${yBunn-n*h})`); }
+  else requestAnimationFrame(steg);
+}
+byggAnimasjon($("heroLag"), $("heroDyse"), 170, 180, 280, 14, 14, i => i%2 ? "var(--green)" : "color-mix(in srgb, var(--green) 80%, #000)", 700);
+byggAnimasjon($("addLag"), $("addDyse"), 90, 120, 190, 10, 12, i => i%2 ? "var(--orange)" : "color-mix(in srgb, var(--orange) 80%, #000)", 500);
+
+/* ---------- Del 2: printe eller maskinere ---------- */
+document.querySelectorAll("#velgKort .flip").forEach(b => b.addEventListener("click", () => {
+  b.style.borderColor = b.classList.contains("show") ? (b.dataset.m === "p" ? "var(--green)" : "var(--blue)") : "";
+}));
+
+/* ---------- Del 3: lag for lag (kopp) ---------- */
+(function(){
+  const svg = $("lagSvg"), N = 24, h = 10, yB = 290, cx = 300;
+  const r = i => 70 + 45 * Math.sin(i / (N-1) * Math.PI * 0.9);
+  let n = +$("lagR").value, timer = null, fase = 0;
+  el("rect",{x:120,y:yB,width:360,height:14,rx:3,style:"fill:var(--steel)"},svg);
+  const lagG = el("g",{},svg);
+  const dyse = el("g",{},svg);
+  el("rect",{x:-16,y:-54,width:32,height:40,rx:4,style:"fill:var(--steel-dark)"},dyse);
+  el("path",{d:"M-7 -14 H7 L2 -2 H-2 Z",style:"fill:var(--yellow)"},dyse);
+  function tegn(){
+    lagG.innerHTML = "";
+    for (let i = 0; i < n; i++){
+      const w = r(i), vegg = i < 2 ? w : 14;
+      const stil = i === n-1 ? "fill:var(--orange)" : `fill:${i%2 ? "var(--green)" : "color-mix(in srgb, var(--green) 80%, #000)"}`;
+      if (i < 2) el("rect",{x:cx-w,y:yB-(i+1)*h,width:2*w,height:h-1,rx:2,style:stil},lagG);
+      else { el("rect",{x:cx-w,y:yB-(i+1)*h,width:vegg,height:h-1,rx:2,style:stil},lagG); el("rect",{x:cx+w-vegg,y:yB-(i+1)*h,width:vegg,height:h-1,rx:2,style:stil},lagG); }
+    }
+    $("lagN").textContent = n + " av " + N;
+    $("lagH").textContent = fmt(n * 0.2, 1) + " mm";
+  }
+  function flyttDyse(){
+    const w = r(n-1), x = cx - w + (Math.sin(fase) + 1) * w;
+    dyse.setAttribute("transform", `translate(${x} ${yB - n*h})`);
+    fase += 0.05;
+    if (!reduceMotion) requestAnimationFrame(flyttDyse);
+  }
+  $("lagR").oninput = e => { n = +e.target.value; tegn(); };
+  $("lagPlay").onclick = () => {
+    if (timer){ clearInterval(timer); timer = null; $("lagPlay").textContent = "▶ Print"; return; }
+    if (n >= N) n = 1;
+    $("lagPlay").textContent = "⏸ Pause";
+    timer = setInterval(() => { n++; $("lagR").value = n; tegn(); if (n >= N){ clearInterval(timer); timer = null; $("lagPlay").textContent = "▶ Print"; } }, 450);
+  };
+  tegn(); flyttDyse();
+})();
+
+/* ---------- Del 5: fra Fusion til Bambu Studio ---------- */
+function visFx(s){
+  document.querySelectorAll("#fxSvg .fx-steg").forEach(g => g.classList.toggle("vis", g.classList.contains("s"+s)));
+  document.querySelectorAll("#fxTrinn li").forEach(li => li.classList.toggle("aktiv", li.dataset.s === String(s)));
+}
+document.querySelectorAll("#fxTrinn li").forEach(li => li.onclick = () => visFx(li.dataset.s));
+visFx(1);
+
+/* ---------- Del 6: lagtykkelse ---------- */
+(function(){
+  const svg = $("tykkSvg"), R = 220, x0 = 120, yB = 270;
+  const DATA = {"0.1":{lag:200, tid:"ca. 2 t 40 min", txt:"Glatt overflate, men tregt.", cls:"info"},
+                "0.2":{lag:100, tid:"ca. 1 t 20 min", txt:"Standard. Passe glatt og passe raskt.", cls:"ok"},
+                "0.3":{lag:67, tid:"ca. 55 min", txt:"Raskt, men du ser trappetrinn.", cls:"warn"}};
+  function tegn(hmm){
+    svg.innerHTML = "";
+    const h = hmm * 100;
+    el("rect",{x:60,y:yB,width:480,height:12,rx:3,style:"fill:var(--steel)"},svg);
+    for (let y = 0; y < R - 1; y += h){
+      const ym = Math.min(R, y + h/2), w = Math.sqrt(Math.max(0, R*R - ym*ym));
+      const hh = Math.min(h, R - y);
+      el("rect",{x:x0,y:yB-y-hh,width:w,height:hh-1,style:`fill:${Math.round(y/h)%2 ? "var(--green)" : "color-mix(in srgb, var(--green) 80%, #000)"}`},svg);
+    }
+    el("path",{d:`M${x0+R} ${yB} A${R} ${R} 0 0 0 ${x0} ${yB-R}`,style:"fill:none;stroke:var(--orange);stroke-width:3;stroke-dasharray:8 6"},svg);
+    el("text",{x:x0+R-10,y:yB-R+30,"font-size":15,"font-weight":700,style:"fill:var(--orange)"},svg,"Tegningen i Fusion");
+    const d = DATA[hmm];
+    $("tykkLag").textContent = d.lag; $("tykkTid").textContent = d.tid; setStatus("tykkTxt", d.txt, d.cls);
+  }
+  document.querySelectorAll("#tykkTabs .btn").forEach(b => b.onclick = () => {
+    document.querySelectorAll("#tykkTabs .btn").forEach(x => x.classList.toggle("on", x === b)); tegn(b.dataset.h);
+  });
+  tegn("0.2");
+})();
+
+/* ---------- Del 7: vegger og fyll ---------- */
+(function(){
+  const svg = $("fyllSvg");
+  const DATA = {0:{s:20,t:30,p:20,txt:"Hul inni. Lett, men svak. Toppen kan synke inn.",cls:"warn"},
+                15:{s:55,t:45,p:35,txt:"Standard. Sterk nok til det meste.",cls:"ok"},
+                40:{s:80,t:70,p:60,txt:"Sterkere. Bruk når delen skal tåle mye.",cls:"info"},
+                100:{s:100,t:100,p:100,txt:"Helt fylt. Tregt og mye plast.",cls:"warn"}};
+  function tegn(f){
+    svg.innerHTML = "";
+    const x = 150, y = 30, s = 240, v = 14;
+    const defs = el("defs",{},svg), cp = el("clipPath",{id:"fyllClip"},defs);
+    el("rect",{x:x+v,y:y+v,width:s-2*v,height:s-2*v},cp);
+    el("rect",{x:x,y:y,width:s,height:s,rx:4,style:"fill:var(--panel)"},svg);
+    const g = el("g",{"clip-path":"url(#fyllClip)"},svg);
+    if (f === 100) el("rect",{x:x,y:y,width:s,height:s,style:"fill:var(--green)"},g);
+    else if (f > 0){
+      const step = f === 15 ? 42 : 18;
+      for (let k = -s; k < 2*s; k += step){
+        el("line",{x1:x+k,y1:y,x2:x+k+s,y2:y+s,style:"stroke:var(--green);stroke-width:4"},g);
+        el("line",{x1:x+k+s,y1:y,x2:x+k,y2:y+s,style:"stroke:var(--green);stroke-width:4"},g);
+      }
+    }
+    el("rect",{x:x+v/2,y:y+v/2,width:s-v,height:s-v,rx:3,style:"fill:none;stroke:color-mix(in srgb, var(--green) 75%, #000);stroke-width:"+v},svg);
+    el("text",{x:x+s+16,y:y+20,"font-size":15,"font-weight":700,style:"fill:var(--ink)"},svg,"← vegger");
+    el("text",{x:x+s+16,y:y+s/2,"font-size":15,"font-weight":700,style:"fill:var(--green)"},svg,"← fyll " + f + " %");
+    el("text",{x:x+s/2,y:y+s+28,"text-anchor":"middle","font-size":14,style:"fill:var(--muted)"},svg,"Snitt gjennom delen, sett ovenfra");
+    const d = DATA[f];
+    $("fyllS").style.width = d.s + "%"; $("fyllT").style.width = d.t + "%"; $("fyllP").style.width = d.p + "%";
+    setStatus("fyllTxt", d.txt, d.cls);
+  }
+  document.querySelectorAll("#fyllTabs .btn").forEach(b => b.onclick = () => {
+    document.querySelectorAll("#fyllTabs .btn").forEach(x => x.classList.toggle("on", x === b)); tegn(+b.dataset.f);
+  });
+  tegn(15);
+})();
+
+/* ---------- Del 8: overheng og støtte ---------- */
+(function(){
+  const svg = $("overSvg"), yB = 280, h = 18, x0 = 120, w = 70;
+  let vinkel = +$("overR").value, stotte = false;
+  function tegn(){
+    svg.innerHTML = "";
+    el("rect",{x:60,y:yB,width:480,height:12,rx:3,style:"fill:var(--steel)"},svg);
+    const dx = Math.tan(vinkel * Math.PI / 180) * h, for_mye = vinkel > 45;
+    const N = Math.min(12, Math.floor(380 / Math.max(dx, 1)) + 1);
+    // 45°-linje
+    el("line",{x1:x0+w,y1:yB,x2:x0+w+12*h,y2:yB-12*h,style:"stroke:var(--blue);stroke-width:2;stroke-dasharray:6 5"},svg);
+    el("text",{x:x0+w+12*h+6,y:yB-12*h+4,"font-size":15,"font-weight":700,style:"fill:var(--blue)"},svg,"45°");
+    for (let i = 0; i < N; i++){
+      const x = x0 + i*dx, y = yB - (i+1)*h;
+      if (for_mye && stotte && i > 0){
+        el("rect",{x:x0+w+(i-1)*dx,y:y+h,width:dx,height:yB-y-h,style:"fill:var(--steel-soft);stroke:var(--steel);stroke-dasharray:3 3"},svg);
+      }
+      const synk = for_mye && !stotte ? Math.min(i, 6) * (vinkel - 45) * 0.12 : 0;
+      el("rect",{x:x,y:y+synk,width:w,height:h-2,rx:2,style:`fill:${for_mye && !stotte && i>0 ? "var(--red)" : (i%2 ? "var(--green)" : "color-mix(in srgb, var(--green) 80%, #000)")}`},svg);
+      if (for_mye && !stotte && i > 0){
+        const tr = el("path",{d:`M${x+w-6} ${y+synk+h-2} q4 10 -2 18`,class:"dryp",style:"fill:none;stroke:var(--red);stroke-width:2.5"},svg);
+      }
+    }
+    $("overV").textContent = vinkel + "°";
+    if (!for_mye) setStatus("overTxt","OK. Hvert lag ligger godt nok på laget under.","ok");
+    else if (stotte) setStatus("overTxt","Støtten holder lagene oppe. Brekk den av etterpå.","info");
+    else setStatus("overTxt","For bratt! Lagene henger i lufta og synker. Slå på støtte.","bad");
+  }
+  $("overR").oninput = e => { vinkel = +e.target.value; tegn(); };
+  $("overStotte").onclick = () => { stotte = !stotte; $("overStotte").textContent = "Støtte: " + (stotte ? "på" : "av"); $("overStotte").classList.toggle("on", stotte); tegn(); };
+  tegn();
+})();
+
+/* ---------- Del 9: plassering ---------- */
+(function(){
+  const svg = $("plassSvg");
+  function krok(g, lagLinjer){
+    // L-formet krok: stang ned, arm ut til høyre
+    const d = "M0 0 H40 V160 H140 V120 H180 V200 H0 Z";
+    const defs = el("defs",{},g), cp = el("clipPath",{id:"krokClip"+lagLinjer},defs); el("path",{d},cp);
+    el("path",{d,style:"fill:var(--green)"},g);
+    if (lagLinjer){
+      const lg = el("g",{"clip-path":`url(#krokClip${lagLinjer})`},g);
+      for (let y = 8; y < 200; y += 8) el("line",{x1:0,y1:y,x2:180,y2:y,style:"stroke:color-mix(in srgb, var(--green) 60%, #000);stroke-width:1.5"},lg);
+    }
+    el("path",{d,style:"fill:none;stroke:color-mix(in srgb, var(--green) 60%, #000);stroke-width:2"},g);
+  }
+  function tegn(p){
+    svg.innerHTML = "";
+    const sta = p === "sta";
+    el("rect",{x:60,y:20,width:20,height:240,style:"fill:var(--steel-soft);stroke:var(--steel)"},svg);
+    el("text",{x:70,y:275,"text-anchor":"middle","font-size":13,style:"fill:var(--muted)"},svg,"vegg");
+    krok(el("g",{transform:"translate(80 40)"},svg), sta ? 1 : 0);
+    el("circle",{cx:100,cy:60,r:6,style:"fill:var(--panel);stroke:var(--steel-dark);stroke-width:2"},svg);
+    const pil = el("g",{class:"puls"},svg);
+    el("path",{d:"M240 100 V145",style:"stroke:var(--red);stroke-width:5"},pil); el("path",{d:"M240 155 l-9 -14 h18 z",style:"fill:var(--red)"},pil);
+    el("text",{x:252,y:118,"font-size":15,"font-weight":700,style:"fill:var(--red)"},svg,"kraft");
+    // Slik ligger den på platen
+    el("text",{x:470,y:170,"text-anchor":"middle","font-size":14,"font-weight":700,style:"fill:var(--muted)"},svg,"Slik ligger den på platen:");
+    el("rect",{x:390,y:262,width:160,height:10,rx:3,style:"fill:var(--steel)"},svg);
+    if (!sta){
+      el("rect",{x:400,y:242,width:140,height:20,style:"fill:var(--green)"},svg);
+      for (let y = 246; y < 262; y += 5) el("line",{x1:400,y1:y,x2:540,y2:y,style:"stroke:color-mix(in srgb, var(--green) 60%, #000);stroke-width:1.2"},svg);
+      el("text",{x:200,y:290,"text-anchor":"middle","font-size":14,"font-weight":700,style:"fill:var(--muted)"},svg,"Hvert lag er hele kroken");
+      el("text",{x:470,y:110,"text-anchor":"middle","font-size":28,"font-weight":800,style:"fill:var(--green)"},svg,"Holder! ✓");
+      setStatus("plassTxt","Hvert lag har hele krokformen. Kraften går langs lagene.","ok");
+    } else {
+      const m = el("g",{transform:"translate(434 182) scale(.4)"},svg); krok(m, 2);
+      el("text",{x:200,y:290,"text-anchor":"middle","font-size":14,"font-weight":700,style:"fill:var(--muted)"},svg,"Lagene ligger tvers over stanga");
+      el("path",{d:"M78 200 L92 196 L104 201 L122 197",class:"puls",style:"fill:none;stroke:var(--red);stroke-width:4"},svg);
+      el("text",{x:470,y:110,"text-anchor":"middle","font-size":28,"font-weight":800,style:"fill:var(--red)"},svg,"Brekker ✗");
+      setStatus("plassTxt","Kraften drar lagene fra hverandre i hjørnet. Den brekker langs et lag.","bad");
+    }
+  }
+  document.querySelectorAll("#plassTabs .btn").forEach(b => b.onclick = () => {
+    document.querySelectorAll("#plassTabs .btn").forEach(x => x.classList.toggle("on", x === b)); tegn(b.dataset.p);
+  });
+  tegn("ligg");
+})();
+
+/* ---------- Del 11: sirkelen lyser opp ---------- */
+(function(){
+  const kort = [...document.querySelectorAll("#sirkel .card")]; let i = 0;
+  function neste(){ kort.forEach((k,j) => k.classList.toggle("aktiv", j === i)); i = (i+1) % kort.length; }
+  neste(); if (!reduceMotion) setInterval(neste, 1800);
+})();
+
+/* ---------- Oppgaver ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToImg(svg){
+  const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
+  const img = new Image(); await new Promise(r => { img.onload = r; img.onerror = r; img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str); });
+  const c = document.createElement("canvas"); c.width = vb.width*2; c.height = vb.height*2; const x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+  const im = document.createElement("img"); im.src = c.toDataURL("image/png"); im.width = vb.width; im.height = vb.height; return im;
+}
+$("btnCopy").onclick = async () => {
+  const orig = $("oppgavetekst"), clone = orig.cloneNode(true);
+  const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>
