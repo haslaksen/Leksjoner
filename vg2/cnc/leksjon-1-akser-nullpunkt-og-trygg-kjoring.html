@@ -1,0 +1,1066 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CNC 1 – Akser, nullpunkt og trygg kjøring</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#e0a800; --yellow-soft:#fff8db;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:66ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2 > *, .hero > *{min-width:0}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg, .fig canvas{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.8rem; font-weight:600}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+details.laerer{margin-top:1.2rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+@media (prefers-reduced-motion: reduce){ .scene *, .hero-fig *{animation:none!important} }
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.75rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.legend{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin:.2rem 0 .3rem}
+.legend i{display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:.4rem}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem; line-height:1.7}
+.steps .res{color:var(--orange); font-weight:700; font-size:1.1rem}
+.formula{font-family:"Cascadia Mono", Consolas, monospace; font-size:1.5rem; font-weight:700; text-align:center; padding:.6rem; background:var(--bg); border-radius:10px; margin:.4rem 0}
+
+/* Repetisjon */
+.flip{cursor:pointer; text-align:left; font:inherit; color:inherit; width:100%; min-height:9rem; display:flex; flex-direction:column; justify-content:space-between}
+.flip .q{font-weight:650; font-size:1.05rem}
+.flip .a{display:none; color:var(--green); font-weight:600; margin-top:.6rem}
+.flip.show .a{display:block}
+.flip .hint{font-size:.75rem; color:var(--muted); margin-top:.6rem}
+.flip.show .hint{display:none}
+
+.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
+/* Tabs */
+.tabs{display:flex; gap:.4rem; flex-wrap:wrap}
+.tabs .btn{font-size:.9rem; padding:.5rem 1rem}
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.oppfig{max-width:620px; margin:.4rem 0; background:#fff; border:1px solid #999; border-radius:6px}
+.oppfig svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr 1fr}
+  .readout{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .paper{overflow-x:auto} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+
+
+/* CNC */
+.controls .btn.small.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+.mono{font-family:"Cascadia Mono", Consolas, monospace}
+.jog{display:grid; grid-template-columns:repeat(3,3.2rem); gap:.35rem; justify-content:start}
+.jog .btn{font-weight:700; padding:.5rem 0}
+.verktoy{transition:transform 1.4s ease-in-out}
+.krasj{animation:krasj .5s ease-in-out 3}
+@keyframes krasj{50%{opacity:.2}}
+.panel{background:#25282a; border-radius:14px; padding:1rem; display:grid; grid-template-columns:repeat(4,1fr); gap:.6rem}
+.tast{background:#ebe9e1; color:#1d1d1b; border:2px solid #8d8a81; border-radius:8px; padding:.6rem .3rem; text-align:center; font-weight:800; font-size:.8rem; line-height:1.2; min-height:3.4rem; display:grid; place-items:center}
+.tast.gronn{background:#2b8a3e; color:#fff; border-color:#1d5f2a}
+.tast.gul{background:#e0a800; color:#1d1d1b; border-color:#9c7600}
+.tast.nod{background:#c92a2a; color:#fff; border-color:#7a1414; border-radius:50%; aspect-ratio:1; min-height:0; font-size:.7rem}
+.panel .dial.lys,.tast.lys{outline:4px solid #ff8a3d; outline-offset:2px; animation:puls 1s ease-in-out infinite}
+@keyframes puls{50%{outline-color:transparent}}
+.panel .dial{grid-column:span 2; background:#303437; color:#d9dad6; border-radius:8px; padding:.4rem .6rem; font-size:.75rem; font-weight:700; display:flex; align-items:center; gap:.6rem}
+.panel .dial svg{width:54px; height:54px; flex:none}
+#panelA .tast{cursor:pointer}
+.trinn{list-style:none; padding:0; margin:0; counter-reset:t}
+.trinn li{counter-increment:t; display:flex; gap:.7rem; align-items:flex-start; padding:.55rem .7rem; border-radius:10px; margin-bottom:.35rem; border:1px solid var(--line); background:var(--panel); cursor:pointer; font-size:1rem}
+.trinn li::before{content:counter(t); flex:none; width:1.7rem; height:1.7rem; border-radius:50%; display:grid; place-items:center; font-weight:800; background:var(--steel-soft); color:var(--ink)}
+.trinn li.aktiv{border-color:var(--orange); background:var(--orange-soft)}
+.trinn li.aktiv::before{background:var(--orange); color:#fff}
+.flyt{display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:.6rem; align-items:center}
+.flyt .pil{font-size:2rem; color:var(--orange); font-weight:800}
+@media (max-width:900px){ .flyt{grid-template-columns:1fr} .flyt .pil{transform:rotate(90deg); text-align:center} .panel{grid-template-columns:repeat(3,1fr)} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">CNC · <span>Leksjon 1</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- FORSIDE -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · CNC</div>
+      <h1>Leksjon 1<br>CNC-dreiebenken: akser, nullpunkt og trygg kjøring</h1>
+      <p class="lead">Hvordan vet maskinen hvor verktøyet er?</p>
+      <ol class="goals">
+        <li>Hva er <b>CNC</b>?</li>
+        <li>Aksene <b>Z</b> og <b>X</b></li>
+        <li>To nullpunkt: <b>M</b> og <b>W</b></li>
+        <li><b>Verktøyoffset</b></li>
+        <li><b>Knappene</b> og trygg kjøring</li>
+      </ol>
+    </div>
+    <div>
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="CNC-dreiebenk: verktøyet kjører etter et program fra nullpunktet W på emnet">
+          <defs>
+            <linearGradient id="hgStal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7783"/><stop offset=".4" stop-color="#e3e8ee"/><stop offset="1" stop-color="#5f6b78"/></linearGradient>
+          </defs>
+          <!-- Skjerm med program -->
+          <rect x="20" y="20" width="180" height="120" rx="8" style="fill:#1d2126;stroke:var(--steel-dark);stroke-width:2"/>
+          <g font-family="Consolas, monospace" font-size="14" font-weight="700">
+            <rect x="28" y="30" width="164" height="20" rx="3" style="fill:#e8590c">
+              <animate attributeName="y" dur="6s" repeatCount="indefinite" values="30;30;52;52;74;74;96;96" keyTimes="0;.24;.25;.49;.5;.74;.75;1" calcMode="discrete"/>
+            </rect>
+            <text x="34" y="45" style="fill:#e8f5e9">G0 X20 Z2</text>
+            <text x="34" y="67" style="fill:#e8f5e9">G1 Z-30 F0.2</text>
+            <text x="34" y="89" style="fill:#e8f5e9">G1 X44</text>
+            <text x="34" y="111" style="fill:#e8f5e9">G0 X80 Z50</text>
+          </g>
+          <!-- Chuck og emne -->
+          <rect x="40" y="185" width="60" height="130" rx="6" style="fill:var(--steel-dark)"/>
+          <rect x="100" y="215" width="240" height="70" style="fill:url(#hgStal);stroke:var(--steel-dark)"/>
+          <line x1="30" y1="250" x2="500" y2="250" style="stroke:var(--muted);stroke-dasharray:10 5 2 5"/>
+          <!-- W -->
+          <circle cx="340" cy="250" r="9" style="fill:var(--panel);stroke:var(--blue);stroke-width:3"/>
+          <path d="M340 241 V259 M331 250 H349" style="stroke:var(--blue);stroke-width:2"/>
+          <text x="350" y="275" font-size="18" font-weight="800" style="fill:var(--blue)">W</text>
+          <!-- Verktøy -->
+          <g>
+            <animateTransform attributeName="transform" type="translate" dur="6s" repeatCount="indefinite" values="140 -40;0 0;0 0;-128 0;-128 0;-128 -12;-128 -12;140 -40" keyTimes="0;.2;.25;.45;.5;.7;.75;1"/>
+            <path d="M348 230 L366 224 L360 206 Z" style="fill:var(--orange)"/>
+            <rect x="356" y="160" width="22" height="50" rx="3" style="fill:var(--steel-dark)"/>
+          </g>
+          <!-- Akser -->
+          <path d="M400 310 H470" style="stroke:var(--ink);stroke-width:3"/><path d="M470 310 l-10 -6 v12 z" style="fill:var(--ink)"/>
+          <text x="476" y="316" font-size="18" font-weight="800" style="fill:var(--ink)">Z</text>
+          <path d="M400 310 V250" style="stroke:var(--ink);stroke-width:3"/><path d="M400 250 l-6 10 h12 z" style="fill:var(--ink)"/>
+          <text x="392" y="242" font-size="18" font-weight="800" style="fill:var(--ink)">X</text>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <p style="margin:.6rem 0">Hver del er én visning med én ting. Bla videre når klassen har forstått den. Innledning: Vis en ekte CNC-dreiebenk i verkstedet, eller start CNC-dreiebenk-simulatoren på fremviseren. Spør: «Hvordan vet maskinen hvor emnet er?»</p>
+      <div class="card" style="margin-top:.6rem">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p><i>«programmere, simulere og drifte styrte produksjonsmaskiner»</i> (T8). Her: drifte.</p>
+        <p><i>«bruke maskiner og utstyr til å omarbeide aktuelle materialer i tråd med gjeldende HMS-rutiner»</i> (T1)</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Første leksjon i emnet CNC. Forutsetter ingen CNC fra Vg1. Læringsmål: forklare hva CNC er (program, styring, maskin) · kjenne aksene X og Z på dreiebenken, og at X er diameter · skille maskinnullpunkt M og arbeidsnullpunkt W · forklare hvorfor hvert verktøy må måles inn (offset) · følge en trygg rutine første gang et program kjøres (HOME, single block, ilgang 25 %, hånd ved nødstopp). Leksjon 2 handler om å skrive og simulere programmet.</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1</th></tr>
+          <tr><td>0–5 min</td><td>Husker du?</td></tr>
+          <tr><td>5–23 min</td><td>Del 1–4: CNC, Z-aksen, X = diameter, fresen</td></tr>
+          <tr><td>23–45 min</td><td>Oppgave 1–3</td></tr>
+          <tr><th colspan="2">Time 2</th></tr>
+          <tr><td>0–26 min</td><td>Del 5–10: M, W, verktøyoffset, knappene, første kjøring</td></tr>
+          <tr><td>26–42 min</td><td>Oppgave 4–6 og CNC-dreiebenk-simulatoren</td></tr>
+          <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+        <p style="font-size:.85rem; color:var(--muted); margin:.5rem 0 0">Oppgave 7 er ekstra. Ta gjerne klassen med til maskinen og vis HOME, offsettabellen og SINGLE BLOCK på ekte.</p>
+      </div>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HUSKER DU -->
+<section class="slide" id="rep" data-nav="Husker du?">
+  <div class="wrap">
+    <div class="kicker">Oppstart · ca. 5 min</div>
+    <h2>Husker du?</h2>
+    <p class="lead">Svar med sidemannen – klikk for svar.</p>
+    <div class="grid4" style="margin-top:1.2rem">
+      <button class="card flip"><span class="q">På en dreiebenk: hva roterer, emnet eller verktøyet?</span><span class="a">Emnet. Dreiestålet står stille og mates.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva er forskjellen på radius og diameter?</span><span class="a">Diameter er hele veien over. Radius er fra midten og ut. Diameter = 2 × radius.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva gjør nødstoppen?</span><span class="a">Stopper alle bevegelser i maskinen med en gang.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvilket verneutstyr bruker du ved dreiebenken?</span><span class="a">Vernebriller og vernesko. Ikke hansker, løst tøy eller løst hår nær chucken.</span><span class="hint">Klikk for svar</span></button>
+    </div>
+    <div class="tip o"><b>I dag:</b> Hvordan vet maskinen hvor verktøyet er – og hvordan kjører du trygt?</div>
+  </div>
+</section>
+
+<!-- DEL 1 HVA ER CNC -->
+<section class="slide" id="cnc" data-nav="1 Hva er CNC?">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 5 min</div>
+    <h2>CNC = maskinen følger et program</h2>
+    <p class="lead"><b>C</b>omputer <b>N</b>umerical <b>C</b>ontrol: en datamaskin styrer maskinen med tall.</p>
+    <div class="flyt" style="margin-top:1.2rem">
+      <div class="card">
+        <svg viewBox="0 0 220 130" role="img" aria-label="Program: linjer med kode">
+          <rect x="10" y="8" width="200" height="114" rx="8" style="fill:var(--steel-soft);stroke:var(--line)"/>
+          <g font-family="Consolas, monospace" font-size="14" font-weight="700" style="fill:var(--ink)">
+            <text x="24" y="34">G0 X20 Z2</text><text x="24" y="58">G1 Z-30 F0.2</text><text x="24" y="82">G1 X44</text><text x="24" y="106">M30</text>
+          </g>
+          <rect x="18" y="20" width="184" height="20" rx="3" style="fill:var(--orange);opacity:.25"><animate attributeName="y" dur="4s" repeatCount="indefinite" values="20;44;68;92" calcMode="discrete"/></rect>
+        </svg>
+        <h3>1 · Program</h3><p class="short">Lages i <b>Fusion</b> på PC, eller skrives på maskinen.</p>
+      </div>
+      <div class="pil">→</div>
+      <div class="card">
+        <svg viewBox="0 0 220 130" role="img" aria-label="Styring: skjerm og knapper på maskinen">
+          <rect x="20" y="10" width="120" height="85" rx="6" style="fill:#1d2126;stroke:var(--steel-dark);stroke-width:2"/>
+          <text x="32" y="38" font-family="Consolas, monospace" font-size="15" font-weight="700" style="fill:#51cf66">X  20.000</text>
+          <text x="32" y="62" font-family="Consolas, monospace" font-size="15" font-weight="700" style="fill:#51cf66">Z   2.000<animate attributeName="opacity" dur="1s" repeatCount="indefinite" values="1;.4;1"/></text>
+          <g style="fill:#ebe9e1;stroke:#8d8a81">
+            <rect x="152" y="12" width="24" height="18" rx="3"/><rect x="182" y="12" width="24" height="18" rx="3"/>
+            <rect x="152" y="36" width="24" height="18" rx="3"/><rect x="182" y="36" width="24" height="18" rx="3"/>
+          </g>
+          <rect x="152" y="62" width="54" height="22" rx="4" style="fill:#2b8a3e"/>
+          <circle cx="80" cy="112" r="12" style="fill:#c92a2a"/>
+        </svg>
+        <h3>2 · Styring</h3><p class="short">Leser én linje om gangen og regner ut bevegelsen.</p>
+      </div>
+      <div class="pil">→</div>
+      <div class="card">
+        <svg viewBox="0 0 220 130" role="img" aria-label="Maskin: emnet roterer og verktøyet beveger seg">
+          <rect x="10" y="30" width="40" height="80" rx="4" style="fill:var(--steel-dark)"/>
+          <rect x="50" y="52" width="110" height="36" style="fill:var(--steel);stroke:var(--steel-dark)"/>
+          <path d="M120 44 a10 26 0 1 1 0 52" style="fill:none;stroke:var(--blue);stroke-width:3"><animate attributeName="opacity" dur=".6s" repeatCount="indefinite" values="1;.3;1"/></path>
+          <g><animateTransform attributeName="transform" type="translate" dur="4s" repeatCount="indefinite" values="40 -10;0 0;-80 0;40 -10"/>
+            <path d="M160 52 L174 46 L168 32 Z" style="fill:var(--orange)"/><rect x="166" y="0" width="16" height="36" rx="2" style="fill:var(--steel-dark)"/>
+          </g>
+        </svg>
+        <h3>3 · Maskin</h3><p class="short">Motorer flytter verktøyet nøyaktig, til 0,001 mm.</p>
+      </div>
+    </div>
+    <div class="tip">Samme program gir <b>samme del hver gang</b>. Derfor brukes CNC når mange like deler skal lages.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>CNC-maskinen har servomotorer og kuleskruer på hver akse, og målesystem som gir tilbakemelding om posisjonen. Styringen på skolens Mazak bruker vanlig G-kode (EIA/ISO). Programmet kan lages i Fusion (DAP/CAM) og overføres med minnepinne eller nettverk, eller skrives på maskinen (EDIT/MDI). Leksjon 2 går gjennom kodene.</details>
+  </div>
+</section>
+
+<!-- DEL 2 Z-AKSEN -->
+<section class="slide" id="zakse" data-nav="2 Z-aksen">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 4 min</div>
+    <h2>Z går langs emnet</h2>
+    <p class="lead"><b>Z0</b> er endeflaten. Inne i emnet er Z <b>minus</b>.</p>
+    <div class="fig" style="max-width:1000px">
+      <svg id="zSvg" viewBox="0 0 600 300" role="img" aria-label="Verktøyet glir langs emnet. Z-verdien vises. Til høyre for endeflaten er Z pluss, inne i emnet er Z minus."></svg>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Z-aksen er spindelens akse. Pluss er alltid bort fra chucken. Spør: «Verktøyet står 30 mm inne i emnet. Hva er Z?» (Z-30). Vis gjerne Z-verdien på maskinens skjerm mens du kjører med håndhjulet.</details>
+  </div>
+</section>
+
+<!-- DEL 3 X = DIAMETER -->
+<section class="slide" id="xakse" data-nav="3 X = diameter">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 6 min</div>
+    <h2>X er diameteren</h2>
+    <p class="lead">Spissen står <b>10 mm</b> fra midten. Da viser maskinen <b>X20</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="jogSvg" viewBox="0 0 600 300" role="img" aria-label="Dreiebenk sett fra siden. Flytt verktøyet med knappene og se X og Z."></svg>
+        <div class="readout">
+          <div><span>X (diameter)</span><b id="rX"></b></div>
+          <div><span>Z</span><b id="rZ"></b></div>
+          <div style="grid-column:span 2"><span>Avstand fra midten (radius)</span><b id="rR"></b></div>
+        </div>
+        <div class="status info" id="jogTxt"></div>
+      </div>
+      <div>
+        <h3>Flytt verktøyet</h3>
+        <div class="jog no-print">
+          <span></span><button class="btn" data-j="X+">X+</button><span></span>
+          <button class="btn" data-j="Z-">Z−</button><button class="btn" data-j="0" title="Tilbake">⌂</button><button class="btn" data-j="Z+">Z+</button>
+          <span></span><button class="btn" data-j="X-">X−</button><span></span>
+        </div>
+        <p class="caption">Ett trykk = 5 i X eller Z. Som håndhjulet på maskinen.</p>
+        <div class="formula" style="margin-top:1rem">X = 2 × radius</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Diameterprogrammering er standard på dreiebenker. Målene fra tegningen kan skrives rett inn. Flytter du X med 10, flytter verktøyet seg 5 mm. La en elev styre knappene og resten si X-verdien før den vises.</details>
+  </div>
+</section>
+
+<!-- DEL 4 FRESEN -->
+<section class="slide" id="fres" data-nav="4 Fresen">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 3 min</div>
+    <h2>Fresen har tre akser</h2>
+    <p class="lead">X og Y går sideveis. <b>Z</b> er alltid verktøyets akse, opp og ned.</p>
+    <div class="fig" style="max-width:820px">
+      <svg viewBox="0 0 600 300" role="img" aria-label="Fres: bordet beveger seg i X og Y, fresen beveger seg i Z">
+        <rect x="70" y="250" width="330" height="22" rx="3" style="fill:var(--steel-dark)"/>
+        <g><animateTransform attributeName="transform" type="translate" dur="6s" repeatCount="indefinite" values="0 0;60 0;60 0;0 0" keyTimes="0;.4;.6;1"/>
+          <rect x="90" y="200" width="250" height="50" rx="3" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <rect x="150" y="180" width="130" height="20" style="fill:var(--steel);stroke:var(--steel-dark)"/>
+        </g>
+        <g><animateTransform attributeName="transform" type="translate" dur="6s" repeatCount="indefinite" values="0 -20;0 -20;0 0;0 -20" keyTimes="0;.5;.75;1"/>
+          <rect x="196" y="40" width="40" height="90" style="fill:var(--steel-dark)"/>
+          <rect x="206" y="130" width="20" height="50" style="fill:var(--orange)"/>
+        </g>
+        <g style="stroke:var(--ink);stroke-width:3.5">
+          <path d="M470 220 H560"/><path d="M470 220 V110"/><path d="M470 220 L425 262"/>
+        </g>
+        <path d="M560 220 l-12 -7 v14 z" style="fill:var(--ink)"/><path d="M470 110 l-7 12 h14 z" style="fill:var(--ink)"/><path d="M425 262 l4 -14 l9 9 z" style="fill:var(--ink)"/>
+        <text x="566" y="227" font-size="24" font-weight="800" style="fill:var(--orange)">X</text>
+        <text x="461" y="100" font-size="24" font-weight="800" style="fill:var(--blue)">Z</text>
+        <text x="405" y="285" font-size="24" font-weight="800" style="fill:var(--green)">Y</text>
+      </svg>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Leksjonene om CNC bruker dreiebenken, fordi skolens CNC-simulator er en dreiebenk. Det samme gjelder på fresen: nullpunkt, verktøyoffset (lengde) og trygg oppstart. På fresen er W ofte et hjørne på toppen av emnet.</details>
+  </div>
+</section>
+
+<!-- DEL 5 M -->
+<section class="slide" id="mnull" data-nav="5 M">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 4 min</div>
+    <h2>M · maskinnullpunktet</h2>
+    <p class="lead">Et fast punkt inne i maskinen. Etter oppstart må maskinen kjøre dit: <b>HOME</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="homeSvg" viewBox="0 0 600 300" role="img" aria-label="Verktøyet kjører til maskinnullpunktet M når du trykker HOME"></svg>
+        <div class="status warn" id="homeTxt">Maskinen er slått på. Den vet ikke hvor aksene står.</div>
+      </div>
+      <div>
+        <button class="btn primary no-print" id="homeBtn" style="font-size:1.1rem; padding:.8rem 1.4rem">🏠 Trykk HOME</button>
+        <div class="tip" style="margin-top:1.2rem">M ligger <b>ytterst</b> i plussretning på X og Z. Du kan ikke flytte M.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Maskinnullpunktet kalles også referansepunkt eller HOME-posisjon. Etter strømbrudd eller nødstopp vet styringen ikke sikkert hvor aksene står, og må nullpunktkjøres. Det er det første elevene gjør i CNC-dreiebenk-simulatoren.</details>
+  </div>
+</section>
+
+<!-- DEL 6 W -->
+<section class="slide" id="wnull" data-nav="6 W">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 5 min</div>
+    <h2>W · arbeidsnullpunktet</h2>
+    <p class="lead">Punktet <b>du</b> velger på emnet, oftest midt på endeflaten. Programmet regner fra W.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <div class="controls no-print" style="margin-top:0"><label>Emnet</label><button class="btn small on" data-emne="60">Langt emne</button><button class="btn small" data-emne="35">Kort emne</button></div>
+        <svg id="nullSvg" viewBox="0 0 600 300" role="img" aria-label="Maskinnullpunkt M står fast. Arbeidsnullpunkt W flytter seg med emnet. Verktøyet kjører til samme punkt fra W."></svg>
+        <div class="status info" id="nullTxt"></div>
+      </div>
+      <div>
+        <div class="tip o">Nytt emne i chucken? Da må du <b>stille inn W på nytt</b>.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>W settes ved å skrape (berøre) endeflaten med verktøyet og skrive inn Z0 i arbeidsforskyvningen (for eksempel G54 eller verktøyets Z-geometri, avhengig av maskinen). Vis hvordan det gjøres på skolens maskin. Poeng: programmet blir likt selv om emnet sitter lenger inn eller ut i chucken.</details>
+  </div>
+</section>
+
+<!-- DEL 7 VERKTØYENE -->
+<section class="slide" id="verktoy" data-nav="7 Verktøyene">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 4 min</div>
+    <h2>Verktøyene er ikke like lange</h2>
+    <p class="lead">Maskinen må vite hvor <b>spissen</b> på hvert verktøy er. Det kalles <b>verktøyoffset</b>.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="lengdeSvg" viewBox="0 0 600 280" role="img" aria-label="Tre verktøy i revolveren med ulik lengde"></svg>
+      </div>
+      <div>
+        <h3>Offsettabellen</h3>
+        <table class="t" id="offTab" style="font-size:.95rem">
+          <tr><th>Nr.</th><th>Verktøy</th><th>Lengde Z (mm)</th></tr>
+        </table>
+        <p class="caption">Står i styringen under OFFSET. Tallene er eksempler.</p>
+        <div class="tip"><b>T0303</b> = verktøy nr. 3 med offset nr. 3.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Verktøyoffset (geometri) er avstanden fra et fast punkt på revolveren til skjærespissen, i både X og Z. Her vises bare Z for å gjøre det enkelt. Innmåling gjøres ved å skrape diameter og endeflate med hvert verktøy, eller med verktøymålearm hvis maskinen har det. Slitasjeoffset (wear) brukes til små justeringer.</details>
+  </div>
+</section>
+
+<!-- DEL 8 KRASJ -->
+<section class="slide" id="offset" data-nav="8 Glemt offset">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 4 min</div>
+    <h2>Glemt å måle inn? Krasj!</h2>
+    <p class="lead">Velg verktøy og kjør til Z2. Prøv med og uten offset.</p>
+    <div class="fig" style="max-width:1000px">
+      <div class="controls no-print" style="margin-top:0"><label>Verktøy</label><span id="tBtns"></span></div>
+      <div class="controls no-print" style="margin-top:.4rem"><label>Offset</label><button class="btn small on" id="offPa">Målt inn</button><button class="btn small" id="offAv">Glemt å måle inn</button><button class="btn small primary" id="offKjor">▶ Kjør til Z2</button></div>
+      <svg id="offSvg" viewBox="0 0 600 260" role="img" aria-label="Verktøyet kjører mot endeflaten. Uten riktig offset krasjer et langt verktøy i emnet."></svg>
+      <div class="status info" id="offTxt"></div>
+    </div>
+    <div class="tip o"><b>Nytt verktøy eller nytt skjær?</b> Mål inn på nytt før du kjører.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Uten innmåling regner maskinen her med at alle verktøy er like lange som T01. Finstålet (litt lengre) skjærer 2 mm for langt. Boret (mye lengre) krasjer. En krasj kan ødelegge verktøy, revolver og spindellager.</details>
+  </div>
+</section>
+
+<!-- DEL 9 KNAPPENE -->
+<section class="slide" id="knapper" data-nav="9 Knappene">
+  <div class="wrap">
+    <div class="kicker">Del 9 · ca. 4 min</div>
+    <h2>Knappene du må kunne</h2>
+    <p class="lead">Trykk på en knapp og les hva den gjør.</p>
+    <div class="grid2">
+      <div class="panel" id="panelA">
+        <div class="tast nod" data-f="nod">NØD-<br>STOPP</div>
+        <div class="tast" data-f="reset">RESET</div>
+        <div class="tast" data-f="home">HOME</div>
+        <div class="tast" data-f="offset">OFFSET</div>
+        <div class="tast" data-f="single">SINGLE<br>BLOCK</div>
+        <div class="tast" data-f="dor">DØR</div>
+        <div class="tast" data-f="rapid" style="grid-column:span 2">RAPID %</div>
+        <div class="tast gul" data-f="hold">FEED<br>HOLD</div>
+        <div class="tast gronn" data-f="start">CYCLE<br>START</div>
+      </div>
+      <div>
+        <div class="card" style="min-height:9rem">
+          <h3 id="knappNavn">Velg en knapp</h3>
+          <p class="short" id="knappTxt" style="font-size:1.15rem">Knappene er laget etter skolens Mazak.</p>
+        </div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Ta gjerne klassen med til maskinen og pek på knappene. FEED HOLD stopper bevegelsen uten å slå av spindelen. Nødstoppen stopper alt.</details>
+  </div>
+</section>
+
+<!-- DEL 10 FØRSTE KJØRING -->
+<section class="slide" id="trygt" data-nav="10 Første kjøring">
+  <div class="wrap">
+    <div class="kicker">Del 10 · ca. 5 min</div>
+    <h2>Første gang et program kjøres</h2>
+    <p class="lead">Klikk på hvert steg og se hvilken knapp du bruker.</p>
+    <div class="grid2">
+      <ol class="trinn" id="trinn">
+        <li data-tast="dor"><span>Dør lukket. Vernebriller på. Chucknøkkelen ute.</span></li>
+        <li data-tast="nod reset home"><span>Slipp nødstoppen, trykk <b>RESET</b>, så <b>HOME</b> på X og Z.</span></li>
+        <li data-tast="offset"><span>Sjekk at verktøy og offset stemmer.</span></li>
+        <li data-tast="single rapid"><span>Slå på <b>SINGLE BLOCK</b>. Sett ilgang (<b>RAPID</b>) på <b>25 %</b>.</span></li>
+        <li data-tast="start hold nod"><span>Trykk <b>CYCLE START</b> for hver linje. Hånden klar ved <b>FEED HOLD</b> og nødstopp.</span></li>
+      </ol>
+      <div>
+        <div class="panel" id="panel">
+          <div class="tast nod" data-k="nod">NØD-<br>STOPP</div>
+          <div class="tast" data-k="reset">RESET</div>
+          <div class="tast" data-k="home">HOME</div>
+          <div class="tast" data-k="offset">OFFSET</div>
+          <div class="tast" data-k="single">SINGLE<br>BLOCK</div>
+          <div class="tast" data-k="dor">DØR</div>
+          <div class="dial" data-k="rapid">
+            <svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="30" r="26" style="fill:#ebe9e1;stroke:#8d8a81;stroke-width:2"/><line id="rapidViser" x1="30" y1="30" x2="30" y2="8" style="stroke:#c92a2a;stroke-width:4;stroke-linecap:round;transition:transform .8s;transform-origin:30px 30px"/></svg>
+            <span>RAPID<br><b id="rapidTxt" style="font-size:1rem">100 %</b></span>
+          </div>
+          <div class="tast gul" data-k="hold">FEED<br>HOLD</div>
+          <div class="tast gronn" data-k="start">CYCLE<br>START</div>
+        </div>
+        <div class="status warn" id="trygtTxt">Klikk på steg 1.</div>
+        <a class="simlink no-print" data-sim="cnc-dreiebenk"><span class="ico">🖥️</span><span><b>Prøv selv: CNC-dreiebenk-simulatoren</b><small>Slipp nødstopp, RESET, HOME. Følg oppgavene på skjermen.</small></span><span class="pil">→</span></a>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>SINGLE BLOCK: maskinen stopper etter hver linje. RAPID OVERRIDE senker farten på G0-bevegelser, så du rekker å stoppe hvis noe er feil. Første gang: se på posisjonen og «avstand igjen» (distance to go) på skjermen før verktøyet nærmer seg emnet. Når programmet er prøvd og godkjent, kan ilgangen settes opp igjen. Simulatoren er laget etter skolens Mazak QT Nexus 250.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <ol style="font-size:1.08rem">
+          <li><b>CNC</b>: program → styring → maskin.</li>
+          <li><b>Z</b> langs emnet. <b>X</b> = diameter.</li>
+          <li><b>Z0</b> er endeflaten. Inne i emnet er Z minus.</li>
+          <li><b>M</b> = fast i maskinen (HOME). <b>W</b> = på emnet, du velger.</li>
+          <li>Hvert verktøy må <b>måles inn</b> (offset). Ellers: krasj.</li>
+          <li>Første gang: <b>SINGLE BLOCK</b>, <b>RAPID 25 %</b>, hånden ved stopp.</li>
+        </ol>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>CNC</span><span>X-akse</span><span>Z-akse</span><span>diameter</span><span>maskinnullpunkt M</span><span>arbeidsnullpunkt W</span><span>HOME</span><span>verktøyoffset</span><span>T0101</span><span>SINGLE BLOCK</span><span>RAPID</span><span>FEED HOLD</span></div>
+        </div>
+        <div class="tip" style="margin-top:1rem"><b>Neste leksjon:</b> Skriv og simuler et CNC-program.</div>
+        <p class="caption">Slå opp mer i <a href="https://verkstedhandboka.vercel.app/#maskinering" target="_blank" rel="noopener">Verkstedhåndboka, emne Maskinering</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 45 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>CNC 1 – Akser, nullpunkt og trygg kjøring · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Hva er CNC? <small>Time 1 · 5 min</small></h3>
+        <p>Fyll inn: <b>program · styring · maskin</b></p>
+        <table class="ot">
+          <tr><th style="width:55%">Hva gjør den?</th><th>Del</th></tr>
+          <tr><td>Leser én linje om gangen og regner ut bevegelsen.</td><td class="tom"><span class="fasit" hidden>Styring</span></td></tr>
+          <tr><td>Linjer med kode, for eksempel G1 Z-30.</td><td class="tom"><span class="fasit" hidden>Program</span></td></tr>
+          <tr><td>Motorer flytter verktøyet og emnet roterer.</td><td class="tom"><span class="fasit" hidden>Maskin</span></td></tr>
+        </table>
+        <p>Hvorfor brukes CNC når mange like deler skal lages?</p>
+        <div class="svar"><span class="fasit" hidden>Samme program gir samme del hver gang, nøyaktig og raskt.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Les av X og Z <small>Time 1 · 10 min</small></h3>
+        <p>Rutene er 5 mm. W er midt på endeflaten. Husk: <b>X = diameter</b>.</p>
+        <div class="oppfig">
+          <svg viewBox="0 0 520 250" role="img" aria-label="Emne med tre punkter A, B og C. Rutenett 5 mm.">
+            <g style="stroke:#e1e5ea;stroke-width:1">
+              <path d="M40 30 V230 M60 30 V230 M80 30 V230 M100 30 V230 M120 30 V230 M140 30 V230 M160 30 V230 M180 30 V230 M200 30 V230 M220 30 V230 M240 30 V230 M260 30 V230 M280 30 V230 M300 30 V230 M320 30 V230 M340 30 V230 M360 30 V230 M380 30 V230 M400 30 V230 M420 30 V230 M440 30 V230 M460 30 V230 M480 30 V230"/>
+              <path d="M40 30 H480 M40 50 H480 M40 70 H480 M40 90 H480 M40 110 H480 M40 130 H480 M40 150 H480 M40 170 H480 M40 190 H480 M40 210 H480 M40 230 H480"/>
+            </g>
+            <rect x="20" y="70" width="20" height="160" style="fill:#5f6b78"/>
+            <rect x="40" y="150" width="360" height="80" style="fill:#dfe4ea;stroke:#5f6b78;stroke-width:2"/>
+            <rect x="200" y="130" width="200" height="20" style="fill:#dfe4ea;stroke:#5f6b78;stroke-width:2"/>
+            <rect x="300" y="110" width="100" height="20" style="fill:#dfe4ea;stroke:#5f6b78;stroke-width:2"/>
+            <line x1="10" y1="230" x2="510" y2="230" style="stroke:#333;stroke-dasharray:10 4 2 4"/>
+            <circle cx="400" cy="230" r="7" style="fill:#fff;stroke:#1c6fd1;stroke-width:3"/><text x="408" y="248" font-size="15" font-weight="800" fill="#1c6fd1">W</text>
+            <g font-size="16" font-weight="800" fill="#e8590c">
+              <circle cx="408" cy="110" r="6"/><text x="416" y="106">A</text>
+              <circle cx="300" cy="130" r="6"/><text x="290" y="124">B</text>
+              <circle cx="200" cy="150" r="6"/><text x="190" y="144">C</text>
+            </g>
+            <text x="470" y="243" font-size="13" fill="#333">Z+ →</text>
+          </svg>
+        </div>
+        <table class="ot" style="max-width:460px">
+          <tr><th>Punkt</th><th>X (diameter)</th><th>Z</th></tr>
+          <tr><td>A</td><td class="tom"><span class="fasit" hidden>X60</span></td><td class="tom"><span class="fasit" hidden>Z2</span></td></tr>
+          <tr><td>B</td><td class="tom"><span class="fasit" hidden>X50</span></td><td class="tom"><span class="fasit" hidden>Z-25</span></td></tr>
+          <tr><td>C</td><td class="tom"><span class="fasit" hidden>X40</span></td><td class="tom"><span class="fasit" hidden>Z-50</span></td></tr>
+        </table>
+        <p>Hvorfor er Z minus i punkt B og C?</p>
+        <div class="svar"><span class="fasit" hidden>Fordi punktene ligger inne i emnet, til venstre for W (mot chucken).</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – M eller W? <small>Time 1 · 5 min</small></h3>
+        <p>Sett kryss.</p>
+        <table class="ot">
+          <tr><th style="width:62%"></th><th>M</th><th>W</th></tr>
+          <tr><td>Står fast i maskinen.</td><td class="tom"><span class="fasit" hidden>✗</span></td><td class="tom"></td></tr>
+          <tr><td>Du velger det selv, oftest midt på endeflaten.</td><td class="tom"></td><td class="tom"><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>Maskinen finner det når du trykker HOME.</td><td class="tom"><span class="fasit" hidden>✗</span></td><td class="tom"></td></tr>
+          <tr><td>Programmet regner fra dette punktet.</td><td class="tom"></td><td class="tom"><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>Må stilles inn på nytt når du setter i et nytt emne.</td><td class="tom"></td><td class="tom"><span class="fasit" hidden>✗</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Verktøyoffset <small>Time 2 · 6 min</small></h3>
+        <p>a) Hva betyr <b>T0202</b>?</p>
+        <div class="svar"><span class="fasit" hidden>Verktøy nr. 2 med offset nr. 2.</span></div>
+        <p>b) Hvorfor må hvert verktøy måles inn?</p>
+        <div class="svar"><span class="fasit" hidden>Verktøyene er ikke like lange. Maskinen må vite hvor spissen på hvert verktøy er.</span></div>
+        <p>c) Du har glemt å måle inn et langt bor. Hva kan skje?</p>
+        <div class="svar"><span class="fasit" hidden>Boret går for langt og krasjer i emnet.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Kjør trygt <small>Time 2 · 5 min</small></h3>
+        <p>Skriv 1–5 i riktig rekkefølge.</p>
+        <table class="ot">
+          <tr><th style="width:4rem">Nr.</th><th>Steg</th></tr>
+          <tr><td class="tom"><span class="fasit" hidden>4</span></td><td>Slå på SINGLE BLOCK og sett RAPID på 25 %.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>1</span></td><td>Lukk døren, ta på vernebriller, ta ut chucknøkkelen.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>5</span></td><td>Trykk CYCLE START, med hånden klar ved FEED HOLD.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>2</span></td><td>Slipp nødstoppen, RESET og HOME.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>3</span></td><td>Sjekk verktøy og offset.</td></tr>
+        </table>
+        <p>Hva er forskjellen på FEED HOLD og nødstopp?</p>
+        <div class="svar"><span class="fasit" hidden>FEED HOLD stopper bevegelsen, men spindelen går. Nødstopp stopper alt.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – CNC-dreiebenk-simulatoren <small>Time 2 · 5 min</small></h3>
+        <p>Åpne <a data-sim="cnc-dreiebenk">CNC-dreiebenk-simulatoren</a>. Følg oppgavene på skjermen.</p>
+        <p>a) Hvilke knapper trykket du for å nullpunktkjøre maskinen?</p>
+        <div class="svar"><span class="fasit" hidden>Slipp nødstoppen, RESET, HOME, så X og Z.</span></div>
+        <p>b) Skriv koden du brukte i MDI for å starte spindelen.</p>
+        <div class="svar"><span class="fasit" hidden>For eksempel G97 S800 M3 (800 o/min med klokka).</span></div>
+        <p>c) Hva skjedde da du trykket CYCLE START med SINGLE BLOCK på?</p>
+        <div class="svar"><span class="fasit" hidden>Maskinen kjørte én linje og stoppet. Trykk CYCLE START igjen for neste linje.</span></div>
+      </div>
+
+      <div class="oppgave" style="border-style:dashed">
+        <h3>Oppgave 7 – Ekstra: regn selv <small>Ekstra / hjemme · 6 min</small></h3>
+        <p>a) Spissen står 12,5 mm fra midten av emnet. Hva viser X?</p>
+        <div class="svar"><span class="fasit" hidden>X = 2 · 12,5 = <b>X25</b></span></div>
+        <p>b) Du flytter fra X40 til X30. Hvor mange mm flytter verktøyet seg?</p>
+        <div class="svar"><span class="fasit" hidden>(40 − 30) / 2 = <b>5 mm</b> inn mot midten.</span></div>
+        <p>c) W ligger 250 mm fra M langs Z. Verktøyet skal til Z2. Hvor langt fra M er det?</p>
+        <div class="svar"><span class="fasit" hidden>250 − 2 = <b>248 mm</b> fra M.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 3 min</small></h3>
+        <p>1. Hva betyr X på en dreiebenk?</p><div class="svar"><span class="fasit" hidden>Diameteren.</span></div>
+        <p>2. Hvor ligger W oftest?</p><div class="svar"><span class="fasit" hidden>Midt på endeflaten av emnet.</span></div>
+        <p>3. Nevn to ting du gjør første gang et program kjøres.</p><div class="svar"><span class="fasit" hidden>SINGLE BLOCK, RAPID 25 %, hånden ved FEED HOLD/nødstopp.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const fmtT = (x, d=2) => x.toLocaleString("nb-NO", {maximumFractionDigits:d});
+function el(tag, attrs, parent, text){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function setStatus(id, txt, cls){ const s=$(id); s.textContent=txt; s.className="status "+cls; }
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName) && e.target.type!=="range") return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  const i = Math.max(0, Math.min(slides.length-1, currentIndex()+dir));
+  slides[i].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.classList.toggle("show"));
+const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* Felles tegning: chuck, emne, senterlinje, W og et dreiestål med spissen i (0,0) */
+function stalDefs(svg){
+  const d = el("defs",{},svg); const g = el("linearGradient",{id:svg.id+"G",x1:"0",y1:"0",x2:"0",y2:"1"},d);
+  el("stop",{offset:"0","stop-color":"#6c7783"},g); el("stop",{offset:".4","stop-color":"#e3e8ee"},g); el("stop",{offset:"1","stop-color":"#5f6b78"},g);
+}
+function emne(svg, x0, x1, cy, r){
+  stalDefs(svg);
+  el("rect",{x:x0-60,y:cy-r-30,width:60,height:2*r+60,rx:6,style:"fill:var(--steel-dark)"},svg);
+  el("rect",{x:x0,y:cy-r,width:x1-x0,height:2*r,style:`fill:url(#${svg.id}G);stroke:var(--steel-dark)`},svg);
+  el("line",{x1:10,y1:cy,x2:590,y2:cy,style:"stroke:var(--muted);stroke-dasharray:10 5 2 5"},svg);
+}
+function wMerke(svg, x, y){
+  el("circle",{cx:x,cy:y,r:9,style:"fill:var(--panel);stroke:var(--blue);stroke-width:3"},svg);
+  el("path",{d:`M${x} ${y-9} V${y+9} M${x-9} ${y} H${x+9}`,style:"stroke:var(--blue);stroke-width:2"},svg);
+  el("text",{x:x+10,y:y+26,"font-size":18,"font-weight":800,style:"fill:var(--blue)"},svg,"W");
+}
+function dreiestal(parent){
+  const g = el("g",{},parent);
+  el("rect",{x:6,y:-62,width:22,height:50,rx:3,style:"fill:var(--steel-dark)"},g);
+  el("path",{d:"M0 0 L18 -6 L12 -24 Z",style:"fill:var(--orange)"},g);
+  return g;
+}
+
+/* ---------- Del 2: jogg X og Z ---------- */
+const J = {Z:20, X:60}, jW = {x:340, y:200}, jPx = 4;
+function tegnJog(){
+  const svg = $("jogSvg"); svg.innerHTML = "";
+  emne(svg, 100, jW.x, jW.y, 20*jPx);
+  wMerke(svg, jW.x, jW.y);
+  el("text",{x:jW.x-6,y:jW.y-90,"text-anchor":"end","font-size":14,style:"fill:var(--muted)"},svg,"Z0 = endeflaten");
+  el("line",{x1:jW.x,y1:20,x2:jW.x,y2:jW.y,style:"stroke:var(--blue);stroke-dasharray:4 4"},svg);
+  // Akser
+  el("path",{d:"M470 280 H540",style:"stroke:var(--ink);stroke-width:3"},svg); el("path",{d:"M540 280 l-10 -6 v12 z",style:"fill:var(--ink)"},svg);
+  el("text",{x:546,y:286,"font-size":17,"font-weight":800,style:"fill:var(--ink)"},svg,"Z+");
+  el("path",{d:"M470 280 V220",style:"stroke:var(--ink);stroke-width:3"},svg); el("path",{d:"M470 220 l-6 10 h12 z",style:"fill:var(--ink)"},svg);
+  el("text",{x:476,y:226,"font-size":17,"font-weight":800,style:"fill:var(--ink)"},svg,"X+");
+  const px = jW.x + J.Z*jPx, py = jW.y - J.X/2*jPx;
+  // Radius og diameter
+  el("line",{x1:px,y1:py,x2:px,y2:jW.y,style:"stroke:var(--orange);stroke-width:2.5"},svg);
+  el("line",{x1:px,y1:jW.y,x2:px,y2:jW.y+(jW.y-py),style:"stroke:var(--orange);stroke-width:2.5;stroke-dasharray:5 4;opacity:.6"},svg);
+  if (J.X > 0) el("text",{x:px+8,y:(py+jW.y)/2+5,"font-size":14,"font-weight":700,style:"fill:var(--orange)"},svg,"radius " + fmtT(J.X/2,1));
+  const t = dreiestal(svg); t.setAttribute("transform",`translate(${px} ${py})`);
+  const inne = J.Z < 0 && J.X < 40, chuck = J.Z <= -60;
+  if (inne || chuck){ el("text",{x:px,y:py-75,"text-anchor":"middle","font-size":22,"font-weight":800,class:"krasj",style:"fill:var(--red)"},svg,"KRASJ!"); }
+  $("rX").textContent = "X" + fmtT(J.X,0);
+  $("rZ").textContent = "Z" + fmtT(J.Z,0);
+  $("rR").textContent = fmtT(J.X/2,1) + " mm";
+  if (inne || chuck) setStatus("jogTxt","Stopp! Verktøyet er inne i emnet. Trykk ⌂.","bad");
+  else if (J.Z < 0) setStatus("jogTxt","Z er minus: spissen er til venstre for endeflaten, mot chucken.","warn");
+  else setStatus("jogTxt",`Spissen er ${fmtT(J.X/2,1)} mm fra midten. Det gir X${fmtT(J.X,0)} (diameter).`,"info");
+}
+document.querySelectorAll("[data-j]").forEach(b => b.onclick = () => {
+  const j = b.dataset.j;
+  if (j === "0"){ J.Z = 20; J.X = 60; }
+  if (j === "X+") J.X = Math.min(80, J.X+5);
+  if (j === "X-") J.X = Math.max(0, J.X-5);
+  if (j === "Z+") J.Z = Math.min(60, J.Z+5);
+  if (j === "Z-") J.Z = Math.max(-60, J.Z-5);
+  tegnJog();
+});
+tegnJog();
+
+/* ---------- Del 3: M og W ---------- */
+let emneL = 60, nullTimer = null;
+function tegnNull(){
+  const svg = $("nullSvg"); svg.innerHTML = "";
+  const cy = 200, face = 100 + emneL*4;
+  emne(svg, 100, face, cy, 80);
+  wMerke(svg, face, cy);
+  // M
+  const M = {x:560, y:40};
+  el("circle",{cx:M.x,cy:M.y,r:11,style:"fill:var(--purple)"},svg);
+  el("path",{d:`M${M.x-6} ${M.y+5} V${M.y-5} L${M.x} ${M.y+2} L${M.x+6} ${M.y-5} V${M.y+5}`,style:"fill:none;stroke:#fff;stroke-width:2"},svg);
+  el("text",{x:M.x-16,y:M.y+5,"text-anchor":"end","font-size":15,"font-weight":700,style:"fill:var(--purple)"},svg,"M · fast i maskinen");
+  // Målpunkt X20 Z2
+  const mx = face + 8, my = cy - 40;
+  el("circle",{cx:mx,cy:my,r:5,style:"fill:none;stroke:var(--green);stroke-width:2.5"},svg);
+  el("text",{x:face-10,y:cy-90,"text-anchor":"end","font-size":15,"font-weight":700,style:"fill:var(--green)"},svg,"Mål: X20 Z2 fra W");
+  // Stiplede piler fra W
+  el("path",{d:`M${face} ${cy} V${my} H${mx}`,style:"fill:none;stroke:var(--green);stroke-width:2;stroke-dasharray:5 4"},svg);
+  const g = el("g",{class:"verktoy"},svg); dreiestal(g);
+  g.style.transform = `translate(${M.x-20}px, ${M.y+40}px)`;
+  clearInterval(nullTimer);
+  let ute = true;
+  const flytt = () => { ute = !ute; g.style.transform = ute ? `translate(${M.x-20}px, ${M.y+40}px)` : `translate(${mx}px, ${my}px)`; };
+  if (!reduceMotion){ setTimeout(flytt, 300); nullTimer = setInterval(flytt, 2600); } else flytt();
+  $("nullTxt").textContent = emneL === 60 ? "Langt emne. W er på endeflaten. Programmet sier X20 Z2." : "Kort emne. W er flyttet, men programmet er det samme: X20 Z2.";
+  document.querySelectorAll("[data-emne]").forEach(b => b.classList.toggle("on", +b.dataset.emne === emneL));
+}
+document.querySelectorAll("[data-emne]").forEach(b => b.onclick = () => { emneL = +b.dataset.emne; tegnNull(); });
+tegnNull();
+
+/* ---------- Del 4: verktøyoffset ---------- */
+const VT = [
+  {t:"T0101", navn:"Grovstål", L:60, X:30, type:"stal"},
+  {t:"T0202", navn:"Finstål", L:68, X:20, type:"stal"},
+  {t:"T0303", navn:"Bor Ø10", L:110, X:0, type:"bor"}
+];
+let vSel = 2, offOk = true;
+(function(){
+  const tab = $("offTab");
+  VT.forEach((v,i) => { const tr = document.createElement("tr"); tr.dataset.i = i; tr.innerHTML = `<td><b>${i+1}</b></td><td>${v.navn}</td><td>${fmt(v.L/4,1)}</td>`; tab.appendChild(tr); });
+  const box = $("tBtns");
+  VT.forEach((v,i) => { const b = document.createElement("button"); b.className = "btn small"; b.textContent = v.t; b.dataset.i = i; b.onclick = () => { vSel = i; tegnOff(false); }; box.appendChild(b); });
+})();
+function tegnOff(kjor){
+  const svg = $("offSvg"); svg.innerHTML = "";
+  const cy = 150, face = 340, v = VT[vSel];
+  emne(svg, 100, face, cy, 80);
+  wMerke(svg, face, cy);
+  const ty = cy - v.X*2, maal = face + 8;
+  el("line",{x1:maal,y1:20,x2:maal,y2:240,style:"stroke:var(--green);stroke-width:2;stroke-dasharray:5 4"},svg);
+  el("text",{x:maal+6,y:34,"font-size":14,"font-weight":700,style:"fill:var(--green)"},svg,"Z2");
+  // Spissen havner her (uten offset tror maskinen at alle er like lange som T01)
+  const feil = offOk ? 0 : v.L - VT[0].L, tipX = maal - feil;
+  const g = el("g",{class:"verktoy"},svg);
+  if (v.type === "bor"){
+    el("rect",{x:0,y:-10,width:v.L,height:20,style:"fill:var(--steel)"},g);
+    el("path",{d:"M0 -10 L-10 0 L0 10 Z",style:"fill:var(--orange)"},g);
+    for (let k=10;k<v.L;k+=16) el("path",{d:`M${k} -10 L${k+10} 10`,style:"stroke:var(--steel-dark);stroke-width:2"},g);
+  } else {
+    el("rect",{x:4,y:-9,width:v.L-4,height:18,style:"fill:var(--steel-dark)"},g);
+    el("path",{d:"M0 0 L10 -10 L10 10 Z",style:"fill:var(--orange)"},g);
+  }
+  el("rect",{x:v.L,y:-30,width:40,height:60,rx:4,style:"fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"},g);
+  el("text",{x:v.L+20,y:5,"text-anchor":"middle","font-size":12,"font-weight":700,style:"fill:var(--ink)"},g,v.t.slice(0,3));
+  // Lengdepil
+  const startX = 600 - v.L - 45;
+  g.style.transform = `translate(${startX}px, ${ty}px)`;
+  if (kjor){
+    requestAnimationFrame(() => requestAnimationFrame(() => { g.style.transform = `translate(${tipX}px, ${ty}px)`; }));
+    setTimeout(() => {
+      const zEkte = (tipX - face)/4;
+      if (zEkte < -1){ el("text",{x:tipX,y:ty-26,"text-anchor":"middle","font-size":24,"font-weight":800,class:"krasj",style:"fill:var(--red)"},svg,"KRASJ!"); setStatus("offTxt",`Krasj! ${v.navn} er lengre enn maskinen tror. Spissen gikk til Z${fmtT(zEkte,1)}.`,"bad"); }
+      else if (zEkte < 1.5) setStatus("offTxt",`Feil! Spissen gikk til Z${fmtT(zEkte,1)} i stedet for Z2. Den skjærer i emnet.`,"warn");
+      else setStatus("offTxt", offOk ? `Riktig. ${v.navn} stopper på Z2 fordi offseten er målt inn.` : `T01 er det maskinen regner med her, så det går bra. Prøv ${VT[2].t}.`,"ok");
+    }, reduceMotion ? 50 : 1500);
+  } else setStatus("offTxt",`${v.t}: ${v.navn}, lengde ${fmt(v.L/4,1)} mm. Trykk ▶ Kjør til Z2.`,"info");
+  document.querySelectorAll("#tBtns .btn").forEach(b => b.classList.toggle("on", +b.dataset.i === vSel));
+  document.querySelectorAll("#offTab tr[data-i]").forEach(tr => { const on = +tr.dataset.i === vSel; tr.style.background = on ? "var(--orange-soft)" : ""; tr.style.fontWeight = on ? "700" : ""; tr.style.opacity = offOk ? 1 : .35; });
+  $("offPa").classList.toggle("on", offOk); $("offAv").classList.toggle("on", !offOk);
+}
+$("offPa").onclick = () => { offOk = true; tegnOff(false); };
+$("offAv").onclick = () => { offOk = false; tegnOff(false); };
+$("offKjor").onclick = () => tegnOff(true);
+tegnOff(false);
+
+/* ---------- Del 5: kjør trygt ---------- */
+const TRINN_TXT = [
+  "Steg 1: Sjekk deg selv og maskinen før du starter.",
+  "Steg 2: Maskinen vet ikke hvor aksene er før den har kjørt til HOME (M).",
+  "Steg 3: Åpne OFFSET og se at T-nummeret i programmet har riktig offset.",
+  "Steg 4: Maskinen stopper etter hver linje, og ilgangen går på kvart fart.",
+  "Steg 5: Følg med på skjermen. Ser noe feil ut: FEED HOLD eller nødstopp."
+];
+document.querySelectorAll("#trinn li").forEach((li, i) => li.onclick = () => {
+  document.querySelectorAll("#trinn li").forEach(l => l.classList.toggle("aktiv", l === li));
+  const keys = li.dataset.tast.split(" ");
+  document.querySelectorAll("#panel [data-k]").forEach(k => k.classList.toggle("lys", keys.includes(k.dataset.k)));
+  const r = i >= 3 ? 25 : 100;
+  $("rapidTxt").textContent = r + " %";
+  $("rapidViser").style.transform = `rotate(${r === 25 ? -100 : 100}deg)`;
+  setStatus("trygtTxt", TRINN_TXT[i], i === 4 ? "ok" : "info");
+});
+$("rapidViser").style.transform = "rotate(100deg)";
+
+/* ---------- Del 2: Z-aksen ---------- */
+(function(){
+  const svg = $("zSvg"), cy = 230, face = 340, px = 4;
+  emne(svg, 100, face, cy, 60);
+  wMerke(svg, face, cy);
+  el("rect",{x:face,y:8,width:250,height:36,style:"fill:var(--green-soft)"},svg);
+  el("rect",{x:40,y:8,width:face-40,height:36,style:"fill:var(--red-soft)"},svg);
+  el("text",{x:face+125,y:32,"text-anchor":"middle","font-size":17,"font-weight":800,style:"fill:var(--green)"},svg,"Z pluss →");
+  el("text",{x:(face+40)/2,y:32,"text-anchor":"middle","font-size":17,"font-weight":800,style:"fill:var(--red)"},svg,"← Z minus");
+  for (let z=-50; z<=20; z+=10){
+    const x = face + z*px;
+    el("line",{x1:x,y1:44,x2:x,y2:56,style:"stroke:var(--ink);stroke-width:2"},svg);
+    el("text",{x,y:72,"text-anchor":"middle","font-size":13,"font-weight":z===0?800:500,style:z===0?"fill:var(--blue)":"fill:var(--muted)"},svg,z>0?"+"+z:String(z));
+  }
+  el("line",{x1:face,y1:44,x2:face,y2:cy,style:"stroke:var(--blue);stroke-width:2;stroke-dasharray:4 4"},svg);
+  const t = dreiestal(svg);
+  const lab = el("text",{"text-anchor":"middle","font-size":20,"font-weight":800,style:"fill:var(--orange)"},svg,"");
+  function vis(z){
+    const x = face + z*px, y = cy - 62;
+    t.setAttribute("transform",`translate(${x} ${y})`);
+    lab.setAttribute("x", x+62); lab.setAttribute("y", y-30);
+    lab.textContent = "Z" + (z>0?"":"") + Math.round(z);
+  }
+  if (reduceMotion){ vis(-20); return; }
+  const t0 = performance.now();
+  (function loop(t){ vis(-15 + 35*Math.sin((t-t0)/1600)); requestAnimationFrame(loop); })(t0);
+})();
+
+/* ---------- Del 5: HOME ---------- */
+(function(){
+  const svg = $("homeSvg");
+  el("rect",{x:15,y:15,width:570,height:270,rx:14,style:"fill:none;stroke:var(--line);stroke-width:3"},svg);
+  emne(svg, 100, 300, 230, 50);
+  const M = {x:545, y:45};
+  el("circle",{cx:M.x,cy:M.y,r:13,style:"fill:var(--purple)"},svg);
+  el("path",{d:`M${M.x-7} ${M.y+6} V${M.y-6} L${M.x} ${M.y+2} L${M.x+7} ${M.y-6} V${M.y+6}`,style:"fill:none;stroke:#fff;stroke-width:2"},svg);
+  el("text",{x:M.x-22,y:M.y+6,"text-anchor":"end","font-size":16,"font-weight":800,style:"fill:var(--purple)"},svg,"Maskinnullpunkt");
+  const g = el("g",{class:"verktoy"},svg); dreiestal(g);
+  const start = "translate(340px, 170px)";
+  g.style.transform = start;
+  let hjemme = false;
+  $("homeBtn").onclick = () => {
+    if (hjemme){ hjemme = false; g.style.transform = start; $("homeBtn").textContent = "🏠 Trykk HOME"; setStatus("homeTxt","Maskinen er slått på. Den vet ikke hvor aksene står.","warn"); return; }
+    g.style.transform = "translate(340px, 120px)";
+    setStatus("homeTxt","X kjører først ut …","info");
+    setTimeout(() => { g.style.transform = `translate(${M.x-40}px, ${M.y+110}px)`; setStatus("homeTxt","… så Z.","info"); }, reduceMotion ? 0 : 1400);
+    setTimeout(() => { hjemme = true; $("homeBtn").textContent = "↺ Slå av og på igjen"; setStatus("homeTxt","HOME ferdig. Nå vet maskinen hvor X og Z er.","ok"); }, reduceMotion ? 0 : 2900);
+  };
+})();
+
+/* ---------- Del 7: verktøyene er ikke like lange ---------- */
+(function(){
+  const svg = $("lengdeSvg"), front = 470, s = 2.2;
+  el("rect",{x:front,y:20,width:90,height:240,rx:8,style:"fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"},svg);
+  el("text",{x:front+45,y:145,"text-anchor":"middle","font-size":14,"font-weight":700,style:"fill:var(--ink)"},svg,"Revolver");
+  el("line",{x1:front,y1:10,x2:front,y2:275,style:"stroke:var(--blue);stroke-width:2;stroke-dasharray:5 4"},svg);
+  VT.forEach((v,i) => {
+    const y = 60 + i*80, L = v.L*s, tip = front - L;
+    if (v.type === "bor"){
+      el("rect",{x:tip,y:y-9,width:L,height:18,style:"fill:var(--steel)"},svg);
+      el("path",{d:`M${tip} ${y-9} L${tip-10} ${y} L${tip} ${y+9} Z`,style:"fill:var(--orange)"},svg);
+    } else {
+      el("rect",{x:tip+6,y:y-9,width:L-6,height:18,style:"fill:var(--steel-dark)"},svg);
+      el("path",{d:`M${tip} ${y} L${tip+12} ${y-10} L${tip+12} ${y+10} Z`,style:"fill:var(--orange)"},svg);
+    }
+    el("circle",{cx:v.type==="bor"?tip-10:tip,cy:y,r:5,style:"fill:none;stroke:var(--red);stroke-width:2.5"},svg);
+    el("path",{d:`M${v.type==="bor"?tip-10:tip} ${y+22} H${front}`,style:"stroke:var(--ink);stroke-width:1.5"},svg);
+    el("text",{x:(tip+front)/2,y:y+40,"text-anchor":"middle","font-size":15,"font-weight":700,style:"fill:var(--ink)"},svg,fmt(v.L/4,1)+" mm");
+    el("text",{x:tip,y:y-16,"text-anchor":"start","font-size":15,"font-weight":800,style:"fill:var(--orange)"},svg,v.t);
+  });
+})();
+
+/* ---------- Del 9: knappene ---------- */
+const KNAPP = {
+  nod:["Nødstopp","Stopper alt med en gang. Slå den når noe er farlig."],
+  reset:["RESET","Nullstiller styringen etter alarm eller nødstopp."],
+  home:["HOME","Kjører X og Z til maskinnullpunktet M."],
+  offset:["OFFSET","Viser offsettabellen: hvor spissen på hvert verktøy er."],
+  single:["SINGLE BLOCK","Maskinen kjører én linje og stopper."],
+  dor:["Dør","Døren må være lukket. Ellers vil ikke maskinen starte."],
+  rapid:["RAPID %","Senker farten på hurtigbevegelser (G0). Første gang: 25 %."],
+  hold:["FEED HOLD","Stopper bevegelsen. Spindelen går fortsatt."],
+  start:["CYCLE START","Starter programmet, eller neste linje med SINGLE BLOCK."]
+};
+document.querySelectorAll("#panelA [data-f]").forEach(k => k.onclick = () => {
+  document.querySelectorAll("#panelA [data-f]").forEach(x => x.classList.toggle("lys", x === k));
+  $("knappNavn").textContent = KNAPP[k.dataset.f][0];
+  $("knappTxt").textContent = KNAPP[k.dataset.f][1];
+});
+/* ---------- Oppgaver ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToImg(svg){
+  const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
+  const img = new Image(); await new Promise(r => { img.onload = r; img.onerror = r; img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str); });
+  const c = document.createElement("canvas"); c.width = vb.width*2; c.height = vb.height*2; const x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+  const im = document.createElement("img"); im.src = c.toDataURL("image/png"); im.width = vb.width; im.height = vb.height; return im;
+}
+$("btnCopy").onclick = async () => {
+  const orig = $("oppgavetekst"), clone = orig.cloneNode(true);
+  const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>
