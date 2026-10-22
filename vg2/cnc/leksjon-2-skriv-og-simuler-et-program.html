@@ -166,6 +166,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
 .mono{font-family:"Cascadia Mono", Consolas, monospace}
 .ord{display:flex; flex-wrap:wrap; gap:.5rem; margin:.4rem 0 1rem}
 .ord button{font:700 1.7rem/1 "Cascadia Mono", Consolas, monospace; cursor:pointer; padding:.6rem .9rem; border-radius:10px; border:2px solid var(--line); background:var(--panel); color:var(--ink)}
+#ordBtns button{font-size:clamp(1.6rem,4vw,3.2rem); padding:.8rem 1.3rem}
 .ord button.on{border-color:var(--orange); background:var(--orange-soft); color:var(--orange)}
 .kode{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:#1d2126; color:#e8eaed; border-radius:10px; padding:.6rem 0; margin:0; list-style:none; line-height:1.55}
 .kode li{padding:0 .9rem; border-left:5px solid transparent; white-space:pre; cursor:default}
@@ -262,7 +263,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         </svg>
       </div>
       <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
-      <p style="margin:.6rem 0">Innledning: Vis en ferdig dreid aksel og tegningen. Spør: «Hva må maskinen få vite for å lage denne?»</p>
+      <p style="margin:.6rem 0">Hver del er én visning med én ting. Bla videre når klassen har forstått den. Innledning: Vis en ferdig dreid aksel og tegningen. Spør: «Hva må maskinen få vite for å lage denne?»</p>
       <div class="card" style="margin-top:.6rem">
         <h3>Kompetansemål (PIN02-03)</h3>
         <p><i>«programmere, simulere og drifte styrte produksjonsmaskiner»</i> (T8). Her: programmere og simulere.</p>
@@ -274,13 +275,12 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <table class="t plan">
           <tr><th colspan="2">Time 1</th></tr>
           <tr><td>0–5 min</td><td>Husker du?</td></tr>
-          <tr><td>5–15 min</td><td>Del 1: ordene i en linje</td></tr>
-          <tr><td>15–30 min</td><td>Del 2–3: oppbygning og følg verktøyet</td></tr>
-          <tr><td>30–45 min</td><td>Oppgave 1–3</td></tr>
+          <tr><td>5–26 min</td><td>Del 1–5: ord, G0/G1, T S F M, tegningen, oppbygning</td></tr>
+          <tr><td>26–45 min</td><td>Oppgave 1–3</td></tr>
           <tr><th colspan="2">Time 2</th></tr>
-          <tr><td>0–8 min</td><td>Del 4: G2 og G3</td></tr>
-          <tr><td>8–15 min</td><td>Del 5: simuler i Fusion</td></tr>
-          <tr><td>15–42 min</td><td>Oppgave 4–5 (Fusion på PC)</td></tr>
+          <tr><td>0–8 min</td><td>Del 6: følg verktøyet</td></tr>
+          <tr><td>8–26 min</td><td>Del 7–11: buer, Simulate, til maskinen</td></tr>
+          <tr><td>26–42 min</td><td>Oppgave 4–5 (Fusion på PC)</td></tr>
           <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
         </table>
         <p style="font-size:.85rem; color:var(--muted); margin:.5rem 0 0">Oppgave 6 er ekstra. Til oppgave 5 trenger elevene en 3D-modell av akselen i Fusion. Del ut ferdig modell til elever som ikke har modellert før.</p>
@@ -310,95 +310,109 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
 <!-- DEL 1 ORD -->
 <section class="slide" id="ord" data-nav="1 Ordene">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 10 min</div>
+    <div class="kicker">Del 1 · ca. 4 min</div>
     <h2>En linje er laget av ord</h2>
     <p class="lead">Hvert ord er en <b>bokstav</b> og et <b>tall</b>. Trykk på ordene.</p>
-    <div class="ord no-print" id="ordBtns">
+    <div class="ord no-print" id="ordBtns" style="margin-top:1.5rem">
       <button data-o="0">N12</button><button data-o="1">G1</button><button data-o="2">X30</button><button data-o="3">Z-40</button><button data-o="4">F0.15</button>
     </div>
-    <div class="status info" id="ordTxt">Trykk på et ord.</div>
-    <div class="grid4" style="margin-top:1.2rem">
-      <div class="card gkort">
-        <svg viewBox="0 0 160 90" role="img" aria-label="G0: hurtig bevegelse, stiplet linje">
-          <path d="M20 70 L140 20" style="stroke:var(--yellow);stroke-width:4;stroke-dasharray:8 6"/>
-          <circle r="7" style="fill:var(--orange)"><animateMotion dur="1s" repeatCount="indefinite" path="M20 70 L140 20" keyTimes="0;1"/></circle>
-        </svg>
-        <div class="g">G0</div><p class="short">Hurtig. <b>Skjærer ikke.</b></p>
-      </div>
-      <div class="card gkort">
-        <svg viewBox="0 0 160 90" role="img" aria-label="G1: rett linje med mating">
-          <path d="M20 70 L140 20" style="stroke:var(--blue);stroke-width:4"/>
-          <circle r="7" style="fill:var(--orange)"><animateMotion dur="3.5s" repeatCount="indefinite" path="M20 70 L140 20"/></circle>
-        </svg>
-        <div class="g">G1</div><p class="short">Rett linje. <b>Skjærer</b> med mating F.</p>
-      </div>
-      <div class="card gkort">
-        <svg viewBox="0 0 160 90" role="img" aria-label="G2: bue med klokka">
-          <path d="M40 75 A45 45 0 0 1 130 75" style="fill:none;stroke:var(--green);stroke-width:4"/>
-          <path d="M126 64 l6 12 l7 -11" style="fill:none;stroke:var(--green);stroke-width:3"/>
-          <circle r="7" style="fill:var(--orange)"><animateMotion dur="3s" repeatCount="indefinite" path="M40 75 A45 45 0 0 1 130 75"/></circle>
-          <text x="85" y="58" text-anchor="middle" font-size="22" style="fill:var(--green)">↻</text>
-        </svg>
-        <div class="g">G2</div><p class="short">Bue <b>med</b> klokka.</p>
-      </div>
-      <div class="card gkort">
-        <svg viewBox="0 0 160 90" role="img" aria-label="G3: bue mot klokka">
-          <path d="M130 75 A45 45 0 0 0 40 75" style="fill:none;stroke:var(--purple);stroke-width:4"/>
-          <path d="M33 64 l7 12 l6 -12" style="fill:none;stroke:var(--purple);stroke-width:3"/>
-          <circle r="7" style="fill:var(--orange)"><animateMotion dur="3s" repeatCount="indefinite" path="M130 75 A45 45 0 0 0 40 75"/></circle>
-          <text x="85" y="58" text-anchor="middle" font-size="22" style="fill:var(--purple)">↺</text>
-        </svg>
-        <div class="g">G3</div><p class="short">Bue <b>mot</b> klokka.</p>
-      </div>
-    </div>
-    <table class="t" style="margin-top:1rem; font-size:.95rem">
-      <tr><th>T0101</th><td>Verktøy 1, offset 1</td><th>M3</th><td>Spindel på, med klokka</td></tr>
-      <tr><th>S200</th><td>Fart (turtall eller v<sub>c</sub>)</td><th>M5</th><td>Spindel stopp</td></tr>
-      <tr><th>F0.15</th><td>Mating, mm per omdreining</td><th>M30</th><td>Programslutt</td></tr>
-    </table>
-    <details class="laerer no-print"><summary>Lærernotat</summary>G-koder er «modale»: de gjelder til en annen G-kode i samme gruppe kommer. Derfor står G1 bare én gang selv om flere linjer etter hverandre skjærer. Det samme gjelder F. N-nummer er valgfritt, men gjør det lettere å snakke om linjene. G-koden er av ISO/Fanuc-typen (EIA på Mazak). Andre styringer kan ha små forskjeller, for eksempel G95 i stedet for G99 for mating per omdreining.</details>
+    <div class="status info" id="ordTxt" style="font-size:1.3rem; max-width:900px">Trykk på et ord.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>N-nummer er valgfritt, men gjør det lettere å snakke om linjene. Bokstaven sier hva tallet gjelder. La elevene gjette hvert ord før du trykker.</details>
   </div>
 </section>
 
-<!-- DEL 2 OPPBYGNING -->
-<section class="slide" id="oppbygning" data-nav="2 Oppbygning">
+<!-- DEL 2 G0 OG G1 -->
+<section class="slide" id="g0g1" data-nav="2 G0 og G1">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 7 min</div>
+    <div class="kicker">Del 2 · ca. 4 min</div>
+    <h2>G0 og G1: hurtig eller skjær</h2>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="card gkort">
+        <svg viewBox="0 0 160 90" style="max-height:220px" role="img" aria-label="G0: hurtig bevegelse, stiplet linje">
+          <path d="M20 70 L140 20" style="stroke:var(--yellow);stroke-width:4;stroke-dasharray:8 6"/>
+          <circle r="7" style="fill:var(--orange)"><animateMotion dur="1s" repeatCount="indefinite" path="M20 70 L140 20"/></circle>
+        </svg>
+        <div class="g" style="font-size:3rem">G0</div><p style="font-size:1.3rem">Hurtig. <b>Skjærer ikke.</b><br>Bare i lufta, aldri i emnet.</p>
+      </div>
+      <div class="card gkort">
+        <svg viewBox="0 0 160 90" style="max-height:220px" role="img" aria-label="G1: rett linje med mating">
+          <path d="M20 70 L140 20" style="stroke:var(--blue);stroke-width:4"/>
+          <circle r="7" style="fill:var(--orange)"><animateMotion dur="3.5s" repeatCount="indefinite" path="M20 70 L140 20"/></circle>
+        </svg>
+        <div class="g" style="font-size:3rem">G1</div><p style="font-size:1.3rem">Rett linje. <b>Skjærer</b><br>med matingen F.</p>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>G-koder er «modale»: de gjelder til en annen G-kode i samme gruppe kommer. Derfor står G1 bare én gang selv om flere linjer etter hverandre skjærer. Det samme gjelder F. G0 inn i emnet er den vanligste årsaken til krasj.</details>
+  </div>
+</section>
+
+<!-- DEL 3 T S F M -->
+<section class="slide" id="tsfm" data-nav="3 T, S, F og M">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 4 min</div>
+    <h2>T, S, F og M</h2>
+    <p class="lead">Verktøy, fart, mating og maskinen.</p>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card gkort"><svg viewBox="0 0 120 70" aria-hidden="true"><rect x="70" y="10" width="40" height="50" rx="5" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/><rect x="25" y="28" width="45" height="14" style="fill:var(--steel-dark)"/><path d="M14 35 L26 26 V44 Z" style="fill:var(--orange)"/></svg><div class="g">T0101</div><p class="short">Verktøy 1 med offset 1.</p></div>
+      <div class="card gkort"><svg viewBox="0 0 120 70" aria-hidden="true"><g transform="translate(60 35)"><circle r="28" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/><g><animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" values="0;360"/><line x1="0" y1="0" x2="0" y2="-24" style="stroke:var(--orange);stroke-width:4"/></g></g></svg><div class="g">S200</div><p class="short">Fart. Med G96: skjærehastighet 200 m/min.</p></div>
+      <div class="card gkort"><svg viewBox="0 0 120 70" aria-hidden="true"><path d="M100 35 H25" style="stroke:var(--blue);stroke-width:5"/><path d="M20 35 l14 -9 v18 z" style="fill:var(--blue)"/></svg><div class="g">F0.15</div><p class="short">Mating: 0,15 mm per omdreining.</p></div>
+      <div class="card gkort"><svg viewBox="0 0 120 70" aria-hidden="true"><text x="60" y="50" text-anchor="middle" font-size="44" style="fill:var(--green)">↻</text></svg><div class="g">M3</div><p class="short">Spindelen starter, med klokka.</p></div>
+      <div class="card gkort"><svg viewBox="0 0 120 70" aria-hidden="true"><rect x="40" y="15" width="40" height="40" rx="6" style="fill:var(--red)"/></svg><div class="g">M5</div><p class="short">Spindelen stopper.</p></div>
+      <div class="card gkort"><svg viewBox="0 0 120 70" aria-hidden="true"><path d="M45 60 V10" style="stroke:var(--ink);stroke-width:3"/><path d="M45 10 H85 L77 20 L85 30 H45 Z" style="fill:var(--ink)"/></svg><div class="g">M30</div><p class="short">Programslutt.</p></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>G-koden er av ISO/Fanuc-typen (EIA på Mazak). Andre styringer kan ha små forskjeller, for eksempel G95 i stedet for G99 for mating per omdreining. G96 = konstant skjærehastighet, G97 = fast turtall (S800 = 800 o/min), som i simulatoren.</details>
+  </div>
+</section>
+
+<!-- DEL 4 TEGNINGEN -->
+<section class="slide" id="tegning" data-nav="4 Tegningen">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 3 min</div>
+    <h2>Dette skal vi dreie</h2>
+    <p class="lead">Ø20 med fas, en radius på 3 mm og Ø30. W er midt på endeflaten.</p>
+    <div class="fig" style="max-width:900px">
+      <svg viewBox="0 0 360 200" role="img" aria-label="Tegning av akselen: Ø20 med fas 2x45, radius 3, Ø30">
+        <line x1="10" y1="160" x2="350" y2="160" style="stroke:var(--muted);stroke-dasharray:10 5 2 5"/>
+        <path d="M40 160 V64 H88 V70 H190 A18 18 0 0 1 208 88 V100 H316 L328 112 V160" style="fill:var(--steel-soft);stroke:var(--ink);stroke-width:2.5"/>
+        <rect x="20" y="40" width="20" height="135" style="fill:var(--steel-dark)"/>
+        <g font-size="14" font-weight="700" style="fill:var(--ink)">
+          <text x="250" y="130">Ø20</text><text x="120" y="120">Ø30</text>
+          <text x="212" y="76">R3</text><text x="300" y="96" style="fill:var(--orange)">2×45°</text>
+        </g>
+        <g style="stroke:var(--muted)"><path d="M208 182 H328 M88 194 H328 M208 176 V188 M328 176 V198 M88 188 V200"/></g>
+        <text x="268" y="178" text-anchor="middle" font-size="12" style="fill:var(--muted)">20</text>
+        <text x="150" y="190" text-anchor="middle" font-size="12" style="fill:var(--muted)">40</text>
+        <circle cx="328" cy="160" r="6" style="fill:var(--panel);stroke:var(--blue);stroke-width:2.5"/><text x="336" y="152" font-size="14" font-weight="800" style="fill:var(--blue)">W</text>
+      </svg>
+      <p class="caption">Emne Ø32. Grovdreid på forhånd. Programmet er finskjæret.</p>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Spør: «Hvilke X- og Z-verdier trenger vi?» Skriv dem på tavla: X20, X30, Z-2, Z-20, Z-23, Z-40. I praksis kommer grovdreiingen før, for eksempel med syklusen G71 eller en grovoperasjon i Fusion.</details>
+  </div>
+</section>
+
+<!-- DEL 5 OPPBYGNING -->
+<section class="slide" id="oppbygning" data-nav="5 Oppbygning">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 6 min</div>
     <h2>Programmet har fast oppbygning</h2>
-    <p class="lead">Nesten alle program har de samme delene, i samme rekkefølge. Trykk på en del.</p>
+    <p class="lead">Samme deler, i samme rekkefølge. Trykk på en del.</p>
     <div class="grid2 wide-left">
       <div>
         <div class="deler no-print" id="delBtns"></div>
         <ol class="kode" id="kode2"></ol>
       </div>
       <div>
-        <div class="fig">
-          <svg viewBox="0 0 360 200" role="img" aria-label="Tegning av akselen: Ø20 med fas 2x45, radius 3, Ø30">
-            <line x1="10" y1="160" x2="350" y2="160" style="stroke:var(--muted);stroke-dasharray:10 5 2 5"/>
-            <path d="M40 160 V64 H88 V70 H190 A18 18 0 0 1 208 88 V100 H316 L328 112 V160" style="fill:var(--steel-soft);stroke:var(--ink);stroke-width:2.5"/>
-            <rect x="20" y="40" width="20" height="135" style="fill:var(--steel-dark)"/>
-            <g font-size="14" font-weight="700" style="fill:var(--ink)">
-              <text x="250" y="130">Ø20</text><text x="120" y="120">Ø30</text>
-              <text x="212" y="76">R3</text><text x="300" y="96" style="fill:var(--orange)">2×45°</text>
-            </g>
-            <g style="stroke:var(--muted)"><path d="M208 182 H328 M88 194 H328 M208 176 V188 M328 176 V198 M88 188 V200"/></g>
-            <text x="268" y="178" text-anchor="middle" font-size="12" style="fill:var(--muted)">20</text>
-            <text x="150" y="190" text-anchor="middle" font-size="12" style="fill:var(--muted)">40</text>
-            <circle cx="328" cy="160" r="6" style="fill:var(--panel);stroke:var(--blue);stroke-width:2.5"/><text x="336" y="152" font-size="14" font-weight="800" style="fill:var(--blue)">W</text>
-          </svg>
-          <p class="caption">Emne Ø32. Grovdreid på forhånd. Programmet er finskjæret.</p>
-        </div>
-        <div class="status info" id="delTxt">Trykk på en del over programmet.</div>
+        <div class="status info" id="delTxt" style="font-size:1.2rem; margin-top:2.6rem">Trykk på en del over programmet.</div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>G21 = millimeter. G40 = ingen radiuskompensasjon (sikker start). G99 = mating i mm per omdreining. G28 U0 W0 = kjør til referansepunktet (HOME) i X og Z. G50 S3000 = øvre grense for turtallet; viktig med G96, fordi turtallet ellers ville blitt veldig høyt når diameteren blir liten. I praksis kommer grovdreiingen før, for eksempel med syklusen G71 eller en grovoperasjon i Fusion.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>G21 = millimeter. G40 = ingen radiuskompensasjon (sikker start). G99 = mating i mm per omdreining. G28 U0 W0 = kjør til referansepunktet (HOME) i X og Z. G50 S3000 = øvre grense for turtallet; viktig med G96, fordi turtallet ellers ville blitt veldig høyt når diameteren blir liten.</details>
   </div>
 </section>
 
-<!-- DEL 3 FØLG VERKTØYET -->
-<section class="slide" id="folg" data-nav="3 Følg verktøyet">
+<!-- DEL 6 FØLG VERKTØYET -->
+<section class="slide" id="folg" data-nav="6 Følg verktøyet">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 8 min</div>
+    <div class="kicker">Del 6 · ca. 8 min</div>
     <h2>Følg verktøyet linje for linje</h2>
     <div class="grid2" style="grid-template-columns:1fr 1.5fr">
       <div>
@@ -422,44 +436,75 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
   </div>
 </section>
 
-<!-- DEL 4 G2 G3 -->
-<section class="slide" id="buer" data-nav="4 G2 og G3">
+<!-- DEL 7 G2 OG G3 -->
+<section class="slide" id="g2g3" data-nav="7 G2 og G3">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 8 min</div>
-    <h2>Buer: G2 eller G3?</h2>
-    <p class="lead">Se på tegningen med <b>X opp</b> og <b>Z mot høyre</b>. Går verktøyet med klokka: <b>G2</b>. Mot klokka: <b>G3</b>.</p>
-    <div class="grid2 wide-left">
-      <div class="fig">
-        <div class="controls no-print" style="margin-top:0"><label>Bue</label><button class="btn small on" data-bue="ut">Utvendig radius</button><button class="btn small" data-bue="inn">Innvendig radius (hulkil)</button></div>
-        <svg id="bueSvg" viewBox="0 0 560 280" role="img" aria-label="Verktøyet kjører en bue. Pilen viser med eller mot klokka."></svg>
-        <div class="status info" id="bueTxt"></div>
+    <div class="kicker">Del 7 · ca. 3 min</div>
+    <h2>G2 og G3: buer</h2>
+    <p class="lead">Se på tegningen med <b>X opp</b> og <b>Z mot høyre</b>.</p>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="card gkort">
+        <svg viewBox="0 0 160 90" style="max-height:220px" role="img" aria-label="G2: bue med klokka">
+          <path d="M40 75 A45 45 0 0 1 130 75" style="fill:none;stroke:var(--green);stroke-width:4"/>
+          <path d="M126 64 l6 12 l7 -11" style="fill:none;stroke:var(--green);stroke-width:3"/>
+          <circle r="7" style="fill:var(--orange)"><animateMotion dur="3s" repeatCount="indefinite" path="M40 75 A45 45 0 0 1 130 75"/></circle>
+          <text x="85" y="58" text-anchor="middle" font-size="22" style="fill:var(--green)">↻</text>
+        </svg>
+        <div class="g" style="font-size:3rem">G2</div><p style="font-size:1.3rem">Bue <b>med</b> klokka.</p>
       </div>
-      <div>
-        <div class="card">
-          <h3>Slik skriver du en bue</h3>
-          <p class="mono" style="font-size:1.3rem; font-weight:700; margin:.3rem 0">G3 X30 Z-23 R3</p>
-          <ul class="short" style="padding-left:1.1rem">
-            <li><b>G3</b>: retning</li>
-            <li><b>X30 Z-23</b>: der buen slutter</li>
-            <li><b>R3</b>: radius 3 mm</li>
-          </ul>
-        </div>
-        <div class="tip o">Verktøyet står allerede der buen <b>starter</b>. Du skriver bare <b>sluttpunktet</b>.</div>
-        <details class="ekstra"><summary>Ekstra: radiuskompensasjon G41/G42</summary>
-          <p style="margin:.3rem 0">Skjæret har en liten radius på spissen (for eksempel 0,4 mm). På skrå linjer og buer gir det små målfeil. Med <b>G42</b> regner maskinen med skjærradiusen. <b>G40</b> slår det av. Fusion tar dette med av seg selv.</p>
-        </details>
+      <div class="card gkort">
+        <svg viewBox="0 0 160 90" style="max-height:220px" role="img" aria-label="G3: bue mot klokka">
+          <path d="M130 75 A45 45 0 0 0 40 75" style="fill:none;stroke:var(--purple);stroke-width:4"/>
+          <path d="M33 64 l7 12 l6 -12" style="fill:none;stroke:var(--purple);stroke-width:3"/>
+          <circle r="7" style="fill:var(--orange)"><animateMotion dur="3s" repeatCount="indefinite" path="M130 75 A45 45 0 0 0 40 75"/></circle>
+          <text x="85" y="58" text-anchor="middle" font-size="22" style="fill:var(--purple)">↺</text>
+        </svg>
+        <div class="g" style="font-size:3rem">G3</div><p style="font-size:1.3rem">Bue <b>mot</b> klokka.</p>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Regelen gjelder når du ser tegningen med X opp og Z mot høyre, slik delen er tegnet i leksjonen (verktøy på oversiden av senter, som på maskiner med revolver bak senter). På maskiner med revolveren foran senter ser det speilvendt ut fra operatørens side, men koden er den samme. Det er derfor tryggest å tenke ut fra tegningen. Utvendig radius som går utover mot større diameter mot chucken: G3. Hulkil (innvendig radius) i samme retning: G2.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Regelen gjelder når du ser tegningen med X opp og Z mot høyre, slik delen er tegnet i leksjonen (verktøy på oversiden av senter, som på maskiner med revolver bak senter). På maskiner med revolveren foran senter ser det speilvendt ut fra operatørens side, men koden er den samme. Det er derfor tryggest å tenke ut fra tegningen.</details>
   </div>
 </section>
 
-<!-- DEL 5 SIMULER I FUSION -->
-<section class="slide" id="simuler" data-nav="5 Simuler">
+<!-- DEL 8 UTVENDIG / INNVENDIG -->
+<section class="slide" id="buer" data-nav="8 Hvilken bue?">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 7 min</div>
+    <div class="kicker">Del 8 · ca. 4 min</div>
+    <h2>Avrundet kant eller hulkil?</h2>
+    <p class="lead">Verktøyet går fra høyre mot venstre. Se hvilken vei det svinger.</p>
+    <div class="fig" style="max-width:950px">
+      <div class="controls no-print" style="margin-top:0"><label>Bue</label><button class="btn small on" data-bue="ut">Utvendig radius</button><button class="btn small" data-bue="inn">Innvendig radius (hulkil)</button></div>
+      <svg id="bueSvg" viewBox="0 0 560 280" role="img" aria-label="Verktøyet kjører en bue. Pilen viser med eller mot klokka."></svg>
+      <div class="status info" id="bueTxt"></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Utvendig radius som går utover mot større diameter mot chucken: G3. Hulkil (innvendig radius) i samme retning: G2. I programmet vårt er R3 en utvendig radius, derfor G3.</details>
+  </div>
+</section>
+
+<!-- DEL 9 SKRIV EN BUE -->
+<section class="slide" id="skrivbue" data-nav="9 Skriv en bue">
+  <div class="wrap">
+    <div class="kicker">Del 9 · ca. 3 min</div>
+    <h2>Slik skriver du en bue</h2>
+    <p class="mono" style="font-size:clamp(2rem,5vw,3.4rem); font-weight:700; margin:1rem 0"><span style="color:var(--purple)">G3</span> <span style="color:var(--blue)">X30 Z-23</span> <span style="color:var(--orange)">R3</span></p>
+    <div class="grid3">
+      <div class="card"><h3 style="color:var(--purple)">G3</h3><p class="short">Retningen: mot klokka.</p></div>
+      <div class="card"><h3 style="color:var(--blue)">X30 Z-23</h3><p class="short">Der buen <b>slutter</b>.</p></div>
+      <div class="card"><h3 style="color:var(--orange)">R3</h3><p class="short">Radius 3 mm.</p></div>
+    </div>
+    <div class="tip o">Verktøyet står allerede der buen <b>starter</b>. Du skriver bare <b>sluttpunktet</b>.</div>
+    <details class="ekstra"><summary>Ekstra: radiuskompensasjon G41/G42</summary>
+      <p style="margin:.3rem 0">Skjæret har en liten radius på spissen (for eksempel 0,4 mm). På skrå linjer og buer gir det små målfeil. Med <b>G42</b> regner maskinen med skjærradiusen. <b>G40</b> slår det av. Fusion tar dette med av seg selv.</p>
+    </details>
+  </div>
+</section>
+
+<!-- DEL 10 SIMULER I FUSION -->
+<section class="slide" id="simuler" data-nav="10 Simulate">
+  <div class="wrap">
+    <div class="kicker">Del 10 · ca. 5 min</div>
     <h2>Simuler i Fusion før du kjører</h2>
-    <p class="lead">I Fusion: <b>Manufacture → TURNING → ACTIONS → Simulate</b>. Blir noe <b>rødt</b>, er det en <b>kollisjon</b>.</p>
+    <p class="lead"><b>Manufacture → TURNING → ACTIONS → Simulate</b>. Rødt = <b>kollisjon</b>.</p>
     <div class="controls no-print" style="margin:0 0 .6rem"><button class="btn primary" id="simOk">▶ Simulate: riktig program</button><button class="btn" id="simFeil">▶ Simulate: N6 G0 X16 Z-2</button></div>
     <div class="fxwrap"><div class="fx" aria-label="Tegning av Fusion-vinduet i Manufacture med Simulate">
       <div class="fx-top">
@@ -487,13 +532,23 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         </div>
       </div>
     </div></div>
-    <div class="grid4" style="margin-top:1rem">
-      <div class="card"><h3>1 · Simulate</h3><p class="short">Se at verktøyet går riktig vei.</p></div>
-      <div class="card"><h3>2 · Rødt?</h3><p class="short">Rødt = kollisjon. Rett feilen først.</p></div>
-      <div class="card"><h3>3 · Post Process</h3><p class="short">Fusion lager G-koden til skolens maskin.</p></div>
-      <div class="card"><h3>4 · Maskinen</h3><p class="short">Kjør med SINGLE BLOCK og RAPID 25 %.</p></div>
-    </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Tegningen er forenklet og ligner Fusion Manufacture. I Fusion vises kollisjoner som røde merker i tidslinjen under simuleringen, og Simulation-panelet teller dem. Fusion simulerer sin egen verktøybane. Et program som er skrevet for hånd, kan prøvekjøres i maskinens grafikk eller i en egen NC-simulator. Last gjerne opp skjermbilder fra skolens PC-er med «Vis/skjul plass for filer».</details>
+  </div>
+</section>
+
+<!-- DEL 11 FRA FUSION TIL MASKINEN -->
+<section class="slide" id="tilmaskin" data-nav="11 Til maskinen">
+  <div class="wrap">
+    <div class="kicker">Del 11 · ca. 3 min</div>
+    <h2>Fra Fusion til maskinen</h2>
+    <p class="lead">Fire steg. Alltid i denne rekkefølgen.</p>
+    <div class="grid4" style="margin-top:1rem">
+      <div class="card gkort"><svg viewBox="0 0 25 25" style="max-height:90px" aria-hidden="true"><rect x="2" y="4" width="21" height="15" rx="2" fill="#e8f3fc" stroke="#5b6470"/><path d="M10 8 v7 l6 -3.5 z" fill="#1a73e8"/></svg><h3>1 · Simulate</h3><p class="short">Se at verktøyet går riktig vei.</p></div>
+      <div class="card gkort"><svg viewBox="0 0 25 25" style="max-height:90px" aria-hidden="true"><circle cx="12.5" cy="12.5" r="9" fill="none" stroke="#d93025" stroke-width="2.5"/><path d="M12.5 7 V14" stroke="#d93025" stroke-width="2.5"/><circle cx="12.5" cy="17.5" r="1.4" fill="#d93025"/></svg><h3>2 · Rødt?</h3><p class="short">Rett feilen før du går videre.</p></div>
+      <div class="card gkort"><svg viewBox="0 0 25 25" style="max-height:90px" aria-hidden="true"><path d="M5 2 H16 L21 7 V23 H5 Z" fill="#fff" stroke="#5b6470"/><text x="7" y="17" font-size="8" font-weight="700" fill="#1a73e8" font-family="Arial">G1</text></svg><h3>3 · Post Process</h3><p class="short">Fusion lager G-koden til skolens maskin.</p></div>
+      <div class="card gkort"><svg viewBox="0 0 25 25" style="max-height:90px" aria-hidden="true"><rect x="2" y="5" width="21" height="15" rx="2" fill="#25282a"/><rect x="5" y="8" width="9" height="7" fill="#51cf66"/><circle cx="18.5" cy="11" r="2" fill="#c92a2a"/><rect x="16" y="15" width="5" height="3" fill="#2b8a3e"/></svg><h3>4 · Maskinen</h3><p class="short">SINGLE BLOCK og RAPID 25 %.</p></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Velg postprosessor for skolens maskin i Post Process. Programmet overføres med minnepinne eller nettverk. Repeter trygg oppstart fra leksjon 1.</details>
   </div>
 </section>
 
@@ -595,7 +650,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 4 – Finn feilene <small>Time 2 · 10 min</small></h3>
+        <h3>Oppgave 4 – Finn feilene <small>Time 2 · 6 min</small></h3>
         <p>Programmet har tre feil. Sett ring rundt dem og skriv riktig linje.</p>
         <table class="ot" style="max-width:620px">
           <tr><th>Linje</th><th>Riktig?</th></tr>
@@ -614,7 +669,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
       </div>
 
       <div class="oppgave">
-        <h3>Oppgave 5 – Lag og simuler i Fusion <small>Time 2 · 17 min</small></h3>
+        <h3>Oppgave 5 – Lag og simuler i Fusion <small>Time 2 · 10 min</small></h3>
         <p>Bruk akselen fra Del 2 (Ø20 med fas, R3, Ø30). Kryss av når du er ferdig.</p>
         <table class="ot">
           <tr><th style="width:80%">Steg i Fusion</th><th>✓</th></tr>
