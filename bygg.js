@@ -1,6 +1,7 @@
 // Bygger nettstedet til mappen public/ (kjøres av Vercel, se vercel.json).
 //   public/                 Elevversjon: fasit og lærernotater er fjernet fra filene.
 //   public/<LAERER_STI>/    Lærerversjon: leksjonene slik de er, med fasit.
+// Prøver (<emne>/prove-<navn>.html) bygges bare til lærerversjonen, så elevene ikke ser dem før prøven.
 // Kjør lokalt med: node bygg.js
 const fs = require("fs");
 const path = require("path");
@@ -76,6 +77,7 @@ const HJEM = 'style="display:inline-block;margin-right:12px;padding:3px 12px;bor
 const LENKE = 'style="color:#fff;font-weight:700;text-decoration:underline"';
 // Tilpassede oppgaver for elever som trenger mer støtte ligger ved siden av leksjonen: leksjon-N-<navn>-steg-for-steg.html
 const STEG = "-steg-for-steg.html";
+const erProve = fil => path.basename(fil).startsWith("prove-");
 function laererversjon(s, fil) {
   const steg = fil.endsWith(STEG), stegFil = fil.replace(/\.html$/, STEG);
   s = s.replace(/<head>/i, '<head>\n<meta name="robots" content="noindex, nofollow">');
@@ -83,6 +85,9 @@ function laererversjon(s, fil) {
     ? `<b>Lærerversjon med fasit.</b> Ikke del denne adressen med elever.<br>` +
       `<a href="/" ${LENKE}>Gå til elevsiden</a>: samme leksjoner uten fasit og lærernotater. ` +
       `Når du har gått gjennom en leksjon, åpner du den på elevsiden og deler lenken med klassen i Teams eller OneNote.`
+    : erProve(fil)
+    ? `<a href="/${LAERER_STI}/" ${HJEM}>⌂ Hjem</a> <b>Prøve: finnes bare på lærersiden.</b> ` +
+      `Skriv ut uten fasit (eller lagre som PDF), eller bruk «Kopier til OneNote».`
     : `<a href="/${LAERER_STI}/" ${HJEM}>⌂ Hjem</a> <b>Lærerversjon med fasit.</b> ` +
       `<a href="/${fil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Elevversjon av denne ${steg ? "siden" : "leksjonen"}</a> (uten fasit, del denne med ${steg ? "eleven" : "klassen"}).` +
       (/^leksjon-\d+-/.test(path.basename(fil)) && !steg ? ` · <button onclick="document.body.classList.toggle('vis-filplass')" style="font:inherit;color:#fff;background:none;border:1px solid #fff;border-radius:99px;padding:1px 10px;cursor:pointer">📎 Vis/skjul plass for filer</button>` : "") +
@@ -163,7 +168,9 @@ fs.rmSync(UT, { recursive: true, force: true });
 for (const trinn of ["vg1", "vg2"]) { kopierFiler(trinn, false); kopierFiler(trinn, true); }
 for (const fil of filer) {
   const s = fs.readFileSync(path.join(__dirname, fil), "utf8");
-  for (const [mappe, innhold] of [[UT, vedlegg(elevversjon(s), fil, false)], [path.join(UT, LAERER_STI), vedlegg(laererversjon(s, fil), fil, true)]]) {
+  const ut = [[path.join(UT, LAERER_STI), vedlegg(laererversjon(s, fil), fil, true)]];
+  if (!erProve(fil)) ut.push([UT, vedlegg(elevversjon(s), fil, false)]);
+  for (const [mappe, innhold] of ut) {
     const mål = path.join(mappe, fil);
     fs.mkdirSync(path.dirname(mål), { recursive: true });
     fs.writeFileSync(mål, innhold);
