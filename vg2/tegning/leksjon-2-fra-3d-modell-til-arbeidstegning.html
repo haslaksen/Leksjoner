@@ -207,12 +207,10 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
     </g>
     <ellipse cx="-30" cy="-5" rx="12" ry="16" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:2"/>
   </g>
-  <path d="M280 165 H320" style="stroke:var(--orange);stroke-width:4"/><path d="M316 155 L332 165 L316 175 Z" style="fill:var(--orange)">
-    <animate attributeName="opacity" dur="1.5s" repeatCount="indefinite" values="1;.3;1"/></path>
+  <path d="M280 165 H320" style="stroke:var(--orange);stroke-width:4"/><path d="M316 155 L332 165 L316 175 Z" style="fill:var(--orange)"></path>
   <g transform="translate(350 60)">
     <rect width="150" height="210" style="fill:var(--panel);stroke:var(--ink);stroke-width:2"/>
-    <g style="fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:400;stroke-dashoffset:400">
-      <animate attributeName="stroke-dashoffset" dur="4s" repeatCount="indefinite" keyTimes="0;.6;1" values="400;0;0"/>
+    <g style="fill:none;stroke:var(--ink);stroke-width:2;stroke-dasharray:400">
       <path d="M20 20 H40 V90 H120 V105 H20 Z"/><path d="M20 130 H120 V170 H20 Z"/><circle cx="70" cy="150" r="8"/>
     </g>
     <rect x="80" y="180" width="70" height="30" style="fill:var(--orange-soft);stroke:var(--ink);stroke-width:1"/>
@@ -228,7 +226,7 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
       </div>
       <div class="card" style="margin-top:1rem">
         <h3>Plan for to skoletimer</h3>
-        <table class="t plan"><tr><th colspan="2">Time 1</th></tr><tr><td>0–5 min</td><td>Repetisjon fra Vg1</td></tr><tr><td>5–15 min</td><td>Del 1: parametrisk modell</td></tr><tr><td>15–25 min</td><td>Del 2: begrensninger</td></tr><tr><td>25–45 min</td><td>Oppgave 1–2, og prøv i DAK-programmet</td></tr><tr><th colspan="2">Time 2</th></tr><tr><td>0–10 min</td><td>Del 3: sammenstilling</td></tr><tr><td>10–18 min</td><td>Del 4: stykkliste</td></tr><tr><td>18–30 min</td><td>Oppgave 3</td></tr><tr><td>30–37 min</td><td>Del 5: filer til produksjon</td></tr><tr><td>37–42 min</td><td>Oppgave 4</td></tr><tr><td>42–45 min</td><td>Exit-lapp</td></tr></table>
+        <table class="t plan"><tr><th colspan="2">Time 1</th></tr><tr><td>0–5 min</td><td>Repetisjon fra Vg1</td></tr><tr><td>5–15 min</td><td>Del 1: parametrisk modell</td></tr><tr><td>15–25 min</td><td>Del 2: begrensninger</td></tr><tr><td>25–45 min</td><td>Oppgave 1–2, og prøv i DAK-programmet</td></tr><tr><th colspan="2">Time 2</th></tr><tr><td>0–10 min</td><td>Del 3: sammenstilling</td></tr><tr><td>10–18 min</td><td>Del 4: stykkliste</td></tr><tr><td>18–30 min</td><td>Oppgave 3</td></tr><tr><td>30–37 min</td><td>Del 5–6: filer til produksjon</td></tr><tr><td>37–42 min</td><td>Oppgave 4</td></tr><tr><td>42–45 min</td><td>Exit-lapp</td></tr></table>
         <p style="font-size:.85rem; color:var(--muted); margin:.5rem 0 0">Bruk skolens DAK-program (Fusion, Onshape, Inventor eller SolidWorks). Navnene på begrensningene kan variere litt.</p>
       </div>
       </details>
@@ -346,18 +344,27 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
 
 <section class="slide" id="filer" data-nav="5 Filer">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 7 min</div>
+    <div class="kicker">Del 5 · ca. 3 min</div>
     <h2>Riktig fil til riktig maskin</h2>
     <p class="lead">Modellen er den samme. Filtypen avhenger av maskinen.</p>
     <div class="grid4" style="margin-top:1rem"><div class="card"><div style="font-size:1.8rem">🛠️</div><b style="font-family:Consolas,monospace;font-size:1.3rem;color:var(--orange)">.step</b><p class="short">CNC-fresing og -dreiing (CAM)</p></div><div class="card"><div style="font-size:1.8rem">🔥</div><b style="font-family:Consolas,monospace;font-size:1.3rem;color:var(--orange)">.dxf</b><p class="short">Laser, plasma og vannskjæring (2D)</p></div><div class="card"><div style="font-size:1.8rem">🖨️</div><b style="font-family:Consolas,monospace;font-size:1.3rem;color:var(--orange)">.stl</b><p class="short">3D-printer</p></div><div class="card"><div style="font-size:1.8rem">📄</div><b style="font-family:Consolas,monospace;font-size:1.3rem;color:var(--orange)">.pdf</b><p class="short">Tegning til verkstedet og kunden</p></div></div>
+    <a class="simlink no-print" data-sim="cnc-dreiebenk"><span class="ico">⚙️</span><span><b>Se CNC-dreiebenken</b><small>Slik styres maskinen.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>STEP er et nøytralt 3D-format som alle DAK/CAM-program kan lese. DXF er 2D (linjer og buer). STL beskriver bare overflaten som trekanter, uten mål, og passer derfor ikke til CNC. Lagre alltid originalfilen også. Programmering av CNC (T8) og 3D-printing (T15) bør få egne leksjoner.</details>
+  </div>
+</section>
+
+<!-- HVILKEN FIL -->
+<section class="slide" id="hvilkenfil" data-nav="6 Hvilken fil?">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 4 min</div>
+    <h2>Hvilken fil sender du?</h2>
+    <p class="lead">Tenk først. Klikk så for svar.</p>
     <div class="grid4" style="margin-top:1rem">
       <button class="card flip"><span class="q">Du skal skjære en flens i 10 mm plate med laser.</span><span class="a">DXF. Laseren trenger bare 2D-konturen.</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Du skal frese en del i CNC-fresen.</span><span class="a">STEP. CAM-programmet lager verktøybanen fra 3D-modellen.</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Du skal printe en holder i plast.</span><span class="a">STL. 3D-printeren bruker trekanter.</span><span class="hint">Klikk for svar</span></button>
       <button class="card flip"><span class="q">Kunden vil se tegningen.</span><span class="a">PDF. Alle kan åpne den.</span><span class="hint">Klikk for svar</span></button>
     </div>
-    <a class="simlink no-print" data-sim="cnc-dreiebenk"><span class="ico">⚙️</span><span><b>Se CNC-dreiebenken</b><small>Slik styres maskinen.</small></span><span class="pil">→</span></a>
-    <details class="laerer no-print"><summary>Lærernotat</summary>STEP er et nøytralt 3D-format som alle DAK/CAM-program kan lese. DXF er 2D (linjer og buer). STL beskriver bare overflaten som trekanter, uten mål, og passer derfor ikke til CNC. Lagre alltid originalfilen også. Programmering av CNC (T8) og 3D-printing (T15) bør få egne leksjoner.</details>
   </div>
 </section>
 
