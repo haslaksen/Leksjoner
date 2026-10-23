@@ -210,18 +210,15 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <path d="M140 80 V250" style="stroke:var(--orange);stroke-width:4"/>
           <!-- Glider -->
           <g>
-            <animateTransform attributeName="transform" type="translate" dur="5s" repeatCount="indefinite" keyTimes="0;.45;.9;1" values="80 0;0 0;0 0;80 0"/>
             <rect x="230" y="30" width="130" height="60" rx="6" style="fill:var(--steel-dark)"/>
             <path d="M230 90 V250 L242 270 L300 160 V90 Z" style="fill:var(--steel-dark)"/>
             <path d="M230 90 V250" style="stroke:var(--orange);stroke-width:4"/>
             <rect x="250" y="40" width="90" height="34" rx="4" style="fill:#1d2a1f"/>
-            <text x="295" y="64" text-anchor="middle" font-size="19" font-weight="700" style="fill:#7cfc8a;font-family:'Cascadia Mono',Consolas,monospace" opacity="0">25,40
-              <animate attributeName="opacity" dur="5s" repeatCount="indefinite" keyTimes="0;.44;.45;.9;.91;1" values="0;0;1;1;0;0"/>
+            <text x="295" y="64" text-anchor="middle" font-size="19" font-weight="700" style="fill:#7cfc8a;font-family:'Cascadia Mono',Consolas,monospace">25,40
             </text>
           </g>
           <!-- Målepil -->
-          <g opacity="0">
-            <animate attributeName="opacity" dur="5s" repeatCount="indefinite" keyTimes="0;.45;.5;.88;.9;1" values="0;0;1;1;0;0"/>
+          <g>
             <path d="M146 312 H224" style="stroke:var(--orange);stroke-width:3"/>
             <path d="M146 306 v12 M224 306 v12" style="stroke:var(--orange);stroke-width:3"/>
             <text x="185" y="302" text-anchor="middle" font-size="15" font-weight="700" style="fill:var(--orange)">Ø25,40</text>
@@ -244,14 +241,14 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <table class="t plan">
           <tr><th colspan="2">Time 1</th></tr>
           <tr><td>0–5 min</td><td>Repetisjon</td></tr>
-          <tr><td>5–12 min</td><td>Del 1: hvor fint viser verktøyet?</td></tr>
-          <tr><td>12–30 min</td><td>Del 2: skyvelære, fire måter og nonius</td></tr>
+          <tr><td>5–12 min</td><td>Del 1–2: hvor fint viser verktøyet?</td></tr>
+          <tr><td>12–30 min</td><td>Del 3–4: skyvelære, fire måter og nonius</td></tr>
           <tr><td>30–45 min</td><td>Oppgave 1 og Skyvelære-simulatoren</td></tr>
           <tr><th colspan="2">Time 2</th></tr>
-          <tr><td>0–12 min</td><td>Del 3: mikrometer</td></tr>
+          <tr><td>0–12 min</td><td>Del 5–6: mikrometer</td></tr>
           <tr><td>12–20 min</td><td>Oppgave 2</td></tr>
-          <tr><td>20–28 min</td><td>Del 4: måleur</td></tr>
-          <tr><td>28–34 min</td><td>Del 5–6: velg verktøy, stell</td></tr>
+          <tr><td>20–28 min</td><td>Del 7: måleur</td></tr>
+          <tr><td>28–34 min</td><td>Del 8–10: velg verktøy, tolk og passbiter, stell</td></tr>
           <tr><td>34–42 min</td><td>Oppgave 3–5</td></tr>
           <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
         </table>
@@ -279,10 +276,10 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
   </div>
 </section>
 
-<!-- DEL 1 OPPLØSNING -->
+<!-- OPPLØSNING -->
 <section class="slide" id="opplosning" data-nav="1 Hvor fint?">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 7 min</div>
+    <div class="kicker">Del 1 · ca. 4 min</div>
     <h2>Hvor fint viser verktøyet?</h2>
     <p class="lead">Den minste streken verktøyet kan vise, kaller vi <b>oppløsningen</b>.</p>
     <div class="grid2 wide-left">
@@ -299,21 +296,30 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <tr><td>Mikrometer</td><td>0,01 mm</td></tr>
           <tr><td>Måleur</td><td>0,01 mm</td></tr>
         </table>
-        <div class="tip"><b>Tommelfingerregel:</b> verktøyet skal vise <b>10 ganger finere</b> enn toleransen.</div>
-        <div class="grid2" style="gap:.6rem">
-          <div class="card"><b>± 0,5 mm</b><br>→ skyvelære</div>
-          <div class="card"><b>± 0,05 mm</b><br>→ mikrometer</div>
-        </div>
       </div>
     </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Figuren viser én millimeter forstørret 500 ganger. Hårstrået er ca. 0,07 mm tykt. Skyvelæra deler millimeteren i 20 (0,05 mm), mikrometeret i 100 (0,01 mm). Regelen om 10 ganger finere gjelder hele toleransefeltet: ± 0,05 er et felt på 0,1 mm, og en tidel av det er 0,01 mm. Digitale skyvelærer viser 0,01, men er i praksis ikke mer nøyaktige enn ca. 0,02–0,03 mm.</details>
   </div>
 </section>
 
-<!-- DEL 2 SKYVELÆRE -->
-<section class="slide" id="skyvelaere" data-nav="2 Skyvelære">
+<!-- 10 GANGER FINERE -->
+<section class="slide" id="regel" data-nav="2 Ti ganger finere">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 8 min</div>
+    <div class="kicker">Del 2 · ca. 3 min</div>
+    <h2>Verktøyet skal vise 10 ganger finere</h2>
+    <p class="lead">Se på <b>toleransen</b> først. Velg så verktøyet.</p>
+    <div class="grid2" style="gap:1rem;margin-top:1.4rem;max-width:820px">
+      <div class="card" style="font-size:1.3rem;text-align:center"><b>± 0,5 mm</b><br>→ skyvelære<br><span class="short" style="font-size:1rem;color:var(--muted)">viser 0,05 mm</span></div>
+      <div class="card" style="font-size:1.3rem;text-align:center"><b>± 0,05 mm</b><br>→ mikrometer<br><span class="short" style="font-size:1rem;color:var(--muted)">viser 0,01 mm</span></div>
+    </div>
+    <div class="tip" style="max-width:820px"><b>Tommelfingerregel:</b> verktøyet skal vise <b>10 ganger finere</b> enn toleransen.</div>
+  </div>
+</section>
+
+<!-- SKYVELÆRE -->
+<section class="slide" id="skyvelaere" data-nav="3 Skyvelære">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 8 min</div>
     <h2>Skyvelæra måler på fire måter</h2>
     <p class="lead">Velg måten og se hvilken del av skyvelæra som måler.</p>
     <div class="grid2 wide-left">
@@ -330,10 +336,10 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
   </div>
 </section>
 
-<!-- DEL 2 NONIUS -->
-<section class="slide" id="nonius" data-nav="2 Nonius">
+<!-- NONIUS -->
+<section class="slide" id="nonius" data-nav="4 Nonius">
   <div class="wrap">
-    <div class="kicker">Del 2 · Skyvelære · ca. 10 min</div>
+    <div class="kicker">Del 4 · ca. 10 min</div>
     <h2>Les av noniusen</h2>
     <p class="lead">Hele millimeter på <b>hovedskalaen</b>. Hundredeler der en strek på <b>noniusen</b> <b>flukter</b>.</p>
     <div class="grid2 wide-left">
@@ -359,13 +365,13 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
   </div>
 </section>
 
-<!-- DEL 3 MIKROMETER -->
-<section class="slide" id="mikrometer" data-nav="3 Mikrometer">
+<!-- MIKROMETERETS DELER -->
+<section class="slide" id="mikrometer" data-nav="5 Mikrometeret">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 12 min</div>
-    <h2>Mikrometeret måler hundredeler</h2>
-    <p class="lead">Én omdreining på trommelen = <b>0,5 mm</b>. Trommelen har <b>50</b> streker = 0,01 mm hver.</p>
-    <div class="grid2" style="grid-template-columns:1fr 1.25fr">
+    <div class="kicker">Del 5 · ca. 4 min</div>
+    <h2>Delene på mikrometeret</h2>
+    <p class="lead">Lær navnene på delene før du måler.</p>
+    <div style="max-width:760px;margin-top:1rem">
       <div class="fig">
         <svg viewBox="0 0 420 230" role="img" aria-label="Mikrometer med bøyle, ambolt, spindel, låsing, hylse, trommel og skralle">
           <path d="M60 60 Q30 60 30 110 V160 Q30 200 80 200 H190 Q220 200 220 170 V106 H190 V165 Q190 175 180 175 H80 Q62 175 62 155 V110 Q62 85 85 85" style="fill:var(--blue);opacity:.85"/>
@@ -390,6 +396,17 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         </svg>
         <div class="tip" style="margin-bottom:0">Skru med <b>skralla</b> til den klikker. Da blir måletrykket likt hver gang.</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- LES AV MIKROMETERET -->
+<section class="slide" id="miles" data-nav="6 Les av mikrometeret">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 8 min</div>
+    <h2>Les av mikrometeret</h2>
+    <p class="lead">Én omdreining på trommelen = <b>0,5 mm</b>. Trommelen har <b>50</b> streker = 0,01 mm hver.</p>
+    <div class="grid2 wide-left">
       <div class="fig">
         <svg id="miSvg" viewBox="0 0 560 200" role="img" aria-label="Hylse og trommel på mikrometer"></svg>
         <div class="controls">
@@ -401,21 +418,21 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         </div>
         <div class="steps" id="miSteps"></div>
       </div>
-    </div>
-    <div class="grid3" style="margin-top:1rem">
-      <div class="card"><b>1</b> Hele mm <b>over</b> streken på hylsa.</div>
-      <div class="card"><b>2</b> Ser du en strek <b>under</b> linja etter siste hele mm? Legg til <b>0,5</b>.</div>
-      <div class="card"><b>3</b> Tallet på trommelen som står <b>på linja</b> = hundredeler.</div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem"><b>1</b> Hele mm <b>over</b> streken på hylsa.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>2</b> Ser du en strek <b>under</b> linja etter siste hele mm? Legg til <b>0,5</b>.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>3</b> Tallet på trommelen som står <b>på linja</b> = hundredeler.</div>
+      </div>
     </div>
     <a class="simlink no-print" data-sim="mikrometer"><span class="ico">🔩</span><span><b>Prøv selv: Mikrometer-simulatoren</b><small>Skru, les av og sjekk svaret.</small></span><span class="pil">→</span></a>
     <details class="laerer no-print"><summary>Lærernotat</summary>Spindelen har gjenge med stigning 0,5 mm. Den vanligste feilen er å glemme halvmillimeteren. Et mikrometer måler bare 25 mm: 0–25, 25–50, 50–75 osv. Sjekk null før bruk: lukk 0–25-mikrometeret med skralla (eller mål på innstillingsstaven for større mikrometer). Låsingen holder målet når du tar mikrometeret av delen.</details>
   </div>
 </section>
 
-<!-- DEL 4 MÅLEUR -->
-<section class="slide" id="maleur" data-nav="4 Måleur">
+<!-- MÅLEUR -->
+<section class="slide" id="maleur" data-nav="7 Måleur">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 8 min</div>
+    <div class="kicker">Del 7 · ca. 8 min</div>
     <h2>Måleuret viser hvor mye noe slingrer</h2>
     <p class="lead">Måleuret måler <b>forskjeller</b>, ikke mål. Drei akselen og se viseren.</p>
     <div class="grid2 wide-left">
@@ -445,10 +462,10 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
   </div>
 </section>
 
-<!-- DEL 5 VELG VERKTØY -->
-<section class="slide" id="velg" data-nav="5 Velg verktøy">
+<!-- VELG VERKTØY -->
+<section class="slide" id="velg" data-nav="8 Velg verktøy">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 4 min</div>
+    <div class="kicker">Del 8 · ca. 3 min</div>
     <h2>Velg rett verktøy</h2>
     <p class="lead">Les oppgaven og toleransen. Hvilket verktøy tar du?</p>
     <div class="grid2 wide-left">
@@ -459,7 +476,17 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <div class="status info" id="vgTxt">Velg et verktøy.</div>
         <div class="controls no-print"><button class="btn orange" id="vgNeste">Neste oppgave →</button></div>
       </div>
-      <div class="grid2" style="gap:.8rem">
+    </div>
+  </div>
+</section>
+
+<!-- TOLK OG PASSBITER -->
+<section class="slide" id="tolk" data-nav="9 Tolk og passbiter">
+  <div class="wrap">
+    <div class="kicker">Del 9 · ca. 2 min</div>
+    <h2>To verktøy uten avlesning</h2>
+    <p class="lead"><b>Toleransetolk</b> sjekker delen. <b>Passbiter</b> sjekker verktøyet.</p>
+      <div class="grid2 solo" style="gap:1rem;margin-top:1.4rem">
         <div class="card">
           <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Toleransetolk med gå-side og ikke-gå-side">
             <rect x="20" y="40" width="40" height="26" rx="3" style="fill:var(--green)"/>
@@ -481,24 +508,22 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <h3>Passbiter</h3><p class="short">Stålklosser med helt nøyaktige mål. Brukes til å <b>kontrollere</b> annet måleverktøy.</p>
         </div>
       </div>
-    </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Toleransetolk (gå/ikke-gå) brukes når mange like deler skal kontrolleres raskt, for eksempel hull med H7. Grensetolken for hull kalles tolkdor, for aksler tolkring eller gaffeltolk. Passbiter er laget med nøyaktighet på tusendeler. De settes sammen til et mål og brukes til å sjekke skyvelærer og mikrometre. Det tar vi i leksjon 4 (målefeil og kalibrering).</details>
   </div>
 </section>
 
-<!-- DEL 6 STELL -->
-<section class="slide" id="stell" data-nav="6 Stell">
+<!-- STELL -->
+<section class="slide" id="stell" data-nav="10 Stell">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 3 min</div>
+    <div class="kicker">Del 10 · ca. 3 min</div>
     <h2>Stell godt med måleverktøyet</h2>
     <p class="lead">Et måleverktøy som har fått en smell, måler feil – og du ser det ikke.</p>
     <div class="grid4" style="margin-top:1rem">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 110" role="img" aria-label="Klut som tørker målflatene">
           <rect x="40" y="20" width="16" height="70" style="fill:var(--steel-dark)"/><rect x="120" y="20" width="16" height="70" style="fill:var(--steel-dark)"/>
-          <rect x="62" y="40" width="34" height="30" rx="8" style="fill:var(--yellow)">
-            <animateTransform attributeName="transform" type="translate" values="0 -12;0 12;0 -12" dur="1.6s" repeatCount="indefinite"/>
-          </rect>
+          <rect x="62" y="40" width="34" height="30" rx="8" style="fill:var(--yellow)"/>
+          <path d="M79 26 v-8 M79 84 v8 M73 22 l6 -6 l6 6 M73 88 l6 6 l6 -6" style="fill:none;stroke:var(--muted);stroke-width:2"/>
         </svg>
         <h3>Tørk av</h3><p class="short">Spon og olje mellom målflatene gir feil mål.</p></div>
       <div class="card">
@@ -715,7 +740,7 @@ const SKJERM = {ink:"var(--ink)", muted:"var(--muted)", steel:"var(--steel)", st
 const PAPIR = {ink:"#000", muted:"#444", steel:"#9aa5b1", steelSoft:"#eef1f4", steelDark:"#5f6b78", panel:"#fff", orange:"#000", green:"#000", blue:"#1c6fd1", red:"#c92a2a", line:"#999"};
 const komma = (x, d=2) => fmt(x, d);
 
-/* ---------- Del 1: oppløsning ---------- */
+/* ---------- Oppløsning ---------- */
 const OPP = [
   {n:"Stållinjal", d:0.5, txt:"Stållinjal: 0,5 mm. Millimeteren deles i to."},
   {n:"Skyvelære", d:0.05, txt:"Skyvelære: 0,05 mm. Millimeteren deles i 20."},
@@ -750,7 +775,7 @@ function drawOp(){
 }
 drawOp();
 
-/* ---------- Del 2: skyvelæra måler på fire måter ---------- */
+/* ---------- Skyvelæra måler på fire måter ---------- */
 const SV = {
   ut:{n:"Utvendig", h:"Utvendig mål", t:"De store <b>kjeftene</b> rundt delen. Diameter på aksler, tykkelse på plater."},
   inn:{n:"Innvendig", h:"Innvendig mål", t:"De små <b>nebbene</b> inn i hullet. Diameter på hull og rør."},
@@ -883,7 +908,7 @@ $("miVis").onclick = () => { miVis = !miVis; drawMi(); };
 $("miNy").onclick = () => { $("miV").value = (Math.round(Math.random()*2400 + 50)/100).toFixed(2); miVis = false; drawMi(); };
 drawMi();
 
-/* ---------- Del 4: måleur ---------- */
+/* ---------- Måleur ---------- */
 const mu = $("muSvg");
 let muVinkel = 0, muPause = false, muMax = 0, muMin = 0, muSist = 0;
 const MU = {cx:400, cy:110, r:86};
@@ -940,7 +965,7 @@ muStatus();
 if (roligAnim){ muVinkel = Math.PI/2; muTegn(); muVinkel = -Math.PI/2; muTegn(); }
 requestAnimationFrame(muLoop);
 
-/* ---------- Del 5: velg verktøy ---------- */
+/* ---------- Velg verktøy ---------- */
 const VERKTOY = ["Stållinjal", "Skyvelære", "Mikrometer", "Måleur", "Toleransetolk"];
 const VG = [
   {o:"Kappe et flatstål til 300 ± 1 mm", s:0, f:"± 1 mm er grovt. Stållinjal eller målebånd holder."},
