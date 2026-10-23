@@ -101,6 +101,15 @@ table.t th{background:var(--steel-soft)}
 .gloss{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:1rem}
 .gloss div{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:.5rem .7rem; font-size:.85rem; color:var(--muted)}
 .gloss b{display:block; font-size:.95rem; color:var(--blue)}
+.duo.solo{margin-top:1.4rem}
+.duo.solo .scene{max-height:260px}
+.duo.solo .card{font-size:1.05rem}
+.gloss.solo{margin-top:1.4rem; gap:.8rem}
+.gloss.solo div{padding:.8rem 1rem; font-size:1rem}
+.gloss.solo b{font-size:1.15rem}
+.gloss.solo svg{max-height:90px}
+.solo1{max-width:820px; margin-top:1.4rem}
+.solo1 .scene{max-height:300px}
 .big{font-size:2rem; font-weight:800; line-height:1; font-variant-numeric:tabular-nums}
 .counts{display:flex; gap:.6rem; margin-top:.8rem}
 .counts div{flex:1; border-radius:10px; padding:.5rem; text-align:center; font-weight:700; font-size:.85rem}
@@ -218,7 +227,7 @@ table.sja td.r{text-align:center; width:3.2em}
           <rect x="82" y="40" width="18" height="110" style="fill:var(--steel)"/>
           <!-- pumpehus -->
           <circle cx="90" cy="186" r="52" style="fill:var(--red)"/>
-          <g><animateTransform attributeName="transform" type="rotate" from="0 90 186" to="360 90 186" dur="1.6s" repeatCount="indefinite"/>
+          <g>
             <circle cx="90" cy="186" r="34" style="fill:#7a1515"/>
             <path d="M90 186 q-10 -26 4 -32 M90 186 q26 -10 32 4 M90 186 q10 26 -4 32 M90 186 q-26 10 -32 -4" style="fill:none;stroke:#ffb3b3;stroke-width:5;stroke-linecap:round"/>
           </g>
@@ -230,19 +239,19 @@ table.sja td.r{text-align:center; width:3.2em}
           <path d="M238 154 v66 M252 154 v66 M266 154 v66 M280 154 v66 M294 154 v66 M308 154 v66" style="stroke:#0b4fa3;stroke-width:2"/>
           <!-- lydbølger fra lageret -->
           <g style="fill:none;stroke:var(--orange);stroke-width:3;stroke-linecap:round">
-            <path d="M156 150 q13 -12 26 0"><animate attributeName="opacity" values="1;0" dur="1s" repeatCount="indefinite"/></path>
-            <path d="M150 138 q19 -18 38 0"><animate attributeName="opacity" values="1;0" dur="1s" begin=".33s" repeatCount="indefinite"/></path>
+            <path d="M156 150 q13 -12 26 0"></path>
+            <path d="M150 138 q19 -18 38 0"></path>
           </g>
           <!-- kabel og arbeidsbryter -->
           <path d="M274 148 V100 H364" style="fill:none;stroke:var(--ink);stroke-width:4"/>
           <rect x="364" y="70" width="56" height="64" rx="6" style="fill:var(--yellow);stroke:#b07d00;stroke-width:2"/>
           <circle cx="392" cy="102" r="18" style="fill:var(--red)"/>
-          <rect x="388" y="86" width="8" height="32" rx="2" style="fill:#fff">
-            <animateTransform attributeName="transform" type="rotate" values="90 392 102;90 392 102;0 392 102;0 392 102" keyTimes="0;.15;.25;1" dur="6s" repeatCount="indefinite"/></rect>
+          <rect x="388" y="86" width="8" height="32" rx="2" style="fill:#fff" transform="rotate(0 392 102)">
+            </rect>
           <text x="392" y="64" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--muted)">0 · AV</text>
           <!-- hengelås -->
-          <g opacity="0">
-            <animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.28;.32;1" dur="6s" repeatCount="indefinite"/>
+          <g>
+            
             <path d="M380 148 v-10 a12 12 0 0 1 24 0 v10" style="fill:none;stroke:var(--steel-dark);stroke-width:5"/>
             <rect x="374" y="148" width="36" height="28" rx="4" style="fill:var(--red)"/>
             <circle cx="392" cy="160" r="4" style="fill:#fff"/>
@@ -257,9 +266,9 @@ table.sja td.r{text-align:center; width:3.2em}
             <text x="38" y="22" text-anchor="middle" style="font-size:14px;font-weight:800;fill:var(--orange)">SJA</text>
             <g style="stroke:var(--line);stroke-width:3"><path d="M30 40 h36 M30 60 h36 M30 80 h36"/></g>
             <g style="fill:none;stroke:var(--green);stroke-width:4;stroke-linecap:round;stroke-linejoin:round">
-              <path d="M10 40 l5 5 l9 -10" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.45;.48;1" dur="6s" repeatCount="indefinite"/></path>
-              <path d="M10 60 l5 5 l9 -10" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.6;.63;1" dur="6s" repeatCount="indefinite"/></path>
-              <path d="M10 80 l5 5 l9 -10" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.75;.78;1" dur="6s" repeatCount="indefinite"/></path>
+              <path d="M10 40 l5 5 l9 -10"></path>
+              <path d="M10 60 l5 5 l9 -10"></path>
+              <path d="M10 80 l5 5 l9 -10"></path>
             </g>
           </g>
           <text x="90" y="300" text-anchor="middle" style="font-size:14px;fill:var(--muted)">pumpe P-102</text>
@@ -282,15 +291,15 @@ table.sja td.r{text-align:center; width:3.2em}
         <h3>Plan for to skoletimer</h3>
         <table class="t plan">
           <tr><th colspan="2">Time 1 · Fra verksted til jobb</th></tr>
-          <tr><td>0–5 min</td><td>Del 1: risikovurdering og SJA</td></tr>
-          <tr><td>5–12 min</td><td>Del 2: trenger jobben SJA?</td></tr>
-          <tr><td>12–22 min</td><td>Del 3: jobben steg for steg</td></tr>
-          <tr><td>22–30 min</td><td>Del 4: finn energiene</td></tr>
+          <tr><td>0–5 min</td><td>Del 1–2: risikovurdering og SJA</td></tr>
+          <tr><td>5–12 min</td><td>Del 3: trenger jobben SJA?</td></tr>
+          <tr><td>12–22 min</td><td>Del 4–5: jobben steg for steg og delene på pumpa</td></tr>
+          <tr><td>22–30 min</td><td>Del 6: finn energiene</td></tr>
           <tr><td>30–45 min</td><td>Oppgave 1–3</td></tr>
           <tr><th colspan="2">Time 2 · Vurdere, skrive og få lov</th></tr>
-          <tr><td>0–7 min</td><td>Del 5: risiko før og etter</td></tr>
-          <tr><td>7–16 min</td><td>Del 6: SJA-skjemaet</td></tr>
-          <tr><td>16–22 min</td><td>Del 7: arbeidstillatelse</td></tr>
+          <tr><td>0–7 min</td><td>Del 7: risiko før og etter</td></tr>
+          <tr><td>7–16 min</td><td>Del 8–9: SJA-skjemaet og slik gjør dere SJA</td></tr>
+          <tr><td>16–22 min</td><td>Del 10–11: arbeidstillatelse</td></tr>
           <tr><td>22–43 min</td><td>Oppgave 4–6</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
@@ -302,10 +311,10 @@ table.sja td.r{text-align:center; width:3.2em}
   </div>
 </section>
 
-<!-- DEL 1 -->
+<!-- RV OG SJA -->
 <section class="slide" id="rvsja" data-nav="1 RV og SJA">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 5 min</div>
+    <div class="kicker">Del 1 · ca. 3 min</div>
     <h2>Risikovurdering og SJA</h2>
     <p class="lead">Risikovurdering ser <b>hele verkstedet</b>. SJA zoomer inn på <b>én jobb</b>.</p>
     <div class="fig">
@@ -313,22 +322,30 @@ table.sja td.r{text-align:center; width:3.2em}
       <div class="controls"><span class="chips" id="d1Sel"></span></div>
       <div class="status info" id="d1Msg"></div>
     </div>
-    <div class="duo">
+  </div>
+</section>
+
+<!-- FORSKJELLEN -->
+<section class="slide" id="forskjell" data-nav="2 Forskjellen">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 2 min</div>
+    <h2>Risikovurdering eller SJA?</h2>
+    <p class="lead"><b>Hele verkstedet</b> eller <b>én jobb</b>.</p>
+    <div class="duo solo">
       <div class="card">
-        <svg class="scene" viewBox="0 0 300 140" role="img" aria-label="Kalender og plantegning av hele verkstedet som blir sjekket maskin for maskin">
+        <svg class="scene" viewBox="0 0 300 140" role="img" aria-label="Plantegning av hele verkstedet der hver maskin er sjekket">
           <rect x="10" y="14" width="190" height="112" rx="6" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
           <g style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:2">
             <rect x="24" y="28" width="60" height="26" rx="3"/><rect x="100" y="28" width="40" height="34" rx="3"/><rect x="152" y="28" width="38" height="44" rx="3"/>
             <rect x="24" y="78" width="70" height="20" rx="3"/><rect x="120" y="84" width="70" height="32" rx="3"/>
           </g>
-          <rect x="10" y="14" width="10" height="112" style="fill:var(--blue);opacity:.35">
-            <animate attributeName="x" values="10;190;10" dur="5s" repeatCount="indefinite"/></rect>
+          
           <g style="fill:var(--green)">
-            <circle cx="84" cy="28" r="7" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.18;.2;.95;1" dur="5s" repeatCount="indefinite"/></circle>
-            <circle cx="140" cy="28" r="7" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.3;.32;.95;1" dur="5s" repeatCount="indefinite"/></circle>
-            <circle cx="190" cy="28" r="7" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.45;.47;.95;1" dur="5s" repeatCount="indefinite"/></circle>
-            <circle cx="94" cy="78" r="7" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.2;.22;.95;1" dur="5s" repeatCount="indefinite"/></circle>
-            <circle cx="190" cy="84" r="7" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.45;.47;.95;1" dur="5s" repeatCount="indefinite"/></circle>
+            <circle cx="84" cy="28" r="7"></circle>
+            <circle cx="140" cy="28" r="7"></circle>
+            <circle cx="190" cy="28" r="7"></circle>
+            <circle cx="94" cy="78" r="7"></circle>
+            <circle cx="190" cy="84" r="7"></circle>
           </g>
           <g transform="translate(222 30)">
             <rect x="0" y="0" width="68" height="64" rx="6" style="fill:var(--panel);stroke:var(--blue);stroke-width:3"/>
@@ -347,10 +364,10 @@ table.sja td.r{text-align:center; width:3.2em}
           <rect x="92" y="66" width="22" height="20" style="fill:var(--steel)"/>
           <rect x="114" y="56" width="56" height="40" rx="6" style="fill:var(--blue)"/>
           <rect x="34" y="104" width="140" height="10" style="fill:var(--steel-dark)"/>
-          <g>
+          <g transform="translate(80 74)">
             <circle cx="0" cy="0" r="40" style="fill:none;stroke:var(--orange);stroke-width:6"/>
             <path d="M28 28 l22 22" style="stroke:var(--orange);stroke-width:10;stroke-linecap:round"/>
-            <animateTransform attributeName="transform" type="translate" values="80 74;110 70;80 74" dur="3s" repeatCount="indefinite"/>
+            
           </g>
           <g style="fill:var(--steel-dark)">
             <circle cx="222" cy="52" r="11"/><path d="M208 118 v-40 a14 14 0 0 1 28 0 v40z"/>
@@ -358,7 +375,7 @@ table.sja td.r{text-align:center; width:3.2em}
           </g>
           <g style="fill:var(--yellow)"><path d="M209 50 a13 13 0 0 1 26 0z"/><path d="M249 50 a13 13 0 0 1 26 0z"/></g>
           <g><rect x="232" y="76" width="20" height="26" rx="2" style="fill:var(--panel);stroke:var(--orange);stroke-width:2"/>
-            <animateTransform attributeName="transform" type="rotate" values="-6 242 89;6 242 89;-6 242 89" dur="2s" repeatCount="indefinite"/></g>
+            </g>
         </svg>
         <h3>SJA – sikker jobbanalyse</h3><p class="short">Farene i <b>én jobb</b>, steg for steg.</p>
         <div class="facts"><span>⏱ Rett før jobben</span><span>👷 De som gjør jobben</span><span>📍 På stedet</span></div>
@@ -374,10 +391,10 @@ table.sja td.r{text-align:center; width:3.2em}
   </div>
 </section>
 
-<!-- DEL 2 -->
-<section class="slide" id="trenger" data-nav="2 Trenger jobben SJA?">
+<!-- TRENGER JOBBEN SJA -->
+<section class="slide" id="trenger" data-nav="3 Trenger jobben SJA?">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 7 min</div>
+    <div class="kicker">Del 3 · ca. 7 min</div>
     <h2>Trenger jobben SJA?</h2>
     <p class="lead">Velg en jobb. Følg prikken gjennom spørsmålene.</p>
     <div class="fig">
@@ -389,10 +406,10 @@ table.sja td.r{text-align:center; width:3.2em}
   </div>
 </section>
 
-<!-- DEL 3 -->
-<section class="slide" id="jobben" data-nav="3 Jobben steg for steg">
+<!-- JOBBEN STEG FOR STEG -->
+<section class="slide" id="jobben" data-nav="4 Jobben steg for steg">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 10 min</div>
+    <div class="kicker">Del 4 · ca. 8 min</div>
     <h2>Jobben: bytte lager på pumpe P-102</h2>
     <p class="lead">SJA steg 1: <b>del jobben opp i steg</b>.</p>
     <div class="grid2 wide-left">
@@ -415,24 +432,33 @@ table.sja td.r{text-align:center; width:3.2em}
         <div class="tip o" style="margin-bottom:0"><b>Feil rekkefølge = feil tiltak.</b> Lås strømmen <b>før</b> vernet tas av.</div>
       </div>
     </div>
-    <div class="gloss">
+    <details class="laerer no-print"><summary>Lærernotat</summary>Pumpa lager ulyd – lageret er slitt. En SJA følger rekkefølgen i jobben; er rekkefølgen feil, blir tiltakene feil (f.eks. å ta av vernet før strømmen er låst). <b>Ordliste:</b> sentrifugalpumpe – et hjul med skovler (pumpehjul) slynger væsken utover og videre i røret; lagerhus – huset som holder akselen og lagrene, har olje til smøring; kulelager – ring med kuler som lar akselen rotere lett, slitt lager gir ulyd og varme; kobling og vern – kobler motorakselen til pumpeakselen, vernet hindrer at noe trekkes inn; arbeidsbryter – bryter ved maskinen som kobler fra strømmen, kan låses i 0; manometer – måler trykket i røret, skal vise 0 før du åpner noe; avtrekker – verktøy med armer og skrue som drar lageret av akselen; induksjonsvarmer – varmer lageret med magnetfelt, uten flamme, varmt lager utvider seg. Forenklet: på mange pumper trekkes hele rotorenheten (lagerhus, aksel og pumpehjul) ut bakover («back pull-out»), ofte med en mellomstykke-kobling slik at motoren kan stå. Lager monteres med varme for å unngå slag på ringene – vanligvis til ca. 110 °C og ikke over ca. 120 °C. Bruk aldri flamme: det kan ødelegge lageret, og det er varmt arbeid. Etter montering skal koblingen rettes opp (oppretting) – kobles til Vedlikehold-serien.</details>
+  </div>
+</section>
+
+<!-- DELENE PÅ PUMPA -->
+<section class="slide" id="ordliste" data-nav="5 Delene på pumpa">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 2 min</div>
+    <h2>Ord du trenger: delene på pumpa</h2>
+    <p class="lead">Disse ordene står i SJA-en.</p>
+    <div class="gloss solo">
       <div><svg viewBox="0 0 120 60" aria-hidden="true"><circle cx="60" cy="30" r="26" style="fill:var(--red)"/><g><animateTransform attributeName="transform" type="rotate" from="0 60 30" to="360 60 30" dur="1.5s" repeatCount="indefinite"/><circle cx="60" cy="30" r="16" style="fill:#7a1515"/><path d="M60 30 q-6 -14 3 -16 M60 30 q14 -6 16 3 M60 30 q6 14 -3 16 M60 30 q-14 6 -16 -3" style="fill:none;stroke:#ffb3b3;stroke-width:3"/></g></svg><b>Sentrifugalpumpe</b>Hjul slynger væsken ut.</div>
-      <div><svg viewBox="0 0 120 60" aria-hidden="true"><rect x="22" y="12" width="76" height="36" rx="5" style="fill:var(--steel)"/><rect x="4" y="26" width="112" height="8" style="fill:var(--steel-dark)"/><rect x="34" y="34" width="30" height="10" rx="2" style="fill:#c9a227"><animate attributeName="width" values="30;34;30" dur="2s" repeatCount="indefinite"/></rect></svg><b>Lagerhus</b>Holder aksel og lager. Har olje.</div>
+      <div><svg viewBox="0 0 120 60" aria-hidden="true"><rect x="22" y="12" width="76" height="36" rx="5" style="fill:var(--steel)"/><rect x="4" y="26" width="112" height="8" style="fill:var(--steel-dark)"/><rect x="34" y="34" width="30" height="10" rx="2" style="fill:#c9a227"/></svg><b>Lagerhus</b>Holder aksel og lager. Har olje.</div>
       <div><svg viewBox="0 0 120 60" aria-hidden="true"><circle cx="60" cy="30" r="26" style="fill:none;stroke:var(--steel-dark);stroke-width:6"/><circle cx="60" cy="30" r="12" style="fill:none;stroke:var(--steel-dark);stroke-width:5"/><g style="fill:var(--steel)"><animateTransform attributeName="transform" type="rotate" from="0 60 30" to="360 60 30" dur="3s" repeatCount="indefinite"/><circle cx="60" cy="11" r="5"/><circle cx="79" cy="30" r="5"/><circle cx="60" cy="49" r="5"/><circle cx="41" cy="30" r="5"/><circle cx="73" cy="17" r="5"/><circle cx="47" cy="43" r="5"/><circle cx="73" cy="43" r="5"/><circle cx="47" cy="17" r="5"/></g></svg><b>Kulelager</b>Kuler lar akselen rotere lett.</div>
       <div><svg viewBox="0 0 120 60" aria-hidden="true"><rect x="0" y="26" width="44" height="8" style="fill:var(--steel-dark)"/><rect x="76" y="26" width="44" height="8" style="fill:var(--steel-dark)"/><rect x="44" y="14" width="32" height="32" rx="3" style="fill:var(--orange)"/><path d="M40 8 h40 v44 h-40z" style="fill:none;stroke:var(--steel);stroke-width:3;stroke-dasharray:5 3"/></svg><b>Kobling og vern</b>Kobler motor til pumpe.</div>
       <div><svg viewBox="0 0 120 60" aria-hidden="true"><rect x="38" y="4" width="44" height="52" rx="5" style="fill:var(--yellow);stroke:#b07d00;stroke-width:2"/><circle cx="60" cy="30" r="14" style="fill:var(--red)"/><rect x="57" y="18" width="6" height="24" rx="2" style="fill:#fff"><animateTransform attributeName="transform" type="rotate" values="90 60 30;90 60 30;0 60 30;0 60 30" keyTimes="0;.4;.5;1" dur="3s" repeatCount="indefinite"/></rect><text x="92" y="34" style="font-size:12px;font-weight:800;fill:var(--ink)">0</text></svg><b>Arbeidsbryter</b>Slår av strømmen. Kan låses.</div>
       <div><svg viewBox="0 0 120 60" aria-hidden="true"><circle cx="60" cy="30" r="26" style="fill:var(--panel);stroke:var(--ink);stroke-width:3"/><path d="M42 40 A22 22 0 1 1 78 40" style="fill:none;stroke:var(--line);stroke-width:3"/><line x1="60" y1="30" x2="60" y2="12" style="stroke:var(--red);stroke-width:3;stroke-linecap:round"><animateTransform attributeName="transform" type="rotate" values="40 60 30;-130 60 30;-130 60 30;40 60 30" keyTimes="0;.4;.6;1" dur="4s" repeatCount="indefinite"/></line><text x="60" y="52" text-anchor="middle" style="font-size:9px;font-weight:700;fill:var(--muted)">bar</text></svg><b>Manometer</b>Måler trykket. Skal vise 0.</div>
       <div><svg viewBox="0 0 120 60" aria-hidden="true"><rect x="4" y="27" width="70" height="6" style="fill:var(--steel-dark)"/><g><animateTransform attributeName="transform" type="translate" values="0 0;24 0;24 0;0 0" keyTimes="0;.5;.8;1" dur="3s" repeatCount="indefinite"/><rect x="58" y="18" width="10" height="24" rx="2" style="fill:var(--steel)"/><path d="M62 18 l30 -10 h8 v44 h-8 l-30 -10" style="fill:none;stroke:var(--blue);stroke-width:4"/></g><rect x="98" y="26" width="22" height="8" style="fill:var(--blue)"/></svg><b>Avtrekker</b>Drar lageret av akselen.</div>
-      <div><svg viewBox="0 0 120 60" aria-hidden="true"><rect x="34" y="30" width="52" height="24" rx="4" style="fill:var(--steel-dark)"/><circle cx="60" cy="22" r="14" style="fill:none;stroke-width:7"><animate attributeName="stroke" values="#9aa5b1;#e8590c;#c92a2a;#9aa5b1" dur="3s" repeatCount="indefinite"/></circle><g style="fill:none;stroke:var(--orange);stroke-width:2"><path d="M44 6 q4 -4 0 -8"/><path d="M76 6 q4 -4 0 -8"/></g></svg><b>Induksjonsvarmer</b>Varmer lageret uten flamme.</div>
+      <div><svg viewBox="0 0 120 60" aria-hidden="true"><rect x="34" y="30" width="52" height="24" rx="4" style="fill:var(--steel-dark)"/><circle cx="60" cy="22" r="14" style="fill:none;stroke-width:7;stroke:#e8590c"/><g style="fill:none;stroke:var(--orange);stroke-width:2"><path d="M44 6 q4 -4 0 -8"/><path d="M76 6 q4 -4 0 -8"/></g></svg><b>Induksjonsvarmer</b>Varmer lageret uten flamme.</div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Pumpa lager ulyd – lageret er slitt. En SJA følger rekkefølgen i jobben; er rekkefølgen feil, blir tiltakene feil (f.eks. å ta av vernet før strømmen er låst). <b>Ordliste:</b> sentrifugalpumpe – et hjul med skovler (pumpehjul) slynger væsken utover og videre i røret; lagerhus – huset som holder akselen og lagrene, har olje til smøring; kulelager – ring med kuler som lar akselen rotere lett, slitt lager gir ulyd og varme; kobling og vern – kobler motorakselen til pumpeakselen, vernet hindrer at noe trekkes inn; arbeidsbryter – bryter ved maskinen som kobler fra strømmen, kan låses i 0; manometer – måler trykket i røret, skal vise 0 før du åpner noe; avtrekker – verktøy med armer og skrue som drar lageret av akselen; induksjonsvarmer – varmer lageret med magnetfelt, uten flamme, varmt lager utvider seg. Forenklet: på mange pumper trekkes hele rotorenheten (lagerhus, aksel og pumpehjul) ut bakover («back pull-out»), ofte med en mellomstykke-kobling slik at motoren kan stå. Lager monteres med varme for å unngå slag på ringene – vanligvis til ca. 110 °C og ikke over ca. 120 °C. Bruk aldri flamme: det kan ødelegge lageret, og det er varmt arbeid. Etter montering skal koblingen rettes opp (oppretting) – kobles til Vedlikehold-serien.</details>
   </div>
 </section>
 
-<!-- DEL 4 -->
-<section class="slide" id="energi" data-nav="4 Finn energiene">
+<!-- FINN ENERGIENE -->
+<section class="slide" id="energi" data-nav="6 Finn energiene">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 8 min</div>
+    <div class="kicker">Del 6 · ca. 8 min</div>
     <h2>Finn de farlige energiene</h2>
     <p class="lead">Klikk og finn <b>6 farlige energier</b>.</p>
     <div class="grid2 wide-left">
@@ -458,10 +484,10 @@ table.sja td.r{text-align:center; width:3.2em}
   </div>
 </section>
 
-<!-- DEL 5 -->
-<section class="slide" id="vurder" data-nav="5 Før og etter">
+<!-- FØR OG ETTER -->
+<section class="slide" id="vurder" data-nav="7 Før og etter">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 7 min</div>
+    <div class="kicker">Del 7 · ca. 7 min</div>
     <h2>Vurder risikoen – før og etter tiltak</h2>
     <p class="lead">Trykk <b>Etter tiltak</b>. Se farene flytte seg.</p>
     <div class="grid2 wide-right">
@@ -489,10 +515,10 @@ table.sja td.r{text-align:center; width:3.2em}
   </div>
 </section>
 
-<!-- DEL 6 -->
-<section class="slide" id="sja" data-nav="6 SJA-skjemaet">
+<!-- SJA-SKJEMAET -->
+<section class="slide" id="sja" data-nav="8 SJA-skjemaet">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 9 min</div>
+    <div class="kicker">Del 8 · ca. 6 min</div>
     <h2>SJA-skjemaet</h2>
     <p class="lead">Steg → fare → risiko → tiltak → hvem.</p>
     <div class="grid2 wide-left">
@@ -520,29 +546,42 @@ table.sja td.r{text-align:center; width:3.2em}
       </div>
       <div>
         <div class="fig"><svg id="d6Svg" viewBox="0 0 1000 480" role="img" aria-label="Pumpen i det steget som fylles ut i skjemaet"></svg></div>
-        <div class="card" style="margin-top:1rem">
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Trykk «Neste rad» og se skjemaet fylles ut. Slik gjør dere SJA: 1) Alle som skal gjøre jobben, møtes på stedet. 2) Gå gjennom steg for steg og fyll ut. 3) Alle signerer – og alle kan stoppe jobben. R før og R etter er regnet med matrisen fra leksjon 1 (grønn 1–4, gul 5–10, rød 12–25). Rad 3 (koblingen) har lav risiko etter tiltak fordi strømmen allerede er låst i steg 1 – vis hvordan stegene henger sammen. SJA-en oppbevares sammen med arbeidstillatelsen til jobben er avsluttet.</details>
+  </div>
+</section>
+
+<!-- SLIK GJØR DERE SJA -->
+<section class="slide" id="slik" data-nav="9 Slik gjør dere SJA">
+  <div class="wrap">
+    <div class="kicker">Del 9 · ca. 3 min</div>
+    <h2>Slik gjør dere SJA</h2>
+    <p class="lead">Møt på stedet → steg for steg → signer. <b>Alle</b> kan si stopp.</p>
+    <div class="solo1">
+        <div class="card">
           <svg class="scene" viewBox="0 0 300 110" role="img" aria-label="Tre steg: møtes på stedet, gå gjennom steg for steg, alle signerer og alle kan stoppe">
             <g>
               <rect x="4" y="4" width="92" height="76" rx="8" style="fill:var(--steel-soft);stroke:var(--line);stroke-width:2"/>
-              <rect x="4" y="4" width="92" height="76" rx="8" style="fill:none;stroke:var(--orange);stroke-width:4" opacity="0"><animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.32;.34;1" dur="6s" repeatCount="indefinite"/></rect>
+              <rect x="4" y="4" width="92" height="76" rx="8" style="fill:none;stroke:var(--orange);stroke-width:4" opacity="0"></rect>
               <g style="fill:var(--steel-dark)"><circle cx="30" cy="30" r="8"/><path d="M20 66 v-22 a10 10 0 0 1 20 0 v22z"/><circle cx="70" cy="30" r="8"/><path d="M60 66 v-22 a10 10 0 0 1 20 0 v22z"/></g>
               <path d="M50 18 c-8 0 -12 6 -12 12 c0 8 12 18 12 18 s12 -10 12 -18 c0 -6 -4 -12 -12 -12z" style="fill:var(--red)"/><circle cx="50" cy="30" r="4" style="fill:#fff"/>
             </g>
             <g>
               <rect x="104" y="4" width="92" height="76" rx="8" style="fill:var(--steel-soft);stroke:var(--line);stroke-width:2"/>
-              <rect x="104" y="4" width="92" height="76" rx="8" style="fill:none;stroke:var(--orange);stroke-width:4" opacity="0"><animate attributeName="opacity" values="0;0;1;1;0;0" keyTimes="0;.33;.34;.65;.67;1" dur="6s" repeatCount="indefinite"/></rect>
+              <rect x="104" y="4" width="92" height="76" rx="8" style="fill:none;stroke:var(--orange);stroke-width:4" opacity="0"></rect>
               <g style="font-size:13px;font-weight:800;fill:var(--ink)"><text x="116" y="28">1</text><text x="116" y="48">2</text><text x="116" y="68">3</text></g>
               <g style="stroke:var(--line);stroke-width:4"><path d="M130 24 h54 M130 44 h54 M130 64 h54"/></g>
               <g style="stroke:var(--blue);stroke-width:4">
-                <path d="M130 24 h54" stroke-dasharray="54" stroke-dashoffset="54"><animate attributeName="stroke-dashoffset" values="54;54;0;0" keyTimes="0;.36;.44;1" dur="6s" repeatCount="indefinite"/></path>
-                <path d="M130 44 h54" stroke-dasharray="54" stroke-dashoffset="54"><animate attributeName="stroke-dashoffset" values="54;54;0;0" keyTimes="0;.45;.53;1" dur="6s" repeatCount="indefinite"/></path>
-                <path d="M130 64 h54" stroke-dasharray="54" stroke-dashoffset="54"><animate attributeName="stroke-dashoffset" values="54;54;0;0" keyTimes="0;.54;.62;1" dur="6s" repeatCount="indefinite"/></path>
+                <path d="M130 24 h54" stroke-dasharray="54" stroke-dashoffset="0"></path>
+                <path d="M130 44 h54" stroke-dasharray="54" stroke-dashoffset="0"></path>
+                <path d="M130 64 h54" stroke-dasharray="54" stroke-dashoffset="0"></path>
               </g>
             </g>
             <g>
               <rect x="204" y="4" width="92" height="76" rx="8" style="fill:var(--steel-soft);stroke:var(--line);stroke-width:2"/>
-              <rect x="204" y="4" width="92" height="76" rx="8" style="fill:none;stroke:var(--orange);stroke-width:4" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.66;.67;1" dur="6s" repeatCount="indefinite"/></rect>
-              <path d="M214 56 c6 -14 10 6 16 -6 s8 8 14 -2" style="fill:none;stroke:var(--ink);stroke-width:2.5" stroke-dasharray="60" stroke-dashoffset="60"><animate attributeName="stroke-dashoffset" values="60;60;0;0" keyTimes="0;.68;.78;1" dur="6s" repeatCount="indefinite"/></path>
+              <rect x="204" y="4" width="92" height="76" rx="8" style="fill:none;stroke:var(--orange);stroke-width:4" opacity="0"></rect>
+              <path d="M214 56 c6 -14 10 6 16 -6 s8 8 14 -2" style="fill:none;stroke:var(--ink);stroke-width:2.5" stroke-dasharray="60" stroke-dashoffset="0"></path>
               <path d="M214 64 h34" style="stroke:var(--muted);stroke-width:1.5"/>
               <path d="M262 20 h22 l8 8 v22 l-8 8 h-22 l-8 -8 v-22 z" style="fill:var(--red)"/>
               <text x="273" y="43" text-anchor="middle" style="font-size:10px;font-weight:800;fill:#fff">STOPP</text>
@@ -551,16 +590,14 @@ table.sja td.r{text-align:center; width:3.2em}
           </svg>
         </div>
         <div class="tip g" style="margin-bottom:0">SJA er en <b>samtale</b> – skjemaet viser at den har skjedd.</div>
-      </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Trykk «Neste rad» og se skjemaet fylles ut. Slik gjør dere SJA: 1) Alle som skal gjøre jobben, møtes på stedet. 2) Gå gjennom steg for steg og fyll ut. 3) Alle signerer – og alle kan stoppe jobben. R før og R etter er regnet med matrisen fra leksjon 1 (grønn 1–4, gul 5–10, rød 12–25). Rad 3 (koblingen) har lav risiko etter tiltak fordi strømmen allerede er låst i steg 1 – vis hvordan stegene henger sammen. SJA-en oppbevares sammen med arbeidstillatelsen til jobben er avsluttet.</details>
   </div>
 </section>
 
-<!-- DEL 7 -->
-<section class="slide" id="at" data-nav="7 Arbeidstillatelse">
+<!-- ARBEIDSTILLATELSE -->
+<section class="slide" id="at" data-nav="10 Arbeidstillatelse">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 6 min</div>
+    <div class="kicker">Del 10 · ca. 4 min</div>
     <h2>Arbeidstillatelse – lov til å starte</h2>
     <p class="lead"><b>SJA</b> = hvordan. <b>Arbeidstillatelse</b> = lov, her og nå.</p>
     <div class="fig">
@@ -571,12 +608,20 @@ table.sja td.r{text-align:center; width:3.2em}
       </div>
       <div class="status info" id="d7Msg"></div>
     </div>
-    <div class="card" style="margin-top:1rem">
-      <h3>Jobber som ofte krever arbeidstillatelse</h3>
+    <details class="laerer no-print"><summary>Lærernotat</summary>SJA sier hvordan vi gjør jobben trygt; arbeidstillatelsen sier at vi har lov til å gjøre den – her og nå. Arbeidstillatelse (AT) brukes i prosessindustri, offshore, på verft og i større verksteder. Områdeansvarlig er den som har ansvar for anlegget (f.eks. driftsleder). Varme arbeider utenfor faste sveiseplasser krever kurs i varme arbeider, og forsikringsselskapenes regler krever brannvakt under og etter arbeidet. Poeng: tillatelsen gjelder én jobb, ett sted og et bestemt tidsrom – endrer forholdene seg, stopper vi.</details>
+  </div>
+</section>
+
+<!-- HVILKE JOBBER -->
+<section class="slide" id="attyper" data-nav="11 Hvilke jobber?">
+  <div class="wrap">
+    <div class="kicker">Del 11 · ca. 2 min</div>
+    <h2>Hvilke jobber trenger arbeidstillatelse?</h2>
+    <p class="lead">Klikk på en type jobb.</p>
+    <div class="card" style="margin-top:1.4rem">
       <div class="chips" id="d7Typ"></div>
       <div class="status info" id="d7TMsg">Klikk på en type.</div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>SJA sier hvordan vi gjør jobben trygt; arbeidstillatelsen sier at vi har lov til å gjøre den – her og nå. Arbeidstillatelse (AT) brukes i prosessindustri, offshore, på verft og i større verksteder. Områdeansvarlig er den som har ansvar for anlegget (f.eks. driftsleder). Varme arbeider utenfor faste sveiseplasser krever kurs i varme arbeider, og forsikringsselskapenes regler krever brannvakt under og etter arbeidet. Poeng: tillatelsen gjelder én jobb, ett sted og et bestemt tidsrom – endrer forholdene seg, stopper vi.</details>
   </div>
 </section>
 
@@ -805,7 +850,7 @@ $("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2)
 $("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
 
 /* =====================================================================
-   PUMPEANLEGGET – felles tegning (del 3, 4, 6 og oppgaver)
+   PUMPEANLEGGET – felles tegning (del 4, 6, 8 og oppgaver)
    ===================================================================== */
 function bearingX(cx,cy,col,sc=1){
   const h=24*sc, w=14*sc, g=10*sc, r=7*sc;
@@ -952,7 +997,7 @@ const stepState = i => Object.assign({ang:40}, STATE[i]);
     {n:"Pumperom", x:400,y:196,w:184,h:126, r:"#fcc419"}
   ];
   chipsInto($("d1Sel"), [["rv","🏭 Risikovurdering"],["sja","🔍 SJA"]], mode);
-  $("d1Sel").onclick = e => { const b=e.target.closest("[data-k]"); if(!b) return; mode=b.dataset.k; pressOnly($("d1Sel"), b); msg(); };
+  $("d1Sel").onclick = e => { const b=e.target.closest("[data-k]"); if(!b) return; mode=b.dataset.k; pressOnly($("d1Sel"), b); msg(); draw(5); };
   function msg(){ $("d1Msg").textContent = mode==="rv" ? "Risikovurdering: bedriften går gjennom hele verkstedet på forhånd – maskin for maskin – og oppdaterer når noe endres." : "SJA: de som skal gjøre jobben, går gjennom akkurat denne jobben – steg for steg – rett før de starter."; }
   function miniPump(x,y,sc,col="#c92a2a"){ return `<g transform="translate(${x} ${y}) scale(${sc})"><rect x="-30" y="22" width="150" height="8" fill="#5f6b78"/><circle cx="0" cy="0" r="22" fill="${col}"/><rect x="20" y="-8" width="32" height="16" fill="#adb5bd"/><rect x="52" y="-10" width="10" height="20" fill="#f08c00"/><rect x="62" y="-22" width="58" height="44" rx="8" fill="#1c6fd1"/></g>`; }
   function draw(t){
@@ -994,8 +1039,7 @@ const stepState = i => Object.assign({ang:40}, STATE[i]);
     }
     $("d1Svg").innerHTML = s;
   }
-  addAnim($("d1Svg"), (dt,t)=>draw(t));
-  draw(0); msg();
+  draw(5); msg();
 })();
 
 /* =====================================================================
@@ -1260,15 +1304,15 @@ const SJA = [
    ===================================================================== */
 (function(){
   const S = [["🏭","Risikovurdering – på forhånd","#1c6fd1"],["🔍","SJA – rett før jobben","#e8590c"],["📝","Arbeidstillatelse – lov til å starte","#c92a2a"],["🛠","Utfør – stopp hvis noe endrer seg","#7048e8"],["✅","Avslutt, rydd og meld avvik","#2b8a3e"]];
-  addAnim($("sumSvg"), (dt,t) => {
-    let s = ""; const act = Math.floor((t*.6)%5);
+  (() => {
+    let s = ""; const act = -1;
     S.forEach((q,i) => {
       const y = 12 + i*62, on = i===act;
       s += `<rect x="20" y="${y}" width="560" height="52" rx="12" fill="${on?q[2]:"var(--panel)"}" stroke="${q[2]}" stroke-width="3"/>`;
       s += TX(54,y+36,q[0],{size:24,anchor:"middle"})+TX(84,y+35,(i+1)+". "+q[1],{size:20,weight:800,fill:on?"#fff":"var(--ink)"});
     });
     $("sumSvg").innerHTML = s;
-  });
+  })();
 })();
 
 /* =====================================================================
