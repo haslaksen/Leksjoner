@@ -83,6 +83,14 @@ table.t th{background:var(--steel-soft)}
 .mini4{grid-template-columns:repeat(4,1fr)}
 .mini3 .card,.mini4 .card{padding:.7rem .9rem; font-size:.9rem}
 .mini3 .card h3,.mini4 .card h3{font-size:1.05rem}
+.mini3.solo,.mini4.solo{margin-top:1.4rem}
+.mini3.solo .scene,.mini4.solo .scene{max-height:240px}
+.mini3.solo .card,.mini4.solo .card{font-size:1rem}
+.mini3.solo .card h3,.mini4.solo .card h3{font-size:1.25rem}
+.solo1{max-width:820px; margin-top:1.2rem}
+.pairwrap.solo{display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.4rem; max-width:820px}
+.pairwrap.solo .card{margin-top:0!important}
+.pairwrap.solo .scene{max-height:200px}
 .pcard h3{font-size:1.5rem}
 .pcard .row{display:grid; grid-template-columns:2.2rem 1fr; gap:.4rem; margin:.5rem 0; font-size:1rem}
 .pcard .row b{font-size:1.3rem}
@@ -226,14 +234,14 @@ table.t th{background:var(--steel-soft)}
         <h3>Plan for to skoletimer</h3>
         <table class="t plan">
           <tr><th colspan="2">Time 1 · Hvorfor og hvordan</th></tr>
-          <tr><td>0–6 min</td><td>Del 1: hva smøring gjør</td></tr>
-          <tr><td>6–14 min</td><td>Del 2: olje eller fett</td></tr>
-          <tr><td>14–20 min</td><td>Del 3: fettpresse og smørenippel</td></tr>
-          <tr><td>20–26 min</td><td>Del 4: riktig mengde</td></tr>
+          <tr><td>0–6 min</td><td>Del 1–2: hva smøring gjør</td></tr>
+          <tr><td>6–14 min</td><td>Del 3–4: olje eller fett</td></tr>
+          <tr><td>14–20 min</td><td>Del 5: fettpresse og smørenippel</td></tr>
+          <tr><td>20–26 min</td><td>Del 6: riktig mengde</td></tr>
           <tr><td>26–45 min</td><td>Oppgave 1–3</td></tr>
           <tr><th colspan="2">Time 2 · Gjør jobben</th></tr>
-          <tr><td>0–8 min</td><td>Del 5: oljeskift i girkasse</td></tr>
-          <tr><td>8–15 min</td><td>Del 6: smøreplan på dreiebenken</td></tr>
+          <tr><td>0–8 min</td><td>Del 7–8: oljeskift i girkasse</td></tr>
+          <tr><td>8–15 min</td><td>Del 9–10: smøreplan på dreiebenken</td></tr>
           <tr><td>15–43 min</td><td>Oppgave 4–6</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
@@ -248,7 +256,7 @@ table.t th{background:var(--steel-soft)}
 <!-- DEL 1 -->
 <section class="slide" id="hvorfor" data-nav="1 Hvorfor smøre">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 6 min</div>
+    <div class="kicker">Del 1 · ca. 3 min</div>
     <h2>Hva smøring gjør</h2>
     <p class="lead">Under mikroskop er blankt stål <b>ruglete</b>.</p>
     <div class="fig">
@@ -260,7 +268,17 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="status" id="d1Msg"></div>
     </div>
-    <div class="mini4">
+    <details class="laerer no-print"><summary>Lærernotat</summary>Selv blankpolert stål er ruglete under mikroskop – bytt mellom uten og med smøring i figuren. Mindre friksjon = mindre energi går tapt. Olja tar med seg varme bort fra gir og lager. Et tynt lag holder fukt og luft borte fra stålet. Fett tetter mot støv og vann; olje skyller bort slitepartikler. <b>Friksjon</b> = motstanden når to flater glir mot hverandre. Toppene på overflaten kalles ruhetstopper (jf. Ra i Verkstedhåndboka, emne 3). Uten smøring sveises toppene sammen et øyeblikk og rives løs – det gir rykk («stick-slip»), varme og slitasje. Med oljefilm er det full separasjon (hydrodynamisk smøring). Godt spørsmål til klassen: «Hvor i verkstedet har vi metall mot metall som beveger seg?» – sleidebaner, ledeskrue, lagre, gir, kjeder, styreskinner.</details>
+  </div>
+</section>
+
+<!-- FIRE JOBBER -->
+<section class="slide" id="fireting" data-nav="2 Fire jobber">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 3 min</div>
+    <h2>Fire jobber smøringen gjør</h2>
+    <p class="lead">Mindre friksjon, kjøling, mot rust, holder ute skitt.</p>
+    <div class="mini4 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="En kloss glir lett fram og tilbake på en oljefilm">
           <rect x="10" y="78" width="180" height="22" style="fill:var(--steel)"/>
@@ -275,11 +293,8 @@ table.t th{background:var(--steel-soft)}
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Termometer som synker når olja fører varmen bort">
           <rect x="40" y="10" width="22" height="80" rx="11" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:3"/>
           <circle cx="51" cy="96" r="16" style="fill:var(--red)"/>
-          <rect x="45" y="20" width="12" height="76" style="fill:var(--red)">
-            <animate attributeName="y" values="20;60;60;20" keyTimes="0;.5;.9;1" dur="4s" repeatCount="indefinite"/>
-            <animate attributeName="height" values="76;36;36;76" keyTimes="0;.5;.9;1" dur="4s" repeatCount="indefinite"/></rect>
-          <path d="M90 40 C120 40 120 80 150 80 S180 60 190 60" style="fill:none;stroke:var(--orange);stroke-width:8;stroke-linecap:round;stroke-dasharray:14 10">
-            <animate attributeName="stroke-dashoffset" from="0" to="-48" dur="1s" repeatCount="indefinite"/></path>
+          <rect x="45" y="20" width="12" height="76" style="fill:var(--red)"></rect>
+          <path d="M90 40 C120 40 120 80 150 80 S180 60 190 60" style="fill:none;stroke:var(--orange);stroke-width:8;stroke-linecap:round;stroke-dasharray:14 10"></path>
           <text x="140" y="112" text-anchor="middle" class="lbls">olja tar varmen bort</text>
         </svg>
         <h3>Kjøler</h3><p class="short">Olja fører varmen bort.</p></div>
@@ -288,11 +303,11 @@ table.t th{background:var(--steel-soft)}
           <rect x="10" y="30" width="180" height="60" rx="4" style="fill:var(--steel)"/>
           <rect x="10" y="30" width="90" height="60" rx="4" style="fill:var(--orange);opacity:.25"/>
           <path d="M20 44 h70" style="stroke:#fff;stroke-width:4;opacity:.7"/>
-          <g style="fill:#a0522d"><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.6;.9;1" dur="4s" repeatCount="indefinite"/>
+          <g style="fill:#a0522d">
             <circle cx="120" cy="50" r="8"/><circle cx="150" cy="72" r="10"/><circle cx="172" cy="44" r="6"/><circle cx="135" cy="80" r="5"/></g>
           <text x="55" y="110" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--green)">olje ✓</text>
           <text x="145" y="110" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--red)">tørt: rust</text>
-          <g style="fill:var(--blue)"><path d="M0 -6 q5 8 0 11 q-5 -3 0 -11z"><animateMotion dur="2s" repeatCount="indefinite" path="M60 0 V28"/></path><path d="M0 -6 q5 8 0 11 q-5 -3 0 -11z"><animateMotion dur="2s" begin="-1s" repeatCount="indefinite" path="M150 0 V28"/></path></g>
+          <g style="fill:var(--blue)"><path d="M0 -6 q5 8 0 11 q-5 -3 0 -11z"></path><path d="M0 -6 q5 8 0 11 q-5 -3 0 -11z"></path></g>
         </svg>
         <h3>Mot rust</h3><p class="short">Et tynt lag holder fukt borte.</p></div>
       <div class="card">
@@ -309,14 +324,13 @@ table.t th{background:var(--steel-soft)}
         </svg>
         <h3>Holder ute skitt</h3><p class="short">Fett tetter. Olje skyller bort partikler.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Selv blankpolert stål er ruglete under mikroskop – bytt mellom uten og med smøring i figuren. Mindre friksjon = mindre energi går tapt. Olja tar med seg varme bort fra gir og lager. Et tynt lag holder fukt og luft borte fra stålet. Fett tetter mot støv og vann; olje skyller bort slitepartikler. <b>Friksjon</b> = motstanden når to flater glir mot hverandre. Toppene på overflaten kalles ruhetstopper (jf. Ra i Verkstedhåndboka, emne 3). Uten smøring sveises toppene sammen et øyeblikk og rives løs – det gir rykk («stick-slip»), varme og slitasje. Med oljefilm er det full separasjon (hydrodynamisk smøring). Godt spørsmål til klassen: «Hvor i verkstedet har vi metall mot metall som beveger seg?» – sleidebaner, ledeskrue, lagre, gir, kjeder, styreskinner.</details>
   </div>
 </section>
 
 <!-- DEL 2 -->
-<section class="slide" id="olje-fett" data-nav="2 Olje eller fett">
+<section class="slide" id="olje-fett" data-nav="3 Olje eller fett">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 8 min</div>
+    <div class="kicker">Del 3 · ca. 5 min</div>
     <h2>Olje eller fett?</h2>
     <p class="lead"><b>Viskositet</b> = hvor tykk olja er. Start løpet!</p>
     <div class="fig">
@@ -327,7 +341,18 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="status info" id="d2Msg">Tre oljer med ulik viskositet. Hvilken kommer først ned?</div>
     </div>
-    <div class="mini3">
+    <div class="tip o"><b>Bland aldri</b> ulike typer uten å sjekke. Bruk det smøreplanen sier.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Prøv både kald og varm olje i løpet. <b>Olje</b>: girkasser, hydraulikk, sleidebaner – der det går fort, og der varmen må føres bort. <b>Fett</b>: lager med smørenippel og åpne steder – der olje ville rent bort, og der det må tettes mot skitt. <b>ISO VG 68</b> = viskositeten til olja ved 40 °C; høyt tall = tykk olje. <b>NLGI 2</b> = hvor stivt fettet er; 2 er vanligst. Ulike oljer og fett kan ødelegge hverandre – sjekk alltid før blanding. ISO VG (Viscosity Grade) er viskositeten i mm²/s (centistoke) ved 40 °C: VG 32 er typisk hydraulikkolje, VG 68 sleidebane- og lett girolje, VG 220 girolje for tunge girkasser. Viskositeten faller kraftig når olja blir varm – derfor kan for tynn olje gi metall mot metall i en varm maskin, og for tykk olje gi treg start og varmgang når den er kald. Fett = baseolje (ca. 80–90 %) + <b>fortykningsmiddel</b> (f.eks. litiumsåpe) som holder på olja som en svamp, og som slipper litt olje ut der det smører. NLGI-skalaen går fra 000 (nesten flytende) til 6 (hardt som ost). Ulike fortykningsmidler kan være uforenlige: blandingen blir bløt og renner ut av lageret.</details>
+  </div>
+</section>
+
+<!-- NÅR OLJE, NÅR FETT -->
+<section class="slide" id="oljefettord" data-nav="4 Når olje?">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 3 min</div>
+    <h2>Når olje – når fett?</h2>
+    <p class="lead">Og hva betyr tallene på kanna?</p>
+    <div class="mini3 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Girkasse med olje som skvulper rundt et tannhjul">
           <rect x="30" y="10" width="140" height="96" rx="8" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
@@ -362,21 +387,19 @@ table.t th{background:var(--steel-soft)}
           <rect x="118" y="70" width="56" height="30" rx="3" style="fill:#fff"/>
           <text x="146" y="83" text-anchor="middle" style="font-size:10px;font-weight:700;fill:#14181d">NLGI</text>
           <text x="146" y="97" text-anchor="middle" style="font-size:13px;font-weight:800;fill:#14181d">2</text>
-          <g><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.2;.8;1" dur="3s" repeatCount="indefinite"/>
+          <g>
             <text x="50" y="12" text-anchor="middle" style="font-size:11px;font-weight:700;fill:var(--blue)">høyt tall = tykk</text>
             <text x="146" y="40" text-anchor="middle" style="font-size:11px;font-weight:700;fill:var(--green)">stivhet</text></g>
         </svg>
         <h3>Tallene på kanna</h3><p class="short"><b>VG</b>: høyt tall = tykk olje. <b>NLGI</b>: hvor stivt fettet er.</p></div>
     </div>
-    <div class="tip o"><b>Bland aldri</b> ulike typer uten å sjekke. Bruk det smøreplanen sier.</div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Prøv både kald og varm olje i løpet. <b>Olje</b>: girkasser, hydraulikk, sleidebaner – der det går fort, og der varmen må føres bort. <b>Fett</b>: lager med smørenippel og åpne steder – der olje ville rent bort, og der det må tettes mot skitt. <b>ISO VG 68</b> = viskositeten til olja ved 40 °C; høyt tall = tykk olje. <b>NLGI 2</b> = hvor stivt fettet er; 2 er vanligst. Ulike oljer og fett kan ødelegge hverandre – sjekk alltid før blanding. ISO VG (Viscosity Grade) er viskositeten i mm²/s (centistoke) ved 40 °C: VG 32 er typisk hydraulikkolje, VG 68 sleidebane- og lett girolje, VG 220 girolje for tunge girkasser. Viskositeten faller kraftig når olja blir varm – derfor kan for tynn olje gi metall mot metall i en varm maskin, og for tykk olje gi treg start og varmgang når den er kald. Fett = baseolje (ca. 80–90 %) + <b>fortykningsmiddel</b> (f.eks. litiumsåpe) som holder på olja som en svamp, og som slipper litt olje ut der det smører. NLGI-skalaen går fra 000 (nesten flytende) til 6 (hardt som ost). Ulike fortykningsmidler kan være uforenlige: blandingen blir bløt og renner ut av lageret.</details>
   </div>
 </section>
 
 <!-- DEL 3 -->
-<section class="slide" id="fettpresse" data-nav="3 Fettpresse">
+<section class="slide" id="fettpresse" data-nav="5 Fettpresse">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 6 min</div>
+    <div class="kicker">Del 5 · ca. 6 min</div>
     <h2>Fettpresse og smørenippel</h2>
     <p class="lead">Smøreplanen sier <b>4 slag</b>. Pump ett slag om gangen og følg med på lagerhuset.</p>
     <div class="fig">
@@ -394,9 +417,9 @@ table.t th{background:var(--steel-soft)}
 </section>
 
 <!-- DEL 4 -->
-<section class="slide" id="mengde" data-nav="4 Riktig mengde">
+<section class="slide" id="mengde" data-nav="6 Riktig mengde">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 6 min</div>
+    <div class="kicker">Del 6 · ca. 6 min</div>
     <h2>Riktig mengde – mer er ikke bedre</h2>
     <p class="lead">Dra i glideren. Hva skjer med temperaturen?</p>
     <div class="fig">
@@ -415,9 +438,9 @@ table.t th{background:var(--steel-soft)}
 </section>
 
 <!-- DEL 5 -->
-<section class="slide" id="oljeskift" data-nav="5 Oljeskift">
+<section class="slide" id="oljeskift" data-nav="7 Oljeskift">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 8 min</div>
+    <div class="kicker">Del 7 · ca. 5 min</div>
     <h2>Oljeskift i girkasse</h2>
     <p class="lead">Åtte trinn. Klikk deg gjennom.</p>
     <div class="fig">
@@ -431,16 +454,24 @@ table.t th{background:var(--steel-soft)}
     </div>
     <div class="steps s8" id="d5Steps" style="margin-top:.8rem"></div>
     <a class="simlink no-print" data-sim="momentnokkel"><span class="ico">🔧</span><span><b>Prøv selv: Momentnøkkel-simulatoren</b><small>Skru inn tappepluggen med riktig moment.</small></span><span class="pil">→</span></a>
-    <h3 style="margin-top:1.4rem">Se på olja – hva forteller den?</h3>
-    <div class="fig"><svg id="d5Jars" viewBox="0 0 1000 205" role="img" aria-label="Fem oljeprøver: klar, melkehvit, svart, glitrende og skummende"></svg></div>
     <details class="laerer no-print"><summary>Lærernotat</summary><b>Seglass</b> (nivåglass) = vindu i huset som viser oljenivået. Les av når maskinen har stått litt, slik at olja har rent ned. <b>Magnetisk tappeplugg</b> samler opp jernpartikler: fint grått slam er normal innkjøring/slitasje, flak og biter tyder på skade i gir eller lager – meld det i arbeidsordren. Påfyllingspluggen har ofte <b>lufting</b> (et lite hull med filter) så det ikke bygges opp trykk når olja blir varm. Melkehvit olje = vann (kondens, vasking, lekk kjøler). Spillolje er farlig avfall og skal leveres i merket fat – aldri i sluk. Spill tørkes opp med absorbent. Tiltrekkingsmoment på pluggen kommer i leksjon 5.</details>
   </div>
 </section>
 
-<!-- DEL 6 -->
-<section class="slide" id="smoreplan" data-nav="6 Smøreplan">
+<!-- SE PÅ OLJA -->
+<section class="slide" id="oljeprove" data-nav="8 Oljeprøver">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 7 min</div>
+    <div class="kicker">Del 8 · ca. 3 min</div>
+    <h2>Se på olja – hva forteller den?</h2>
+    <p class="lead">Fargen sier noe om maskinen.</p>
+    <div class="fig"><svg id="d5Jars" viewBox="0 0 1000 205" role="img" aria-label="Fem oljeprøver: klar, melkehvit, svart, glitrende og skummende"></svg></div>
+  </div>
+</section>
+
+<!-- DEL 6 -->
+<section class="slide" id="smoreplan" data-nav="9 Smøreplan">
+  <div class="wrap">
+    <div class="kicker">Del 9 · ca. 4 min</div>
     <h2>Smørekart for dreiebenken DB-02</h2>
     <p class="lead">Formen viser <b>hva</b> (● olje, ▲ fett). Fargen viser <b>hvor ofte</b>. Klikk på et punkt.</p>
     <div class="grid2 wide-left">
@@ -450,7 +481,17 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="card pcard" id="d6Card"></div>
     </div>
-    <div class="mini3">
+    <details class="laerer no-print"><summary>Lærernotat</summary>Smørekart = tegning av maskinen med alle smørepunktene, henger på maskinen. Smøreplan = liste med punkt, smøremiddel, mengde og intervall. Smørelogg = hvem smurte hva og når – blir historikk i vedlikeholdssystemet. Symbolene er et eksempel – mange produsenter bruker egne symboler, men prinsippet «form = smøremiddel/metode, farge = intervall» er vanlig. Ord: <b>spindelkasse</b> = huset med gir som driver chucken; <b>sleide</b> = vognen som bærer verktøyet; <b>bakdokke</b> = den flyttbare enheten til høyre; <b>pinoll</b> = røret som skyves ut av bakdokka; <b>matekasse</b> = girkassen som velger mating og stigning. Daglige punkter tar operatøren (autonomt vedlikehold, jf. leksjon 1), oljeskift tar fagarbeideren etter vedlikeholdsplanen. Spør: «Hva skjer hvis sleidebanene ikke smøres og spon blir liggende?» – riper, slitasje, tap av nøyaktighet.</details>
+  </div>
+</section>
+
+<!-- SMØREKART, PLAN OG LOGG -->
+<section class="slide" id="smoreord" data-nav="10 Kart og logg">
+  <div class="wrap">
+    <div class="kicker">Del 10 · ca. 3 min</div>
+    <h2>Smørekart, smøreplan og smørelogg</h2>
+    <p class="lead">Tre papirer som henger sammen.</p>
+    <div class="mini3 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Tegning av en maskin med smørepunkter som blinker">
           <rect x="10" y="40" width="180" height="16" rx="3" style="fill:var(--steel)"/>
@@ -458,9 +499,9 @@ table.t th{background:var(--steel-soft)}
           <rect x="150" y="22" width="34" height="30" rx="4" style="fill:var(--steel-dark)"/>
           <rect x="20" y="56" width="20" height="34" style="fill:var(--steel)"/><rect x="160" y="56" width="20" height="34" style="fill:var(--steel)"/>
           <rect x="84" y="24" width="30" height="16" rx="3" style="fill:var(--steel-dark)"/>
-          <g><animate attributeName="opacity" values="1;.2;1" dur="1.2s" repeatCount="indefinite"/>
+          <g>
             <circle cx="37" cy="34" r="7" style="fill:var(--red)"/><circle cx="130" cy="48" r="7" style="fill:var(--red)"/></g>
-          <g><animate attributeName="opacity" values=".2;1;.2" dur="1.2s" repeatCount="indefinite"/>
+          <g>
             <path d="M99 18 l8 13 h-16z" style="fill:var(--blue)"/><circle cx="167" cy="37" r="7" style="fill:var(--green)"/></g>
           <text x="100" y="114" text-anchor="middle" class="lbls">● olje · ▲ fett · farge = hvor ofte</text>
         </svg>
@@ -471,8 +512,7 @@ table.t th{background:var(--steel-soft)}
           <rect x="16" y="8" width="168" height="20" rx="6" style="fill:var(--steel-soft)"/>
           <g style="font-size:9px;font-weight:700;fill:var(--ink)"><text x="21" y="22">Punkt</text><text x="58" y="22">Middel</text><text x="102" y="22">Mengde</text><text x="142" y="22">Ofte</text></g>
           <g style="stroke:var(--line);stroke-width:1"><path d="M16 50 h168 M16 72 h168 M16 94 h168 M54 8 v104 M98 8 v104 M138 8 v104"/></g>
-          <rect x="17" y="29" width="166" height="21" style="fill:var(--orange);opacity:.25">
-            <animate attributeName="y" values="29;51;73;95;29" keyTimes="0;.25;.5;.75;1" calcMode="discrete" dur="4s" repeatCount="indefinite"/></rect>
+          <rect x="17" y="29" width="166" height="21" style="fill:var(--orange);opacity:.25"></rect>
           <g style="font-size:9px;fill:var(--muted)"><text x="22" y="43">1</text><text x="58" y="43">VG 68</text><text x="102" y="43">nivå</text><text x="142" y="43">daglig</text>
             <text x="22" y="65">3</text><text x="58" y="65">NLGI 2</text><text x="102" y="65">2 slag</text><text x="142" y="65">ukentlig</text></g>
         </svg>
@@ -482,14 +522,12 @@ table.t th{background:var(--steel-soft)}
           <rect x="40" y="8" width="120" height="104" rx="6" style="fill:var(--panel);stroke:var(--steel-dark);stroke-width:2"/>
           <path d="M52 34 h96 M52 58 h96 M52 82 h96" style="stroke:var(--line);stroke-width:2"/>
           <path d="M56 28 l5 5 l9 -10 M56 52 l5 5 l9 -10" style="fill:none;stroke:var(--green);stroke-width:3"/>
-          <path d="M56 76 l5 5 l9 -10" style="fill:none;stroke:var(--green);stroke-width:3;stroke-dasharray:24;stroke-dashoffset:24">
-            <animate attributeName="stroke-dashoffset" values="24;24;0;0" keyTimes="0;.5;.7;1" dur="3s" repeatCount="indefinite"/></path>
-          <g><animateTransform attributeName="transform" type="translate" values="0 0;30 0;-10 0;0 0" dur="3s" repeatCount="indefinite"/>
+          <path d="M56 76 l5 5 l9 -10" style="fill:none;stroke:var(--green);stroke-width:3;stroke-dasharray:24"></path>
+          <g>
             <path d="M110 74 l34 -34 l8 8 l-34 34 l-11 3z" style="fill:var(--orange)"/></g>
         </svg>
         <h3>Smørelogg</h3><p class="short">Hvem smurte hva, og når.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Smørekart = tegning av maskinen med alle smørepunktene, henger på maskinen. Smøreplan = liste med punkt, smøremiddel, mengde og intervall. Smørelogg = hvem smurte hva og når – blir historikk i vedlikeholdssystemet. Symbolene er et eksempel – mange produsenter bruker egne symboler, men prinsippet «form = smøremiddel/metode, farge = intervall» er vanlig. Ord: <b>spindelkasse</b> = huset med gir som driver chucken; <b>sleide</b> = vognen som bærer verktøyet; <b>bakdokke</b> = den flyttbare enheten til høyre; <b>pinoll</b> = røret som skyves ut av bakdokka; <b>matekasse</b> = girkassen som velger mating og stigning. Daglige punkter tar operatøren (autonomt vedlikehold, jf. leksjon 1), oljeskift tar fagarbeideren etter vedlikeholdsplanen. Spør: «Hva skjer hvis sleidebanene ikke smøres og spon blir liggende?» – riper, slitasje, tap av nøyaktighet.</details>
   </div>
 </section>
 
@@ -892,7 +930,7 @@ function surfaces(o){ // o: {x0,y0,w,h,yB,yT,shift,oil,pr,id}
     if (n<PLAN) msg(`Slag ${n}: nytt fett (grønt) presses inn og skyver det gamle foran seg.`,"info");
     else if (n===PLAN) msg("✓ 4 slag – som planen sier. Ta av munnstykket, tørk av nippelen og skriv det i smøreloggen.","ok");
     else if (n<=6) msg(`Slag ${n}: mer enn planen. Huset er nesten fullt, og fettet presser på tetningen.`,"warn");
-    else msg(`Slag ${n}: FOR MYE! Fettet presses ut forbi tetningen, og lageret blir varmt. Se del 4.`,"bad");
+    else msg(`Slag ${n}: FOR MYE! Fettet presses ut forbi tetningen, og lageret blir varmt. Se del 6.`,"bad");
   };
   const STEPS = [["🔒","Lås og merk hvis vernet må av"],["🧽","Tørk av nippelen"],["🎯","Munnstykket rett på"],["⬇","Pump antall slag i planen"],["✍","Tørk av og logg"]];
   $("d3Steps").innerHTML = STEPS.map((x,i)=>`<div data-i="${i}"><span class="ic">${x[0]}</span><b>${i+1}</b> ${x[1]}</div>`).join("");

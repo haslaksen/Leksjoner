@@ -89,6 +89,14 @@ table.t th{background:var(--steel-soft)}
 .mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
 .mini3 .card{padding:.7rem .9rem; font-size:.9rem}
 .mini3 .card h3{font-size:1.05rem}
+.mini3.solo,.mini4.solo{margin-top:1.4rem}
+.mini3.solo .scene,.mini4.solo .scene{max-height:240px}
+.mini3.solo .card,.mini4.solo .card{font-size:1rem}
+.mini3.solo .card h3,.mini4.solo .card h3{font-size:1.25rem}
+.solo1{max-width:820px; margin-top:1.2rem}
+.pairwrap.solo{display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.4rem; max-width:820px}
+.pairwrap.solo .card{margin-top:0!important}
+.pairwrap.solo .scene{max-height:200px}
 .big{font-size:1.6rem; font-weight:800; color:var(--orange)}
 .who{display:inline-block; font-size:.72rem; font-weight:700; padding:.1rem .5rem; border-radius:99px; margin-left:.3rem}
 .who.op{background:var(--green-soft); color:var(--green)}
@@ -254,15 +262,15 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
         <h3>Plan for to skoletimer</h3>
         <table class="t plan">
           <tr><th colspan="2">Time 1 · Hva er vedlikehold?</th></tr>
-          <tr><td>0–6 min</td><td>Del 1: hvorfor vedlikeholde?</td></tr>
-          <tr><td>6–14 min</td><td>Del 2: vedlikeholdsformer</td></tr>
-          <tr><td>14–22 min</td><td>Del 3: daglig ettersyn – finn feilene</td></tr>
-          <tr><td>22–31 min</td><td>Del 4: kilereim</td></tr>
+          <tr><td>0–6 min</td><td>Del 1–2: hvorfor vedlikeholde?</td></tr>
+          <tr><td>6–14 min</td><td>Del 3: vedlikeholdsformer</td></tr>
+          <tr><td>14–22 min</td><td>Del 4–5: daglig ettersyn – finn feilene</td></tr>
+          <tr><td>22–31 min</td><td>Del 6–8: kilereim</td></tr>
           <tr><td>31–45 min</td><td>Oppgave 1–3</td></tr>
           <tr><th colspan="2">Time 2 · Strategi og system</th></tr>
-          <tr><td>0–8 min</td><td>Del 5: tre strategier – ett år</td></tr>
-          <tr><td>8–16 min</td><td>Del 6: vedlikeholdssystemet</td></tr>
-          <tr><td>16–22 min</td><td>Del 7: vedlikeholdsplanen</td></tr>
+          <tr><td>0–8 min</td><td>Del 9: tre strategier – ett år</td></tr>
+          <tr><td>8–16 min</td><td>Del 10–11: vedlikeholdssystemet</td></tr>
+          <tr><td>16–22 min</td><td>Del 12: vedlikeholdsplanen</td></tr>
           <tr><td>22–43 min</td><td>Oppgave 4–6</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
@@ -277,7 +285,7 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
 <!-- DEL 1 -->
 <section class="slide" id="hvorfor" data-nav="1 Hvorfor">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 6 min</div>
+    <div class="kicker">Del 1 · ca. 4 min</div>
     <h2>Hva koster et havari?</h2>
     <p class="lead">Lageret ryker. Hva koster det <b>egentlig</b>?</p>
     <div class="fig">
@@ -289,7 +297,17 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
       </div>
       <div class="status info" id="d1Msg"></div>
     </div>
-    <div class="mini3">
+    <details class="laerer no-print"><summary>Lærernotat</summary>Situasjonen: et lager ryker i en CNC-dreiebenk. Delen koster lite – men det meste av kostnaden ligger «under vann». Sikkerhet: en maskin i god stand er en trygg maskin. Drift og kvalitet: færre stopp, jevn kvalitet og levering til avtalt tid. Økonomi og bærekraft: lengre levetid = mindre stål, energi og avfall, ingen oljesøl. (15 og 25 år i figuren er et eksempel.) Tallene er et realistisk eksempel, ikke fasit. Spør først: «Hva koster det når lageret ryker?» – elevene svarer som regel bare lageret. Klikk så fram én og én skjult kostnad. Poeng: tapt produksjon er nesten alltid den største posten. Bærekraft (kompetansemål): en maskin som varer 25 år i stedet for 15, sparer en hel ny maskin – stål, transport og energi. Vedlikehold er også miljøvern: lekkasjer av olje og kjølevæske stoppes tidlig.</details>
+  </div>
+</section>
+
+<!-- TRE GRUNNER -->
+<section class="slide" id="grunner" data-nav="2 Tre grunner">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 2 min</div>
+    <h2>Tre grunner til vedlikehold</h2>
+    <p class="lead">Sikkerhet, drift og økonomi.</p>
+    <div class="mini3 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Nødstopp som trykkes inn og et skjold med hake">
           <rect x="22" y="58" width="56" height="48" rx="6" style="fill:var(--yellow)"/>
@@ -324,21 +342,19 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
           <rect x="10" y="36" width="90" height="16" rx="4" style="fill:var(--steel)"/>
           <text x="106" y="49" style="font-size:12px;font-weight:700;fill:var(--muted)">15 år</text>
           <text x="10" y="74" class="lbls">med godt vedlikehold</text>
-          <rect x="10" y="80" width="90" height="16" rx="4" style="fill:var(--green)">
-            <animate attributeName="width" values="90;150;150;90" keyTimes="0;.45;.9;1" dur="4s" repeatCount="indefinite"/></rect>
+          <rect x="10" y="80" width="90" height="16" rx="4" style="fill:var(--green)"></rect>
           <text x="166" y="93" style="font-size:12px;font-weight:700;fill:var(--green)">25 år</text>
           <path d="M176 22 c-18 0 -26 12 -22 28 c16 2 26 -10 22 -28z M154 50 l12 -14" style="fill:var(--green-soft);stroke:var(--green);stroke-width:2.5"/>
         </svg>
         <h3>Økonomi og bærekraft</h3><p class="short">Lengre levetid, mindre avfall og søl.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Situasjonen: et lager ryker i en CNC-dreiebenk. Delen koster lite – men det meste av kostnaden ligger «under vann». Sikkerhet: en maskin i god stand er en trygg maskin. Drift og kvalitet: færre stopp, jevn kvalitet og levering til avtalt tid. Økonomi og bærekraft: lengre levetid = mindre stål, energi og avfall, ingen oljesøl. (15 og 25 år i figuren er et eksempel.) Tallene er et realistisk eksempel, ikke fasit. Spør først: «Hva koster det når lageret ryker?» – elevene svarer som regel bare lageret. Klikk så fram én og én skjult kostnad. Poeng: tapt produksjon er nesten alltid den største posten. Bærekraft (kompetansemål): en maskin som varer 25 år i stedet for 15, sparer en hel ny maskin – stål, transport og energi. Vedlikehold er også miljøvern: lekkasjer av olje og kjølevæske stoppes tidlig.</details>
   </div>
 </section>
 
 <!-- DEL 2 -->
-<section class="slide" id="former" data-nav="2 Former">
+<section class="slide" id="former" data-nav="3 Former">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 8 min</div>
+    <div class="kicker">Del 3 · ca. 8 min</div>
     <h2>Vedlikeholdsformer</h2>
     <p class="lead"><b>Etter</b> feilen – eller <b>før</b>? Klikk på boksene.</p>
     <div class="fig">
@@ -353,9 +369,9 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
 </section>
 
 <!-- DEL 3 -->
-<section class="slide" id="ettersyn" data-nav="3 Ettersyn">
+<section class="slide" id="ettersyn" data-nav="4 Ettersyn">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 8 min</div>
+    <div class="kicker">Del 4 · ca. 6 min</div>
     <h2>Daglig ettersyn – finn feilene</h2>
     <p class="lead">Pumpa går. Finn <b>8 feil</b> – klikk på dem.</p>
     <div class="fig">
@@ -372,7 +388,17 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
       </div>
       <div class="status info" id="d3Msg"></div>
     </div>
-    <div class="mini3">
+    <details class="laerer no-print"><summary>Lærernotat</summary>Sansene: øyne, ører, hender og nese. Kjenn med <b>baksiden av hånden</b>, aldri på roterende deler – hold avstand til reimer og aksler. Fare for folk (vern, kabel) → stopp og lås. Ellers → meld og lag arbeidsordre. En ren maskin viser lekkasjer og sprekker; skitt skjuler feil. La elevene komme opp og klikke, eller kjør det som konkurranse i par (tid og antall bom står i telleren). Varme og ulyd vises med symboler: bølger = lyd, krøllete streker = varme. Diskuter for hver feil: kan maskinen gå videre, eller må den stoppes? Kabelskade og manglende vern: stopp og lås, ingen diskusjon. Løs fundamentbolt gir vibrasjon som ødelegger lagre og rør. Lavt oljenivå: finn lekkasjen først, ikke bare fyll på. Kjøleribber med spon: motoren blir varm – derfor henger feil 6 og 8 sammen. Elevene skal ikke kjenne på maskiner i drift uten opplæring – her handler det om å vite hva man ser etter.</details>
+  </div>
+</section>
+
+<!-- SLIK GJØR DU ETTERSYN -->
+<section class="slide" id="ettersynord" data-nav="5 Slik gjør du">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 3 min</div>
+    <h2>Slik gjør du ettersynet</h2>
+    <p class="lead">Kjenn trygt, vurder, rydd.</p>
+    <div class="mini3 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Baksiden av hånden kjenner forsiktig på et varmt motorhus">
           <rect x="18" y="34" width="96" height="62" rx="8" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>
@@ -416,14 +442,13 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
         </svg>
         <h3>Rydd og rengjør</h3><p class="short">En ren maskin viser lekkasjer og sprekker.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Sansene: øyne, ører, hender og nese. Kjenn med <b>baksiden av hånden</b>, aldri på roterende deler – hold avstand til reimer og aksler. Fare for folk (vern, kabel) → stopp og lås. Ellers → meld og lag arbeidsordre. En ren maskin viser lekkasjer og sprekker; skitt skjuler feil. La elevene komme opp og klikke, eller kjør det som konkurranse i par (tid og antall bom står i telleren). Varme og ulyd vises med symboler: bølger = lyd, krøllete streker = varme. Diskuter for hver feil: kan maskinen gå videre, eller må den stoppes? Kabelskade og manglende vern: stopp og lås, ingen diskusjon. Løs fundamentbolt gir vibrasjon som ødelegger lagre og rør. Lavt oljenivå: finn lekkasjen først, ikke bare fyll på. Kjøleribber med spon: motoren blir varm – derfor henger feil 6 og 8 sammen. Elevene skal ikke kjenne på maskiner i drift uten opplæring – her handler det om å vite hva man ser etter.</details>
   </div>
 </section>
 
 <!-- DEL 4 -->
-<section class="slide" id="reim" data-nav="4 Kilereim">
+<section class="slide" id="reim" data-nav="6 Kilereim">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 9 min</div>
+    <div class="kicker">Del 6 · ca. 4 min</div>
     <h2>Kilereim – stramme og rette opp</h2>
     <p class="lead">For slakk eller for stram – begge ødelegger.</p>
     <div class="grid2 wide-left">
@@ -444,26 +469,43 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
           <h3>Tommelfingerregel</h3>
           <p style="margin:0;font-size:1.1rem">Trykk midt på spennet:<br>nedbøyning ≈ <b style="color:var(--orange);font-size:1.4rem">16 mm per meter</b> akselavstand.<br>600 mm → ca. <b>10 mm</b>.</p>
         </div>
-        <div class="fig" style="margin-top:.8rem">
-          <svg id="d4Top" viewBox="0 0 520 220" role="img" aria-label="Reimskiver sett ovenfra med linjal"></svg>
-          <div class="controls" style="margin-top:.3rem"><span class="chips" id="d4A"></span></div>
-          <div class="status info" id="d4AMsg" style="font-size:.9rem"></div>
-        </div>
       </div>
-    </div>
-    <div class="card" style="margin-top:1rem">
-      <h3>Slik bytter du kilereim</h3>
-      <div class="steps" id="d4Steps"></div>
     </div>
     <a class="simlink no-print" data-sim="momentnokkel"><span class="ico">🔧</span><span><b>Prøv selv: Momentnøkkel-simulatoren</b><small>Trekk til motorboltene med riktig moment.</small></span><span class="pil">→</span></a>
     <details class="laerer no-print"><summary>Lærernotat</summary>Kilereim er den vanligste vedlikeholdsjobben på mange maskiner. Når reima er stram og skivene rettet opp, trekkes motorboltene til igjen – med riktig moment, slik at motoren ikke sklir og reima blir slakk (se Momentnøkkel-simulatoren). 16 mm per meter er en vanlig tommelfingerregel. Riktig prøvekraft og nedbøyning står i produsentens tabell, og mange bruker reimspenningsmåler. Ny reim strammes litt mer og etterstrammes etter noen timers drift (den setter seg). Bytt alltid alle reimene i et sett – en ny og en gammel reim er aldri like lange. Aldri lirk en reim over skivekanten med skrutrekker: kordene inni ryker. Oppretting: linjal eller snor over begge skivenes flater; den skal ligge an i fire punkter.</details>
   </div>
 </section>
 
-<!-- DEL 5 -->
-<section class="slide" id="strategi" data-nav="5 Strategier">
+<!-- RETT OPP SKIVENE -->
+<section class="slide" id="reimlinje" data-nav="7 Rett opp">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 8 min</div>
+    <div class="kicker">Del 7 · ca. 3 min</div>
+    <h2>Rett opp reimskivene</h2>
+    <p class="lead">Legg en linjal over begge skivene.</p>
+        <div class="fig solo1">
+          <svg id="d4Top" viewBox="0 0 520 220" role="img" aria-label="Reimskiver sett ovenfra med linjal"></svg>
+          <div class="controls" style="margin-top:.3rem"><span class="chips" id="d4A"></span></div>
+          <div class="status info" id="d4AMsg" style="font-size:.9rem"></div>
+        </div>
+  </div>
+</section>
+
+<!-- BYTT KILEREIM -->
+<section class="slide" id="reimbytte" data-nav="8 Bytt reim">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 4 min</div>
+    <h2>Slik bytter du kilereim</h2>
+    <p class="lead">Steg for steg.</p>
+    <div class="card solo1">
+      <div class="steps" id="d4Steps"></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEL 5 -->
+<section class="slide" id="strategi" data-nav="9 Strategier">
+  <div class="wrap">
+    <div class="kicker">Del 9 · ca. 8 min</div>
     <h2>Tre strategier – samme maskin, ett år</h2>
     <p class="lead">Like maskiner, like lagre. Hvilken strategi er <b>billigst</b>?</p>
     <div class="fig">
@@ -490,9 +532,9 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
 </section>
 
 <!-- DEL 6 -->
-<section class="slide" id="system" data-nav="6 Systemet">
+<section class="slide" id="system" data-nav="10 Systemet">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 8 min</div>
+    <div class="kicker">Del 10 · ca. 5 min</div>
     <h2>Vedlikeholdssystemet – arbeidsordrens reise</h2>
     <p class="lead">Hver jobb blir en <b>arbeidsordre</b> som går i en sirkel.</p>
     <div class="fig">
@@ -504,7 +546,17 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
       </div>
       <div class="status info" id="d6Msg"></div>
     </div>
-    <div class="mini3">
+    <details class="laerer no-print"><summary>Lærernotat</summary>Et <b>vedlikeholdssystem</b> holder orden på maskiner, planer, arbeidsordrer og hva som er gjort. <b>CMMS</b> = datastyrt vedlikeholdssystem; mindre bedrifter bruker en perm. <b>FDV</b> = forvaltning, drift og vedlikehold: brukerhåndbok, reservedelsliste og intervaller fra produsenten. Det som ikke er dokumentert, har ikke skjedd. Poenget med steg 6: historikken gjør at planen blir bedre. I eksemplet viser funnet at lageret manglet smøring – derfor endres smøreintervallet. Prioritet: mange bedrifter bruker 1 = straks (sikkerhet/stans), 2 = innen en uke, 3 = ved neste planlagte stopp. Sikkerhet ved vedlikehold (SJA, frakobling og låsing) kommer i neste leksjon. Ved arbeid på elektrisk utstyr: bare frakobling etter instruks – selve elektroarbeidet gjøres av elektrofagfolk.</details>
+  </div>
+</section>
+
+<!-- SYSTEM, FDV OG HISTORIKK -->
+<section class="slide" id="systemord" data-nav="11 FDV og historikk">
+  <div class="wrap">
+    <div class="kicker">Del 11 · ca. 3 min</div>
+    <h2>Systemet, FDV og historikken</h2>
+    <p class="lead">Tre ord du møter i bedriften.</p>
+    <div class="mini3 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Dataskjerm med en liste over arbeidsordrer som blir krysset av">
           <rect x="30" y="8" width="140" height="88" rx="6" style="fill:var(--steel-dark)"/>
@@ -512,10 +564,10 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
           <rect x="88" y="96" width="24" height="10" style="fill:var(--steel-dark)"/><rect x="70" y="106" width="60" height="6" rx="3" style="fill:var(--steel-dark)"/>
           <g style="stroke:var(--line);stroke-width:6;stroke-linecap:round"><path d="M64 28 h86 M64 46 h70 M64 64 h80 M64 82 h60"/></g>
           <g style="fill:none;stroke:var(--green);stroke-width:4;stroke-linecap:round;stroke-linejoin:round">
-            <path d="M44 28 l4 4 l7 -8"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.1;.15;1" dur="5s" repeatCount="indefinite"/></path>
-            <path d="M44 46 l4 4 l7 -8"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.3;.35;1" dur="5s" repeatCount="indefinite"/></path>
-            <path d="M44 64 l4 4 l7 -8"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.5;.55;1" dur="5s" repeatCount="indefinite"/></path>
-            <path d="M44 82 l4 4 l7 -8"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;.7;.75;1" dur="5s" repeatCount="indefinite"/></path>
+            <path d="M44 28 l4 4 l7 -8"></path>
+            <path d="M44 46 l4 4 l7 -8"></path>
+            <path d="M44 64 l4 4 l7 -8"></path>
+            <path d="M44 82 l4 4 l7 -8"></path>
           </g>
         </svg>
         <h3>Vedlikeholdssystem</h3><p class="short">Program (<b>CMMS</b>) eller perm med alle maskiner og jobber.</p></div>
@@ -526,9 +578,7 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
           <rect x="44" y="12" width="10" height="96" style="fill:#1a5aa8"/>
           <text x="104" y="52" text-anchor="middle" style="font-size:24px;font-weight:800;fill:var(--blue)">FDV</text>
           <path d="M66 68 h76 M66 80 h60 M66 92 h70" style="stroke:var(--line);stroke-width:4"/>
-          <rect x="103" y="18" width="51" height="84" style="fill:var(--blue-soft);stroke:var(--line)">
-            <animate attributeName="x" values="103;103;103;52;52" keyTimes="0;.4;.55;.7;1" dur="3s" repeatCount="indefinite"/>
-            <animate attributeName="width" values="51;51;0;51;51" keyTimes="0;.4;.55;.7;1" dur="3s" repeatCount="indefinite"/></rect>
+          <rect x="103" y="18" width="51" height="84" style="fill:var(--blue-soft);stroke:var(--line)"></rect>
         </svg>
         <h3>FDV-dokumentasjon</h3><p class="short">Produsentens håndbok, deler og intervaller.</p></div>
       <div class="card">
@@ -537,22 +587,21 @@ table.sim tr.best td{background:var(--green-soft); font-weight:700}
           <g style="fill:var(--steel)">
             <rect x="28" y="70" width="20" height="26"/><rect x="58" y="80" width="20" height="16"/><rect x="118" y="76" width="20" height="20"/><rect x="148" y="84" width="20" height="12"/>
           </g>
-          <rect x="88" y="40" width="20" height="56" style="fill:var(--red)"><animate attributeName="opacity" values="1;.35;1" dur="1.4s" repeatCount="indefinite"/></rect>
-          <rect x="168" y="44" width="16" height="52" style="fill:var(--red)"><animate attributeName="opacity" values="1;.35;1" dur="1.4s" repeatCount="indefinite"/></rect>
+          <rect x="88" y="40" width="20" height="56" style="fill:var(--red)"></rect>
+          <rect x="168" y="44" width="16" height="52" style="fill:var(--red)"></rect>
           <text x="98" y="32" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--red)">lager</text>
           <text x="176" y="36" text-anchor="middle" style="font-size:12px;font-weight:700;fill:var(--red)">igjen!</text>
           <text x="105" y="114" text-anchor="middle" class="lbls">feil per måned</text>
         </svg>
         <h3>Historikk</h3><p class="short">Viser hvilke feil som kommer igjen.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Et <b>vedlikeholdssystem</b> holder orden på maskiner, planer, arbeidsordrer og hva som er gjort. <b>CMMS</b> = datastyrt vedlikeholdssystem; mindre bedrifter bruker en perm. <b>FDV</b> = forvaltning, drift og vedlikehold: brukerhåndbok, reservedelsliste og intervaller fra produsenten. Det som ikke er dokumentert, har ikke skjedd. Poenget med steg 6: historikken gjør at planen blir bedre. I eksemplet viser funnet at lageret manglet smøring – derfor endres smøreintervallet. Prioritet: mange bedrifter bruker 1 = straks (sikkerhet/stans), 2 = innen en uke, 3 = ved neste planlagte stopp. Sikkerhet ved vedlikehold (SJA, frakobling og låsing) kommer i neste leksjon. Ved arbeid på elektrisk utstyr: bare frakobling etter instruks – selve elektroarbeidet gjøres av elektrofagfolk.</details>
   </div>
 </section>
 
 <!-- DEL 7 -->
-<section class="slide" id="plan" data-nav="7 Planen">
+<section class="slide" id="plan" data-nav="12 Planen">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 6 min</div>
+    <div class="kicker">Del 12 · ca. 6 min</div>
     <h2>Vedlikeholdsplanen – søylebormaskinen</h2>
     <p class="lead"><b>Hva</b>, <b>hvor ofte</b> og <b>hvem</b>? Klikk på tallene.</p>
     <div class="grid2">
