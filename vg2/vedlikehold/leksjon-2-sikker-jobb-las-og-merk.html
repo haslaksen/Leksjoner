@@ -83,6 +83,14 @@ table.t th{background:var(--steel-soft)}
 .mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
 .mini3 .card{padding:.7rem .9rem; font-size:.9rem}
 .mini3 .card h3{font-size:1.05rem}
+.mini3.solo,.mini4.solo{margin-top:1.4rem}
+.mini3.solo .scene,.mini4.solo .scene{max-height:240px}
+.mini3.solo .card,.mini4.solo .card{font-size:1rem}
+.mini3.solo .card h3,.mini4.solo .card h3{font-size:1.25rem}
+.solo1{max-width:820px; margin-top:1.2rem}
+.pairwrap.solo{display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.4rem; max-width:820px}
+.pairwrap.solo .card{margin-top:0!important}
+.pairwrap.solo .scene{max-height:200px}
 .hot{cursor:pointer}
 .ecard h3{font-size:1.5rem}
 .ecard .row{display:grid; grid-template-columns:2.2rem 1fr; gap:.4rem; margin:.5rem 0; font-size:1rem}
@@ -233,14 +241,14 @@ table.t th{background:var(--steel-soft)}
         <h3>Plan for to skoletimer</h3>
         <table class="t plan">
           <tr><th colspan="2">Time 1 · Energien i maskinen</th></tr>
-          <tr><td>0–6 min</td><td>Del 1: av er ikke nok</td></tr>
-          <tr><td>6–15 min</td><td>Del 2: seks energikilder</td></tr>
-          <tr><td>15–25 min</td><td>Del 3: restenergi – simulator</td></tr>
+          <tr><td>0–6 min</td><td>Del 1–2: av er ikke nok</td></tr>
+          <tr><td>6–15 min</td><td>Del 3–4: seks energikilder</td></tr>
+          <tr><td>15–25 min</td><td>Del 5: restenergi – simulator</td></tr>
           <tr><td>25–45 min</td><td>Oppgave 1–3</td></tr>
           <tr><th colspan="2">Time 2 · Lås, merk og start igjen</th></tr>
-          <tr><td>0–8 min</td><td>Del 4: LOTO i sju trinn</td></tr>
-          <tr><td>8–14 min</td><td>Del 5: gruppelås</td></tr>
-          <tr><td>14–20 min</td><td>Del 6: tilbake i drift</td></tr>
+          <tr><td>0–8 min</td><td>Del 6: LOTO i sju trinn</td></tr>
+          <tr><td>8–14 min</td><td>Del 7–8: gruppelås</td></tr>
+          <tr><td>14–20 min</td><td>Del 9: tilbake i drift</td></tr>
           <tr><td>20–43 min</td><td>Oppgave 4–6</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
@@ -255,7 +263,7 @@ table.t th{background:var(--steel-soft)}
 <!-- DEL 1 -->
 <section class="slide" id="hvorfor" data-nav="1 Av er ikke nok">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 6 min</div>
+    <div class="kicker">Del 1 · ca. 3 min</div>
     <h2>Av er ikke nok</h2>
     <p class="lead">Kristian bytter reim. Følg med på begge sidene.</p>
     <div class="fig">
@@ -264,7 +272,18 @@ table.t th{background:var(--steel-soft)}
         <button class="btn" id="d1Restart">↺ Spill av igjen</button>
       </div>
     </div>
-    <div class="mini3">
+    <div class="tip o"><b>LOTO</b> = <i>Lockout – Tagout</i> = <b>lås og merk</b>.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Situasjonen: Kristian bytter reim, en kollega kommer forbi og ser at maskinen står. LOTO betyr å stenge av all energi, låse av med egen lås og henge på merkelapp. Merkelappen forteller hvem som jobber, hva som gjøres, dato og telefon – lappen <b>forklarer</b> låsen. Spør først: «Hvem kan finne på å slå på en maskin som står?» Kollega, nattskiftet, en som skal teste noe, automatikk (tidsur, trykkbryter, fjernstyring). Forskrift om utførelse av arbeid krever at arbeidsutstyr som vedlikeholdes, skal være stoppet og sikret mot utilsiktet start. Stoppknappen er et styresignal – den bryter ikke energien, og en annen kan trykke start. En vanlig hengelås fra hjemme er ikke god nok: verkstedet skal ha egne LOTO-låser med én nøkkel per lås.</details>
+  </div>
+</section>
+
+<!-- LÅS OG MERKELAPP -->
+<section class="slide" id="lasord" data-nav="2 Lås og lapp">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 3 min</div>
+    <h2>Lås, merkelapp – og bare du</h2>
+    <p class="lead">Din lås. Din nøkkel. Din lapp.</p>
+    <div class="mini3 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Én lås og én nøkkel som går ned i lomma">
           <path d="M43.2 52 v-19.599999999999998 a16.799999999999997 16.799999999999997 0 0 1 33.599999999999994 0 v19.599999999999998" style="fill:none;stroke:var(--steel-dark);stroke-width:7.0"/><rect x="34.8" y="52" width="50.4" height="42.0" rx="5.6" style="fill:var(--red)"/><circle cx="60" cy="68.8" r="5.6" style="fill:#14181d"/><rect x="57.9" y="68.8" width="4.199999999999999" height="14.0" style="fill:#14181d"/>
@@ -278,15 +297,15 @@ table.t th{background:var(--steel-soft)}
         <h3>Personlig lås</h3><p class="short">Én lås, <b>én nøkkel</b> – i <b>din</b> lomme.</p></div>
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Merkelapp som fylles ut med navn, jobb og dato">
-          <g><animateTransform attributeName="transform" type="rotate" values="-6 100 8;6 100 8;-6 100 8" dur="3s" repeatCount="indefinite"/>
+          <g>
             <line x1="100" y1="2" x2="100" y2="16" style="stroke:var(--ink);stroke-width:2"/>
             <rect x="50" y="16" width="100" height="100" rx="8" style="fill:var(--panel);stroke:var(--red);stroke-width:3"/>
             <rect x="50" y="16" width="100" height="24" rx="8" style="fill:var(--red)"/>
             <text x="100" y="33" text-anchor="middle" style="font-size:12px;font-weight:800;fill:#fff">IKKE START</text>
             <g style="stroke:var(--blue);stroke-width:3;stroke-linecap:round">
-              <path d="M60 56 h70" stroke-dasharray="70" stroke-dashoffset="70"><animate attributeName="stroke-dashoffset" values="70;0;0" keyTimes="0;.25;1" dur="5s" repeatCount="indefinite"/></path>
-              <path d="M60 74 h56" stroke-dasharray="56" stroke-dashoffset="56"><animate attributeName="stroke-dashoffset" values="56;56;0;0" keyTimes="0;.25;.5;1" dur="5s" repeatCount="indefinite"/></path>
-              <path d="M60 92 h64" stroke-dasharray="64" stroke-dashoffset="64"><animate attributeName="stroke-dashoffset" values="64;64;0;0" keyTimes="0;.5;.75;1" dur="5s" repeatCount="indefinite"/></path>
+              <path d="M60 56 h70" stroke-dasharray="70" stroke-dashoffset="0"></path>
+              <path d="M60 74 h56" stroke-dasharray="56" stroke-dashoffset="0"></path>
+              <path d="M60 92 h64" stroke-dasharray="64" stroke-dashoffset="0"></path>
             </g>
             <g style="font-size:8px;fill:var(--muted)"><text x="60" y="51">navn</text><text x="60" y="69">jobb</text><text x="60" y="87">dato · tlf</text></g>
           </g>
@@ -304,15 +323,13 @@ table.t th{background:var(--steel-soft)}
         </svg>
         <h3>Bare du</h3><p class="short">Bare den som satte på låsen, tar den av.</p></div>
     </div>
-    <div class="tip o"><b>LOTO</b> = <i>Lockout – Tagout</i> = <b>lås og merk</b>.</div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Situasjonen: Kristian bytter reim, en kollega kommer forbi og ser at maskinen står. LOTO betyr å stenge av all energi, låse av med egen lås og henge på merkelapp. Merkelappen forteller hvem som jobber, hva som gjøres, dato og telefon – lappen <b>forklarer</b> låsen. Spør først: «Hvem kan finne på å slå på en maskin som står?» Kollega, nattskiftet, en som skal teste noe, automatikk (tidsur, trykkbryter, fjernstyring). Forskrift om utførelse av arbeid krever at arbeidsutstyr som vedlikeholdes, skal være stoppet og sikret mot utilsiktet start. Stoppknappen er et styresignal – den bryter ikke energien, og en annen kan trykke start. En vanlig hengelås fra hjemme er ikke god nok: verkstedet skal ha egne LOTO-låser med én nøkkel per lås.</details>
   </div>
 </section>
 
 <!-- DEL 2 -->
-<section class="slide" id="energi" data-nav="2 Energikilder">
+<section class="slide" id="energi" data-nav="3 Energikilder">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 9 min</div>
+    <div class="kicker">Del 3 · ca. 6 min</div>
     <h2>Seks energikilder i hydraulikkpressa HP-01</h2>
     <p class="lead">Strøm er bare én av dem. Klikk deg gjennom energiene.</p>
     <div class="grid2 wide-left">
@@ -322,7 +339,17 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="card ecard" id="d2Card"></div>
     </div>
-    <div class="mini3">
+    <details class="laerer no-print"><summary>Lærernotat</summary><b>Akkumulator</b> = trykkbeholder som lagrer olje under trykk – en «trykkluftflaske for olje». Den holder trykket etter at pumpa har stoppet. <b>Manometer</b> = trykkmåler; viser om det fortsatt er trykk i systemet (bar). <b>Isolasjonspunkt</b> = stedet der du stenger av en energi: hovedbryter, ventil, støpsel. Hvert punkt skal låses. Hele hydraulikkretsen vises: tank → pumpe → styreventil → sylinder → retur til tank, med akkumulatoren koblet på trykkledningen. Akkumulatoren gjør at pressa kan gjøre raske slag uten stor pumpe – men den er også den farligste restenergien. Oljestråle under høyt trykk kan gå gjennom huden (injeksjonsskade) – det er en livsfarlig skade selv om såret ser lite ut. Tyngde: stempel og oververktøy på en presse kan veie flere tonn. Fjær: stripperfjærer i verktøyet, fjærbelastede bremser og klemmer. Bevegelse (svinghjul, vifte som går etter) kan også nevnes som sjuende energi. Måling av spenningsløshet er jobben til elektrofagperson; mekanikeren låser hovedbryteren etter instruks og gjør prøvestart.</details>
+  </div>
+</section>
+
+<!-- AKKUMULATOR, MANOMETER, ISOLASJON -->
+<section class="slide" id="energiord" data-nav="4 Tre ord">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 3 min</div>
+    <h2>Akkumulator, manometer og isolasjonspunkt</h2>
+    <p class="lead">Tre ord du trenger for å finne restenergien.</p>
+    <div class="mini3 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Akkumulator: en trykkbeholder med olje under trykk">
           <rect x="70" y="8" width="60" height="96" rx="28" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
@@ -360,14 +387,13 @@ table.t th{background:var(--steel-soft)}
         </svg>
         <h3>Isolasjonspunkt</h3><p class="short">Der du stenger av en energi. Hvert punkt låses.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary><b>Akkumulator</b> = trykkbeholder som lagrer olje under trykk – en «trykkluftflaske for olje». Den holder trykket etter at pumpa har stoppet. <b>Manometer</b> = trykkmåler; viser om det fortsatt er trykk i systemet (bar). <b>Isolasjonspunkt</b> = stedet der du stenger av en energi: hovedbryter, ventil, støpsel. Hvert punkt skal låses. Hele hydraulikkretsen vises: tank → pumpe → styreventil → sylinder → retur til tank, med akkumulatoren koblet på trykkledningen. Akkumulatoren gjør at pressa kan gjøre raske slag uten stor pumpe – men den er også den farligste restenergien. Oljestråle under høyt trykk kan gå gjennom huden (injeksjonsskade) – det er en livsfarlig skade selv om såret ser lite ut. Tyngde: stempel og oververktøy på en presse kan veie flere tonn. Fjær: stripperfjærer i verktøyet, fjærbelastede bremser og klemmer. Bevegelse (svinghjul, vifte som går etter) kan også nevnes som sjuende energi. Måling av spenningsløshet er jobben til elektrofagperson; mekanikeren låser hovedbryteren etter instruks og gjør prøvestart.</details>
   </div>
 </section>
 
 <!-- DEL 3 -->
-<section class="slide" id="rest" data-nav="3 Restenergi">
+<section class="slide" id="rest" data-nav="5 Restenergi">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 10 min</div>
+    <div class="kicker">Del 5 · ca. 10 min</div>
     <h2>Restenergi – gjør pressa energifri</h2>
     <p class="lead"><b>Restenergi</b> = energi som er igjen når strømmen er av. Fjern alt – i riktig rekkefølge.</p>
     <div class="fig">
@@ -399,9 +425,9 @@ table.t th{background:var(--steel-soft)}
 </section>
 
 <!-- DEL 4 -->
-<section class="slide" id="loto" data-nav="4 LOTO">
+<section class="slide" id="loto" data-nav="6 LOTO">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 8 min</div>
+    <div class="kicker">Del 6 · ca. 8 min</div>
     <h2>Lås og merk i sju trinn</h2>
     <p class="lead">Samme rekkefølge – hver gang, på hver maskin.</p>
     <div class="fig">
@@ -419,9 +445,9 @@ table.t th{background:var(--steel-soft)}
 </section>
 
 <!-- DEL 5 -->
-<section class="slide" id="gruppe" data-nav="5 Gruppelås">
+<section class="slide" id="gruppe" data-nav="7 Gruppelås">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 6 min</div>
+    <div class="kicker">Del 7 · ca. 4 min</div>
     <h2>Gruppelås – flere på samme maskin</h2>
     <p class="lead">Tre jobber på pressa. Alle har <b>sin egen lås</b>.</p>
     <div class="grid2 wide-left">
@@ -437,8 +463,21 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div>
         <div class="card"><h3>Låsehasp</h3><p class="short">Klype med mange hull. Åpner først når <b>siste</b> lås er av.</p></div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kristian, Sara og Ola jobber på pressa samtidig – la elevene ta av låsene og prøve å starte. <b>Låsehasp</b> = stålklype med mange hull; den låser hovedbryteren, og hver person henger sin lås i et eget hull. <b>Låseboks</b>: ved mange isolasjonspunkter låses alle punktene, nøklene legges i en boks, og alle henger sin lås på boksen. <b>Skiftbytte</b>: den nye setter på sin lås før den gamle tar av sin – maskinen er aldri ulåst. Regelen er enkel: én person – én lås – én nøkkel. Ingen henger lås «for» andre. Glemt lås: lås skal aldri klippes av en kollega. Bedriften skal ha en skriftlig prosedyre der leder tar ansvar: prøver å nå personen, kontrollerer selv at ingen er i maskinen og at den er klar, fjerner låsen med vitne, dokumenterer, og informerer personen før neste skift.</details>
+  </div>
+</section>
+
+<!-- LÅSEBOKS OG SKIFTBYTTE -->
+<section class="slide" id="laseboks" data-nav="8 Låseboks">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 3 min</div>
+    <h2>Låseboks og skiftbytte</h2>
+    <p class="lead">Når mange låser og jobben går over flere skift.</p>
+        <div class="pairwrap solo">
         <div class="card" style="margin-top:.7rem">
-          <svg class="scene" style="max-height:100px" viewBox="0 0 200 90" role="img" aria-label="Nøklene fra isolasjonspunktene legges i en låseboks, og alle henger sin lås på boksen">
+          <svg class="scene" viewBox="0 0 200 90" role="img" aria-label="Nøklene fra isolasjonspunktene legges i en låseboks, og alle henger sin lås på boksen">
             <rect x="60" y="30" width="80" height="54" rx="6" style="fill:var(--yellow);stroke:var(--orange);stroke-width:3"/>
             <rect x="92" y="22" width="16" height="10" style="fill:var(--steel-dark)"/>
             <g><animateTransform attributeName="transform" type="translate" values="-40 -20;0 12;0 12" keyTimes="0;.4;1" dur="3s" repeatCount="indefinite"/>
@@ -447,7 +486,7 @@ table.t th{background:var(--steel-soft)}
           </svg>
           <h3>Låseboks</h3><p class="short">Nøklene i boksen – alle låser boksen.</p></div>
         <div class="card" style="margin-top:.7rem">
-          <svg class="scene" style="max-height:100px" viewBox="0 0 200 90" role="img" aria-label="Skiftbytte: ny lås henges på før den gamle tas av">
+          <svg class="scene" viewBox="0 0 200 90" role="img" aria-label="Skiftbytte: ny lås henges på før den gamle tas av">
             <rect x="40" y="14" width="120" height="22" rx="6" style="fill:var(--steel-dark)"/>
             <circle cx="80" cy="25" r="6" style="fill:var(--steel-soft)"/><circle cx="120" cy="25" r="6" style="fill:var(--steel-soft)"/>
             <g><animate attributeName="opacity" values="1;1;1;0;0;1" keyTimes="0;.3;.6;.7;.95;1" dur="4s" repeatCount="indefinite"/><path d="M70.4 40 v-11.200000000000001 a9.600000000000001 9.600000000000001 0 0 1 19.200000000000003 0 v11.200000000000001" style="fill:none;stroke:var(--steel-dark);stroke-width:4.0"/><rect x="65.6" y="40" width="28.8" height="24.0" rx="3.2" style="fill:var(--orange)"/><circle cx="80" cy="49.6" r="3.2" style="fill:#14181d"/><rect x="78.8" y="49.6" width="2.4000000000000004" height="8.0" style="fill:#14181d"/>
@@ -456,16 +495,14 @@ table.t th{background:var(--steel-soft)}
               <text x="120" y="86" text-anchor="middle" style="font-size:11px;font-weight:700;fill:var(--blue)">ny</text></g>
           </svg>
           <h3>Skiftbytte</h3><p class="short">Ny lås <b>på</b> før gammel lås <b>av</b>.</p></div>
-      </div>
-    </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Kristian, Sara og Ola jobber på pressa samtidig – la elevene ta av låsene og prøve å starte. <b>Låsehasp</b> = stålklype med mange hull; den låser hovedbryteren, og hver person henger sin lås i et eget hull. <b>Låseboks</b>: ved mange isolasjonspunkter låses alle punktene, nøklene legges i en boks, og alle henger sin lås på boksen. <b>Skiftbytte</b>: den nye setter på sin lås før den gamle tar av sin – maskinen er aldri ulåst. Regelen er enkel: én person – én lås – én nøkkel. Ingen henger lås «for» andre. Glemt lås: lås skal aldri klippes av en kollega. Bedriften skal ha en skriftlig prosedyre der leder tar ansvar: prøver å nå personen, kontrollerer selv at ingen er i maskinen og at den er klar, fjerner låsen med vitne, dokumenterer, og informerer personen før neste skift.</details>
+        </div>
   </div>
 </section>
 
 <!-- DEL 6 -->
-<section class="slide" id="drift" data-nav="6 Tilbake i drift">
+<section class="slide" id="drift" data-nav="9 Tilbake i drift">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 6 min</div>
+    <div class="kicker">Del 9 · ca. 6 min</div>
     <h2>Tilbake i drift – finn feilene før start</h2>
     <p class="lead">Jobben er ferdig. Finn <b>5 feil</b> før start.</p>
     <div class="fig">
@@ -1041,7 +1078,7 @@ const ENERGI = [
     msg(on[k] ? `${p.n} har satt på låsen sin igjen.` : (left.length ? `${p.n} er ferdig og tar av SIN lås. Fortsatt låst av: ${left.join(", ")}.` : "Alle låsene er av. Klypa kan åpnes."), on[k]?"info":left.length?"info":"ok"); };
   $("d5Start").onclick = () => { const left = P.filter(x=>on[x.k]).map(x=>x.n);
     if (left.length){ run=false; msg(`❌ Kan ikke starte – hovedbryteren er låst av ${left.join(", ")}. Hver lås = en person som kanskje er inne i maskinen.`,"bad"); }
-    else { run=true; msg("✓ Alle låser er av – bryteren kan slås på. Maskinen går. (Før dette: vern på og ingen i faresonen – se del 6.)","ok"); } };
+    else { run=true; msg("✓ Alle låser er av – bryteren kan slås på. Maskinen går. (Før dette: vern på og ingen i faresonen – se del 9.)","ok"); } };
   $("d5Home").onclick = () => { home=true; on.O=true; run=false; chips();
     msg("Olas lås henger fortsatt, og Ola er hjemme. <b>Ingen klipper den av.</b> Leder følger prosedyren: ringer Ola, sjekker selv at ingen er i maskinen, fjerner låsen med vitne og skriver det ned. Ola får beskjed før neste skift.","warn"); };
   $("d5Reset").onclick = reset;
