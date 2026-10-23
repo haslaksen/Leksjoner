@@ -91,6 +91,11 @@ table.t th{background:var(--steel-soft)}
 .mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
 .mini3 .card{padding:.7rem .9rem; font-size:.9rem}
 .mini3 .card h3{font-size:1.05rem}
+.mini3.solo{margin-top:1.4rem}
+.mini3.solo .scene{max-height:240px}
+.mini3.solo .card{font-size:1rem}
+.mini3.solo .card h3{font-size:1.25rem}
+.solo1{max-width:760px; margin-top:1.2rem}
 .formula{font-size:1.5rem; font-weight:800; text-align:center; padding:.4rem 0; color:var(--orange)}
 .calc{font-variant-numeric:tabular-nums; font-size:1.05rem; background:var(--bg); border:1px dashed var(--line); border-radius:10px; padding:.5rem .8rem; margin-top:.6rem}
 .hot{cursor:pointer}
@@ -253,15 +258,15 @@ table.t th{background:var(--steel-soft)}
         <h3>Plan for to skoletimer</h3>
         <table class="t plan">
           <tr><th colspan="2">Time 1 · Fra luft til kraft</th></tr>
-          <tr><td>0–6 min</td><td>Del 1: luft er en fjær – trykk</td></tr>
-          <tr><td>6–16 min</td><td>Del 2: luftforsyningen</td></tr>
-          <tr><td>16–26 min</td><td>Del 3: kraft – F = p · A</td></tr>
+          <tr><td>0–6 min</td><td>Del 1–2: luft er en fjær – trykk</td></tr>
+          <tr><td>6–16 min</td><td>Del 3–4: luftforsyningen og vann i lufta</td></tr>
+          <tr><td>16–26 min</td><td>Del 5: kraft – F = p · A</td></tr>
           <tr><td>26–45 min</td><td>Oppgave 1–2</td></tr>
           <tr><th colspan="2">Time 2 · Sylindere, ventiler og skjema</th></tr>
-          <tr><td>0–5 min</td><td>Del 4: sylindere</td></tr>
-          <tr><td>5–12 min</td><td>Del 5: ventiler og symboler</td></tr>
-          <tr><td>12–21 min</td><td>Del 6: første koblingsskjema</td></tr>
-          <tr><td>21–24 min</td><td>Del 7: trygt med trykkluft</td></tr>
+          <tr><td>0–5 min</td><td>Del 6: sylindere</td></tr>
+          <tr><td>5–12 min</td><td>Del 7–8: ventiler og symboler</td></tr>
+          <tr><td>12–21 min</td><td>Del 9: første koblingsskjema</td></tr>
+          <tr><td>21–24 min</td><td>Del 10: trygt med trykkluft</td></tr>
           <tr><td>24–43 min</td><td>Oppgave 3–6</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
@@ -273,10 +278,10 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 1 -->
+<!-- TRYKK -->
 <section class="slide" id="trykk" data-nav="1 Trykk">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 6 min</div>
+    <div class="kicker">Del 1 · ca. 3 min</div>
     <h2>Luft er en fjær</h2>
     <p class="lead">Skyv stempelet inn – <b>trykket stiger</b>.</p>
     <div class="fig">
@@ -293,7 +298,17 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="status info" id="p1Msg"></div>
     </div>
-    <div class="mini3">
+    <details class="laerer no-print"><summary>Lærernotat</summary>Trykk = kraft per flate: 1 bar = 10 N på hver cm². Manometeret viser overtrykk – hvor mye mer enn lufta rundt; absolutt trykk = overtrykk + 1 bar. Luft er myk, rask og ren; olje er stiv og sterk (hydraulikk).Boyles lov p₁·V₁ = p₂·V₂ gjelder med <i>absolutt</i> trykk og konstant temperatur. I virkeligheten blir lufta varm når den trykkes sammen (kompressoren). Poeng: 1/7 av volumet gir 7 bar absolutt = 6 bar på manometeret – vanlig nettrykk i verksteder. Trykk på «Olje»: et volum olje må få ca. 75 bar for å krympe 0,5 % (kompresjonsmodul ca. 1,5 GPa). Derfor er hydraulikk stiv og presis, mens pneumatikk er «fjærende» og vanskelig å stoppe midt i slaget. 1 bar = 100 000 Pa = 0,1 N/mm² = 10 N/cm².</details>
+  </div>
+</section>
+
+<!-- TRYKK OG MANOMETER -->
+<section class="slide" id="trykkord" data-nav="2 Manometer">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 3 min</div>
+    <h2>Trykk, manometer – og olje</h2>
+    <p class="lead">Tre ting du må vite om trykk.</p>
+    <div class="mini3 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Et lodd på 1 kg trykker på en flate på 1 kvadratcentimeter">
           <rect x="60" y="84" width="80" height="14" rx="2" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
@@ -332,14 +347,13 @@ table.t th{background:var(--steel-soft)}
         </svg>
         <h3>Luft eller olje?</h3><p class="short">Luft kan trykkes sammen. Olje nesten ikke (hydraulikk).</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Trykk = kraft per flate: 1 bar = 10 N på hver cm². Manometeret viser overtrykk – hvor mye mer enn lufta rundt; absolutt trykk = overtrykk + 1 bar. Luft er myk, rask og ren; olje er stiv og sterk (hydraulikk).Boyles lov p₁·V₁ = p₂·V₂ gjelder med <i>absolutt</i> trykk og konstant temperatur. I virkeligheten blir lufta varm når den trykkes sammen (kompressoren). Poeng: 1/7 av volumet gir 7 bar absolutt = 6 bar på manometeret – vanlig nettrykk i verksteder. Trykk på «Olje»: et volum olje må få ca. 75 bar for å krympe 0,5 % (kompresjonsmodul ca. 1,5 GPa). Derfor er hydraulikk stiv og presis, mens pneumatikk er «fjærende» og vanskelig å stoppe midt i slaget. 1 bar = 100 000 Pa = 0,1 N/mm² = 10 N/cm².</details>
   </div>
 </section>
 
-<!-- DEL 2 -->
-<section class="slide" id="forsyning" data-nav="2 Forsyning">
+<!-- FORSYNING -->
+<section class="slide" id="forsyning" data-nav="3 Forsyning">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 10 min</div>
+    <div class="kicker">Del 3 · ca. 6 min</div>
     <h2>Luftforsyningen – fra uteluft til sylinder</h2>
     <p class="lead">Klikk på tallene. Hvor blir <b style="color:var(--water)">vannet</b> av?</p>
     <div class="fig">
@@ -352,7 +366,17 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="status info" id="p2Msg">Klikk på et tall for å se hva delen gjør.</div>
     </div>
-    <div class="mini3">
+    <details class="laerer no-print"><summary>Lærernotat</summary>Uteluft inneholder vanndamp. Når lufta trykkes sammen og avkjøles, blir dampen til vann (kondens). Vann gir rust i rør, slitte pakninger og ventiler som henger – derfor kjøle, drenere, tørke og filtrere. Vedlikeholdsenheten: Filter, Regulator (med manometer), Smører.Kompressoren gjør lufta varm (ofte over 100 °C ved utløpet). Etterkjøleren kjøler den, og mye vann felles ut. Tanken jevner ut trykket og gir kompressoren pauser (trykkbryter: starter ved lavt trykk, stopper ved høyt). Sikkerhetsventilen åpner hvis trykkbryteren svikter. Tanken må dreneres – automatisk eller manuelt – og kontrolleres etter forskrift om trykkpåkjent utstyr. Tørkeren (kjøletørker) senker duggpunktet. Rørnettet legges med fall (ca. 1–2 %) mot et dreneringspunkt, og uttak tas fra <i>toppen</i> av røret (svanehals) så vannet ikke renner med. Smøreren brukes mindre i dag: mange komponenter er smurt fra fabrikk og skal ha oljefri luft – har du først begynt å smøre, må du fortsette. Lekkasjer koster mye strøm – det kommer i leksjon 6.</details>
+  </div>
+</section>
+
+<!-- VANN I TRYKKLUFTA -->
+<section class="slide" id="vann" data-nav="4 Vann i lufta">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 4 min</div>
+    <h2>Vann i trykklufta</h2>
+    <p class="lead">Derfor kjøler, drenerer, tørker og filtrerer vi lufta.</p>
+    <div class="mini3 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Varm luft kjøles i et rør, og vanndråper faller ned i bunnen">
           <rect x="15" y="30" width="170" height="40" rx="6" style="fill:var(--air-soft);stroke:var(--steel-dark);stroke-width:2.5"/>
@@ -396,14 +420,13 @@ table.t th{background:var(--steel-soft)}
         </svg>
         <h3>Vedlikeholdsenheten</h3><p class="short">Står foran hver maskin.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Uteluft inneholder vanndamp. Når lufta trykkes sammen og avkjøles, blir dampen til vann (kondens). Vann gir rust i rør, slitte pakninger og ventiler som henger – derfor kjøle, drenere, tørke og filtrere. Vedlikeholdsenheten: Filter, Regulator (med manometer), Smører.Kompressoren gjør lufta varm (ofte over 100 °C ved utløpet). Etterkjøleren kjøler den, og mye vann felles ut. Tanken jevner ut trykket og gir kompressoren pauser (trykkbryter: starter ved lavt trykk, stopper ved høyt). Sikkerhetsventilen åpner hvis trykkbryteren svikter. Tanken må dreneres – automatisk eller manuelt – og kontrolleres etter forskrift om trykkpåkjent utstyr. Tørkeren (kjøletørker) senker duggpunktet. Rørnettet legges med fall (ca. 1–2 %) mot et dreneringspunkt, og uttak tas fra <i>toppen</i> av røret (svanehals) så vannet ikke renner med. Smøreren brukes mindre i dag: mange komponenter er smurt fra fabrikk og skal ha oljefri luft – har du først begynt å smøre, må du fortsette. Lekkasjer koster mye strøm – det kommer i leksjon 6.</details>
   </div>
 </section>
 
-<!-- DEL 3 -->
-<section class="slide" id="kraft" data-nav="3 Kraft">
+<!-- KRAFT -->
+<section class="slide" id="kraft" data-nav="5 Kraft">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 10 min</div>
+    <div class="kicker">Del 5 · ca. 10 min</div>
     <h2>Hvor sterk er sylinderen? F = p · A</h2>
     <p class="lead"><b>Større flate</b> eller <b>høyere trykk</b> gir mer kraft.</p>
     <div class="grid2 wide-left">
@@ -437,10 +460,10 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 4 -->
-<section class="slide" id="sylinder" data-nav="4 Sylindere">
+<!-- SYLINDERE -->
+<section class="slide" id="sylinder" data-nav="6 Sylindere">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 5 min</div>
+    <div class="kicker">Del 6 · ca. 5 min</div>
     <h2>To typer sylindere</h2>
     <p class="lead">Øverst: inni. Nederst: <b>symbolet</b>. <span style="color:var(--blue)">Blått</span> = trykkluft, <span style="color:var(--orange)">oransje</span> = ut.</p>
     <div class="fig">
@@ -455,14 +478,14 @@ table.t th{background:var(--steel-soft)}
       <div class="card"><h3>Enkeltvirkende</h3><p class="short">Luft ut – <b>fjær</b> inn. <i>Klemme, stemple.</i></p></div>
       <div class="card"><h3>Dobbeltvirkende</h3><p class="short">Luft <b>både ut og inn</b>. <i>Skyve, løfte.</i></p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Enkeltvirkende: én luftport, fjæra skyver tilbake. + halvparten av lufta, enkel. − kraft bare én vei, fjæra «spiser» litt kraft, kort slag. Eks.: klemme, stemple, låse. Dobbeltvirkende: to luftporter, kraft begge veier, langt slag, vanligst i industrien; − bruker mer luft. Eks.: skyve deler, åpne porter, løfte. Plussiden (stempelsiden) og minussiden (stangsiden) er vanlige ord – kobles til Del 3. Enkeltvirkende sylinder har et lufthull med filter på fjærsiden («pustehull»). Mange sylindere har endedemping og magnet i stempelet for sensorer – kommer i senere leksjoner.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Enkeltvirkende: én luftport, fjæra skyver tilbake. + halvparten av lufta, enkel. − kraft bare én vei, fjæra «spiser» litt kraft, kort slag. Eks.: klemme, stemple, låse. Dobbeltvirkende: to luftporter, kraft begge veier, langt slag, vanligst i industrien; − bruker mer luft. Eks.: skyve deler, åpne porter, løfte. Plussiden (stempelsiden) og minussiden (stangsiden) er vanlige ord – kobles til Del 5. Enkeltvirkende sylinder har et lufthull med filter på fjærsiden («pustehull»). Mange sylindere har endedemping og magnet i stempelet for sensorer – kommer i senere leksjoner.</details>
   </div>
 </section>
 
-<!-- DEL 5 -->
-<section class="slide" id="ventil" data-nav="5 Ventiler">
+<!-- VENTILER -->
+<section class="slide" id="ventil" data-nav="7 Ventiler">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 7 min</div>
+    <div class="kicker">Del 7 · ca. 4 min</div>
     <h2>Ventiler – les symbolet</h2>
     <p class="lead"><b>5/2</b> = 5 porter, 2 stillinger. <b>Hold inne knappen.</b></p>
     <div class="grid2 wide-left">
@@ -485,8 +508,20 @@ table.t th{background:var(--steel-soft)}
             <tr><td><b>12 og 14</b></td><td>styring: 14 kobler 1 til 4, 12 kobler 1 til 2</td><td>–</td></tr>
           </table>
         </div>
-        <div class="card" style="margin-top:.8rem">
-          <h3>Slik leser du symbolet</h3>
+      </div>
+    </div>
+    <a class="simlink no-print" data-sim="pneumatikk-og-hydraulikk"><span class="ico">🧪</span><span><b>Prøv selv: Pneumatikk- og hydraulikksimulatoren</b><small>Finn 3/2- og 5/2-ventilen og se symbolene.</small></span><span class="pil">→</span></a>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Hver rute er én stilling; pilene viser hvor lufta går. Slik leser du det: (1) tell ruter = antall stillinger, (2) tell portene på én rute = antall porter, (3) portene tegnes på ruta som er i bruk nå (hvilestilling), (4) det som står ved siden av ruta, skyver ruta inn: knapp, fjær …, (5) ⊥ = stengt port. Symbolene følger ISO 1219-1 og portnummer ISO 5599-3. Tenk på symbolet som en skuff: ruta skyves sideveis inn under portene. Det er derfor det animerte symbolet beveger seg. 3/2 «normalt stengt» (NC): uten signal er 1 stengt og 2 avluftet mot 3. Her er knappen tegnet til høyre og fjæra til venstre – det kan like gjerne være motsatt; det viktige er at påvirkningen står ved den ruta den kobler inn. Ventiltyper med to signaler (impulsventil/minne) kommer i leksjon 2.</details>
+  </div>
+</section>
+
+<!-- LES SYMBOLET -->
+<section class="slide" id="symbol" data-nav="8 Les symbolet">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 3 min</div>
+    <h2>Slik leser du et ventilsymbol</h2>
+    <p class="lead">Tell rutene. Tell portene. Finn fjæra og knappen.</p>
+        <div class="card solo1">
           <svg class="scene" viewBox="0 0 360 210" role="img" aria-label="3/2-ventil: to ruter er to stillinger, tre porter, fjær og knapp. Rutene skyves som en skuff når knappen trykkes.">
             <!-- faste porter -->
             <g style="stroke:var(--ink);stroke-width:3">
@@ -518,17 +553,13 @@ table.t th{background:var(--steel-soft)}
           </svg>
           <p class="short">Rutene skyves som en <b>skuff</b> inn under portene.</p>
         </div>
-      </div>
-    </div>
-    <a class="simlink no-print" data-sim="pneumatikk-og-hydraulikk"><span class="ico">🧪</span><span><b>Prøv selv: Pneumatikk- og hydraulikksimulatoren</b><small>Finn 3/2- og 5/2-ventilen og se symbolene.</small></span><span class="pil">→</span></a>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Hver rute er én stilling; pilene viser hvor lufta går. Slik leser du det: (1) tell ruter = antall stillinger, (2) tell portene på én rute = antall porter, (3) portene tegnes på ruta som er i bruk nå (hvilestilling), (4) det som står ved siden av ruta, skyver ruta inn: knapp, fjær …, (5) ⊥ = stengt port. Symbolene følger ISO 1219-1 og portnummer ISO 5599-3. Tenk på symbolet som en skuff: ruta skyves sideveis inn under portene. Det er derfor det animerte symbolet beveger seg. 3/2 «normalt stengt» (NC): uten signal er 1 stengt og 2 avluftet mot 3. Her er knappen tegnet til høyre og fjæra til venstre – det kan like gjerne være motsatt; det viktige er at påvirkningen står ved den ruta den kobler inn. Ventiltyper med to signaler (impulsventil/minne) kommer i leksjon 2.</details>
   </div>
 </section>
 
-<!-- DEL 6 -->
-<section class="slide" id="skjema" data-nav="6 Skjema">
+<!-- SKJEMA -->
+<section class="slide" id="skjema" data-nav="9 Skjema">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 9 min</div>
+    <div class="kicker">Del 9 · ca. 9 min</div>
     <h2>Første koblingsskjema</h2>
     <p class="lead"><b>Kilde → vedlikeholdsenhet → ventil → sylinder.</b> Hold inne knappen.</p>
     <div class="fig">
@@ -548,14 +579,14 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="p6Msg"></div>
     </div>
     <a class="simlink no-print" data-sim="pneumatikk-og-hydraulikk"><span class="ico">🧪</span><span><b>Prøv selv: Pneumatikk- og hydraulikksimulatoren</b><small>Koble kilde, 5/2-ventil og sylinder – og test.</small></span><span class="pil">→</span></a>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Følg den blå lufta inn og den oransje ut. Krets 2 presser en bøssing inn i et hull. Ø32-sylinder: A = 804 mm². Bøssinga trenger 400 N. Ved 6 bar gir sylinderen 482 N – nok. Skru regulatoren ned til 4 bar (322 N): sylinderen stopper ved hullet – kobling til Del 3. Feilspillet: feilen ligger i <i>anlegget</i>, ikke i tegningen. La elevene trykke, se på manometrene og gjette. De tre feilene: (1) regulatoren står på 2 bar, (2) slangene til port 2 og 4 er byttet, (3) lyddemperen på port 3 er tett – lufta på minussiden kan ikke komme ut, trykket der stiger (≈ 7 bar fordi arealet er mindre), og sylinderen står nesten stille. Dette er systematisk feilsøking: symptom → måling → årsak.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Følg den blå lufta inn og den oransje ut. Krets 2 presser en bøssing inn i et hull. Ø32-sylinder: A = 804 mm². Bøssinga trenger 400 N. Ved 6 bar gir sylinderen 482 N – nok. Skru regulatoren ned til 4 bar (322 N): sylinderen stopper ved hullet – kobling til Del 5. Feilspillet: feilen ligger i <i>anlegget</i>, ikke i tegningen. La elevene trykke, se på manometrene og gjette. De tre feilene: (1) regulatoren står på 2 bar, (2) slangene til port 2 og 4 er byttet, (3) lyddemperen på port 3 er tett – lufta på minussiden kan ikke komme ut, trykket der stiger (≈ 7 bar fordi arealet er mindre), og sylinderen står nesten stille. Dette er systematisk feilsøking: symptom → måling → årsak.</details>
   </div>
 </section>
 
-<!-- DEL 7 -->
-<section class="slide" id="hms" data-nav="7 HMS">
+<!-- HMS -->
+<section class="slide" id="hms" data-nav="10 HMS">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 3 min</div>
+    <div class="kicker">Del 10 · ca. 3 min</div>
     <h2>Trygt med trykkluft – riktig eller galt?</h2>
     <p class="lead">Klikk på kortene. Trykkluft er farligere enn du tror.</p>
     <div class="flipgrid" id="p7Grid"></div>
