@@ -94,6 +94,10 @@ table.t th{background:var(--steel-soft)}
 .mini3{display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; margin-top:1rem}
 .mini3 .card{padding:.7rem .9rem; font-size:.9rem}
 .mini3 .card h3{font-size:1.05rem}
+.mini3.solo{margin-top:1.4rem}
+.mini3.solo .scene{max-height:240px}
+.mini3.solo .card{font-size:1rem}
+.mini3.solo .card h3{font-size:1.25rem}
 .big{font-size:2.2rem; font-weight:800; font-variant-numeric:tabular-nums; line-height:1}
 .found{display:flex; flex-wrap:wrap; gap:.35rem; min-height:2rem; margin-top:.5rem}
 .found span{background:var(--green-soft); color:var(--green); border-radius:8px; padding:.2rem .55rem; font-size:.8rem; font-weight:650}
@@ -187,21 +191,21 @@ table.t th{background:var(--steel-soft)}
     </div>
     <div>
       <div class="hero-fig">
-        <svg viewBox="0 0 520 330" role="img" aria-label="Arbeider med hjelm og vernebriller ved en slipemaskin. Gnistene stoppes av et skjold, og H, M og S lyser opp etter tur.">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Arbeider med hjelm og vernebriller ved en slipemaskin. Gnistene stoppes av et skjold.">
           <rect x="0" y="282" width="520" height="48" style="fill:var(--steel-soft)"/>
           <!-- arbeidsbenk med slipemaskin -->
           <rect x="250" y="212" width="200" height="16" rx="3" style="fill:var(--steel-dark)"/>
           <rect x="266" y="228" width="12" height="54" style="fill:var(--steel)"/><rect x="422" y="228" width="12" height="54" style="fill:var(--steel)"/>
           <rect x="330" y="170" width="70" height="42" rx="6" style="fill:var(--steel)"/>
-          <g><animateTransform attributeName="transform" type="rotate" from="0 318 176" to="360 318 176" dur="1s" repeatCount="indefinite"/>
+          <g>
             <circle cx="318" cy="176" r="26" style="fill:var(--steel-dark)"/>
             <path d="M318 152 V200 M294 176 H342" style="stroke:var(--steel);stroke-width:3"/>
           </g>
           <!-- gnister mot skjoldet -->
           <g style="fill:var(--yellow)">
-            <circle r="3"><animateMotion dur=".7s" repeatCount="indefinite" path="M296 186 L240 160"/><animate attributeName="opacity" values="1;1;0" dur=".7s" repeatCount="indefinite"/></circle>
-            <circle r="2.5"><animateMotion dur=".6s" begin=".2s" repeatCount="indefinite" path="M296 190 L242 182"/><animate attributeName="opacity" values="1;1;0" dur=".6s" begin=".2s" repeatCount="indefinite"/></circle>
-            <circle r="2"><animateMotion dur=".8s" begin=".4s" repeatCount="indefinite" path="M298 184 L238 140"/><animate attributeName="opacity" values="1;1;0" dur=".8s" begin=".4s" repeatCount="indefinite"/></circle>
+            <circle r="3" cx="262" cy="172"></circle>
+            <circle r="2.5" cx="266" cy="186"></circle>
+            <circle r="2" cx="258" cy="156"></circle>
           </g>
           <!-- skjold / verneskjerm -->
           <path d="M232 120 L232 210" style="stroke:var(--blue);stroke-width:6;stroke-linecap:round;opacity:.85"/>
@@ -215,15 +219,15 @@ table.t th{background:var(--steel-soft)}
           <path d="M178 196 L226 196" style="stroke:var(--orange);stroke-width:14;stroke-linecap:round"/>
           <!-- H M S -->
           <g style="font-size:30px;font-weight:800;text-anchor:middle;fill:#fff">
-            <g><circle cx="80" cy="44" r="28" style="fill:var(--red)"><animate attributeName="r" values="28;34;28;28;28;28" dur="4.5s" repeatCount="indefinite"/></circle><text x="80" y="55">H</text></g>
-            <g><circle cx="160" cy="44" r="28" style="fill:var(--green)"><animate attributeName="r" values="28;28;28;34;28;28" dur="4.5s" repeatCount="indefinite"/></circle><text x="160" y="55">M</text></g>
-            <g><circle cx="240" cy="44" r="28" style="fill:var(--orange)"><animate attributeName="r" values="28;28;28;28;28;34" dur="4.5s" repeatCount="indefinite"/></circle><text x="240" y="55">S</text></g>
+            <g><circle cx="80" cy="44" r="28" style="fill:var(--red)"></circle><text x="80" y="55">H</text></g>
+            <g><circle cx="160" cy="44" r="28" style="fill:var(--green)"></circle><text x="160" y="55">M</text></g>
+            <g><circle cx="240" cy="44" r="28" style="fill:var(--orange)"></circle><text x="240" y="55">S</text></g>
           </g>
           <!-- varseltrekant -->
           <g transform="translate(440 70)">
             <path d="M0 -36 L38 30 H-38 Z" style="fill:var(--yellow);stroke:var(--ink);stroke-width:4;stroke-linejoin:round"/>
             <rect x="-4" y="-14" width="8" height="26" rx="3" style="fill:var(--ink)"/><circle cx="0" cy="20" r="4.5" style="fill:var(--ink)"/>
-            <animateTransform attributeName="transform" type="scale" additive="sum" values="1;1.1;1" dur="1.6s" repeatCount="indefinite"/>
+            
           </g>
           <text x="232" y="106" text-anchor="middle" style="font-size:13px;fill:var(--muted)">verneskjerm</text>
         </svg>
@@ -240,15 +244,15 @@ table.t th{background:var(--steel-soft)}
         <h3>Plan for to skoletimer</h3>
         <table class="t plan">
           <tr><th colspan="2">Time 1 · Hva er HMS – og hvor er farene?</th></tr>
-          <tr><td>0–5 min</td><td>Del 1: H, M og S</td></tr>
-          <tr><td>5–12 min</td><td>Del 2: ulykkespyramiden</td></tr>
-          <tr><td>12–27 min</td><td>Del 3: finn farene i verkstedet</td></tr>
+          <tr><td>0–5 min</td><td>Del 1–2: H, M og S</td></tr>
+          <tr><td>5–12 min</td><td>Del 3–4: ulykkespyramiden og meld fra</td></tr>
+          <tr><td>12–27 min</td><td>Del 5: finn farene i verkstedet</td></tr>
           <tr><td>27–45 min</td><td>Oppgave 1–3</td></tr>
           <tr><th colspan="2">Time 2 · Ansvar, risiko og tiltak</th></tr>
-          <tr><td>0–7 min</td><td>Del 4: hvem har ansvaret?</td></tr>
-          <tr><td>7–15 min</td><td>Del 5: risiko</td></tr>
-          <tr><td>15–23 min</td><td>Del 6: tiltakshierarkiet</td></tr>
-          <tr><td>23–29 min</td><td>Del 7: verneutstyr</td></tr>
+          <tr><td>0–7 min</td><td>Del 6–7: hvem har ansvaret, og ser du en fare?</td></tr>
+          <tr><td>7–15 min</td><td>Del 8: risiko</td></tr>
+          <tr><td>15–23 min</td><td>Del 9: tiltakshierarkiet</td></tr>
+          <tr><td>23–29 min</td><td>Del 10: verneutstyr</td></tr>
           <tr><td>29–43 min</td><td>Oppgave 4–7</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
@@ -260,10 +264,10 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 1 -->
+<!-- H M S -->
 <section class="slide" id="hms" data-nav="1 H · M · S">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 5 min</div>
+    <div class="kicker">Del 1 · ca. 3 min</div>
     <h2>HMS = Helse, Miljø og Sikkerhet</h2>
     <p class="lead">Vi beskytter <b>kroppen</b>, <b>naturen</b> og <b>deg mot ulykker</b>.</p>
     <div class="fig">
@@ -271,70 +275,79 @@ table.t th{background:var(--steel-soft)}
       <div class="controls"><span class="chips" id="d1Sel"></span></div>
       <div class="status info" id="d1Msg"></div>
     </div>
-    <div class="mini3">
+    <details class="laerer no-print"><summary>Lærernotat</summary>Spør klassen før du trykker: «Hva kan skade deg i verkstedet i dag – og hva kan skade deg om 20 år?» <b>Helse:</b> skader som kommer sakte – støy, støv, røyk, tunge løft; de merkes ofte først etter mange år. <b>Miljø:</b> det vi slipper ut – olje, kjølevæske, kjemikalier, avfall og energi. <b>Sikkerhet:</b> skader som skjer plutselig – kutt, klem, fall, brann og strøm. Skill mellom akutte skader (sikkerhet) og langvarige skader (helse). Mange eksempler hører hjemme i flere bokstaver: sveiserøyk er helse for sveiseren og miljø for omgivelsene. Det er helt i orden.</details>
+  </div>
+</section>
+
+<!-- SAKTE, UTSLIPP, PLUTSELIG -->
+<section class="slide" id="eksempler" data-nav="2 Sakte og plutselig">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 2 min</div>
+    <h2>Sakte – utslipp – plutselig</h2>
+    <p class="lead">Ett eksempel på hver bokstav.</p>
+    <div class="mini3 solo">
       <div class="card">
         <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Øre med lydbølger fra en maskin. Hørselen synker sakte gjennom årene.">
           <rect x="8" y="30" width="44" height="40" rx="5" style="fill:var(--steel)"/>
           <circle cx="30" cy="50" r="12" style="fill:var(--steel-dark)"/>
           <g style="fill:none;stroke:var(--red);stroke-width:3;stroke-linecap:round">
-            <path d="M62 38 q8 12 0 24"><animate attributeName="opacity" values="1;0" dur="1s" repeatCount="indefinite"/></path>
-            <path d="M74 32 q12 18 0 36"><animate attributeName="opacity" values="1;0" dur="1s" begin=".3s" repeatCount="indefinite"/></path>
-            <path d="M86 26 q16 24 0 48"><animate attributeName="opacity" values="1;0" dur="1s" begin=".6s" repeatCount="indefinite"/></path>
+            <path d="M62 38 q8 12 0 24"></path>
+            <path d="M74 32 q12 18 0 36"></path>
+            <path d="M86 26 q16 24 0 48"></path>
           </g>
           <path d="M140 24 c26 0 34 30 18 46 c-8 8 -6 18 -16 22 c-10 4 -18 -4 -16 -12 c2 -10 -12 -10 -12 -28 c0 -16 12 -28 26 -28z" style="fill:#f1c27d;stroke:#c48a4a;stroke-width:2"/>
           <path d="M136 42 c8 -6 18 0 14 10 c-3 6 -10 6 -10 14" style="fill:none;stroke:#c48a4a;stroke-width:3"/>
           <text x="10" y="104" font-size="11" style="fill:var(--muted)">hørsel</text>
           <rect x="52" y="95" width="140" height="12" rx="6" style="fill:var(--steel-soft);stroke:var(--line)"/>
-          <rect x="52" y="95" width="140" height="12" rx="6" style="fill:var(--green)">
-            <animate attributeName="width" values="140;60;60" keyTimes="0;.85;1" dur="7s" repeatCount="indefinite"/>
-            <animate attributeName="fill" values="#2b8a3e;#e8590c;#c92a2a;#c92a2a" keyTimes="0;.45;.85;1" dur="7s" repeatCount="indefinite"/></rect>
+          <rect x="52" y="95" width="60" height="12" rx="6" style="fill:var(--red)">
+            
+            </rect>
           <text x="122" y="118" text-anchor="middle" font-size="10" style="fill:var(--muted)">år 1 → år 20</text>
         </svg>
         <h3>Helse</h3><p class="short">Skader som kommer <b>sakte</b>.</p></div>
       <div class="card">
-        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Oljedråper drypper mot et sluk med forbudstegn, og havner i et oppsamlingskar i stedet">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Olje fra en tank går i et oppsamlingskar, ikke i sluket med forbudstegn">
           <path d="M30 14 h40 v34 h-40z" style="fill:var(--steel-dark)"/>
           <path d="M70 22 l22 10 v6 l-22 -4z" style="fill:var(--steel)"/>
           <text x="50" y="36" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">OLJE</text>
           <g style="fill:#5c4a1a">
-            <path d="M92 40 q-4 6 0 8 q4 -2 0 -8z"><animateTransform attributeName="transform" type="translate" values="0 0;0 52" dur="1.2s" repeatCount="indefinite"/></path>
-            <path d="M92 40 q-4 6 0 8 q4 -2 0 -8z"><animateTransform attributeName="transform" type="translate" values="0 0;0 52" dur="1.2s" begin=".6s" repeatCount="indefinite"/></path>
+            <path d="M92 40 q-4 6 0 8 q4 -2 0 -8z"></path>
+            <path d="M92 40 q-4 6 0 8 q4 -2 0 -8z"></path>
           </g>
           <path d="M72 92 h40 l-4 12 h-32z" style="fill:var(--green)"/>
           <text x="92" y="117" text-anchor="middle" font-size="10" style="fill:var(--muted)">oppsamling</text>
           <ellipse cx="158" cy="98" rx="24" ry="8" style="fill:var(--steel-dark)"/>
           <path d="M140 98 h36 M146 94 v8 M158 92 v12 M170 94 v8" style="stroke:var(--steel);stroke-width:2"/>
-          <circle cx="158" cy="78" r="18" style="fill:none;stroke:var(--red);stroke-width:4"><animate attributeName="r" values="17;20;17" dur="1.4s" repeatCount="indefinite"/></circle>
+          <circle cx="158" cy="78" r="18" style="fill:none;stroke:var(--red);stroke-width:4"></circle>
           <path d="M146 66 L170 90" style="stroke:var(--red);stroke-width:4"/>
           <text x="158" y="117" text-anchor="middle" font-size="10" style="fill:var(--muted)">sluk</text>
         </svg>
         <h3>Miljø</h3><p class="short">Det vi <b>slipper ut</b>.</p></div>
       <div class="card">
-        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="En kasse faller plutselig ned fra en reol og treffer gulvet">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="En kasse har falt ned fra en reol og treffer gulvet">
           <rect x="20" y="10" width="8" height="96" style="fill:var(--steel-dark)"/>
           <rect x="20" y="38" width="90" height="6" style="fill:var(--steel-dark)"/>
           <rect x="102" y="10" width="8" height="96" style="fill:var(--steel-dark)"/>
           <rect x="0" y="106" width="200" height="14" style="fill:var(--steel-soft)"/>
           <g>
-            <rect x="80" y="16" width="34" height="22" rx="2" style="fill:var(--orange);stroke:#a63c04;stroke-width:2"/>
-            <animateTransform attributeName="transform" type="translate" values="0 0;0 0;46 68;46 68" keyTimes="0;.45;.6;1" dur="3s" repeatCount="indefinite"/>
+            <rect x="126" y="84" width="34" height="22" rx="2" style="fill:var(--orange);stroke:#a63c04;stroke-width:2"/>
+            
           </g>
-          <g style="fill:var(--yellow);stroke:var(--red);stroke-width:2" opacity="0">
+          <g style="fill:var(--yellow);stroke:var(--red);stroke-width:2">
             <path d="M143 94 l6 -12 l4 10 l10 -8 l-2 12 l12 2 l-12 6 z"/>
-            <animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;.59;.62;.8;1" dur="3s" repeatCount="indefinite"/>
+            
           </g>
-          <text x="150" y="30" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--red)" opacity="0">PANG!<animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;.59;.62;.85;1" dur="3s" repeatCount="indefinite"/></text>
+          <text x="150" y="30" text-anchor="middle" font-size="22" font-weight="800" style="fill:var(--red)">PANG!</text>
         </svg>
         <h3>Sikkerhet</h3><p class="short">Skader som skjer <b>plutselig</b>.</p></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Spør klassen før du trykker: «Hva kan skade deg i verkstedet i dag – og hva kan skade deg om 20 år?» <b>Helse:</b> skader som kommer sakte – støy, støv, røyk, tunge løft; de merkes ofte først etter mange år. <b>Miljø:</b> det vi slipper ut – olje, kjølevæske, kjemikalier, avfall og energi. <b>Sikkerhet:</b> skader som skjer plutselig – kutt, klem, fall, brann og strøm. Skill mellom akutte skader (sikkerhet) og langvarige skader (helse). Mange eksempler hører hjemme i flere bokstaver: sveiserøyk er helse for sveiseren og miljø for omgivelsene. Det er helt i orden.</details>
   </div>
 </section>
 
-<!-- DEL 2 -->
-<section class="slide" id="pyramide" data-nav="2 Ulykkespyramiden">
+<!-- ULYKKESPYRAMIDEN -->
+<section class="slide" id="pyramide" data-nav="3 Ulykkespyramiden">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 7 min</div>
+    <div class="kicker">Del 3 · ca. 4 min</div>
     <h2>Ulykkespyramiden</h2>
     <p class="lead">Fjerner vi <b>bunnen</b>, krymper <b>toppen</b>.</p>
     <div class="fig">
@@ -345,61 +358,70 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="status info" id="d2Msg"></div>
     </div>
-    <div class="mini3">
-      <div class="card">
-        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="En skiftenøkkel faller ned og lander like ved en fot – ingen blir skadet">
-          <rect x="0" y="104" width="200" height="16" style="fill:var(--steel-soft)"/>
-          <path d="M110 104 v-30 h26 v20 c14 0 22 4 22 10z" style="fill:var(--ink)"/>
-          <rect x="108" y="40" width="30" height="36" rx="4" style="fill:var(--blue)"/>
-          <g>
-            <g transform="translate(70 0)">
-              <rect x="-4" y="0" width="8" height="34" rx="3" style="fill:var(--steel-dark)"/>
-              <path d="M-10 -2 a10 10 0 1 1 20 0 l-5 0 l0 -6 l-10 0 l0 6z" style="fill:var(--steel-dark)"/>
-            </g>
-            <animateTransform attributeName="transform" type="translate" values="0 -40;0 -40;0 70;0 70" keyTimes="0;.3;.5;1" dur="3s" repeatCount="indefinite"/>
-          </g>
-          <text x="58" y="30" text-anchor="middle" font-size="20" font-weight="800" style="fill:var(--orange)" opacity="0">Puh!<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.5;.55;.9;1" dur="3s" repeatCount="indefinite"/></text>
-        </svg>
-        <h3>Nestenulykke</h3><p class="short"><b>Ingen ble skadet</b> – denne gangen.</p></div>
-      <div class="card">
-        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Et RUH-skjema blir fylt ut med en blyant">
-          <rect x="54" y="6" width="92" height="108" rx="6" style="fill:var(--panel);stroke:var(--blue);stroke-width:3"/>
-          <text x="100" y="26" text-anchor="middle" font-size="14" font-weight="800" style="fill:var(--blue)">RUH</text>
-          <g style="stroke:var(--line);stroke-width:3"><path d="M66 44 h68 M66 62 h68 M66 80 h68 M66 98 h40"/></g>
-          <g style="stroke:var(--ink);stroke-width:3;stroke-linecap:round">
-            <path d="M66 44 h68" stroke-dasharray="68" stroke-dashoffset="68"><animate attributeName="stroke-dashoffset" values="68;0;0" keyTimes="0;.25;1" dur="4s" repeatCount="indefinite"/></path>
-            <path d="M66 62 h68" stroke-dasharray="68" stroke-dashoffset="68"><animate attributeName="stroke-dashoffset" values="68;68;0;0" keyTimes="0;.25;.5;1" dur="4s" repeatCount="indefinite"/></path>
-            <path d="M66 80 h68" stroke-dasharray="68" stroke-dashoffset="68"><animate attributeName="stroke-dashoffset" values="68;68;0;0" keyTimes="0;.5;.75;1" dur="4s" repeatCount="indefinite"/></path>
-          </g>
-          <g>
-            <path d="M0 0 l-6 -6 l30 -30 l6 6z" style="fill:var(--yellow);stroke:#b07d00;stroke-width:1.5"/><path d="M0 0 l-6 -6 l-2 8z" style="fill:var(--ink)"/>
-            <animateMotion dur="4s" repeatCount="indefinite" keyPoints="0;.33;.33;.66;.66;1;1" keyTimes="0;.25;.25;.5;.5;.75;1" calcMode="linear" path="M66 44 h68 M66 62 h68 M66 80 h68"/>
-          </g>
-          <circle cx="160" cy="100" r="12" style="fill:var(--green)" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;.78;.82;1" dur="4s" repeatCount="indefinite"/></circle>
-          <path d="M154 100 l4 4 l8 -8" style="fill:none;stroke:#fff;stroke-width:3" opacity="0"><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;.78;.82;1" dur="4s" repeatCount="indefinite"/></path>
-        </svg>
-        <h3>RUH / avviksmelding</h3><p class="short">Skriv hva som skjedde, så det kan <b>rettes</b>.</p></div>
-      <div class="card">
-        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Et forstørrelsesglass leter langs gulvet og finner årsaken: et oljesøl">
-          <rect x="0" y="96" width="200" height="24" style="fill:var(--steel-soft)"/>
-          <ellipse cx="140" cy="102" rx="30" ry="6" style="fill:#5c4a1a;opacity:.75"/>
-          <text x="140" y="80" text-anchor="middle" font-size="13" font-weight="800" style="fill:var(--green)" opacity="0">årsak!<animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;.55;.6;.9;1" dur="4s" repeatCount="indefinite"/></text>
-          <g>
-            <circle cx="0" cy="0" r="20" style="fill:var(--blue-soft);stroke:var(--ink);stroke-width:4;opacity:.9"/>
-            <path d="M14 14 l20 20" style="stroke:var(--ink);stroke-width:7;stroke-linecap:round"/>
-            <animateTransform attributeName="transform" type="translate" values="30 60;140 60;140 60;30 60" keyTimes="0;.55;.9;1" dur="4s" repeatCount="indefinite"/>
-          </g>
-        </svg>
-        <h3>Ikke sladring</h3><p class="short">Vi leter etter <b>årsaken</b>, ikke en syndebukk.</p></div>
-    </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Under hver alvorlige ulykke ligger mange små hendelser med samme årsak. <b>Nestenulykke:</b> noe gikk galt, men ingen ble skadet – denne gangen. <b>RUH</b> = rapport om uønsket hendelse: et skjema der du skriver hva som skjedde, slik at det kan rettes. Vi melder for å finne årsaken, ikke for å finne en syndebukk. Tallene 1 – 10 – 30 – 600 er fra Frank Bird (1969), som studerte ca. 1,7 millioner hendelser. Forholdstallene er ikke en naturlov, og de varierer mellom bransjer. Poenget er at alvorlige ulykker og små hendelser ofte har de samme årsakene. Får vi mange meldinger om nestenulykker, er det et tegn på god HMS-kultur – ikke på at verkstedet er farlig. Spør: «Hva er den siste nestenulykken du har sett?»</details>
   </div>
 </section>
 
-<!-- DEL 3 -->
-<section class="slide" id="finn" data-nav="3 Finn farene">
+<!-- NESTENULYKKE OG RUH -->
+<section class="slide" id="ruh" data-nav="4 Meld fra">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 15 min</div>
+    <div class="kicker">Del 4 · ca. 3 min</div>
+    <h2>Nestenulykke? Meld fra!</h2>
+    <p class="lead">Det som <b>nesten</b> gikk galt, kan gå galt neste gang.</p>
+    <div class="mini3 solo">
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="En skiftenøkkel har falt ned like ved en fot – ingen ble skadet">
+          <rect x="0" y="104" width="200" height="16" style="fill:var(--steel-soft)"/>
+          <path d="M110 104 v-30 h26 v20 c14 0 22 4 22 10z" style="fill:var(--ink)"/>
+          <rect x="108" y="40" width="30" height="36" rx="4" style="fill:var(--blue)"/>
+          <g>
+            <g transform="translate(70 70)">
+              <rect x="-4" y="0" width="8" height="34" rx="3" style="fill:var(--steel-dark)"/>
+              <path d="M-10 -2 a10 10 0 1 1 20 0 l-5 0 l0 -6 l-10 0 l0 6z" style="fill:var(--steel-dark)"/>
+            </g>
+            
+          </g>
+          <text x="58" y="30" text-anchor="middle" font-size="20" font-weight="800" style="fill:var(--orange)">Puh!</text>
+        </svg>
+        <h3>Nestenulykke</h3><p class="short"><b>Ingen ble skadet</b> – denne gangen.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Et RUH-skjema fylt ut med blyant">
+          <rect x="54" y="6" width="92" height="108" rx="6" style="fill:var(--panel);stroke:var(--blue);stroke-width:3"/>
+          <text x="100" y="26" text-anchor="middle" font-size="14" font-weight="800" style="fill:var(--blue)">RUH</text>
+          <g style="stroke:var(--line);stroke-width:3"><path d="M66 44 h68 M66 62 h68 M66 80 h68 M66 98 h40"/></g>
+          <g style="stroke:var(--ink);stroke-width:3;stroke-linecap:round">
+            <path d="M66 44 h68" stroke-dasharray="68" stroke-dashoffset="0"></path>
+            <path d="M66 62 h68" stroke-dasharray="68" stroke-dashoffset="0"></path>
+            <path d="M66 80 h68" stroke-dasharray="68" stroke-dashoffset="0"></path>
+          </g>
+          <g transform="translate(134 80)">
+            <path d="M0 0 l-6 -6 l30 -30 l6 6z" style="fill:var(--yellow);stroke:#b07d00;stroke-width:1.5"/><path d="M0 0 l-6 -6 l-2 8z" style="fill:var(--ink)"/>
+            
+          </g>
+          <circle cx="160" cy="100" r="12" style="fill:var(--green)"></circle>
+          <path d="M154 100 l4 4 l8 -8" style="fill:none;stroke:#fff;stroke-width:3"></path>
+        </svg>
+        <h3>RUH / avviksmelding</h3><p class="short">Skriv hva som skjedde, så det kan <b>rettes</b>.</p></div>
+      <div class="card">
+        <svg class="scene" viewBox="0 0 200 120" role="img" aria-label="Et forstørrelsesglass finner årsaken: et oljesøl">
+          <rect x="0" y="96" width="200" height="24" style="fill:var(--steel-soft)"/>
+          <ellipse cx="140" cy="102" rx="30" ry="6" style="fill:#5c4a1a;opacity:.75"/>
+          <text x="70" y="40" text-anchor="middle" font-size="16" font-weight="800" style="fill:var(--green)">årsak!</text>
+          <g transform="translate(140 60)">
+            <circle cx="0" cy="0" r="20" style="fill:var(--blue-soft);stroke:var(--ink);stroke-width:4;opacity:.9"/>
+            <path d="M14 14 l20 20" style="stroke:var(--ink);stroke-width:7;stroke-linecap:round"/>
+            
+          </g>
+        </svg>
+        <h3>Ikke sladring</h3><p class="short">Vi leter etter <b>årsaken</b>, ikke en syndebukk.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FINN FARENE -->
+<section class="slide" id="finn" data-nav="5 Finn farene">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 15 min</div>
     <h2>Finn farene i verkstedet</h2>
     <p class="lead">Klikk på de <b>8 farene</b> i bildet.</p>
     <div class="grid2 wide-left">
@@ -421,14 +443,14 @@ table.t th{background:var(--steel-soft)}
         <div class="tip o"><b>Ryddig verksted = tryggere verksted.</b></div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Orden og ryddighet er HMS: et ryddig verksted har færre snublefarer, færre branner og gjør det lettere å se farer. La elevene jobbe i par på skjermen eller på fremviseren: én peker, én forklarer. Diskuter etter hver fare: «Hvem sitt ansvar er dette?» – det fører rett over til del 4. Farene: sperret nødutgang, tung kasse med overheng i reolen, chucknøkkel i chucken, hansker ved dreiebenk, oljesøl, skadet ledning over gangveien, sliping uten vernebriller og usikrede gassflasker. Samme tegning (uten markering) er med i oppgave 3.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Orden og ryddighet er HMS: et ryddig verksted har færre snublefarer, færre branner og gjør det lettere å se farer. La elevene jobbe i par på skjermen eller på fremviseren: én peker, én forklarer. Diskuter etter hver fare: «Hvem sitt ansvar er dette?» – det fører rett over til del 6. Farene: sperret nødutgang, tung kasse med overheng i reolen, chucknøkkel i chucken, hansker ved dreiebenk, oljesøl, skadet ledning over gangveien, sliping uten vernebriller og usikrede gassflasker. Samme tegning (uten markering) er med i oppgave 3.</details>
   </div>
 </section>
 
-<!-- DEL 4 -->
-<section class="slide" id="roller" data-nav="4 Ansvar">
+<!-- ANSVAR -->
+<section class="slide" id="roller" data-nav="6 Ansvar">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 7 min</div>
+    <div class="kicker">Del 6 · ca. 4 min</div>
     <h2>Hvem har ansvaret?</h2>
     <p class="lead"><b>Arbeidsgiveren</b> har hovedansvaret – men <b>du</b> må være med.</p>
     <div class="grid2 wide-left">
@@ -440,17 +462,26 @@ table.t th{background:var(--steel-soft)}
         <div class="tip r" style="margin-bottom:0"><b>Fare for liv eller helse? Stopp og si fra!</b></div>
       </div>
     </div>
-    <div class="fig" style="margin-top:1rem">
-      <svg id="d4Flow" viewBox="0 0 1000 130" role="img" aria-label="Fire steg når du ser en fare: sikre, si fra, meld, følg opp"></svg>
-    </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Klikk på rollene i figuren. Du har rett og plikt til å stoppe arbeidet hvis du mener det er fare for liv eller helse, og si fra med én gang. Arbeidsmiljøloven: § 2-1 (arbeidsgivers ansvar), § 2-3 (arbeidstakers medvirkningsplikt, bl.a. bruke verneutstyr, si fra om feil og avbryte arbeid ved fare), § 3-1 (systematisk HMS-arbeid), § 6-1 (verneombud ved minst 10 arbeidstakere), § 6-3 (verneombud kan stanse arbeid ved umiddelbar fare), § 7-1 (AMU ved minst 50 arbeidstakere, og ved 20–50 når en av partene krever det). Elever er ikke arbeidstakere etter loven på skolen, men skolen har samme ansvar for et trygt læringsmiljø, og som lærling gjelder loven fullt ut. Kobling til kompetansemålet om plikter og rettigheter.</details>
   </div>
 </section>
 
-<!-- DEL 5 -->
-<section class="slide" id="risiko" data-nav="5 Risiko">
+<!-- SER DU EN FARE -->
+<section class="slide" id="farested" data-nav="7 Ser du en fare?">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 8 min</div>
+    <div class="kicker">Del 7 · ca. 3 min</div>
+    <h2>Ser du en fare? Fire steg</h2>
+    <p class="lead">Sikre → si fra → meld → følg opp.</p>
+    <div class="fig" style="margin-top:1.4rem">
+      <svg id="d4Flow" viewBox="0 0 1000 130" role="img" aria-label="Fire steg når du ser en fare: sikre, si fra, meld, følg opp"></svg>
+    </div>
+  </div>
+</section>
+
+<!-- RISIKO -->
+<section class="slide" id="risiko" data-nav="8 Risiko">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 8 min</div>
     <h2>Risiko = sannsynlighet × konsekvens</h2>
     <p class="lead">Hvor <b>ofte</b> kan det skje? Hvor <b>ille</b> blir det?</p>
     <div class="grid2 wide-right">
@@ -476,10 +507,10 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 6 -->
-<section class="slide" id="tiltak" data-nav="6 Tiltak">
+<!-- TILTAK -->
+<section class="slide" id="tiltak" data-nav="9 Tiltak">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 8 min</div>
+    <div class="kicker">Del 9 · ca. 8 min</div>
     <h2>Tiltakshierarkiet – best tiltak først</h2>
     <p class="lead">Slå på tiltakene ett og ett. Hvor mye <b>slipestøv</b> når lungene?</p>
     <div class="fig">
@@ -496,10 +527,10 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 7 -->
-<section class="slide" id="pvu" data-nav="7 Verneutstyr">
+<!-- VERNEUTSTYR -->
+<section class="slide" id="pvu" data-nav="10 Verneutstyr">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 6 min</div>
+    <div class="kicker">Del 10 · ca. 6 min</div>
     <h2>Personlig verneutstyr (PVU)</h2>
     <p class="lead">Velg en jobb. Kle på arbeideren. Trykk <b>Sjekk</b>.</p>
     <div class="grid2 wide-right">
@@ -764,7 +795,7 @@ $("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.them
       msg:"Sikkerhet: skader som skjer på et sekund. Vern på maskinen, ryddige gangveier og riktig verneutstyr hindrer dem."}
   ];
   chipsInto($("d1Sel"), [["all","Alle"],["H","H – Helse"],["M","M – Miljø"],["S","S – Sikkerhet"]], sel);
-  $("d1Sel").onclick = e => { const b=e.target.closest("[data-k]"); if(!b) return; sel=b.dataset.k; pressOnly($("d1Sel"), b); msg(); };
+  $("d1Sel").onclick = e => { const b=e.target.closest("[data-k]"); if(!b) return; sel=b.dataset.k; pressOnly($("d1Sel"), b); msg(); draw(0); };
   function msg(){ const p = P.find(q=>q.k===sel); $("d1Msg").textContent = p ? p.msg : "HMS handler om å beskytte mennesker, natur og verdier. Velg en bokstav."; }
   function icon(k, cx, cy, t, col){
     let s = "";
@@ -806,7 +837,6 @@ $("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.them
     });
     $("d1Svg").innerHTML = s;
   }
-  addAnim($("d1Svg"), (dt,t) => draw(t));
   draw(0); msg();
 })();
 
@@ -967,8 +997,9 @@ function sceneSVG(o={}){
 }
 (function(){
   const found = new Set(), svg = $("d3Svg");
-  function draw(t){ svg.innerHTML = sceneSVG({t, found}); }
+  function draw(t=.1){ svg.innerHTML = sceneSVG({t, found}); }
   function show(i){
+    draw();
     const h = HAZ[i];
     $("d3T").textContent = (i+1)+". "+h.n;
     $("d3Fare").innerHTML = "<b>Hva kan skje:</b> "+h.fare;
@@ -986,9 +1017,8 @@ function sceneSVG(o={}){
     found.add(best); show(best);
   });
   $("d3All").onclick = () => { HAZ.forEach((h,i)=>found.add(i)); show(7); $("d3T").textContent = "Alle 8 farene"; $("d3Fare").textContent = "Klikk på et nummer i bildet for å lese om faren."; $("d3Tiltak").textContent = ""; };
-  $("d3Reset").onclick = () => { found.clear(); $("d3T").textContent = "Klikk på en fare"; $("d3Fare").textContent = "Tips: Se på gulvet, hendene, øynene, reolen og veggene."; $("d3Tiltak").textContent = ""; $("d3Count").textContent = "Funnet: 0 av 8"; $("d3List").innerHTML = ""; };
-  addAnim(svg, (dt,t) => draw(t));
-  draw(0);
+  $("d3Reset").onclick = () => { found.clear(); $("d3T").textContent = "Klikk på en fare"; $("d3Fare").textContent = "Tips: Se på gulvet, hendene, øynene, reolen og veggene."; $("d3Tiltak").textContent = ""; $("d3Count").textContent = "Funnet: 0 av 8"; $("d3List").innerHTML = ""; draw(); };
+  draw();
 })();
 
 /* =====================================================================
@@ -1038,17 +1068,16 @@ function sceneSVG(o={}){
     const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
     const p = pt.matrixTransform(svg.getScreenCTM().inverse());
     const hit = Object.entries(R).find(([k,r]) => Math.hypot(p.x-r.x, p.y-r.y) < 54);
-    if (hit){ sel = hit[0]; card(); }
+    if (hit){ sel = hit[0]; card(); draw(0); }
   });
-  addAnim(svg, (dt,t) => draw(t));
   draw(0); card();
 
   /* Ser du en fare? */
   const S = [["1","Sikre","Stopp maskinen eller sperr av hvis det haster.","#c92a2a"],["2","Si fra","Til læreren, lederen eller verneombudet – med én gang.","#e8590c"],["3","Meld","Skriv avviksmelding (RUH) – også for nestenulykker.","#1c6fd1"],["4","Følg opp","Tiltak settes inn. Sjekk at faren er borte.","#2b8a3e"]];
   const fl = $("d4Flow");
-  addAnim(fl, (dt,t) => {
+  (() => {
     let s = "";
-    const act = Math.floor((t*.5)%4);
+    const act = -1;
     S.forEach((q,i) => {
       const x = 10 + i*248, on = i===act;
       s += `<rect x="${x}" y="12" width="228" height="106" rx="14" fill="${on?q[3]:"var(--panel)"}" stroke="${q[3]}" stroke-width="3"/>`;
@@ -1061,7 +1090,7 @@ function sceneSVG(o={}){
       if (i<3) s += `<path d="M${x+232} 65 l12 0 l-5 -6 m5 6 l-5 6" stroke="var(--muted)" stroke-width="2.5" fill="none"/>`;
     });
     fl.innerHTML = s;
-  });
+  })();
 })();
 
 /* =====================================================================
@@ -1277,15 +1306,15 @@ function workerSVG(it){
    ===================================================================== */
 (function(){
   const S = [["👀","Se faren","#1c6fd1"],["⚖","Vurder risikoen","#7048e8"],["🛠","Velg tiltak – best først","#2b8a3e"],["🦺","Bruk verneutstyr","#e8590c"],["📣","Meld fra","#c92a2a"]];
-  addAnim($("sumSvg"), (dt,t) => {
-    let s = ""; const act = Math.floor((t*.6)%5);
+  (() => {
+    let s = ""; const act = -1;
     S.forEach((q,i) => {
       const y = 12 + i*62, on = i===act;
       s += `<rect x="20" y="${y}" width="560" height="52" rx="12" fill="${on?q[2]:"var(--panel)"}" stroke="${q[2]}" stroke-width="3"/>`;
       s += TX(54,y+36,q[0],{size:24,anchor:"middle"})+TX(84,y+35,(i+1)+". "+q[1],{size:21,weight:800,fill:on?"#fff":"var(--ink)"});
     });
     $("sumSvg").innerHTML = s;
-  });
+  })();
 })();
 
 /* =====================================================================
