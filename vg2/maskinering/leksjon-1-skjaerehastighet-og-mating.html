@@ -209,22 +209,18 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <rect x="100" y="138" width="330" height="54" style="fill:url(#hgStal)"/>
           <g clip-path="url(#hClip)" style="stroke:#4a545e;stroke-width:1.2;opacity:.45">
             <g>
-              <animateTransform attributeName="transform" type="translate" dur=".5s" repeatCount="indefinite" values="0 0;0 -12"/>
               <path d="M100 140 H430 M100 152 H430 M100 164 H430 M100 176 H430 M100 188 H430 M100 200 H430"/>
             </g>
           </g>
           <!-- Udreid lag som blir mindre -->
           <rect x="100" y="128" width="330" height="74" style="fill:url(#hgStal);stroke:var(--steel-dark)">
-            <animate attributeName="width" dur="7s" repeatCount="indefinite" values="330;40;40" keyTimes="0;.85;1"/>
           </rect>
           <!-- Dreiestål og spon -->
           <g>
-            <animateTransform attributeName="transform" type="translate" dur="7s" repeatCount="indefinite" values="0 0;-290 0;-290 0" keyTimes="0;.85;1"/>
             <path d="M430 202 L444 226 L424 226 Z" style="fill:var(--orange)"/>
             <rect x="414" y="226" width="50" height="40" rx="3" style="fill:var(--steel-dark)"/>
             <g transform="translate(446 212)">
               <path d="M0 0 c 10 -2 18 6 14 14 c -3 7 -13 6 -14 0 c -1 -5 5 -7 7 -3" style="fill:none;stroke:var(--orange);stroke-width:3;stroke-linecap:round">
-                <animateTransform attributeName="transform" type="rotate" dur=".6s" repeatCount="indefinite" values="0 7 7;360 7 7"/>
               </path>
             </g>
           </g>
@@ -253,12 +249,12 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <table class="t plan">
           <tr><th colspan="2">Time 1</th></tr>
           <tr><td>0–5 min</td><td>Repetisjon</td></tr>
-          <tr><td>5–17 min</td><td>Del 1: skjærehastighet og turtall</td></tr>
-          <tr><td>17–27 min</td><td>Del 2: dreiebenk og fres</td></tr>
+          <tr><td>5–17 min</td><td>Del 1–2: skjærehastighet og turtall</td></tr>
+          <tr><td>17–27 min</td><td>Del 3–4: dreiebenk og fres</td></tr>
           <tr><td>27–45 min</td><td>Oppgave 1 og 2</td></tr>
           <tr><th colspan="2">Time 2</th></tr>
-          <tr><td>0–10 min</td><td>Del 3: mating</td></tr>
-          <tr><td>10–20 min</td><td>Del 4–5: velg v<sub>c</sub>, feil fart</td></tr>
+          <tr><td>0–10 min</td><td>Del 5–7: mating</td></tr>
+          <tr><td>10–20 min</td><td>Del 8–9: velg v<sub>c</sub>, feil fart</td></tr>
           <tr><td>20–42 min</td><td>Oppgave 3–5 og Skjæredatasimulatoren</td></tr>
           <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
         </table>
@@ -286,10 +282,10 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
   </div>
 </section>
 
-<!-- DEL 1 SKJÆREHASTIGHET -->
+<!-- SKJÆREHASTIGHET -->
 <section class="slide" id="vc" data-nav="1 Skjærehastighet">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 12 min</div>
+    <div class="kicker">Del 1 · ca. 8 min</div>
     <h2>Skjærehastighet og turtall</h2>
     <p class="lead"><b>Skjærehastighet v<sub>c</sub></b> er hvor fort overflaten suser forbi skjæret, i <b>meter per minutt</b>.</p>
     <div class="grid2 wide-left">
@@ -305,32 +301,41 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <div class="status info" id="vcTxt"></div>
       </div>
       <div>
-        <h3>Slå opp turtallet</h3>
-        <table class="t" id="nTab" style="font-size:.95rem; text-align:right">
-          <tr><th>Ø (mm)</th><th>v<sub>c</sub> 25</th><th>v<sub>c</sub> 100</th><th>v<sub>c</sub> 200</th></tr>
-        </table>
-        <p class="caption">Turtall i o/min, avrundet. v<sub>c</sub> i m/min.</p>
-        <div class="tip"><b>Dobbel diameter → halvt turtall.</b><br>Stor diameter: lavt turtall. Liten diameter: høyt turtall.</div>
-        <details class="ekstra"><summary>Ekstra: formelen for turtall</summary>
-          <div class="formula">n = v<sub>c</sub> · 1000 / (π · D)</div>
-          <p style="margin:.3rem 0">1000 gjør meter om til millimeter. π · D er veien rundt emnet.</p>
-          <div class="steps">Ø40, v<sub>c</sub> 200 m/min:<br>n = 200 · 1000 / (3,14 · 40)<br>n = 200 000 / 125,6 ≈ <span class="res">1590 o/min</span></div>
-        </details>
+        <div class="tip" style="margin-top:0"><b>Dobbel diameter → halvt turtall.</b><br>Stor diameter: lavt turtall. Liten diameter: høyt turtall.</div>
       </div>
     </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Poenget: det er ikke turtallet som bestemmer om skjæret har det bra, men farten i skjæret. Den samme v<sub>c</sub> gir helt ulikt turtall på en tynn og en tykk aksel. Ved planing mot sentrum blir diameteren mindre og mindre. Med fast turtall faller v<sub>c</sub> mot null i sentrum. Derfor bruker CNC-dreiebenker konstant skjærehastighet (G96), med en øvre grense for turtallet (G50/G92 S…). På fresen er det freserens diameter som teller, ikke emnets.</details>
   </div>
 </section>
 
-<!-- DEL 2 DREIEBENK OG FRES -->
-<section class="slide" id="maskiner" data-nav="2 Drei og fres">
+<!-- TURTALLSTABELL -->
+<section class="slide" id="tabell" data-nav="2 Turtallstabell">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 10 min</div>
-    <h2>Dreiebenk og fres</h2>
-    <p class="lead">Begge har en ting som <b>roterer</b> og en ting som <b>mates</b>. Men det er motsatt.</p>
-    <div class="grid2">
+    <div class="kicker">Del 2 · ca. 4 min</div>
+    <h2>Slå opp turtallet i tabellen</h2>
+    <p class="lead">Finn diameteren. Gå bort til riktig v<sub>c</sub>. Les turtallet.</p>
+    <div style="max-width:760px;margin-top:1rem">
+        <table class="t" id="nTab" style="font-size:.95rem; text-align:right">
+          <tr><th>Ø (mm)</th><th>v<sub>c</sub> 25</th><th>v<sub>c</sub> 100</th><th>v<sub>c</sub> 200</th></tr>
+        </table>
+        <p class="caption">Turtall i o/min, avrundet. v<sub>c</sub> i m/min.</p>
+        <details class="ekstra"><summary>Ekstra: formelen for turtall</summary>
+          <div class="formula">n = v<sub>c</sub> · 1000 / (π · D)</div>
+          <p style="margin:.3rem 0">1000 gjør meter om til millimeter. π · D er veien rundt emnet.</p>
+          <div class="steps">Ø40, v<sub>c</sub> 200 m/min:<br>n = 200 · 1000 / (3,14 · 40)<br>n = 200 000 / 125,6 ≈ <span class="res">1590 o/min</span></div>
+        </details>
+    </div>
+  </div>
+</section>
+
+<!-- DREIEBENK -->
+<section class="slide" id="maskiner" data-nav="3 Dreiebenk">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 5 min</div>
+    <h2>Dreiebenk: emnet roterer</h2>
+    <p class="lead"><b>Emnet</b> roterer. <b>Dreiestålet</b> mates langs emnet.</p>
+    <div style="max-width:760px;margin-top:1rem">
       <div class="fig">
-        <h3>Dreiebenk</h3>
         <svg viewBox="0 0 420 240" role="img" aria-label="Dreiing: emnet roterer, dreiestålet mates langs emnet">
           <defs>
             <linearGradient id="dgStal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7783"/><stop offset=".4" stop-color="#e3e8ee"/><stop offset="1" stop-color="#5f6b78"/></linearGradient>
@@ -359,8 +364,19 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         </svg>
         <div class="status info">Mating <b>f</b> = mm per <b>omdreining</b> av emnet.</div>
       </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>På dreiebenken er v<sub>c</sub> farten på emnets overflate, og D er emnets diameter. På fresen er v<sub>c</sub> farten i tennene, og D er fresens diameter. Matingen på fresen stilles inn som bordmating v<sub>f</sub> i mm/min, men verktøyleverandøren oppgir f<sub>z</sub> per tann. Bor og gjengetapper: borets diameter, som på fresen.</details>
+  </div>
+</section>
+
+<!-- FRES -->
+<section class="slide" id="fres" data-nav="4 Fres">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 5 min</div>
+    <h2>Fres: verktøyet roterer</h2>
+    <p class="lead">Motsatt av dreiebenken: <b>fresen</b> roterer, og <b>emnet</b> mates under fresen.</p>
+    <div style="max-width:760px;margin-top:1rem">
       <div class="fig">
-        <h3>Fres (sett ovenfra)</h3>
         <svg viewBox="0 0 420 240" role="img" aria-label="Fresing sett ovenfra: fresen roterer, emnet mates under fresen og et spor blir frest">
           <defs>
             <marker id="fArr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" style="fill:var(--orange)"/></marker>
@@ -388,17 +404,16 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         <div class="status info">Mating <b>f<sub>z</sub></b> = mm per <b>tann</b> på fresen.</div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>På dreiebenken er v<sub>c</sub> farten på emnets overflate, og D er emnets diameter. På fresen er v<sub>c</sub> farten i tennene, og D er fresens diameter. Matingen på fresen stilles inn som bordmating v<sub>f</sub> i mm/min, men verktøyleverandøren oppgir f<sub>z</sub> per tann. Bor og gjengetapper: borets diameter, som på fresen.</details>
   </div>
 </section>
 
-<!-- DEL 3 MATING -->
-<section class="slide" id="mating" data-nav="3 Mating">
+<!-- MATING -->
+<section class="slide" id="mating" data-nav="5 Mating">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 10 min</div>
+    <div class="kicker">Del 5 · ca. 5 min</div>
     <h2>Mating og overflate</h2>
     <p class="lead">Dreiestålet lager en skrueformet rille. Stor mating gir <b>grove riller</b>, men jobben går <b>fortere</b>.</p>
-    <div class="grid2 wide-left">
+    <div style="max-width:820px">
       <div class="fig">
         <div class="controls no-print" style="margin-top:0"><label for="fSl">Mating f</label><input type="range" id="fSl" min="0.05" max="0.5" step="0.05" value="0.2"></div>
         <svg id="fSvg" viewBox="0 0 560 230" role="img" aria-label="Overflaten under lupe. Rillene blir større når matingen øker."></svg>
@@ -409,18 +424,38 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
         </div>
         <div class="status" id="fTxt"></div>
       </div>
-      <div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Rilledybden (teoretisk R<sub>t</sub>) avhenger av matingen og neseradiusen på skjæret: R<sub>t</sub> ≈ f² / (8 · r). Her er neseradiusen 0,8 mm. Dobbel mating gir fire ganger så dype riller. Større neseradius gir finere overflate, men mer vibrasjoner. Ra er omtrent en firedel av R<sub>t</sub>.</details>
+  </div>
+</section>
+
+<!-- GROV OG FIN -->
+<section class="slide" id="grovfin" data-nav="6 Grov og fin">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 3 min</div>
+    <h2>Grov- og finbearbeiding</h2>
+    <p class="lead">Først <b>grovt og fort</b>. Til slutt <b>fint og sakte</b>.</p>
+    <div style="max-width:760px;margin-top:1rem">
         <div class="card">
-          <h3>Grov- og finbearbeiding</h3>
-          <table class="t">
+                    <table class="t" style="font-size:1.1rem">
             <tr><th></th><th>Grov</th><th>Fin</th></tr>
             <tr><td>Mål</td><td>Fjerne mye, fort</td><td>Fint mål og overflate</td></tr>
             <tr><td>Mating f</td><td>0,2–0,4 mm</td><td>0,05–0,15 mm</td></tr>
             <tr><td>Skjæredybde</td><td>Stor</td><td>Liten</td></tr>
           </table>
         </div>
-        <div class="card" style="margin-top:1rem">
-          <h3>Fres: mating per tann</h3>
+    </div>
+  </div>
+</section>
+
+<!-- MATING PER TANN -->
+<section class="slide" id="pertann" data-nav="7 Mating per tann">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 3 min</div>
+    <h2>Fres: mating per tann</h2>
+    <p class="lead">Hver tann tar en liten bit. Flere tenner gir mer mating per runde.</p>
+    <div style="max-width:760px;margin-top:1rem">
+        <div class="card">
           <svg viewBox="0 0 300 120" role="img" aria-label="Fres med fire tenner. Hver tann tar en bit på 0,05 mm.">
             <circle cx="70" cy="60" r="40" style="fill:var(--steel-dark)"/>
             <path d="M70 20 l9 4 l-9 7 Z M110 60 l-4 9 l-7 -9 Z M70 100 l-9 -4 l9 -7 Z M30 60 l4 -9 l7 9 Z" style="fill:var(--orange)"/>
@@ -434,16 +469,14 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
           <p style="margin:.3rem 0">z = antall tenner. v<sub>f</sub> i mm/min.</p>
           <div class="steps">f<sub>z</sub> 0,05 mm, 4 tenner, 3000 o/min:<br>v<sub>f</sub> = 0,05 · 4 · 3000 = <span class="res">600 mm/min</span></div>
         </details>
-      </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Rilledybden (teoretisk R<sub>t</sub>) avhenger av matingen og neseradiusen på skjæret: R<sub>t</sub> ≈ f² / (8 · r). Her er neseradiusen 0,8 mm. Dobbel mating gir fire ganger så dype riller. Større neseradius gir finere overflate, men mer vibrasjoner. Ra er omtrent en firedel av R<sub>t</sub>.</details>
   </div>
 </section>
 
-<!-- DEL 4 VELG vc -->
-<section class="slide" id="velg" data-nav="4 Velg vc">
+<!-- VELG vc -->
+<section class="slide" id="velg" data-nav="8 Velg vc">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 6 min</div>
+    <div class="kicker">Del 8 · ca. 6 min</div>
     <h2>Velg skjærehastighet</h2>
     <p class="lead">v<sub>c</sub> bestemmes av to ting: <b>materialet</b> og <b>verktøyet</b>.</p>
     <div class="grid2 wide-left">
@@ -468,16 +501,16 @@ details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
   </div>
 </section>
 
-<!-- DEL 5 FEIL FART -->
-<section class="slide" id="feil" data-nav="5 Feil fart?">
+<!-- FEIL FART -->
+<section class="slide" id="feil" data-nav="9 Feil fart?">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 4 min</div>
+    <div class="kicker">Del 9 · ca. 4 min</div>
     <h2>Feil fart? Se på sponet</h2>
     <div class="grid4" style="margin-top:1rem">
       <div class="card">
         <svg viewBox="0 0 200 110" role="img" aria-label="Blått spon og glødende skjær">
           <path d="M40 90 L70 40 L100 90 Z" style="fill:var(--steel-dark)"/>
-          <circle cx="70" cy="44" r="9" style="fill:var(--red);opacity:.8"><animate attributeName="opacity" dur="1s" repeatCount="indefinite" values=".3;.9;.3"/></circle>
+          <circle cx="70" cy="44" r="9" style="fill:var(--red);opacity:.8"/>
           <path d="M105 45 c 25 -10 45 5 35 25 c -8 15 -30 10 -25 -5 c 3 -10 15 -8 15 0" style="fill:none;stroke:#2f6fd6;stroke-width:6;stroke-linecap:round"/>
         </svg>
         <h3 style="color:var(--red)">For høy v<sub>c</sub></h3>
