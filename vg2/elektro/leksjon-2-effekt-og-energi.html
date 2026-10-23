@@ -309,17 +309,17 @@ table.t th{background:var(--steel-soft)}
         <h3>Plan for to skoletimer</h3>
         <table class="t plan">
           <tr><th colspan="2">Time 1</th></tr>
-          <tr><td>0–12 min</td><td>Del 1: effekt, kursen og energi</td></tr>
+          <tr><td>0–12 min</td><td>Del 1–3: effekt, energi og typisk effekt</td></tr>
           <tr><td>12–27 min</td><td>Oppgave 1 og 2</td></tr>
-          <tr><td>27–37 min</td><td>Del 2: sveiseapparatet</td></tr>
+          <tr><td>27–37 min</td><td>Del 4–5: sveiseapparatet, lysbuen er motstanden</td></tr>
           <tr><td>37–45 min</td><td>Oppgave 3</td></tr>
           <tr><th colspan="2">Time 2</th></tr>
-          <tr><td>0–15 min</td><td>Del 3: strøm gjennom kroppen og de fem sikkerhetsreglene</td></tr>
+          <tr><td>0–15 min</td><td>Del 6–8: strøm gjennom kroppen, jordfeilbryter og de fem sikkerhetsreglene</td></tr>
           <tr><td>15–30 min</td><td>Oppgave 4</td></tr>
           <tr><td>30–42 min</td><td>Oppgave 5 (ekstra): les merkeskiltet</td></tr>
           <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
         </table>
-      <div class="tip" style="margin:.8rem 0 0"><b>Repetisjon fra Vg1:</b> Har klassen hatt Vg1 Elektro 1–2 (effekt og P = U · I), kan dere ta Del 1 (effekt) raskt som repetisjon og bruke tiden på oppgavene.</div>
+      <div class="tip" style="margin:.8rem 0 0"><b>Repetisjon fra Vg1:</b> Har klassen hatt Vg1 Elektro 1–2 (effekt og P = U · I), kan dere ta Del 1–3 (effekt) raskt som repetisjon og bruke tiden på oppgavene.</div>
       </div>
       </details>
       <p class="caption no-print">Bla med piltastene ↑ ↓. A+ gir større tekst på fremviser.</p>
@@ -328,11 +328,11 @@ table.t th{background:var(--steel-soft)}
 </section>
 
 
-<!-- DEL 1 -->
-<section class="slide" id="effekt" data-nav="1 Effekt og energi">
+<!-- EFFEKT -->
+<section class="slide" id="effekt" data-nav="1 Effekt">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 12 min</div>
-    <h2>Effekt og energi</h2>
+    <div class="kicker">Del 1 · ca. 6 min</div>
+    <h2>Effekt: P = U · I</h2>
     <p class="lead"><b>Effekt</b> = hvor mye energi utstyret bruker hvert sekund. Watt (W).</p>
     <div class="grid2">
       <div class="fig">
@@ -352,12 +352,26 @@ table.t th{background:var(--steel-soft)}
         <div class="meter"><div class="fill" id="kursFill"></div><div class="lim" style="left:80%"></div><div class="txt" id="kursTxtM">0 A</div></div>
         <div class="readout r3"><div><span>Effekt P</span><b id="kursP">0 W</b></div><div><span>Strøm I = P / U</span><b id="kursI">0,0 A</b></div><div><span>Grense</span><b>16 A</b></div></div>
         <div class="status info" id="kursTxt">Slå på utstyr. Rød strek = 16 A.</div>
-        
       </div>
+      <div style="display:grid;gap:.7rem;align-content:start">
+        <div class="card"><b>P</b> effekt · watt (W)</div>
+        <div class="card"><b>U</b> spenning · volt (V)</div>
+        <div class="card"><b>I</b> strøm · ampere (A)</div>
+        <div class="tip o" style="margin:0">For mye utstyr på én kurs → for stor strøm → sikringen går.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENERGI -->
+<section class="slide" id="energi" data-nav="2 Energi">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 3 min</div>
+    <h2>Energi og strømregning: E = P · t</h2>
+    <p class="lead">Effekt ganger tid. Strømregningen måles i <b>kWh</b>.</p>
+    <div class="grid2">
       <div>
         <div class="card">
-          <h3>Energi: E = P · t</h3>
-          <p>Strømregningen måles i <b>kWh</b>.</p>
           <div class="calc" style="grid-template-columns:repeat(3,minmax(0,1fr))">
             <label>Effekt P (kW)<input id="eP" type="text" inputmode="decimal" value="5,5"></label>
             <label>Tid t (timer)<input id="eT" type="text" inputmode="decimal" value="8"></label>
@@ -366,19 +380,32 @@ table.t th{background:var(--steel-soft)}
           <div class="steps" id="eSteps"></div>
           <p class="caption">Kompressor 5,5 kW i en arbeidsdag.</p>
         </div>
-        <div class="card" style="margin-top:1rem">
-          <h3>Typisk effekt</h3>
-          <div id="effBars"></div>
-        </div>
+      </div>
+      <div style="display:grid;gap:.7rem;align-content:start">
+        <div class="formula">E = P · t</div>
+        <div class="card"><b>1 kWh</b> = 1 kW i 1 time</div>
+        <div class="tip" style="margin:0">Husk: kW og <b>timer</b> gir kWh.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DEL 2 -->
-<section class="slide" id="sveis" data-nav="2 Sveising">
+<!-- TYPISK EFFEKT -->
+<section class="slide" id="typisk" data-nav="3 Typisk effekt">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 10 min</div>
+    <div class="kicker">Del 3 · ca. 3 min</div>
+    <h2>Hvor mye effekt bruker utstyret?</h2>
+    <p class="lead">Fra en lampe til en sveisemaskin.</p>
+    <div class="card" style="margin-top:1rem">
+      <div id="effBars"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SVEISEAPPARATET -->
+<section class="slide" id="sveis" data-nav="4 Sveising">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 6 min</div>
     <h2>Effekt i et sveiseapparat</h2>
     <p class="lead">MIG/MAG med <b>rørtråd</b>. <b>Lysbuen er motstanden</b> i kretsen. Ohms lov og P = U · I gjelder her også.</p>
     <div class="grid2 wide-left">
@@ -441,9 +468,23 @@ table.t th{background:var(--steel-soft)}
         </div>
         <div class="status ok" id="swTxt"></div>
       </div>
+      <div style="display:grid;gap:.7rem;align-content:start">
+        <div class="tip" style="margin:0"><b style="color:var(--red)">U opp</b> → lengre lysbue → større R.<br><b style="color:var(--blue)">Mating opp</b> → mer strøm I → mer effekt P.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Et MIG/MAG-apparat har konstant spenning. Sveiseren stiller spenning og trådmating; strømmen blir det tråden trenger for å smelte, og følger derfor matingen (her ca. I = 40 + 20 · mating, typisk for 1,2 mm rørtråd). Derfor henger I- og mating-sliderne sammen. Grov tommelfingerregel for passe spenning: U ≈ 14 + 0,05 · I. Lav spenning: tråden «stanger» i smeltebadet. Høy spenning: lang og urolig lysbue med sprut. Rørtråd er et stålrør fylt med flussmiddel som gir slagg og beskyttelse.</details>
+  </div>
+</section>
+
+<!-- LYSBUEN ER MOTSTANDEN -->
+<section class="slide" id="lysbue" data-nav="5 Lysbuen">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 4 min</div>
+    <h2>Lysbuen er motstanden</h2>
+    <p class="lead">Tallene kommer fra innstillingen i Del 4.</p>
+    <div class="grid2">
       <div>
         <div class="card">
-          <h3>Lysbuen er motstanden</h3>
           <p>Strømmen går gjennom lysbuen. Den bremser strømmen, som lampen i en krets.</p>
           <div class="formula" style="font-size:1.25rem">R = U / I</div>
           <p style="text-align:center;margin:0 0 .5rem;font-weight:650;font-variant-numeric:tabular-nums" id="swFR">24 V / 200 A = 0,12 Ω</p>
@@ -451,18 +492,19 @@ table.t th{background:var(--steel-soft)}
           <p style="text-align:center;margin:0 0 .5rem;font-weight:650;font-variant-numeric:tabular-nums" id="swFP">24 V · 200 A = 4 800 W</p>
           <p style="margin:0">Effekten blir <b>varme</b> i lysbuen. Den smelter tråden og stålet.</p>
         </div>
-        <div class="tip"><b style="color:var(--red)">U opp</b> → lengre lysbue → større R.<br><b style="color:var(--blue)">Mating opp</b> → mer strøm I → mer effekt P.</div>
-        <div class="tip" style="border-color:var(--orange);background:var(--orange-soft)"><b id="swCmpP">4,8 kW</b> i en liten lysbue. Like mye som <b id="swCmpN">ca. 2</b> vinkelslipere (2 kW).</div>
+      </div>
+      <div style="display:grid;gap:.7rem;align-content:start">
+        <div class="tip" style="margin:0;border-color:var(--orange);background:var(--orange-soft)"><b id="swCmpP">4,8 kW</b> i en liten lysbue. Like mye som <b id="swCmpN">ca. 2</b> vinkelslipere (2 kW).</div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Et MIG/MAG-apparat har konstant spenning. Sveiseren stiller spenning og trådmating; strømmen blir det tråden trenger for å smelte, og følger derfor matingen (her ca. I = 40 + 20 · mating, typisk for 1,2 mm rørtråd). Derfor henger I- og mating-sliderne sammen. Grov tommelfingerregel for passe spenning: U ≈ 14 + 0,05 · I. Lav spenning: tråden «stanger» i smeltebadet. Høy spenning: lang og urolig lysbue med sprut. Rørtråd er et stålrør fylt med flussmiddel som gir slagg og beskyttelse. Lysbuen er ionisert gass (plasma) som leder strøm. Motstanden er liten (ca. 0,1 Ω), men strømmen er stor, så effekten blir stor. Flinke elever: P = R · I² viser at strømmen betyr mest. Spørsmål til klassen: Hvorfor blir ikke ledningene like varme som lysbuen? (Kobberet har mye mindre R.)</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Lysbuen er ionisert gass (plasma) som leder strøm. Motstanden er liten (ca. 0,1 Ω), men strømmen er stor, så effekten blir stor. Flinke elever: P = R · I² viser at strømmen betyr mest. Spørsmål til klassen: Hvorfor blir ikke ledningene like varme som lysbuen? (Kobberet har mye mindre R.)</details>
   </div>
 </section>
 
-<!-- DEL 3 -->
-<section class="slide" id="sikkerhet" data-nav="3 Sikkerhet">
+<!-- STRØM GJENNOM KROPPEN -->
+<section class="slide" id="sikkerhet" data-nav="6 Strøm i kroppen">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 15 min</div>
+    <div class="kicker">Del 6 · ca. 6 min</div>
     <h2>Strøm gjennom kroppen</h2>
     <p class="lead">Det er <b>strømmen</b> som skader. Ohms lov: høyere spenning gir mer strøm gjennom kroppen.</p>
     <div class="grid2 wide-left">
@@ -507,11 +549,27 @@ table.t th{background:var(--steel-soft)}
         <div class="status bad" id="bTxt"></div>
         <p class="caption">Forenklede verdier, hånd til føtter.</p>
       </div>
+      <div style="display:grid;gap:.7rem;align-content:start">
+        <div class="tip r" style="margin:0">Våt hud → mindre R → <b>mer strøm</b> gjennom kroppen.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JORDFEILBRYTER OG SPENNINGSNIVÅER -->
+<section class="slide" id="jordfeil" data-nav="7 Jordfeil og spenning">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 3 min</div>
+    <h2>Jordfeilbryter og spenningsnivåer</h2>
+    <p class="lead">Hva er farlig, og hva beskytter deg?</p>
+    <div class="grid2" style="margin-top:1rem">
       <div>
-        <div class="card" style="margin-bottom:.8rem">
+        <div class="card">
           <h3>Jordfeilbryter</h3>
           <p class="short">Slår av lynraskt hvis strøm lekker ut – gjennom deg. <b>30 mA</b>.</p>
         </div>
+      </div>
+      <div>
         <div class="card">
           <h3>Spenningsnivåer</h3>
           <table class="t">
@@ -519,12 +577,18 @@ table.t th{background:var(--steel-soft)}
             <tr><td style="white-space:nowrap"><b>230 V</b></td><td>Stikkontakter. <span style="color:var(--red);font-weight:700">Livsfarlig.</span></td></tr>
             <tr><td style="white-space:nowrap"><b>400 V</b></td><td>Maskiner og motorer. <span style="color:var(--red);font-weight:700">Livsfarlig.</span></td></tr>
           </table>
-          
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <h3 style="margin-top:2rem">Før du jobber på en maskin: de fem sikkerhetsreglene</h3>
+<!-- DE FEM SIKKERHETSREGLENE -->
+<section class="slide" id="fem-regler" data-nav="8 Fem sikkerhetsregler">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 6 min</div>
+    <h2>Før du jobber på en maskin: de fem sikkerhetsreglene</h2>
+    <p class="lead">Trykk «Neste regel» og se hva du gjør.</p>
     <div class="grid2">
       <div class="fig">
         <svg class="loto" id="loto" viewBox="0 0 520 300" role="img" aria-label="Hovedbryter som slås av, låses og merkes">

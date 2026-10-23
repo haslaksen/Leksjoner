@@ -105,6 +105,10 @@ table.t th{background:var(--steel-soft)}
 .steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.92rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem}
 .steps div{margin:.15rem 0}
 .steps .res{color:var(--orange); font-weight:700}
+.qty{display:grid; grid-template-columns:3.2rem 1fr; gap:.2rem .8rem; align-items:center}
+.qty .sym{grid-row:span 2; font-size:2rem; font-weight:800; text-align:center; border-radius:12px; padding:.2rem 0}
+.qty .nm{font-weight:700}
+.qty .ds{font-size:.85rem; color:var(--muted)}
 .formula{font-size:1.5rem; font-weight:800; text-align:center; padding:.3rem; color:var(--orange)}
 .rule{display:grid; grid-template-columns:3.4rem 1fr; gap:.8rem; align-items:center}
 .rule .ic{font-size:1.7rem; font-weight:800; text-align:center; border-radius:12px; padding:.3rem 0}
@@ -264,15 +268,15 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         <h3>Plan for to skoletimer</h3>
         <table class="t plan">
           <tr><th colspan="2">Time 1 · Likestrøm (DC)</th></tr>
-          <tr><td>0–8 min</td><td>Del 1: bli kjent med multimeteret</td></tr>
-          <tr><td>8–22 min</td><td>Del 2: slik måler du – fem målinger</td></tr>
-          <tr><td>22–30 min</td><td>Del 3: feilsøking i 24 V-krets</td></tr>
+          <tr><td>0–8 min</td><td>Del 1–2: bli kjent med multimeteret, symbolene</td></tr>
+          <tr><td>8–22 min</td><td>Del 3–4: slik måler du – fem målinger, tre regler</td></tr>
+          <tr><td>22–30 min</td><td>Del 5–6: feilsøking i 24 V-krets</td></tr>
           <tr><td>30–45 min</td><td>Oppgave 1 og 2</td></tr>
           <tr><th colspan="2">Time 2 · Vekselstrøm (AC)</th></tr>
-          <tr><td>0–5 min</td><td>Del 4: nettet – TN og IT</td></tr>
-          <tr><td>5–12 min</td><td>Del 5: spenning i 1-, 2- og 3-fas</td></tr>
-          <tr><td>12–19 min</td><td>Del 6: strømtang</td></tr>
-          <tr><td>19–26 min</td><td>Del 7: motorviklinger og spenningsløshet</td></tr>
+          <tr><td>0–5 min</td><td>Del 7–8: nettet – TN og IT, lederfargene</td></tr>
+          <tr><td>5–12 min</td><td>Del 9–10: spenning i 1-, 2- og 3-fas</td></tr>
+          <tr><td>12–19 min</td><td>Del 11–12: strømtang</td></tr>
+          <tr><td>19–26 min</td><td>Del 13–14: motorviklinger og spenningsløshet</td></tr>
           <tr><td>26–43 min</td><td>Oppgave 3, 4 og 5 · Oppgave 6 er ekstra</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
@@ -283,10 +287,10 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
   </div>
 </section>
 
-<!-- DEL 1 -->
+<!-- MULTIMETERET -->
 <section class="slide" id="multimeter" data-nav="1 Multimeteret">
   <div class="wrap">
-    <div class="kicker">Del 1 · ca. 8 min · DC og AC</div>
+    <div class="kicker">Del 1 · ca. 6 min · DC og AC</div>
     <h2>Multimeteret – ett instrument, mange målinger</h2>
     <p class="lead">Velg hva du vil måle. Se hvor den <b style="color:#e03131">røde</b> ledningen skal stå.</p>
     <div class="grid2">
@@ -299,20 +303,31 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <h3 id="mmName">–</h3>
           <div class="mmrow"><div>Brukes til</div><div id="mmHva"></div><div>Rød ledning i</div><div id="mmJack" style="font-weight:700"></div><div>Svart ledning i</div><div style="font-weight:700">COM (felles)</div><div>Slik kobler du</div><div id="mmKob" style="font-weight:700"></div></div>
         </div>
-        <div class="grid2" style="gap:1rem; margin-top:1rem">
-          <div class="card"><h3>⎓ og ~</h3><p class="short"><b>⎓</b> likestrøm · <b>~</b> vekselstrøm</p></div>
-          <div class="card"><h3>OL</h3><p class="short">Utenfor området. På Ω: <b>brudd</b>.</p></div>
-        </div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Svart ledning står nesten alltid i COM. Rød ledning flyttes bare ved strømmåling – og må flyttes tilbake etterpå. En ledning som er glemt i A-kontakten, er den vanligste årsaken til ødelagte målere og lysbuer. Har dere multimetre i verkstedet, kan elevene finne de samme symbolene på dem. ⎓ = likestrøm (f.eks. 24 V styrestrøm), ~ = vekselstrøm (f.eks. 230 V); feil valg gir 0 eller «hoppende» tall. OL = «over limit».</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Svart ledning står nesten alltid i COM. Rød ledning flyttes bare ved strømmåling – og må flyttes tilbake etterpå. En ledning som er glemt i A-kontakten, er den vanligste årsaken til ødelagte målere og lysbuer.</details>
   </div>
 </section>
 
-<!-- DEL 2 -->
-<section class="slide" id="dc" data-nav="2 Slik måler du (DC)">
+<!-- SYMBOLENE -->
+<section class="slide" id="symboler" data-nav="2 ⎓, ~ og OL">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 14 min · Likestrøm</div>
+    <div class="kicker">Del 2 · ca. 2 min</div>
+    <h2>Tre symboler du må kunne</h2>
+    <p class="lead">Disse ser du på bryteren og i displayet.</p>
+    <div class="grid3" style="margin-top:1.4rem">
+      <div class="card qty"><div class="sym" style="background:var(--blue-soft);color:var(--blue)">⎓</div><div class="nm">Likestrøm (DC)</div><div class="ds">Batteri, 24 V styrestrøm.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--red-soft);color:var(--red)">~</div><div class="nm">Vekselstrøm (AC)</div><div class="ds">Stikkontakt 230 V.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--steel-soft);color:var(--ink)">OL</div><div class="nm">Utenfor området</div><div class="ds">På Ω: <b>brudd</b>.</div></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Har dere multimetre i verkstedet, kan elevene finne de samme symbolene på dem. ⎓ = likestrøm (f.eks. 24 V styrestrøm), ~ = vekselstrøm (f.eks. 230 V); feil valg gir 0 eller «hoppende» tall. OL = «over limit».</details>
+  </div>
+</section>
+
+<!-- FEM MÅLINGER -->
+<section class="slide" id="dc" data-nav="3 Slik måler du (DC)">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 11 min · Likestrøm</div>
     <h2>Fem målinger i en likestrømkrets</h2>
     <p class="lead">Velg måling. Trykk <b>«Vis vanlig feil»</b> etterpå.</p>
     <div class="hbwrap">
@@ -323,11 +338,6 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
       </figure>
       <div>
         <div class="card"><h3>Fremgangsmåte</h3><ol id="mm-how" class="how"></ol></div>
-        <div class="grid3 small3" style="margin-top:.8rem">
-          <div class="card rule"><div class="ic" style="background:var(--red-soft);color:var(--red)">V</div><div><b>parallelt</b></div></div>
-          <div class="card rule"><div class="ic" style="background:var(--blue-soft);color:var(--blue)">A</div><div><b>i serie</b></div></div>
-          <div class="card rule"><div class="ic" style="background:var(--green-soft);color:var(--green)">Ω</div><div><b>spennings&shy;løst</b></div></div>
-        </div>
       </div>
     </div>
     <a class="simlink no-print" data-sim="multimeter"><span class="ico">🧪</span><span><b>Prøv selv: Multimeter-simulatoren</b><small>Velg funksjon, område og kontakt, og mål selv.</small></span><span class="pil">→</span></a>
@@ -335,10 +345,42 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
   </div>
 </section>
 
-<!-- DEL 3 -->
-<section class="slide" id="feilsok" data-nav="3 Feilsøking">
+<!-- TRE REGLER -->
+<section class="slide" id="regler" data-nav="4 Tre regler">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 8 min · Likestrøm</div>
+    <div class="kicker">Del 4 · ca. 3 min</div>
+    <h2>Tre regler for kobling</h2>
+    <p class="lead">Spenning over, strøm gjennom, motstand uten strøm.</p>
+    <div class="grid3" style="margin-top:1.4rem">
+      <div class="card qty"><div class="sym" style="background:var(--red-soft);color:var(--red)">V</div><div class="nm">Spenning: parallelt</div><div class="ds">Over det du måler.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--blue-soft);color:var(--blue)">A</div><div class="nm">Strøm: i serie</div><div class="ds">Bryt kretsen, måleren inn i ledningen.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--green-soft);color:var(--green)">Ω</div><div class="nm">Motstand: spenningsløst</div><div class="ds">Ingen strøm i kretsen.</div></div>
+    </div>
+    <div class="tip r">Rød ledning tilbake i <b>VΩ</b> etter strømmåling.</div>
+  </div>
+</section>
+
+<!-- REGELEN FOR FEILSØKING -->
+<section class="slide" id="halvering" data-nav="5 Følg spenningen">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 2 min · Likestrøm</div>
+    <h2>Feilsøking: følg spenningen</h2>
+    <p class="lead">Mål fra + og videre. Der spenningen forsvinner, er feilen.</p>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="tip g" style="margin:0;font-size:1.15rem"><b>Regelen:</b> Feilen sitter mellom siste <b>24 V</b> og første <b>0 V</b>.</div>
+      <div class="card">
+        <h3>Halveringsmetoden</h3>
+        <svg viewBox="0 0 320 70" style="display:block;width:100%;height:auto" aria-label="Halveringsmetoden"><g id="halv"></g></svg>
+        <p class="short" style="margin-top:.3rem">Mål <b>i midten</b> først. Da vet du hvilken halvdel feilen er i.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINN FEILEN -->
+<section class="slide" id="feilsok" data-nav="6 Finn feilen">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 6 min · Likestrøm</div>
     <h2>Feilsøking: følg spenningen</h2>
     <p class="lead">Lampa lyser ikke. Trykk på de oransje <b>målepunktene</b>.</p>
     <div class="grid2 wide-left">
@@ -349,11 +391,6 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
       </div>
       <div>
         <div class="tip g" style="margin-top:0"><b>Regelen:</b> Feilen sitter mellom siste <b>24 V</b> og første <b>0 V</b>.</div>
-        <div class="card" style="margin-bottom:.8rem">
-          <h3>Halveringsmetoden</h3>
-          <svg viewBox="0 0 320 70" style="display:block;width:100%;height:auto" aria-label="Halveringsmetoden"><g id="halv"></g></svg>
-          <p class="short" style="margin-top:.3rem">Mål <b>i midten</b> først.</p>
-        </div>
         <div class="card">
           <h3>Hvor er feilen?</h3>
           <div class="controls" id="fsGuess" style="margin-top:.2rem"></div>
@@ -369,10 +406,10 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
   </div>
 </section>
 
-<!-- DEL 4 -->
-<section class="slide" id="nett" data-nav="4 Nettet (AC)">
+<!-- NETTET -->
+<section class="slide" id="nett" data-nav="7 Nettet (AC)">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 5 min · Vekselstrøm</div>
+    <div class="kicker">Del 7 · ca. 3 min · Vekselstrøm</div>
     <h2>Hvilket nett står du i?</h2>
     <p class="lead"><b>TN-nett:</b> 230/400 V, nyere. <b>IT-nett:</b> 230 V, eldre.</p>
     <div class="hbwrap">
@@ -380,7 +417,7 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         <svg id="mmac-net" viewBox="0 0 640 250" role="img" aria-label="Transformatorens sekundærside i TN-nett og IT-nett, med faser, nøytral og jord"></svg>
       </figure>
       <div>
-        <div class="card" style="margin-bottom:.8rem">
+        <div class="card">
           <h3>Ordene</h3>
           <div class="mmrow" style="grid-template-columns:3.2rem 1fr">
             <div><b>L1–L3</b></div><div><b>Fase</b> – har spenning</div>
@@ -389,8 +426,22 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
             <div><b>2-fas</b></div><div>To faser og jord (IT)</div>
           </div>
         </div>
-        <div class="card">
-          <h3>Fargene</h3>
+      </div>
+    </div>
+    <div class="tip r"><b>Over 50 V AC måler elektrofagfolk.</b> Du skal forstå målingene.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Arbeid på anlegg over 50 V AC krever kompetanse etter forskrift om sikkerhet ved arbeid i og drift av elektriske anlegg (FSE). Transformatoren har tre spoler (én per fase). I TN er stjernepunktet (der spolene møtes) jordet og ført ut som N. I IT er ingenting jordet. Spør klassen: Hvilket nett har vi i verkstedet? Hvis dere vet det, bruk det som eksempel resten av timen.</details>
+  </div>
+</section>
+
+<!-- FARGENE -->
+<section class="slide" id="farger" data-nav="8 Lederfargene">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 2 min · Vekselstrøm</div>
+    <h2>Lederfargene</h2>
+    <p class="lead">Fargen sier hva lederen skal være.</p>
+    <div class="grid2" style="margin-top:1rem">
+      <div>
+        <div class="card" style="font-size:1.15rem">
           <div class="cols">
             <div><span class="sw" style="background:#8b4a1c"></span>L1 brun</div>
             <div><span class="sw" style="background:#1a1a1a"></span>L2 svart</div>
@@ -398,19 +449,20 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
             <div><span class="sw" style="background:#1e6fd9"></span>N blå</div>
             <div><span class="sw" style="background:repeating-linear-gradient(90deg,#3a9a3a 0 6px,#e8c51a 6px 12px)"></span>PE gul/grønn</div>
           </div>
-          <p class="caption" style="margin-bottom:0"><b>Mål alltid</b> – stol ikke på fargen.</p>
         </div>
       </div>
+      <div>
+        <div class="tip r" style="margin:0;font-size:1.15rem"><b>Mål alltid</b> – stol ikke på fargen.</div>
+      </div>
     </div>
-    <div class="tip r"><b>Over 50 V AC måler elektrofagfolk.</b> Du skal forstå målingene.</div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Arbeid på anlegg over 50 V AC krever kompetanse etter forskrift om sikkerhet ved arbeid i og drift av elektriske anlegg (FSE). Eldre anlegg kan ha andre lederfarger. Transformatoren har tre spoler (én per fase). I TN er stjernepunktet (der spolene møtes) jordet og ført ut som N. I IT er ingenting jordet. Spør klassen: Hvilket nett har vi i verkstedet? Hvis dere vet det, bruk det som eksempel resten av timen.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Eldre anlegg kan ha andre lederfarger. Derfor må man alltid måle.</details>
   </div>
 </section>
 
-<!-- DEL 5 -->
-<section class="slide" id="acv" data-nav="5 Spenning AC">
+<!-- SPENNING AC -->
+<section class="slide" id="acv" data-nav="9 Spenning AC">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 7 min · Vekselstrøm</div>
+    <div class="kicker">Del 9 · ca. 4 min · Vekselstrøm</div>
     <h2>Spenning i 1-, 2- og 3-fas</h2>
     <p class="lead">Velg nett og to punkter å måle mellom.</p>
     <div class="hbwrap">
@@ -425,7 +477,21 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <h3>Viserdiagram</h3>
           <p class="short">Hver fase er en <b>pil som snurrer</b>. Måleren viser den <b style="color:var(--orange)">stiplede pila</b>.</p>
         </div>
-        <table class="t">
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kobling til L1: måleren viser effektivverdien (RMS). Toppverdien er √2 større: 230 V → 325 V, 400 V → 566 V. Derfor må måleren og probene tåle minst 600 V CAT III i en fordeling. Et True RMS-multimeter (TRMS) viser riktig også når kurven ikke er en ren sinus, f.eks. bak en frekvensomformer.</details>
+  </div>
+</section>
+
+<!-- TABELL SPENNING -->
+<section class="slide" id="acv-tabell" data-nav="10 Hva viser måleren?">
+  <div class="wrap">
+    <div class="kicker">Del 10 · ca. 3 min · Vekselstrøm</div>
+    <h2>Hva viser måleren?</h2>
+    <p class="lead">Samme to nett, fire målinger.</p>
+    <div class="grid2" style="margin-top:1rem">
+      <div>
+        <table class="t" style="font-size:1.1rem">
           <tr><th>Måling</th><th>TN 230/400</th><th>IT 230</th></tr>
           <tr><td>Fase–fase</td><td><b>400 V</b></td><td><b>230 V</b></td></tr>
           <tr><td>Fase–N</td><td><b>230 V</b></td><td>– (ingen N)</td></tr>
@@ -433,19 +499,21 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
           <tr><td>N–PE</td><td><b>0–2 V</b></td><td>–</td></tr>
         </table>
         <p class="caption">* «Flytende» verdi i IT-nett. Mål alltid mellom fasene også.</p>
+      </div>
+      <div>
         <details class="ekstra"><summary>Ekstra: Hvorfor 400 V og ikke 460 V?</summary>
           <p class="short" style="margin:.5rem 0 0">Fasene ligger 120° fra hverandre. Da blir spenningen mellom to faser √3 · 230 ≈ <b>400 V</b>, ikke 230 + 230.</p>
         </details>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Kobling til L1: måleren viser effektivverdien (RMS). Toppverdien er √2 større: 230 V → 325 V, 400 V → 566 V. Derfor må måleren og probene tåle minst 600 V CAT III i en fordeling. Et True RMS-multimeter (TRMS) viser riktig også når kurven ikke er en ren sinus, f.eks. bak en frekvensomformer. Vanlig feil: står måleren på V⎓ på et vekselspenningsnett, viser den ca. 0 V eller hoppende tall.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Vanlig feil: står måleren på V⎓ på et vekselspenningsnett, viser den ca. 0 V eller hoppende tall. Tallene i tabellen er de samme som i Del 9.</details>
   </div>
 </section>
 
-<!-- DEL 6 -->
-<section class="slide" id="tang" data-nav="6 Strømtang">
+<!-- STRØMTANG -->
+<section class="slide" id="tang" data-nav="11 Strømtang">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 7 min · Vekselstrøm</div>
+    <div class="kicker">Del 11 · ca. 4 min · Vekselstrøm</div>
     <h2>Strøm på 230/400 V: alltid med tang</h2>
     <p class="lead">Tanga måler <b>magnetfeltet</b> rundt lederen. Du bryter ikke kretsen.</p>
     <div class="hbwrap">
@@ -456,51 +524,77 @@ ol.how{margin:0; padding-left:1.3rem} ol.how li{margin:.3rem 0}
         <div class="ctrl"><label class="ctl-l" style="display:flex;gap:6px;align-items:center;color:var(--ink)"><input type="checkbox" id="mmac-ifault"> Jordfeil: 0,5 A lekker fra L1 til PE</label><button class="chip play" type="button" id="mmac-iplay"></button></div>
         <p id="mmac-imsg" class="hbmsg" aria-live="polite"></p>
       </figure>
-      <div>
-        <table class="t">
+      <div style="display:grid;gap:.7rem;align-content:start">
+        <div class="tip" style="margin:0"><b>Husk:</b> Velg A~. Legg én leder midt i kjeften og lukk den helt.</div>
+        <div class="tip r" style="margin:0"><b>Aldri</b> multimeteret i serie på 230/400 V.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Start med «1-fas last 230 V (TN)» og tang rundt L: 10 A. Flytt tanga rundt L + N: 0 A – strømmen går ut i L og tilbake i N. Slå på jordfeil: nå viser L + N 0,5 A. En jordfeilbryter for personvern løser ut ved 30 mA (L1). Bytt til «3-fas motor, symmetrisk» og tang rundt alle faser: 0 A.</details>
+  </div>
+</section>
+
+<!-- TABELL TANG -->
+<section class="slide" id="tang-tabell" data-nav="12 Hva viser tanga?">
+  <div class="wrap">
+    <div class="kicker">Del 12 · ca. 3 min · Vekselstrøm</div>
+    <h2>Hva viser tanga?</h2>
+    <p class="lead">Tanga viser <b>summen</b> av strømmene inni kjeften.</p>
+    <div style="max-width:760px;margin-top:1rem">
+        <table class="t" style="font-size:1.1rem">
           <tr><th>Tang rundt …</th><th>viser</th></tr>
           <tr><td><b>én fase</b></td><td>strømmen i den fasen</td></tr>
           <tr><td><b>alle faser</b>, symmetrisk motor</td><td><b>0 A</b> – strømmene opphever hverandre</td></tr>
           <tr><td><b>alle faser + N</b></td><td>lekkasjen til jord</td></tr>
           <tr><td><b>hele kabelen med PE</b></td><td>alltid <b>0 A</b></td></tr>
         </table>
-        <div class="tip"><b>Husk:</b> Velg A~. Legg én leder midt i kjeften og lukk den helt.</div>
-        <div class="tip r" style="margin-bottom:0"><b>Aldri</b> multimeteret i serie på 230/400 V.</div>
-      </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Start med «1-fas last 230 V (TN)» og tang rundt L: 10 A. Flytt tanga rundt L + N: 0 A – strømmen går ut i L og tilbake i N. Slå på jordfeil: nå viser L + N 0,5 A. En jordfeilbryter for personvern løser ut ved 30 mA (L1). Bytt til «3-fas motor, symmetrisk» og tang rundt alle faser: 0 A. DC-strøm krever en tang med Hall-sensor (AC/DC-tang). Tanga viser summen av strømmene den omslutter – slik måler også en jordfeilbryter. Et brudd i kretsen under last kan gi lysbue, derfor aldri multimeter i serie på 230/400 V.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>DC-strøm krever en tang med Hall-sensor (AC/DC-tang). Tanga viser summen av strømmene den omslutter – slik måler også en jordfeilbryter. Et brudd i kretsen under last kan gi lysbue, derfor aldri multimeter i serie på 230/400 V.</details>
   </div>
 </section>
 
-<!-- DEL 7 -->
-<section class="slide" id="motor" data-nav="7 Motor og spenningsløst">
+<!-- MOTORVIKLINGER -->
+<section class="slide" id="motor" data-nav="13 Motorviklinger">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 7 min · Spenningsløst</div>
-    <h2>Motorviklinger og kontroll av spenningsløshet</h2>
-    <div class="grid2">
+    <div class="kicker">Del 13 · ca. 4 min · Spenningsløst</div>
+    <h2>Mål motstanden i motorviklingene</h2>
+    <p class="lead">Tre like <b>viklinger</b> = lik motstand.</p>
+    <div class="grid2 wide-left">
       <div>
-        <p class="lead" style="margin-bottom:.6rem">Tre like <b>viklinger</b> = lik motstand.</p>
         <figure class="hbfig">
           <svg id="mmac-r" viewBox="0 0 640 300" role="img" aria-label="Klemmebrett på trefasemotor med laskene fjernet og multimeter som måler viklingsmotstand"></svg>
           <div class="ctrl"><span class="chips2" id="mmac-rpair"></span><button class="chip" type="button" id="mmac-rfault">Vis motor med viklingsfeil</button></div>
           <p id="mmac-rmsg" class="hbmsg" aria-live="polite"></p>
         </figure>
       </div>
+      <div style="display:grid;gap:.7rem;align-content:start">
+        <div class="card"><h3>Lasker</h3><p class="short">Fjernes før du måler.</p></div>
+        <div class="tip" style="margin:0">Ulik motstand = <b>viklingsfeil</b>.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Vis viklingsfeilen: V-viklingen viser 1,62 Ω mot 2,40 Ω – kortslutning mellom vindinger. Laskene er metallbitene på klemmebrettet som kobler viklingene i stjerne eller trekant. 0L mot jord betyr bare at det ikke er kortslutning; isolasjonen skal sjekkes med isolasjonsmåler (500 V) av elektrofagperson.</details>
+  </div>
+</section>
+
+<!-- SPENNINGSLØST -->
+<section class="slide" id="spenningslost" data-nav="14 Spenningsløst?">
+  <div class="wrap">
+    <div class="kicker">Del 14 · ca. 3 min · Spenningsløst</div>
+    <h2>Kontroller at det er spenningsløst</h2>
+    <p class="lead">Test prøveren – mål alt – test igjen.</p>
+    <div class="grid2 wide-left">
       <div>
-        <p class="lead" style="margin-bottom:.6rem">Test prøveren – mål alt – test igjen.</p>
         <figure class="hbfig">
           <svg id="sl-svg" viewBox="0 0 600 300" role="img" aria-label="Spenningsprøver som måler mellom faser og jord i rekkefølge"></svg>
           <div class="ctrl"><button class="chip play" type="button" id="sl-pp"></button><button class="chip" type="button" id="sl-next">Neste steg →</button></div>
           <p id="sl-msg" class="hbmsg" aria-live="polite"></p>
         </figure>
       </div>
+      <div style="display:grid;gap:.7rem;align-content:start">
+        <div class="card"><h3>Test to ganger</h3><p class="short">En ødelagt prøver viser også 0 V.</p></div>
+        <div class="card"><h3>CAT</h3><p class="short"><b>II</b> stikkontakt · <b>III</b> maskin · <b>IV</b> inntak</p></div>
+      </div>
     </div>
-    <div class="grid3" style="margin-top:1rem">
-      <div class="card"><h3>Lasker</h3><p class="short">Fjernes før du måler.</p></div>
-      <div class="card"><h3>Test to ganger</h3><p class="short">En ødelagt prøver viser også 0 V.</p></div>
-      <div class="card"><h3>CAT</h3><p class="short"><b>II</b> stikkontakt · <b>III</b> maskin · <b>IV</b> inntak</p></div>
-    </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Kobling til L1: dette er regel 3 i de fem sikkerhetsreglene – kontroller at det er spenningsløst. Vis viklingsfeilen: V-viklingen viser 1,62 Ω mot 2,40 Ω – kortslutning mellom vindinger. Laskene er metallbitene på klemmebrettet som kobler viklingene i stjerne eller trekant. Måleren må ha minst riktig CAT og spenning. 0L mot jord betyr bare at det ikke er kortslutning; isolasjonen skal sjekkes med isolasjonsmåler (500 V) av elektrofagperson.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Kobling til leksjon 2: dette er regel 3 i de fem sikkerhetsreglene – kontroller at det er spenningsløst. Måleren må ha minst riktig CAT og spenning.</details>
   </div>
 </section>
 

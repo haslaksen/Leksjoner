@@ -304,18 +304,18 @@ table.t th{background:var(--steel-soft)}
         <table class="t plan">
           <tr><th colspan="2">Time 1</th></tr>
           <tr><td>0–5 min</td><td>Del 1: strøm i verkstedet</td></tr>
-          <tr><td>5–23 min</td><td>Del 2–4: vannmodellen, kretsen, likestrøm/vekselstrøm</td></tr>
-          <tr><td>23–30 min</td><td>Del 5: vannkraftverket – slik lages 3-fase</td></tr>
-          <tr><td>30–36 min</td><td>Del 6: fra AC til DC</td></tr>
+          <tr><td>5–23 min</td><td>Del 2–6: vannmodellen, U, I og R, kretsen, leder og isolator, likestrøm/vekselstrøm</td></tr>
+          <tr><td>23–30 min</td><td>Del 7: vannkraftverket – slik lages 3-fase</td></tr>
+          <tr><td>30–36 min</td><td>Del 8–9: fra AC til DC, dioden</td></tr>
           <tr><td>36–45 min</td><td>Oppgave 1, 2 og 3</td></tr>
           <tr><th colspan="2">Time 2</th></tr>
-          <tr><td>0–12 min</td><td>Del 7: Ohms lov</td></tr>
+          <tr><td>0–12 min</td><td>Del 10–12: Ohms lov, hva er en motstand, regn ut</td></tr>
           <tr><td>12–25 min</td><td>Oppgave 4</td></tr>
           <tr><td>25–35 min</td><td>Oppgave 5</td></tr>
           <tr><td>35–42 min</td><td>Oppgave 6 (ekstra) eller Multimeter-simulatoren</td></tr>
           <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
         </table>
-      <div class="tip" style="margin:.8rem 0 0"><b>Repetisjon fra Vg1:</b> Har klassen hatt Vg1 Elektro 1–2 (U, I, R og Ohms lov), kan dere ta Del 1–3 og Del 7 raskt som repetisjon og bruke tiden på oppgavene.</div>
+      <div class="tip" style="margin:.8rem 0 0"><b>Repetisjon fra Vg1:</b> Har klassen hatt Vg1 Elektro 1–2 (U, I, R og Ohms lov), kan dere ta Del 1–5 og Del 10–12 raskt som repetisjon og bruke tiden på oppgavene.</div>
       </div>
       </details>
       <p class="caption no-print">Bla med piltastene ↑ ↓. A+ gir større tekst på fremviser.</p>
@@ -323,7 +323,7 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 1 -->
+<!-- I VERKSTEDET -->
 <section class="slide" id="verksted" data-nav="1 I verkstedet">
   <div class="wrap">
     <div class="kicker">Del 1 · ca. 5 min</div>
@@ -387,14 +387,14 @@ table.t th{background:var(--steel-soft)}
         <h3>Batteriverktøy</h3><p class="short">Drill og muttertrekker, 18 V.</p></div>
     </div>
     <div class="tip o"><b>Snakk med sidemannen:</b> Hva stopper i verkstedet hvis strømmen går?</div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Skriv svarene på tavla. Merk dem med «stor maskin» / «liten / batteri». Det brukes igjen i Del 4–6 (vekselstrøm/likestrøm) og Del 8 (effekt). Hvilke maskiner i verkstedet bruker strøm?</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Skriv svarene på tavla. Merk dem med «stor maskin» / «liten / batteri». Det brukes igjen i Del 6–9 (likestrøm/vekselstrøm) og i leksjon 2 (effekt). Hvilke maskiner i verkstedet bruker strøm?</details>
   </div>
 </section>
 
-<!-- DEL 2 -->
+<!-- VANNMODELLEN -->
 <section class="slide" id="vannmodell" data-nav="2 Vannmodellen">
   <div class="wrap">
-    <div class="kicker">Del 2 · ca. 10 min</div>
+    <div class="kicker">Del 2 · ca. 7 min</div>
     <h2>Hva er strøm? Tenk på vann i et rør</h2>
     <p class="lead">Strøm = <b>elektroner</b> som flytter seg samme vei. Akkurat som vann i et rør.</p>
     <div class="grid2">
@@ -461,19 +461,29 @@ table.t th{background:var(--steel-soft)}
       <button class="btn" id="btnDir">Vis elektronene</button>
     </div>
     <div class="status info" id="vmTxt"></div>
-    <div class="grid3" style="margin-top:1rem">
-      <div class="card qty"><div class="sym" style="background:var(--red-soft);color:var(--red)">U</div><div class="nm">Spenning · volt (V)</div><div class="ds">Trykket. Som pumpa.</div></div>
-      <div class="card qty"><div class="sym" style="background:var(--blue-soft);color:var(--blue)">I</div><div class="nm">Strøm · ampere (A)</div><div class="ds">Mengden. Som vannet som renner.</div></div>
-      <div class="card qty"><div class="sym" style="background:var(--green-soft);color:var(--green)">R</div><div class="nm">Resistans · ohm (Ω)</div><div class="ds">Bremsen. Som et smalt rør.</div></div>
-    </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Elektronene kan flytte seg fritt i metall («elektronsjøen» fra Materiallære 1). Pek på at batteriet ikke «lager» elektroner – de er i ledningen hele tiden, akkurat som vannet i røret. Trykk «Vis elektronene»: elektronene går fra − til +, men i skjemaer tegner vi strømmen fra + til − (teknisk strømretning). Den ble bestemt før man kjente til elektronene, og vi har beholdt den.</details>
   </div>
 </section>
 
-<!-- DEL 3 -->
-<section class="slide" id="kretsen" data-nav="3 Kretsen">
+<!-- U, I OG R -->
+<section class="slide" id="uir" data-nav="3 U, I og R">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 8 min</div>
+    <div class="kicker">Del 3 · ca. 3 min</div>
+    <h2>Tre størrelser: U, I og R</h2>
+    <p class="lead">Samme tre ting finnes i vannrøret og i ledningen.</p>
+    <div class="grid3" style="margin-top:1.4rem">
+      <div class="card qty"><div class="sym" style="background:var(--red-soft);color:var(--red)">U</div><div class="nm">Spenning · volt (V)</div><div class="ds">Trykket. Som pumpa.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--blue-soft);color:var(--blue)">I</div><div class="nm">Strøm · ampere (A)</div><div class="ds">Mengden. Som vannet som renner.</div></div>
+      <div class="card qty"><div class="sym" style="background:var(--green-soft);color:var(--green)">R</div><div class="nm">Resistans · ohm (Ω)</div><div class="ds">Bremsen. Som et smalt rør.</div></div>
+    </div>
+    <div class="tip o"><b>Husk:</b> U dytter · I flyter · R bremser.</div>
+  </div>
+</section>
+
+<!-- KRETSEN -->
+<section class="slide" id="kretsen" data-nav="4 Kretsen">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 6 min</div>
     <h2>Kretsen må være lukket</h2>
     <p class="lead">Strøm går bare når veien er hel – <b>rundt</b> og tilbake.</p>
     <div class="grid2 wide-left">
@@ -538,7 +548,19 @@ table.t th{background:var(--steel-soft)}
           <h3>Kortslutning</h3>
           <p class="short">En snarvei utenom lampa. Enorm strøm!</p>
         </div>
-        <div class="card">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEDER OG ISOLATOR -->
+<section class="slide" id="leder" data-nav="5 Leder og isolator">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 2 min</div>
+    <h2>Leder og isolator</h2>
+    <p class="lead">Strømmen går i kobberet. Plasten holder den inne.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
           <svg viewBox="0 0 300 120" style="display:block;width:100%;height:auto" role="img" aria-label="Tverrsnitt av kabel">
             <circle cx="62" cy="60" r="52" style="fill:#868e96"/>
             <circle cx="62" cy="60" r="44" style="fill:var(--steel-soft)"/>
@@ -551,17 +573,19 @@ table.t th{background:var(--steel-soft)}
             <text x="156" y="96" style="font-size:15px;font-weight:700;fill:var(--ink)">plast: isolator</text>
             <text x="156" y="114" style="font-size:12px;fill:var(--muted)">elektronene sitter fast</text>
           </svg>
-          
-        </div>
+      </div>
+      <div style="display:grid;gap:.7rem;align-content:start">
+        <div class="card"><b>Leder</b><br>Kobber og andre metaller. Elektronene kan flytte seg.</div>
+        <div class="card"><b>Isolator</b><br>Plast, gummi, glass. Elektronene sitter fast.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- DEL 4 -->
-<section class="slide" id="dcac" data-nav="4 DC / AC">
+<!-- DC / AC -->
+<section class="slide" id="dcac" data-nav="6 DC / AC">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 5 min</div>
+    <div class="kicker">Del 6 · ca. 5 min</div>
     <h2>Likestrøm og vekselstrøm</h2>
     <div class="grid2 wide-left">
       <div class="fig">
@@ -604,10 +628,10 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 5: VANNKRAFTVERKET -->
-<section class="slide" id="kraftverk" data-nav="5 Vannkraftverket">
+<!-- VANNKRAFTVERKET -->
+<section class="slide" id="kraftverk" data-nav="7 Vannkraftverket">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 8 min · Vekselstrøm</div>
+    <div class="kicker">Del 7 · ca. 8 min · Vekselstrøm</div>
     <h2>Hvor kommer 3-fase strøm fra?</h2>
     <p class="lead">Nesten all strøm i Norge lages i vannkraftverk. Følg vannet fra fjellet til fabrikken.</p>
     <div class="fig big">
@@ -681,14 +705,14 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="status info hp-txt" id="hpTxt"></div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Animasjonen er forenklet og i sakte film. En ekte generator har mange magnetpoler og går ganske sakte (f.eks. 300–500 o/min), men gir likevel 50 Hz. Magneten i rotoren er en elektromagnet som får likestrøm (magnetisering). Generatorspenningen er typisk 10–20 kV; transformatoren øker til f.eks. 132 kV eller 420 kV fordi høy spenning gir liten strøm og små tap i linjene. Kobling til neste del: strømmen kommer som vekselstrøm. Skal vi ha likestrøm, må den gjennom en likeretter (Del 6). Spør: Hvorfor er det tre ledninger i toppen av en kraftlinje?</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Animasjonen er forenklet og i sakte film. En ekte generator har mange magnetpoler og går ganske sakte (f.eks. 300–500 o/min), men gir likevel 50 Hz. Magneten i rotoren er en elektromagnet som får likestrøm (magnetisering). Generatorspenningen er typisk 10–20 kV; transformatoren øker til f.eks. 132 kV eller 420 kV fordi høy spenning gir liten strøm og små tap i linjene. Kobling til neste del: strømmen kommer som vekselstrøm. Skal vi ha likestrøm, må den gjennom en likeretter (Del 8). Spør: Hvorfor er det tre ledninger i toppen av en kraftlinje?</details>
   </div>
 </section>
 
-<!-- DEL 6: AC TIL DC -->
-<section class="slide" id="likeretter" data-nav="6 Fra AC til DC">
+<!-- AC TIL DC -->
+<section class="slide" id="likeretter" data-nav="8 Fra AC til DC">
   <div class="wrap">
-    <div class="kicker">Del 6 · ca. 8 min</div>
+    <div class="kicker">Del 8 · ca. 6 min</div>
     <h2>Slik blir vekselstrøm til likestrøm</h2>
     <p class="lead">Stikkontakten gir AC. Sensorer, styringer og batterier trenger DC. Trykk deg gjennom de fire stegene.</p>
     <div class="fig big">
@@ -765,9 +789,19 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="status info ad-txt" id="adTxt"></div>
     </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Animasjonen går i sakte film – i virkeligheten skifter retningen 50 ganger i sekundet. Pek på at strømmen gjennom lampa går <b>samme vei</b> i begge halvperiodene (steg 3), og at to og to dioder leder. Uten kondensator ville en lampe blinket 100 ganger i sekundet (for fort til å se, men en motor eller elektronikk merker det). Spenningen etter likeretteren er toppverdien: 18 V · 1,41 ≈ 25 V. En moderne strømforsyning (switch-mode) holder spenningen nøyaktig på 24 V med elektronikk, men prinsippet med likeretter og kondensator er det samme.</details>
+  </div>
+</section>
+
+<!-- DIODEN -->
+<section class="slide" id="dioden" data-nav="9 Dioden">
+  <div class="wrap">
+    <div class="kicker">Del 9 · ca. 2 min</div>
+    <h2>Dioden: en enveisventil for strøm</h2>
+    <p class="lead">Fire dioder i likeretteren slipper strømmen bare én vei.</p>
     <div class="grid2" style="margin-top:1rem">
       <div class="card" style="display:grid;grid-template-columns:minmax(0,1.3fr) 1fr;gap:1rem;align-items:center">
-        <svg viewBox="0 0 300 130" role="img" aria-label="Dioden er som en enveisventil for vann" style="display:block;width:100%;height:auto">
+        <svg id="adValve" viewBox="0 0 300 130" role="img" aria-label="Dioden er som en enveisventil for vann" style="display:block;width:100%;height:auto">
           <rect x="10" y="40" width="280" height="50" rx="8" style="fill:var(--water);stroke:var(--steel-dark);stroke-width:3"/>
           <path d="M150 40 V90" style="stroke:var(--steel-dark);stroke-width:4"/>
           <g id="adFlap"><path d="M150 44 L150 86" style="stroke:var(--orange);stroke-width:8;stroke-linecap:round"/></g>
@@ -787,14 +821,14 @@ table.t th{background:var(--steel-soft)}
         </div>
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Animasjonen går i sakte film – i virkeligheten skifter retningen 50 ganger i sekundet. Pek på at strømmen gjennom lampa går <b>samme vei</b> i begge halvperiodene (steg 3), og at to og to dioder leder. Uten kondensator ville en lampe blinket 100 ganger i sekundet (for fort til å se, men en motor eller elektronikk merker det). Spenningen etter likeretteren er toppverdien: 18 V · 1,41 ≈ 25 V. En moderne strømforsyning (switch-mode) holder spenningen nøyaktig på 24 V med elektronikk, men prinsippet med likeretter og kondensator er det samme.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Ventilen går i samme takt som vekselstrømmen i Del 8: klaffen åpner når vannet presser riktig vei, og stenger når det snur. Strømforsyningen i elskapet, batteriladeren og PC-en har alle en likeretter inni.</details>
   </div>
 </section>
 
-<!-- DEL 7 -->
-<section class="slide" id="ohm" data-nav="7 Ohms lov">
+<!-- OHMS LOV -->
+<section class="slide" id="ohm" data-nav="10 Ohms lov">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 10 min</div>
+    <div class="kicker">Del 10 · ca. 4 min</div>
     <h2>Ohms lov: U = R · I</h2>
     <p class="lead">Kjenner du to av U, I og R, kan du regne ut den tredje.</p>
     <div class="grid2">
@@ -831,9 +865,16 @@ table.t th{background:var(--steel-soft)}
         <p class="caption">Bratt linje = liten resistans. Slak linje = stor resistans.</p>
       </div>
     </div>
-    <h3 style="margin-top:1.6rem">Hva kan en motstand være?</h3>
-    <p style="margin:0 0 .6rem">Alt som bremser strømmen. I skjema: et rektangel med R.</p>
-    <div class="grid3 mot">
+  </div>
+</section>
+
+<!-- HVA ER EN MOTSTAND -->
+<section class="slide" id="motstand" data-nav="11 Hva er en motstand?">
+  <div class="wrap">
+    <div class="kicker">Del 11 · ca. 3 min</div>
+    <h2>Hva kan en motstand være?</h2>
+    <p class="lead">Alt som bremser strømmen. I skjema: et rektangel med R.</p>
+    <div class="grid3 mot" style="margin-top:1.2rem">
       <div class="card">
         <svg class="scene" viewBox="0 0 160 80" role="img" aria-label="Motstandskomponent med fargeringer">
           <path d="M8 40 H44 M116 40 H152" style="stroke:var(--steel-dark);stroke-width:3"/>
@@ -898,6 +939,15 @@ table.t th{background:var(--steel-soft)}
         </svg>
         <b>Ledningen – og kroppen</b><br><span style="font-size:.85rem;color:var(--muted)">Også kroppen (leksjon 2).</span></div>
     </div>
+  </div>
+</section>
+
+<!-- REGN UT -->
+<section class="slide" id="regnut" data-nav="12 Regn ut">
+  <div class="wrap">
+    <div class="kicker">Del 12 · ca. 3 min</div>
+    <h2>Ohms lov-trekanten: regn ut</h2>
+    <p class="lead">Trykk på det du vil finne. Skriv inn de to andre.</p>
     <div class="grid2" style="margin-top:1.2rem">
       <div class="card" style="display:grid; grid-template-columns:200px 1fr; gap:1rem; align-items:center">
         <svg class="uri" id="uri" viewBox="0 0 240 210" role="img" aria-label="Ohms lov-trekant">
@@ -1432,7 +1482,9 @@ setStep(1);
 const vdots = Array.from({length:9}, (_,i) => ({x:20 + i*30, c:el("circle", {r:5, cy:65}, $("adVdots"))}));
 
 let vis = false, last = performance.now();
-new IntersectionObserver(es => es.forEach(e => vis = e.isIntersecting)).observe(svg);
+const adVis = new Set();
+const adIO = new IntersectionObserver(es => { es.forEach(e => e.isIntersecting ? adVis.add(e.target) : adVis.delete(e.target)); vis = adVis.size > 0; });
+adIO.observe(svg); adIO.observe($("adValve"));
 function frame(now){
   const dt = Math.min(.05, (now-last)/1000); last = now;
   if (vis) tick(paused ? 0 : dt);

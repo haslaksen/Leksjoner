@@ -224,14 +224,14 @@ table.t th{background:var(--steel-soft)}
           <tr><th colspan="2">Time 1 · Kontaktor og direktestart</th></tr>
           <tr><td>0–5 min</td><td>Del 1: to kretser – hovedstrøm og styrestrøm</td></tr>
           <tr><td>5–13 min</td><td>Del 2: kontaktoren</td></tr>
-          <tr><td>13–28 min</td><td>Del 3: direktestart med selvhold</td></tr>
+          <tr><td>13–28 min</td><td>Del 3–4: direktestart med selvhold, start og stopp</td></tr>
           <tr><td>28–45 min</td><td>Oppgave 1 og 2</td></tr>
           <tr><th colspan="2">Time 2 · Vern, retning, start og feilsøking</th></tr>
-          <tr><td>0–6 min</td><td>Del 4: motorvernet</td></tr>
-          <tr><td>6–15 min</td><td>Del 5: snu motoren – forrigling</td></tr>
-          <tr><td>15–21 min</td><td>Del 7: feilsøking i styrekretsen</td></tr>
+          <tr><td>0–6 min</td><td>Del 5–6: motorvernet, sikring eller motorvern</td></tr>
+          <tr><td>6–15 min</td><td>Del 7–8: snu motoren, forrigling</td></tr>
+          <tr><td>15–21 min</td><td>Del 12: feilsøking i styrekretsen</td></tr>
           <tr><td>21–43 min</td><td>Oppgave 3, 4 og 5</td></tr>
-          <tr><td>Ekstra</td><td>Del 6: startmetoder og oppgave 6, hvis klassen har tid</td></tr>
+          <tr><td>Ekstra</td><td>Del 9–11: startmetoder, stjerne og trekant, og oppgave 6, hvis klassen har tid</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
@@ -241,7 +241,7 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 1 -->
+<!-- TO KRETSER -->
 <section class="slide" id="tokretser" data-nav="1 To kretser">
   <div class="wrap">
     <div class="kicker">Del 1 · ca. 5 min</div>
@@ -266,7 +266,7 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 2 -->
+<!-- KONTAKTOREN -->
 <section class="slide" id="kontaktor" data-nav="2 Kontaktoren">
   <div class="wrap">
     <div class="kicker">Del 2 · ca. 8 min</div>
@@ -289,10 +289,10 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
-<!-- DEL 3 -->
+<!-- DIREKTESTART -->
 <section class="slide" id="selvhold" data-nav="3 Direktestart">
   <div class="wrap">
-    <div class="kicker">Del 3 · ca. 15 min</div>
+    <div class="kicker">Del 3 · ca. 11 min</div>
     <h2>Direktestart med selvhold</h2>
     <p class="lead">Trykk START og slipp. Hvorfor går motoren fortsatt?</p>
     <div class="fig">
@@ -314,19 +314,29 @@ table.t th{background:var(--steel-soft)}
       <div class="status info" id="d3Msg"></div>
       <div class="legend"><span><i style="background:var(--red)"></i>400 V</span><span><i style="background:var(--orange)"></i>+24 V</span><span><i style="background:var(--blue)"></i>0 V</span><span><i style="background:var(--steel)"></i>ingen spenning</span><span>● prikker = strøm går</span></div>
     </div>
-    <div class="mini3">
-      <div class="card"><h3>Selvhold</h3>Q1 13–14 <b>parallelt</b> med START</div>
-      <div class="card"><h3>Stopp</h3><b>NC i serie</b> – brudd stopper maskinen</div>
-      <div class="card"><h3>Ingen automatisk start</h3>Etter strømbrudd: trykk START igjen</div>
-    </div>
     <details class="laerer no-print"><summary>Lærernotat</summary>Kjør i denne rekkefølgen: Start → slipp (selvhold) → Stopp → Start → Nødstopp (vis at Start ikke virker) → tilbakestill → Strømbrudd (motoren starter ikke igjen av seg selv: krav i maskinforskriften / NEK EN 60204-1). Overbelast: strømtanga viser at strømmen øker fra 8 A, F2 løser ut, 95–96 åpner og P2 lyser via 97–98. Legg merke til startstrømmen på tanga: ca. 6–7 ganger merkestrømmen i et kort øyeblikk. Skjemaet er prinsipielt; i ekte anlegg skal nødstopp ofte gå via sikkerhetsrelé.</details>
   </div>
 </section>
 
-<!-- DEL 4 -->
-<section class="slide" id="motorvern" data-nav="4 Motorvern">
+<!-- START OG STOPP -->
+<section class="slide" id="start-stopp" data-nav="4 Start og stopp">
   <div class="wrap">
-    <div class="kicker">Del 4 · ca. 6 min</div>
+    <div class="kicker">Del 4 · ca. 4 min</div>
+    <h2>Tre ting å se etter i skjemaet</h2>
+    <p class="lead">Slik blir direktestarten trygg.</p>
+    <div class="mini3" style="margin-top:1.4rem">
+      <div class="card"><h3>Selvhold</h3>Q1 13–14 <b>parallelt</b> med START</div>
+      <div class="card"><h3>Stopp</h3><b>NC i serie</b> – brudd stopper maskinen</div>
+      <div class="card"><h3>Ingen automatisk start</h3>Etter strømbrudd: trykk START igjen</div>
+    </div>
+    <div class="tip o">Gå tilbake til Del 3 og vis hver av de tre i skjemaet.</div>
+  </div>
+</section>
+
+<!-- MOTORVERN -->
+<section class="slide" id="motorvern" data-nav="5 Motorvern">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 4 min</div>
     <h2>Motorvernet F2 – passer på at motoren ikke blir for varm</h2>
     <p class="lead">For stor strøm for lenge → <b>bimetallet</b> bøyer seg → vernet løser ut.</p>
     <div class="grid2 wide-left">
@@ -345,21 +355,30 @@ table.t th{background:var(--steel-soft)}
           <svg id="d4Plate" viewBox="0 0 380 170" style="display:block;width:100%;height:auto" aria-label="Merkeskilt 4 kW motor"></svg>
           <p style="margin:.5rem 0 0">Still F2 på merkestrømmen: <span class="big">8,0 A</span></p>
         </div>
-        <div class="grid2" style="gap:.8rem; margin-top:.8rem">
-          <div class="card"><h3>F1 sikring</h3><b>Kortslutning</b> – lynraskt</div>
-          <div class="card"><h3>F2 motorvern</h3><b>Overlast</b> – over tid</div>
-        </div>
-        
       </div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Bimetall = to metaller valset sammen; det ene utvider seg mer enn det andre når det blir varmt, så stripa bøyer seg. Motoren på skiltet går i stjerne (Y) på 400 V. F1 beskytter kabelen, F2 beskytter motoren. Prøv: (1) 8 A / 8 A = normal drift, bimetallet blir varmt, men løser ikke ut. (2) 12 A / 8 A = løser ut etter en stund. (3) Still F2 til 12 A og la motoren gå på 11 A: vernet løser ikke ut, men viklingen blir for varm – feil innstilling ødelegger motoren. Tiden er kraftig forkortet: i virkeligheten tar det minutter ved liten overlast (utløseklasse 10: under 10 s ved 7,2 × innstilt strøm). Motorvernbryter (Q1 i mange anlegg) har både termisk og magnetisk utløser og kan erstatte F1 + F2. Etter utløsning: finn årsaken (fastkjørt last, manglende fase, feil innstilling) og la motoren kjøle seg ned.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Bimetall = to metaller valset sammen; det ene utvider seg mer enn det andre når det blir varmt, så stripa bøyer seg. Motoren på skiltet går i stjerne (Y) på 400 V. Prøv: (1) 8 A / 8 A = normal drift, bimetallet blir varmt, men løser ikke ut. (2) 12 A / 8 A = løser ut etter en stund. (3) Still F2 til 12 A og la motoren gå på 11 A: vernet løser ikke ut, men viklingen blir for varm – feil innstilling ødelegger motoren. Tiden er kraftig forkortet: i virkeligheten tar det minutter ved liten overlast (utløseklasse 10: under 10 s ved 7,2 × innstilt strøm). Etter utløsning: finn årsaken (fastkjørt last, manglende fase, feil innstilling) og la motoren kjøle seg ned.</details>
   </div>
 </section>
 
-<!-- DEL 5 -->
-<section class="slide" id="revers" data-nav="5 Snu motoren">
+<!-- SIKRING ELLER MOTORVERN -->
+<section class="slide" id="f1-f2" data-nav="6 Sikring eller motorvern?">
   <div class="wrap">
-    <div class="kicker">Del 5 · ca. 9 min</div>
+    <div class="kicker">Del 6 · ca. 2 min</div>
+    <h2>Sikring eller motorvern?</h2>
+    <p class="lead">Begge bryter strømmen, men av ulik grunn.</p>
+    <div class="grid2" style="margin-top:1.4rem">
+      <div class="card" style="border-top:6px solid var(--red)"><h3>F1 sikring</h3><b>Kortslutning</b> – lynraskt.<br>Beskytter kabelen.</div>
+      <div class="card" style="border-top:6px solid var(--orange)"><h3>F2 motorvern</h3><b>Overlast</b> – over tid.<br>Beskytter motoren.</div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>F1 beskytter kabelen, F2 beskytter motoren. Motorvernbryter (Q1 i mange anlegg) har både termisk og magnetisk utløser og kan erstatte F1 + F2.</details>
+  </div>
+</section>
+
+<!-- SNU MOTOREN -->
+<section class="slide" id="revers" data-nav="7 Snu motoren">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 6 min</div>
     <h2>Snu motoren – og forrigling</h2>
     <p class="lead">Bytt to faser – motoren går motsatt vei. Q1 og Q2 må <b>aldri</b> være inne samtidig.</p>
     <div class="fig">
@@ -373,19 +392,29 @@ table.t th{background:var(--steel-soft)}
       </div>
       <div class="status info" id="d5Msg"></div>
     </div>
-    <div class="mini3">
+    <details class="laerer no-print"><summary>Lærernotat</summary>Q2 bytter L1 og L3. Kjør Fram → prøv Bak (ingenting skjer) → Stopp → Bak. Slå så av forriglingen og gjør det samme: kortslutning. Motoren bremses kraftig hvis den reverseres i full fart (motstrømsbremsing) – derfor stopp først. Dreiefeltet: se Verkstedhåndboka 9.12 for animasjon av statorfeltet.</details>
+  </div>
+</section>
+
+<!-- FORRIGLING -->
+<section class="slide" id="forrigling" data-nav="8 Forrigling">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 3 min</div>
+    <h2>Forrigling: aldri Q1 og Q2 samtidig</h2>
+    <p class="lead">Ellers blir det kortslutning mellom to faser.</p>
+    <div class="mini3" style="margin-top:1.4rem">
       <div class="card"><h3>Forrigling</h3>Er den ene inne, kan den andre ikke trekke</div>
       <div class="card"><h3>Uten forrigling</h3><b>Kortslutning</b> mellom L1 og L3</div>
       <div class="card"><h3>Stopp før bytte</h3>STOPP først, så motsatt vei</div>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Q2 bytter L1 og L3. Forrigling: Q2 21–22 (NC) står i Q1 sin spolekrets, og Q1 21–22 i Q2 sin. Uten forrigling: lysbue, sveisede kontakter, F1 løser ut. Kjør Fram → prøv Bak (ingenting skjer) → Stopp → Bak. Slå så av forriglingen og gjør det samme: kortslutning. Mange kontaktorer har i tillegg mekanisk forrigling (en vippe mellom Q1 og Q2). Motoren bremses kraftig hvis den reverseres i full fart (motstrømsbremsing) – derfor stopp først. Dreiefeltet: se Verkstedhåndboka 9.12 for animasjon av statorfeltet.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Forrigling: Q2 21–22 (NC) står i Q1 sin spolekrets, og Q1 21–22 i Q2 sin. Uten forrigling: lysbue, sveisede kontakter, F1 løser ut. Mange kontaktorer har i tillegg mekanisk forrigling (en vippe mellom Q1 og Q2).</details>
   </div>
 </section>
 
-<!-- DEL 6 -->
-<section class="slide" id="start-metoder" data-nav="6 Startmetoder">
+<!-- STARTMETODER (EKSTRA) -->
+<section class="slide" id="start-metoder" data-nav="9 Startmetoder">
   <div class="wrap">
-    <div class="kicker">Del 6 · Ekstra</div>
+    <div class="kicker">Del 9 · Ekstra</div>
     <h2>Startmetoder – hvor stor blir startstrømmen?</h2>
     <p class="lead">Direktestart trekker <b>6–8 ganger</b> vanlig strøm. Store motorer startes mykere.</p>
     <div class="fig">
@@ -393,13 +422,17 @@ table.t th{background:var(--steel-soft)}
       <div class="controls"><span class="chips" id="d6M"></span><button class="btn primary" id="d6Go">▶ Start motoren</button></div>
       <div class="status info" id="d6Msg"></div>
     </div>
-    <div class="grid2" style="margin-top:1rem">
-      <div class="fig">
-        <svg id="d6Kb" viewBox="0 0 620 250" role="img" aria-label="Klemmebrett med lasker i stjerne eller trekant"></svg>
-        <div class="controls"><span class="chips" id="d6Kk"></span><span class="chips" id="d6Km"></span></div>
-        <div class="status info" id="d6KMsg"></div>
-      </div>
-      <table class="t">
+  </div>
+</section>
+
+<!-- SAMMENLIGN STARTMETODER (EKSTRA) -->
+<section class="slide" id="start-tabell" data-nav="10 Sammenlign">
+  <div class="wrap">
+    <div class="kicker">Del 10 · Ekstra</div>
+    <h2>Fire startmetoder</h2>
+    <p class="lead">Mindre startstrøm skåner nettet og maskinen.</p>
+    <div style="margin-top:1rem">
+      <table class="t" style="font-size:1.05rem">
         <tr><th>Metode</th><th>Startstrøm</th><th>Startmoment</th><th>Brukes til</th></tr>
         <tr><td><b>Direktestart</b></td><td>6–8 × I<sub>n</sub></td><td>stort</td><td>små motorer, enkle maskiner</td></tr>
         <tr><td><b>Stjerne-trekant</b></td><td>ca. 2–3 × I<sub>n</sub></td><td>1/3</td><td>vifter, pumper som starter lett</td></tr>
@@ -407,14 +440,36 @@ table.t th{background:var(--steel-soft)}
         <tr><td><b>Frekvensomformer</b></td><td>ca. 1–1,5 × I<sub>n</sub></td><td>fullt</td><td>varierende turtall: vifter, bånd, spindler</td></tr>
       </table>
     </div>
-    <details class="laerer no-print"><summary>Lærernotat</summary>Stjerne-trekant: hver vikling får 230 V i stjerne i stedet for 400 V. Strømmen og momentet blir 1/3 (spenning / √3 og kobling / √3). Derfor kan ikke motoren starte under full last i stjerne. Krav: motoren må gå i trekant på nettet, altså 400/690 V Δ/Y på 400 V-nett. En motor merket 230/400 V Δ/Y skal gå i stjerne på 400 V og kan ikke stjerne-trekant-startes der. Mykstarter senker spenningen med tyristorer (elektroniske brytere) og øker den langsomt. Frekvensomformer endrer både spenning og frekvens, slik at turtallet kan styres.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Mykstarter senker spenningen med tyristorer (elektroniske brytere) og øker den langsomt. Frekvensomformer endrer både spenning og frekvens, slik at turtallet kan styres.</details>
   </div>
 </section>
 
-<!-- DEL 7 -->
-<section class="slide" id="feilsok" data-nav="7 Feilsøking">
+<!-- STJERNE OG TREKANT (EKSTRA) -->
+<section class="slide" id="stjerne-trekant" data-nav="11 Stjerne og trekant">
   <div class="wrap">
-    <div class="kicker">Del 7 · ca. 6 min</div>
+    <div class="kicker">Del 11 · Ekstra</div>
+    <h2>Stjerne (Y) og trekant (Δ) på klemmebrettet</h2>
+    <p class="lead">Laskene bestemmer hvor mye spenning hver vikling får.</p>
+    <div class="grid2 wide-left" style="margin-top:1rem">
+      <div class="fig">
+        <svg id="d6Kb" viewBox="0 0 620 250" role="img" aria-label="Klemmebrett med lasker i stjerne eller trekant"></svg>
+        <div class="controls"><span class="chips" id="d6Kk"></span><span class="chips" id="d6Km"></span></div>
+        <div class="status info" id="d6KMsg"></div>
+      </div>
+      <div style="display:grid;gap:.7rem;align-content:start">
+        <div class="card"><b>Stjerne (Y)</b><br>Hver vikling får 230 V (på 400 V-nett).</div>
+        <div class="card"><b>Trekant (Δ)</b><br>Hver vikling får 400 V (på 400 V-nett).</div>
+        <div class="tip o" style="margin:0">Les merkeskiltet før du flytter laskene.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Stjerne-trekant: hver vikling får 230 V i stjerne i stedet for 400 V. Strømmen og momentet blir 1/3 (spenning / √3 og kobling / √3). Derfor kan ikke motoren starte under full last i stjerne. Krav: motoren må gå i trekant på nettet, altså 400/690 V Δ/Y på 400 V-nett. En motor merket 230/400 V Δ/Y skal gå i stjerne på 400 V og kan ikke stjerne-trekant-startes der.</details>
+  </div>
+</section>
+
+<!-- FEILSØKING -->
+<section class="slide" id="feilsok" data-nav="12 Feilsøking">
+  <div class="wrap">
+    <div class="kicker">Del 12 · ca. 6 min</div>
     <h2>Feilsøking: motoren starter ikke</h2>
     <p class="lead">Motoren starter ikke. Hold START inne og trykk på målepunktene.</p>
     <div class="grid2 wide-left">
@@ -468,7 +523,7 @@ table.t th{background:var(--steel-soft)}
         <div class="tip">Stopp og nødstopp er <b>NC i serie</b>. Start og selvhold er <b>NO i parallell</b>. Forrigling er <b>NC fra den andre kontaktoren</b>.</div>
         <div class="card">
           <h3>Repeter</h3>
-          <p style="margin:0">Dette er siste leksjon i Elektro. Prøv skjemaene i Del 3 og Del 5 en gang til, og les mer i Verkstedhåndboka.</p>
+          <p style="margin:0">Dette er siste leksjon i Elektro. Prøv skjemaene i Del 3 og Del 7 en gang til, og les mer i Verkstedhåndboka.</p>
         </div>
         <p class="caption">Mer: <a href="https://verkstedhandboka.vercel.app/#motorstyring" target="_blank" rel="noopener">Verkstedhåndboka 9.12 Motorstyring</a> · <a href="https://verkstedhandboka.vercel.app/#el9-stjerne" target="_blank" rel="noopener">9.11 Stjerne og trekant</a></p>
       </div>
