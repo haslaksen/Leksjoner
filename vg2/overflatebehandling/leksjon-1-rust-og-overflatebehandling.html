@@ -1,0 +1,1046 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overflatebehandling 1 – Rust og overflatebehandling</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#e0a800; --yellow-soft:#fff8db;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:66ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2 > *, .hero > *{min-width:0}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg, .fig canvas{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.8rem; font-weight:600}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+details.laerer{margin-top:1.2rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+@media (prefers-reduced-motion: reduce){ .scene *, .hero-fig *{animation:none!important} }
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.75rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.legend{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin:.2rem 0 .3rem}
+.legend i{display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:.4rem}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem; line-height:1.7}
+.steps .res{color:var(--orange); font-weight:700; font-size:1.1rem}
+.formula{font-family:"Cascadia Mono", Consolas, monospace; font-size:1.5rem; font-weight:700; text-align:center; padding:.6rem; background:var(--bg); border-radius:10px; margin:.4rem 0}
+
+/* Repetisjon */
+.flip{cursor:pointer; text-align:left; font:inherit; color:inherit; width:100%; min-height:9rem; display:flex; flex-direction:column; justify-content:space-between}
+.flip .q{font-weight:650; font-size:1.05rem}
+.flip .a{display:none; color:var(--green); font-weight:600; margin-top:.6rem}
+.flip.show .a{display:block}
+.flip .hint{font-size:.75rem; color:var(--muted); margin-top:.6rem}
+.flip.show .hint{display:none}
+
+.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
+/* Tabs */
+.tabs{display:flex; gap:.4rem; flex-wrap:wrap}
+.tabs .btn{font-size:.9rem; padding:.5rem 1rem}
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.oppfig{max-width:620px; margin:.4rem 0; background:#fff; border:1px solid #999; border-radius:6px}
+.oppfig svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr 1fr}
+  .readout{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .paper{overflow-x:auto} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+
+
+
+/* Overflatebehandling */
+.togs{display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.8rem}
+.togs .btn{font-size:.95rem; padding:.55rem 1rem}
+.togs .btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+.big{font-size:2.6rem; line-height:1}
+.ico-card{text-align:center}
+.ico-card svg{max-width:150px; margin:0 auto .5rem}
+.lag{transition:opacity .6s, transform .6s}
+.lag.av{opacity:0; transform:translateY(-14px)}
+.flyt3{display:grid; grid-template-columns:1fr auto 1fr auto 1fr; gap:.6rem; align-items:center}
+.flyt3 .pil{font-size:2rem; color:var(--orange); font-weight:800}
+.velg{display:grid; grid-template-columns:repeat(4,1fr); gap:.6rem}
+.velg .btn{font-size:.95rem; padding:.7rem .5rem; display:flex; flex-direction:column; align-items:center; gap:.3rem}
+.velg .btn span{font-size:2rem; line-height:1}
+.svarkort{min-height:7rem}
+.svarkort h3{color:var(--orange)}
+.rust-flekk{transform-box:fill-box; transform-origin:center}
+@media (max-width:900px){ .flyt3{grid-template-columns:1fr} .flyt3 .pil{transform:rotate(90deg); text-align:center} .velg{grid-template-columns:repeat(2,1fr)} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Overflatebehandling · <span>Leksjon 1</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- FORSIDE -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Overflatebehandling</div>
+      <h1>Leksjon 1<br>Rust og overflatebehandling</h1>
+      <p class="lead">Hvordan hindrer vi at stål ruster?</p>
+      <ol class="goals">
+        <li>Hva er <b>rust</b>?</li>
+        <li><b>Forarbeid</b>: avfette og blåse</li>
+        <li><b>Maling</b> og <b>pulverlakk</b></li>
+        <li><b>Sink</b> og <b>krom</b></li>
+        <li><b>Olje</b>, rustfritt og aluminium</li>
+        <li><b>HMS</b> og å <b>velge metode</b></li>
+      </ol>
+    </div>
+    <div>
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 300" role="img" aria-label="To stålbjelker ute i regnet. Den ubehandlede ruster, den malte holder seg fin.">
+          <defs>
+            <linearGradient id="gStal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7783"/><stop offset=".4" stop-color="#e3e8ee"/><stop offset="1" stop-color="#5f6b78"/></linearGradient>
+          </defs>
+          <!-- regn -->
+          <g style="stroke:var(--blue);stroke-width:3;stroke-linecap:round;opacity:.7">
+            <g><animateTransform attributeName="transform" type="translate" dur="1.2s" repeatCount="indefinite" values="0 -40;0 60"/>
+              <path d="M60 40 v14 M130 20 v14 M200 50 v14 M300 30 v14 M380 55 v14 M450 25 v14 M240 10 v14 M100 70 v14 M420 80 v14"/>
+            </g>
+          </g>
+          <!-- ubehandlet -->
+          <rect x="30" y="150" width="210" height="60" rx="4" style="fill:url(#gStal);stroke:var(--steel-dark)"/>
+          <g style="fill:#a4471b">
+            <ellipse class="rust-flekk" cx="80" cy="168" rx="22" ry="10"><animate attributeName="rx" dur="6s" repeatCount="indefinite" values="2;30;30"/><animate attributeName="ry" dur="6s" repeatCount="indefinite" values="1;12;12"/></ellipse>
+            <ellipse cx="160" cy="190" rx="20" ry="9"><animate attributeName="rx" dur="6s" begin="1s" repeatCount="indefinite" values="2;36;36"/><animate attributeName="ry" dur="6s" begin="1s" repeatCount="indefinite" values="1;14;14"/></ellipse>
+            <ellipse cx="210" cy="164" rx="14" ry="7" style="fill:#c0622d"><animate attributeName="rx" dur="6s" begin="2s" repeatCount="indefinite" values="1;20;20"/></ellipse>
+          </g>
+          <text x="135" y="245" text-anchor="middle" font-size="20" font-weight="800" style="fill:#a4471b">Ubehandlet</text>
+          <!-- malt -->
+          <rect x="280" y="150" width="210" height="60" rx="4" style="fill:var(--blue);stroke:var(--steel-dark)"/>
+          <rect x="290" y="156" width="190" height="8" rx="4" style="fill:#fff;opacity:.35"/>
+          <text x="385" y="245" text-anchor="middle" font-size="20" font-weight="800" style="fill:var(--blue)">Malt</text>
+          <text x="385" y="280" text-anchor="middle" font-size="30">✓</text>
+          <text x="135" y="280" text-anchor="middle" font-size="30">✗</text>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <p style="margin:.6rem 0">Hver del er én visning med én ting. Bla videre når klassen har forstått den. Innledning: Ta med en rusten og en forsinket bolt (eller et malt og et rustent stykke stål). Spør: «Hvorfor ser disse så forskjellige ut?»</p>
+      <div class="card" style="margin-top:.6rem">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p><i>«forklare og bruke ulike metoder og teknikker for overflatebehandling»</i> (T9)</p>
+        <p><i>«håndtere gasser og kjemikalier i henhold til sikkerhetsdatablader»</i> (T11). Her: maling og løsemidler.</p>
+        <p><i>«vurdere og beskrive bruksområder, egenskaper og kombinasjoner for aktuelle materialer»</i> (T12). Her: rustfritt og aluminium.</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Første leksjon i emnet. Forutsetter ingen Vg1-kunnskap. Læringsmål: forklare at stål ruster når vann og luft er til stede · forklare hvorfor overflaten må avfettes og blåses før maling · beskrive maling i lag, pulverlakk, varmforsinking, elforsinking, forkromming og olje · forklare at sink ofrer seg for stålet · finne verneutstyr i sikkerhetsdatabladet · velge en passende metode til et produkt. «Bruke»-delen av T9 gjøres praktisk i verkstedet (for eksempel avfette, slipe og grunne et emne).</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1</th></tr>
+          <tr><td>0–5 min</td><td>Husker du?</td></tr>
+          <tr><td>5–27 min</td><td>Del 1–7: rust, prøv selv, hvorfor, avfette, blåse, maling, pulverlakk</td></tr>
+          <tr><td>27–45 min</td><td>Oppgave 1–3</td></tr>
+          <tr><th colspan="2">Time 2</th></tr>
+          <tr><td>0–25 min</td><td>Del 8–14: varmforsinking, sink ofrer seg, belegg med strøm, olje, rustfritt, HMS, velg metode</td></tr>
+          <tr><td>25–42 min</td><td>Oppgave 4–7</td></tr>
+          <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+        <p style="font-size:.85rem; color:var(--muted); margin:.5rem 0 0">Oppgave 8 er ekstra. Vis gjerne et ekte sikkerhetsdatablad for malingen dere bruker i verkstedet.</p>
+      </div>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HUSKER DU -->
+<section class="slide" id="rep" data-nav="Husker du?">
+  <div class="wrap">
+    <div class="kicker">Oppstart · ca. 5 min</div>
+    <h2>Husker du?</h2>
+    <p class="lead">Svar med sidemannen – klikk for svar.</p>
+    <div class="grid4" style="margin-top:1.2rem">
+      <button class="card flip"><span class="q">Hva er stål laget av?</span><span class="a">Mest jern, og litt karbon.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvilken farge har rust?</span><span class="a">Rødbrun. Rust er jern som har reagert med vann og luft.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Ruster aluminium?</span><span class="a">Nei, ikke rødt. Rust kommer bare fra jern.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvor finner du farene ved et kjemikalie?</span><span class="a">I sikkerhetsdatabladet og på etiketten.</span><span class="hint">Klikk for svar</span></button>
+    </div>
+    <div class="tip o"><b>I dag:</b> Hvorfor ruster stål – og hvordan hindrer vi det?</div>
+  </div>
+</section>
+
+<!-- DEL 1 RUST -->
+<section class="slide" id="rust" data-nav="1 Hva er rust?">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 3 min</div>
+    <h2>Rust = jern + vann + luft</h2>
+    <p class="lead">Vannet og oksygenet i lufta «spiser» jernet.</p>
+    <div class="fig" style="max-width:950px">
+      <svg viewBox="0 0 600 290" role="img" aria-label="En vanndråpe faller på en stålplate. Oksygen fra lufta går ned i dråpen. Under dråpen vokser en rustflekk.">
+        <defs><linearGradient id="gStal1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7783"/><stop offset=".4" stop-color="#e3e8ee"/><stop offset="1" stop-color="#5f6b78"/></linearGradient></defs>
+        <rect x="40" y="190" width="520" height="70" rx="4" style="fill:url(#gStal1);stroke:var(--steel-dark)"/>
+        <text x="60" y="250" font-size="18" font-weight="700" style="fill:#2f3843">Stål (jern)</text>
+        <!-- dråpe som faller -->
+        <path d="M300 20 q-14 22 0 30 q14 -8 0 -30z" style="fill:var(--blue)">
+          <animateTransform attributeName="transform" type="translate" dur="8s" repeatCount="indefinite" values="0 0;0 150;0 150" keyTimes="0;.15;1"/>
+          <animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;.14;.16;1"/>
+        </path>
+        <!-- vannpytt -->
+        <ellipse cx="300" cy="186" rx="90" ry="14" style="fill:var(--blue);opacity:.55">
+          <animate attributeName="rx" dur="8s" repeatCount="indefinite" values="0;0;90;90" keyTimes="0;.15;.2;1"/>
+        </ellipse>
+        <!-- oksygen -->
+        <g font-size="16" font-weight="800" style="fill:var(--green)">
+          <text x="160" y="70">O₂<animateTransform attributeName="transform" type="translate" dur="4s" repeatCount="indefinite" values="0 0;90 105"/><animate attributeName="opacity" dur="4s" repeatCount="indefinite" values="1;1;0"/></text>
+          <text x="420" y="60">O₂<animateTransform attributeName="transform" type="translate" dur="4s" begin="1.5s" repeatCount="indefinite" values="0 0;-80 115"/><animate attributeName="opacity" dur="4s" begin="1.5s" repeatCount="indefinite" values="1;1;0"/></text>
+        </g>
+        <text x="120" y="45" font-size="18" font-weight="700" style="fill:var(--green)">Luft</text>
+        <text x="430" y="150" font-size="18" font-weight="700" style="fill:var(--blue)">Vann</text>
+        <!-- rust -->
+        <ellipse cx="300" cy="194" rx="0" ry="8" style="fill:#a4471b">
+          <animate attributeName="rx" dur="8s" repeatCount="indefinite" values="0;0;80;80" keyTimes="0;.25;.85;1"/>
+          <animate attributeName="ry" dur="8s" repeatCount="indefinite" values="0;0;14;14" keyTimes="0;.25;.85;1"/>
+        </ellipse>
+        <text x="300" y="285" text-anchor="middle" font-size="20" font-weight="800" style="fill:#a4471b">Rust<animate attributeName="opacity" dur="8s" repeatCount="indefinite" values="0;0;1;1" keyTimes="0;.5;.6;1"/></text>
+      </svg>
+    </div>
+    <div class="chips" style="margin-top:1rem"><span>Jern</span><span>+ vann</span><span>+ luft (O₂)</span><span>→ rust</span></div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Rust er jernoksid (jernhydroksid). Korrosjon er det vanlige ordet for at metall brytes ned av omgivelsene. Rust er korrosjon på jern og stål. Rusten er porøs og løs, så den beskytter ikke jernet under. Derfor fortsetter den innover.</details>
+  </div>
+</section>
+
+<!-- DEL 2 PRØV SELV -->
+<section class="slide" id="prov" data-nav="2 Prøv selv">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 4 min</div>
+    <h2>Fjern vannet eller lufta – da stopper rusten</h2>
+    <p class="lead">Slå av og på. Hva skjer?</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="provSvg" viewBox="0 0 600 260" role="img" aria-label="Stålplate. Rusten vokser når både vann og luft er på.">
+          <defs><linearGradient id="gStal2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7783"/><stop offset=".4" stop-color="#e3e8ee"/><stop offset="1" stop-color="#5f6b78"/></linearGradient></defs>
+          <g id="provLuft" font-size="18" font-weight="800" style="fill:var(--green)">
+            <text x="120" y="50">O₂</text><text x="260" y="35">O₂</text><text x="400" y="55">O₂</text><text x="500" y="30">O₂</text>
+          </g>
+          <ellipse id="provVann" cx="300" cy="146" rx="200" ry="16" style="fill:var(--blue);opacity:.5"/>
+          <g id="provSalt" style="fill:#fff;stroke:var(--muted)">
+            <rect x="180" y="138" width="7" height="7"/><rect x="250" y="142" width="7" height="7"/><rect x="330" y="137" width="7" height="7"/><rect x="410" y="141" width="7" height="7"/>
+          </g>
+          <rect x="60" y="150" width="480" height="70" rx="4" style="fill:url(#gStal2);stroke:var(--steel-dark)"/>
+          <g id="provRust" style="fill:#a4471b">
+            <ellipse cx="160" cy="160" rx="0" ry="0"/><ellipse cx="260" cy="170" rx="0" ry="0"/><ellipse cx="350" cy="158" rx="0" ry="0"/><ellipse cx="450" cy="172" rx="0" ry="0"/>
+          </g>
+        </svg>
+        <div class="status info" id="provTxt"></div>
+      </div>
+      <div>
+        <div class="togs no-print">
+          <button class="btn on" data-p="vann">💧 Vann</button>
+          <button class="btn on" data-p="luft">💨 Luft</button>
+          <button class="btn" data-p="salt">🧂 Salt</button>
+          <button class="btn" id="provNy">↺ Ny plate</button>
+        </div>
+        <div class="tip" style="margin-top:1.2rem">Tørt stål inne ruster nesten ikke. Salt gjør at rusten går <b>mye fortere</b> (vei, sjø).</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>All overflatebehandling bygger på dette: vi stenger vann og luft ute (maling, olje), eller vi lar et annet metall ruste i stedet (sink). Spør: «Hvorfor ruster bilen mer om vinteren?» (veisalt).</details>
+  </div>
+</section>
+
+<!-- DEL 3 HVORFOR -->
+<section class="slide" id="hvorfor" data-nav="3 Hvorfor?">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 2 min</div>
+    <h2>Hvorfor overflatebehandle?</h2>
+    <div class="grid4" style="margin-top:1.2rem">
+      <div class="card ico-card">
+        <svg viewBox="0 0 120 100" aria-hidden="true"><path d="M60 8 L100 22 V50 C100 72 82 88 60 94 C38 88 20 72 20 50 V22 Z" style="fill:var(--blue-soft);stroke:var(--blue);stroke-width:5"/><path d="M42 52 l13 13 l24 -26" style="fill:none;stroke:var(--green);stroke-width:7;stroke-linecap:round;stroke-linejoin:round"/></svg>
+        <h3>Stopper rust</h3>
+      </div>
+      <div class="card ico-card">
+        <svg viewBox="0 0 120 100" aria-hidden="true"><rect x="16" y="40" width="88" height="40" rx="6" style="fill:var(--orange)"/><path d="M30 30 l6 -12 l6 12 l12 6 l-12 6 l-6 12 l-6 -12 l-12 -6z" style="fill:var(--yellow)"><animate attributeName="opacity" dur="1.6s" repeatCount="indefinite" values="1;.2;1"/></path></svg>
+        <h3>Ser pent ut</h3>
+      </div>
+      <div class="card ico-card">
+        <svg viewBox="0 0 120 100" aria-hidden="true"><rect x="10" y="60" width="100" height="26" rx="4" style="fill:var(--steel)"/><rect x="10" y="54" width="100" height="8" style="fill:var(--purple)"/><rect x="40" y="24" width="40" height="30" rx="4" style="fill:var(--steel-dark)"><animateTransform attributeName="transform" type="translate" dur="1.5s" repeatCount="indefinite" values="-25 0;25 0;-25 0"/></rect></svg>
+        <h3>Tåler slitasje</h3>
+      </div>
+      <div class="card ico-card">
+        <svg viewBox="0 0 120 100" aria-hidden="true"><rect x="10" y="60" width="100" height="26" rx="4" style="fill:var(--blue)"/><circle cx="60" cy="50" r="9" style="fill:var(--blue);opacity:.6"><animateTransform attributeName="transform" type="translate" dur="2s" repeatCount="indefinite" values="-40 0;40 0"/></circle></svg>
+        <h3>Lett å holde ren</h3>
+      </div>
+    </div>
+    <div class="tip o">Rust gjør stålet <b>svakere</b> – og ser dårlig ut for kunden.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Korrosjon koster mye: vedlikehold, utskifting og ulykker når bærende deler ruster i stykker. Bruk et eksempel fra elevenes hverdag: bil, henger, rekkverk, båt.</details>
+  </div>
+</section>
+
+<!-- DEL 4 AVFETTE -->
+<section class="slide" id="avfette" data-nav="4 Avfette">
+  <div class="wrap">
+    <div class="kicker">Del 4 · Forarbeid 1 · ca. 3 min</div>
+    <h2>Maling fester ikke på olje</h2>
+    <p class="lead">Først: vask bort olje og fett med avfettingsmiddel.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="avfSvg" viewBox="0 0 600 240" role="img" aria-label="Maling på en oljete plate trekker seg sammen til dråper. På en avfettet plate legger malingen seg jevnt.">
+          <defs><linearGradient id="gStal3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7783"/><stop offset=".4" stop-color="#e3e8ee"/><stop offset="1" stop-color="#5f6b78"/></linearGradient></defs>
+          <rect x="60" y="150" width="480" height="60" rx="4" style="fill:url(#gStal3);stroke:var(--steel-dark)"/>
+          <g id="avfOlje"><rect x="60" y="143" width="480" height="8" style="fill:#e0a800;opacity:.7"/><text x="545" y="140" text-anchor="end" font-size="16" font-weight="700" style="fill:#9c7600">olje</text></g>
+          <g id="avfPerler" style="fill:var(--blue)">
+            <ellipse cx="120" cy="134" rx="18" ry="11"/><ellipse cx="200" cy="132" rx="24" ry="13"/><ellipse cx="290" cy="134" rx="16" ry="10"/><ellipse cx="370" cy="132" rx="26" ry="13"/><ellipse cx="460" cy="134" rx="18" ry="11"/>
+          </g>
+          <rect id="avfLag" x="60" y="136" width="480" height="14" rx="3" style="fill:var(--blue)"/>
+          <path d="M300 20 q-14 22 0 30 q14 -8 0 -30z" style="fill:var(--blue)"><animateTransform attributeName="transform" type="translate" dur="3s" repeatCount="indefinite" values="0 0;0 85;0 85" keyTimes="0;.4;1"/><animate attributeName="opacity" dur="3s" repeatCount="indefinite" values="1;1;0;0" keyTimes="0;.38;.42;1"/></path>
+          <text x="80" y="40" font-size="16" font-weight="700" style="fill:var(--blue)">maling</text>
+        </svg>
+        <div class="status bad" id="avfTxt"></div>
+      </div>
+      <div>
+        <div class="togs no-print">
+          <button class="btn on" data-a="olje">🛢 Med olje</button>
+          <button class="btn" data-a="ren">🧽 Avfettet</button>
+        </div>
+        <div class="tip" style="margin-top:1.2rem">Fingeravtrykk er også fett. Ikke ta på flaten etter avfetting!</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Avfetting gjøres med avfettingsmiddel (løsemiddel eller vannbasert/alkalisk) og rene filler. Les sikkerhetsdatabladet (del 13). Skjæreolje og kjølevæske fra maskineringen må alltid bort.</details>
+  </div>
+</section>
+
+<!-- DEL 5 BLÅSE -->
+<section class="slide" id="blase" data-nav="5 Blåse">
+  <div class="wrap">
+    <div class="kicker">Del 5 · Forarbeid 2 · ca. 3 min</div>
+    <h2>Blås eller slip bort rust og glødeskall</h2>
+    <p class="lead">Da blir flaten ren og <b>ru</b>. Malingen får tak.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg viewBox="0 0 600 260" role="img" aria-label="Et blåsemunnstykke kjører over platen. Bak munnstykket er rusten borte og stålet er rent.">
+          <defs><linearGradient id="gStal4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c7783"/><stop offset=".4" stop-color="#e3e8ee"/><stop offset="1" stop-color="#5f6b78"/></linearGradient></defs>
+          <rect x="60" y="160" width="480" height="60" rx="4" style="fill:url(#gStal4);stroke:var(--steel-dark)"/>
+          <rect x="60" y="150" width="480" height="12" style="fill:#a4471b">
+            <animate attributeName="x" dur="5s" repeatCount="indefinite" values="60;540;540" keyTimes="0;.85;1"/>
+            <animate attributeName="width" dur="5s" repeatCount="indefinite" values="480;0;0" keyTimes="0;.85;1"/>
+          </rect>
+          <g>
+            <animateTransform attributeName="transform" type="translate" dur="5s" repeatCount="indefinite" values="0 0;480 0;480 0" keyTimes="0;.85;1"/>
+            <rect x="40" y="40" width="40" height="50" rx="5" style="fill:var(--steel-dark)"/>
+            <path d="M48 90 h24 l-6 22 h-12z" style="fill:var(--ink)"/>
+            <g style="fill:var(--muted)"><circle cx="55" cy="125" r="3"><animate attributeName="cy" dur=".4s" repeatCount="indefinite" values="115;148"/></circle><circle cx="66" cy="130" r="3"><animate attributeName="cy" dur=".4s" begin=".2s" repeatCount="indefinite" values="115;148"/></circle><circle cx="60" cy="120" r="2.5"><animate attributeName="cy" dur=".3s" repeatCount="indefinite" values="115;148"/></circle></g>
+          </g>
+          <text x="300" y="250" text-anchor="middle" font-size="16" font-weight="700" style="fill:var(--muted)">sand eller stålkorn blåses mot flaten</text>
+        </svg>
+      </div>
+      <div class="fig">
+        <svg viewBox="0 0 300 220" role="img" aria-label="Forstørret: blåst flate er ru, og malingen griper fast i ujevnhetene.">
+          <defs><clipPath id="zoomClip"><circle cx="150" cy="110" r="98"/></clipPath></defs>
+          <circle cx="150" cy="110" r="100" style="fill:var(--panel)"/>
+          <g clip-path="url(#zoomClip)">
+          <path d="M40 128 h15 l15 -14 l12 12 l14 -18 l12 16 l14 -14 l12 14 l14 -18 l12 16 l14 -14 l12 14 l14 -16 l12 14 l14 -12 h20 V220 H40z" style="fill:var(--steel)"/>
+          <path d="M40 128 h15 l15 -14 l12 12 l14 -18 l12 16 l14 -14 l12 14 l14 -18 l12 16 l14 -14 l12 14 l14 -16 l12 14 l14 -12 h20 V88 H40z" style="fill:var(--blue);opacity:.8"/>
+          <text x="150" y="70" text-anchor="middle" font-size="18" font-weight="800" style="fill:var(--blue)">maling</text>
+          <text x="150" y="170" text-anchor="middle" font-size="18" font-weight="800" style="fill:#2f3843">ru stål</text>
+          </g>
+          <circle cx="150" cy="110" r="100" style="fill:none;stroke:var(--orange);stroke-width:4"/>
+        </svg>
+        <p class="caption">Forstørret: malingen griper i ujevnhetene.</p>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Glødeskall er det blå-grå oksidlaget på varmvalset stål. Det kan sprekke av og ta malingen med seg. På skolen: stålbørste, slipeskive eller sandpapir på små deler. Blåsing krever eget kabinett, støvmaske og hørselvern.</details>
+  </div>
+</section>
+
+<!-- DEL 6 MALING -->
+<section class="slide" id="maling" data-nav="6 Maling">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 4 min</div>
+    <h2>Maling i lag på lag</h2>
+    <p class="lead">Trykk og legg på ett lag om gangen.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg viewBox="0 0 600 260" role="img" aria-label="Snitt gjennom malt stål: stål, grunning, mellomstrøk og toppstrøk.">
+          <rect x="60" y="180" width="380" height="60" style="fill:var(--steel);stroke:var(--steel-dark)"/>
+          <text x="455" y="216" font-size="17" font-weight="700" style="fill:var(--ink)">Stål</text>
+          <g class="lag av" id="lag1"><rect x="60" y="150" width="380" height="30" style="fill:#9c3d26"/><path d="M445 165 h15" style="stroke:var(--ink);stroke-width:2"/><text x="465" y="171" font-size="17" font-weight="700" style="fill:var(--ink)">1 Grunning</text></g>
+          <g class="lag av" id="lag2"><rect x="60" y="120" width="380" height="30" style="fill:#8a9096"/><path d="M445 135 h15" style="stroke:var(--ink);stroke-width:2"/><text x="465" y="141" font-size="17" font-weight="700" style="fill:var(--ink)">2 Mellomstrøk</text></g>
+          <g class="lag av" id="lag3"><rect x="60" y="90" width="380" height="30" style="fill:var(--blue)"/><path d="M445 105 h15" style="stroke:var(--ink);stroke-width:2"/><text x="465" y="111" font-size="17" font-weight="700" style="fill:var(--ink)">3 Toppstrøk</text></g>
+          <g id="lagSol" class="lag av"><circle cx="110" cy="40" r="18" style="fill:var(--yellow)"/><path d="M130 50 l40 30 M110 62 l10 22" style="stroke:var(--yellow);stroke-width:4;stroke-linecap:round"/><path d="M300 20 q-10 16 0 22 q10 -6 0 -22z" style="fill:var(--blue)"><animateTransform attributeName="transform" type="translate" dur="1.5s" repeatCount="indefinite" values="0 0;0 60"/></path></g>
+        </svg>
+        <div class="status info" id="lagTxt"></div>
+      </div>
+      <div>
+        <div class="togs no-print">
+          <button class="btn orange" id="lagNeste">+ Legg på neste lag</button>
+          <button class="btn" id="lagNull">↺ Start på nytt</button>
+        </div>
+        <div class="tip" style="margin-top:1.2rem">La hvert lag <b>tørke</b> før neste. Se tørketiden på boksen.</div>
+        <details class="ekstra"><summary>Ekstra: hvor tykt?</summary>Lagtykkelsen måles i <b>µm</b> (mikrometer). 1 µm = 0,001 mm. Et lag er ofte 40–80 µm, omtrent like tykt som et papirark.</details>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Grunningen fester godt til stålet og hindrer rust (rustbeskyttende pigmenter, ofte sinkrik). Mellomstrøket bygger tykkelse. Toppstrøket gir farge og tåler sol (UV) og vær. Inne holder ofte grunning + toppstrøk. Tykkelse måles med et lagtykkelsesmåler (magnetisk).</details>
+  </div>
+</section>
+
+<!-- DEL 7 PULVERLAKK -->
+<section class="slide" id="pulver" data-nav="7 Pulverlakk">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 3 min</div>
+    <h2>Pulverlakk: pulver som smeltes i ovn</h2>
+    <p class="lead">Hard og jevn lakk – uten løsemidler.</p>
+    <div class="flyt3" style="margin-top:1.2rem">
+      <div class="card">
+        <svg viewBox="0 0 220 130" role="img" aria-label="Pulver sprøytes mot delen og fester seg">
+          <rect x="150" y="20" width="40" height="90" rx="4" style="fill:var(--steel)"/>
+          <rect x="10" y="55" width="50" height="20" rx="4" style="fill:var(--steel-dark)"/>
+          <g style="fill:var(--orange)">
+            <circle cx="65" cy="60" r="4"><animate attributeName="cx" dur="1.2s" repeatCount="indefinite" values="65;148"/><animate attributeName="cy" dur="1.2s" repeatCount="indefinite" values="62;40"/></circle>
+            <circle cx="65" cy="65" r="4"><animate attributeName="cx" dur="1.2s" begin=".3s" repeatCount="indefinite" values="65;148"/></circle>
+            <circle cx="65" cy="70" r="4"><animate attributeName="cx" dur="1.2s" begin=".6s" repeatCount="indefinite" values="65;148"/><animate attributeName="cy" dur="1.2s" begin=".6s" repeatCount="indefinite" values="68;95"/></circle>
+          </g>
+          <text x="80" y="30" font-size="18" font-weight="800" style="fill:var(--red)">+</text><text x="196" y="70" font-size="20" font-weight="800" style="fill:var(--blue)">−</text>
+        </svg>
+        <h3>1 · Sprøyt pulver</h3><p class="short">Pulveret er elektrisk ladet og <b>fester</b> seg.</p>
+      </div>
+      <div class="pil">→</div>
+      <div class="card">
+        <svg viewBox="0 0 220 130" role="img" aria-label="Ovn på 200 grader">
+          <rect x="30" y="10" width="160" height="110" rx="8" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:3"/>
+          <rect x="95" y="25" width="30" height="70" rx="3" style="fill:var(--orange)"/>
+          <path d="M60 110 q8 -10 0 -20 q-8 -10 0 -20 M160 110 q8 -10 0 -20 q-8 -10 0 -20" style="fill:none;stroke:var(--red);stroke-width:4"><animate attributeName="opacity" dur="1s" repeatCount="indefinite" values="1;.3;1"/></path>
+          <text x="110" y="115" text-anchor="middle" font-size="16" font-weight="800" style="fill:var(--red)">ca. 200 °C</text>
+        </svg>
+        <h3>2 · Steik i ovn</h3><p class="short">Pulveret <b>smelter</b> og flyter ut.</p>
+      </div>
+      <div class="pil">→</div>
+      <div class="card">
+        <svg viewBox="0 0 220 130" role="img" aria-label="Ferdig blank lakk">
+          <rect x="95" y="20" width="30" height="90" rx="4" style="fill:var(--orange)"/>
+          <rect x="100" y="26" width="6" height="78" rx="3" style="fill:#fff;opacity:.5"/>
+          <path d="M150 40 l5 -10 l5 10 l10 5 l-10 5 l-5 10 l-5 -10 l-10 -5z" style="fill:var(--yellow)"><animate attributeName="opacity" dur="1.6s" repeatCount="indefinite" values="1;.2;1"/></path>
+        </svg>
+        <h3>3 · Ferdig</h3><p class="short">Hard lakk. Felger, møbler, maskindeler.</p>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Pulverlakk krever at delen tåler ovnstemperaturen (ca. 160–200 °C) og leder strøm. Overflaten forbehandles (avfetting, ofte blåsing eller fosfatering). Ingen løsemidler, og overskuddspulver kan gjenbrukes. Pulverlakkering gjøres oftest hos en leverandør.</details>
+  </div>
+</section>
+
+<!-- DEL 8 VARMFORSINKING -->
+<section class="slide" id="varmforsink" data-nav="8 Varmforsinking">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 3 min</div>
+    <h2>Varmforsinking: dypp stålet i flytende sink</h2>
+    <p class="lead">Stålet blir grått og får et tykt lag sink.</p>
+    <div class="fig" style="max-width:950px">
+      <svg viewBox="0 0 600 300" role="img" aria-label="En kran senker en stålbjelke ned i et kar med flytende sink på 450 grader og løfter den opp igjen grå.">
+        <rect x="140" y="160" width="320" height="120" rx="6" style="fill:var(--steel-dark)"/>
+        <rect x="152" y="172" width="296" height="98" style="fill:#b8c2cc"/>
+        <path d="M152 176 q20 -6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" style="fill:none;stroke:#fff;stroke-width:3;opacity:.7"><animateTransform attributeName="transform" type="translate" dur="2s" repeatCount="indefinite" values="0 0;-20 0;0 0"/></path>
+        <text x="300" y="240" text-anchor="middle" font-size="20" font-weight="800" style="fill:#2f3843">Sink ca. 450 °C</text>
+        <g>
+          <animateTransform attributeName="transform" type="translate" dur="7s" repeatCount="indefinite" values="0 0;0 150;0 150;0 0;0 0" keyTimes="0;.3;.5;.8;1"/>
+          <line x1="300" y1="0" x2="300" y2="30" style="stroke:var(--ink);stroke-width:3"/>
+          <path d="M290 30 h20 l-10 12z" style="fill:var(--ink)"/>
+          <rect x="200" y="42" width="200" height="26" rx="3" style="fill:#a4471b">
+            <animate attributeName="fill" dur="7s" repeatCount="indefinite" values="#5f6b78;#5f6b78;#aab4be;#aab4be" keyTimes="0;.35;.45;1"/>
+          </rect>
+        </g>
+        <rect x="152" y="180" width="296" height="90" style="fill:#b8c2cc;opacity:.75"/>
+        <text x="300" y="240" text-anchor="middle" font-size="20" font-weight="800" style="fill:#2f3843">Sink ca. 450 °C</text>
+        <text x="40" y="70" font-size="16" font-weight="700" style="fill:var(--muted)">Rent stål inn</text>
+        <text x="470" y="70" font-size="16" font-weight="700" style="fill:var(--muted)">Grått ut</text>
+      </svg>
+    </div>
+    <div class="tip">Rekkverk, stolper, tilhengere og bolter. Holder i <b>mange tiår</b> ute.</div>
+    <details class="ekstra"><summary>Ekstra: hvor lenge holder det?</summary>Sinklaget er ofte 50–150 µm. Ute forsvinner ca. 1–2 µm sink i året. Derfor kan det holde i 40–80 år.</details>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Delen avfettes, beises (syre fjerner rust) og flukses før den dyppes. Sinken legerer seg med stålet, så laget sitter svært godt. Hule deler må ha hull så luft og sink kommer ut. Varmforsinket stål kan males etterpå («dupleks»), da holder det enda lenger. Sveising i forsinket stål gir giftig sinkrøyk: avsug og åndedrettsvern.</details>
+  </div>
+</section>
+
+<!-- DEL 9 SINK OFRER SEG -->
+<section class="slide" id="offer" data-nav="9 Sink ofrer seg">
+  <div class="wrap">
+    <div class="kicker">Del 9 · ca. 4 min</div>
+    <h2>Sink ofrer seg for stålet</h2>
+    <p class="lead">Det blir en ripe. Hva skjer?</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg viewBox="0 0 600 260" role="img" aria-label="Snitt med en ripe ned til stålet. Med bare maling kryper rusten under malingen. Med sink tæres sinken litt, og stålet ruster ikke.">
+          <rect x="60" y="150" width="480" height="80" style="fill:var(--steel);stroke:var(--steel-dark)"/>
+          <text x="80" y="210" font-size="17" font-weight="700" style="fill:#2f3843">Stål</text>
+          <g id="offMaling">
+            <path d="M60 120 H285 L295 150 H305 L315 120 H540 V150 H60z" style="fill:var(--blue)"/>
+            <ellipse cx="300" cy="152" rx="10" ry="6" style="fill:#a4471b"><animate attributeName="rx" dur="6s" repeatCount="indefinite" values="6;90;90" keyTimes="0;.8;1"/><animate attributeName="ry" dur="6s" repeatCount="indefinite" values="4;14;14" keyTimes="0;.8;1"/></ellipse>
+            <text x="300" y="100" text-anchor="middle" font-size="18" font-weight="800" style="fill:#a4471b">Rusten kryper under malingen</text>
+          </g>
+          <g id="offSink" style="display:none">
+            <path d="M60 120 H285 L295 150 H305 L315 120 H540 V150 H60z" style="fill:#aab4be"/>
+            <g style="fill:#fff;stroke:var(--muted)">
+              <circle cx="276" cy="126" r="5"><animate attributeName="opacity" dur="2s" repeatCount="indefinite" values="0;1;1"/></circle>
+              <circle cx="324" cy="126" r="5"><animate attributeName="opacity" dur="2s" begin=".6s" repeatCount="indefinite" values="0;1;1"/></circle>
+            </g>
+            <g font-size="15" font-weight="800" style="fill:var(--orange)">
+              <text x="200" y="135">e⁻<animateTransform attributeName="transform" type="translate" dur="1.6s" repeatCount="indefinite" values="0 0;85 25"/></text>
+              <text x="390" y="135">e⁻<animateTransform attributeName="transform" type="translate" dur="1.6s" begin=".8s" repeatCount="indefinite" values="0 0;-85 25"/></text>
+            </g>
+            <text x="300" y="100" text-anchor="middle" font-size="18" font-weight="800" style="fill:var(--green)">Sinken tæres – stålet er helt</text>
+          </g>
+        </svg>
+        <div class="status bad" id="offTxt"></div>
+      </div>
+      <div>
+        <div class="togs no-print">
+          <button class="btn on" data-o="maling">🎨 Bare maling</button>
+          <button class="btn" data-o="sink">⚪ Forsinket</button>
+        </div>
+        <div class="tip" style="margin-top:1.2rem">Samme idé på båter: en <b>offeranode</b> av sink tæres i stedet for propellen og skroget.</div>
+        <details class="ekstra"><summary>Ekstra: hvorfor sink?</summary>Sink er et <b>uedlere</b> metall enn jern. Når de to metallene er i kontakt i vann, tæres det uedleste først. Se den galvaniske spenningsrekken i <a href="https://verkstedhandboka.vercel.app/#fysikk" target="_blank" rel="noopener">Verkstedhåndboka</a>.</details>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Dette kalles katodisk beskyttelse. Maling beskytter bare der den er hel. Sink beskytter også i riper og kutt på noen millimeter, fordi sinken avgir elektroner til stålet. Det hvite pulveret er sinkoksid («hvitrust»).</details>
+  </div>
+</section>
+
+<!-- DEL 10 BELEGG MED STRØM -->
+<section class="slide" id="strom" data-nav="10 Belegg med strøm">
+  <div class="wrap">
+    <div class="kicker">Del 10 · ca. 3 min</div>
+    <h2>Belegg med strøm: elforsinking og forkromming</h2>
+    <p class="lead">Strøm flytter metall fra en plate over til delen.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg viewBox="0 0 600 280" role="img" aria-label="Et kar med væske. Til venstre en metallplate koblet til pluss, til høyre delen koblet til minus. Metallioner vandrer fra platen til delen og legger seg som et tynt lag.">
+          <rect x="80" y="90" width="440" height="170" rx="6" style="fill:var(--blue-soft);stroke:var(--steel-dark);stroke-width:3"/>
+          <rect x="130" y="60" width="30" height="170" style="fill:#aab4be;stroke:var(--steel-dark)"/>
+          <rect x="430" y="60" width="40" height="170" style="fill:var(--steel-dark)"/>
+          <rect x="426" y="90" width="48" height="140" rx="2" style="fill:none;stroke:#cfd6dd;stroke-width:0">
+            <animate attributeName="stroke-width" dur="6s" repeatCount="indefinite" values="0;7;7" keyTimes="0;.9;1"/>
+          </rect>
+          <path d="M145 60 V30 H250 M455 60 V30 H350" style="fill:none;stroke:var(--ink);stroke-width:3"/>
+          <rect x="250" y="15" width="100" height="30" rx="4" style="fill:var(--panel);stroke:var(--ink);stroke-width:2"/>
+          <text x="265" y="37" font-size="18" font-weight="800" style="fill:var(--red)">+</text><text x="325" y="37" font-size="20" font-weight="800" style="fill:var(--blue)">−</text>
+          <g font-size="14" font-weight="800" style="fill:var(--orange)">
+            <text x="170" y="130">Zn⁺<animate attributeName="x" dur="3s" repeatCount="indefinite" values="170;405"/></text>
+            <text x="170" y="175">Zn⁺<animate attributeName="x" dur="3s" begin="1s" repeatCount="indefinite" values="170;405"/></text>
+            <text x="170" y="220">Zn⁺<animate attributeName="x" dur="3s" begin="2s" repeatCount="indefinite" values="170;405"/></text>
+          </g>
+          <text x="145" y="275" text-anchor="middle" font-size="16" font-weight="700" style="fill:var(--ink)">sinkplate</text>
+          <text x="450" y="275" text-anchor="middle" font-size="16" font-weight="700" style="fill:var(--ink)">delen</text>
+        </svg>
+      </div>
+      <div>
+        <div class="card"><h3>⚪ Elforsinking</h3><p class="short">Tynt, blankt lag. <b>Skruer og muttere</b> inne.</p></div>
+        <div class="card" style="margin-top:.8rem"><h3>✨ Forkromming</h3><p class="short">Hardt og glatt. <b>Hydraulikkstempler</b> og verktøy.</p></div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Elektrolyse (galvanisering): delen er katode (−), metallet som skal legges på er anode (+) eller finnes som salt i badet. Elforsinking gir 5–25 µm, mye tynnere enn varmforsinking (50–150 µm), så det holder ikke lenge ute. Hardforkromming gir slitesterk overflate. Badene inneholder sterke kjemikalier og gjøres hos spesialbedrifter.</details>
+  </div>
+</section>
+
+<!-- DEL 11 OLJE -->
+<section class="slide" id="olje" data-nav="11 Olje og fett">
+  <div class="wrap">
+    <div class="kicker">Del 11 · ca. 2 min</div>
+    <h2>Olje og fett: vannet preller av</h2>
+    <p class="lead">Rask beskyttelse for verktøy og blanke maskindeler.</p>
+    <div class="fig" style="max-width:950px">
+      <svg viewBox="0 0 600 240" role="img" aria-label="Maskinbord med en tynn oljefilm. En vanndråpe treffer og triller av.">
+        <rect x="60" y="140" width="480" height="70" rx="4" style="fill:var(--steel);stroke:var(--steel-dark)"/>
+        <path d="M100 140 v70 M180 140 v70 M260 140 v70 M340 140 v70 M420 140 v70 M500 140 v70" style="stroke:var(--steel-dark);stroke-width:4"/>
+        <rect x="60" y="133" width="480" height="8" style="fill:#e0a800;opacity:.7"/>
+        <text x="540" y="125" text-anchor="end" font-size="16" font-weight="700" style="fill:#9c7600">tynn oljefilm</text>
+        <circle cx="200" cy="20" r="14" style="fill:var(--blue)">
+          <animate attributeName="cy" dur="3.5s" repeatCount="indefinite" values="20;118;118;118" keyTimes="0;.3;.4;1"/>
+          <animate attributeName="cx" dur="3.5s" repeatCount="indefinite" values="200;200;200;600" keyTimes="0;.3;.4;1"/>
+        </circle>
+        <text x="300" y="232" text-anchor="middle" font-size="16" font-weight="700" style="fill:var(--muted)">maskinbord</text>
+      </svg>
+    </div>
+    <div class="tip o">Olje <b>forsvinner</b> etter hvert. Smør på igjen etter bruk.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Rustbeskyttelsesolje på maskinbord, skrustikker, måleverktøy og ferdige deler som skal lagres. Brunering (sortoksidering) på verktøy og skruer gir en tynn sort hinne som holder på oljen. Kobles til smøring i Vedlikehold 3.</details>
+  </div>
+</section>
+
+<!-- DEL 12 BESKYTTER SEG SELV -->
+<section class="slide" id="selv" data-nav="12 Rustfritt">
+  <div class="wrap">
+    <div class="kicker">Del 12 · ca. 3 min</div>
+    <h2>Rustfritt stål lager sitt eget skjold</h2>
+    <p class="lead">Krom i stålet gir et tynt, usynlig lag. Ripes det, kommer laget tilbake.</p>
+    <div class="fig" style="max-width:950px">
+      <svg viewBox="0 0 600 250" role="img" aria-label="Rustfritt stål med et tynt grønt beskyttelseslag. En ripe lages, og laget vokser tilbake.">
+        <rect x="60" y="120" width="480" height="80" style="fill:#d5dbe1;stroke:var(--steel-dark)"/>
+        <text x="80" y="180" font-size="17" font-weight="700" style="fill:#2f3843">Rustfritt stål (jern + krom)</text>
+        <rect x="60" y="114" width="480" height="6" style="fill:var(--green)"/>
+        <rect x="280" y="112" width="40" height="10" style="fill:var(--panel)">
+          <animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;.2;.25;.6;.8;1"/>
+        </rect>
+        <g>
+          <animateTransform attributeName="transform" type="translate" dur="6s" repeatCount="indefinite" values="-60 0;-60 0;60 0;300 -100;300 -100" keyTimes="0;.15;.25;.35;1"/>
+          <path d="M280 60 l20 50 l8 -4 z" style="fill:var(--steel-dark)"/>
+        </g>
+        <text x="300" y="95" text-anchor="middle" font-size="16" font-weight="700" style="fill:var(--green)">lag av kromoksid<animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="1;1;0;0;1;1" keyTimes="0;.2;.25;.75;.8;1"/></text>
+        <text x="300" y="95" text-anchor="middle" font-size="16" font-weight="800" style="fill:var(--orange)">ripe!<animate attributeName="opacity" dur="6s" repeatCount="indefinite" values="0;0;1;1;0;0" keyTimes="0;.2;.25;.6;.65;1"/></text>
+        <text x="300" y="235" text-anchor="middle" font-size="16" font-weight="700" style="fill:var(--muted)">Lufta lager laget på nytt</text>
+      </svg>
+    </div>
+    <div class="tip">Aluminium gjør det samme. <b>Anodisering</b> gjør laget tykkere – og kan gi farge.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Rustfritt stål har minst ca. 11–12 % krom. Kromoksidlaget er bare noen nanometer tykt (passivt lag). Det kan ødelegges av klorider (salt) og av jernspon fra vanlig stål: bruk egne børster og slipeskiver til rustfritt, ellers får det rustprikker. Se materiallære.</details>
+  </div>
+</section>
+
+<!-- DEL 13 HMS -->
+<section class="slide" id="hms" data-nav="13 HMS">
+  <div class="wrap">
+    <div class="kicker">Del 13 · ca. 3 min</div>
+    <h2>Les sikkerhetsdatabladet før du starter</h2>
+    <p class="lead">Maling, avfetting og løsemidler kan være giftige og brennbare.</p>
+    <div class="grid2">
+      <div class="fig" style="max-width:380px">
+        <svg viewBox="0 0 300 300" role="img" aria-label="Sikkerhetsdatablad med 16 punkter. Punkt 2 Farer og punkt 8 Verneutstyr blinker.">
+          <rect x="40" y="10" width="220" height="280" rx="6" style="fill:#fff;stroke:#5f6b78;stroke-width:2"/>
+          <text x="150" y="36" text-anchor="middle" font-size="15" font-weight="800" style="fill:#14181d">SIKKERHETSDATABLAD</text>
+          <g font-size="12" style="fill:#56606c">
+            <text x="56" y="62">1 Produkt og firma</text>
+            <rect x="50" y="68" width="200" height="20" rx="3" style="fill:#e8590c;opacity:.25"><animate attributeName="opacity" dur="1.4s" repeatCount="indefinite" values=".25;.6;.25"/></rect>
+            <text x="56" y="83" font-weight="800" style="fill:#c92a2a">2 Farer</text>
+            <text x="56" y="104">3 Innhold</text><text x="56" y="122">4 Førstehjelp</text><text x="56" y="140">5 Brann</text><text x="56" y="158">6 Utslipp</text><text x="56" y="176">7 Lagring</text>
+            <rect x="50" y="182" width="200" height="20" rx="3" style="fill:#1c6fd1;opacity:.25"><animate attributeName="opacity" dur="1.4s" begin=".7s" repeatCount="indefinite" values=".25;.6;.25"/></rect>
+            <text x="56" y="197" font-weight="800" style="fill:#1c6fd1">8 Verneutstyr</text>
+            <text x="56" y="218">9 …</text><text x="56" y="236">…</text><text x="56" y="254">16 Annet</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <div class="grid2" style="gap:1rem">
+          <div class="card ico-card">
+            <svg viewBox="0 0 100 100" aria-label="Brannfarlig"><rect x="20" y="20" width="60" height="60" transform="rotate(45 50 50)" style="fill:#fff;stroke:#c92a2a;stroke-width:6"/><path d="M50 30 c10 14 16 20 10 34 c-4 8 -16 8 -20 0 c-4 -8 2 -14 4 -18 c2 8 6 8 6 4 c0 -6 -4 -10 0 -20z" style="fill:#14181d"/></svg>
+            <p class="short"><b>Brannfarlig</b></p>
+          </div>
+          <div class="card ico-card">
+            <svg viewBox="0 0 100 100" aria-label="Helsefare"><rect x="20" y="20" width="60" height="60" transform="rotate(45 50 50)" style="fill:#fff;stroke:#c92a2a;stroke-width:6"/><circle cx="50" cy="36" r="7" style="fill:#14181d"/><path d="M38 70 V50 q12 -8 24 0 V70" style="fill:#14181d"/><path d="M50 46 l-5 8 l5 6 l5 -6z" style="fill:#fff"/></svg>
+            <p class="short"><b>Helsefare</b></p>
+          </div>
+        </div>
+        <div class="chips" style="margin-top:1rem"><span>😷 Maske</span><span>🥽 Briller</span><span>🧤 Hansker</span><span>🌬️ God lufting</span></div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Sikkerhetsdatablad (SDS) har alltid 16 punkter. Punkt 2: farer og faresymboler. Punkt 8: grenseverdier og verneutstyr. Ved sprøytemaling: åndedrettsvern med riktig filter (A2/P2), avtrekk, ingen gnister eller åpen flamme. Filler med løsemidler kan selvantenne: legg dem i lukket metallbeholder. Vis stoffkartoteket på skolen. Se også HMS 1.</details>
+  </div>
+</section>
+
+<!-- DEL 14 VELG METODE -->
+<section class="slide" id="velg" data-nav="14 Velg metode">
+  <div class="wrap">
+    <div class="kicker">Del 14 · ca. 4 min</div>
+    <h2>Velg riktig metode</h2>
+    <p class="lead">Klikk på en ting. Hvilken metode passer?</p>
+    <div class="grid2 wide-left">
+      <div class="velg no-print">
+        <button class="btn" data-v="0"><span>🚧</span>Rekkverk ute</button>
+        <button class="btn" data-v="1"><span>🏭</span>Maskinramme inne</button>
+        <button class="btn" data-v="2"><span>🔩</span>Skruer inne</button>
+        <button class="btn" data-v="3"><span>🛠️</span>Verktøy</button>
+        <button class="btn" data-v="4"><span>🚲</span>Sykkelramme</button>
+        <button class="btn" data-v="5"><span>⚙️</span>Hydraulikkstempel</button>
+        <button class="btn" data-v="6"><span>⛵</span>Båtpropell</button>
+        <button class="btn" data-v="7"><span>🍽️</span>Kjøkkenbenk</button>
+      </div>
+      <div class="card svarkort" id="velgKort"><h3 id="velgMetode">?</h3><p class="short" id="velgHvorfor">Gjett først, klikk så.</p></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Det finnes ofte flere riktige svar. Spør klassen før du klikker. Tenk på: inne eller ute, salt, slitasje, pris og hvor lenge det skal holde. Rekkverk: varmforsinking (gjerne + maling). Maskinramme: maling. Skruer: elforsinking. Verktøy: olje/brunering. Sykkel: pulverlakk. Hydraulikkstempel: hardforkromming. Båtpropell: offeranode. Kjøkkenbenk: rustfritt stål.</details>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 45 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>Overflatebehandling 1 – Rust og overflatebehandling · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Hva gir rust? <small>Time 1 · 5 min</small></h3>
+        <p>Sett kryss.</p>
+        <table class="ot" style="max-width:520px">
+          <tr><th style="width:55%"></th><th>Trengs for rust</th><th>Trengs ikke</th></tr>
+          <tr><td>Vann</td><td class="tom"><span class="fasit" hidden>✗</span></td><td class="tom"></td></tr>
+          <tr><td>Luft (oksygen)</td><td class="tom"><span class="fasit" hidden>✗</span></td><td class="tom"></td></tr>
+          <tr><td>Sollys</td><td class="tom"></td><td class="tom"><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>Jern</td><td class="tom"><span class="fasit" hidden>✗</span></td><td class="tom"></td></tr>
+        </table>
+        <p>Hvorfor ruster en bil mer om vinteren?</p>
+        <div class="svar"><span class="fasit" hidden>Veisalt. Salt gjør at rusten går mye fortere.</span></div>
+        <p>En stålskrue ligger i en tørr skuff inne. Hvorfor ruster den nesten ikke?</p>
+        <div class="svar"><span class="fasit" hidden>Det er nesten ikke vann der. Uten vann blir det ikke rust.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Forarbeid <small>Time 1 · 5 min</small></h3>
+        <p>Skriv 1–4 i riktig rekkefølge.</p>
+        <table class="ot">
+          <tr><th style="width:4rem">Nr.</th><th>Steg</th></tr>
+          <tr><td class="tom"><span class="fasit" hidden>3</span></td><td>Mal grunning.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>1</span></td><td>Avfett med avfettingsmiddel.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>4</span></td><td>Mal toppstrøk når grunningen er tørr.</td></tr>
+          <tr><td class="tom"><span class="fasit" hidden>2</span></td><td>Slip eller blås bort rust og glødeskall.</td></tr>
+        </table>
+        <p>Hvorfor må du avfette før du maler?</p>
+        <div class="svar"><span class="fasit" hidden>Maling fester ikke på olje og fett. Den trekker seg sammen eller flasser av.</span></div>
+        <p>Hvorfor er det bra at flaten er litt ru?</p>
+        <div class="svar"><span class="fasit" hidden>Malingen får tak i ujevnhetene og sitter bedre.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Lag på lag <small>Time 1 · 6 min</small></h3>
+        <p>Skriv navnet på hvert lag i figuren: <b>grunning · mellomstrøk · toppstrøk · stål</b></p>
+        <div class="oppfig">
+          <svg viewBox="0 0 520 200" role="img" aria-label="Snitt gjennom malt stål med fire lag merket A til D">
+            <rect x="30" y="140" width="300" height="50" style="fill:#c8ced5;stroke:#5f6b78"/>
+            <rect x="30" y="110" width="300" height="30" style="fill:#9c3d26"/>
+            <rect x="30" y="80" width="300" height="30" style="fill:#8a9096"/>
+            <rect x="30" y="50" width="300" height="30" style="fill:#1c6fd1"/>
+            <g font-size="16" font-weight="800" fill="#14181d">
+              <path d="M335 65 h30 M335 95 h30 M335 125 h30 M335 165 h30" stroke="#14181d" stroke-width="2"/>
+              <text x="372" y="70">A ________</text><text x="372" y="100">B ________</text><text x="372" y="130">C ________</text><text x="372" y="170">D ________</text>
+            </g>
+            <g font-size="15" font-weight="700" fill="#2b8a3e">
+              <text class="fasit-svg" x="395" y="56">toppstrøk</text><text class="fasit-svg" x="395" y="86">mellomstrøk</text><text class="fasit-svg" x="395" y="116">grunning</text><text class="fasit-svg" x="395" y="156">stål</text>
+            </g>
+          </svg>
+        </div>
+        <table class="ot">
+          <tr><th style="width:35%">Lag</th><th>Hva gjør laget?</th></tr>
+          <tr><td>Grunning</td><td class="tom"><span class="fasit" hidden>Fester godt til stålet og hindrer rust.</span></td></tr>
+          <tr><td>Toppstrøk</td><td class="tom"><span class="fasit" hidden>Gir farge og tåler sol og vær.</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Varmforsinking og pulverlakk <small>Time 2 · 5 min</small></h3>
+        <p>Fyll inn: <b>sink · ovn · 450 °C · pulver</b></p>
+        <p>Ved varmforsinking dyppes stålet i flytende <span class="luke"><span class="fasit" hidden>sink</span></span> på ca. <span class="luke"><span class="fasit" hidden>450 °C</span></span>.</p>
+        <p>Ved pulverlakkering sprøytes <span class="luke"><span class="fasit" hidden>pulver</span></span> på delen. Så smeltes det i en <span class="luke"><span class="fasit" hidden>ovn</span></span>.</p>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Sink ofrer seg <small>Time 2 · 6 min</small></h3>
+        <p>To stålstolper får en dyp ripe. Den ene er malt. Den andre er varmforsinket.</p>
+        <p>a) Hva skjer med den malte stolpen ved ripa?</p>
+        <div class="svar"><span class="fasit" hidden>Den ruster i ripa, og rusten kryper inn under malingen.</span></div>
+        <p>b) Hva skjer med den forsinkede stolpen?</p>
+        <div class="svar"><span class="fasit" hidden>Sinken rundt ripa tæres i stedet for stålet. Stålet ruster ikke.</span></div>
+        <p>c) Hva heter sinkklossen som beskytter propellen på en båt?</p>
+        <div class="svar"><span class="fasit" hidden>Offeranode.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – HMS <small>Time 2 · 5 min</small></h3>
+        <p>Du skal sprøytemale en del med løsemiddelbasert maling.</p>
+        <p>a) Hvilket punkt i sikkerhetsdatabladet viser verneutstyret?</p>
+        <div class="svar"><span class="fasit" hidden>Punkt 8.</span></div>
+        <p>b) Nevn tre ting du bruker eller gjør for å jobbe trygt.</p>
+        <div class="svar"><span class="fasit" hidden>Maske (åndedrettsvern), vernebriller, hansker, god lufting/avtrekk, ingen åpen flamme.</span></div>
+        <p>c) Hva betyr dette symbolet? <svg viewBox="0 0 100 100" style="width:2.6rem;height:2.6rem;vertical-align:middle" aria-label="Faresymbol: flamme"><rect x="20" y="20" width="60" height="60" transform="rotate(45 50 50)" style="fill:#fff;stroke:#c92a2a;stroke-width:6"/><path d="M50 30 c10 14 16 20 10 34 c-4 8 -16 8 -20 0 c-4 -8 2 -14 4 -18 c2 8 6 8 6 4 c0 -6 -4 -10 0 -20z" style="fill:#14181d"/></svg></p>
+        <div class="svar"><span class="fasit" hidden>Brannfarlig.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 7 – Velg metode <small>Time 2 · 6 min</small></h3>
+        <p>Velg en metode til hver ting. Fyll inn: <b>varmforsinking · maling · elforsinking · olje · pulverlakk · forkromming</b></p>
+        <table class="ot">
+          <tr><th style="width:45%">Ting</th><th>Metode</th></tr>
+          <tr><td>Rekkverk ved sjøen</td><td class="tom"><span class="fasit" hidden>Varmforsinking (gjerne + maling)</span></td></tr>
+          <tr><td>Maskinramme i verkstedet</td><td class="tom"><span class="fasit" hidden>Maling</span></td></tr>
+          <tr><td>Små skruer til innebruk</td><td class="tom"><span class="fasit" hidden>Elforsinking</span></td></tr>
+          <tr><td>Maskinbordet på fresen</td><td class="tom"><span class="fasit" hidden>Olje</span></td></tr>
+          <tr><td>Sykkelramme</td><td class="tom"><span class="fasit" hidden>Pulverlakk</span></td></tr>
+          <tr><td>Hydraulikkstempel</td><td class="tom"><span class="fasit" hidden>Forkromming</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave" style="border-style:dashed">
+        <h3>Oppgave 8 – Ekstra: regn selv <small>Ekstra / hjemme · 6 min</small></h3>
+        <p>a) 1 µm = 0,001 mm. Hvor mange µm er 0,08 mm?</p>
+        <div class="svar"><span class="fasit" hidden>0,08 · 1000 = <b>80 µm</b></span></div>
+        <p>b) Et sinklag er 80 µm. Ute forsvinner 2 µm sink i året. Hvor mange år holder sinken?</p>
+        <div class="svar"><span class="fasit" hidden>80 / 2 = <b>40 år</b></span></div>
+        <p>c) Grunning 60 µm + toppstrøk 40 µm. Hvor tykk er malingen til sammen?</p>
+        <div class="svar"><span class="fasit" hidden>60 + 40 = <b>100 µm</b> (0,1 mm)</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 3 min</small></h3>
+        <p>1. Hvilke to ting trenger stål for å ruste?</p><div class="svar"><span class="fasit" hidden>Vann og luft (oksygen).</span></div>
+        <p>2. Hva gjør du før du maler?</p><div class="svar"><span class="fasit" hidden>Avfetter, og sliper eller blåser bort rust.</span></div>
+        <p>3. Hvorfor beskytter sink også i en ripe?</p><div class="svar"><span class="fasit" hidden>Sinken tæres i stedet for stålet (sink ofrer seg).</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function setStatus(id, txt, cls){ const s=$(id); s.textContent=txt; s.className="status "+cls; }
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName) && e.target.type!=="range") return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  const i = Math.max(0, Math.min(slides.length-1, currentIndex()+dir));
+  slides[i].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.classList.toggle("show"));
+
+/* ---------- Del 2: prøv selv ---------- */
+const prov = {vann:true, luft:true, salt:false}; let rust = 0;
+const flekker = [...$("provRust").children], maks = [[40,12],[55,16],[38,11],[48,14]];
+function provTegn(){
+  $("provVann").style.display = prov.vann ? "" : "none";
+  $("provLuft").style.display = prov.luft ? "" : "none";
+  $("provSalt").style.display = prov.salt && prov.vann ? "" : "none";
+  flekker.forEach((f,i) => { f.setAttribute("rx", maks[i][0]*rust); f.setAttribute("ry", maks[i][1]*rust); });
+  document.querySelectorAll("[data-p]").forEach(b => b.classList.toggle("on", prov[b.dataset.p]));
+  if (!prov.vann && !prov.luft) setStatus("provTxt", "Ingen vann og ingen luft: rusten står stille.", "ok");
+  else if (!prov.vann) setStatus("provTxt", "Ikke vann: rusten står stille.", "ok");
+  else if (!prov.luft) setStatus("provTxt", "Ikke luft: rusten står stille.", "ok");
+  else setStatus("provTxt", prov.salt ? "Vann + luft + salt: rusten går FORT!" : "Vann + luft: rusten vokser.", prov.salt ? "bad" : "warn");
+}
+document.querySelectorAll("[data-p]").forEach(b => b.onclick = () => { prov[b.dataset.p] = !prov[b.dataset.p]; provTegn(); });
+$("provNy").onclick = () => { rust = 0; provTegn(); };
+setInterval(() => { if (prov.vann && prov.luft && rust < 1){ rust = Math.min(1, rust + (prov.salt ? 0.03 : 0.008)); provTegn(); } }, 100);
+provTegn();
+
+/* ---------- Del 4: avfette ---------- */
+function avf(ren){
+  $("avfOlje").style.display = ren ? "none" : "";
+  $("avfPerler").style.display = ren ? "none" : "";
+  $("avfLag").style.display = ren ? "" : "none";
+  document.querySelectorAll("[data-a]").forEach(b => b.classList.toggle("on", (b.dataset.a==="ren")===ren));
+  setStatus("avfTxt", ren ? "Ren flate: malingen legger seg jevnt og fester." : "Olje: malingen trekker seg sammen til dråper og fester ikke.", ren ? "ok" : "bad");
+}
+document.querySelectorAll("[data-a]").forEach(b => b.onclick = () => avf(b.dataset.a==="ren"));
+avf(false);
+
+/* ---------- Del 6: lag på lag ---------- */
+const LAG = [
+  ["Bare stål. Vann og luft kommer rett til – det ruster.", "bad"],
+  ["1 Grunning: fester godt til stålet og hindrer rust.", "info"],
+  ["2 Mellomstrøk: gjør malingen tykkere og tettere.", "info"],
+  ["3 Toppstrøk: gir farge og tåler sol og regn.", "ok"]
+];
+let lag = 0;
+function lagTegn(){
+  ["lag1","lag2","lag3"].forEach((id,i) => $(id).classList.toggle("av", i >= lag));
+  $("lagSol").classList.toggle("av", lag < 3);
+  setStatus("lagTxt", LAG[lag][0], LAG[lag][1]);
+  $("lagNeste").disabled = lag >= 3;
+}
+$("lagNeste").onclick = () => { if (lag < 3){ lag++; lagTegn(); } };
+$("lagNull").onclick = () => { lag = 0; lagTegn(); };
+lagTegn();
+
+/* ---------- Del 9: sink ofrer seg ---------- */
+function offer(sink){
+  $("offMaling").style.display = sink ? "none" : "";
+  $("offSink").style.display = sink ? "" : "none";
+  document.querySelectorAll("[data-o]").forEach(b => b.classList.toggle("on", (b.dataset.o==="sink")===sink));
+  setStatus("offTxt", sink ? "Sinken rundt ripa tæres litt. Stålet ruster ikke." : "Maling beskytter bare der den er hel. Ripa ruster.", sink ? "ok" : "bad");
+}
+document.querySelectorAll("[data-o]").forEach(b => b.onclick = () => offer(b.dataset.o==="sink"));
+offer(false);
+
+/* ---------- Del 14: velg metode ---------- */
+const VELG = [
+  ["Varmforsinking", "Ute i regn og salt i mange år. Gjerne malt i tillegg."],
+  ["Maling", "Inne. Grunning + toppstrøk i fargen du vil ha."],
+  ["Elforsinking", "Tynt, billig lag. Holder godt inne."],
+  ["Olje", "Rask beskyttelse. Smør på igjen etter bruk."],
+  ["Pulverlakk", "Hard og pen lakk som tåler steinsprut."],
+  ["Forkromming", "Hard og glatt flate som tåler slitasje fra pakningene."],
+  ["Offeranode av sink", "Sinken tæres i stedet for propellen."],
+  ["Rustfritt stål", "Lager sitt eget skjold. Tåler vask og mat."]
+];
+document.querySelectorAll("[data-v]").forEach(b => b.onclick = () => {
+  document.querySelectorAll("[data-v]").forEach(x => x.classList.toggle("on", x===b));
+  const v = VELG[+b.dataset.v]; $("velgMetode").textContent = v[0]; $("velgHvorfor").textContent = v[1];
+});
+
+/* ---------- Oppgaver ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToImg(svg){
+  const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
+  const img = new Image(); await new Promise(r => { img.onload = r; img.onerror = r; img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str); });
+  const c = document.createElement("canvas"); c.width = vb.width*2; c.height = vb.height*2; const x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+  const im = document.createElement("img"); im.src = c.toDataURL("image/png"); im.width = vb.width; im.height = vb.height; return im;
+}
+$("btnCopy").onclick = async () => {
+  const orig = $("oppgavetekst"), clone = orig.cloneNode(true);
+  const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>
