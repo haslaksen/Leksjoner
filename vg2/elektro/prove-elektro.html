@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prøve: Elektro · Vg2 industriteknologi</title>
+<style>
+/* Prøve for emnet. Vises bare på lærersiden (bygg.js), skrives ut eller kopieres til OneNote. */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{font-size:clamp(18px,0.6vw + 13px,24px)}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 64px}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin:0}
+h2{font-size:1.3rem;margin:0;display:flex;align-items:center;gap:.6rem}
+p{margin:0}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.2rem 0}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+button{font:700 .9rem/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+.tools{display:flex;gap:.5rem;flex-wrap:wrap}
+.navn{margin:.4rem 0 1.2rem}
+
+.oppg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,28px);display:grid;gap:16px;margin-top:18px;break-inside:avoid}
+.nr{display:inline-grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;flex:none}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body)}
+
+/* oppgave 1: bilde → navn og enhet */
+.tre{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kort{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;align-content:start;text-align:center}
+.kort svg{max-height:110px}
+.kort.U{border-top:8px solid var(--u)} .kort.I{border-top:8px solid var(--i)} .kort.R{border-top:8px solid var(--r)}
+.sym{font:800 2.6rem/1 var(--body)}
+.kort .valg{justify-content:center;flex-wrap:nowrap;gap:8px}
+.kort .valg>span{min-width:0;padding:.5rem .8rem}
+
+/* valg: sett ring rundt */
+.valg{display:flex;flex-wrap:wrap;gap:12px}
+.valg>span{position:relative;display:inline-grid;place-items:center;min-width:4.2rem;padding:.55rem 1rem;border:2px solid var(--line);border-radius:12px;font-weight:700;font-size:1.15rem}
+.valg>span:has(.fasit:not([hidden])){border-color:var(--r);background:var(--r-soft);box-shadow:0 0 0 4px var(--r)}
+.valg .fasit{position:absolute;top:-.8rem;right:-.6rem;background:var(--r);color:#fff;border-radius:50%;width:1.5rem;height:1.5rem;display:grid;place-items:center;font-size:.9rem}
+
+.to{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.to>div{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;justify-items:center}
+.to svg{max-height:160px}
+.bokstav{font:800 1.6rem/1 var(--body)}
+
+/* luker og svarruter */
+.luke{display:inline-block;min-width:5.5em;border-bottom:2px solid var(--ink);text-align:center;padding:0 .3em;margin:0 .2em}
+.fasit{color:var(--r);font-weight:700}
+.ordbank{display:flex;flex-wrap:wrap;gap:8px}
+.ordbank span{padding:.3rem .8rem;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700}
+.setning{font-size:1.15rem;line-height:2.4}
+
+.regn{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:20px;align-items:center}
+.linje{font:700 1.5rem/2.2 var(--mono)}
+.linje .luke{min-width:3em}
+
+.jn{width:100%;border-collapse:collapse;font-size:1.1rem}
+.jn td{border-bottom:1px solid var(--line);padding:10px 6px;vertical-align:middle}
+.jn td.ikon{width:3rem;font-size:1.8rem;text-align:center}
+.jn .valg{flex-wrap:nowrap;justify-content:flex-end}
+
+.flow{stroke-dasharray:4 14;animation:flow 1.1s linear infinite}
+.flow.fort{animation-duration:.5s}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.glod{animation:glod 2s ease-in-out infinite}
+@keyframes glod{50%{opacity:.6}}
+
+@media (max-width:620px){.tre,.to,.regn{grid-template-columns:1fr}}
+@media print{.tools{display:none}.oppg{border-color:#999}body{background:#fff}}
+@media (prefers-reduced-motion:reduce){.flow,.glod{animation:none}}
+
+/* felles for alle steg-for-steg-sider */
+.bilder{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.bilder .kort svg{max-height:130px}
+.kort.P{border-top:8px solid var(--orange)}
+.fig{background:var(--bg);border-radius:14px;padding:12px}
+.fig svg{max-height:260px}
+.svar{border-bottom:2px solid var(--ink);min-height:2.2em;padding-top:6px}
+.rekke{display:grid;gap:10px;padding:0;margin:0;list-style:none}
+.rekke li{display:grid;grid-template-columns:3rem 1fr;gap:12px;align-items:center;font-size:1.1rem}
+.rekke .luke{min-width:2.4em}
+.jn td .luke{min-width:7em}
+.poeng{margin-left:auto;font:700 .85rem/1 var(--body);color:var(--muted);white-space:nowrap}
+.ekstra{font:700 .75rem/1 var(--body);text-transform:uppercase;letter-spacing:.06em;color:var(--blue);background:var(--blue-soft);border-radius:99px;padding:.3rem .6rem}
+.kode{font:700 1.1rem/1.9 var(--mono);background:var(--bg);border-radius:12px;padding:10px 16px}
+.kode .luke{min-width:3.5em}
+.sum{text-align:right;font-weight:700;margin-top:18px}
+@media print{.oppg{margin-top:10px}.no-print{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap" id="oppgavetekst">
+
+<div class="top">
+  <div>
+    <p class="tag">Elektro · Vg2 industriteknologi · Leksjon 1–4</p>
+    <h1>Prøve: Elektro</h1>
+  </div>
+  <div class="tools">
+    <button type="button" id="copyBtn">Kopier til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <button type="button" onclick="print()">Skriv ut</button>
+  </div>
+</div>
+<p class="navn">Navn: ______________________ Klasse: ________ Dato: ________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
+
+<details class="laerer no-print"><summary>Lærernotat</summary>Prøven dekker leksjon 1 (strøm, spenning, resistans, Ohms lov), leksjon 2 (effekt, energi, kostnad, sikkerhet), leksjon 3 (måling med multimeter, feilsøking) og leksjon 4 (motorstyring: NO/NC, selvhold, sikring og motorvern). √3-regning og startmetoder er Ekstra-stoff i leksjonene og er ikke med. Kompetansemål V5, V1, T3, T4. 28 poeng. Oppgave 11 er Ekstra. Forslag til grenser: halvparten = bestått, 85 % = svært godt. Skriv ut uten fasit for elevene. Trykk «Vis fasit» og skriv ut på nytt for en fasit til deg selv.</details>
+
+<div class="oppg">
+ <h2><span class="nr">1</span>Regn ut strømmen. I = U : R<span class="poeng">2 p</span></h2>
+  <div class="regn">
+    <svg viewBox="0 0 200 180" aria-label="Ohms trekant: U øverst, R og I nederst. I er dekket til.">
+      <polygon points="100,10 190,170 10,170" fill="var(--surface)" stroke="var(--ink)" stroke-width="4"/>
+      <line x1="45" y1="105" x2="155" y2="105" stroke="var(--ink)" stroke-width="4"/>
+      <line x1="100" y1="105" x2="100" y2="170" stroke="var(--ink)" stroke-width="4"/>
+      <text x="100" y="88" text-anchor="middle" font-size="44" font-weight="800" fill="var(--u)">U</text>
+      <text x="68" y="155" text-anchor="middle" font-size="40" font-weight="800" fill="var(--r)">R</text>
+      <rect x="106" y="111" width="54" height="52" rx="8" fill="var(--i)"/>
+      <text x="133" y="150" text-anchor="middle" font-size="34" font-weight="800" fill="#fff">I</text>
+    </svg>
+    <div>
+      <p>Lampe: <b class="u">U = 24 V</b> &nbsp; <b class="r">R = 12 Ω</b></p>
+      <div class="linje"><span class="i">I</span> = <span class="u">24</span> : <span class="r">12</span> = <span class="luke"><span class="fasit" hidden>2</span></span> A</div>
+      <p style="margin-top:10px">Varmeelement: <b class="u">U = 230 V</b> &nbsp; <b class="r">R = 46 Ω</b></p>
+      <div class="linje"><span class="i">I</span> = <span class="luke"><span class="fasit" hidden>230</span></span> : <span class="luke"><span class="fasit" hidden>46</span></span> = <span class="luke"><span class="fasit" hidden>5</span></span> A</div>
+    </div>
+  </div>
+
+
+<script>
+const $ = id => document.getElementById(id);
+const fb = $("fasitBtn");
+fb.addEventListener("click", () => {
+  const på = fb.getAttribute("aria-pressed") !== "true";
+  fb.setAttribute("aria-pressed", på);
+  fb.textContent = på ? "Skjul fasit" : "Vis fasit";
+  document.querySelectorAll(".fasit").forEach(e => e.hidden = !på);
+});
+
+// Kopier til OneNote: figurer blir bilder, valg blir ◯ (✔ når fasit vises), kort blir tabeller.
+async function svgTilPng(svg, farge) {
+  const vb = svg.viewBox.baseVal, w = Math.round(vb.width * 1.4), h = Math.round(vb.height * 1.4);
+  const c = svg.cloneNode(true);
+  c.setAttribute("xmlns", "http://www.w3.org/2000/svg"); c.setAttribute("width", w); c.setAttribute("height", h);
+  [c, ...c.querySelectorAll("*")].forEach(e => [...e.attributes].forEach(a => {
+    if (a.value.includes("var(")) e.setAttribute(a.name, a.value.replace(/var\((--[\w-]+)\)/g, (_, v) => farge(v)));
+  }));
+  c.querySelectorAll(".flow").forEach(e => e.removeAttribute("class"));
+  const img = new Image();
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, w, h); cx.drawImage(img, 0, 0, w, h);
+  return [cv.toDataURL("image/png"), Math.min(w, 420)];
+}
+$("copyBtn").addEventListener("click", async () => {
+  const msg = $("copyMsg"), rot = document.documentElement, tema = rot.dataset.theme;
+  rot.dataset.theme = "light"; // OneNote har hvit bakgrunn
+  const stil = getComputedStyle(rot), farge = v => stil.getPropertyValue(v).trim() || "#000";
+  const vis = fb.getAttribute("aria-pressed") === "true";
+  const src = $("oppgavetekst"), kl = src.cloneNode(true);
+  kl.querySelectorAll(".top,.navn").forEach(e => e.remove());
+  const svgs = [...src.querySelectorAll("svg")], ks = [...kl.querySelectorAll("svg")];
+  for (let i = 0; i < svgs.length; i++) {
+    if (svgs[i].closest(".top")) continue;
+    try { const [url, w] = await svgTilPng(svgs[i], farge); const im = document.createElement("img"); im.src = url; im.width = svgs[i].closest(".kort,.to,.regn") ? Math.min(w, 200) : w; ks[i].replaceWith(im); }
+    catch (e) { ks[i].remove(); }
+  }
+  if (tema) rot.dataset.theme = tema; else delete rot.dataset.theme;
+  kl.querySelectorAll(".nr").forEach(n => n.textContent = n.textContent + ". ");
+  kl.querySelectorAll(".valg").forEach(v => {
+    const p = document.createElement("p");
+    p.textContent = [...v.children].map(s => {
+      const f = s.querySelector(".fasit"), riktig = f && vis; if (f) f.remove();
+      return (riktig ? "✔ " : "◯ ") + s.textContent.trim();
+    }).join("\u00a0\u00a0\u00a0\u00a0 ");
+    v.replaceWith(p);
+  });
+  kl.querySelectorAll(".fasit").forEach(f => { if (!vis) f.remove(); else f.style.color = "#2b8a3e"; });
+  kl.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "________"; });
+  kl.querySelectorAll(".svar").forEach(s => { const p = document.createElement("p"); p.textContent = s.textContent.trim() || "______________________________"; s.replaceWith(p); });
+  kl.querySelectorAll(".ordbank").forEach(o => { const p = document.createElement("p"); p.innerHTML = "<b>Ord:</b> " + [...o.children].map(s => s.textContent).join(" · "); o.replaceWith(p); });
+  kl.querySelectorAll(".tre,.bilder,.to").forEach(g => {
+    const t = document.createElement("table"), tr = t.insertRow();
+    [...g.children].forEach(k => { const td = tr.insertCell(); td.innerHTML = k.innerHTML; td.style.cssText = "border:1px solid #999;padding:6px;vertical-align:top;text-align:center"; });
+    g.replaceWith(t);
+  });
+  kl.querySelectorAll("table").forEach(t => { t.setAttribute("border", "1"); t.style.borderCollapse = "collapse"; t.querySelectorAll("td").forEach(c => { c.style.border = "1px solid #999"; c.style.padding = "4px 8px"; }); });
+  kl.querySelectorAll("[class]").forEach(e => e.removeAttribute("class"));
+  // Lenke til elevversjonen av denne siden (også når den kopieres fra lærersiden).
+  const lenke = location.origin + location.pathname.replace(/^\/laerer-[^/]+\//, "/").replace(/\.html$/, "");
+  const html = "<h2>" + document.querySelector("h1").textContent + "</h2><p>Navn: ______________________</p>" + kl.innerHTML +
+    '<p>Oppgavene på nett: <a href="' + lenke + '">' + lenke + "</a></p>", text = kl.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({ "text/html": new Blob([html], { type: "text/html" }), "text/plain": new Blob([text], { type: "text/plain" }) })]);
+    msg.textContent = "Kopiert! Lim inn i OneNote med Ctrl+V";
+  } catch (err) {
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.cssText = "position:fixed;left:-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    msg.textContent = ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere. Merk teksten og bruk Ctrl+C.";
+  }
+});
+</script>
+</body>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">2</span>Effekt eller energi? Sett ring rundt og fyll inn.<span class="poeng">3 p</span></h2>
+  <div class="to">
+    <div><svg viewBox="0 0 120 90" aria-label="Lyspære"><circle cx="60" cy="40" r="34" fill="var(--glow)" opacity=".5"/><circle cx="60" cy="40" r="24" fill="var(--glow)"/><rect x="50" y="64" width="20" height="18" rx="3" fill="var(--wire)"/></svg><p class="bokstav">Effekt (P)</p><div class="valg"><span>W<span class="fasit" hidden>✓</span></span><span>kWh</span></div></div>
+    <div><svg viewBox="0 0 120 90" aria-label="Strømmåler"><rect x="20" y="10" width="80" height="70" rx="8" fill="var(--surface)" stroke="var(--wire)" stroke-width="3"/><rect x="30" y="25" width="60" height="22" rx="3" fill="var(--bg)" stroke="var(--line)"/><text x="60" y="42" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">0 2 4 8</text><text x="60" y="68" text-anchor="middle" font-size="11" fill="var(--muted)">kWh</text></svg><p class="bokstav">Energi (E)</p><div class="valg"><span>W</span><span>kWh<span class="fasit" hidden>✓</span></span></div></div>
+  </div>
+  <p class="setning">På strømregningen betaler vi for <span class="luke"><span class="fasit" hidden>energi</span></span>.</p>
+<div class="ordbank"><span>energi</span><span>effekt</span></div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">3</span>Regn ut effekten. P = U × I<span class="poeng">2 p</span></h2>
+  <div class="regn">
+    <svg viewBox="0 0 200 180" aria-label="Effekttrekant: P øverst, U og I nederst. P er dekket til.">
+      <polygon points="100,10 190,170 10,170" fill="var(--surface)" stroke="var(--ink)" stroke-width="4"/>
+      <line x1="45" y1="105" x2="155" y2="105" stroke="var(--ink)" stroke-width="4"/>
+      <line x1="100" y1="105" x2="100" y2="170" stroke="var(--ink)" stroke-width="4"/>
+      <rect x="72" y="50" width="56" height="50" rx="8" fill="var(--orange)"/>
+      <text x="100" y="88" text-anchor="middle" font-size="38" font-weight="800" fill="#fff">P</text>
+      <text x="68" y="155" text-anchor="middle" font-size="40" font-weight="800" fill="var(--u)">U</text>
+      <text x="133" y="155" text-anchor="middle" font-size="40" font-weight="800" fill="var(--i)">I</text>
+    </svg>
+    <div>
+      <p>Maskin: <b class="u">U = 230 V</b> &nbsp; <b class="i">I = 5 A</b></p>
+      <div class="linje">P = <span class="u">230</span> × <span class="i">5</span> = <span class="luke"><span class="fasit" hidden>1150</span></span> W</div>
+      <p style="margin-top:10px">Sveiseapparat: <b class="u">U = 20 V</b> &nbsp; <b class="i">I = 100 A</b></p>
+      <div class="linje">P = <span class="luke"><span class="fasit" hidden>20</span></span> × <span class="luke"><span class="fasit" hidden>100</span></span> = <span class="luke"><span class="fasit" hidden>2000</span></span> W</div>
+    </div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">4</span>Hva koster det? Regn ut.<span class="poeng">2 p</span></h2>
+  <div class="fig">
+    <svg viewBox="0 0 400 90" aria-label="Varmeovn 2 kW i 10 timer">
+      <rect x="10" y="15" width="110" height="60" rx="8" fill="var(--bad-soft)" stroke="var(--bad)" stroke-width="3"/>
+      <path d="M30 25 V65 M50 25 V65 M70 25 V65 M90 25 V65 M110 25 V65" stroke="var(--bad)" stroke-width="4"/>
+      <text x="150" y="52" font-size="22" font-weight="800" fill="var(--ink)">2 kW × 10 timer</text>
+    </svg>
+  </div>
+  <div class="linje">E = 2 × 10 = <span class="luke"><span class="fasit" hidden>20</span></span> kWh</div>
+  <div class="linje">Pris: <span class="luke"><span class="fasit" hidden>20</span></span> × 2 kr = <span class="luke"><span class="fasit" hidden>40</span></span> kr</div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">5</span>Hva stiller du multimeteret på? Sett ring rundt.<span class="poeng">3 p</span></h2>
+  <table class="jn">
+    <tr><td class="ikon">🔋</td><td>Spenning på et batteri</td><td><div class="valg"><span>V⎓<span class="fasit" hidden>✓</span></span><span>Ω</span><span>A</span></div></td></tr>
+    <tr><td class="ikon">🔌</td><td>Spenning i stikkontakten</td><td><div class="valg"><span>V~<span class="fasit" hidden>✓</span></span><span>V⎓</span><span>Ω</span></div></td></tr>
+    <tr><td class="ikon">🧵</td><td>Er sikringen hel?</td><td><div class="valg"><span>V~</span><span>Ω<span class="fasit" hidden>✓</span></span><span>A</span></div></td></tr>
+  </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">6</span>Hvor er feilen? Lampa lyser ikke.<span class="poeng">1 p</span></h2>
+  <div class="fig">
+    <svg viewBox="0 0 440 150" aria-label="Krets: 24 V, sikring, bryter, lampe. Målinger: 24 V før bryteren, 0 V etter bryteren.">
+      <path d="M30 40 H410 V120 H30 Z" fill="none" stroke="var(--wire)" stroke-width="4"/>
+      <rect x="14" y="60" width="32" height="40" rx="4" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/>
+      <text x="30" y="85" text-anchor="middle" font-size="12" font-weight="800" fill="var(--u)">24 V</text>
+      <rect x="100" y="30" width="44" height="20" rx="4" fill="var(--surface)" stroke="var(--wire)" stroke-width="3"/><text x="122" y="22" text-anchor="middle" font-size="13" fill="var(--muted)">sikring</text>
+      <rect x="215" y="25" width="50" height="30" fill="var(--bg)"/><line x1="215" y1="40" x2="262" y2="22" stroke="var(--wire)" stroke-width="4"/><text x="240" y="16" text-anchor="middle" font-size="13" fill="var(--muted)">bryter</text>
+      <circle cx="410" cy="80" r="16" fill="var(--surface)" stroke="var(--wire)" stroke-width="3"/><text x="380" y="85" text-anchor="end" font-size="13" fill="var(--muted)">lampe</text>
+      <text x="180" y="75" text-anchor="middle" font-size="22" font-weight="800" fill="var(--u)">24 V</text>
+      <text x="320" y="75" text-anchor="middle" font-size="22" font-weight="800" fill="var(--bad)">0 V</text>
+    </svg>
+  </div>
+  <p>Feilen er i …</p>
+  <div class="valg"><span>sikringen</span><span>bryteren<span class="fasit" hidden>✓</span></span><span>lampa</span></div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">7</span>NO eller NC? Sett ring rundt og skriv navnet.<span class="poeng">3 p</span></h2>
+  <div class="bilder">
+    <div class="kort"><svg viewBox="0 0 120 90"><circle cx="60" cy="45" r="32" fill="var(--r)"/><text x="60" y="52" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">START</text></svg><span class="luke"><span class="fasit" hidden>start</span></span><div class="valg"><span>NO<span class="fasit" hidden>✓</span></span><span>NC</span></div></div>
+    <div class="kort"><svg viewBox="0 0 120 90"><circle cx="60" cy="45" r="32" fill="var(--bad)"/><text x="60" y="52" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">STOPP</text></svg><span class="luke"><span class="fasit" hidden>stopp</span></span><div class="valg"><span>NO</span><span>NC<span class="fasit" hidden>✓</span></span></div></div>
+    <div class="kort"><svg viewBox="0 0 120 90"><circle cx="60" cy="45" r="38" fill="var(--glow)"/><circle cx="60" cy="45" r="26" fill="var(--bad)"/></svg><span class="luke"><span class="fasit" hidden>nødstopp</span></span><div class="valg"><span>NO</span><span>NC<span class="fasit" hidden>✓</span></span></div></div>
+  </div>
+<div class="ordbank"><span>stopp</span><span>nødstopp</span><span>start</span></div>
+  <p class="caption" style="color:var(--muted)">NO = normalt åpen · NC = normalt lukket</p>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">8</span>Går motoren? Sett ring rundt og fyll inn.<span class="poeng">4 p</span></h2>
+  <table class="jn">
+    <tr><td>1. Trykk START</td><td><div class="valg"><span>går<span class="fasit" hidden>✓</span></span><span>står</span></div></td></tr>
+    <tr><td>2. Slipp START</td><td><div class="valg"><span>går<span class="fasit" hidden>✓</span></span><span>står</span></div></td></tr>
+    <tr><td>3. Trykk STOPP</td><td><div class="valg"><span>går</span><span>står<span class="fasit" hidden>✓</span></span></div></td></tr>
+  </table>
+  <p class="setning">Motoren går videre når jeg slipper START. Det heter <span class="luke"><span class="fasit" hidden>selvhold</span></span>.</p>
+<div class="ordbank"><span>selvhold</span><span>kortslutning</span></div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">9</span>Hva beskytter motoren? Skriv ordet.<span class="poeng">2 p</span></h2>
+  <div class="to">
+    <div><svg viewBox="0 0 120 80"><rect x="35" y="10" width="50" height="60" rx="6" fill="var(--surface)" stroke="var(--wire)" stroke-width="3"/><rect x="52" y="20" width="16" height="40" fill="var(--glow)" stroke="var(--wire)"/></svg><span class="luke"><span class="fasit" hidden>sikring</span></span><p>Stopper <b>kortslutning</b></p></div>
+    <div><svg viewBox="0 0 120 80"><rect x="25" y="10" width="70" height="60" rx="6" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/><text x="60" y="47" text-anchor="middle" font-size="18" font-weight="800" fill="var(--blue)">8 A</text></svg><span class="luke"><span class="fasit" hidden>motorvern</span></span><p>Stopper <b>overbelastning</b></p></div>
+  </div>
+<div class="ordbank"><span>motorvern</span><span>sikring</span></div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">10</span>Sikkerhet og måling. Sett ring rundt Ja eller Nei.<span class="poeng">4 p</span></h2>
+  <table class="jn">
+    <tr><td class="ikon">🔌</td><td>Jeg kan jobbe på en maskin uten å koble den fra.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
+    <tr><td class="ikon">🔒</td><td>Jeg låser og merker før jeg jobber.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">🧲</td><td>Med strømtang måler jeg strøm uten å bryte kretsen.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">⚠️</td><td>Amperemeter parallelt over lampa er riktig.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
+  </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">11</span>Snu motoren. Hva gjør du?<span class="ekstra">Ekstra</span><span class="poeng">2 p</span></h2>
+  <div class="svar"><span class="fasit" hidden>Bytter to av fasene (f.eks. L1 og L2). Da går motoren motsatt vei.</span></div>
+</div>
+
+<p class="sum">Sum: ______ / 28 poeng</p>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fb = $("fasitBtn");
+fb.addEventListener("click", () => {
+  const på = fb.getAttribute("aria-pressed") !== "true";
+  fb.setAttribute("aria-pressed", på);
+  fb.textContent = på ? "Skjul fasit" : "Vis fasit";
+  document.querySelectorAll(".fasit").forEach(e => e.hidden = !på);
+});
+
+// Kopier til OneNote: figurer blir bilder, valg blir ◯ (✔ når fasit vises), kort blir tabeller.
+async function svgTilPng(svg, farge) {
+  const vb = svg.viewBox.baseVal, w = Math.round(vb.width * 1.4), h = Math.round(vb.height * 1.4);
+  const c = svg.cloneNode(true);
+  c.setAttribute("xmlns", "http://www.w3.org/2000/svg"); c.setAttribute("width", w); c.setAttribute("height", h);
+  [c, ...c.querySelectorAll("*")].forEach(e => [...e.attributes].forEach(a => {
+    if (a.value.includes("var(")) e.setAttribute(a.name, a.value.replace(/var\((--[\w-]+)\)/g, (_, v) => farge(v)));
+  }));
+  c.querySelectorAll(".flow").forEach(e => e.removeAttribute("class"));
+  const img = new Image();
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, w, h); cx.drawImage(img, 0, 0, w, h);
+  return [cv.toDataURL("image/png"), Math.min(w, 420)];
+}
+$("copyBtn").addEventListener("click", async () => {
+  const msg = $("copyMsg"), rot = document.documentElement, tema = rot.dataset.theme;
+  rot.dataset.theme = "light"; // OneNote har hvit bakgrunn
+  const stil = getComputedStyle(rot), farge = v => stil.getPropertyValue(v).trim() || "#000";
+  const vis = fb.getAttribute("aria-pressed") === "true";
+  const src = $("oppgavetekst"), kl = src.cloneNode(true);
+  kl.querySelectorAll(".top,.navn,details").forEach(e => e.remove());
+  const svgs = [...src.querySelectorAll("svg")], ks = [...kl.querySelectorAll("svg")];
+  for (let i = 0; i < svgs.length; i++) {
+    if (svgs[i].closest(".top")) continue;
+    try { const [url, w] = await svgTilPng(svgs[i], farge); const im = document.createElement("img"); im.src = url; im.width = svgs[i].closest(".kort,.to,.regn") ? Math.min(w, 200) : w; ks[i].replaceWith(im); }
+    catch (e) { ks[i].remove(); }
+  }
+  if (tema) rot.dataset.theme = tema; else delete rot.dataset.theme;
+  kl.querySelectorAll(".nr").forEach(n => n.textContent = n.textContent + ". ");
+  kl.querySelectorAll(".valg").forEach(v => {
+    const p = document.createElement("p");
+    p.textContent = [...v.children].map(s => {
+      const f = s.querySelector(".fasit"), riktig = f && vis; if (f) f.remove();
+      return (riktig ? "✔ " : "◯ ") + s.textContent.trim();
+    }).join("\u00a0\u00a0\u00a0\u00a0 ");
+    v.replaceWith(p);
+  });
+  kl.querySelectorAll(".fasit").forEach(f => { if (!vis) f.remove(); else f.style.color = "#2b8a3e"; });
+  kl.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "________"; });
+  kl.querySelectorAll(".svar").forEach(s => { const p = document.createElement("p"); p.textContent = s.textContent.trim() || "______________________________"; s.replaceWith(p); });
+  kl.querySelectorAll(".ordbank").forEach(o => { const p = document.createElement("p"); p.innerHTML = "<b>Ord:</b> " + [...o.children].map(s => s.textContent).join(" · "); o.replaceWith(p); });
+  kl.querySelectorAll(".tre,.bilder,.to").forEach(g => {
+    const t = document.createElement("table"), tr = t.insertRow();
+    [...g.children].forEach(k => { const td = tr.insertCell(); td.innerHTML = k.innerHTML; td.style.cssText = "border:1px solid #999;padding:6px;vertical-align:top;text-align:center"; });
+    g.replaceWith(t);
+  });
+  kl.querySelectorAll("table").forEach(t => { t.setAttribute("border", "1"); t.style.borderCollapse = "collapse"; t.querySelectorAll("td").forEach(c => { c.style.border = "1px solid #999"; c.style.padding = "4px 8px"; }); });
+  kl.querySelectorAll("[class]").forEach(e => e.removeAttribute("class"));
+  // Prøven finnes ikke på elevsiden, så den får ingen lenke.
+  const html = "<h2>" + document.querySelector("h1").textContent + "</h2><p>Navn: ______________________</p>" + kl.innerHTML, text = kl.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({ "text/html": new Blob([html], { type: "text/html" }), "text/plain": new Blob([text], { type: "text/plain" }) })]);
+    msg.textContent = "Kopiert! Lim inn i OneNote med Ctrl+V";
+  } catch (err) {
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.cssText = "position:fixed;left:-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    msg.textContent = ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere. Merk teksten og bruk Ctrl+C.";
+  }
+});
+</script>
+</body>
+</html>
