@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Leksjoner – Teknologi- og industrifag</title>
+<title>Leksjoner</title>
 <style>
 :root{
   --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
@@ -24,13 +24,8 @@ h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.2rem}
 p{margin:0 0 .8em}
 a{color:var(--blue)}
 
-.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
-.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
-.top .brand span{color:var(--orange)}
-.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
-.top nav::-webkit-scrollbar{display:none}
-.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
-.top nav a:hover{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line)}
+.top .brand{font-weight:700; white-space:nowrap; font-size:1.1rem}
 .top .tools{display:flex; gap:.3rem}
 .btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
 .btn:hover{border-color:var(--blue)}
@@ -76,40 +71,65 @@ details.mal li em{grid-column:2; font-style:normal; font-size:.75rem; color:var(
 .mal-tekst{margin:.4rem 0 0; color:var(--ink)}
 .mal-tekst:empty{display:none}
 footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
-@media (max-width:700px){ section{padding:2rem 1rem} h1{font-size:2.2rem} h2{font-size:1.6rem} .top nav{display:none} }
+@media (max-width:700px){ section{padding:2rem 1rem} h1{font-size:2.2rem} h2{font-size:1.6rem} }
+
+/* Topp med trinnvalg under */
+.top .rad{display:flex; align-items:center; justify-content:space-between; gap:.8rem; padding:.45rem 1rem}
+nav.trinn{display:flex; gap:.3rem; overflow-x:auto; padding:0 1rem; border-top:1px solid var(--line); scrollbar-width:none}
+nav.trinn::-webkit-scrollbar{display:none}
+nav.trinn a{white-space:nowrap; text-decoration:none; color:var(--muted); font-weight:600; font-size:.85rem; padding:.55rem .8rem; border-bottom:3px solid transparent}
+nav.trinn a:hover{color:var(--blue)}
+nav.trinn a.valgt{color:var(--orange); border-bottom-color:var(--orange)}
+section{padding:2rem 2.5rem}
+h2{font-size:1.6rem}
+/* Sammenlagte fag og emner */
+details.fag{margin-top:.8rem; background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:0 1.1rem}
+details.fag > summary{display:flex; align-items:center; gap:.6rem; cursor:pointer; list-style:none; padding:.8rem 0; border:0; font-weight:700; font-size:1.25rem}
+details.fag[open] > summary{border-bottom:2px solid var(--orange); margin-bottom:.4rem}
+details.fag > summary::-webkit-details-marker, details.emne > summary::-webkit-details-marker{display:none}
+details.fag > summary::before, details.emne > summary::before{content:"▸"; color:var(--orange)}
+details.fag[open] > summary::before, details.emne[open] > summary::before{transform:rotate(90deg)}
+details.fag .grid{margin:.6rem 0 1.1rem}
+details.fag > .tom{margin-bottom:1rem}
+.antall{font-size:.8rem; font-weight:600; color:var(--muted)}
+details.emne{padding:0}
+details.emne > summary{display:flex; align-items:center; gap:.6rem; cursor:pointer; list-style:none; padding:.8rem 1.1rem}
+details.emne > summary h3{margin:0; flex:1}
+details.emne[open] > summary{border-bottom:1px solid var(--line)}
+details.emne > :not(summary){margin-left:1.1rem; margin-right:1.1rem}
+details.emne > :last-child{margin-bottom:1rem}
+details.emne ol.lessons{margin-top:.6rem}
+
+/* Variant A: faner, ett trinn om gangen, emner som rader */
+main > section{display:none; border:0}
+main > section.vis{display:block}
+details.fag .grid{grid-template-columns:1fr; gap:.5rem}
 </style>
 </head>
 <body>
 
 <header class="top">
-  <div class="brand">Teknologi- og industrifag · <span>Leksjoner</span></div>
-  <nav>
-    <a href="#vg1">Vg1</a>
-    <a href="#vg2">Vg2</a>
-    <a href="#vg3">Vg3</a>
+  <div class="rad">
+    <div class="brand">Leksjoner</div>
+    <div class="tools">
+      <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+      <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+    </div>
+  </div>
+  <nav class="trinn">
+    <a href="#vg1">Vg1 TIF</a>
+    <a href="#vg2">Vg2 Industriteknologi</a>
+    <a href="#vg3">Vg3 Idrett</a>
     <a href="#verktoy">Simulatorer og håndbok</a>
   </nav>
-  <div class="tools">
-    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
-    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
-  </div>
 </header>
 
 <main>
-<section>
-  <div class="wrap">
-    <div class="kicker">Vg1 TIF · Vg2 Industriteknologi · Vg3 Idrett</div>
-    <h1>Leksjoner</h1>
-    <p class="lead">Interaktive leksjoner for to skoletimer. Velg emne og leksjon. Bla i leksjonen med piltastene, og trykk A+ for større tekst på fremviser.</p>
-  </div>
-</section>
-
 <section id="vg1">
   <div class="wrap">
-    <div class="kicker">Vg1 · TIF</div>
     <h2>Vg1 Teknologi- og industrifag (TIF)</h2>
-    <div class="fag">
-      <h3 class="fag-tittel">Konstruksjons- og styringsteknikk</h3>
+    <details class="fag">
+      <summary class="fag-tittel">Konstruksjons- og styringsteknikk <span class="antall"></span></summary>
       <details class="laerer mal">
         <summary>Kompetansemål (8) · 2 dekket · 6 delvis · 0 mangler</summary>
         <ul>
@@ -125,8 +145,8 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/tip01-03">læreplan TIP01-03 på udir.no</a></p>
       </details>
       <div class="grid">
-        <div class="card">
-          <h3>Elektro</h3>
+        <details class="card emne">
+          <summary><h3>Elektro</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/elektro/leksjon-1-spenning-strom-og-motstand.html">Spenning, strøm og motstand</a></li>
             <li><a href="vg1/elektro/leksjon-2-repetisjon-og-effekt.html">Repetisjon og effekt</a></li>
@@ -135,9 +155,9 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulator: <a data-sim="multimeter">Multimeter</a></div>
           <div class="laerer prove">📝 <a href="vg1/elektro/prove-elektro.html">Prøve: Elektro</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="KST1">Mål 1</button><button class="mal-merke" data-mal="KST2">Mål 2</button><button class="mal-merke" data-mal="KST3">Mål 3</button><button class="mal-merke" data-mal="KST5">Mål 5</button><button class="mal-merke" data-mal="KST6">Mål 6</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Tegning og DAK</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Tegning og DAK</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/konstruksjon/leksjon-1-tekniske-tegninger.html">Tekniske tegninger</a></li>
             <li><a href="vg1/konstruksjon/leksjon-2-fra-skisse-til-3d-modell.html">Fra skisse til 3D-modell</a></li>
@@ -145,9 +165,9 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="toleranser">Toleranser</a><a data-sim="cnc-dreiebenk">CNC-dreiebenk</a></div>
           <div class="laerer prove">📝 <a href="vg1/konstruksjon/prove-tegning-og-dak.html">Prøve: Tegning og DAK</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="KST7">Mål 7</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>DAP og CNC</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>DAP og CNC</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/dap/leksjon-1-koordinatsystemet.html">Koordinatsystemet</a></li>
             <li><a href="vg1/dap/leksjon-2-cnc-og-g-kode.html">CNC og G-kode</a></li>
@@ -157,18 +177,18 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulatorer: <a data-sim="cnc-dreiebenk">CNC-dreiebenk</a><a data-sim="skjaeredata">Skjæredata</a></div>
           <div class="laerer prove">📝 <a href="vg1/dap/prove-dap-og-cnc.html">Prøve: DAP og CNC</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="KST7">Mål 7</button><button class="mal-merke" data-mal="KST8">Mål 8</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Pneumatikk og hydraulikk</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Pneumatikk og hydraulikk</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/pneumatikk-hydraulikk/leksjon-1-luft-og-olje-gir-kraft.html">Luft og olje gir kraft</a></li>
           </ol>
           <div class="sims">Simulator: <a data-sim="pneumatikk-og-hydraulikk">Pneumatikk og hydraulikk</a></div>
           <div class="laerer prove">📝 <a href="vg1/pneumatikk-hydraulikk/prove-pneumatikk-og-hydraulikk.html">Prøve: Pneumatikk og hydraulikk</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="KST1">Mål 1</button><button class="mal-merke" data-mal="KST2">Mål 2</button><button class="mal-merke" data-mal="KST3">Mål 3</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Styring og automasjon</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Styring og automasjon</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/automasjon/leksjon-1-simuler-for-du-bygger.html">Simuler før du bygger</a></li>
             <li><a href="vg1/automasjon/leksjon-2-robot-og-automasjon.html">Robot og automasjon</a></li>
@@ -176,11 +196,11 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulatorer: <a data-sim="pneumatikk-og-hydraulikk">Pneumatikk og hydraulikk</a><a data-sim="robotlab">Robotlab</a></div>
           <div class="laerer prove">📝 <a href="vg1/automasjon/prove-styring-og-automasjon.html">Prøve: Styring og automasjon</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="KST1">Mål 1</button><button class="mal-merke" data-mal="KST4">Mål 4</button><button class="mal-merke" data-mal="KST5">Mål 5</button><button class="mal-merke" data-mal="KST8">Mål 8</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
+        </details>
       </div>
-    </div>
-    <div class="fag">
-      <h3 class="fag-tittel">Produksjon og tjenester</h3>
+    </details>
+    <details class="fag">
+      <summary class="fag-tittel">Produksjon og tjenester <span class="antall"></span></summary>
       <details class="laerer mal">
         <summary>Kompetansemål (13) · 13 dekket · 0 delvis · 0 mangler</summary>
         <ul>
@@ -201,17 +221,17 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/tip01-03">læreplan TIP01-03 på udir.no</a></p>
       </details>
       <div class="grid">
-        <div class="card">
-          <h3>HMS og kjemikalier</h3>
+        <details class="card emne">
+          <summary><h3>HMS og kjemikalier</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/hms/leksjon-1-trygt-pa-verkstedet.html">Trygt på verkstedet</a></li>
             <li><a href="vg1/hms/leksjon-2-kjemikalier-og-sikkerhetsdatablad.html">Kjemikalier og sikkerhetsdatablad</a></li>
           </ol>
           <div class="laerer prove">📝 <a href="vg1/hms/prove-hms-og-kjemikalier.html">Prøve: HMS og kjemikalier</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="PT1">Mål 1</button><button class="mal-merke" data-mal="PT2">Mål 2</button><button class="mal-merke" data-mal="PT8">Mål 8</button><button class="mal-merke" data-mal="PT10">Mål 10</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Verktøy og måling</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Verktøy og måling</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/verktoy/leksjon-1-handverktoy-og-maskiner.html">Håndverktøy og maskiner</a></li>
             <li><a href="vg1/verktoy/leksjon-2-mal-og-les-av-tegningen.html">Mål og les av tegningen</a></li>
@@ -219,46 +239,46 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="mikrometer">Mikrometer</a><a data-sim="toleranser">Toleranser</a><a data-sim="skjaeredata">Skjæredata</a></div>
           <div class="laerer prove">📝 <a href="vg1/verktoy/prove-verktoy-og-maling.html">Prøve: Verktøy og måling</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="PT3">Mål 3</button><button class="mal-merke" data-mal="PT11">Mål 11</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Sammenføying</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Sammenføying</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/sammenfoying/leksjon-1-skru-lim-og-sveis.html">Skru, lim og sveis</a></li>
           </ol>
           <div class="sims">Simulator: <a data-sim="momentnokkel">Momentnøkkel</a></div>
           <div class="laerer prove">📝 <a href="vg1/sammenfoying/prove-sammenfoying.html">Prøve: Sammenføying</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="PT9">Mål 9</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Maskinelementer</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Maskinelementer</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/maskinelementer/leksjon-1-demonter-og-monter.html">Demonter og monter</a></li>
           </ol>
           <div class="sims">Simulator: <a data-sim="momentnokkel">Momentnøkkel</a></div>
           <div class="laerer prove">📝 <a href="vg1/maskinelementer/prove-maskinelementer.html">Prøve: Maskinelementer</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="PT4">Mål 4</button><button class="mal-merke" data-mal="PT5">Mål 5</button><button class="mal-merke" data-mal="PT6">Mål 6</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Materialer og miljø</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Materialer og miljø</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/materialer/leksjon-1-materialer-og-miljo.html">Materialer og miljø</a></li>
           </ol>
           <div class="laerer prove">📝 <a href="vg1/materialer/prove-materialer-og-miljo.html">Prøve: Materialer og miljø</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="PT7">Mål 7</button><button class="mal-merke" data-mal="PT8">Mål 8</button><button class="mal-merke" data-mal="PT13">Mål 13</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Fra idé til produkt</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Fra idé til produkt</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/ide-til-produkt/leksjon-1-fra-ide-til-produkt.html">Fra idé til produkt</a></li>
           </ol>
           <div class="sims">Simulator: <a data-sim="toleranser">Toleranser</a></div>
           <div class="laerer prove">📝 <a href="vg1/ide-til-produkt/prove-fra-ide-til-produkt.html">Prøve: Fra idé til produkt</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="PT4">Mål 4</button><button class="mal-merke" data-mal="PT6">Mål 6</button><button class="mal-merke" data-mal="PT12">Mål 12</button><button class="mal-merke" data-mal="PT13">Mål 13</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
+        </details>
       </div>
-    </div>
-    <div class="fag">
-      <h3 class="fag-tittel">Produktivitet og kvalitetsstyring</h3>
+    </details>
+    <details class="fag">
+      <summary class="fag-tittel">Produktivitet og kvalitetsstyring <span class="antall"></span></summary>
       <details class="laerer mal">
         <summary>Kompetansemål (9) · 0 dekket · 0 delvis · 9 mangler</summary>
         <ul>
@@ -275,29 +295,28 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/tip01-03">læreplan TIP01-03 på udir.no</a></p>
       </details>
       <p class="tom">Ingen emner ennå.</p>
-    </div>
-    <div class="fag">
-      <h3 class="fag-tittel">YFF</h3>
+    </details>
+    <details class="fag">
+      <summary class="fag-tittel">YFF <span class="antall"></span></summary>
       <div class="laerer mal-yff">YFF har ingen egne kompetansemål. Faget bygger på målene i programfagene.</div>
       <div class="grid">
-        <div class="card">
-          <h3>YFF</h3>
+        <details class="card emne">
+          <summary><h3>YFF</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg1/yff/leksjon-1-hva-er-yff.html">Hva er YFF?</a></li>
           </ol>
           <div class="laerer prove">📝 <a href="vg1/yff/prove-yff.html">Prøve: YFF</a> (bare lærer)</div>
-        </div>
+        </details>
       </div>
-    </div>
+    </details>
   </div>
 </section>
 
 <section id="vg2">
   <div class="wrap">
-    <div class="kicker">Vg2 · Industriteknologi</div>
     <h2>Vg2 Industriteknologi</h2>
-    <div class="fag">
-      <h3 class="fag-tittel">Teknologi</h3>
+    <details class="fag">
+      <summary class="fag-tittel">Teknologi <span class="antall"></span></summary>
       <details class="laerer mal">
         <summary>Kompetansemål (18) · 3 dekket · 10 delvis · 4 mangler</summary>
         <ul>
@@ -323,8 +342,8 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/pin02-03">læreplan PIN02-03 på udir.no</a></p>
       </details>
       <div class="grid">
-        <div class="card">
-          <h3>Materiallære</h3>
+        <details class="card emne">
+          <summary><h3>Materiallære</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/materiallaere/leksjon-1-grunnleggende.html">Grunnleggende</a></li>
             <li><a href="vg2/materiallaere/leksjon-2-stal-og-jern.html">Stål og jern</a></li>
@@ -334,26 +353,26 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulatorer: <a data-sim="strekkprove">Strekkprøve</a><a data-sim="charpy">Charpy</a><a data-sim="bjelke">Bjelke</a></div>
           <div class="laerer prove">📝 <a href="vg2/materiallaere/prove-materiallaere.html">Prøve: Materiallære</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T12">T12</button><button class="mal-merke" data-mal="T7">T7</button><button class="mal-merke" data-mal="T16">T16</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Overflatebehandling</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Overflatebehandling</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/overflatebehandling/leksjon-1-rust-og-overflatebehandling.html">Rust og overflatebehandling</a></li>
           </ol>
           <div class="laerer prove">📝 <a href="vg2/overflatebehandling/prove-overflatebehandling.html">Prøve: Overflatebehandling</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T9">T9</button><button class="mal-merke" data-mal="T11">T11</button><button class="mal-merke" data-mal="T12">T12</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Maskinering</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Maskinering</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/maskinering/leksjon-1-skjaerehastighet-og-mating.html">Skjærehastighet, turtall og mating</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="skjaeredata">Skjæredata</a><a data-sim="cnc-dreiebenk">CNC-dreiebenk</a></div>
           <div class="laerer prove">📝 <a href="vg2/maskinering/prove-maskinering.html">Prøve: Maskinering</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T1">T1</button><button class="mal-merke" data-mal="T7">T7</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>CNC</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>CNC</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/cnc/leksjon-1-akser-nullpunkt-og-trygg-kjoring.html">Akser, nullpunkt og trygg kjøring</a></li>
             <li><a href="vg2/cnc/leksjon-2-skriv-og-simuler-et-program.html">Skriv og simuler et CNC-program</a></li>
@@ -361,26 +380,26 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulator: <a data-sim="cnc-dreiebenk">CNC-dreiebenk</a></div>
           <div class="laerer prove">📝 <a href="vg2/cnc/prove-cnc.html">Prøve: CNC</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T8">T8</button><button class="mal-merke" data-mal="T1">T1</button><button class="mal-merke" data-mal="T6">T6</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Additiv tilvirkning</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Additiv tilvirkning</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/additiv/leksjon-1-fra-3d-modell-til-print.html">Fra 3D-modell til ferdig print</a></li>
           </ol>
           <div class="laerer prove">📝 <a href="vg2/additiv/prove-additiv-tilvirkning.html">Prøve: Additiv tilvirkning</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T15">T15</button><button class="mal-merke" data-mal="T6">T6</button><button class="mal-merke" data-mal="T7">T7</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Måleteknikk og kvalitet</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Måleteknikk og kvalitet</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/maleteknikk/leksjon-1-maleverktoy.html">Måleverktøy</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="mikrometer">Mikrometer</a><a data-sim="maleur">Måleur</a><a data-sim="toleranser">Toleranser</a></div>
           <div class="laerer prove">📝 <a href="vg2/maleteknikk/prove-maleteknikk.html">Prøve: Måleteknikk og kvalitet</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T4">T4</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Tegning og DAK</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Tegning og DAK</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/tegning/leksjon-1-arbeidstegninger.html">Arbeidstegninger</a></li>
             <li><a href="vg2/tegning/leksjon-2-fra-3d-modell-til-arbeidstegning.html">Fra 3D-modell til arbeidstegning</a></li>
@@ -390,9 +409,9 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulatorer: <a data-sim="gjenger">Gjenger</a><a data-sim="maleur">Måleur</a></div>
           <div class="laerer prove">📝 <a href="vg2/tegning/prove-tegning-og-dak.html">Prøve: Tegning og DAK</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T6">T6</button><button class="mal-merke" data-mal="T7">T7</button><button class="mal-merke" data-mal="T4">T4</button><button class="mal-merke" data-mal="T10">T10</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Pneumatikk</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Pneumatikk</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/pneumatikk/leksjon-1-grunnleggende-pneumatikk.html">Grunnleggende pneumatikk</a></li>
             <li><a href="vg2/pneumatikk/leksjon-2-styring-og-fart.html">Styring og fart</a></li>
@@ -400,11 +419,11 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulator: <a data-sim="pneumatikk">Pneumatikk og hydraulikk</a></div>
           <div class="laerer prove">📝 <a href="vg2/pneumatikk/prove-pneumatikk.html">Prøve: Pneumatikk</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T2">T2</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
+        </details>
       </div>
-    </div>
-    <div class="fag">
-      <h3 class="fag-tittel">Vedlikehold</h3>
+    </details>
+    <details class="fag">
+      <summary class="fag-tittel">Vedlikehold <span class="antall"></span></summary>
       <details class="laerer mal">
         <summary>Kompetansemål (8) · 5 dekket · 2 delvis · 1 mangler</summary>
         <ul>
@@ -420,8 +439,8 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/pin02-03">læreplan PIN02-03 på udir.no</a></p>
       </details>
       <div class="grid">
-        <div class="card">
-          <h3>Vedlikehold</h3>
+        <details class="card emne">
+          <summary><h3>Vedlikehold</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/vedlikehold/leksjon-1-vedlikeholdssystemer.html">Vedlikehold og vedlikeholdssystemer</a></li>
             <li><a href="vg2/vedlikehold/leksjon-2-sikker-jobb-las-og-merk.html">Sikker jobb – lås og merk</a></li>
@@ -430,18 +449,18 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulatorer: <a data-sim="momentnokkel">Momentnøkkel</a><a data-sim="maleur">Måleur</a></div>
           <div class="laerer prove">📝 <a href="vg2/vedlikehold/prove-vedlikehold.html">Prøve: Vedlikehold</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="V3">V3</button><button class="mal-merke" data-mal="V7">V7</button><button class="mal-merke" data-mal="V2">V2</button><button class="mal-merke" data-mal="V4">V4</button><button class="mal-merke" data-mal="T3">T3</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>HMS</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>HMS</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/hms/leksjon-1-grunnleggende-hms.html">Grunnleggende HMS</a></li>
             <li><a href="vg2/hms/leksjon-2-risikovurdering-og-sja.html">Risikovurdering og SJA</a></li>
           </ol>
           <div class="laerer prove">📝 <a href="vg2/hms/prove-hms.html">Prøve: HMS</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="V1">V1</button><button class="mal-merke" data-mal="V2">V2</button><button class="mal-merke" data-mal="T1">T1</button><button class="mal-merke" data-mal="T11">T11</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
-        <div class="card">
-          <h3>Elektro</h3>
+        </details>
+        <details class="card emne">
+          <summary><h3>Elektro</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/elektro/leksjon-1-strom-spenning-og-resistans.html">Strøm, spenning og Ohms lov</a></li>
             <li><a href="vg2/elektro/leksjon-2-effekt-og-energi.html">Effekt og energi</a></li>
@@ -451,31 +470,30 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
           <div class="sims">Simulator: <a data-sim="multimeter">Multimeter</a></div>
           <div class="laerer prove">📝 <a href="vg2/elektro/prove-elektro.html">Prøve: Elektro</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="V5">V5</button><button class="mal-merke" data-mal="V1">V1</button><button class="mal-merke" data-mal="T3">T3</button><button class="mal-merke" data-mal="T4">T4</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
+        </details>
       </div>
-    </div>
-    <div class="fag">
-      <h3 class="fag-tittel">YFF</h3>
+    </details>
+    <details class="fag">
+      <summary class="fag-tittel">YFF <span class="antall"></span></summary>
       <div class="laerer mal-yff">YFF har ingen egne kompetansemål. Faget bygger på målene i programfagene.</div>
       <div class="grid">
-        <div class="card">
-          <h3>YFF</h3>
+        <details class="card emne">
+          <summary><h3>YFF</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg2/yff/leksjon-1-veien-til-laereplass.html">Veien til læreplass</a></li>
           </ol>
           <div class="laerer prove">📝 <a href="vg2/yff/prove-yff.html">Prøve: YFF</a> (bare lærer)</div>
-        </div>
+        </details>
       </div>
-    </div>
+    </details>
   </div>
 </section>
 
 <section id="vg3">
   <div class="wrap">
-    <div class="kicker">Vg3 · Idrett</div>
     <h2>Vg3 Idrett</h2>
-    <div class="fag">
-      <h3 class="fag-tittel">Idrett</h3>
+    <details class="fag">
+      <summary class="fag-tittel">Idrett <span class="antall"></span></summary>
       <details class="laerer mal">
         <summary>Kompetansemål Treningslære 2 (12) · 2 dekket · 3 delvis · 7 mangler</summary>
         <ul>
@@ -495,23 +513,22 @@ footer{padding:1.5rem 2.5rem; color:var(--muted); font-size:.8rem}
         <p class="kilde">Kilde: <a href="https://www.udir.no/lk20/idr02-03">læreplan IDR02-03 (Treningslære 2) på udir.no</a></p>
       </details>
       <div class="grid">
-        <div class="card">
-          <h3>Treningslære</h3>
+        <details class="card emne">
+          <summary><h3>Treningslære</h3> <span class="antall"></span></summary>
           <ol class="lessons">
             <li><a href="vg3/treningslaere/leksjon-1-biomekanikk.html">Biomekanikk</a></li>
             <li><a href="vg3/treningslaere/leksjon-2-energi-i-idretten.html">Energi i idretten</a></li>
             <li><a href="vg3/treningslaere/leksjon-3-treningsprinsipper.html">Treningsprinsipper</a></li>
           </ol>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="TL1">TL1</button><button class="mal-merke" data-mal="TL5">TL5</button><button class="mal-merke" data-mal="TL6">TL6</button><button class="mal-merke" data-mal="TL7">TL7</button><button class="mal-merke" data-mal="TL12">TL12</button><p class="mal-tekst" aria-live="polite"></p></div>
-        </div>
+        </details>
       </div>
-    </div>
+    </details>
   </div>
 </section>
 
 <section id="verktoy">
   <div class="wrap">
-    <div class="kicker">Verktøy</div>
     <h2>Simulatorer og håndbok</h2>
     <div class="grid">
       <div class="card">
@@ -546,6 +563,27 @@ document.querySelectorAll(".mal-merke").forEach(b => {
     ut.textContent = ut.textContent === tekst ? "" : tekst;
   };
 });
+
+// Antall emner og leksjoner vises på de sammenlagte fagene og emnene.
+document.querySelectorAll("details.fag").forEach(f => {
+  const n = f.querySelectorAll("details.emne").length;
+  f.querySelector(".antall").textContent = n ? n + (n === 1 ? " emne" : " emner") : "";
+});
+document.querySelectorAll("details.emne").forEach(e => {
+  const n = e.querySelectorAll("ol.lessons li").length;
+  e.querySelector(".antall").textContent = n + (n === 1 ? " leksjon" : " leksjoner");
+});
+// Faner: bare valgt trinn vises.
+const faner = document.querySelectorAll("nav.trinn a");
+function visTrinn() {
+  const id = (location.hash || "#vg1").slice(1);
+  const valgt = document.getElementById(id) ? id : "vg1";
+  document.querySelectorAll("main > section").forEach(s => s.classList.toggle("vis", s.id === valgt));
+  faner.forEach(a => a.classList.toggle("valgt", a.hash === "#" + valgt));
+  scrollTo(0, 0);
+}
+addEventListener("hashchange", visTrinn);
+visTrinn();
 let scale = 1;
 document.getElementById("btnSize").onclick = e => {
   scale = scale >= 1.3 ? 1 : +(scale + 0.15).toFixed(2);
