@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Treningslære Vg3 · Leksjon 3: Treningsprinsipper</title>
+<title>Treningslære Vg3 · Leksjon 5: Tester</title>
 <style>
 /* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
 :root{
@@ -186,13 +186,19 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
 <style>
 .fig svg{max-height:320px}
 .to .q{text-align:center;justify-items:center}
+.to .q svg{max-height:220px}
+.fem{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.fem .q{text-align:center;justify-items:center}
+.sorter .knapper{flex-wrap:wrap;justify-content:center}
+.sorter .knapper button{padding:8px 11px;font-size:14px}
+.liste{text-align:left;justify-self:start;margin:0;padding-left:1.2em;display:grid;gap:6px;font-size:1.05rem}
 </style>
 
 </head>
 <body>
 <header class="top">
-  <div class="brand">Treningslære Vg3 · <span>Leksjon 3</span></div>
-  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hvile">Belastning og hvile</a><a href="#superkomp">Superkompensasjon</a><a href="#progresjon">Progresjon</a><a href="#spesifisitet">Spesifisitet</a><a href="#kontinuitet">Kontinuitet</a><a href="#individ">Individuell</a><a href="#restitusjon">Restitusjon</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="brand">Treningslære Vg3 · <span>Leksjon 5</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hvorfor">Hvorfor teste?</a><a href="#god">God test</a><a href="#like">Like forhold</a><a href="#tester">Tester</a><a href="#resultat">Les resultatet</a><a href="#feil">Feilkilder</a><a href="#oppgaver">Oppgaver</a></nav>
   <div class="tools no-print">
     <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
     <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
@@ -203,139 +209,122 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
 
 <header class="hero" id="start">
   <div>
-    <div class="tag">Idrett Vg3 · Treningslære · Leksjon 3</div>
-    <h1 style="margin-top:10px">Treningsprinsipper</h1>
-    <p class="lead" style="margin-top:12px">Regler som gjør treningen <b>virksom</b>.</p>
+    <div class="tag">Idrett Vg3 · Treningslære · Leksjon 5</div>
+    <h1 style="margin-top:10px">Tester</h1>
+    <p class="lead" style="margin-top:12px">Mål formen, så du vet om treningen <b>virker</b>.</p>
     <ul class="goals">
-      <li><span class="n u">1</span><span><b>Belastning</b> og <b>hvile</b></span></li>
-      <li><span class="n i">2</span><span><b>Superkompensasjon</b>: når skal du trene igjen?</span></li>
-      <li><span class="n r">3</span><span>Progresjon, spesifisitet, kontinuitet</span></li>
-      <li><span class="n" style="color:var(--orange)">4</span><span>Lag en <b>treningsuke</b></span></li>
+      <li><span class="n u">1</span><span>Hvorfor <b>teste</b>?</span></li>
+      <li><span class="n i">2</span><span><b>Gyldig</b> og <b>pålitelig</b></span></li>
+      <li><span class="n r">3</span><span>Vanlige <b>tester</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span>Les og <b>vurder</b> resultatet</span></li>
     </ul>
   </div>
   <div>
   <div class="hero-fig">
-    <svg viewBox="0 0 430 240" role="img" aria-label="En trapp som går oppover: formen øker litt for hver uke">
-      <path d="M40 210 H400" stroke="var(--line)" stroke-width="4"/>
-      <path d="M50 200 H110 V165 H170 V130 H230 V95 H290 V60 H360" fill="none" stroke="var(--r)" stroke-width="8" stroke-linejoin="round"/>
-      <text x="360" y="48" text-anchor="end" font-size="34">🏆</text>
-      <text x="220" y="232" text-anchor="middle" font-size="15" font-weight="700" fill="var(--muted)">uke for uke</text>
+    <svg viewBox="0 0 430 220" role="img" aria-label="Stoppeklokke og et stolpediagram som viser fremgang">
+      <text x="110" y="135" text-anchor="middle" font-size="90">⏱️</text>
+      <path d="M220 190 H400" stroke="var(--line)" stroke-width="4"/>
+      <rect x="235" y="120" width="40" height="70" rx="6" fill="var(--u)"/>
+      <rect x="290" y="95" width="40" height="95" rx="6" fill="var(--u)"/>
+      <rect x="345" y="60" width="40" height="130" rx="6" fill="var(--r)"/>
     </svg>
   </div>
   <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (IDR02-03, Treningslære 2)</h3>
-      <p><b>TL1 (dekket):</b> «drøfte og ta i bruk grunnleggende treningsprinsipper». Del 1–7, oppgave C (drøfte) og D (ta i bruk).</p>
-      <p><b>TL12 (delvis):</b> sammenhengen mellom trening, helse og prestasjon (Del 7, restitusjon).</p>
+      <p><b>TL3 (dekket):</b> «bruke og vurdere ulike tester». Del 1–6 (vurdere) og en praktisk test i gymsalen (bruke).</p>
+      <p><b>TL2 (delvis):</b> testene gir kapasitetsanalysen i leksjon 6.</p>
     </div>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
       <dl class="plan2">
-        <dt>0–10</dt><dd>Start: «Blir du sterkere mens du trener, eller etterpå?»</dd>
-        <dt>10–35</dt><dd>Del 1–2: belastning, hvile og superkompensasjon. Prøv alle tre knappene.</dd>
-        <dt>35–45</dt><dd>Oppgave A og B.</dd>
+        <dt>0–10</dt><dd>Start: «Hvordan vet du at du har blitt raskere?»</dd>
+        <dt>10–30</dt><dd>Del 1–4.</dd>
+        <dt>30–45</dt><dd>Oppgave A og B.</dd>
         <dt>45–55</dt><dd>Pause</dd>
-        <dt>55–70</dt><dd>Del 3–7: de andre prinsippene.</dd>
-        <dt>70–85</dt><dd>Oppgave C og D: elevene lager en treningsuke for sin idrett.</dd>
-        <dt>85–90</dt><dd>Exit-lapp.</dd>
+        <dt>55–80</dt><dd>Del 5–6, så gjennomfører klassen én test (for eksempel 30 m sprint eller svikthopp) og fyller inn oppgave C og D.</dd>
+        <dt>80–90</dt><dd>Exit-lapp.</dd>
       </dl>
     </div>
   </details>
   </div>
 </header>
 
-<section id="hvile">
-  <div class="tag">Del 1 · Belastning og hvile</div>
-  <h2>Du blir sterkere etter treningen, ikke under</h2>
+<section id="hvorfor">
+  <div class="tag">Del 1 · Hvorfor teste?</div>
+  <h2>Tester gir svar, ikke gjetting</h2>
   <div class="trio">
-    <div class="q" style="border-top:6px solid var(--bad)"><span style="font-size:2.4rem">🏋️</span><h3>1 Trening</h3><p>Du blir sliten.</p></div>
-    <div class="q U"><span style="font-size:2.4rem">😴</span><h3>2 Hvile</h3><p>Kroppen reparerer seg.</p></div>
-    <div class="q R"><span style="font-size:2.4rem">📈</span><h3>3 Sterkere</h3><p>Litt bedre enn før.</p></div>
+    <div class="q R"><span style="font-size:2.4rem">📈</span><h3>Se fremgang</h3><p>Virker treningen?</p></div>
+    <div class="q U"><span style="font-size:2.4rem">🔍</span><h3>Finne svakheter</h3><p>Hva bør du trene mer?</p></div>
+    <div class="q I"><span style="font-size:2.4rem">💪</span><h3>Motivasjon</h3><p>Et mål å slå.</p></div>
   </div>
-  <p class="regel">Trening = <b>belastning</b> + <b>hvile</b>. Begge deler må være med.</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Belastningen må være stor nok til at kroppen må tilpasse seg (overbelastningsprinsippet). Under hvilen bygger kroppen seg opp litt over nivået den hadde før.</details>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Tester er grunnlaget for kapasitetsanalysen (leksjon 6). Test før en treningsperiode og etter, så kan fremgangen måles.</details>
 </section>
 
-<section id="superkomp">
-  <div class="tag">Del 2 · Superkompensasjon</div>
-  <h2>Når skal du trene igjen?</h2>
-  <div class="benk">
-    <svg id="skFig" viewBox="0 0 560 280" role="img" aria-label="Graf over formen etter fire treningsøkter"></svg>
-    <div style="display:grid;gap:14px">
-      <div class="valgknapper" id="skKnapper">
-        <button type="button" data-v="0">For tidlig</button>
-        <button type="button" data-v="1" aria-pressed="true">Passe</button>
-        <button type="button" data-v="2">For sent</button>
-      </div>
-      <p class="status" id="skTekst"></p>
-    </div>
-  </div>
-  <p class="regel">Tren igjen når kroppen er på <b>toppen</b> etter hvilen.</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Modellen er forenklet. Hvor lang hvile som trengs, avhenger av hvor hard økten var og hva som ble trent: lett jogging tåler daglig trening, tung styrke for samme muskelgruppe trenger ofte 48–72 timer. For tidlig, gang på gang, kan gi overtrening.</details>
-</section>
-
-<section id="progresjon">
-  <div class="tag">Del 3 · Progresjon</div>
-  <h2>Øk litt om gangen</h2>
+<section id="god">
+  <div class="tag">Del 2 · En god test</div>
+  <h2>Gyldig og pålitelig</h2>
   <div class="fig">
-    <svg viewBox="0 0 560 220" role="img" aria-label="Fire søyler med vekter som blir litt tyngre hver uke">
-      <path d="M30 190 H530" stroke="var(--line)" stroke-width="4"/>
-      <g fill="var(--r)"><rect x="60" y="130" width="70" height="60" rx="6"/><rect x="170" y="115" width="70" height="75" rx="6"/><rect x="280" y="100" width="70" height="90" rx="6"/><rect x="390" y="85" width="70" height="105" rx="6"/></g>
-      <g font-size="17" font-weight="800" text-anchor="middle" fill="var(--ink)"><text x="95" y="120">40 kg</text><text x="205" y="105">42,5 kg</text><text x="315" y="90">45 kg</text><text x="425" y="75">47,5 kg</text></g>
-      <g font-size="15" font-weight="700" text-anchor="middle" fill="var(--muted)"><text x="95" y="212">Uke 1</text><text x="205" y="212">Uke 2</text><text x="315" y="212">Uke 3</text><text x="425" y="212">Uke 4</text></g>
+    <svg viewBox="0 0 630 250" role="img" aria-label="Tre blinker. Gyldig og pålitelig: treff samlet i midten. Pålitelig, men ikke gyldig: samlet utenfor midten. Ikke pålitelig: spredt.">
+      <g id="blinker"></g>
+      <g font-size="16" font-weight="800" text-anchor="middle"><text x="105" y="222" fill="var(--r)">Gyldig og pålitelig</text><text x="315" y="222" fill="var(--i)">Pålitelig, ikke gyldig</text><text x="525" y="222" fill="var(--bad)">Ikke pålitelig</text></g>
+      <g font-size="14" text-anchor="middle" fill="var(--muted)"><text x="105" y="242">✔ god test</text><text x="315" y="242">måler feil ting</text><text x="525" y="242">tilfeldige svar</text></g>
     </svg>
   </div>
-  <p class="regel">Samme trening hele tiden = <b>stopp</b> i fremgangen.</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Progresjon kan være mer vekt, flere repetisjoner, lengre tid, høyere fart eller vanskeligere øvelser. En vanlig tommelfingerregel er å ikke øke den totale belastningen mer enn ca. 10 prosent per uke.</details>
-</section>
-
-<section id="spesifisitet">
-  <div class="tag">Del 4 · Spesifisitet</div>
-  <h2>Du blir god til det du trener</h2>
   <div class="to">
-    <div class="q" style="border-top:6px solid var(--bad)"><span style="font-size:3rem">🏃‍♀️💨</span><h3>Sprinter</h3><p>Trener korte, raske løp.<br>Blir <b>rask</b>.</p></div>
-    <div class="q U"><span style="font-size:3rem">🏃‍♂️⏱️</span><h3>Maratonløper</h3><p>Trener lange, rolige løp.<br>Blir <b>utholdende</b>.</p></div>
+    <div class="q R"><h3>🎯 Gyldig</h3><p>Testen måler det vi <b>vil</b> måle.</p></div>
+    <div class="q U"><h3>🔁 Pålitelig</h3><p>Samme resultat <b>neste gang</b>, hvis formen er lik.</p></div>
   </div>
-  <p class="regel">Treningen må ligne på <b>kravene i idretten</b>.</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Spesifisitet gjelder energisystem (se leksjon 2), muskelgrupper, bevegelser og fart. Kobling til arbeidskravsanalysen (TL2): først finner vi kravene i idretten, så velger vi trening som ligner.</details>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Fagordene er validitet (gyldighet) og reliabilitet (pålitelighet). Eksempel: håndgrep er pålitelig, men lite gyldig for en fotballspiller. Et svar på tidtaking for hånd er mindre pålitelig enn fotocelle.</details>
 </section>
 
-<section id="kontinuitet">
-  <div class="tag">Del 5 · Kontinuitet</div>
-  <h2>Tren jevnt. Stopper du, går formen ned.</h2>
+<section id="like">
+  <div class="tag">Del 3 · Like forhold</div>
+  <h2>Test likt hver gang</h2>
+  <div class="fem">
+    <div class="q"><span style="font-size:2.2rem">🕘</span><h3>Samme tid</h3></div>
+    <div class="q"><span style="font-size:2.2rem">🔥</span><h3>Samme oppvarming</h3></div>
+    <div class="q"><span style="font-size:2.2rem">🏟️</span><h3>Samme sted</h3></div>
+    <div class="q"><span style="font-size:2.2rem">👟</span><h3>Samme utstyr</h3></div>
+    <div class="q"><span style="font-size:2.2rem">🛌</span><h3>Uthvilt</h3></div>
+  </div>
+  <p class="regel">Like forhold gir en <b>pålitelig</b> test.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Kalles å standardisere testen. Skriv ned forholdene i en testprotokoll, så kan testen gjentas likt om noen måneder.</details>
+</section>
+
+<section id="tester">
+  <div class="tag">Del 4 · Vanlige tester</div>
+  <h2>Én test for hver egenskap</h2>
+  <div class="fem">
+    <div class="q U"><span style="font-size:2.2rem">🫁</span><h3>Utholdenhet</h3><p>3000 m løp<br>Beep-test</p></div>
+    <div class="q" style="border-top:6px solid var(--bad)"><span style="font-size:2.2rem">🏋️</span><h3>Styrke</h3><p>1RM knebøy<br>Svikthopp</p></div>
+    <div class="q I"><span style="font-size:2.2rem">⚡</span><h3>Hurtighet</h3><p>30 m sprint</p></div>
+    <div class="q R"><span style="font-size:2.2rem">🤸</span><h3>Bevegelighet</h3><p>Sitt og strekk</p></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>1RM = den tyngste vekten du klarer én gang. For ungdom brukes ofte 3RM eller 5RM, som er tryggere. Beep-test (Yo-Yo) passer for lagidretter. Velg tester som ligner idretten (spesifisitet).</details>
+</section>
+
+<section id="resultat">
+  <div class="tag">Del 5 · Les resultatet</div>
+  <h2>Karis 30 m sprint</h2>
   <div class="fig">
-    <svg viewBox="0 0 560 220" role="img" aria-label="Søylediagram: formen øker i åtte uker med trening og synker i fire uker uten trening">
-      <path d="M30 180 H530" stroke="var(--line)" stroke-width="4"/>
-      <g id="kontSoyler"></g>
-      <text x="170" y="208" text-anchor="middle" font-size="15" font-weight="700" fill="var(--r)">8 uker trening</text>
-      <text x="430" y="208" text-anchor="middle" font-size="15" font-weight="700" fill="var(--bad)">4 uker pause</text>
+    <svg viewBox="0 0 560 250" role="img" aria-label="Søylediagram: januar 4,8 sekunder, mars 4,7 sekunder, mai 4,5 sekunder">
+      <path d="M60 210 H520" stroke="var(--line)" stroke-width="4"/>
+      <g fill="var(--u)"><rect x="100" y="66" width="80" height="144" rx="6"/><rect x="240" y="69" width="80" height="141" rx="6"/></g>
+      <rect x="380" y="75" width="80" height="135" rx="6" fill="var(--r)"/>
+      <g font-size="18" font-weight="800" text-anchor="middle" fill="var(--ink)"><text x="140" y="56">4,8 s</text><text x="280" y="59">4,7 s</text><text x="420" y="65">4,5 s</text></g>
+      <g font-size="15" font-weight="700" text-anchor="middle" fill="var(--muted)"><text x="140" y="234">Januar</text><text x="280" y="234">Mars</text><text x="420" y="234">Mai</text></g>
     </svg>
   </div>
-  <p class="regel">Formen <b>bygges sakte</b> og <b>forsvinner</b> raskere.</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Kalles også reversibilitet. Kondisjon synker merkbart etter 2–4 uker uten trening. Styrke holder seg litt lenger. Litt trening (vedlikehold) er mye bedre enn ingen.</details>
+  <p class="regel">På sprint er <b>lavere tid</b> bedre. Kari har blitt <b>0,3 s</b> raskere.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Spør: «Er 0,1 sekunder fremgang sikker?» Ved håndtid kan feilen være like stor som fremgangen. Da trengs flere målinger eller fotocelle. Søylene er bevisst nesten like høye: små forskjeller er vanlig.</details>
 </section>
 
-<section id="individ">
-  <div class="tag">Del 6 · Individualisering</div>
-  <h2>Alle er forskjellige</h2>
-  <div class="trio">
-    <div class="q U"><span style="font-size:2.4rem">🎂</span><h3>Alder</h3><p>Ung og voksen tåler ulikt.</p></div>
-    <div class="q I"><span style="font-size:2.4rem">📒</span><h3>Bakgrunn</h3><p>Ny eller erfaren?</p></div>
-    <div class="q R"><span style="font-size:2.4rem">🎯</span><h3>Mål</h3><p>Hva vil du bli god på?</p></div>
-  </div>
-  <p class="regel">Samme program gir <b>ulikt resultat</b>. Tilpass treningen til <b>deg</b>.</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Andre faktorer: arv, skader, søvn, stress, skole og jobb. Kobling til kapasitetsanalysen (TL2): hva kan utøveren i dag?</details>
-</section>
-
-<section id="restitusjon">
-  <div class="tag">Del 7 · Restitusjon</div>
-  <h2>Hvilen er en del av treningen</h2>
-  <div class="trio">
-    <div class="q U"><span style="font-size:2.4rem">🛌</span><h3>Søvn</h3><p>8–10 timer.</p></div>
-    <div class="q R"><span style="font-size:2.4rem">🍽️</span><h3>Mat og drikke</h3><p>Spis etter trening.</p></div>
-    <div class="q I"><span style="font-size:2.4rem">📅</span><h3>Hviledager</h3><p>Minst én i uka.</p></div>
-  </div>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Ungdom trenger 8–10 timer søvn. Lite søvn gir dårligere restitusjon og høyere skaderisiko. Tegn på for lite hvile: tung i kroppen, dårlig søvn, høy hvilepuls, lyst til å slutte.</details>
+<section id="feil">
+  <div class="tag">Del 6 · Feilkilder</div>
+  <h2>Hva kan gjøre resultatet feil?</h2>
+  <div class="sorter" id="feilKort"></div>
+  <p class="status" id="feilTekst">Gir dette et riktig eller feil resultat?</p>
 </section>
 
 <section id="oppgaver">
@@ -346,62 +335,54 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
   </div>
   <div class="sheet" id="sheet">
     <div>
-      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 3: Treningsprinsipper</h2>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 5: Tester</h2>
       <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
     </div>
 
     <div>
       <h3>Del A · Fyll inn</h3>
-      <p><i>Ord: hvile · etter · progresjon · toppen · søvn</i></p>
-      <p>Du blir sterkere <span class="luke"><span class="fasit" hidden>etter</span></span> treningen.</p>
-      <p>Trening = belastning + <span class="luke"><span class="fasit" hidden>hvile</span></span>.</p>
-      <p>Tren igjen når kroppen er på <span class="luke"><span class="fasit" hidden>toppen</span></span>.</p>
-      <p>Å øke litt om gangen kalles <span class="luke"><span class="fasit" hidden>progresjon</span></span>.</p>
-      <p>Ungdom trenger 8–10 timer <span class="luke"><span class="fasit" hidden>søvn</span></span>.</p>
+      <p><i>Ord: gyldig · pålitelig · oppvarming · fremgang</i></p>
+      <p>Vi tester for å se <span class="luke"><span class="fasit" hidden>fremgang</span></span>.</p>
+      <p>En test som måler det vi vil måle, er <span class="luke"><span class="fasit" hidden>gyldig</span></span>.</p>
+      <p>En test som gir samme resultat neste gang, er <span class="luke"><span class="fasit" hidden>pålitelig</span></span>.</p>
+      <p>Bruk samme <span class="luke"><span class="fasit" hidden>oppvarming</span></span> hver gang.</p>
     </div>
 
     <div>
-      <h3>Del B · Hvilket prinsipp? Skriv navnet.</h3>
-      <p><i>Prinsipper: progresjon · spesifisitet · kontinuitet · individualisering</i></p>
+      <h3>Del B · Hvilken egenskap måler testen?</h3>
       <div class="tablewrap"><table>
-        <tr><th>Eksempel</th><th>Prinsipp</th></tr>
-        <tr><td>En sprinter trener korte, raske løp.</td><td class="blank"><span class="fasit" hidden>spesifisitet</span></td></tr>
-        <tr><td>Hver uke legger du på 2,5 kg i knebøy.</td><td class="blank"><span class="fasit" hidden>progresjon</span></td></tr>
-        <tr><td>Etter fire uker sommerferie er kondisjonen dårligere.</td><td class="blank"><span class="fasit" hidden>kontinuitet</span></td></tr>
-        <tr><td>En nybegynner får lettere program enn en erfaren utøver.</td><td class="blank"><span class="fasit" hidden>individualisering</span></td></tr>
+        <tr><th>Test</th><th>Egenskap</th></tr>
+        <tr><td>3000 m løp</td><td class="blank"><span class="fasit" hidden>Utholdenhet</span></td></tr>
+        <tr><td>30 m sprint</td><td class="blank"><span class="fasit" hidden>Hurtighet</span></td></tr>
+        <tr><td>1RM knebøy</td><td class="blank"><span class="fasit" hidden>Styrke</span></td></tr>
+        <tr><td>Sitt og strekk</td><td class="blank"><span class="fasit" hidden>Bevegelighet</span></td></tr>
       </table></div>
     </div>
 
     <div>
-      <h3>Del C · Drøft</h3>
+      <h3>Del C · Gjennomfør en test</h3>
+      <p>Test: ______________________</p>
+      <div class="tablewrap"><table>
+        <tr><th></th><th>Forsøk 1</th><th>Forsøk 2</th><th>Beste</th></tr>
+        <tr><td>Resultat</td><td class="blank"></td><td class="blank"></td><td class="blank"></td></tr>
+      </table></div>
       <ol>
-        <li>Ola trener tung styrke for beina hver dag. Formen går ned. Hvorfor? Hva bør han gjøre?<div class="svar"><span class="fasit" hidden>Han trener før kroppen har hentet seg inn (for tidlig). Han bør ha 1–2 dager hvile mellom tunge beinøkter, sove godt og spise etter trening.</span></div></li>
-        <li>Kari trener én gang i uka. Formen står stille. Hvorfor?<div class="svar"><span class="fasit" hidden>Hun trener for sjelden (for sent). Fremgangen er borte før neste økt. Hun bør trene 2–3 ganger i uka.</span></div></li>
+        <li>Skriv ned forholdene (tid, sted, oppvarming, utstyr).<div class="svar"><span class="fasit" hidden>For eksempel: tirsdag kl. 10, gymsalen, 10 min jogg og 3 stigningsløp, innesko, fotocelle.</span></div></li>
       </ol>
     </div>
 
     <div>
-      <h3>Del D · Lag en treningsuke for din idrett</h3>
-      <p>Idrett: ______________________</p>
-      <div class="tablewrap"><table>
-        <tr><th>Dag</th><th>Økt</th></tr>
-        <tr><td>Mandag</td><td class="blank"><span class="fasit" hidden>Eksempel fotball: intervaller 4 × 4 min</span></td></tr>
-        <tr><td>Tirsdag</td><td class="blank"><span class="fasit" hidden>Styrke bein og kjerne</span></td></tr>
-        <tr><td>Onsdag</td><td class="blank"><span class="fasit" hidden>Hvile</span></td></tr>
-        <tr><td>Torsdag</td><td class="blank"><span class="fasit" hidden>Fotballtrening med spurter</span></td></tr>
-        <tr><td>Fredag</td><td class="blank"><span class="fasit" hidden>Lett jogging</span></td></tr>
-        <tr><td>Lørdag</td><td class="blank"><span class="fasit" hidden>Kamp</span></td></tr>
-        <tr><td>Søndag</td><td class="blank"><span class="fasit" hidden>Hvile</span></td></tr>
-      </table></div>
+      <h3>Del D · Vurder testen</h3>
       <ol>
-        <li>Hvilke to prinsipper har du brukt? Hvordan?<div class="svar"><span class="fasit" hidden>Spesifisitet: spurter og intervaller ligner kamp. Restitusjon: hviledag etter harde økter.</span></div></li>
+        <li>Er testen gyldig for din idrett? Hvorfor?<div class="svar"><span class="fasit" hidden>Eksempel: 30 m sprint er gyldig for fotball, fordi spurter i kamp ofte er 10–30 m.</span></div></li>
+        <li>Nevn én feilkilde, og hvordan den kan unngås.<div class="svar"><span class="fasit" hidden>Håndtid er unøyaktig. Bruk fotocelle eller samme person som tar tiden.</span></div></li>
       </ol>
     </div>
 
     <div>
       <h3>Exit-lapp</h3>
       <ol>
-        <li>Hva er superkompensasjon?<div class="svar"><span class="fasit" hidden>At kroppen bygger seg opp litt over nivået den hadde før, i hvilen etter en treningsøkt.</span></div></li>
+        <li>Hva er forskjellen på gyldig og pålitelig?<div class="svar"><span class="fasit" hidden>Gyldig: testen måler det vi vil måle. Pålitelig: testen gir samme resultat igjen under like forhold.</span></div></li>
       </ol>
     </div>
   </div>
@@ -435,42 +416,50 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
   const r1 = n => n.toFixed(1);
   const KROPP = 'stroke="var(--ink)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"';
 
-  // ---------- del 2: superkompensasjon ----------
-  // Etter en økt: formen faller og kommer tilbake (T1), så en topp over startnivået (T2), så tilbake.
-  const T1 = 1, T2 = 2, A = 34, B = 22;
-  const g = t => t < 0 ? 0 : t < T1 ? -A * Math.sin(Math.PI * t / T1) : t < T1 + T2 ? B * Math.sin(Math.PI * (t - T1) / T2) : 0;
-  const PAUSE = [0.85, 2, 3.6];
-  const SK_TEKST = [
-    '<span style="color:var(--bad)">✖ For tidlig: kroppen har ikke hentet seg inn. Formen går ned.</span>',
-    '<span class="r">✔ Passe: du trener på toppen. Formen går opp.</span>',
-    '<span style="color:var(--i)">✖ For sent: toppen er borte. Formen står stille.</span>'
-  ];
-  function superkomp(v) {
-    const p = PAUSE[v], x0 = 50, y0 = 150, sx = 460 / (3 * p + T1 + T2 + 0.4);
-    let niva = 0, pkt = [], merker = '';
-    for (let i = 0; i < 4; i++) {
-      const slutt = i < 3 ? p : T1 + T2 + 0.4;
-      merker += `<path d="M${(x0 + i * p * sx).toFixed(1)} 248 v-14" stroke="var(--orange)" stroke-width="5"/><text x="${(x0 + i * p * sx).toFixed(1)}" y="268" text-anchor="middle" font-size="18">🏋️</text>`;
-      for (let t = 0; t <= slutt + 1e-9; t += slutt / 40) pkt.push([x0 + (i * p + t) * sx, y0 - niva - g(t)]);
-      niva += g(slutt);
-    }
-    const farge = ['var(--bad)', 'var(--r)', 'var(--i)'][v];
-    tegn($('skFig'),
-      `<path d="M40 20 V240 H540" fill="none" stroke="var(--line)" stroke-width="3"/>` +
-      `<path d="M40 ${y0} H540" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 6"/>` +
-      `<text x="536" y="${y0 - 8}" text-anchor="end" font-size="14" fill="var(--muted)">startnivå</text>` +
-      `<text x="48" y="30" font-size="15" font-weight="700" fill="var(--ink)">Form</text>` +
-      `<polyline points="${pkt.map(q => q[0].toFixed(1) + ',' + q[1].toFixed(1)).join(' ')}" fill="none" stroke="${farge}" stroke-width="5" stroke-linejoin="round"/>` + merker);
-    $('skTekst').innerHTML = SK_TEKST[v];
-    $('skKnapper').querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.v === v));
+  // ---------- sorter: trykk på riktig svar for hvert kort ----------
+  function sorter(boks, status, valg, kort) {
+    let riktige = 0;
+    kort.forEach(([e, n, r, f]) => {
+      const k = document.createElement('div'); k.className = 'q';
+      k.innerHTML = `<span class="emoji">${e}</span><h3>${n}</h3><div class="knapper"></div><p class="forkl"></p>`;
+      valg.forEach((s, j) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = s;
+        b.onclick = () => {
+          if (k.dataset.ok) return;
+          k.querySelectorAll('button').forEach(x => x.classList.remove('feil'));
+          if (j === r) { b.classList.add('ok'); k.dataset.ok = 1; riktige++; k.querySelector('.forkl').textContent = f; }
+          else { b.classList.add('feil'); k.querySelector('.forkl').textContent = 'Prøv igjen.'; }
+          $(status).textContent = riktige + ' av ' + kort.length + ' riktige';
+        };
+        k.querySelector('.knapper').appendChild(b);
+      });
+      $(boks).appendChild(k);
+    });
   }
-  $('skKnapper').querySelectorAll('button').forEach(b => b.onclick = () => superkomp(+b.dataset.v));
-  superkomp(1);
 
-  // ---------- del 5: kontinuitet ----------
-  const FORM = [20, 30, 39, 47, 54, 60, 65, 69, 58, 46, 36, 28];
-  $('kontSoyler').innerHTML = FORM.map((f, i) =>
-    `<rect x="${44 + i * 40}" y="${180 - f * 2}" width="30" height="${f * 2}" rx="4" fill="${i < 8 ? 'var(--r)' : 'var(--bad)'}"/>`).join('');
+  // ---------- del 2: tre blinker ----------
+  const TREFF = [
+    [[0, 0], [6, -4], [-5, 5], [3, 7], [-6, -5]],
+    [[38, -30], [44, -26], [34, -24], [42, -36], [36, -38]],
+    [[-50, 30], [40, -45], [10, 55], [-35, -40], [55, 20]]
+  ];
+  let bl = '';
+  [105, 315, 525].forEach((cx, i) => {
+    [80, 56, 32, 10].forEach((r, j) => { bl += `<circle cx="${cx}" cy="105" r="${r}" fill="${j % 2 ? 'var(--surface)' : 'var(--bg)'}" stroke="var(--line)" stroke-width="2"/>`; });
+    bl += `<circle cx="${cx}" cy="105" r="10" fill="var(--orange-soft)" stroke="var(--orange)" stroke-width="2"/>`;
+    TREFF[i].forEach(([x, y]) => { bl += `<circle cx="${cx + x}" cy="${105 + y}" r="6" fill="var(--ink)"/>`; });
+  });
+  document.getElementById('blinker').innerHTML = bl;
+
+  // ---------- del 6: feilkilder ----------
+  sorter('feilKort', 'feilTekst', ['Riktig', 'Feil'], [
+    ['🥶', 'Ingen oppvarming', 1, 'Kald kropp gir dårligere resultat.'],
+    ['📸', 'Fotocelle tar tiden', 0, 'Nøyaktig og likt hver gang.'],
+    ['🌬️', 'Sterk medvind', 1, 'Vinden hjelper, så tiden blir for god.'],
+    ['📋', 'Samme oppvarming som sist', 0, 'Like forhold.'],
+    ['🤒', 'Syk eller sliten', 1, 'Formen er ikke som vanlig.'],
+    ['✋', 'Ulike personer tar tiden for hånd', 1, 'Folk reagerer ulikt raskt.']
+  ]);
 
   fixVars(document);
   // ---------- oppgaver: fasit + kopier ----------
@@ -497,4 +486,9 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
 })();
 </script>
 
+<script>
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { const [navn, fane] = a.dataset.sim.split("#"); a.href = SIMULATORER + navn + ".html" + (fane ? "#" + fane : ""); a.target = "_blank"; a.rel = "noopener"; });
+</script>
 </body></html>

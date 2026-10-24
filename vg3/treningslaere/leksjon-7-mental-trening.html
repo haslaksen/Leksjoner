@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treningslære Vg3 · Leksjon 7: Mental trening</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+</style>
+<style>
+.fig svg{max-height:320px}
+.to .q{text-align:center;justify-items:center}
+.to .q svg{max-height:220px}
+.fem{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.fem .q{text-align:center;justify-items:center}
+.sorter .knapper{flex-wrap:wrap;justify-content:center}
+.sorter .knapper button{padding:8px 11px;font-size:14px}
+.liste{text-align:left;justify-self:start;margin:0;padding-left:1.2em;display:grid;gap:6px;font-size:1.05rem}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Treningslære Vg3 · <span>Leksjon 7</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hva">Hva er det?</a><a href="#spenning">Spenning</a><a href="#pust">Pust</a><a href="#bilder">Indre bilder</a><a href="#selvprat">Selvprat</a><a href="#rutine">Rutine</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Idrett Vg3 · Treningslære · Leksjon 7</div>
+    <h1 style="margin-top:10px">Mental trening</h1>
+    <p class="lead" style="margin-top:12px">Tren <b>hodet</b>, ikke bare kroppen.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Passe <b>spenning</b></span></li>
+      <li><span class="n i">2</span><span><b>Pust</b> og <b>indre bilder</b></span></li>
+      <li><span class="n r">3</span><span>Positiv <b>selvprat</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span>Prøv selv</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 200" role="img" aria-label="Et hode med en målskive">
+      <text x="160" y="140" text-anchor="middle" font-size="110">🧠</text>
+      <text x="320" y="130" text-anchor="middle" font-size="80">🎯</text>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (IDR02-03, Treningslære 2)</h3>
+      <p><b>TL9 (dekket):</b> «utføre mental trening og drøfte betydningen av slik trening». Del 3–5 utføres i timen, oppgave C og D drøfter.</p>
+      <p><b>TL4 (delvis):</b> psykiske egenskaper.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: «Har du prestert dårligere fordi du var nervøs?»</dd>
+        <dt>10–25</dt><dd>Del 1–2: hva mental trening er, og spenningskurven.</dd>
+        <dt>25–45</dt><dd>Del 3–4: alle gjør boks-pust (2 min) og visualisering (3 min). Rolig rom.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–70</dt><dd>Del 5–6: selvprat og rutiner. Oppgave A og B.</dd>
+        <dt>70–85</dt><dd>Oppgave C og D.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="hva">
+  <div class="tag">Del 1 · Hva er mental trening?</div>
+  <h2>Hodet kan også trenes</h2>
+  <div class="trio">
+    <div class="q U"><span style="font-size:2.4rem">🎯</span><h3>Konsentrasjon</h3><p>Fokus på oppgaven</p></div>
+    <div class="q I"><span style="font-size:2.4rem">😬</span><h3>Nervøsitet</h3><p>Roe ned eller gire opp</p></div>
+    <div class="q R"><span style="font-size:2.4rem">💪</span><h3>Selvtillit</h3><p>Tro på deg selv</p></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Mental trening er systematisk trening av psykiske ferdigheter, akkurat som fysisk trening. Det må øves mange ganger før det virker i konkurranse.</details>
+</section>
+
+<section id="spenning">
+  <div class="tag">Del 2 · Passe spenning</div>
+  <h2>Ikke for slapp, ikke for nervøs</h2>
+  <div class="fig">
+    <svg viewBox="0 0 560 270" role="img" aria-label="Kurve formet som en omvendt U: prestasjonen er best ved passe spenning">
+      <path d="M50 230 V30 M50 230 H520" stroke="var(--line)" stroke-width="3" fill="none"/>
+      <path d="M60 210 Q285 -40 510 210" fill="none" stroke="var(--orange)" stroke-width="6"/>
+      <circle cx="285" cy="85" r="10" fill="var(--r)"/>
+      <g font-size="15" font-weight="700" text-anchor="middle"><text x="120" y="252" fill="var(--u)">😴 for slapp</text><text x="285" y="252" fill="var(--r)">🙂 passe</text><text x="450" y="252" fill="var(--bad)">😰 for nervøs</text></g>
+      <text x="62" y="26" font-size="14" font-weight="700" fill="var(--muted)">prestasjon</text>
+      <text x="516" y="222" text-anchor="end" font-size="14" font-weight="700" fill="var(--muted)">spenning</text>
+    </svg>
+  </div>
+  <p class="regel">Pust og selvprat hjelper deg til <b>passe</b> spenning.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Omvendt U-kurve (Yerkes–Dodson). Toppen ligger ulikt: i skyting trengs lav spenning, i vektløfting høyere. Spør elevene hvor toppen ligger i deres idrett.</details>
+</section>
+
+<section id="pust">
+  <div class="tag">Del 3 · Pust</div>
+  <h2>Boks-pust: prøv nå</h2>
+  <div class="benk">
+    <svg id="boksFig" viewBox="0 0 320 300" role="img" aria-label="En firkant med fire sider: pust inn 4, hold 4, pust ut 4, hold 4"></svg>
+    <div style="display:grid;gap:14px">
+      <button type="button" id="pustBtn" class="stor">Neste steg ▶</button>
+      <p class="status" id="pustTekst">Trykk for å starte. Tell rolig til 4 på hvert steg.</p>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Rolig pust med lang utpust senker pulsen og demper nervøsitet. Gjør 4–6 runder. Læreren kan trykke på knappen og telle høyt for klassen.</details>
+</section>
+
+<section id="bilder">
+  <div class="tag">Del 4 · Indre bilder</div>
+  <h2>Se filmen i hodet</h2>
+  <div class="fem">
+    <div class="q"><span style="font-size:2.2rem">😌</span><h3>1 Lukk øynene</h3></div>
+    <div class="q"><span style="font-size:2.2rem">🎬</span><h3>2 Se deg selv</h3><p>gjøre øvelsen perfekt</p></div>
+    <div class="q"><span style="font-size:2.2rem">🤲</span><h3>3 Kjenn det</h3><p>i kroppen</p></div>
+    <div class="q"><span style="font-size:2.2rem">🔁</span><h3>4 Gjenta</h3><p>3–5 ganger</p></div>
+  </div>
+  <p class="regel">Hjernen trener <b>nesten som</b> når du gjør det på ekte.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Kalles visualisering eller mental trening med indre bilder. Bruk alle sanser: lyder, lukt, følelsen i musklene. Eksempel: straffekast, satsen i høydehopp, starten i et svømmeløp.</details>
+</section>
+
+<section id="selvprat">
+  <div class="tag">Del 5 · Selvprat</div>
+  <h2>Snu tanken. Trykk på kortet.</h2>
+  <div class="sorter" id="snuKort"></div>
+  <p class="regel">Si det du ville sagt til en <b>god venn</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Positiv selvprat er korte, konkrete setninger. Stikkord fungerer ofte best i selve øvelsen («høye knær», «rolig», «nå»).</details>
+</section>
+
+<section id="rutine">
+  <div class="tag">Del 6 · Rutine før konkurranse</div>
+  <h2>Gjør det samme hver gang</h2>
+  <div class="trio">
+    <div class="q U"><span style="font-size:2.4rem">🔥</span><h3>Samme oppvarming</h3></div>
+    <div class="q I"><span style="font-size:2.4rem">🌬️</span><h3>Pust</h3></div>
+    <div class="q R"><span style="font-size:2.4rem">🗣️</span><h3>Stikkord</h3><p>«Rolig. Nå.»</p></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>En fast rutine gir trygghet og flytter fokus fra resultatet til det du skal gjøre. Mange toppidrettsutøvere har rutiner før start, serve eller straffe.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 7: Mental trening</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p><i>Ord: passe · pust · bilder · rutine</i></p>
+      <p>Vi presterer best med <span class="luke"><span class="fasit" hidden>passe</span></span> spenning.</p>
+      <p>Rolig <span class="luke"><span class="fasit" hidden>pust</span></span> senker pulsen.</p>
+      <p>Med indre <span class="luke"><span class="fasit" hidden>bilder</span></span> ser vi øvelsen i hodet.</p>
+      <p>En fast <span class="luke"><span class="fasit" hidden>rutine</span></span> før start gir trygghet.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Snu tanken</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Negativ tanke</th><th>Positiv tanke</th></tr>
+        <tr><td>Jeg kommer til å bomme.</td><td class="blank"><span class="fasit" hidden>Jeg har trent på dette mange ganger.</span></td></tr>
+        <tr><td>De andre er mye bedre enn meg.</td><td class="blank"><span class="fasit" hidden>Jeg gjør mitt beste og fokuserer på meg selv.</span></td></tr>
+        <tr><td>Nå er alt ødelagt.</td><td class="blank"><span class="fasit" hidden>Neste forsøk er nytt. Rolig, nå.</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Prøv selv</h3>
+      <ol>
+        <li>Gjør boks-pust i 2 minutter. Hvordan føltes det?<div class="svar"><span class="fasit" hidden>Eksempel: Pulsen gikk ned, jeg ble roligere.</span></div></li>
+        <li>Velg en øvelse fra din idrett. Beskriv filmen du så i hodet.<div class="svar"><span class="fasit" hidden>Eksempel straffekast: jeg ser kurven, kjenner ballen, hører lyden når den går i nettet.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del D · Drøft</h3>
+      <ol>
+        <li>Hvorfor kan mental trening gi bedre prestasjon? Gi ett for og ett imot.<div class="svar"><span class="fasit" hidden>For: Mindre nervøsitet og bedre fokus gir færre feil. Imot: Det tar tid å lære, og det erstatter ikke fysisk trening.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Nevn to metoder for mental trening.<div class="svar"><span class="fasit" hidden>For eksempel pust, indre bilder (visualisering), positiv selvprat og rutiner.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+})();
+
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  const tegn = (svg, h) => { svg.innerHTML = h; fixVars(svg); };
+  const r1 = n => n.toFixed(1);
+  const KROPP = 'stroke="var(--ink)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+
+  // ---------- sorter: trykk på riktig svar for hvert kort ----------
+  function sorter(boks, status, valg, kort) {
+    let riktige = 0;
+    kort.forEach(([e, n, r, f]) => {
+      const k = document.createElement('div'); k.className = 'q';
+      k.innerHTML = `<span class="emoji">${e}</span><h3>${n}</h3><div class="knapper"></div><p class="forkl"></p>`;
+      valg.forEach((s, j) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = s;
+        b.onclick = () => {
+          if (k.dataset.ok) return;
+          k.querySelectorAll('button').forEach(x => x.classList.remove('feil'));
+          if (j === r) { b.classList.add('ok'); k.dataset.ok = 1; riktige++; k.querySelector('.forkl').textContent = f; }
+          else { b.classList.add('feil'); k.querySelector('.forkl').textContent = 'Prøv igjen.'; }
+          $(status).textContent = riktige + ' av ' + kort.length + ' riktige';
+        };
+        k.querySelector('.knapper').appendChild(b);
+      });
+      $(boks).appendChild(k);
+    });
+  }
+
+  // ---------- del 3: boks-pust ----------
+  const PUST = [['Pust inn', 'var(--u)'], ['Hold', 'var(--i)'], ['Pust ut', 'var(--r)'], ['Hold', 'var(--i)']];
+  const SIDE = [[60, 240, 60, 60], [60, 60, 260, 60], [260, 60, 260, 240], [260, 240, 60, 240]];
+  const TEKST = [[30, 150, -90], [160, 40, 0], [290, 150, 90], [160, 275, 0]];
+  let pSteg = -1;
+  function pust() {
+    let h = '';
+    SIDE.forEach(([x1, y1, x2, y2], i) => {
+      const på = i === pSteg;
+      h += `<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${på ? PUST[i][1] : 'var(--line)'}" stroke-width="${på ? 14 : 8}" stroke-linecap="round"/>`;
+      const [tx, ty, r] = TEKST[i];
+      h += `<text x="${tx}" y="${ty}" text-anchor="middle" font-size="17" font-weight="800" fill="${på ? PUST[i][1] : 'var(--muted)'}" transform="rotate(${r} ${tx} ${ty})">${PUST[i][0]} 4</text>`;
+    });
+    h += `<text x="160" y="165" text-anchor="middle" font-size="54">${pSteg < 0 ? '🌬️' : ['😮‍💨', '😶', '😌', '😶'][pSteg]}</text>`;
+    tegn($('boksFig'), h);
+    $('pustTekst').textContent = pSteg < 0 ? 'Trykk for å starte. Tell rolig til 4 på hvert steg.' : PUST[pSteg][0] + ': 1 … 2 … 3 … 4';
+  }
+  $('pustBtn').onclick = () => { pSteg = (pSteg + 1) % 4; pust(); };
+  pust();
+
+  // ---------- del 5: snu tanken ----------
+  const SNU = [
+    ['😟', 'Jeg kommer til å bomme.', 'Jeg har trent på dette.'],
+    ['😞', 'De andre er bedre enn meg.', 'Jeg gjør mitt beste.'],
+    ['😣', 'Nå er alt ødelagt.', 'Neste forsøk er nytt.'],
+    ['😰', 'Jeg er så nervøs.', 'Nervøs = kroppen er klar.']
+  ];
+  SNU.forEach(([e, neg, pos]) => {
+    const b = document.createElement('button'); b.type = 'button'; b.className = 'q';
+    b.style.cssText = 'font:inherit;text-align:center;cursor:pointer;border-top:6px solid var(--bad)';
+    b.innerHTML = `<span class="emoji">${e}</span><h3>${neg}</h3><p class="forkl">Trykk for å snu</p>`;
+    b.onclick = () => { b.innerHTML = `<span class="emoji">💪</span><h3 style="color:var(--r)">${pos}</h3><p class="forkl">${neg}</p>`; b.style.borderTopColor = 'var(--r)'; };
+    $('snuKort').appendChild(b);
+  });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+<script>
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { const [navn, fane] = a.dataset.sim.split("#"); a.href = SIMULATORER + navn + ".html" + (fane ? "#" + fane : ""); a.target = "_blank"; a.rel = "noopener"; });
+</script>
+</body></html>
