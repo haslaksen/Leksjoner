@@ -5,11 +5,11 @@
   const d = document.createElement("dialog");
   d.style.cssText = "max-width:440px;width:92vw;border:0;border-radius:14px;padding:18px 20px;font:500 15px/1.45 system-ui,sans-serif;color:#14181d";
   d.innerHTML = `<form method="dialog" style="display:grid;gap:10px">
-    <b style="font-size:17px">📎 Last opp bilde eller fil</b>
+    <b class="tittel" style="font-size:17px">📎 Last opp bilde eller fil</b>
     <label>Fra PC-en<br><input name="fil" type="file"></label>
     <label>…eller nettadresse<br><input name="adresse" type="url" placeholder="https://…" style="width:100%"></label>
-    <label>Tekst under (valgfritt)<br><input name="tekst" placeholder="for eksempel herdekar" style="width:100%"></label>
-    <label><input name="bareLaerer" type="checkbox"> Bare på lærersiden</label>
+    <label class="vedleggfelt">Tekst under (valgfritt)<br><input name="tekst" placeholder="for eksempel herdekar" style="width:100%"></label>
+    <label class="vedleggfelt"><input name="bareLaerer" type="checkbox"> Bare på lærersiden</label>
     <div class="melding" style="min-height:1.4em;color:#56606c"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end">
       <button value="avbryt" formnovalidate>Lukk</button>
@@ -17,14 +17,20 @@
     </div></form>`;
   document.body.appendChild(d);
   const f = d.querySelector("form"), melding = d.querySelector(".melding");
-  let boks;
+  let boks, bytt; // bytt = navnet på tegningen som skal byttes med bilde, ellers null.
+  const åpne = (b, navn) => {
+    boks = b; bytt = navn; melding.textContent = "";
+    d.querySelector(".tittel").textContent = navn ? "📷 Bytt tegningen med et bilde" : "📎 Last opp bilde eller fil";
+    d.querySelectorAll(".vedleggfelt").forEach(l => { l.style.display = navn ? "none" : ""; });
+    d.showModal();
+  };
 
   // Bilder over 400 kB gjøres om til JPEG på høyst 1600 px, så sidene lastes raskt (mobilbilder er ofte 3–5 MB).
   const lesFil = fil => new Promise((ok, feil) => {
     const r = new FileReader();
     r.onerror = feil;
     r.onload = () => {
-      if (!/^image\/(jpeg|png|webp|heic)$/.test(fil.type) || fil.size < 4e5) return ok({ innhold: r.result.split(",")[1], filnavn: fil.name });
+      if (!/^image\/(jpeg|png|webp|heic)$/.test(fil.type) || (fil.size < 4e5 && !bytt)) return ok({ innhold: r.result.split(",")[1], filnavn: fil.name });
       const img = new Image();
       img.onload = () => {
         const s = Math.min(1, 1600 / Math.max(img.width, img.height)), c = document.createElement("canvas");
@@ -48,14 +54,14 @@
     try {
       const svar = await fetch("/laerer-k7q4mz/api/last-opp", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(Object.assign({
+        body: JSON.stringify(Object.assign(bytt ? { mappe: boks.dataset.mappe, bilde: bytt } : {
           mappe: boks.dataset.mappe, prefiks: boks.dataset.prefiks,
           tekst: f.tekst.value, bareLaerer: f.bareLaerer.checked,
         }, fil ? await lesFil(fil) : { adresse })),
       });
       const data = await svar.json().catch(() => ({ feil: `Noe gikk galt (${svar.status})` }));
       if (!svar.ok) throw new Error(data.feil);
-      melding.innerHTML = `✅ Lastet opp som <b>${data.navn}</b>. Siden publiseres på nytt nå. Last inn siden på nytt om et par minutter for å se den.`;
+      melding.innerHTML = bytt ? "✅ Bildet er lagt inn. Siden publiseres på nytt nå. Last inn siden på nytt om et par minutter for å se det." : `✅ Lastet opp som <b>${data.navn}</b>. Siden publiseres på nytt nå. Last inn siden på nytt om et par minutter for å se den.`;
       f.fil.value = f.adresse.value = f.tekst.value = "";
     } catch (err) {
       melding.textContent = "❌ " + err.message;
@@ -92,7 +98,27 @@
     const knapp = document.createElement("button");
     knapp.textContent = "⬆ Last opp";
     knapp.style.cssText = "margin-left:8px;font:700 14px system-ui,sans-serif;padding:3px 12px;border-radius:99px;border:1px solid #c92a2a;background:#fff;color:#c92a2a;cursor:pointer";
-    knapp.onclick = () => { boks = b; melding.textContent = ""; d.showModal(); };
+    knapp.onclick = () => åpne(b);
     b.appendChild(knapp);
+  });
+
+  // Tegninger som kan byttes med bilde (bygg.js lager knappene).
+  document.querySelectorAll("button[data-bytt]").forEach(k => { k.onclick = () => åpne(k, k.dataset.bytt); });
+  document.querySelectorAll("button[data-tegning]").forEach(k => {
+    k.onclick = async () => {
+      if (!confirm("Fjerne bildet og vise tegningen igjen?")) return;
+      k.disabled = true;
+      try {
+        const svar = await fetch("/laerer-k7q4mz/api/last-opp", {
+          method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ slett: k.dataset.tegning }),
+        });
+        const data = await svar.json().catch(() => ({ feil: `Noe gikk galt (${svar.status})` }));
+        if (!svar.ok) throw new Error(data.feil);
+        k.textContent = "Tegningen kommer tilbake om et par minutter.";
+      } catch (err) {
+        alert("❌ " + err.message);
+        k.disabled = false;
+      }
+    };
   });
 })();

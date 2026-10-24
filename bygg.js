@@ -143,11 +143,26 @@ function vedlegg(s, fil, laerer) {
     innsett.push([s.indexOf("</section>", pos), boks]);
   }
   for (const [i, t] of innsett.reverse()) s = s.slice(0, i) + t + "\n" + s.slice(i);
-  // Trykk på et bilde for å se det i fullskjerm (fungerer også på mobil og fremviser).
-  if (/<img data-fullskjerm/.test(s)) s = s.replace(/<\/body>/i, () => `<script>\n${FULLSKJERM}</script>\n</body>`);
   // Admin kan laste opp fra lærersiden, se admin-opplasting.js og api/last-opp.js.
   if (laerer) s = s.replace(/<\/body>/i, () => `<script>\n${ADMIN}</script>\n</body>`);
   return s;
+}
+
+// Tegninger som kan byttes med bilde: <svg data-bilde="navn" data-alt="Tekst">. Finnes
+// <emne>/filer/bilde-navn.<type>, vises bildet i stedet for tegningen (på alle sider i emnet).
+// På lærersiden får hver tegning knappen «📷 Bytt til bilde» (vises med «Vis/skjul plass for filer»).
+const BILDETYPER = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
+function tegningTilBilde(s, fil, laerer) {
+  const mappe = path.dirname(fil).replace(/\\/g, "/");
+  const admin = laerer && /^leksjon-\d+-/.test(path.basename(fil)) && !fil.endsWith(STEG);
+  return s.replace(/<svg\b[^>]*\bdata-bilde="([a-z0-9-]+)"[^>]*>[\s\S]*?<\/svg>/g, (svg, navn) => {
+    const alt = esc((svg.match(/data-alt="([^"]*)"/) || [, navn])[1]);
+    const f = BILDETYPER.map(t => `bilde-${navn}${t}`).find(f => fs.existsSync(path.join(__dirname, mappe, FILER, f)));
+    const ut = f ? `<img data-fullskjerm src="${FILER}/${f}" alt="${alt}" loading="lazy" decoding="async" style="cursor:zoom-in;width:100%;height:160px;object-fit:contain;border-radius:8px">` : svg;
+    if (!admin) return ut;
+    return ut + `<button type="button" class="filplass no-print" data-bytt="${navn}" data-mappe="${esc(mappe)}"${f ? ` data-bildesti="${esc(mappe)}/${FILER}/${f}"` : ""} style="justify-self:center;font:700 13px system-ui,sans-serif;padding:2px 10px;border-radius:99px;border:1px solid #c92a2a;background:#fff;color:#c92a2a;cursor:pointer">📷 ${f ? "Bytt bilde" : "Bytt til bilde"}</button>` +
+      (f ? `<button type="button" class="filplass no-print" data-tegning="${esc(mappe)}/${FILER}/${f}" style="justify-self:center;font:700 13px system-ui,sans-serif;padding:2px 10px;border-radius:99px;border:1px solid #56606c;background:#fff;color:#56606c;cursor:pointer">↩ Tegning igjen</button>` : "");
+  });
 }
 
 function kopierFiler(dir, laerer) {
@@ -168,9 +183,11 @@ fs.rmSync(UT, { recursive: true, force: true });
 for (const trinn of ["vg1", "vg2"]) { kopierFiler(trinn, false); kopierFiler(trinn, true); }
 for (const fil of filer) {
   const s = fs.readFileSync(path.join(__dirname, fil), "utf8");
-  const ut = [[path.join(UT, LAERER_STI), vedlegg(laererversjon(s, fil), fil, true)]];
-  if (!erProve(fil)) ut.push([UT, vedlegg(elevversjon(s), fil, false)]);
-  for (const [mappe, innhold] of ut) {
+  const ut = [[path.join(UT, LAERER_STI), vedlegg(tegningTilBilde(laererversjon(s, fil), fil, true), fil, true)]];
+  if (!erProve(fil)) ut.push([UT, vedlegg(tegningTilBilde(elevversjon(s), fil, false), fil, false)]);
+  for (let [mappe, innhold] of ut) {
+    // Trykk på et bilde for å se det i fullskjerm (fungerer også på mobil og fremviser).
+    if (/<img data-fullskjerm/.test(innhold)) innhold = innhold.replace(/<\/body>/i, () => `<script>\n${FULLSKJERM}</script>\n</body>`);
     const mål = path.join(mappe, fil);
     fs.mkdirSync(path.dirname(mål), { recursive: true });
     fs.writeFileSync(mål, innhold);
