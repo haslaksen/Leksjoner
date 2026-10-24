@@ -18,7 +18,7 @@ function finn(dir) {
     else if (e.name.endsWith(".html")) leksjoner.push(rel);
   }
 }
-for (const trinn of ["vg1", "vg2"]) finn(trinn);
+for (const trinn of ["vg1", "vg2", "vg3"]) finn(trinn);
 const filer = ["index.html", ...leksjoner];
 
 // Fjerner <tag class="klasse ...">...</tag> med alt innhold (også nestede tag).
@@ -181,7 +181,7 @@ function kopierFiler(dir, laerer) {
 }
 
 fs.rmSync(UT, { recursive: true, force: true });
-for (const trinn of ["vg1", "vg2"]) { kopierFiler(trinn, false); kopierFiler(trinn, true); }
+for (const trinn of ["vg1", "vg2", "vg3"]) { kopierFiler(trinn, false); kopierFiler(trinn, true); }
 for (const fil of filer) {
   const s = fs.readFileSync(path.join(__dirname, fil), "utf8");
   const ut = [[path.join(UT, LAERER_STI), vedlegg(tegningTilBilde(laererversjon(s, fil), fil, true), fil, true)]];
