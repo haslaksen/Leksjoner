@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HMS og kjemikalier Vg1 · Leksjon 2: Kjemikalier og sikkerhetsdatablad</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+
+/* Produksjon og tjenester: figurer man trykker på */
+.hms button[data-r]{min-height:7.5em}
+.velg{display:grid;gap:12px}
+.finn svg .spot{cursor:pointer;pointer-events:all}
+.finn svg .spot .ring{fill:transparent;stroke:transparent;stroke-width:5}
+.finn svg .spot:hover .ring{stroke:var(--line)}
+.finn svg .spot.funnet .ring{stroke:var(--bad)}
+.finn svg .spot:focus{outline:none}
+.finn svg .spot:focus-visible .ring{stroke:var(--u)}
+.rekkefolge{display:grid;gap:10px;max-width:640px}
+.rekkefolge button{display:flex;gap:14px;align-items:center;text-align:left;font-size:1.05rem;padding:14px 18px;border-radius:14px}
+.rekkefolge button .nrk{display:inline-grid;place-items:center;width:2rem;height:2rem;border-radius:50%;border:2px dashed var(--line);font-weight:800;flex:none}
+.rekkefolge button.ok .nrk{border:none;background:var(--r);color:#fff}
+.del3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.del3 .q{text-align:center;justify-items:center}
+.del3 .emoji{font-size:2.4rem;line-height:1}
+.del3 .knapper{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.del3 .knapper button{font-size:.85rem;padding:8px 10px}
+.del3 .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+.bildeliste{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.bildeliste .q{text-align:center;justify-items:center;gap:6px}
+.bildeliste svg{max-height:120px}
+.bildeliste .emoji{font-size:2.6rem;line-height:1}
+.bildeliste p{font-size:.92rem;color:var(--muted)}
+.matrise{display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px;max-width:620px}
+.matrise .ax{font-weight:700;font-size:.9rem;color:var(--muted);display:grid;place-items:center;text-align:center;padding:4px}
+.matrise button{border-radius:10px;min-height:3.6em;font-size:.95rem;border:2px solid transparent;color:#14181d}
+.matrise button.lav{background:#b7e4c7} .matrise button.mid{background:#ffe08a} .matrise button.hoy{background:#ffb3b3}
+.matrise button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 3px var(--ink)}
+
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">HMS og kjemikalier Vg1 · <span>Leksjon 2</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hvor">Hvor finnes de</a><a href="#piktogram">Faresymboler</a><a href="#etikett">Etiketten</a><a href="#sdb">Sikkerhetsdatablad</a><a href="#risiko">Risiko</a><a href="#tiltak">Tiltak</a><a href="#lagring">Lagring</a><a href="#avfall">Avfall</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Produksjon og tjenester Vg1 · HMS og kjemikalier · Leksjon 2</div>
+    <h1 style="margin-top:10px">Kjemikalier og sikkerhetsdatablad</h1>
+    <p class="lead" style="margin-top:12px">Les før du bruker. Da vet du hva som kan skje.</p>
+    <ul class="goals">
+      <li><span class="n" style="color:var(--bad)">1</span><span>Les <b>faresymbolene</b></span></li>
+      <li><span class="n u">2</span><span>Finn svaret i <b>sikkerhetsdatabladet</b></span></li>
+      <li><span class="n" style="color:var(--orange)">3</span><span>Hvor stor er <b>risikoen</b>?</span></li>
+      <li><span class="n r">4</span><span><b>Lagre</b> trygt og kast <b>riktig</b></span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 200" role="img" aria-label="Tre faresymboler: brannfarlig, etsende og miljøfarlig">
+      <g transform="translate(20 40) scale(1.2)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><path d="M50 76 C33 76 29 61 36 50 C39 57 44 58 44 52 C44 42 52 36 50 23 C62 31 69 46 65 59 C63 53 58 53 58 57 C58 66 66 67 63 76 Z" fill="#14181d"/><path d="M30 80 H70" stroke="#14181d" stroke-width="4"/></g><g transform="translate(155 40) scale(1.2)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><g transform="rotate(35 34 32)"><rect x="29" y="18" width="10" height="26" rx="3" fill="none" stroke="#14181d" stroke-width="3"/></g><g transform="rotate(-35 66 32)"><rect x="61" y="18" width="10" height="26" rx="3" fill="none" stroke="#14181d" stroke-width="3"/></g><circle cx="40" cy="52" r="3" fill="#14181d"/><circle cx="60" cy="52" r="3" fill="#14181d"/><path d="M26 66 H46 M54 66 H74" stroke="#14181d" stroke-width="7"/><path d="M30 70 l4 6 M40 70 l-3 6 M58 70 l4 6 M68 70 l-3 6" stroke="#14181d" stroke-width="2.5"/></g><g transform="translate(290 40) scale(1.2)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><path d="M33 76 V40 M33 52 L24 43 M33 47 L42 38 M33 60 L42 54" stroke="#14181d" stroke-width="4" stroke-linecap="round" fill="none"/><ellipse cx="58" cy="68" rx="12" ry="6" fill="#14181d"/><path d="M69 68 L78 62 V74 Z" fill="#14181d"/><path d="M22 78 H80" stroke="#14181d" stroke-width="3"/></g>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (TIP01-03, Produksjon og tjenester)</h3>
+      <p><b>Mål 10:</b> «anvende sikkerhetsdatablad og andre typer kjemikaliedokumentasjon og utføre risikoanalyse for kjemikalier som brukes på arbeidsplassen» (Del 2–6).</p>
+      <p><b>Mål 8 (delvis):</b> «forklare hvordan kjemiske forbindelser og egenskaper virker inn på bruk, gjenbruk og trygg oppbevaring av råstoffer og materialer» (Del 7–8). Materialer og miljø kommer i et eget emne.</p>
+      <p><b>Mål 1 (delvis):</b> HMS-regelverk for kjemikalier (stoffkartotek, substitusjonsplikt).</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: ta med en sprayboks fra verkstedet. «Hva står på den?»</dd>
+        <dt>10–30</dt><dd>Del 1–3: kjemikalier, faresymboler og etiketten.</dd>
+        <dt>30–45</dt><dd>Del 4: sikkerhetsdatablad. Vis skolens stoffkartotek.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–70</dt><dd>Del 5–6: risiko og tiltak.</dd>
+        <dt>70–75</dt><dd>Del 7–8: lagring og avfall.</dd>
+        <dt>75–88</dt><dd>Oppgavene A–D.</dd>
+        <dt>88–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="hvor">
+  <div class="tag">Del 1 · Kjemikalier på verkstedet</div>
+  <h2>Mer kjemi enn du tror</h2>
+  <div class="bildeliste">
+    <div class="q"><span class="emoji" aria-hidden="true">💧</span><h3>Skjærevæske</h3><p>Kjøler og smører når du dreier.</p></div>
+    <div class="q"><span class="emoji" aria-hidden="true">🧴</span><h3>Avfetting</h3><p>Vasker bort olje.</p></div>
+    <div class="q"><span class="emoji" aria-hidden="true">🎨</span><h3>Maling og spray</h3><p>Beskytter mot rust.</p></div>
+    <div class="q"><span class="emoji" aria-hidden="true">🧪</span><h3>Lim</h3><p>Limer deler sammen.</p></div>
+    <div class="q"><span class="emoji" aria-hidden="true">🛢️</span><h3>Olje og fett</h3><p>Smører maskiner.</p></div>
+    <div class="q"><span class="emoji" aria-hidden="true">🔥</span><h3>Sveisegass</h3><p>Acetylen, argon, CO₂.</p></div>
+  </div>
+  <p class="regel">Alle farlige kjemikalier skal ha et <b>sikkerhetsdatablad</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Arbeidsgiver skal ha et stoffkartotek med sikkerhetsdatablad for alle farlige kjemikalier (forskrift om utførelse av arbeid, kap. 2). Vis elevene hvor skolens kartotek ligger (perm eller digitalt). Sikkerhetsdatabladet skal være på norsk.</details>
+</section>
+
+<section id="piktogram">
+  <div class="tag">Del 2 · Faresymboler</div>
+  <h2>Rød ruter = fare</h2>
+  <div class="bildeliste">
+    <div class="q"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(0 0) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><path d="M50 76 C33 76 29 61 36 50 C39 57 44 58 44 52 C44 42 52 36 50 23 C62 31 69 46 65 59 C63 53 58 53 58 57 C58 66 66 67 63 76 Z" fill="#14181d"/><path d="M30 80 H70" stroke="#14181d" stroke-width="4"/></g></svg><h3>Brannfarlig</h3><p>Tar lett fyr.</p></div>
+    <div class="q"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(0 0) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><g transform="rotate(35 34 32)"><rect x="29" y="18" width="10" height="26" rx="3" fill="none" stroke="#14181d" stroke-width="3"/></g><g transform="rotate(-35 66 32)"><rect x="61" y="18" width="10" height="26" rx="3" fill="none" stroke="#14181d" stroke-width="3"/></g><circle cx="40" cy="52" r="3" fill="#14181d"/><circle cx="60" cy="52" r="3" fill="#14181d"/><path d="M26 66 H46 M54 66 H74" stroke="#14181d" stroke-width="7"/><path d="M30 70 l4 6 M40 70 l-3 6 M58 70 l4 6 M68 70 l-3 6" stroke="#14181d" stroke-width="2.5"/></g></svg><h3>Etsende</h3><p>Skader hud, øyne og metall.</p></div>
+    <div class="q"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(0 0) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><rect x="45" y="24" width="10" height="34" rx="4" fill="#14181d"/><circle cx="50" cy="69" r="6" fill="#14181d"/></g></svg><h3>Helseskadelig</h3><p>Irriterer hud og øyne.</p></div>
+    <div class="q"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(0 0) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><circle cx="50" cy="30" r="9" fill="#14181d"/><path d="M31 77 C31 54 40 42 50 42 C60 42 69 54 69 77 Z" fill="#14181d"/><path d="M50 50 L53 58 L61 58 L55 63 L57 71 L50 66 L43 71 L45 63 L39 58 L47 58 Z" fill="#fff"/></g></svg><h3>Alvorlig helsefare</h3><p>Kan gi kreft eller skade lungene.</p></div>
+    <div class="q"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(0 0) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><circle cx="50" cy="38" r="15" fill="#14181d"/><rect x="42" y="46" width="16" height="11" rx="2" fill="#14181d"/><circle cx="44" cy="37" r="4.5" fill="#fff"/><circle cx="56" cy="37" r="4.5" fill="#fff"/><path d="M30 60 L70 76 M70 60 L30 76" stroke="#14181d" stroke-width="6" stroke-linecap="round"/></g></svg><h3>Giftig</h3><p>Kan drepe, selv i små mengder.</p></div>
+    <div class="q"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(0 0) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><path d="M33 76 V40 M33 52 L24 43 M33 47 L42 38 M33 60 L42 54" stroke="#14181d" stroke-width="4" stroke-linecap="round" fill="none"/><ellipse cx="58" cy="68" rx="12" ry="6" fill="#14181d"/><path d="M69 68 L78 62 V74 Z" fill="#14181d"/><path d="M22 78 H80" stroke="#14181d" stroke-width="3"/></g></svg><h3>Miljøfarlig</h3><p>Skader fisk og natur.</p></div>
+    <div class="q"><svg viewBox="0 0 100 100" aria-hidden="true"><g transform="translate(0 0) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><rect x="24" y="42" width="48" height="22" rx="10" fill="#14181d"/><rect x="72" y="47" width="8" height="12" fill="#14181d"/><path d="M22 72 H80" stroke="#14181d" stroke-width="3"/></g></svg><h3>Gass under trykk</h3><p>Flasken kan eksplodere ved varme.</p></div>
+  </div>
+  <div class="benk">
+    <svg viewBox="0 0 100 100" role="img" aria-label="Et faresymbol med to rør som drypper på en hånd og et metallstykke" style="max-height:220px"><g transform="translate(0 0) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><g transform="rotate(35 34 32)"><rect x="29" y="18" width="10" height="26" rx="3" fill="none" stroke="#14181d" stroke-width="3"/></g><g transform="rotate(-35 66 32)"><rect x="61" y="18" width="10" height="26" rx="3" fill="none" stroke="#14181d" stroke-width="3"/></g><circle cx="40" cy="52" r="3" fill="#14181d"/><circle cx="60" cy="52" r="3" fill="#14181d"/><path d="M26 66 H46 M54 66 H74" stroke="#14181d" stroke-width="7"/><path d="M30 70 l4 6 M40 70 l-3 6 M58 70 l4 6 M68 70 l-3 6" stroke="#14181d" stroke-width="2.5"/></g></svg>
+    <div class="velg">
+      <p class="stor"><b>Hva betyr symbolet?</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="0" data-svar="Nei. Brannfarlig har en flamme.">Brannfarlig</button>
+        <button type="button" data-r="1" data-svar="Riktig! Dråpene eter på hånda og metallet.">Etsende</button>
+        <button type="button" data-r="0" data-svar="Nei. Giftig har en hodeskalle.">Giftig</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+</section>
+
+<section id="etikett">
+  <div class="tag">Del 3 · Etiketten</div>
+  <h2>Fire ting står på boksen</h2>
+  <div class="benk">
+    <svg viewBox="0 0 520 380" role="img" aria-label="En sprayboks med etikett: faresymboler, signalordet FARE, en faresetning og en sikkerhetssetning, merket 1 til 4">
+      <rect x="86" y="20" width="44" height="26" rx="4" fill="#9aa3ad" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M60 60 Q60 44 108 44 Q156 44 156 60 V350 Q156 364 108 364 Q60 364 60 350 Z" fill="#c9ced6" stroke="var(--wire)" stroke-width="3"/>
+      <rect x="40" y="80" width="250" height="240" rx="8" fill="#fff" stroke="var(--wire)" stroke-width="2.5"/>
+      <text x="56" y="110" font-size="20" font-weight="800" fill="#14181d">AVFETT</text>
+      <text x="56" y="128" font-size="12" fill="#56606c">Avfettingsspray · 500 ml</text>
+      <g transform="translate(56 140) scale(.6)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><path d="M50 76 C33 76 29 61 36 50 C39 57 44 58 44 52 C44 42 52 36 50 23 C62 31 69 46 65 59 C63 53 58 53 58 57 C58 66 66 67 63 76 Z" fill="#14181d"/><path d="M30 80 H70" stroke="#14181d" stroke-width="4"/></g><g transform="translate(122 140) scale(.6)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><rect x="45" y="24" width="10" height="34" rx="4" fill="#14181d"/><circle cx="50" cy="69" r="6" fill="#14181d"/></g>
+      <text x="56" y="226" font-size="22" font-weight="800" fill="#c92a2a">FARE</text>
+      <text x="56" y="252" font-size="12.5" fill="#14181d">Ekstremt brannfarlig aerosol.</text>
+      <text x="56" y="268" font-size="12.5" fill="#14181d">Kan gi svimmelhet.</text>
+      <text x="56" y="292" font-size="12.5" fill="#14181d">Holdes vekk fra varme og flammer.</text>
+      <text x="56" y="308" font-size="12.5" fill="#14181d">Brukes bare der det er god lufting.</text>
+      <g stroke="var(--orange)" stroke-width="2.5"><path d="M184 170 L330 110"/><path d="M118 218 L330 170"/><path d="M250 260 H330"/><path d="M262 300 H330"/></g>
+      <g font-size="16" font-weight="700" fill="var(--ink)">
+        <circle cx="344" cy="110" r="14" fill="var(--orange)"/><text x="339" y="116" fill="#fff">1</text><text x="366" y="116">Faresymbol</text>
+        <circle cx="344" cy="170" r="14" fill="var(--orange)"/><text x="339" y="176" fill="#fff">2</text><text x="366" y="176">Signalord</text>
+        <circle cx="344" cy="260" r="14" fill="var(--orange)"/><text x="339" y="266" fill="#fff">3</text><text x="366" y="266">Hva er farlig?</text>
+        <circle cx="344" cy="300" r="14" fill="var(--orange)"/><text x="339" y="306" fill="#fff">4</text><text x="366" y="306">Slik er du trygg</text>
+      </g>
+    </svg>
+    <div style="display:grid;gap:14px">
+      <div class="q" style="border-top:6px solid var(--bad)"><h3><span style="color:var(--bad)">FARE</span> = mest farlig</h3></div>
+      <div class="q" style="border-top:6px solid var(--glow)"><h3>ADVARSEL = mindre farlig</h3></div>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Punkt 3 er faresetninger (H-setninger, «hazard»), punkt 4 er sikkerhetssetninger (P-setninger, «precaution»). Etiketten følger CLP-forordningen. Ta med noen bokser fra verkstedet og la elevene finne de fire tingene.</details>
+</section>
+
+<section id="sdb">
+  <div class="tag">Del 4 · Sikkerhetsdatabladet</div>
+  <h2>16 avsnitt. Lær deg fem.</h2>
+  <div class="benk">
+    <svg viewBox="0 0 360 440" role="img" aria-label="Et sikkerhetsdatablad med 16 avsnitt. Avsnitt 2, 4, 7, 8 og 13 er markert.">
+      <rect x="10" y="10" width="340" height="420" rx="8" fill="#fff" stroke="var(--wire)" stroke-width="2.5"/>
+      <text x="30" y="40" font-size="17" font-weight="800" fill="#14181d">SIKKERHETSDATABLAD</text>
+      <g font-size="14" fill="#56606c">
+        <text x="30" y="72">1  Navn og leverandør</text>
+        <rect x="22" y="80" width="316" height="24" rx="4" fill="#fdeaea"/><text x="30" y="97" fill="#14181d" font-weight="700">2  Farer</text>
+        <text x="30" y="122">3  Innhold</text>
+        <rect x="22" y="130" width="316" height="24" rx="4" fill="#dff1e6"/><text x="30" y="147" fill="#14181d" font-weight="700">4  Førstehjelp</text>
+        <text x="30" y="172">5  Brannslokking</text>
+        <text x="30" y="194">6  Søl og utslipp</text>
+        <rect x="22" y="202" width="316" height="24" rx="4" fill="#e4eefc"/><text x="30" y="219" fill="#14181d" font-weight="700">7  Bruk og lagring</text>
+        <rect x="22" y="228" width="316" height="24" rx="4" fill="#fff0e5"/><text x="30" y="245" fill="#14181d" font-weight="700">8  Verneutstyr</text>
+        <text x="30" y="272">9  Egenskaper</text>
+        <text x="30" y="294">10  Stabilitet</text>
+        <text x="30" y="316">11  Helse</text>
+        <text x="30" y="338">12  Miljø</text>
+        <rect x="22" y="346" width="316" height="24" rx="4" fill="#ececec"/><text x="30" y="363" fill="#14181d" font-weight="700">13  Avfall</text>
+        <text x="30" y="390">14  Transport</text>
+        <text x="30" y="412">15–16  Regler og annet</text>
+      </g>
+    </svg>
+    <div style="display:grid;gap:22px">
+      <div class="velg">
+        <p class="stor"><b>Du fikk væske i øyet. Hvilket avsnitt?</b></p>
+        <div class="svar-knapper"><button type="button" data-r="0">2</button><button type="button" data-r="1" data-svar="Riktig! 4 = førstehjelp.">4</button><button type="button" data-r="0">8</button></div>
+        <p class="status"></p>
+      </div>
+      <div class="velg">
+        <p class="stor"><b>Hvilke hansker trenger du?</b></p>
+        <div class="svar-knapper"><button type="button" data-r="0">4</button><button type="button" data-r="0">7</button><button type="button" data-r="1" data-svar="Riktig! 8 = verneutstyr.">8</button></div>
+        <p class="status"></p>
+      </div>
+      <div class="velg">
+        <p class="stor"><b>Hvordan skal boksen lagres?</b></p>
+        <div class="svar-knapper"><button type="button" data-r="1" data-svar="Riktig! 7 = bruk og lagring.">7</button><button type="button" data-r="0">12</button><button type="button" data-r="0">13</button></div>
+        <p class="status"></p>
+      </div>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Avsnittene er like i alle sikkerhetsdatablad (REACH). Finn et ekte sikkerhetsdatablad for et produkt dere bruker (for eksempel avfetting eller skjærevæske) i stoffkartoteket, og la elevene finne avsnitt 2, 4, 7, 8 og 13.</details>
+</section>
+
+<section id="risiko">
+  <div class="tag">Del 5 · Risikovurdering</div>
+  <h2>Hvor stor er risikoen?</h2>
+  <div class="benk">
+    <div>
+      <div class="matrise" role="group" aria-label="Risikomatrise">
+        <span class="ax" style="grid-row:span 1"></span><span class="ax">Liten skade</span><span class="ax">Middels skade</span><span class="ax">Stor skade</span>
+        <span class="ax">Skjer ofte</span>
+        <button type="button" class="mid" data-tekst="🟡 Middels: gjør tiltak.">🟡</button><button type="button" class="hoy" data-tekst="🔴 Høy: stopp! Gjør tiltak først.">🔴</button><button type="button" class="hoy" data-tekst="🔴 Høy: stopp! Gjør tiltak først.">🔴</button>
+        <span class="ax">Kan skje</span>
+        <button type="button" class="lav" data-tekst="🟢 Lav: greit, følg rutinene.">🟢</button><button type="button" class="mid" data-tekst="🟡 Middels: gjør tiltak.">🟡</button><button type="button" class="hoy" data-tekst="🔴 Høy: stopp! Gjør tiltak først.">🔴</button>
+        <span class="ax">Skjer sjelden</span>
+        <button type="button" class="lav" data-tekst="🟢 Lav: greit, følg rutinene.">🟢</button><button type="button" class="lav" data-tekst="🟢 Lav: greit, følg rutinene.">🟢</button><button type="button" class="mid" data-tekst="🟡 Middels: gjør tiltak.">🟡</button>
+      </div>
+      <p class="status matrise-status" style="margin-top:10px">Trykk på en rute.</p>
+    </div>
+    <div class="velg">
+      <p class="stor"><b>Du sprayer avfetting i et lite rom uten lufting. Det skjer ofte, og du kan bli svimmel og falle.</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="0">🟢 Lav</button>
+        <button type="button" data-r="0">🟡 Middels</button>
+        <button type="button" data-r="1" data-svar="Riktig! Skjer ofte og gir stor skade = rød. Stopp og gjør tiltak.">🔴 Høy</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <p class="regel">Risiko = hvor <b>ofte</b> det skjer × hvor <b>ille</b> det blir.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Risikovurdering av kjemikalier: hvilke kjemikalier, hvem eksponeres, hvordan (innånding, hud, svelging), hvor lenge og hvor mye. Bruk gjerne skolens skjema. Vg2 HMS 2 går videre med sikker jobb-analyse.</details>
+</section>
+
+<section id="tiltak">
+  <div class="tag">Del 6 · Tiltak</div>
+  <h2>Hva gjør du først? Trykk i riktig rekkefølge.</h2>
+  <div class="benk">
+    <div class="rekkefolge">
+      <button type="button" data-n="3">🧤 Bruk verneutstyr</button>
+      <button type="button" data-n="1">🔄 Bytt til et mindre farlig produkt</button>
+      <button type="button" data-n="2">🌬️ Luft ut eller bruk avsug</button>
+    </div>
+    <div style="display:grid;gap:14px">
+      <p class="status">Avfettingen er farlig. Hvordan gjør du den tryggere?</p>
+    </div>
+  </div>
+  <p class="regel">Fjern faren først. Verneutstyr er <b>siste</b> utvei.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Substitusjonsplikten: arbeidsgiver skal bytte ut farlige kjemikalier med mindre farlige når det er mulig. Deretter tekniske tiltak (avsug, lukket system), så rutiner, og til slutt personlig verneutstyr.</details>
+</section>
+
+<section id="lagring">
+  <div class="tag">Del 7 · Lagring</div>
+  <h2>Lagre trygt: riktig eller galt?</h2>
+  <div class="hms">
+    <button type="button" data-r="1" data-svar="Riktig! Da vet alle hva det er."><span class="ikon" aria-hidden="true">🏷️</span><span>Kjemikalier står i originalboksen med etikett.</span></button>
+    <button type="button" data-r="0" data-svar="Galt! Noen kan tro det er brus og drikke det."><span class="ikon" aria-hidden="true">🥤</span><span>Jeg heller tynner over i en brusflaske.</span></button>
+    <button type="button" data-r="0" data-svar="Galt! Gnister kan sette fyr på den."><span class="ikon" aria-hidden="true">🔥</span><span>Sprayboksen står ved sveiseplassen.</span></button>
+    <button type="button" data-r="1" data-svar="Riktig! Damp fra løsemidler kan ta fyr og er farlig å puste inn."><span class="ikon" aria-hidden="true">🗄️</span><span>Brannfarlige ting står i et eget skap med lufting.</span></button>
+    <button type="button" data-r="0" data-svar="Galt! Syre og base kan reagere med hverandre. Hold dem fra hverandre."><span class="ikon" aria-hidden="true">⚗️</span><span>Syre og lut står på samme hylle.</span></button>
+    <button type="button" data-r="1" data-svar="Riktig! Ellers damper det ut."><span class="ikon" aria-hidden="true">🔒</span><span>Jeg setter lokket på igjen med en gang.</span></button>
+  </div>
+  <p class="regel">Riktig <b>boks</b>. Riktig <b>skap</b>. <b>Lokk</b> på.</p>
+</section>
+
+<section id="avfall">
+  <div class="tag">Del 8 · Avfall</div>
+  <h2>Brukt opp. Hvor skal det?</h2>
+  <div class="del3">
+    <div class="q" data-svar="F" data-hvorfor="Det er rester og gass igjen i boksen."><span class="emoji" aria-hidden="true">🧴</span><b>Tom sprayboks</b><div class="knapper"><button type="button" data-v="F">☣️ Farlig avfall</button><button type="button" data-v="M">🔩 Metall</button><button type="button" data-v="R">🗑️ Restavfall</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="F" data-hvorfor="Fillene har løsemiddel i seg, og kan ta fyr."><span class="emoji" aria-hidden="true">🧻</span><b>Filler med avfetting</b><div class="knapper"><button type="button" data-v="F">☣️ Farlig avfall</button><button type="button" data-v="M">🔩 Metall</button><button type="button" data-v="R">🗑️ Restavfall</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="F" data-hvorfor="Spillolje samles inn og blir renset og brukt på nytt."><span class="emoji" aria-hidden="true">🛢️</span><b>Brukt olje</b><div class="knapper"><button type="button" data-v="F">☣️ Farlig avfall</button><button type="button" data-v="M">🔩 Metall</button><button type="button" data-v="R">🗑️ Restavfall</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="M" data-hvorfor="Spon blir smeltet om til nytt metall."><span class="emoji" aria-hidden="true">🌀</span><b>Rene stålspon</b><div class="knapper"><button type="button" data-v="F">☣️ Farlig avfall</button><button type="button" data-v="M">🔩 Metall</button><button type="button" data-v="R">🗑️ Restavfall</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="R" data-hvorfor="Det er ikke kjemikalier i det."><span class="emoji" aria-hidden="true">📦</span><b>Ren papp fra en pakke</b><div class="knapper"><button type="button" data-v="F">☣️ Farlig avfall</button><button type="button" data-v="M">🔩 Metall</button><button type="button" data-v="R">🗑️ Restavfall</button></div><p class="forkl"></p></div>
+  </div>
+  <p class="regel">Aldri i <b>vasken</b>. Aldri i <b>naturen</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Ren papp kan også gå til papirinnsamling hvis skolen har det. Farlig avfall leveres til godkjent mottak. Spillolje og løsemidler kan gjenvinnes (renses og brukes igjen, eller brennes for energi). Vis elevene hvor verkstedet samler farlig avfall.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 2: Kjemikalier og sikkerhetsdatablad</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Hva betyr symbolene?</h3>
+      <p><i>Ord: etsende · brannfarlig · miljøfarlig · giftig</i></p>
+      <svg class="oppgfig" viewBox="0 0 520 130" role="img" aria-label="Fire faresymboler merket A, B, C og D">
+        <g transform="translate(10 24) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><path d="M50 76 C33 76 29 61 36 50 C39 57 44 58 44 52 C44 42 52 36 50 23 C62 31 69 46 65 59 C63 53 58 53 58 57 C58 66 66 67 63 76 Z" fill="#14181d"/><path d="M30 80 H70" stroke="#14181d" stroke-width="4"/></g><g transform="translate(140 24) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><circle cx="50" cy="38" r="15" fill="#14181d"/><rect x="42" y="46" width="16" height="11" rx="2" fill="#14181d"/><circle cx="44" cy="37" r="4.5" fill="#fff"/><circle cx="56" cy="37" r="4.5" fill="#fff"/><path d="M30 60 L70 76 M70 60 L30 76" stroke="#14181d" stroke-width="6" stroke-linecap="round"/></g><g transform="translate(270 24) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><path d="M33 76 V40 M33 52 L24 43 M33 47 L42 38 M33 60 L42 54" stroke="#14181d" stroke-width="4" stroke-linecap="round" fill="none"/><ellipse cx="58" cy="68" rx="12" ry="6" fill="#14181d"/><path d="M69 68 L78 62 V74 Z" fill="#14181d"/><path d="M22 78 H80" stroke="#14181d" stroke-width="3"/></g><g transform="translate(400 24) scale(1)"><path d="M50 4 L96 50 L50 96 L4 50 Z" fill="#fff" stroke="#c92a2a" stroke-width="7" stroke-linejoin="round"/><g transform="rotate(35 34 32)"><rect x="29" y="18" width="10" height="26" rx="3" fill="none" stroke="#14181d" stroke-width="3"/></g><g transform="rotate(-35 66 32)"><rect x="61" y="18" width="10" height="26" rx="3" fill="none" stroke="#14181d" stroke-width="3"/></g><circle cx="40" cy="52" r="3" fill="#14181d"/><circle cx="60" cy="52" r="3" fill="#14181d"/><path d="M26 66 H46 M54 66 H74" stroke="#14181d" stroke-width="7"/><path d="M30 70 l4 6 M40 70 l-3 6 M58 70 l4 6 M68 70 l-3 6" stroke="#14181d" stroke-width="2.5"/></g>
+        <g font-size="20" font-weight="800" fill="var(--orange)"><text x="2" y="20">A</text><text x="132" y="20">B</text><text x="262" y="20">C</text><text x="392" y="20">D</text></g>
+      </svg>
+      <div class="tablewrap"><table>
+        <tr><th>Symbol</th><th>Betyr</th></tr>
+        <tr><td>A</td><td class="blank"><span class="fasit" hidden>brannfarlig</span></td></tr>
+        <tr><td>B</td><td class="blank"><span class="fasit" hidden>giftig</span></td></tr>
+        <tr><td>C</td><td class="blank"><span class="fasit" hidden>miljøfarlig</span></td></tr>
+        <tr><td>D</td><td class="blank"><span class="fasit" hidden>etsende</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del B · Fyll inn</h3>
+      <p><i>Ord: FARE · sikkerhetsdatablad · lokket · originalboksen · verneutstyr</i></p>
+      <p>Signalordet <span class="luke"><span class="fasit" hidden>FARE</span></span> betyr mer farlig enn ADVARSEL.</p>
+      <p>Et <span class="luke"><span class="fasit" hidden>sikkerhetsdatablad</span></span> har 16 avsnitt.</p>
+      <p>Kjemikalier skal stå i <span class="luke"><span class="fasit" hidden>originalboksen</span></span>.</p>
+      <p>Jeg setter <span class="luke"><span class="fasit" hidden>lokket</span></span> på igjen med en gang.</p>
+      <p><span class="luke"><span class="fasit" hidden>Verneutstyr</span></span> er siste tiltak.</p>
+    </div>
+
+    <div>
+      <h3>Del C · Hvilket avsnitt i sikkerhetsdatabladet?</h3>
+      <p><i>Avsnitt: 2 Farer · 4 Førstehjelp · 7 Bruk og lagring · 8 Verneutstyr · 13 Avfall</i></p>
+      <div class="tablewrap"><table>
+        <tr><th>Du lurer på …</th><th>Avsnitt</th></tr>
+        <tr><td>Hvilke hansker skal jeg bruke?</td><td class="blank"><span class="fasit" hidden>8</span></td></tr>
+        <tr><td>Hvor skal jeg kaste resten?</td><td class="blank"><span class="fasit" hidden>13</span></td></tr>
+        <tr><td>Hva gjør jeg hvis jeg får det på huden?</td><td class="blank"><span class="fasit" hidden>4</span></td></tr>
+        <tr><td>Er det brannfarlig?</td><td class="blank"><span class="fasit" hidden>2</span></td></tr>
+        <tr><td>Hvor skal boksen stå?</td><td class="blank"><span class="fasit" hidden>7</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Riktig eller galt?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Jeg kan helle tynner over i en brusflaske.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Brannfarlige ting skal stå langt fra sveiseplassen.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>En tom sprayboks kan kastes i restavfallet.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Brukt olje kan renses og brukes igjen.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div class="ekstra-oppg">
+      <h3>Ekstra · Risikovurdering</h3>
+      <p>Du skal male en stålplate med spraymaling inne i verkstedet. Fyll ut.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Spørsmål</th><th>Svar</th></tr>
+        <tr><td>Hva kan skje?</td><td class="blank"><span class="fasit" hidden>Puste inn løsemiddel (svimmel), brann, maling i øynene</span></td></tr>
+        <tr><td>Hvor stor er risikoen? (lav, middels, høy)</td><td class="blank"><span class="fasit" hidden>Middels eller høy uten tiltak</span></td></tr>
+        <tr><td>Hvilke tiltak gjør du?</td><td class="blank"><span class="fasit" hidden>Maling uten løsemiddel (bytte), sprøytebås med avsug, ingen gnister i nærheten, maske og vernebriller</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Du skal bruke et nytt kjemikalie. Hva gjør du før du begynner?<div class="svar"><span class="fasit" hidden>Leser etiketten og sikkerhetsdatabladet (farer, verneutstyr, førstehjelp), og spør læreren.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+// Felles for figurene man trykker på (Produksjon og tjenester)
+(function(){
+  // Riktig eller galt-kort: <button data-r="1|0" data-svar="…">
+  document.querySelectorAll('.hms button[data-r]').forEach(b => {
+    b.insertAdjacentHTML('beforeend', '<span class="svar-hms">Trykk for svar</span>');
+    b.onclick = () => { b.classList.add(b.dataset.r === '1' ? 'ok' : 'feil'); b.querySelector('.svar-hms').textContent = b.dataset.svar; };
+  });
+  // Velg riktig svar: .velg med knapper data-r og en .status
+  document.querySelectorAll('.velg').forEach(v => {
+    const st = v.querySelector('.status');
+    v.querySelectorAll('button[data-r]').forEach(b => b.onclick = () => {
+      const ok = b.dataset.r === '1';
+      b.classList.add(ok ? 'ok' : 'feil');
+      if (st) st.textContent = b.dataset.svar || (ok ? 'Riktig!' : 'Prøv igjen.');
+    });
+  });
+  // Finn feilene i bildet: .finn med <g class="spot" data-navn="…"><… class="ring"/></g>
+  document.querySelectorAll('.finn').forEach(f => {
+    const spots = [...f.querySelectorAll('.spot')], t = f.querySelector('.teller'), st = f.querySelector('.status');
+    const vis = () => { t.textContent = f.querySelectorAll('.spot.funnet').length + ' av ' + spots.length + ' funnet'; };
+    spots.forEach(s => {
+      s.setAttribute('tabindex', '0'); s.setAttribute('role', 'button'); s.setAttribute('aria-label', 'Feil i bildet');
+      const go = () => { s.classList.add('funnet'); st.textContent = '❗ ' + s.dataset.navn; vis(); };
+      s.addEventListener('click', go);
+      s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    });
+    vis();
+  });
+  // Trykk i riktig rekkefølge: .rekkefolge med knapper data-n="1…"
+  document.querySelectorAll('.rekkefolge').forEach(r => {
+    let neste = 1; const st = r.parentElement.querySelector('.status'), alle = r.querySelectorAll('button');
+    alle.forEach(b => {
+      b.insertAdjacentHTML('afterbegin', '<span class="nrk"></span>');
+      b.onclick = () => {
+        if (b.classList.contains('ok')) return;
+        if (+b.dataset.n === neste) { b.classList.add('ok'); b.querySelector('.nrk').textContent = neste++; if (st) st.textContent = neste > alle.length ? 'Riktig rekkefølge! 🎉' : 'Riktig. Hva kommer så?'; }
+        else { b.classList.add('feil'); setTimeout(() => b.classList.remove('feil'), 600); if (st) st.textContent = 'Ikke ennå. Hva må skje først?'; }
+      };
+    });
+  });
+  // Sorter i tre (eller flere) grupper: .del3 med .q[data-svar] og knapper data-v
+  document.querySelectorAll('.del3 .q[data-svar]').forEach(k => {
+    k.querySelectorAll('button[data-v]').forEach(b => b.onclick = () => {
+      const ok = b.dataset.v === k.dataset.svar;
+      k.querySelectorAll('button').forEach(c => c.classList.remove('ok', 'feil'));
+      b.classList.add(ok ? 'ok' : 'feil');
+      k.querySelector('.forkl').textContent = ok ? 'Riktig! ' + (k.dataset.hvorfor || '') : 'Prøv igjen.';
+    });
+  });
+})();
+// Risikomatrise: .matrise med knapper data-tekst, svaret i .matrise-status
+document.querySelectorAll('.matrise').forEach(m => {
+  const st = m.parentElement.querySelector('.matrise-status');
+  m.querySelectorAll('button').forEach(b => b.onclick = () => {
+    m.querySelectorAll('button').forEach(c => c.setAttribute('aria-pressed', c === b));
+    st.textContent = b.dataset.tekst;
+  });
+});
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
