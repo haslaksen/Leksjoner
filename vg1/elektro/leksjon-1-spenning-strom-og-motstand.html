@@ -764,12 +764,13 @@ document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.
     for(let k=0;k<WN;k++){ const p=wloop.getPointAtLength(((woff+k*WL/WN)%WL+WL)%WL); wdots[k].setAttribute('cx',p.x); wdots[k].setAttribute('cy',p.y); }
     $('imp').setAttribute('transform','rotate('+ang.toFixed(1)+' 80 115)');
   }
-  let last=performance.now();
+  let last=performance.now(), vis=true;
+  new IntersectionObserver(es=>es.forEach(e=>vis=e.isIntersecting)).observe(loop.ownerSVGElement);
   function tick(t){
     const dt=Math.min(.05,(t-last)/1000); last=t;
     const v = I>0 ? 18 + 210*Math.sqrt(Math.min(I,2.4)/2.4) : 0;
     off+=v*dt; woff+=v*dt*(WL/L); ang+=v*dt*1.4;
-    draw(); requestAnimationFrame(tick);
+    if(vis) draw(); requestAnimationFrame(tick);
   }
   sU.addEventListener('input',update); sR.addEventListener('input',update);
   document.querySelectorAll('.presets button').forEach(b=>b.addEventListener('click',()=>{ sU.value=b.dataset.u; sR.value=b.dataset.r; update(); }));

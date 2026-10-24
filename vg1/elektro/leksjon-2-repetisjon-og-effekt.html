@@ -866,12 +866,14 @@ document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.
 
   // ---------- animation ----------
   let last=performance.now();
+  const vis=new Map();
+  const synlig=el=>{ const sv=el.ownerSVGElement||el; if(!vis.has(sv)){ vis.set(sv,true); new IntersectionObserver(es=>es.forEach(e=>vis.set(sv,e.isIntersecting))).observe(sv); } return vis.get(sv); };
   function tick(t){
     const dt=Math.min(.05,(t-last)/1000); last=t;
     off+= (I>0? 18+210*Math.sqrt(Math.min(I,2.4)/2.4):0)*dt;
     aoff+= (10+220*Math.sqrt(aI/8.7))*dt;
     pkoff+= (pkI>0? 15+150*pkI/2:0)*dt;
-    drawLab(); drawApp(); drawPk(); requestAnimationFrame(tick);
+    if(synlig(loop)) drawLab(); if(synlig(cable)) drawApp(); if(synlig(pkl)) drawPk(); requestAnimationFrame(tick);
   }
   fixVars(document);
   update(); newTask(); setApp(6); drawLab(); drawApp(); upPk(); drawRace();
