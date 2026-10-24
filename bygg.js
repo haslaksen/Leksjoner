@@ -115,6 +115,7 @@ const FULLSKJERM = `(function () {
 })();
 `;
 const ADMIN = fs.readFileSync(path.join(__dirname, "admin-opplasting.js"), "utf8");
+const SPAR = fs.readFileSync(path.join(__dirname, "spar-strom.js"), "utf8");
 const TEKST = "color:var(--muted,#56606c);font:500 14px/1.45 system-ui,sans-serif";
 function vedlegg(s, fil, laerer) {
   const nr = path.basename(fil).match(/^(leksjon-\d+)-/);
@@ -186,6 +187,8 @@ for (const fil of filer) {
   const ut = [[path.join(UT, LAERER_STI), vedlegg(tegningTilBilde(laererversjon(s, fil), fil, true), fil, true)]];
   if (!erProve(fil)) ut.push([UT, vedlegg(tegningTilBilde(elevversjon(s), fil, false), fil, false)]);
   for (let [mappe, innhold] of ut) {
+    // Demper animasjoner som ikke synes, så sidene går lett også på mobil (se spar-strom.js).
+    innhold = innhold.replace(/<head(\s[^>]*)?>/i, (m) => `${m}\n<script>\n${SPAR}</script>`);
     // Trykk på et bilde for å se det i fullskjerm (fungerer også på mobil og fremviser).
     if (/<img data-fullskjerm/.test(innhold)) innhold = innhold.replace(/<\/body>/i, () => `<script>\n${FULLSKJERM}</script>\n</body>`);
     const mål = path.join(mappe, fil);
