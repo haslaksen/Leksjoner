@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sammenføying Vg1 · Leksjon 1: Skru, lim og sveis</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+
+/* Produksjon og tjenester: figurer man trykker på */
+.hms button[data-r]{min-height:7.5em}
+.velg{display:grid;gap:12px}
+.finn svg .spot{cursor:pointer;pointer-events:all}
+.finn svg .spot .ring{fill:transparent;stroke:transparent;stroke-width:5}
+.finn svg .spot:hover .ring{stroke:var(--line)}
+.finn svg .spot.funnet .ring{stroke:var(--bad)}
+.finn svg .spot:focus{outline:none}
+.finn svg .spot:focus-visible .ring{stroke:var(--u)}
+.rekkefolge{display:grid;gap:10px;max-width:640px}
+.rekkefolge button{display:flex;gap:14px;align-items:center;text-align:left;font-size:1.05rem;padding:14px 18px;border-radius:14px}
+.rekkefolge button .nrk{display:inline-grid;place-items:center;width:2rem;height:2rem;border-radius:50%;border:2px dashed var(--line);font-weight:800;flex:none}
+.rekkefolge button.ok .nrk{border:none;background:var(--r);color:#fff}
+.del3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.del3 .q{text-align:center;justify-items:center}
+.del3 .emoji{font-size:2.4rem;line-height:1}
+.del3 .knapper{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.del3 .knapper button{font-size:.85rem;padding:8px 10px}
+.del3 .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+.bildeliste{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.bildeliste .q{text-align:center;justify-items:center;gap:6px}
+.bildeliste svg{max-height:120px}
+.bildeliste .emoji{font-size:2.6rem;line-height:1}
+.bildeliste p{font-size:.92rem;color:var(--muted)}
+.matrise{display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px;max-width:620px}
+.matrise .ax{font-weight:700;font-size:.9rem;color:var(--muted);display:grid;place-items:center;text-align:center;padding:4px}
+.matrise button{border-radius:10px;min-height:3.6em;font-size:.95rem;border:2px solid transparent;color:#14181d}
+.matrise button.lav{background:#b7e4c7} .matrise button.mid{background:#ffe08a} .matrise button.hoy{background:#ffb3b3}
+.matrise button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 3px var(--ink)}
+
+.M{color:var(--u)} .K{color:var(--r)} .T{color:var(--bad)}
+.q.M,.q.K,.q.T{color:var(--ink)}
+.q.M{border-top:6px solid var(--u)} .q.K{border-top:6px solid var(--r)} .q.T{border-top:6px solid var(--bad)}
+.bildeliste svg{max-height:130px}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Sammenføying Vg1 · <span>Leksjon 1</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#tre">Tre måter</a><a href="#losbar">Løsbar?</a><a href="#skrue">Skrue</a><a href="#nagle">Nagle</a><a href="#lim">Lim</a><a href="#sveis">Sveis</a><a href="#lodd">Lodd</a><a href="#velg">Velg metode</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Produksjon og tjenester Vg1 · Sammenføying · Leksjon 1</div>
+    <h1 style="margin-top:10px">Skru, lim og sveis</h1>
+    <p class="lead" style="margin-top:12px">To deler skal bli én. Hvordan?</p>
+    <ul class="goals">
+      <li><span class="n M">1</span><span><b class="M">Mekanisk</b>: skrue og nagle</span></li>
+      <li><span class="n K">2</span><span><b class="K">Kjemisk</b>: lim</span></li>
+      <li><span class="n T">3</span><span><b class="T">Termisk</b>: sveis og lodd</span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span>Velg riktig <b>metode</b></span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 200" role="img" aria-label="To plater skrudd sammen, to plater limt og to plater sveiset">
+      <g><rect x="10" y="80" width="120" height="16" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/><rect x="10" y="96" width="120" height="16" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/><rect x="62" y="64" width="16" height="64" fill="var(--u)"/><rect x="54" y="58" width="32" height="10" rx="2" fill="var(--u)"/><rect x="54" y="122" width="32" height="12" rx="2" fill="var(--u)"/></g>
+      <g><rect x="155" y="80" width="120" height="16" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/><rect x="155" y="100" width="120" height="16" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/><rect x="157" y="96" width="116" height="4" fill="var(--r)"/></g>
+      <g><rect x="300" y="88" width="56" height="18" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/><rect x="364" y="88" width="56" height="18" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/><path d="M354 86 q6 -8 12 0 v22 q-6 8 -12 0 z" fill="var(--bad)"/></g>
+      <g font-size="15" font-weight="700" text-anchor="middle"><text x="70" y="160" fill="var(--u)">Skrue</text><text x="215" y="160" fill="var(--r)">Lim</text><text x="360" y="160" fill="var(--bad)">Sveis</text></g>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (TIP01-03, Produksjon og tjenester)</h3>
+      <p><b>Mål 9:</b> «gjennomføre og gjøre rede for termiske, kjemiske og mekaniske sammenføyingsmetoder». Leksjonen gjør rede for metodene. Gjennomføringen skjer i verkstedet (skru, nagle, lime, lodde og sveise en enkel prøve).</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: vis en sykkel. «Hvor mange måter er delene satt sammen på?»</dd>
+        <dt>10–25</dt><dd>Del 1–2: tre måter, løsbar eller ikke.</dd>
+        <dt>25–45</dt><dd>Del 3–5: skrue, nagle og lim. Ha med en popnagletang.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–70</dt><dd>Del 6–8: sveis, lodd og velg metode.</dd>
+        <dt>70–88</dt><dd>Oppgavene A–D.</dd>
+        <dt>88–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="tre">
+  <div class="tag">Del 1 · Tre måter</div>
+  <h2>Mekanisk, kjemisk eller termisk</h2>
+  <div class="trio">
+    <div class="q M"><h3>🔩 <span class="M">Mekanisk</span></h3><p>Delene holdes sammen av en <b>ting</b>: skrue, mutter, nagle.</p></div>
+    <div class="q K"><h3>🧪 <span class="K">Kjemisk</span></h3><p>Et <b>stoff</b> herder og holder: lim.</p></div>
+    <div class="q T"><h3>🔥 <span class="T">Termisk</span></h3><p><b>Varme</b> smelter metall: sveising og lodding.</p></div>
+  </div>
+  <p class="regel">Mekanisk = <b>ting</b>. Kjemisk = <b>stoff</b>. Termisk = <b>varme</b>.</p>
+</section>
+
+<section id="losbar">
+  <div class="tag">Del 2 · Kan du ta det fra hverandre?</div>
+  <h2>Løsbar eller fast? Trykk på svaret.</h2>
+  <div class="del3">
+    <div class="q" data-svar="L" data-hvorfor="Skru løs mutteren, så er delene fri."><span class="emoji" aria-hidden="true">🔩</span><b>Skrue og mutter</b><div class="knapper"><button type="button" data-v="L">🔓 Løsbar</button><button type="button" data-v="F">🔒 Fast</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="F" data-hvorfor="Nagla må bores ut. Da ødelegges den."><span class="emoji" aria-hidden="true">📌</span><b>Nagle</b><div class="knapper"><button type="button" data-v="L">🔓 Løsbar</button><button type="button" data-v="F">🔒 Fast</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="F" data-hvorfor="Herdet lim slipper ikke uten å ødelegge."><span class="emoji" aria-hidden="true">🧪</span><b>Lim</b><div class="knapper"><button type="button" data-v="L">🔓 Løsbar</button><button type="button" data-v="F">🔒 Fast</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="F" data-hvorfor="Sveisen må kappes eller slipes bort."><span class="emoji" aria-hidden="true">🔥</span><b>Sveis</b><div class="knapper"><button type="button" data-v="L">🔓 Løsbar</button><button type="button" data-v="F">🔒 Fast</button></div><p class="forkl"></p></div>
+  </div>
+  <p class="regel">Skal delen <b>skiftes</b> senere? Velg en <b>løsbar</b> metode.</p>
+</section>
+
+<section id="skrue">
+  <div class="tag">Del 3 · Skrueforbindelse</div>
+  <h2>Bolt, skive og mutter</h2>
+  <div class="benk">
+    <svg viewBox="0 0 460 330" role="img" aria-label="Snitt av to plater holdt sammen av en bolt med skive og mutter, merket 1 til 4">
+      <rect x="40" y="130" width="200" height="40" fill="#c9ced6" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="40" y="170" width="200" height="40" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="128" y="130" width="24" height="80" fill="var(--bg)"/>
+      <rect x="130" y="80" width="20" height="186" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2.5"/>
+      <rect x="104" y="96" width="72" height="34" rx="3" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2.5"/>
+      <rect x="96" y="210" width="88" height="8" fill="var(--r-soft)" stroke="var(--r)" stroke-width="2"/>
+      <rect x="104" y="218" width="72" height="30" rx="3" fill="#f8e9dc" stroke="var(--i)" stroke-width="2.5"/>
+      <g stroke="var(--u)" stroke-width="1.5"><path d="M130 236 l20 6 M130 248 l20 6 M130 258 l20 6"/></g>
+      <rect x="130" y="80" width="20" height="16" fill="var(--bg)"/>
+      <g stroke="var(--orange)" stroke-width="2.5"><path d="M176 112 H300"/><path d="M180 214 L300 170"/><path d="M176 232 H300"/><path d="M152 262 L300 290"/></g>
+      <g font-size="17" font-weight="700" fill="var(--ink)">
+        <circle cx="314" cy="112" r="14" fill="var(--orange)"/><text x="309" y="118" fill="#fff">1</text><text x="336" y="118">Bolt</text>
+        <circle cx="314" cy="170" r="14" fill="var(--orange)"/><text x="309" y="176" fill="#fff">2</text><text x="336" y="176">Skive</text>
+        <circle cx="314" cy="232" r="14" fill="var(--orange)"/><text x="309" y="238" fill="#fff">3</text><text x="336" y="238">Mutter</text>
+        <circle cx="314" cy="290" r="14" fill="var(--orange)"/><text x="309" y="296" fill="#fff">4</text><text x="336" y="296">Stikker ut</text>
+      </g>
+    </svg>
+    <div class="velg">
+      <p class="stor"><b>Hva gjør skiva?</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="1" data-svar="Riktig! Skiva sprer trykket, så mutteren ikke graver seg ned i platen.">Sprer trykket</button>
+        <button type="button" data-r="0" data-svar="Nei. Det er bolten som holder delene.">Holder delene</button>
+        <button type="button" data-r="0">Pynter</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <a class="simlink no-print" data-sim="momentnokkel"><span class="ico">🧪</span><span><b>Prøv selv: Momentnøkkel-simulatoren</b><small>Trekk til med riktig moment.</small></span><span class="pil">→</span></a>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Låsing mot vibrasjon: låsemutter (nylon), låsetråd, gjengelim eller kontramutter. Les mer om skruer, skiver og sikring i <a href="https://verkstedhandboka.vercel.app/#e5-skruer" target="_blank" rel="noopener">Verkstedhåndboka</a>.</details>
+</section>
+
+<section id="nagle">
+  <div class="tag">Del 4 · Popnagle</div>
+  <h2>Nagle i tre steg</h2>
+  <div class="fig">
+    <svg viewBox="0 0 760 230" role="img" aria-label="Popnagle: 1 sett nagla i hullet, 2 tangen drar i spikeren, 3 spikeren knekker og nagla er klemt fast">
+      <g font-size="16" font-weight="700" fill="var(--ink)" text-anchor="middle">
+        <rect x="10" y="10" width="230" height="210" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <rect x="30" y="110" width="80" height="20" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/><rect x="140" y="110" width="80" height="20" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/>
+        <rect x="30" y="130" width="80" height="20" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/><rect x="140" y="130" width="80" height="20" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/>
+        <rect x="112" y="104" width="26" height="8" fill="var(--u)"/><rect x="116" y="112" width="18" height="52" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2"/><rect x="123" y="40" width="4" height="130" fill="var(--wire)"/><circle cx="125" cy="170" r="5" fill="var(--wire)"/>
+        <text x="125" y="200">1 Sett i hullet</text>
+        <rect x="265" y="10" width="230" height="210" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <rect x="285" y="110" width="80" height="20" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/><rect x="395" y="110" width="80" height="20" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/>
+        <rect x="285" y="130" width="80" height="20" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/><rect x="395" y="130" width="80" height="20" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/>
+        <rect x="367" y="104" width="26" height="8" fill="var(--u)"/><rect x="371" y="112" width="18" height="38" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2"/><path d="M369 150 h22 l4 12 h-30 z" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2"/><rect x="378" y="30" width="4" height="130" fill="var(--wire)"/>
+        <rect x="350" y="30" width="60" height="44" rx="6" fill="var(--wire)"/><path d="M380 26 V8" stroke="var(--r)" stroke-width="4"/><path d="M372 16 l8 -10 l8 10" fill="none" stroke="var(--r)" stroke-width="4"/>
+        <text x="380" y="200">2 Tangen drar</text>
+        <rect x="520" y="10" width="230" height="210" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <rect x="540" y="110" width="80" height="20" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/><rect x="650" y="110" width="80" height="20" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/>
+        <rect x="540" y="130" width="80" height="20" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/><rect x="650" y="130" width="80" height="20" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/>
+        <rect x="622" y="104" width="26" height="8" fill="var(--u)"/><rect x="626" y="112" width="18" height="38" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2"/><path d="M620 150 h30 v10 h-30 z" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2"/>
+        <text x="635" y="200">3 Klemt fast</text>
+      </g>
+    </svg>
+  </div>
+  <p class="regel">Popnagle trenger bare tilgang fra <b>én side</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Nagla skal ha riktig lengde: klemlengden (begge platene) står på pakken. Hullet bores med samme diameter som nagla, for eksempel Ø4,0 eller Ø4,1 for en 4 mm nagle.</details>
+</section>
+
+<section id="lim">
+  <div class="tag">Del 5 · Lim</div>
+  <h2>Hva gjør du først? Trykk i riktig rekkefølge.</h2>
+  <div class="benk">
+    <div class="rekkefolge">
+      <button type="button" data-n="3">🧴 Smør på lim</button>
+      <button type="button" data-n="1">🧽 Vask bort olje og fett</button>
+      <button type="button" data-n="5">⏱️ Vent til limet har herdet</button>
+      <button type="button" data-n="2">🪵 Rugg opp flaten med sandpapir</button>
+      <button type="button" data-n="4">🗜️ Press delene sammen</button>
+    </div>
+    <div style="display:grid;gap:14px">
+      <p class="status">Du skal lime to stålplater.</p>
+      <p style="color:var(--muted)">Les etiketten: noen lim er farlige (se HMS og kjemikalier 2).</p>
+    </div>
+  </div>
+  <p class="regel">Limet holder bare på en <b>ren</b> flate.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>To-komponent epoksy er sterkt lim for metall. Hurtiglim (cyanoakrylat) brukes på små deler. Limte skjøter tåler skjær godt, men ikke flekk (avskrelling). Les mer i <a href="https://verkstedhandboka.vercel.app/#e5-lim" target="_blank" rel="noopener">Verkstedhåndboka</a>.</details>
+</section>
+
+<section id="sveis">
+  <div class="tag">Del 6 · Sveising</div>
+  <h2>MIG/MAG: tråd, gass og lysbue</h2>
+  <div class="benk">
+    <svg viewBox="0 0 460 330" role="img" aria-label="Sveisepistol med tråd og gass over to plater. Lysbuen smelter metallet til et smeltebad. Merket 1 til 4.">
+      <path d="M150 20 L190 150" stroke="var(--wire)" stroke-width="34" stroke-linecap="round"/>
+      <path d="M180 120 L196 186" stroke="#9aa3ad" stroke-width="26"/>
+      <path d="M196 186 L203 214" stroke="#b85a14" stroke-width="4"/>
+      <g fill="var(--blue)" opacity=".5"><circle cx="186" cy="204" r="5"/><circle cx="214" cy="200" r="5"/><circle cx="178" cy="218" r="4"/><circle cx="222" cy="216" r="4"/></g>
+      <path d="M203 214 l-6 10 l10 -2 l-6 12" fill="none" stroke="var(--glow)" stroke-width="4"/>
+      <rect x="40" y="236" width="160" height="30" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/>
+      <rect x="216" y="236" width="160" height="30" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/>
+      <path d="M196 234 q12 -12 24 0 v34 q-12 10 -24 0 z" fill="var(--bad)"/>
+      <g stroke="var(--orange)" stroke-width="2.5"><path d="M205 210 H310"/><path d="M224 204 L310 150"/><path d="M200 100 L310 90"/></g>
+      <g font-size="17" font-weight="700" fill="var(--ink)">
+        <circle cx="324" cy="90" r="14" fill="var(--orange)"/><text x="319" y="96" fill="#fff">1</text><text x="346" y="96">Pistol</text>
+        <circle cx="324" cy="150" r="14" fill="var(--orange)"/><text x="319" y="156" fill="#fff">2</text><text x="346" y="156">Gass</text>
+        <circle cx="324" cy="210" r="14" fill="var(--orange)"/><text x="319" y="216" fill="#fff">3</text><text x="346" y="216">Tråd</text>
+        <circle cx="324" cy="300" r="14" fill="var(--orange)"/><text x="319" y="306" fill="#fff">4</text><text x="346" y="306">Smeltebad</text>
+      </g>
+      <path d="M210 260 L310 296" stroke="var(--orange)" stroke-width="2.5"/>
+    </svg>
+    <div style="display:grid;gap:12px">
+      <p class="stor">Lysbuen er <b>varm</b>. Begge platene <b>smelter</b> og blir én.</p>
+      <p class="stor">Gassen <b>beskytter</b> smeltebadet mot lufta.</p>
+      <div class="q" style="border-top:6px solid var(--bad)"><h3>🦺 Sveisemaske, hansker og jakke</h3><p>Lysbuen skader øynene. Røyken skal suges bort.</p></div>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Andre metoder: elektrode (MMA), TIG og gassveising. Lysbuen gir UV-stråling som gir «sveiseblink» (sveiseøyne) og forbrenning av hud. Sveiserøyk er helsefarlig (alvorlig helsefare). Les mer i <a href="https://verkstedhandboka.vercel.app/#sammenfoyning" target="_blank" rel="noopener">Verkstedhåndboka</a>. Sveisesymboler på tegninger kommer i Vg2 Tegning og DAK 3.</details>
+</section>
+
+<section id="lodd">
+  <div class="tag">Del 7 · Lodding</div>
+  <h2>Sveising eller lodding?</h2>
+  <div class="to">
+    <div class="q T"><h3>🔥 Sveising</h3><p>Platene <b>smelter</b>. Veldig sterkt.</p>
+      <svg viewBox="0 0 220 70" aria-hidden="true"><rect x="10" y="20" width="90" height="26" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/><rect x="120" y="20" width="90" height="26" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/><path d="M94 18 q16 -10 32 0 v30 q-16 10 -32 0 z" fill="var(--bad)"/></svg></div>
+    <div class="q I"><h3>🪛 Lodding</h3><p>Bare <b>loddetinnet</b> smelter. Platene er hele.</p>
+      <svg viewBox="0 0 220 70" aria-hidden="true"><rect x="10" y="20" width="96" height="26" fill="#c9ced6" stroke="var(--wire)" stroke-width="2"/><rect x="114" y="20" width="96" height="26" fill="#aeb6c0" stroke="var(--wire)" stroke-width="2"/><path d="M104 18 q6 -6 12 0 v30 q-6 6 -12 0 z" fill="#b6bcc4" stroke="var(--i)" stroke-width="2"/></svg></div>
+  </div>
+  <div class="velg">
+    <p class="stor"><b>Du skal feste en ledning på et kretskort. Hva gjør du?</b></p>
+    <div class="svar-knapper">
+      <button type="button" data-r="0" data-svar="Nei. Sveising er altfor varmt for et kretskort.">Sveiser</button>
+      <button type="button" data-r="1" data-svar="Riktig! Lodding gir lite varme og leder strøm.">Lodder</button>
+      <button type="button" data-r="0">Nagler</button>
+    </div>
+    <p class="status"></p>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Bløtlodding (under 450 °C): elektronikk, kobberrør for vann. Hardlodding (over 450 °C): kobberrør i kjøleanlegg, verktøy. Les mer i <a href="https://verkstedhandboka.vercel.app/#s4-lodd" target="_blank" rel="noopener">Verkstedhåndboka</a>.</details>
+</section>
+
+<section id="velg">
+  <div class="tag">Del 8 · Velg metode</div>
+  <h2>Hvilken metode passer? Trykk på svaret.</h2>
+  <div class="del3">
+    <div class="q" data-svar="T" data-hvorfor="Rammen må være sterk og tett. Den sveises."><span class="emoji" aria-hidden="true">🚲</span><b>Sykkelramme i stål</b><div class="knapper"><button type="button" data-v="M">🔩 Skru</button><button type="button" data-v="K">🧪 Lim</button><button type="button" data-v="T">🔥 Sveis</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="M" data-hvorfor="Hjulet skal kunne tas av. Det må være løsbart."><span class="emoji" aria-hidden="true">🛞</span><b>Hjul på en bil</b><div class="knapper"><button type="button" data-v="M">🔩 Skru</button><button type="button" data-v="K">🧪 Lim</button><button type="button" data-v="T">🔥 Sveis</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="K" data-hvorfor="Glass kan ikke sveises eller skrus. Det limes."><span class="emoji" aria-hidden="true">🪟</span><b>Frontrute i en bil</b><div class="knapper"><button type="button" data-v="M">🔩 Skru</button><button type="button" data-v="K">🧪 Lim</button><button type="button" data-v="T">🔥 Sveis</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="M" data-hvorfor="Motoren skal byttes eller repareres. Skru den fast."><span class="emoji" aria-hidden="true">⚙️</span><b>Motor på en maskin</b><div class="knapper"><button type="button" data-v="M">🔩 Skru</button><button type="button" data-v="K">🧪 Lim</button><button type="button" data-v="T">🔥 Sveis</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="T" data-hvorfor="Rekkverket skal være sterkt og fast. Det sveises."><span class="emoji" aria-hidden="true">🌉</span><b>Rekkverk i stål</b><div class="knapper"><button type="button" data-v="M">🔩 Skru</button><button type="button" data-v="K">🧪 Lim</button><button type="button" data-v="T">🔥 Sveis</button></div><p class="forkl"></p></div>
+  </div>
+  <p class="regel">Spør: Skal det <b>tas fra hverandre</b>? Hvilket <b>materiale</b>? Hvor <b>sterkt</b>?</p>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 1: Skru, lim og sveis</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Mekanisk, kjemisk eller termisk?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Metode</th><th>Mekanisk</th><th>Kjemisk</th><th>Termisk</th></tr>
+        <tr><td>Sveising</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Skrue og mutter</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
+        <tr><td>Lim</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Nagle</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
+        <tr><td>Lodding</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del B · Fyll inn</h3>
+      <p><i>Ord: skiva · gassen · løsbar · ren · loddetinnet</i></p>
+      <p>En skrueforbindelse er <span class="luke"><span class="fasit" hidden>løsbar</span></span>.</p>
+      <p><span class="luke"><span class="fasit" hidden>Skiva</span></span> sprer trykket fra mutteren.</p>
+      <p>Limet holder bare på en <span class="luke"><span class="fasit" hidden>ren</span></span> flate.</p>
+      <p>Ved MAG-sveising beskytter <span class="luke"><span class="fasit" hidden>gassen</span></span> smeltebadet.</p>
+      <p>Ved lodding smelter bare <span class="luke"><span class="fasit" hidden>loddetinnet</span></span>.</p>
+    </div>
+
+    <div>
+      <h3>Del C · Lim to plater: skriv 1 til 5</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Steg</th><th>Nr.</th></tr>
+        <tr><td>Press delene sammen</td><td class="blank"><span class="fasit" hidden>4</span></td></tr>
+        <tr><td>Vask bort olje og fett</td><td class="blank"><span class="fasit" hidden>1</span></td></tr>
+        <tr><td>Vent til limet har herdet</td><td class="blank"><span class="fasit" hidden>5</span></td></tr>
+        <tr><td>Smør på lim</td><td class="blank"><span class="fasit" hidden>3</span></td></tr>
+        <tr><td>Rugg opp flaten</td><td class="blank"><span class="fasit" hidden>2</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Velg metode og forklar</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Jobb</th><th>Metode</th><th>Hvorfor?</th></tr>
+        <tr><td>Feste et deksel som skal tas av ved service</td><td class="blank"><span class="fasit" hidden>skrue</span></td><td class="blank"><span class="fasit" hidden>løsbar</span></td></tr>
+        <tr><td>Lage en tilhengerramme i stål</td><td class="blank"><span class="fasit" hidden>sveise</span></td><td class="blank"><span class="fasit" hidden>sterk og fast</span></td></tr>
+        <tr><td>Feste en ledning på et kretskort</td><td class="blank"><span class="fasit" hidden>lodde</span></td><td class="blank"><span class="fasit" hidden>lite varme, leder strøm</span></td></tr>
+      </table></div>
+    </div>
+
+    <div class="ekstra-oppg">
+      <h3>Ekstra · HMS ved sveising</h3>
+      <p>Skriv tre ting du gjør for å være trygg når du sveiser.</p>
+      <div class="svar"><span class="fasit" hidden>Sveisemaske med riktig filter, hansker og sveisejakke, avsug for røyk, fjerne brannfarlige ting, skjerm for andre.</span></div>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hva er forskjellen på sveising og lodding?<div class="svar"><span class="fasit" hidden>Ved sveising smelter platene. Ved lodding smelter bare loddetinnet, platene smelter ikke.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+// Felles for figurene man trykker på (Produksjon og tjenester)
+(function(){
+  // Riktig eller galt-kort: <button data-r="1|0" data-svar="…">
+  document.querySelectorAll('.hms button[data-r]').forEach(b => {
+    b.insertAdjacentHTML('beforeend', '<span class="svar-hms">Trykk for svar</span>');
+    b.onclick = () => { b.classList.add(b.dataset.r === '1' ? 'ok' : 'feil'); b.querySelector('.svar-hms').textContent = b.dataset.svar; };
+  });
+  // Velg riktig svar: .velg med knapper data-r og en .status
+  document.querySelectorAll('.velg').forEach(v => {
+    const st = v.querySelector('.status');
+    v.querySelectorAll('button[data-r]').forEach(b => b.onclick = () => {
+      const ok = b.dataset.r === '1';
+      b.classList.add(ok ? 'ok' : 'feil');
+      if (st) st.textContent = b.dataset.svar || (ok ? 'Riktig!' : 'Prøv igjen.');
+    });
+  });
+  // Finn feilene i bildet: .finn med <g class="spot" data-navn="…"><… class="ring"/></g>
+  document.querySelectorAll('.finn').forEach(f => {
+    const spots = [...f.querySelectorAll('.spot')], t = f.querySelector('.teller'), st = f.querySelector('.status');
+    const vis = () => { t.textContent = f.querySelectorAll('.spot.funnet').length + ' av ' + spots.length + ' funnet'; };
+    spots.forEach(s => {
+      s.setAttribute('tabindex', '0'); s.setAttribute('role', 'button'); s.setAttribute('aria-label', 'Feil i bildet');
+      const go = () => { s.classList.add('funnet'); st.textContent = '❗ ' + s.dataset.navn; vis(); };
+      s.addEventListener('click', go);
+      s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    });
+    vis();
+  });
+  // Trykk i riktig rekkefølge: .rekkefolge med knapper data-n="1…"
+  document.querySelectorAll('.rekkefolge').forEach(r => {
+    let neste = 1; const st = r.parentElement.querySelector('.status'), alle = r.querySelectorAll('button');
+    alle.forEach(b => {
+      b.insertAdjacentHTML('afterbegin', '<span class="nrk"></span>');
+      b.onclick = () => {
+        if (b.classList.contains('ok')) return;
+        if (+b.dataset.n === neste) { b.classList.add('ok'); b.querySelector('.nrk').textContent = neste++; if (st) st.textContent = neste > alle.length ? 'Riktig rekkefølge! 🎉' : 'Riktig. Hva kommer så?'; }
+        else { b.classList.add('feil'); setTimeout(() => b.classList.remove('feil'), 600); if (st) st.textContent = 'Ikke ennå. Hva må skje først?'; }
+      };
+    });
+  });
+  // Sorter i tre (eller flere) grupper: .del3 med .q[data-svar] og knapper data-v
+  document.querySelectorAll('.del3 .q[data-svar]').forEach(k => {
+    k.querySelectorAll('button[data-v]').forEach(b => b.onclick = () => {
+      const ok = b.dataset.v === k.dataset.svar;
+      k.querySelectorAll('button').forEach(c => c.classList.remove('ok', 'feil'));
+      b.classList.add(ok ? 'ok' : 'feil');
+      k.querySelector('.forkl').textContent = ok ? 'Riktig! ' + (k.dataset.hvorfor || '') : 'Prøv igjen.';
+    });
+  });
+})();
+// Risikomatrise: .matrise med knapper data-tekst, svaret i .matrise-status
+document.querySelectorAll('.matrise').forEach(m => {
+  const st = m.parentElement.querySelector('.matrise-status');
+  m.querySelectorAll('button').forEach(b => b.onclick = () => {
+    m.querySelectorAll('button').forEach(c => c.setAttribute('aria-pressed', c === b));
+    st.textContent = b.dataset.tekst;
+  });
+});
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>

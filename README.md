@@ -20,6 +20,7 @@ vg2/<emne>/leksjon-N-<navn>.html
 | Vg1 | Styring og automasjon | 1 Simuler før du bygger · 2 Robot og automasjon |
 | Vg1 | HMS og kjemikalier | 1 Trygt på verkstedet · 2 Kjemikalier og sikkerhetsdatablad |
 | Vg1 | Verktøy og måling | 1 Håndverktøy og maskiner · 2 Mål og les av tegningen |
+| Vg1 | Sammenføying | 1 Skru, lim og sveis |
 | Vg2 | Elektro | 1 Strøm, spenning og Ohms lov · 2 Effekt og energi · 3 Måling med multimeter · 4 Motorstyring |
 | Vg2 | HMS | 1 Grunnleggende HMS · 2 Risikovurdering og SJA |
 | Vg2 | Materiallære | 1 Grunnleggende · 2 Stål og jern · 3 Mekanisk prøving · 4 Varmebehandling |
