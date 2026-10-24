@@ -451,6 +451,7 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
         <ul class="liste"><li>Muskler: lår og sete</li><li>Energi: kort og tungt = uten oksygen</li><li>Ledd og sener tåler belastning</li></ul></div>
     </div>
   </div>
+  <a class="simlink no-print" data-sim="kneboy"><span class="ico">🧪</span><span><b>Prøv selv: Knebøy-simulatoren</b><small>Se hvordan dybde og knær fram endrer vektarmen i hofte og kne.</small></span><span class="pil">→</span></a>
   <details class="laerer no-print"><summary>Lærernotat</summary>TL6 sier «mekaniske og organiske forhold». Mekanisk: krefter, tyngdepunkt, vektarmer, bevegelsesprinsipper. Organisk: muskler og muskelfibertyper, energisystemer, ledd, sener og nervesystem. Et tungt knebøysett på 3–5 repetisjoner bruker mest kreatinfosfat (anaerobt). I oppgave D gjør elevene det samme for en øvelse fra sin egen idrett.</details>
 </section>
 
@@ -653,4 +654,9 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
 })();
 </script>
 
+<script>
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+</script>
 </body></html>
