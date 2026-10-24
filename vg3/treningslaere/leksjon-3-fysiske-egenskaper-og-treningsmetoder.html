@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treningslære Vg3 · Leksjon 3: Fysiske egenskaper og treningsmetoder</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+</style>
+<style>
+.fig svg{max-height:320px}
+.to .q{text-align:center;justify-items:center}
+.to .q svg{max-height:220px}
+.fem{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.fem .q{text-align:center;justify-items:center}
+.sorter .knapper{flex-wrap:wrap;justify-content:center}
+.sorter .knapper button{padding:8px 11px;font-size:14px}
+.liste{text-align:left;justify-self:start;margin:0;padding-left:1.2em;display:grid;gap:6px;font-size:1.05rem}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Treningslære Vg3 · <span>Leksjon 3</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#fem">Fem egenskaper</a><a href="#styrke">Styrke</a><a href="#utholdenhet">Utholdenhet</a><a href="#hurtighet">Hurtighet</a><a href="#beveg">Bevegelighet</a><a href="#faktorer">Hva påvirker?</a><a href="#sorter">Sorter</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Idrett Vg3 · Treningslære · Leksjon 3</div>
+    <h1 style="margin-top:10px">Fysiske egenskaper og treningsmetoder</h1>
+    <p class="lead" style="margin-top:12px">Hva skal du trene, og <b>hvordan</b>?</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Fem <b>fysiske egenskaper</b></span></li>
+      <li><span class="n i">2</span><span>En <b>metode</b> for hver</span></li>
+      <li><span class="n r">3</span><span>Hva <b>påvirker</b> utviklingen?</span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span>Velg metoder for <b>din idrett</b></span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 220" role="img" aria-label="Fem symboler for styrke, utholdenhet, hurtighet, bevegelighet og koordinasjon">
+      <g font-size="44" text-anchor="middle"><text x="60" y="110">🏋️</text><text x="140" y="110">🫁</text><text x="220" y="110">⚡</text><text x="300" y="110">🤸</text><text x="380" y="110">🎯</text></g>
+      <g font-size="13" font-weight="700" text-anchor="middle" fill="var(--ink)"><text x="60" y="150">Styrke</text><text x="140" y="150">Utholdenhet</text><text x="220" y="150">Hurtighet</text><text x="300" y="150">Bevegelighet</text><text x="380" y="150">Koordinasjon</text></g>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (IDR02-03, Treningslære 2)</h3>
+      <p><b>TL4 (dekket):</b> «gjøre rede for faktorer som har betydning for utvikling av fysiske, psykiske, tekniske og koordinative egenskaper». Del 1–6. Psykiske egenskaper utdypes i leksjon 7.</p>
+      <p><b>TL8 (delvis):</b> «gjøre rede for treningsformer, treningsmetoder og øvelser» (Del 2–5, oppgave D). Fullføres i leksjon 6.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: «Hvilken egenskap er viktigst i din idrett?»</dd>
+        <dt>10–40</dt><dd>Del 1–4: de fem egenskapene, styrke, utholdenhet og hurtighet. Elevene regner ut egen makspuls i Del 3.</dd>
+        <dt>40–45</dt><dd>Oppgave A og B.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–75</dt><dd>Del 5–7: bevegelighet og koordinasjon, faktorer og sortering.</dd>
+        <dt>75–85</dt><dd>Oppgave C og D.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="fem">
+  <div class="tag">Del 1 · Fem fysiske egenskaper</div>
+  <h2>Hva kan kroppen bli bedre på?</h2>
+  <div class="fem">
+    <div class="q" style="border-top:6px solid var(--bad)"><span style="font-size:2.4rem">🏋️</span><h3>Styrke</h3><p>Løfte, skyve, hoppe</p></div>
+    <div class="q U"><span style="font-size:2.4rem">🫁</span><h3>Utholdenhet</h3><p>Holde ut lenge</p></div>
+    <div class="q I"><span style="font-size:2.4rem">⚡</span><h3>Hurtighet</h3><p>Raske bevegelser</p></div>
+    <div class="q R"><span style="font-size:2.4rem">🤸</span><h3>Bevegelighet</h3><p>Store utslag i leddene</p></div>
+    <div class="q" style="border-top:6px solid var(--orange)"><span style="font-size:2.4rem">🎯</span><h3>Koordinasjon</h3><p>Styre kroppen presist</p></div>
+  </div>
+  <p class="regel">Hver idrett trenger en egen <b>blanding</b> av egenskapene.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Læreplanen nevner fysiske, psykiske, tekniske og koordinative egenskaper. Koordinasjon henger tett sammen med teknikk (se leksjon 4 Biomekanikk). Psykiske egenskaper kommer i leksjon 7 Mental trening.</details>
+</section>
+
+<section id="styrke">
+  <div class="tag">Del 2 · Styrke</div>
+  <h2>Antall repetisjoner styrer hva du får</h2>
+  <div class="fig">
+    <svg viewBox="0 0 600 190" role="img" aria-label="Skala for repetisjoner: 1 til 5 gir maksimal styrke, 6 til 12 gir muskelvekst, 15 eller flere gir styrkeutholdenhet">
+      <rect x="30" y="60" width="160" height="50" rx="10" fill="var(--bad)"/>
+      <rect x="200" y="60" width="200" height="50" rx="10" fill="var(--i)"/>
+      <rect x="410" y="60" width="160" height="50" rx="10" fill="var(--u)"/>
+      <g font-size="22" font-weight="800" text-anchor="middle" fill="#fff"><text x="110" y="93">1–5</text><text x="300" y="93">6–12</text><text x="490" y="93">15+</text></g>
+      <text x="300" y="40" text-anchor="middle" font-size="16" font-weight="700" fill="var(--muted)">repetisjoner per sett</text>
+      <g font-size="17" font-weight="700" text-anchor="middle"><text x="110" y="140" fill="var(--bad)">Maks styrke</text><text x="300" y="140" fill="var(--i)">Større muskler</text><text x="490" y="140" fill="var(--u)">Styrkeutholdenhet</text></g>
+      <g font-size="14" text-anchor="middle" fill="var(--muted)"><text x="110" y="162">tungt</text><text x="300" y="162">middels</text><text x="490" y="162">lett</text></g>
+    </svg>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Vanlige anbefalinger: maksstyrke 1–5 reps med lange pauser (2–5 min), muskelvekst (hypertrofi) 6–12 reps, styrkeutholdenhet 15+ reps med korte pauser. Eksplosiv styrke (spenst) trenes med lette vekter, hopp og kast i høy fart.</details>
+</section>
+
+<section id="utholdenhet">
+  <div class="tag">Del 3 · Utholdenhet</div>
+  <h2>Pulsen viser hvor hardt du trener</h2>
+  <div class="benk">
+    <svg id="pulsFig" viewBox="0 0 600 250" role="img" aria-label="Tre pulssoner: rolig, terskel og intervall"></svg>
+    <div style="display:grid;gap:14px">
+      <label class="slider">Din alder <input type="range" id="alder" min="15" max="60" value="17"> <span class="lw" id="alderTall">17 år</span></label>
+      <p class="status" id="pulsTekst"></p>
+    </div>
+  </div>
+  <p class="regel">Makspuls ≈ <b>220 − alder</b>. Mest rolig trening, litt hard.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>220 − alder er bare et grovt anslag (kan bomme med ±10 slag). En makspulstest gir sikrere tall. Sonene her er forenklet: rolig 60–72 %, terskel 82–87 %, intervall 88–95 % av makspuls. Eksempel på intervall: 4 × 4 minutter.</details>
+</section>
+
+<section id="hurtighet">
+  <div class="tag">Del 4 · Hurtighet</div>
+  <h2>Kort, maks fart og lang pause</h2>
+  <div class="fig">
+    <svg viewBox="0 0 600 170" role="img" aria-label="Tidslinje: sprint 5–10 sekunder, så pause 2–3 minutter, gjentas">
+      <rect x="30" y="50" width="40" height="50" rx="6" fill="var(--bad)"/><rect x="74" y="50" width="130" height="50" rx="6" fill="var(--r-soft)" stroke="var(--r)" stroke-width="2"/>
+      <rect x="208" y="50" width="40" height="50" rx="6" fill="var(--bad)"/><rect x="252" y="50" width="130" height="50" rx="6" fill="var(--r-soft)" stroke="var(--r)" stroke-width="2"/>
+      <rect x="386" y="50" width="40" height="50" rx="6" fill="var(--bad)"/><rect x="430" y="50" width="130" height="50" rx="6" fill="var(--r-soft)" stroke="var(--r)" stroke-width="2"/>
+      <g font-size="24" text-anchor="middle"><text x="50" y="84">⚡</text><text x="228" y="84">⚡</text><text x="406" y="84">⚡</text></g>
+      <g font-size="15" font-weight="700" text-anchor="middle" fill="var(--r)"><text x="139" y="82">pause</text><text x="317" y="82">pause</text><text x="495" y="82">pause</text></g>
+      <text x="50" y="130" text-anchor="middle" font-size="15" font-weight="700" fill="var(--bad)">5–10 s</text>
+      <text x="139" y="130" text-anchor="middle" font-size="15" font-weight="700" fill="var(--r)">2–3 min</text>
+    </svg>
+  </div>
+  <p class="regel">Hurtighet trenes når du er <b>uthvilt</b>. Sliten = treg.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Bruker kreatinfosfatsystemet (leksjon 2). Pausen må være lang nok til at lageret fylles opp igjen. Legg hurtighetstrening tidlig i økta, rett etter oppvarming.</details>
+</section>
+
+<section id="beveg">
+  <div class="tag">Del 5 · Bevegelighet og koordinasjon</div>
+  <h2>Myk og presis</h2>
+  <div class="to">
+    <div class="q R"><span style="font-size:3rem">🤸</span><h3>Bevegelighet</h3><p>Tøy rolig <b>etter</b> trening.<br>30–60 sekunder per muskel.</p></div>
+    <div class="q" style="border-top:6px solid var(--orange)"><span style="font-size:3rem">🎯</span><h3>Koordinasjon</h3><p>Stigeløp, balanse, nye øvelser.<br>Tren når du er <b>uthvilt</b>.</p></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Før trening passer dynamisk bevegelighet (bevegelser med økende utslag) bedre enn lang, statisk tøying. Koordinasjon læres best i ung alder, men kan trenes hele livet.</details>
+</section>
+
+<section id="faktorer">
+  <div class="tag">Del 6 · Hva påvirker utviklingen?</div>
+  <h2>Ikke bare treningen</h2>
+  <div class="fem">
+    <div class="q U"><span style="font-size:2.2rem">🧬</span><h3>Arv</h3><p>Muskelfibre og høyde</p></div>
+    <div class="q I"><span style="font-size:2.2rem">🎂</span><h3>Alder</h3><p>Vekst og modning</p></div>
+    <div class="q R"><span style="font-size:2.2rem">🏃</span><h3>Trening</h3><p>Riktig mengde og type</p></div>
+    <div class="q" style="border-top:6px solid var(--orange)"><span style="font-size:2.2rem">🛌</span><h3>Søvn og mat</h3><p>Restitusjon</p></div>
+    <div class="q" style="border-top:6px solid var(--bad)"><span style="font-size:2.2rem">🧠</span><h3>Psyke</h3><p>Motivasjon og stress</p></div>
+  </div>
+  <p class="regel">Arv kan du ikke endre. <b>Resten</b> kan du gjøre noe med.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Andre faktorer: skader, sykdom, utstyr, trenere og miljø. Hurtige muskelfibre (type II) er mye arvelig, utholdenhet kan trenes mer opp. La elevene drøfte: «Hvilke faktorer kan du selv påvirke?»</details>
+</section>
+
+<section id="sorter">
+  <div class="tag">Del 7 · Sorter øvelsene</div>
+  <h2>Hvilken egenskap trener øvelsen?</h2>
+  <div class="sorter" id="sorterKort"></div>
+  <p class="status" id="sorterTekst">Trykk på riktig egenskap.</p>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 3: Fysiske egenskaper og treningsmetoder</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p><i>Ord: tungt · uthvilt · alder · arv · etter</i></p>
+      <p>Maks styrke trenes med få repetisjoner og <span class="luke"><span class="fasit" hidden>tungt</span></span>.</p>
+      <p>Makspuls ≈ 220 − <span class="luke"><span class="fasit" hidden>alder</span></span>.</p>
+      <p>Hurtighet trenes når du er <span class="luke"><span class="fasit" hidden>uthvilt</span></span>.</p>
+      <p>Tøy rolig <span class="luke"><span class="fasit" hidden>etter</span></span> trening.</p>
+      <p><span class="luke"><span class="fasit" hidden>Arv</span></span> kan du ikke endre.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Hvilken egenskap? Sett kryss.</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Øvelse</th><th>Styrke</th><th>Utholdenhet</th><th>Hurtighet</th><th>Bevegelighet</th></tr>
+        <tr><td>Knebøy 5 × 3 tungt</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td><td class="blank x"></td></tr>
+        <tr><td>Intervall 4 × 4 min</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
+        <tr><td>30 m sprint med lang pause</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Tøying av hamstring</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Regn ut pulsen</h3>
+      <ol>
+        <li>Du er 17 år. Hva er makspulsen omtrent? (220 − alder)<div class="svar"><span class="fasit" hidden>220 − 17 = 203 slag per minutt</span></div></li>
+        <li>Intervall skal være ca. 90 % av makspuls. Hvilken puls er det? (makspuls × 0,9)<div class="svar"><span class="fasit" hidden>203 × 0,9 ≈ 183 slag per minutt</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del D · Din idrett</h3>
+      <p>Idrett: ______________________</p>
+      <div class="tablewrap"><table>
+        <tr><th>Viktigste egenskap</th><th>Treningsmetode og øvelse</th></tr>
+        <tr><td class="blank"><span class="fasit" hidden>Eksempel håndball: hurtighet</span></td><td class="blank"><span class="fasit" hidden>Sprint 6 × 20 m med 2 min pause</span></td></tr>
+        <tr><td class="blank"><span class="fasit" hidden>Utholdenhet</span></td><td class="blank"><span class="fasit" hidden>Intervall 4 × 4 min, ca. 90 % av makspuls</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Nevn to faktorer som påvirker hvor mye du utvikler deg.<div class="svar"><span class="fasit" hidden>For eksempel arv, alder, trening, søvn og mat, motivasjon.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+})();
+
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  const tegn = (svg, h) => { svg.innerHTML = h; fixVars(svg); };
+  const r1 = n => n.toFixed(1);
+  const KROPP = 'stroke="var(--ink)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+
+  // ---------- sorter: trykk på riktig svar for hvert kort ----------
+  function sorter(boks, status, valg, kort) {
+    let riktige = 0;
+    kort.forEach(([e, n, r, f]) => {
+      const k = document.createElement('div'); k.className = 'q';
+      k.innerHTML = `<span class="emoji">${e}</span><h3>${n}</h3><div class="knapper"></div><p class="forkl"></p>`;
+      valg.forEach((s, j) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = s;
+        b.onclick = () => {
+          if (k.dataset.ok) return;
+          k.querySelectorAll('button').forEach(x => x.classList.remove('feil'));
+          if (j === r) { b.classList.add('ok'); k.dataset.ok = 1; riktige++; k.querySelector('.forkl').textContent = f; }
+          else { b.classList.add('feil'); k.querySelector('.forkl').textContent = 'Prøv igjen.'; }
+          $(status).textContent = riktige + ' av ' + kort.length + ' riktige';
+        };
+        k.querySelector('.knapper').appendChild(b);
+      });
+      $(boks).appendChild(k);
+    });
+  }
+
+  // ---------- del 3: pulssoner ----------
+  const SONER = [['Rolig', .60, .72, 'var(--r)'], ['Terskel', .82, .87, 'var(--i)'], ['Intervall', .88, .95, 'var(--bad)']];
+  function puls() {
+    const alder = +$('alder').value, maks = 220 - alder;
+    let h = `<text x="20" y="34" font-size="17" font-weight="800" fill="var(--ink)">Makspuls ≈ ${maks}</text>`;
+    SONER.forEach(([n, a, b, f], i) => {
+      const y = 60 + i * 62, x0 = 140 + (a - .5) * 700, x1 = 140 + (b - .5) * 700;
+      h += `<text x="20" y="${y + 30}" font-size="17" font-weight="700" fill="${f}">${n}</text>` +
+        `<rect x="140" y="${y + 6}" width="350" height="36" rx="8" fill="var(--bg)" stroke="var(--line)"/>` +
+        `<rect x="${x0}" y="${y + 6}" width="${x1 - x0}" height="36" rx="8" fill="${f}"/>` +
+        `<text x="500" y="${y + 30}" font-size="15" font-weight="700" fill="var(--ink)">${Math.round(maks * a)}–${Math.round(maks * b)}</text>`;
+    });
+    tegn($('pulsFig'), h);
+    $('alderTall').textContent = alder + ' år';
+    $('pulsTekst').textContent = 'Intervall for deg: ca. ' + Math.round(maks * .88) + '–' + Math.round(maks * .95) + ' slag i minuttet.';
+  }
+  $('alder').oninput = puls;
+  puls();
+
+  // ---------- del 7: sorter ----------
+  sorter('sorterKort', 'sorterTekst', ['Styrke', 'Utholdenhet', 'Hurtighet', 'Bevegelighet', 'Koordinasjon'], [
+    ['🏋️', 'Markløft 4 × 3', 0, 'Tungt og få repetisjoner.'],
+    ['🏃', 'Intervall 4 × 4 min', 1, 'Høy puls i flere minutter.'],
+    ['⚡', '6 × 20 m sprint', 2, 'Maks fart og lang pause.'],
+    ['🧘', 'Tøying etter økt', 3, 'Store utslag i leddene.'],
+    ['🪜', 'Stigeløp', 4, 'Raske, presise fotbevegelser.'],
+    ['🚴', 'Rolig sykkeltur 1 time', 1, 'Lav puls, lang tid.']
+  ]);
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+<script>
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { const [navn, fane] = a.dataset.sim.split("#"); a.href = SIMULATORER + navn + ".html" + (fane ? "#" + fane : ""); a.target = "_blank"; a.rel = "noopener"; });
+</script>
+</body></html>
