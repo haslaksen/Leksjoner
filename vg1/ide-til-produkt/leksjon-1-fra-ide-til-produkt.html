@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fra idé til produkt Vg1 · Leksjon 1: Fra idé til produkt</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+
+/* Produksjon og tjenester: figurer man trykker på */
+.hms button[data-r]{min-height:7.5em}
+.velg{display:grid;gap:12px}
+.finn svg .spot{cursor:pointer;pointer-events:all}
+.finn svg .spot .ring{fill:transparent;stroke:transparent;stroke-width:5}
+.finn svg .spot:hover .ring{stroke:var(--line)}
+.finn svg .spot.funnet .ring{stroke:var(--bad)}
+.finn svg .spot:focus{outline:none}
+.finn svg .spot:focus-visible .ring{stroke:var(--u)}
+.rekkefolge{display:grid;gap:10px;max-width:640px}
+.rekkefolge button{display:flex;gap:14px;align-items:center;text-align:left;font-size:1.05rem;padding:14px 18px;border-radius:14px}
+.rekkefolge button .nrk{display:inline-grid;place-items:center;width:2rem;height:2rem;border-radius:50%;border:2px dashed var(--line);font-weight:800;flex:none}
+.rekkefolge button.ok .nrk{border:none;background:var(--r);color:#fff}
+.del3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.del3 .q{text-align:center;justify-items:center}
+.del3 .emoji{font-size:2.4rem;line-height:1}
+.del3 .knapper{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.del3 .knapper button{font-size:.85rem;padding:8px 10px}
+.del3 .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+.bildeliste{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.bildeliste .q{text-align:center;justify-items:center;gap:6px}
+.bildeliste svg{max-height:120px}
+.bildeliste .emoji{font-size:2.6rem;line-height:1}
+.bildeliste p{font-size:.92rem;color:var(--muted)}
+.matrise{display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px;max-width:620px}
+.matrise .ax{font-weight:700;font-size:.9rem;color:var(--muted);display:grid;place-items:center;text-align:center;padding:4px}
+.matrise button{border-radius:10px;min-height:3.6em;font-size:.95rem;border:2px solid transparent;color:#14181d}
+.matrise button.lav{background:#b7e4c7} .matrise button.mid{background:#ffe08a} .matrise button.hoy{background:#ffb3b3}
+.matrise button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 3px var(--ink)}
+
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Fra idé til produkt Vg1 · <span>Leksjon 1</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#steg">Seks steg</a><a href="#ide">Idé og krav</a><a href="#tegning">Tegning</a><a href="#plan">Rekkefølge</a><a href="#verktoy">Arbeidsplan</a><a href="#kontroll">Kontroll</a><a href="#logg">Dokumenter</a><a href="#vedlikehold">Vedlikehold</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Produksjon og tjenester Vg1 · Fra idé til produkt · Leksjon 1</div>
+    <h1 style="margin-top:10px">Fra idé til produkt</h1>
+    <p class="lead" style="margin-top:12px">Vi lager en bokstøtte. Steg for steg.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Fra <b>idé</b> til <b>tegning</b></span></li>
+      <li><span class="n i">2</span><span>Lag en <b>arbeidsplan</b></span></li>
+      <li><span class="n r">3</span><span><b>Kontroller</b> og <b>dokumenter</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span><b>Vedlikehold</b> er også en jobb</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 200" role="img" aria-label="Bokstøtte: en L-formet stålplate med bøker">
+      <g stroke="var(--wire)" stroke-width="2">
+        <rect x="150" y="30" width="34" height="140" rx="3" fill="var(--u)"/>
+        <rect x="186" y="40" width="28" height="130" rx="3" fill="var(--i)"/>
+        <rect x="216" y="22" width="38" height="148" rx="3" fill="var(--r)"/>
+        <rect x="256" y="50" width="26" height="120" rx="3" fill="var(--orange)"/>
+      </g>
+      <path d="M286 60 H298 V168 H380 V178 H286 Z" fill="#8a929c" stroke="var(--wire)" stroke-width="2"/>
+      <path d="M60 178 H400" stroke="var(--muted)" stroke-width="3"/>
+      <text x="80" y="110" font-size="44" text-anchor="middle">💡</text>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (TIP01-03, Produksjon og tjenester)</h3>
+      <p><b>Mål 12:</b> «beskrive arbeidsgangen i en praktisk arbeidsoppgave fra idé til sluttprodukt» (hele leksjonen).</p>
+      <p><b>Mål 4:</b> «planlegge, gjennomføre og dokumentere praktisk arbeid med produksjon og vedlikehold av maskiner og utstyr» (Del 4–8).</p>
+      <p><b>Mål 6:</b> tegningsunderlag og prosedyrer (Del 3–5). <b>Mål 13:</b> bærekraft i materialvalg og vedlikehold (Del 2 og 8).</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: vis en ferdig bokstøtte. «Hvordan ble den laget?»</dd>
+        <dt>10–30</dt><dd>Del 1–3: seks steg, krav og tegning.</dd>
+        <dt>30–45</dt><dd>Del 4–5: arbeidsplan.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–75</dt><dd>Del 6–8: kontroll, logg og vedlikehold.</dd>
+        <dt>75–88</dt><dd>Oppgavene A–D.</dd>
+        <dt>88–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+      <p style="margin-top:8px">Leksjonen passer som oppstart før elevene lager bokstøtten (eller et annet lite produkt) i verkstedet.</p>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="steg">
+  <div class="tag">Del 1 · Seks steg</div>
+  <h2>Fra idé til ferdig produkt</h2>
+  <div class="fig">
+    <svg viewBox="0 0 760 200" role="img" aria-label="Seks steg: idé, skisse, tegning, plan, lag, kontroller. Under alle: dokumenter">
+      <defs><marker id="ps" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--muted)"/></marker></defs>
+      <g font-size="15" font-weight="700" fill="var(--ink)" text-anchor="middle">
+        <rect x="6" y="14" width="106" height="110" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><text x="59" y="70" font-size="38">💡</text><text x="59" y="108">1 Idé</text>
+        <rect x="134" y="14" width="106" height="110" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><text x="187" y="70" font-size="38">✏️</text><text x="187" y="108">2 Skisse</text>
+        <rect x="262" y="14" width="106" height="110" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><text x="315" y="70" font-size="38">📐</text><text x="315" y="108">3 Tegning</text>
+        <rect x="390" y="14" width="106" height="110" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><text x="443" y="70" font-size="38">📋</text><text x="443" y="108">4 Plan</text>
+        <rect x="518" y="14" width="106" height="110" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><text x="571" y="70" font-size="38">🔧</text><text x="571" y="108">5 Lag</text>
+        <rect x="646" y="14" width="108" height="110" rx="14" fill="var(--r-soft)" stroke="var(--r)" stroke-width="2"/><text x="700" y="70" font-size="38">✅</text><text x="700" y="108">6 Kontroller</text>
+        <rect x="6" y="146" width="748" height="44" rx="12" fill="var(--blue-soft, #e4eefc)" stroke="var(--blue)" stroke-width="2"/><text x="380" y="174" fill="var(--blue)">📝 Dokumenter hele veien</text>
+      </g>
+      <g stroke="var(--muted)" stroke-width="3" marker-end="url(#ps)"><path d="M113 69 H130"/><path d="M241 69 H258"/><path d="M369 69 H386"/><path d="M497 69 H514"/><path d="M625 69 H642"/></g>
+    </svg>
+  </div>
+  <p class="regel">Hopper du over et steg, blir det ofte feil senere.</p>
+</section>
+
+<section id="ide">
+  <div class="tag">Del 2 · Idé og krav</div>
+  <h2>Hva vil kunden ha?</h2>
+  <div class="trio">
+    <div class="q U"><h3>📚 Holder 10 bøker</h3><p>Må være stiv nok.</p></div>
+    <div class="q I"><h3>🌧️ Står på verandaen</h3><p>Må tåle vær.</p></div>
+    <div class="q R"><h3>💰 Under 100 kr</h3><p>Lite materiale og enkel jobb.</p></div>
+  </div>
+  <div class="velg">
+    <p class="stor"><b>Hvilket materiale passer best?</b></p>
+    <div class="svar-knapper">
+      <button type="button" data-r="0" data-svar="Nei. Umalt stål ruster ute.">Umalt stål</button>
+      <button type="button" data-r="1" data-svar="Riktig! Malingen holder vann og luft borte. Stål er billig og sterkt.">Malt stål</button>
+      <button type="button" data-r="0" data-svar="Nei. Papp tåler ikke vann.">Papp</button>
+    </div>
+    <p class="status"></p>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Kravene kalles ofte kravspesifikasjon. Aluminium eller galvanisert stål er også gode svar, men dyrere. Koble til bærekraft: et produkt som varer lenge og kan gjenvinnes, gir mindre avfall (se Materialer og miljø 1).</details>
+</section>
+
+<section id="tegning">
+  <div class="tag">Del 3 · Skisse og tegning</div>
+  <h2>Skissen viser ideen. Tegningen viser målene.</h2>
+  <div class="to">
+    <div class="fig">
+      <svg viewBox="0 0 320 220" role="img" aria-label="Frihåndsskisse av bokstøtten uten mål">
+        <path d="M92 32 Q96 90 90 168 Q160 172 240 166" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+        <path d="M110 34 Q112 100 108 150 Q170 154 238 148" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+        <text x="160" y="205" font-size="17" font-weight="700" fill="var(--muted)" text-anchor="middle">✏️ Skisse</text>
+      </svg>
+    </div>
+    <div class="fig">
+      <svg viewBox="0 0 320 220" role="img" aria-label="Arbeidstegning av bokstøtten: høyde 100, dybde 80, tykkelse 3, hull diameter 6">
+        <path d="M80 30 H92 V158 H240 V170 H80 Z" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+        <circle cx="200" cy="164" r="4" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        <g stroke="var(--blue)" stroke-width="1.3" fill="var(--blue)" font-size="14" font-weight="700">
+          <path d="M60 30 V170"/><path d="M54 30 H74"/><path d="M54 170 H74"/><text x="54" y="104" text-anchor="end" stroke="none">100</text>
+          <path d="M80 190 H240"/><path d="M80 184 V196"/><path d="M240 184 V196"/><text x="160" y="210" text-anchor="middle" stroke="none">80</text>
+          <path d="M204 160 L250 120"/><text x="252" y="116" stroke="none">Ø6</text>
+          <path d="M92 60 H118"/><text x="122" y="64" stroke="none">t = 3</text>
+        </g>
+        <text x="300" y="30" font-size="15" font-weight="700" fill="var(--muted)" text-anchor="end">📐 Tegning</text>
+      </svg>
+    </div>
+  </div>
+  <div class="velg">
+    <p class="stor"><b>Hva mangler på skissen?</b></p>
+    <div class="svar-knapper">
+      <button type="button" data-r="0" data-svar="Nei, farge er ikke viktig for å lage delen.">Farge</button>
+      <button type="button" data-r="1" data-svar="Riktig! Uten mål vet du ikke hvor stor delen skal være.">Mål</button>
+      <button type="button" data-r="0" data-svar="Nei, navnet ditt hjelper ikke verkstedet.">Navnet ditt</button>
+    </div>
+    <p class="status"></p>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Tegningen kan lages i Fusion (se Tegning og DAK 2). Mål i millimeter. Tegningen er grunnlaget for arbeidsplanen og kontrollen.</details>
+</section>
+
+<section id="plan">
+  <div class="tag">Del 4 · Rekkefølge</div>
+  <h2>Hva gjør du først? Trykk i riktig rekkefølge.</h2>
+  <div class="benk">
+    <div class="rekkefolge">
+      <button type="button" data-n="5">↪️ Bøy 90°</button>
+      <button type="button" data-n="1">📏 Merk opp</button>
+      <button type="button" data-n="4">🔩 Bor hull</button>
+      <button type="button" data-n="2">🪚 Kapp</button>
+      <button type="button" data-n="6">🎨 Lakk eller mal</button>
+      <button type="button" data-n="3">🪛 Fil bort grader</button>
+    </div>
+    <div style="display:grid;gap:14px">
+      <p class="status">Lag bokstøtten fra flatstål.</p>
+    </div>
+  </div>
+  <p class="regel"><b>Bor før du bøyer.</b> En flat del er lettere å spenne fast.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Diskuter hvorfor rekkefølgen betyr noe: maling til slutt, ellers ødelegges den. Grader fjernes før bøying så du ikke skjærer deg.</details>
+</section>
+
+<section id="verktoy">
+  <div class="tag">Del 5 · Arbeidsplan</div>
+  <h2>Arbeidsplanen: steg, verktøy og verneutstyr</h2>
+  <div class="trio">
+    <div class="q"><h3>📏 1 Merk opp</h3><p>🔧 Rissenål, vinkel</p><p>🦺 👓</p></div>
+    <div class="q"><h3>🪚 2 Kapp</h3><p>🔧 Baufil eller båndsag</p><p>🦺 👓 🧤</p></div>
+    <div class="q"><h3>🪛 3 Fil bort grader</h3><p>🔧 Fil</p><p>🦺 👓 🧤</p></div>
+    <div class="q"><h3>🔩 4 Bor hull Ø6</h3><p>🔧 Søyleboremaskin</p><p>🦺 👓 Ikke hansker!</p></div>
+    <div class="q"><h3>↪️ 5 Bøy 90°</h3><p>🔧 Kantpresse</p><p>🦺 👓 🧤</p></div>
+    <div class="q"><h3>🎨 6 Mal</h3><p>🔧 Pensel eller spray</p><p>🦺 👓 😷 Luft ut</p></div>
+  </div>
+  <a class="simlink no-print" href="https://verkstedhandboka.vercel.app/" target="_blank" rel="noopener"><span class="ico">📘</span><span><b>Verkstedhåndboka</b><small>Turtall for boring og andre tabeller.</small></span><span class="pil">→</span></a>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Arbeidsplanen er en enkel prosedyre. Ingen hansker ved roterende maskiner (se HMS og kjemikalier 1). La elevene lage sin egen plan for produktet de skal lage.</details>
+</section>
+
+<section id="kontroll">
+  <div class="tag">Del 6 · Kontroll</div>
+  <h2>Tegning: 100 ± 0,5 mm. Er delen godkjent?</h2>
+  <div class="fig">
+    <svg viewBox="0 0 760 120" role="img" aria-label="Tallinje fra 99 til 101 millimeter. Grønt felt fra 99,5 til 100,5 er godkjent">
+      <rect x="230" y="30" width="300" height="40" fill="var(--r-soft)" stroke="var(--r)" stroke-width="2"/>
+      <path d="M80 70 H680" stroke="var(--ink)" stroke-width="2"/>
+      <g stroke="var(--ink)" stroke-width="2"><path d="M80 64 V76"/><path d="M230 64 V76"/><path d="M380 64 V76"/><path d="M530 64 V76"/><path d="M680 64 V76"/></g>
+      <g font-size="15" fill="var(--ink)" text-anchor="middle"><text x="80" y="96">99,0</text><text x="230" y="96">99,5</text><text x="380" y="96">100,0</text><text x="530" y="96">100,5</text><text x="680" y="96">101,0</text></g>
+      <text x="380" y="56" font-size="16" font-weight="700" fill="var(--r)" text-anchor="middle">Godkjent</text>
+    </svg>
+  </div>
+  <div class="del3">
+    <div class="q" data-svar="J" data-hvorfor="100,3 ligger mellom 99,5 og 100,5."><span class="emoji" aria-hidden="true">📏</span><b>Del A: 100,3 mm</b><div class="knapper"><button type="button" data-v="J">✅ OK</button><button type="button" data-v="N">❌ Ikke OK</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="N" data-hvorfor="99,2 er for kort. Under 99,5."><span class="emoji" aria-hidden="true">📏</span><b>Del B: 99,2 mm</b><div class="knapper"><button type="button" data-v="J">✅ OK</button><button type="button" data-v="N">❌ Ikke OK</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="J" data-hvorfor="100,5 er akkurat på grensen. Det er godkjent."><span class="emoji" aria-hidden="true">📏</span><b>Del C: 100,5 mm</b><div class="knapper"><button type="button" data-v="J">✅ OK</button><button type="button" data-v="N">❌ Ikke OK</button></div><p class="forkl"></p></div>
+  </div>
+  <a class="simlink no-print" data-sim="toleranser"><span class="ico">🧪</span><span><b>Prøv selv: Toleranse-simulatoren</b><small>Mål deler og sorter dem.</small></span><span class="pil">→</span></a>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Mål med skyvelære (se Verktøy og måling 2). En del som ikke er OK, er et avvik og skal skrives i loggen.</details>
+</section>
+
+<section id="logg">
+  <div class="tag">Del 7 · Dokumenter</div>
+  <h2>Skriv ned hva du har gjort</h2>
+  <div class="benk">
+    <div class="fig">
+      <svg viewBox="0 0 400 250" role="img" aria-label="Arbeidslogg med dato, hva jeg gjorde, tid, avvik og bilde">
+        <rect x="10" y="10" width="380" height="230" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <text x="30" y="42" font-size="18" font-weight="800" fill="var(--ink)">📝 Arbeidslogg</text>
+        <g font-size="15" fill="var(--ink)">
+          <text x="30" y="80">Dato:</text><text x="140" y="80" fill="var(--blue)">24.10.</text>
+          <text x="30" y="112">Gjort:</text><text x="140" y="112" fill="var(--blue)">Kappet og boret</text>
+          <text x="30" y="144">Tid:</text><text x="140" y="144" fill="var(--blue)">45 min</text>
+          <text x="30" y="176">Avvik:</text><text x="140" y="176" fill="var(--bad)">Hull 2 mm feil</text>
+          <text x="30" y="208">Bilde:</text><text x="140" y="212" font-size="26">📷</text>
+        </g>
+        <g stroke="var(--line)"><path d="M30 88 H370"/><path d="M30 120 H370"/><path d="M30 152 H370"/><path d="M30 184 H370"/></g>
+      </svg>
+    </div>
+    <div class="velg">
+      <p class="stor"><b>Hvorfor skriver vi ned avvik?</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="1" data-svar="Riktig! Da kan vi rette feilen og gjøre det bedre neste gang.">Så vi lærer</button>
+        <button type="button" data-r="0" data-svar="Nei. Avvik skal ikke skjules, de skal rettes.">Så noen får skylda</button>
+        <button type="button" data-r="0" data-svar="Nei. Loggen er nyttig for både deg og bedriften.">Fordi læreren vil ha det</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Loggen kan føres i OneNote med bilder. I bedriften brukes arbeidsordre og timeliste (se Maskinelementer 1). Dokumentasjonen er grunnlag for vurdering i faget.</details>
+</section>
+
+<section id="vedlikehold">
+  <div class="tag">Del 8 · Vedlikehold</div>
+  <h2>Maskinene trenger også en plan</h2>
+  <div class="trio">
+    <div class="q U"><h3>📋 Planlegg</h3><p>Sjekkliste: smør, sjekk reim, rengjør.</p></div>
+    <div class="q I"><h3>🔧 Utfør</h3><p>Lås maskinen. Gjør jobben.</p></div>
+    <div class="q R"><h3>📝 Dokumenter</h3><p>Skriv i vedlikeholdsloggen.</p></div>
+  </div>
+  <div class="velg">
+    <p class="stor"><b>Søyleboremaskinen blir smurt hver måned. Hvorfor?</b></p>
+    <div class="svar-knapper">
+      <button type="button" data-r="1" data-svar="Riktig! Den varer lenger og stopper ikke plutselig. Det er også bærekraftig.">Den varer lenger</button>
+      <button type="button" data-r="0" data-svar="Nei. Smøring gjør ikke maskinen raskere.">Den går fortere</button>
+      <button type="button" data-r="0" data-svar="Nei. Vi venter ikke til den går i stykker.">Vi vil at den skal stoppe</button>
+    </div>
+    <p class="status"></p>
+  </div>
+  <p class="regel">Fast <b>vedlikehold</b> = færre stopp og lengre <b>levetid</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Forebyggende vedlikehold (planlagt) og korrigerende vedlikehold (etter feil). La elevene følge verkstedets vedlikeholdsplan for én maskin og føre logg. Lengre levetid gir mindre avfall (mål 13).</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 1: Fra idé til produkt</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p><i>Ord: mål · arbeidsplan · avvik · kontrollerer · vedlikehold</i></p>
+      <p>En skisse har ikke <span class="luke"><span class="fasit" hidden>mål</span></span>, men det har en tegning.</p>
+      <p>I en <span class="luke"><span class="fasit" hidden>arbeidsplan</span></span> står steg, verktøy og verneutstyr.</p>
+      <p>Jeg <span class="luke"><span class="fasit" hidden>kontrollerer</span></span> målene med skyvelære.</p>
+      <p>En feil som skrives i loggen, kalles et <span class="luke"><span class="fasit" hidden>avvik</span></span>.</p>
+      <p>Smøring av maskinen hver måned er <span class="luke"><span class="fasit" hidden>vedlikehold</span></span>.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Skriv 1 til 6</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Steg</th><th>Nr.</th></tr>
+        <tr><td>Lag produktet</td><td class="blank"><span class="fasit" hidden>5</span></td></tr>
+        <tr><td>Idé</td><td class="blank"><span class="fasit" hidden>1</span></td></tr>
+        <tr><td>Kontroller</td><td class="blank"><span class="fasit" hidden>6</span></td></tr>
+        <tr><td>Tegning med mål</td><td class="blank"><span class="fasit" hidden>3</span></td></tr>
+        <tr><td>Skisse</td><td class="blank"><span class="fasit" hidden>2</span></td></tr>
+        <tr><td>Arbeidsplan</td><td class="blank"><span class="fasit" hidden>4</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Godkjent? Tegning: 50 ± 0,2 mm</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Målt</th><th>OK</th><th>Ikke OK</th></tr>
+        <tr><td>50,1 mm</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>49,7 mm</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>50,2 mm</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>50,4 mm</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Lag arbeidsplan for en nøkkelhenger i aluminium</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Steg</th><th>Verktøy</th><th>Verneutstyr</th></tr>
+        <tr><td>Merk opp</td><td class="blank"><span class="fasit" hidden>rissenål, linjal</span></td><td class="blank"><span class="fasit" hidden>vernebriller</span></td></tr>
+        <tr><td>Kapp</td><td class="blank"><span class="fasit" hidden>baufil</span></td><td class="blank"><span class="fasit" hidden>vernebriller, hansker</span></td></tr>
+        <tr><td>Bor hull</td><td class="blank"><span class="fasit" hidden>søyleboremaskin</span></td><td class="blank"><span class="fasit" hidden>vernebriller, ikke hansker</span></td></tr>
+        <tr><td>Fil kantene</td><td class="blank"><span class="fasit" hidden>fil</span></td><td class="blank"><span class="fasit" hidden>vernebriller</span></td></tr>
+      </table></div>
+    </div>
+
+    <div class="ekstra-oppg">
+      <h3>Ekstra · Regn ut materialet</h3>
+      <p>Én bokstøtte bruker 0,2 m flatstål. Flatstålet koster 40 kr per meter. Klassen lager 15 bokstøtter.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Hva</th><th>Svar</th></tr>
+        <tr><td>Meter flatstål</td><td class="blank"><span class="fasit" hidden>15 · 0,2 = 3 m</span></td></tr>
+        <tr><td>Pris</td><td class="blank"><span class="fasit" hidden>3 · 40 = 120 kr</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hvorfor lager vi en arbeidsplan før vi starter?<div class="svar"><span class="fasit" hidden>Så vi gjør stegene i riktig rekkefølge, har riktig verktøy og verneutstyr, og ikke må gjøre jobben om igjen.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+// Felles for figurene man trykker på (Produksjon og tjenester)
+(function(){
+  // Riktig eller galt-kort: <button data-r="1|0" data-svar="…">
+  document.querySelectorAll('.hms button[data-r]').forEach(b => {
+    b.insertAdjacentHTML('beforeend', '<span class="svar-hms">Trykk for svar</span>');
+    b.onclick = () => { b.classList.add(b.dataset.r === '1' ? 'ok' : 'feil'); b.querySelector('.svar-hms').textContent = b.dataset.svar; };
+  });
+  // Velg riktig svar: .velg med knapper data-r og en .status
+  document.querySelectorAll('.velg').forEach(v => {
+    const st = v.querySelector('.status');
+    v.querySelectorAll('button[data-r]').forEach(b => b.onclick = () => {
+      const ok = b.dataset.r === '1';
+      b.classList.add(ok ? 'ok' : 'feil');
+      if (st) st.textContent = b.dataset.svar || (ok ? 'Riktig!' : 'Prøv igjen.');
+    });
+  });
+  // Finn feilene i bildet: .finn med <g class="spot" data-navn="…"><… class="ring"/></g>
+  document.querySelectorAll('.finn').forEach(f => {
+    const spots = [...f.querySelectorAll('.spot')], t = f.querySelector('.teller'), st = f.querySelector('.status');
+    const vis = () => { t.textContent = f.querySelectorAll('.spot.funnet').length + ' av ' + spots.length + ' funnet'; };
+    spots.forEach(s => {
+      s.setAttribute('tabindex', '0'); s.setAttribute('role', 'button'); s.setAttribute('aria-label', 'Feil i bildet');
+      const go = () => { s.classList.add('funnet'); st.textContent = '❗ ' + s.dataset.navn; vis(); };
+      s.addEventListener('click', go);
+      s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    });
+    vis();
+  });
+  // Trykk i riktig rekkefølge: .rekkefolge med knapper data-n="1…"
+  document.querySelectorAll('.rekkefolge').forEach(r => {
+    let neste = 1; const st = r.parentElement.querySelector('.status'), alle = r.querySelectorAll('button');
+    alle.forEach(b => {
+      b.insertAdjacentHTML('afterbegin', '<span class="nrk"></span>');
+      b.onclick = () => {
+        if (b.classList.contains('ok')) return;
+        if (+b.dataset.n === neste) { b.classList.add('ok'); b.querySelector('.nrk').textContent = neste++; if (st) st.textContent = neste > alle.length ? 'Riktig rekkefølge! 🎉' : 'Riktig. Hva kommer så?'; }
+        else { b.classList.add('feil'); setTimeout(() => b.classList.remove('feil'), 600); if (st) st.textContent = 'Ikke ennå. Hva må skje først?'; }
+      };
+    });
+  });
+  // Sorter i tre (eller flere) grupper: .del3 med .q[data-svar] og knapper data-v
+  document.querySelectorAll('.del3 .q[data-svar]').forEach(k => {
+    k.querySelectorAll('button[data-v]').forEach(b => b.onclick = () => {
+      const ok = b.dataset.v === k.dataset.svar;
+      k.querySelectorAll('button').forEach(c => c.classList.remove('ok', 'feil'));
+      b.classList.add(ok ? 'ok' : 'feil');
+      k.querySelector('.forkl').textContent = ok ? 'Riktig! ' + (k.dataset.hvorfor || '') : 'Prøv igjen.';
+    });
+  });
+})();
+// Risikomatrise: .matrise med knapper data-tekst, svaret i .matrise-status
+document.querySelectorAll('.matrise').forEach(m => {
+  const st = m.parentElement.querySelector('.matrise-status');
+  m.querySelectorAll('button').forEach(b => b.onclick = () => {
+    m.querySelectorAll('button').forEach(c => c.setAttribute('aria-pressed', c === b));
+    st.textContent = b.dataset.tekst;
+  });
+});
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>

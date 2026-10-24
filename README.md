@@ -23,6 +23,7 @@ vg2/<emne>/leksjon-N-<navn>.html
 | Vg1 | Sammenføying | 1 Skru, lim og sveis |
 | Vg1 | Maskinelementer | 1 Demonter og monter |
 | Vg1 | Materialer og miljø | 1 Materialer og miljø |
+| Vg1 | Fra idé til produkt | 1 Fra idé til produkt |
 | Vg2 | Elektro | 1 Strøm, spenning og Ohms lov · 2 Effekt og energi · 3 Måling med multimeter · 4 Motorstyring |
 | Vg2 | HMS | 1 Grunnleggende HMS · 2 Risikovurdering og SJA |
 | Vg2 | Materiallære | 1 Grunnleggende · 2 Stål og jern · 3 Mekanisk prøving · 4 Varmebehandling |
