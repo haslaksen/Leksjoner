@@ -50,13 +50,26 @@ async function slettFil(sti, res) {
   res.json({ ok: true });
 }
 
+// Bilde i stedet for en tegning: lagres som filer/bilde-<navn>.<type> og erstatter et gammelt bilde.
+async function byttTegning(mappe, navn, fil, type, res) {
+  if (!/^\.(jpe?g|png|webp|gif)$/.test(type)) throw new Error("Velg et bilde (jpg, png, webp eller gif).");
+  const liste = await github(`${mappe}/filer`, "GET");
+  const gamle = liste.ok ? (await liste.json()).filter(f => f.name.replace(/\.[^.]+$/, "") === `bilde-${navn}`) : [];
+  const sti = `${mappe}/filer/bilde-${navn}${type}`, samme = gamle.find(f => f.path === sti);
+  const svar = await github(sti, "PUT", { message: `Bytt tegningen ${navn} med bilde fra lærersiden`, content: fil.data.toString("base64"), branch: GREN, ...(samme && { sha: samme.sha }) });
+  if (!svar.ok) throw new Error(`GitHub sa nei (${svar.status}).`);
+  // Bilde med annen filtype fra før fjernes, så bare det nye vises.
+  for (const g of gamle) if (g.path !== sti) await github(g.path, "DELETE", { message: `Slett gammelt bilde ${g.path}`, sha: g.sha, branch: GREN });
+  res.json({ ok: true, navn: `bilde-${navn}${type}` });
+}
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ feil: "Bruk POST" });
-  const { slett, mappe, prefiks, tekst, bareLaerer, filnavn, innhold, adresse } = req.body || {};
+  const { slett, mappe, prefiks, tekst, bareLaerer, filnavn, innhold, adresse, bilde } = req.body || {};
   if (!innlogget(req)) return res.status(401).json({ feil: "Du må være logget inn på lærersiden. Last inn siden på nytt og logg inn." });
   if (!(process.env.GITHUB_TOKEN || "").trim()) return res.status(500).json({ feil: "GITHUB_TOKEN mangler i Vercel" });
   if (slett) return slettFil(slett, res);
-  if (!/^vg[12]\/[a-z0-9-]+$/.test(mappe || "") || !/^leksjon-\d+-[A-Za-z0-9_-]+-$/.test(prefiks || ""))
+  if (!/^vg[12]\/[a-z0-9-]+$/.test(mappe || "") || (bilde ? !/^[a-z0-9-]+$/.test(bilde) : !/^leksjon-\d+-[A-Za-z0-9_-]+-$/.test(prefiks || "")))
     return res.status(400).json({ feil: "Ugyldig mappe eller del" });
 
   try {
@@ -65,6 +78,7 @@ module.exports = async (req, res) => {
     if (fil.data.length > MAKS) throw new Error("Filen er for stor (over 3 MB). Last den opp på GitHub i stedet.");
     const type = (fil.navn.match(TYPER) || [""])[0].toLowerCase();
     if (!type) throw new Error("Denne filtypen er ikke tillatt");
+    if (bilde) return await byttTegning(mappe, bilde, fil, type, res);
     // Navnet blir leksjon-N-<del>-<tekst>.<type>, med bare små bokstaver, tall og bindestrek.
     const rent = String(tekst || fil.navn.replace(TYPER, "")).toLowerCase()
       .replace(/æ/g, "ae").replace(/ø/g, "o").replace(/å/g, "a")

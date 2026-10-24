@@ -8,3 +8,9 @@ Gi filen et navn som starter med leksjonsnummeret og delen, slik det står i den
 - `laerer-leksjon-4-herding-arbeidsark.pdf` vises bare på lærersiden.
 
 Bilder (jpg, png, gif, webp, svg) og video (mp4, webm) vises på siden. Andre filer, som PDF og Word, blir en nedlastingslenke. Bruk små bokstaver og bindestrek i navnet. GitHub tar ikke filer over 25 MB; legg store videoer på YouTube eller OneDrive i stedet.
+
+## Bilde i stedet for tegning (leksjon 1)
+
+Verktøytegningene i leksjon 1 kan byttes med ekte bilder. Enklest: trykk «📎 Vis/skjul plass for filer» på lærersiden, og så «📷 Bytt til bilde» under tegningen. «↩ Tilbake til tegning» fjerner bildet igjen.
+
+Bildet lagres her som `bilde-<navn>.jpg` og vises også i steg for steg og prøven. Navnene er: `rissenal`, `vinkel`, `kjorner`, `gjengetapp`, `gjengesnitt`, `fastnokkel`, `ringnokkel`, `unbrako`, `momentnokkel`, `soyleboremaskin`, `dreiebenk`, `fres`, `benkslipemaskin`.
