@@ -562,7 +562,7 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
   const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
-      const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
   }), {rootMargin:"-45% 0px -50% 0px"});
   targets.forEach(t => io.observe(t));
   let scale = 1;

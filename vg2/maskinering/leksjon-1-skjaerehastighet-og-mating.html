@@ -726,7 +726,7 @@ slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.te
 const links = [...nav.querySelectorAll("a")];
 const navIO = new IntersectionObserver(es => es.forEach(e => {
   if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
-    const act = nav.querySelector("a.active"); if (act) act.scrollIntoView({block:"nearest", inline:"center"}); }
+    const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
 }), {rootMargin:"-45% 0px -50% 0px"});
 slides.forEach(s => navIO.observe(s));
 function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
