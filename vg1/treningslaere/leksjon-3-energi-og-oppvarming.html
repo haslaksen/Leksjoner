@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treningslære 1 Vg1 · Leksjon 3: Energi og oppvarming</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+</style>
+<style>
+.fig svg{max-height:320px}
+.stabel{display:flex;height:64px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.stabel div{display:grid;place-items:center;color:#fff;font-weight:800;font-size:1rem;transition:flex-grow .4s;min-width:0;overflow:hidden;white-space:nowrap}
+.farger{display:flex;flex-wrap:wrap;gap:14px;font-weight:700}
+.farger span::before{content:"";display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px;background:var(--c)}
+.to .q{text-align:center;justify-items:center}
+.to .q svg{max-height:220px}
+.sorter .knapper{flex-wrap:wrap;justify-content:center}
+.sorter .knapper button{padding:8px 11px;font-size:14px}
+@media (prefers-reduced-motion:reduce){.stabel div{transition:none}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Treningslære 1 Vg1 · <span>Leksjon 3</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#atp">ATP</a><a href="#to">Med eller uten O₂</a><a href="#tid">Hvor lenge?</a><a href="#hvorfor">Hvorfor varme opp?</a><a href="#slik">Slik varmer du opp</a><a href="#hodet">Hodet</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Idrett Vg1 · Treningslære 1 · Leksjon 3</div>
+    <h1 style="margin-top:10px">Energi og oppvarming</h1>
+    <p class="lead" style="margin-top:12px">Hvor får musklene <b>energi</b> fra, og hvorfor <b>varmer</b> vi opp?</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span><b>Aerob</b>: med oksygen</span></li>
+      <li><span class="n i">2</span><span><b>Anaerob</b>: uten oksygen</span></li>
+      <li><span class="n r">3</span><span><b>Oppvarming</b> for kropp og hode</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 240" role="img" aria-label="Termometer: oppvarming gjør musklene varme og klare">
+      <rect x="60" y="30" width="36" height="160" rx="18" fill="var(--surface)" stroke="var(--ink)" stroke-width="4"/>
+      <circle cx="78" cy="196" r="28" fill="var(--bad)" stroke="var(--ink)" stroke-width="4"/>
+      <rect x="68" y="90" width="20" height="110" rx="10" fill="var(--bad)"/>
+      <text x="140" y="80" font-size="22" font-weight="800" fill="var(--bad)">Varm muskel</text>
+      <text x="140" y="110" font-size="17" fill="var(--ink)">= raskere og smidigere</text>
+      <text x="140" y="170" font-size="54">🔥💪</text>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (IDR02-03, Treningslære 1)</h3>
+      <p><b>TR10 (dekket):</b> «beskrive aerob og anaerob energifrigjøring». Del 1–3.</p>
+      <p><b>TR7 (dekket):</b> «forklare hvordan oppvarming og treningsformer kan påvirke kroppen fysisk og psykisk». Del 4–6. Treningsformer kommer igjen i Vg2 leksjon 2.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: «Hvorfor kan ingen løpe 400 m like fort som 100 m?»</dd>
+        <dt>10–35</dt><dd>Del 1–3: ATP, aerob og anaerob. Bruk knappene i Del 3.</dd>
+        <dt>35–45</dt><dd>Oppgave A og B.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–75</dt><dd>Del 4–6: oppvarming. Gjerne praktisk: elevene lager en oppvarming i grupper.</dd>
+        <dt>75–85</dt><dd>Oppgave C og D.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="atp">
+  <div class="tag">Del 1 · ATP</div>
+  <h2>Musklene går på ATP</h2>
+  <div class="fig">
+    <svg viewBox="0 0 560 200" role="img" aria-label="ATP gir energi til muskelen. Lageret i muskelen holder bare i noen sekunder.">
+      <defs><marker id="pilO" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--orange)"/></marker></defs>
+      <circle cx="110" cy="95" r="62" fill="var(--orange-soft)" stroke="var(--orange)" stroke-width="4"/>
+      <text x="110" y="108" text-anchor="middle" font-size="38" font-weight="800" fill="var(--orange)">ATP</text>
+      <path d="M185 95 H330" stroke="var(--orange)" stroke-width="7" marker-end="url(#pilO)"/>
+      <text x="258" y="80" text-anchor="middle" font-size="16" font-weight="700" fill="var(--orange)">energi</text>
+      <text x="420" y="118" text-anchor="middle" font-size="64">💪</text>
+      <text x="40" y="186" font-size="15" font-weight="700" fill="var(--bad)">Lageret holder bare noen sekunder. Kroppen må lage mer hele tiden.</text>
+    </svg>
+  </div>
+  <p class="regel">Maten vi spiser blir til <b>ATP</b> i musklene.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>ATP = adenosintrifosfat. Karbohydrat og fett brukes til å bygge opp ny ATP. Protein brukes nesten bare til å bygge og reparere.</details>
+</section>
+
+<section id="to">
+  <div class="tag">Del 2 · Med eller uten oksygen</div>
+  <h2>To måter å lage energi</h2>
+  <div class="to">
+    <div class="q U"><span style="font-size:2.6rem">🫁</span><h3>Aerob</h3><p><b>Med</b> oksygen.<br>Rolig fart. Varer <b>lenge</b>.</p></div>
+    <div class="q I"><span style="font-size:2.6rem">🔥</span><h3>Anaerob</h3><p><b>Uten</b> oksygen.<br>Høy fart. Tar fort <b>slutt</b>. Gir melkesyre.</p></div>
+  </div>
+  <details class="ekstra"><summary>Ekstra: den aller raskeste energien</summary>
+    <p>De første 5–10 sekundene bruker musklene et lager som heter <b>kreatinfosfat</b>. Det brukes i hopp, kast og korte spurter.</p>
+  </details>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Melkesyre (laktat) er ikke «avfall»: den brukes som brensel igjen. Det er hydrogenionene som gjør musklene sure og stive. Vg3 leksjon 2 går dypere i de tre energisystemene.</details>
+</section>
+
+<section id="tid">
+  <div class="tag">Del 3 · Hvor lenge varer innsatsen?</div>
+  <h2>Velg tid. Se hvem som jobber mest.</h2>
+  <div class="benk" style="grid-template-columns:1fr">
+    <div class="valgknapper" id="tidKnapper"></div>
+    <div class="stabel" id="stabel"><div style="background:var(--i)"></div><div style="background:var(--u)"></div></div>
+    <div class="farger"><span style="--c:var(--i)">Anaerob</span><span style="--c:var(--u)">Aerob</span></div>
+    <p class="status" id="tidTekst"></p>
+  </div>
+  <p class="regel">Kort og hardt: <b>anaerob</b>. Langt og rolig: <b>aerob</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Tallene er omtrentlige (maksimal innsats, etter Gastin 2001), og kreatinfosfat er regnet med i anaerob. Aerob og anaerob bidrar omtrent like mye ved ca. 75 sekunder.</details>
+</section>
+
+<section id="hvorfor">
+  <div class="tag">Del 4 · Hvorfor varme opp?</div>
+  <h2>Kald muskel eller varm muskel?</h2>
+  <div class="to">
+    <div class="q U"><span style="font-size:2.6rem">🥶</span><h3>Kald</h3><p>Stiv og treg.<br>Lettere å bli <b>skadet</b>.</p></div>
+    <div class="q" style="border-top:6px solid var(--bad)"><span style="font-size:2.6rem">🥵</span><h3>Varm</h3><p>Smidig og rask.<br>Pulsen er klar.<br>Nervene sender <b>fortere</b>.</p></div>
+  </div>
+  <p class="regel">Oppvarming gir <b>bedre prestasjon</b> og <b>færre skader</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Fysiske effekter: høyere temperatur i musklene (ca. 1–2 °C), raskere nerveledning, mer blod til musklene, tynnere leddvæske, bedre bevegelighet. Hjertet og lungene kommer i gang, så du slipper «sjokkstarten».</details>
+</section>
+
+<section id="slik">
+  <div class="tag">Del 5 · Slik varmer du opp</div>
+  <h2>Tre steg: fra rolig til nesten full fart</h2>
+  <div class="fig">
+    <svg viewBox="0 0 620 210" role="img" aria-label="Oppvarming i tre steg: rolig og generell, bevegelser fra idretten, og stigningsløp. Intensiteten øker.">
+      <path d="M40 180 L210 150 L390 110 L590 40" fill="none" stroke="var(--bad)" stroke-width="6" stroke-linecap="round"/>
+      <path d="M40 190 H590" stroke="var(--line)" stroke-width="3"/>
+      <g text-anchor="middle"><text x="125" y="120" font-size="36">🏃</text><text x="300" y="80" font-size="36">🤸</text><text x="490" y="40" font-size="36">⚡</text></g>
+      <g font-size="16" font-weight="800" text-anchor="middle" fill="var(--ink)"><text x="125" y="146">1 · Rolig</text><text x="300" y="106">2 · Idrettens bevegelser</text></g>
+      <text x="500" y="125" text-anchor="middle" font-size="16" font-weight="800" fill="var(--ink)">3 · Øk farten</text><text x="30" y="30" font-size="14" font-weight="700" fill="var(--bad)">Fart ↑</text>
+      <g font-size="14" text-anchor="middle" fill="var(--muted)"><text x="125" y="206">jogg, 5–10 min</text><text x="300" y="206">øvelser fra idretten</text><text x="490" y="206">korte drag</text></g>
+    </svg>
+  </div>
+  <p class="regel">Start <b>rolig</b>. Bli mer og mer lik <b>idretten</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Steg 1 = generell oppvarming (store muskelgrupper, lav intensitet). Steg 2 og 3 = spesiell oppvarming (bevegelser fra idretten, økende fart). Totalt 15–25 minutter. Ikke lang statisk tøying rett før eksplosive øvelser; bruk heller dynamiske bevegelser.</details>
+</section>
+
+<section id="hodet">
+  <div class="tag">Del 6 · Oppvarming for hodet</div>
+  <h2>Oppvarming gjør deg også klar i hodet</h2>
+  <div class="trio">
+    <div class="q U"><span style="font-size:2.4rem">🎯</span><h3>Fokus</h3><p>Du tenker på oppgaven.</p></div>
+    <div class="q I"><span style="font-size:2.4rem">😮‍💨</span><h3>Roligere nerver</h3><p>Mindre nervøs før kamp.</p></div>
+    <div class="q R"><span style="font-size:2.4rem">🔁</span><h3>Fast rutine</h3><p>Samme oppvarming gir trygghet.</p></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Psykiske effekter: høyere årvåkenhet, bedre konsentrasjon, regulering av spenningsnivået. Mange utøvere har en fast rutine (samme rekkefølge hver gang). Mental trening kommer i Vg3 leksjon 7.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 3: Energi og oppvarming</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p><i>Ord: ATP · oksygen · melkesyre · lenge · fort</i></p>
+      <p>Musklene får energi fra <span class="luke"><span class="fasit" hidden>ATP</span></span>.</p>
+      <p>Aerob betyr med <span class="luke"><span class="fasit" hidden>oksygen</span></span>. Den varer <span class="luke"><span class="fasit" hidden>lenge</span></span>.</p>
+      <p>Anaerob tar <span class="luke"><span class="fasit" hidden>fort</span></span> slutt og gir <span class="luke"><span class="fasit" hidden>melkesyre</span></span>.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Aerob eller anaerob? Sett kryss.</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Øvelse</th><th>Mest anaerob</th><th>Mest aerob</th></tr>
+        <tr><td>100 m sprint</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Langrenn 10 km</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>400 m løp</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Gå tur i en time</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Oppvarming</h3>
+      <ol>
+        <li>Nevn to ting som skjer i kroppen når du varmer opp.<div class="svar"><span class="fasit" hidden>Musklene blir varmere og smidigere, pulsen går opp, nervene sender fortere.</span></div></li>
+        <li>Hvordan kan oppvarming hjelpe deg i hodet?<div class="svar"><span class="fasit" hidden>Du får fokus, blir mindre nervøs og føler deg trygg med en fast rutine.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del D · Lag en oppvarming</h3>
+      <p>Idrett: ______________________</p>
+      <div class="tablewrap"><table>
+        <tr><th>Steg</th><th>Hva gjør du?</th><th>Hvor lenge?</th></tr>
+        <tr><td>1 · Rolig</td><td class="blank"><span class="fasit" hidden>Eksempel fotball: rolig jogg</span></td><td class="blank"><span class="fasit" hidden>5–10 min</span></td></tr>
+        <tr><td>2 · Idrettens bevegelser</td><td class="blank"><span class="fasit" hidden>Pasninger, sidelengs løp, høye kneløft</span></td><td class="blank"><span class="fasit" hidden>5–10 min</span></td></tr>
+        <tr><td>3 · Øk farten</td><td class="blank"><span class="fasit" hidden>3–4 korte spurter</span></td><td class="blank"><span class="fasit" hidden>3–5 min</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hvorfor kan ingen løpe 400 m like fort som 100 m?<div class="svar"><span class="fasit" hidden>Den anaerobe energien går fort, men tar fort slutt og gir melkesyre. Da må farten ned.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+})();
+
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  const tegn = (svg, h) => { svg.innerHTML = h; fixVars(svg); };
+  const r1 = n => n.toFixed(1);
+  const KROPP = 'stroke="var(--ink)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+
+  // ---------- del 3: hvor lenge varer innsatsen? [anaerob, aerob] i prosent, omtrent ----------
+  const TID = [
+    ['10 s', [90, 10], '100 m: nesten bare anaerob.'],
+    ['30 s', [75, 25], 'Anaerob jobber mest. Melkesyren kommer.'],
+    ['1 min', [55, 45], '400 m: nesten like mye av begge.'],
+    ['2 min', [37, 63], '800 m: nå jobber aerob mest.'],
+    ['10 min', [10, 90], '3000 m: nesten bare aerob.'],
+    ['1 time', [3, 97], 'Halvmaraton og langrenn: aerob.']
+  ];
+  const stabel = [...$('stabel').children];
+  function visTid(i) {
+    const [, p, t] = TID[i];
+    stabel.forEach((d, j) => { d.style.flexGrow = p[j]; d.textContent = p[j] >= 8 ? p[j] + ' %' : ''; });
+    $('tidTekst').textContent = t;
+    $('tidKnapper').querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-pressed', j === i));
+  }
+  TID.forEach(([n], i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = n; b.onclick = () => visTid(i); $('tidKnapper').appendChild(b); });
+  visTid(0);
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>

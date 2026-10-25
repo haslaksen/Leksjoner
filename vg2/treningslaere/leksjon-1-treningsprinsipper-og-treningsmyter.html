@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treningslære 1 Vg2 · Leksjon 1: Treningsprinsipper og treningsmyter</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+</style>
+<style>
+.fig svg{max-height:320px}
+.stabel{display:flex;height:64px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.stabel div{display:grid;place-items:center;color:#fff;font-weight:800;font-size:1rem;transition:flex-grow .4s;min-width:0;overflow:hidden;white-space:nowrap}
+.farger{display:flex;flex-wrap:wrap;gap:14px;font-weight:700}
+.farger span::before{content:"";display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px;background:var(--c)}
+.to .q{text-align:center;justify-items:center}
+.to .q svg{max-height:220px}
+.sorter .knapper{flex-wrap:wrap;justify-content:center}
+.sorter .knapper button{padding:8px 11px;font-size:14px}
+@media (prefers-reduced-motion:reduce){.stabel div{transition:none}}
+</style>
+<style>
+#formFig{max-height:300px}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Treningslære 1 Vg2 · <span>Leksjon 1</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hvile">Trening + hvile</a><a href="#progresjon">Øk litt</a><a href="#spesifikk">Spesifikk</a><a href="#individuell">Individuell</a><a href="#mist">Bruk det</a><a href="#myter">Myte?</a><a href="#kilde">Sjekk kilden</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Idrett Vg2 · Treningslære 1 · Leksjon 1</div>
+    <h1 style="margin-top:10px">Treningsprinsipper og treningsmyter</h1>
+    <p class="lead" style="margin-top:12px">Hvilke <b>regler</b> gjelder for all trening, og hvilke råd kan du <b>stole</b> på?</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Trening + <b>hvile</b> = fremgang</span></li>
+      <li><span class="n i">2</span><span>Fire <b>treningsprinsipper</b></span></li>
+      <li><span class="n r">3</span><span><b>Myte</b> eller fakta?</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 240" role="img" aria-label="Trapp: litt mer trening hver gang gir fremgang">
+      <path d="M40 210 H120 V170 H200 V130 H280 V90 H360 V50" fill="none" stroke="var(--orange)" stroke-width="8" stroke-linejoin="round"/>
+      <text x="380" y="50" font-size="40">🏆</text>
+      <text x="60" y="200" font-size="36">🏃</text>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (IDR02-03, Treningslære 1)</h3>
+      <p><b>TR5 (dekket):</b> «gjøre rede for grunnleggende treningsprinsipper». Del 1–5.</p>
+      <p><b>TR13 (dekket):</b> «drøfte informasjon om trening på en kritisk måte». Del 6–7, oppgave D.</p>
+      <p>Leksjonen forutsetter ikke Vg1. Vg3 leksjon 1 går dypere i prinsippene.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: «Hvorfor blir du ikke bedre av å trene 3 timer hver dag?»</dd>
+        <dt>10–40</dt><dd>Del 1–5: prinsippene. Prøv knappene i Del 1.</dd>
+        <dt>40–45</dt><dd>Oppgave A og B.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–75</dt><dd>Del 6–7: myter og kilder. Ta gjerne med et ekte innlegg fra sosiale medier.</dd>
+        <dt>75–85</dt><dd>Oppgave C og D.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="hvile">
+  <div class="tag">Del 1 · Trening + hvile</div>
+  <h2>Når skal neste økt komme?</h2>
+  <div class="benk" style="grid-template-columns:1fr">
+    <div class="valgknapper" id="formKnapper"></div>
+    <svg id="formFig" viewBox="0 0 620 262" role="img" aria-label="Formkurve over tre treningsøkter"></svg>
+    <p class="status" id="formTekst"></p>
+  </div>
+  <p class="regel">Du blir sterkere i <b>hvilen</b> etter treningen.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Prinsippet heter superkompensasjon: belastning gir tretthet, og under restitusjon bygger kroppen seg opp til et litt høyere nivå enn før. For tett: formen synker (overtrening). For sjelden: effekten forsvinner før neste økt. Kurven er forenklet; ulike egenskaper trenger ulik hviletid.</details>
+</section>
+
+<section id="progresjon">
+  <div class="tag">Del 2 · Progresjon</div>
+  <h2>Øk litt og litt</h2>
+  <div class="fig">
+    <svg viewBox="0 0 620 200" role="img" aria-label="Uke 1: 3 km, uke 2: 3,5 km, uke 3: 4 km, uke 4: 4,5 km. Litt mer hver uke.">
+      <g fill="var(--u)"><rect x="60" y="120" width="90" height="60" rx="6"/><rect x="200" y="105" width="90" height="75" rx="6"/><rect x="340" y="90" width="90" height="90" rx="6"/><rect x="480" y="75" width="90" height="105" rx="6"/></g>
+      <g font-size="16" font-weight="700" text-anchor="middle" fill="var(--ink)"><text x="105" y="110">3 km</text><text x="245" y="95">3,5 km</text><text x="385" y="80">4 km</text><text x="525" y="65">4,5 km</text></g>
+      <g font-size="14" text-anchor="middle" fill="var(--muted)"><text x="105" y="198">uke 1</text><text x="245" y="198">uke 2</text><text x="385" y="198">uke 3</text><text x="525" y="198">uke 4</text></g>
+    </svg>
+  </div>
+  <p class="regel">Samme trening hele tiden gir <b>stopp</b> i fremgangen.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Progresjon: belastningen må økes gradvis (mengde, intensitet eller vanskelighet). For rask økning gir skader. Tommelfingerregel: ca. 10 prosent mer per uke.</details>
+</section>
+
+<section id="spesifikk">
+  <div class="tag">Del 3 · Spesifisitet</div>
+  <h2>Du blir god til det du trener</h2>
+  <div class="to">
+    <div class="q U"><span style="font-size:2.6rem">🏊</span><h3>Svømmer mye</h3><p>Blir god til å <b>svømme</b>.</p></div>
+    <div class="q I"><span style="font-size:2.6rem">🏃</span><h3>Løper mye</h3><p>Blir god til å <b>løpe</b>.</p></div>
+  </div>
+  <p class="regel">Tren det idretten <b>krever</b>: samme muskler, fart og bevegelser.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>En god svømmer er ikke automatisk en god løper, selv om begge har god kondisjon. Musklene og teknikken er ulike. Generell trening (for eksempel styrke) er nyttig som grunnlag, men toppform krever spesifikk trening.</details>
+</section>
+
+<section id="individuell">
+  <div class="tag">Del 4 · Individuell tilpasning</div>
+  <h2>Samme økt passer ikke alle</h2>
+  <div class="trio">
+    <div class="q U"><span style="font-size:2.4rem">🧒</span><h3>Alder</h3><p>Ungdom vokser og trenger mer hvile.</p></div>
+    <div class="q I"><span style="font-size:2.4rem">📊</span><h3>Nivå</h3><p>Nybegynnere tåler mindre.</p></div>
+    <div class="q R"><span style="font-size:2.4rem">🎯</span><h3>Mål</h3><p>Ulike mål gir ulik trening.</p></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>To personer kan få ulik effekt av samme program. Det er også store forskjeller i hvor fort folk blir modne i puberteten.</details>
+</section>
+
+<section id="mist">
+  <div class="tag">Del 5 · Bruk det eller mist det</div>
+  <h2>Slutter du å trene, forsvinner formen</h2>
+  <div class="fig">
+    <svg viewBox="0 0 620 200" role="img" aria-label="Formen stiger mens du trener og synker når du slutter">
+      <path d="M40 170 C150 160 220 60 320 50 C380 45 420 120 580 160" fill="none" stroke="var(--bad)" stroke-width="6" stroke-linecap="round"/>
+      <path d="M320 30 V180" stroke="var(--line)" stroke-width="3" stroke-dasharray="6 6"/>
+      <g font-size="16" font-weight="700"><text x="120" y="70" fill="var(--r)">🏃 Trener</text><text x="420" y="70" fill="var(--u)">🛋️ Slutter</text></g>
+    </svg>
+  </div>
+  <p class="regel">Kondisjon går fortere tapt enn <b>styrke</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Reversibilitet. Etter 2–4 uker uten trening går kondisjonen merkbart ned. Styrke holder seg lenger. Det skal lite trening til for å holde formen ved like (vedlikeholdstrening).</details>
+</section>
+
+<section id="myter">
+  <div class="tag">Del 6 · Myte eller fakta?</div>
+  <h2>Trykk Myte eller Fakta</h2>
+  <div class="sorter" id="sorterKort"></div>
+  <p class="status" id="sorterTekst"></p>
+</section>
+
+<section id="kilde">
+  <div class="tag">Del 7 · Sjekk kilden</div>
+  <h2>Tre spørsmål før du tror på et treningsråd</h2>
+  <div class="trio">
+    <div class="q U"><span style="font-size:2.4rem">👤</span><h3>Hvem sier det?</h3><p>Fagperson eller influenser?</p></div>
+    <div class="q I"><span style="font-size:2.4rem">💰</span><h3>Vil de selge noe?</h3><p>Pulver, program, klær?</p></div>
+    <div class="q R"><span style="font-size:2.4rem">🔬</span><h3>Finnes det forskning?</h3><p>Eller bare «det funker for meg»?</p></div>
+  </div>
+  <p class="regel">«Raskt, lett og garantert» er et <b>varseltegn</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Gode norske kilder: Olympiatoppen, Norges idrettsforbund, Helsenorge, Senter for idrettsskadeforskning, Antidoping Norge. Vg3 leksjon 8 jobber mer med kildekritikk.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 1: Treningsprinsipper og treningsmyter</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Hvilket prinsipp? Skriv riktig navn.</h3>
+      <p><i>Ord: progresjon · spesifisitet · individuell tilpasning · bruk det eller mist det</i></p>
+      <div class="tablewrap"><table>
+        <tr><th>Eksempel</th><th>Prinsipp</th></tr>
+        <tr><td>En håndballspiller trener mye hopp og skudd.</td><td class="blank"><span class="fasit" hidden>Spesifisitet</span></td></tr>
+        <tr><td>Kari løper litt lenger hver uke.</td><td class="blank"><span class="fasit" hidden>Progresjon</span></td></tr>
+        <tr><td>Ole har vært skadet i to måneder og har dårligere kondisjon.</td><td class="blank"><span class="fasit" hidden>Bruk det eller mist det</span></td></tr>
+        <tr><td>Nybegynneren får lettere vekter enn de erfarne.</td><td class="blank"><span class="fasit" hidden>Individuell tilpasning</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del B · Trening og hvile</h3>
+      <ol>
+        <li>Når blir du sterkere: under treningen eller i hvilen etterpå?<div class="svar"><span class="fasit" hidden>I hvilen etterpå. Under treningen blir du sliten.</span></div></li>
+        <li>Hva skjer hvis neste økt kommer for tidlig, hver gang?<div class="svar"><span class="fasit" hidden>Formen går nedover. Du kan bli overtrent eller skadet.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del C · Myte eller fakta? Sett kryss.</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Myte</th><th>Fakta</th></tr>
+        <tr><td>Situps fjerner fett på magen.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Muskler blir sterkere av hvile etter trening.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Jo mer du trener, jo bedre blir du, alltid.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Styrketrening er trygt for ungdom med god teknikk.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Vurder et treningsråd</h3>
+      <p>«Med mitt 30-dagers program og proteinpulveret mitt får du sixpack garantert! Bare 499 kr.» (influenser på sosiale medier)</p>
+      <ol>
+        <li>Bruk de tre spørsmålene fra Del 7. Kan du stole på rådet?<div class="svar"><span class="fasit" hidden>Nei. Det er en influenser, ikke fagperson. Hun vil selge program og pulver. Det finnes ikke forskning som lover sixpack på 30 dager, og «garantert» er et varseltegn.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Forklar progresjon med egne ord.<div class="svar"><span class="fasit" hidden>Du må øke treningen litt og litt for å fortsette å bli bedre.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+})();
+
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  const tegn = (svg, h) => { svg.innerHTML = h; fixVars(svg); };
+  const r1 = n => n.toFixed(1);
+  const KROPP = 'stroke="var(--ink)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+
+  // ---------- del 1: formkurve med tre økter ----------
+  // Hver økt starter fra formen der og da: først en dupp (sliten), så en topp (sterkere) som blir borte igjen.
+  const FORM = [
+    ['For tett', 70, 'Neste økt kommer før kroppen har hentet seg inn. Formen går nedover.'],
+    ['Passe', 110, 'Neste økt kommer på toppen. Formen går oppover.'],
+    ['For sjelden', 250, 'Toppen er borte før neste økt. Du står stille.']
+  ];
+  const økt = d => d < 0 ? 0 : (1 - Math.exp(-d / 6)) * (-40 * Math.exp(-((d - 30) ** 2) / 1500) + 20 * Math.exp(-((d - 100) ** 2) / 1200));
+  const nivå = (t, gap) => {
+    let L = 0, s = 40;
+    for (;;) {
+      if (t < s + gap) return L + økt(t - s);
+      L += økt(gap); s += gap;
+    }
+  };
+  function visForm(i) {
+    const [, gap, t] = FORM[i];
+    let p = '';
+    for (let x = 0; x <= 560; x += 4) p += (x ? ' L' : 'M') + (30 + x) + ' ' + r1(150 - nivå(x, gap) * 1.1);
+    const økter = [0, 1, 2, 3, 4, 5, 6, 7].map(k => 30 + 40 + k * gap).filter(x => x < 590).map(x => `<text x="${x}" y="24" text-anchor="middle" font-size="20">🏃</text><path d="M${x} 32 V235" stroke="var(--i)" stroke-width="2" stroke-dasharray="4 4"/>`).join('');
+    tegn($('formFig'), `<path d="M30 150 H600" stroke="var(--line)" stroke-width="3" stroke-dasharray="8 6"/>
+      <text x="600" y="170" text-anchor="end" font-size="14" fill="var(--muted)">formen før</text>${økter}
+      <path d="${p}" fill="none" stroke="var(--bad)" stroke-width="5" stroke-linecap="round"/>
+      <text x="30" y="255" font-size="14" fill="var(--muted)">tid →</text>`);
+    $('formTekst').textContent = t;
+    $('formKnapper').querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-pressed', j === i));
+  }
+  FORM.forEach(([n], i) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = n; b.onclick = () => visForm(i); $('formKnapper').appendChild(b); });
+  visForm(1);
+
+  // ---------- del 6: myte eller fakta ----------
+  const VALG = ['Myte', 'Fakta'];
+  const PAST = [
+    ['🧘', 'Situps fjerner magefett', 0, 'Du kan ikke velge hvor fettet forsvinner.'],
+    ['😴', 'Du blir sterkere i hvilen', 1, 'Kroppen bygger seg opp etter treningen.'],
+    ['🥵', '«No pain, no gain»: det må gjøre vondt', 0, 'Smerte kan være skade. Trening kan være hard uten å gjøre vondt.'],
+    ['🏋️', 'Ungdom kan trene styrke', 1, 'Trygt med god teknikk og riktig vekt.'],
+    ['🥤', 'Du trenger proteinpulver for å få muskler', 0, 'Vanlig mat gir nok protein for de fleste.'],
+    ['💧', 'Du bør drikke når du trener lenge', 1, 'Kroppen mister væske når du svetter.']
+  ];
+  let riktige = 0;
+  PAST.forEach(([e, n, r, f]) => {
+    const k = document.createElement('div'); k.className = 'q';
+    k.innerHTML = `<span class="emoji">${e}</span><h3>${n}</h3><div class="knapper"></div><p class="forkl"></p>`;
+    VALG.forEach((s, j) => {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = s;
+      b.onclick = () => {
+        if (k.dataset.ok) return;
+        k.querySelectorAll('button').forEach(x => x.classList.remove('feil'));
+        if (j === r) { b.classList.add('ok'); k.dataset.ok = 1; riktige++; k.querySelector('.forkl').textContent = f; }
+        else { b.classList.add('feil'); k.querySelector('.forkl').textContent = 'Prøv igjen.'; }
+        $('sorterTekst').textContent = riktige + ' av ' + PAST.length + ' riktige';
+      };
+      k.querySelector('.knapper').appendChild(b);
+    });
+    $('sorterKort').appendChild(k);
+  });
+  $('sorterTekst').textContent = 'Trykk Myte eller Fakta.';
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>

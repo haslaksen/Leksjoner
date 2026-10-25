@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Treningslære 1 Vg1 · Leksjon 1: Skjelett, muskler og nerver</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+</style>
+<style>
+.fig svg{max-height:320px}
+.stabel{display:flex;height:64px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.stabel div{display:grid;place-items:center;color:#fff;font-weight:800;font-size:1rem;transition:flex-grow .4s;min-width:0;overflow:hidden;white-space:nowrap}
+.farger{display:flex;flex-wrap:wrap;gap:14px;font-weight:700}
+.farger span::before{content:"";display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px;background:var(--c)}
+.to .q{text-align:center;justify-items:center}
+.to .q svg{max-height:220px}
+.sorter .knapper{flex-wrap:wrap;justify-content:center}
+.sorter .knapper button{padding:8px 11px;font-size:14px}
+@media (prefers-reduced-motion:reduce){.stabel div{transition:none}}
+</style>
+<style>
+.kropp text{font-size:14px;font-weight:700;fill:var(--ink)}
+.kropp .strek{stroke:var(--muted);stroke-width:1.5;fill:none}
+#armFig{max-height:300px}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Treningslære 1 Vg1 · <span>Leksjon 1</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#skjelett">Skjelettet</a><a href="#ledd">Ledd</a><a href="#muskler">Musklene</a><a href="#trekker">Trekk</a><a href="#nerver">Nervene</a><a href="#hvilken">Hvilken muskel?</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Idrett Vg1 · Treningslære 1 · Leksjon 1</div>
+    <h1 style="margin-top:10px">Skjelett, muskler og nerver</h1>
+    <p class="lead" style="margin-top:12px">Hvordan klarer kroppen å <b>bevege</b> seg?</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span><b>Skjelettet</b> bærer og beskytter</span></li>
+      <li><span class="n i">2</span><span><b>Musklene</b> trekker i knoklene</span></li>
+      <li><span class="n r">3</span><span><b>Nervene</b> gir beskjed</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 240" role="img" aria-label="Hjernen sender beskjed gjennom nervene til muskelen, som trekker i knokkelen">
+      <defs><marker id="pilH" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--orange)"/></marker></defs>
+      <g font-size="58" text-anchor="middle"><text x="70" y="110">🧠</text><text x="215" y="110">💪</text><text x="360" y="110">🦴</text></g>
+      <g stroke="var(--orange)" stroke-width="6" marker-end="url(#pilH)"><path d="M115 85 H160"/><path d="M262 85 H305"/></g>
+      <g font-size="17" font-weight="700" text-anchor="middle" fill="var(--ink)"><text x="70" y="160">Nervene</text><text x="215" y="160">Musklene</text><text x="360" y="160">Skjelettet</text></g>
+      <g font-size="15" text-anchor="middle" fill="var(--muted)"><text x="70" y="184">gir beskjed</text><text x="215" y="184">trekker</text><text x="360" y="184">beveger seg</text></g>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (IDR02-03, Treningslære 1)</h3>
+      <p><b>TR9 (dekket):</b> «beskrive oppbygningen av og funksjonen til muskel-, nerve- og skjelettsystemet, og forklare muskelarbeid i ulike øvelser». Hele leksjonen.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: elevene kjenner på egne knokler og muskler (kne, albue, kragebein).</dd>
+        <dt>10–35</dt><dd>Del 1–2: skjelettet og leddene.</dd>
+        <dt>35–45</dt><dd>Oppgave A og B.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–75</dt><dd>Del 3–6: musklene, nervene og hvilken muskel som jobber. Bruk glidebryteren i Del 4.</dd>
+        <dt>75–85</dt><dd>Oppgave C og D.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="skjelett">
+  <div class="tag">Del 1 · Skjelettet</div>
+  <h2>Over 200 knokler holder deg oppe</h2>
+  <div class="benk">
+    <svg class="kropp" viewBox="0 0 360 440" role="img" aria-label="Skjelettet med kraniet, ryggsøylen, ribbeina, bekkenet, lårbeinet og leggbeina">
+      <g fill="var(--surface)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round">
+        <ellipse cx="180" cy="42" rx="28" ry="32"/>
+        <path d="M150 92 H210" stroke-linecap="round"/>
+        <path d="M152 100 Q180 96 208 100 L212 180 Q180 196 148 180 Z"/>
+        <path d="M156 122 Q180 132 204 122 M154 144 Q180 154 206 144 M152 166 Q180 176 208 166" fill="none"/>
+        <path d="M148 226 Q180 210 212 226 L206 252 Q180 262 154 252 Z"/>
+        <path d="M148 98 L118 180 L110 250 M212 98 L242 180 L250 250" fill="none" stroke-width="7" stroke-linecap="round"/>
+        <path d="M162 256 L156 345 M198 256 L204 345" fill="none" stroke-width="9" stroke-linecap="round"/>
+        <circle cx="156" cy="350" r="7"/><circle cx="204" cy="350" r="7"/>
+        <path d="M156 360 L158 425 M204 360 L202 425" fill="none" stroke-width="7" stroke-linecap="round"/>
+      </g>
+      <g fill="var(--u)"><rect x="176" y="76" width="8" height="10" rx="2"/><rect x="176" y="188" width="8" height="8" rx="2"/><rect x="176" y="200" width="8" height="8" rx="2"/></g>
+      <g class="strek"><path d="M208 40 H270"/><path d="M184 200 H270"/><path d="M206 140 H270"/><path d="M212 236 H270"/><path d="M204 300 H270"/><path d="M162 400 H90"/><path d="M118 180 H70"/></g>
+      <text x="275" y="45">Kraniet</text><text x="275" y="145">Ribbeina</text><text x="275" y="205">Ryggsøylen</text><text x="275" y="241">Bekkenet</text><text x="275" y="305">Lårbeinet</text><text x="10" y="405">Leggbeina</text><text x="10" y="185">Armene</text>
+    </svg>
+    <div class="trio" style="grid-template-columns:1fr">
+      <div class="q U"><h3>🏗️ Bærer</h3><p>Holder kroppen oppe.</p></div>
+      <div class="q I"><h3>🛡️ Beskytter</h3><p>Kraniet beskytter hjernen. Ribbeina beskytter hjertet og lungene.</p></div>
+      <div class="q R"><h3>🦵 Beveger</h3><p>Musklene trekker i knoklene.</p></div>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Voksne har 206 knokler. Skjelettet lager også blodceller (i beinmargen) og lagrer kalk. Knoklene blir sterkere av belastning, for eksempel hopp og styrketrening.</details>
+</section>
+
+<section id="ledd">
+  <div class="tag">Del 2 · Ledd</div>
+  <h2>Leddene gjør at vi kan bøye oss</h2>
+  <div class="to">
+    <div class="q U">
+      <svg viewBox="0 0 220 170" role="img" aria-label="Hengselledd: kan bare bøyes én vei, som en dør">
+        <rect x="20" y="70" width="90" height="26" rx="13" fill="var(--u-soft)" stroke="var(--u)" stroke-width="4"/>
+        <rect x="104" y="70" width="90" height="26" rx="13" fill="var(--u-soft)" stroke="var(--u)" stroke-width="4" transform="rotate(-35 112 83)"/>
+        <circle cx="112" cy="83" r="13" fill="var(--u)"/>
+        <path d="M150 120 A60 60 0 0 0 170 60" fill="none" stroke="var(--orange)" stroke-width="4" stroke-dasharray="6 6"/>
+      </svg>
+      <h3>Hengselledd</h3><p>Bøyes <b>én vei</b>. Kne og albue.</p>
+    </div>
+    <div class="q I">
+      <svg viewBox="0 0 220 170" role="img" aria-label="Kuleledd: en kule i en skål, kan bevege seg alle veier">
+        <path d="M60 50 A50 50 0 0 0 60 130" fill="none" stroke="var(--i)" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="90" cy="90" r="30" fill="var(--i-soft)" stroke="var(--i)" stroke-width="4"/>
+        <rect x="112" y="78" width="90" height="26" rx="13" fill="var(--i-soft)" stroke="var(--i)" stroke-width="4"/>
+        <circle cx="90" cy="90" r="62" fill="none" stroke="var(--orange)" stroke-width="4" stroke-dasharray="6 6"/>
+      </svg>
+      <h3>Kuleledd</h3><p>Beveger seg <b>alle veier</b>. Skulder og hofte.</p>
+    </div>
+  </div>
+  <p class="regel"><b>Brusk</b> gjør leddet glatt. <b>Leddbånd</b> holder knoklene sammen.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Andre leddtyper: sadelledd (tommelen) og dreieledd (mellom de to øverste nakkevirvlene). Leddvæske smører leddet, og den blir tynnere når vi varmer opp.</details>
+</section>
+
+<section id="muskler">
+  <div class="tag">Del 3 · Musklene</div>
+  <h2>De store musklene</h2>
+  <div class="fig">
+    <svg class="kropp" viewBox="0 0 560 300" role="img" aria-label="Kroppen forfra og bakfra med de store musklene">
+      <g fill="var(--surface)" stroke="var(--ink)" stroke-width="3">
+        <circle cx="140" cy="32" r="22"/><path d="M105 60 H175 L180 150 L170 170 H110 L100 150 Z"/><path d="M110 170 L104 290 M170 170 L176 290 M140 172 L140 290" fill="none"/><path d="M105 62 L78 160 M175 62 L202 160" fill="none" stroke-width="12" stroke-linecap="round"/>
+        <circle cx="420" cy="32" r="22"/><path d="M385 60 H455 L460 150 L450 170 H390 L380 150 Z"/><path d="M390 170 L384 290 M450 170 L456 290 M420 172 L420 290" fill="none"/><path d="M385 62 L358 160 M455 62 L482 160" fill="none" stroke-width="12" stroke-linecap="round"/>
+      </g>
+      <g fill="var(--bad)" opacity=".8">
+        <ellipse cx="125" cy="82" rx="16" ry="12"/><ellipse cx="155" cy="82" rx="16" ry="12"/>
+        <ellipse cx="88" cy="112" rx="7" ry="18"/><ellipse cx="192" cy="112" rx="7" ry="18"/>
+        <rect x="128" y="104" width="24" height="44" rx="6"/>
+        <ellipse cx="122" cy="214" rx="13" ry="32"/><ellipse cx="158" cy="214" rx="13" ry="32"/>
+        <ellipse cx="420" cy="100" rx="30" ry="34"/>
+        <ellipse cx="368" cy="112" rx="7" ry="18"/><ellipse cx="472" cy="112" rx="7" ry="18"/>
+        <ellipse cx="420" cy="182" rx="30" ry="16"/>
+        <ellipse cx="402" cy="230" rx="12" ry="26"/><ellipse cx="438" cy="230" rx="12" ry="26"/>
+        <ellipse cx="398" cy="272" rx="8" ry="14"/><ellipse cx="442" cy="272" rx="8" ry="14"/>
+      </g>
+      <g class="strek"><path d="M155 82 H230"/><path d="M192 112 H230"/><path d="M152 140 H230"/><path d="M158 214 H230"/><path d="M450 100 H500"/><path d="M450 182 H500"/><path d="M438 230 H500"/><path d="M442 272 H500"/><path d="M478 122 Q490 140 500 140"/></g>
+      <text x="234" y="87">Bryst</text><text x="234" y="117">Biceps</text><text x="234" y="145">Mage</text><text x="234" y="219">Forside lår</text>
+      <text x="504" y="105">Rygg</text><text x="504" y="187">Sete</text><text x="504" y="235">Bakside lår</text><text x="504" y="277">Legg</text>
+      <text x="504" y="145">Triceps</text>
+      <text x="140" y="300" text-anchor="middle" fill="var(--muted)">forfra</text><text x="420" y="300" text-anchor="middle" fill="var(--muted)">bakfra</text>
+    </svg>
+  </div>
+  <p class="regel">Musklene sitter fast i knoklene med <b>sener</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Navn med latin for de som vil: brystmuskel (pectoralis major), forside lår (quadriceps), bakside lår (hamstrings), setemuskel (gluteus maximus), leggmuskel (gastrocnemius), stor ryggmuskel (latissimus dorsi). Akillessenen er kroppens største sene.</details>
+</section>
+
+<section id="trekker">
+  <div class="tag">Del 4 · Muskler trekker</div>
+  <h2>En muskel kan bare <i>trekke</i>. Aldri skyve.</h2>
+  <div class="benk">
+    <svg id="armFig" viewBox="0 0 340 340" role="img" aria-label="Armen med biceps og triceps. Dra i glidebryteren for å bøye albuen."></svg>
+    <div style="display:grid;gap:14px">
+      <label class="slider">Bøy albuen <input type="range" id="armVinkel" min="0" max="120" value="60"></label>
+      <p class="status" id="armTekst"></p>
+      <div class="farger"><span style="--c:var(--bad)">Trekker seg sammen</span><span style="--c:var(--u)">Slapper av</span></div>
+    </div>
+  </div>
+  <p class="regel">Musklene jobber i <b>par</b>: når den ene trekker, slapper den andre av.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Muskelen som gjør bevegelsen kalles agonist. Den som slapper av på motsatt side er antagonist. Eksempel: biceps (agonist) og triceps (antagonist) i en bicepscurl. Ekstra: konsentrisk arbeid (muskelen blir kortere, opp i curl), eksentrisk (blir lengre under kontroll, ned i curl), statisk (samme lengde, planke).</details>
+</section>
+
+<section id="nerver">
+  <div class="tag">Del 5 · Nervene</div>
+  <h2>Hjernen gir beskjed. Nervene frakter den.</h2>
+  <div class="fig">
+    <svg viewBox="0 0 620 190" role="img" aria-label="Hjernen sender signal gjennom ryggmargen og en nerve til muskelen. Føleren i huden sender signal tilbake.">
+      <defs><marker id="pilN" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--orange)"/></marker><marker id="pilB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--u)"/></marker></defs>
+      <g font-size="54" text-anchor="middle"><text x="70" y="90">🧠</text><text x="550" y="90">💪</text></g>
+      <rect x="200" y="50" width="200" height="30" rx="15" fill="var(--i-soft)" stroke="var(--i)" stroke-width="3"/>
+      <text x="300" y="71" text-anchor="middle" font-size="15" font-weight="700" fill="var(--i)">Ryggmargen</text>
+      <path d="M115 65 H195" stroke="var(--orange)" stroke-width="5" marker-end="url(#pilN)"/>
+      <path d="M405 65 H500" stroke="var(--orange)" stroke-width="5" marker-end="url(#pilN)"/>
+      <path d="M500 115 H115" stroke="var(--u)" stroke-width="4" stroke-dasharray="8 6" marker-end="url(#pilB)"/>
+      <text x="300" y="40" text-anchor="middle" font-size="15" font-weight="700" fill="var(--orange)">«Trekk deg sammen!»</text>
+      <text x="300" y="140" text-anchor="middle" font-size="15" font-weight="700" fill="var(--u)">Følere sier hvor kroppen er</text>
+      <g font-size="16" font-weight="700" text-anchor="middle" fill="var(--ink)"><text x="70" y="175">Hjernen</text><text x="550" y="175">Muskelen</text></g>
+    </svg>
+  </div>
+  <p class="regel">Jo mer du øver, jo bedre blir hjernen til å <b>styre</b> musklene.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Sentralnervesystemet = hjernen og ryggmargen. Nervene ut i kroppen = det perifere nervesystemet. De første ukene med styrketrening blir man sterkere mest fordi nervesystemet lærer å bruke flere muskelfibre samtidig, før musklene rekker å vokse. Reflekser (for eksempel når du trekker hånda bort fra noe varmt) går bare til ryggmargen.</details>
+</section>
+
+<section id="hvilken">
+  <div class="tag">Del 6 · Hvilken muskel jobber?</div>
+  <h2>Trykk på muskelen som jobber mest</h2>
+  <div class="sorter" id="sorterKort"></div>
+  <p class="status" id="sorterTekst"></p>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 1: Skjelett, muskler og nerver</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p><i>Ord: kraniet · ribbeina · sener · ledd · trekke</i></p>
+      <p><span class="luke"><span class="fasit" hidden>Kraniet</span></span> beskytter hjernen.</p>
+      <p><span class="luke"><span class="fasit" hidden>Ribbeina</span></span> beskytter hjertet og lungene.</p>
+      <p>Musklene sitter fast i knoklene med <span class="luke"><span class="fasit" hidden>sener</span></span>.</p>
+      <p>Et <span class="luke"><span class="fasit" hidden>ledd</span></span> er der to knokler møtes.</p>
+      <p>En muskel kan bare <span class="luke"><span class="fasit" hidden>trekke</span></span>, ikke skyve.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Hengselledd eller kuleledd? Sett kryss.</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Ledd</th><th>Hengselledd</th><th>Kuleledd</th></tr>
+        <tr><td>Kne</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Skulder</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Albue</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Hofte</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Hvilken muskel jobber mest?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Øvelse</th><th>Muskel</th></tr>
+        <tr><td>Knebøy</td><td class="blank"><span class="fasit" hidden>Forside lår (og sete)</span></td></tr>
+        <tr><td>Armhevinger</td><td class="blank"><span class="fasit" hidden>Bryst og triceps</span></td></tr>
+        <tr><td>Tåhev</td><td class="blank"><span class="fasit" hidden>Legg</span></td></tr>
+        <tr><td>Situps</td><td class="blank"><span class="fasit" hidden>Mage</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Forklar</h3>
+      <ol>
+        <li>Du bøyer albuen. Hvilken muskel trekker seg sammen, og hvilken slapper av?<div class="svar"><span class="fasit" hidden>Biceps trekker seg sammen. Triceps slapper av.</span></div></li>
+        <li>Hva gjør nervene når du skal sparke en ball?<div class="svar"><span class="fasit" hidden>Hjernen sender beskjed gjennom ryggmargen og nervene til musklene i beinet, som trekker seg sammen.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Nevn tre ting skjelettet gjør.<div class="svar"><span class="fasit" hidden>Bærer kroppen, beskytter organene og lar oss bevege oss (sammen med musklene).</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+})();
+
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  const tegn = (svg, h) => { svg.innerHTML = h; fixVars(svg); };
+  const r1 = n => n.toFixed(1);
+  const KROPP = 'stroke="var(--ink)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+
+  // ---------- del 4: armen med biceps og triceps ----------
+  function arm() {
+    const v = +$('armVinkel').value;
+    const sx = 130, sy = 40, ex = 130, ey = 190;           // skulder og albue
+    const th = (90 - v) * Math.PI / 180;                   // underarmen: rett ned når v = 0
+    const fx = ex + 140 * Math.cos(th), fy = ey + 140 * Math.sin(th);
+    const fest = [ex + 34 * Math.cos(th), ey + 34 * Math.sin(th)];
+    const kort = v > 10, bic = kort ? 'var(--bad)' : 'var(--u)', tri = kort ? 'var(--u)' : 'var(--bad)';
+    const tyk = 12 + v / 6;                                // biceps blir tykkere når den trekker seg sammen
+    tegn($('armFig'), `
+      <path d="M${sx} ${sy} L${ex} ${ey}" stroke="var(--line)" stroke-width="18" stroke-linecap="round"/>
+      <path d="M${ex} ${ey} L${fx} ${fy}" stroke="var(--line)" stroke-width="16" stroke-linecap="round"/>
+      <path d="M${sx + 14} ${sy + 14} Q${sx + 20 + tyk * 1.6} ${(sy + ey) / 2} ${fest[0] + 6} ${fest[1]}" stroke="${bic}" stroke-width="${tyk}" fill="none" stroke-linecap="round"/>
+      <path d="M${sx - 14} ${sy + 14} Q${sx - 34} ${(sy + ey) / 2} ${ex - 10} ${ey + 14}" stroke="${tri}" stroke-width="${kort ? 12 : 20}" fill="none" stroke-linecap="round"/>
+      <circle cx="${ex}" cy="${ey}" r="11" fill="var(--ink)"/><circle cx="${sx}" cy="${sy}" r="16" fill="var(--ink)"/>
+      <text x="${sx + 34 + tyk}" y="${(sy + ey) / 2 - 20}" font-size="18" font-weight="700" fill="${bic}">Biceps</text>
+      <text x="${sx - 40}" y="${(sy + ey) / 2}" text-anchor="end" font-size="18" font-weight="700" fill="${tri}">Triceps</text>`);
+    $('armTekst').textContent = kort ? 'Biceps trekker seg sammen og bøyer albuen. Triceps slapper av.' : 'Armen er strak: triceps har trukket den ut. Biceps slapper av.';
+  }
+  $('armVinkel').oninput = arm; arm();
+
+  // ---------- del 6: hvilken muskel jobber? ----------
+  const MUSK = ['Lår', 'Bryst', 'Mage', 'Legg'];
+  const OVELSE = [
+    ['🏋️', 'Knebøy', 0, 'Forside lår (og sete) strekker kneet.'],
+    ['🙇', 'Armhevinger', 1, 'Brystet og triceps skyver deg opp.'],
+    ['🧘', 'Situps', 2, 'Magemusklene bøyer overkroppen.'],
+    ['🩰', 'Tåhev', 3, 'Leggmuskelen løfter hælen.'],
+    ['⚽', 'Spark', 0, 'Forside lår strekker kneet.'],
+    ['🏐', 'Satsing i stuss', 3, 'Leggen og låret gir fart opp.']
+  ];
+  let riktige = 0;
+  OVELSE.forEach(([e, n, r, f]) => {
+    const k = document.createElement('div'); k.className = 'q';
+    k.innerHTML = `<span class="emoji">${e}</span><h3>${n}</h3><div class="knapper"></div><p class="forkl"></p>`;
+    MUSK.forEach((s, j) => {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = s;
+      b.onclick = () => {
+        if (k.dataset.ok) return;
+        k.querySelectorAll('button').forEach(x => x.classList.remove('feil'));
+        if (j === r) { b.classList.add('ok'); k.dataset.ok = 1; riktige++; k.querySelector('.forkl').textContent = f; }
+        else { b.classList.add('feil'); k.querySelector('.forkl').textContent = 'Prøv igjen.'; }
+        $('sorterTekst').textContent = riktige + ' av ' + OVELSE.length + ' riktige';
+      };
+      k.querySelector('.knapper').appendChild(b);
+    });
+    $('sorterKort').appendChild(k);
+  });
+  $('sorterTekst').textContent = 'Trykk på muskelen som jobber mest.';
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
