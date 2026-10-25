@@ -326,6 +326,7 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     <div>Søn<b>😴</b>Hvile</div>
   </div>
   <p class="regel">Aldri to <b>harde</b> dager rett etter hverandre.</p>
+  <a class="simlink no-print" data-sim="formkurve"><span class="ico">🧪</span><span><b>Prøv selv: Formkurve</b><small>Test ukeplanen din: blir formen bedre?</small></span><span class="pil">→</span></a>
   <details class="laerer no-print"><summary>Lærernotat</summary>Ukeplanen viser mengde og fordeling. Husk at skole, jobb og søvn også er belastning. Bruk formkurven fra Vg2 leksjon 1 for å forklare hvorfor hvile trengs mellom harde økter.</details>
 </section>
 
@@ -471,6 +472,8 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     }catch(e){ fallback(); }
   });
 })();
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { const [navn, fane] = a.dataset.sim.split("#"); a.href = SIMULATORER + navn + ".html" + (fane ? "#" + fane : ""); a.target = "_blank"; a.rel = "noopener"; });
 </script>
 
 </body></html>

@@ -334,6 +334,7 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     <p class="status" id="aktTekst"></p>
   </div>
   <p class="regel">Hard trening: hjertet slår <b>fortere</b> og du puster <b>mer</b>.</p>
+  <a class="simlink no-print" data-sim="puls"><span class="ico">🧪</span><span><b>Prøv selv: Puls og kretsløp</b><small>Se blodet strømme. Sammenlign et trent og et utrent hjerte.</small></span><span class="pil">→</span></a>
   <details class="laerer no-print"><summary>Lærernotat</summary>Tallene gjelder en vanlig 16-åring. Makspuls er omtrent 220 minus alder, men varierer mye fra person til person. Puls = slag per minutt. Pust = antall åndedrag per minutt.</details>
 </section>
 
@@ -494,6 +495,8 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     }catch(e){ fallback(); }
   });
 })();
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { const [navn, fane] = a.dataset.sim.split("#"); a.href = SIMULATORER + navn + ".html" + (fane ? "#" + fane : ""); a.target = "_blank"; a.rel = "noopener"; });
 </script>
 
 </body></html>
