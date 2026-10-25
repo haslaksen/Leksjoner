@@ -263,6 +263,7 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     <p class="status" id="formTekst"></p>
   </div>
   <p class="regel">Du blir sterkere i <b>hvilen</b> etter treningen.</p>
+  <a class="simlink no-print" data-sim="formkurve"><span class="ico">🧪</span><span><b>Prøv selv: Formkurve</b><small>Lag din egen plan for fire uker, og se formen.</small></span><span class="pil">→</span></a>
   <details class="laerer no-print"><summary>Lærernotat</summary>Prinsippet heter superkompensasjon: belastning gir tretthet, og under restitusjon bygger kroppen seg opp til et litt høyere nivå enn før. For tett: formen synker (overtrening). For sjelden: effekten forsvinner før neste økt. Kurven er forenklet; ulike egenskaper trenger ulik hviletid.</details>
 </section>
 
@@ -505,6 +506,8 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     }catch(e){ fallback(); }
   });
 })();
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { const [navn, fane] = a.dataset.sim.split("#"); a.href = SIMULATORER + navn + ".html" + (fane ? "#" + fane : ""); a.target = "_blank"; a.rel = "noopener"; });
 </script>
 
 </body></html>

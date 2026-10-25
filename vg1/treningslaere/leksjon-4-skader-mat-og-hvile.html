@@ -325,6 +325,7 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     </svg>
   </div>
   <p class="regel">Ungdom trenger <b>8–10 timer søvn</b>.</p>
+  <a class="simlink no-print" data-sim="formkurve"><span class="ico">🧪</span><span><b>Prøv selv: Formkurve</b><small>Legg inn økter i fire uker. Hva skjer uten hvile?</small></span><span class="pil">→</span></a>
   <details class="laerer no-print"><summary>Lærernotat</summary>Dette heter restitusjon og superkompensasjon. Neste økt bør komme når formen er på topp. For tett trening uten hvile gir dårligere form og økt skaderisiko (overtrening). Vg2 leksjon 1 bruker samme kurve.</details>
 </section>
 
@@ -474,6 +475,8 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     }catch(e){ fallback(); }
   });
 })();
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { const [navn, fane] = a.dataset.sim.split("#"); a.href = SIMULATORER + navn + ".html" + (fane ? "#" + fane : ""); a.target = "_blank"; a.rel = "noopener"; });
 </script>
 
 </body></html>

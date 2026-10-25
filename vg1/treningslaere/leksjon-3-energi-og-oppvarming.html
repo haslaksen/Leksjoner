@@ -294,6 +294,7 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     <p class="status" id="tidTekst"></p>
   </div>
   <p class="regel">Kort og hardt: <b>anaerob</b>. Langt og rolig: <b>aerob</b>.</p>
+  <a class="simlink no-print" data-sim="puls"><span class="ico">🧪</span><span><b>Prøv selv: Puls og kretsløp</b><small>Når klarer ikke hjertet å levere nok oksygen lenger?</small></span><span class="pil">→</span></a>
   <details class="laerer no-print"><summary>Lærernotat</summary>Tallene er omtrentlige (maksimal innsats, etter Gastin 2001), og kreatinfosfat er regnet med i anaerob. Aerob og anaerob bidrar omtrent like mye ved ca. 75 sekunder.</details>
 </section>
 
@@ -465,6 +466,8 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     }catch(e){ fallback(); }
   });
 })();
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { const [navn, fane] = a.dataset.sim.split("#"); a.href = SIMULATORER + navn + ".html" + (fane ? "#" + fane : ""); a.target = "_blank"; a.rel = "noopener"; });
 </script>
 
 </body></html>
