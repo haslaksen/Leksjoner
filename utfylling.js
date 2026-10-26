@@ -26,7 +26,7 @@
       ".valg>span[data-ring]{outline:3px solid #1c7ed6;outline-offset:3px}" +
       "td[data-kryss]{cursor:pointer;user-select:none;text-align:center;vertical-align:middle}" +
       "td[data-kryss]:hover{background:rgba(28,126,214,.08)}" +
-      "td[data-kryss][data-ring]::before{content:'✗';font-weight:800;font-size:1.3em}" +
+      ".kryssmerke{font-weight:800;font-size:1.3em}" +
       "@media print{.skriv,.skriv:focus{background:none!important;box-shadow:none!important}.utfylling-knapp{display:none!important}}";
     document.head.appendChild(st);
 
@@ -73,7 +73,19 @@
       boks.insertBefore(f, fasit || null);
     }
 
-    function farge(e) { e.setAttribute("aria-pressed", e.hasAttribute("data-ring")); }
+    // Krysset er ekte tekst (ikke bare utseende), så det blir med når oppgavene kopieres til OneNote.
+    function farge(e) {
+      var på = e.hasAttribute("data-ring");
+      e.setAttribute("aria-pressed", på);
+      if (e.tagName !== "TD") return;
+      var m = e.querySelector(".kryssmerke");
+      if (på && !m) {
+        m = document.createElement("span");
+        m.className = "kryssmerke";
+        m.textContent = "✗";
+        e.insertBefore(m, e.firstChild);
+      } else if (!på && m) m.remove();
+    }
 
     // Tom celle: ingen tekst, og ingen andre element enn fasit og linjeskift.
     function tom(td) {
