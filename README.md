@@ -58,6 +58,16 @@ Ny fasit må stå i `<span class="fasit" hidden>…</span>` (eller `class="fasit
 
 Enklere oppgaver for elever som trenger mer støtte legges ved siden av leksjonen, med samme navn og `-steg-for-steg` til slutt, for eksempel `vg1/elektro/leksjon-1-spenning-strom-og-motstand-steg-for-steg.html`. Siden står ikke på forsiden. Læreren finner den via lenken «Steg for steg» i det røde feltet på lærerversjonen av leksjonen, og deler elevversjonen av siden direkte med eleven. Fasit merkes som i leksjonene.
 
+## Utfylling og PDF
+
+Alle oppgaver er utfyllingsoppgaver: eleven skriver svarene rett på nettsiden og trykker «🖨 Skriv ut / lagre som PDF». `bygg.js` legger `utfylling.js` på alle leksjoner og Steg for steg-sider (ikke prøvene). Skriptet finner svarplassene selv, så nye oppgaver trenger bare vanlige svarplasser:
+
+- `.svar` (svarlinje), `.luke` (luke i tekst) og tomme tabellceller blir skrivefelt. `______` i teksten blir også en skrivelinje.
+- `.valg` (sett ring rundt): eleven trykker på et alternativ. `.ordbank`: trykk på et ord, så skrives det i luka.
+- En oppgave i en liste (`li`) uten svarplass får en svarlinje.
+
+Svarene lagres i elevens nettleser til eleven trykker «🗑 Tøm svarene». Fasit står som før inne i svarplassene (`span.fasit`).
+
 ## Bilder og filer under figurene
 
 Hvert emne har en mappe `filer/` (for eksempel `vg2/materiallaere/filer/`). Last opp med **Add file → Upload files** på GitHub. Filnavnet bestemmer hvor filen vises: `leksjon-4-herding-herdekar.jpg` havner nederst i delen `<section id="herding">` i leksjon 4, med teksten «herdekar». Knappen «Vis/skjul plass for filer» i det røde feltet på lærersiden viser en stiplet boks i hver del med navnet filene skal starte med. Boksene er skjult ellers, så de ikke vises på fremviseren.
