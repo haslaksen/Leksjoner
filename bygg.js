@@ -183,8 +183,40 @@ function kopierFiler(dir, laerer) {
 
 fs.rmSync(UT, { recursive: true, force: true });
 for (const trinn of ["vg1", "vg2", "vg3"]) { kopierFiler(trinn, false); kopierFiler(trinn, true); }
+// Kryssoppgaver: rutene blir kryssruter i stedet for skrivefelt (se utfylling.js). Svaret skrives ikke på elevsiden.
+//   En kolonne der alle cellene er tomme eller har fasit som starter med ✗ (eller ✓, X, «(✗)»), er en kryssekolonne.
+//   Rader med høyst ett kryss i fasiten får data-en: der kan eleven bare krysse av i én rute.
+const MERKE = /^\s*(?:<span class="fasit" hidden>\s*\(?([✗✓✔Xx×])(?![\wæøåÆØÅ0-9,.])(?:(?!<\/?span)[\s\S])*<\/span>)?\s*$/;
+function merkKryss(s) {
+  return s.replace(/<table\b[^>]*>[\s\S]*?<\/table>/g, tab => {
+    if (/colspan|rowspan|<table\b[\s\S]*<table\b/.test(tab.slice(1))) return tab;
+    const rader = [...tab.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/g)].map(r =>
+      [...r[1].matchAll(/<(td|th)\b([^>]*)>([\s\S]*?)<\/\1>/g)].map(c => ({ tag: c[1], merke: c[1] === "td" && c[3].match(MERKE) })));
+    const bredde = Math.max(0, ...rader.map(r => r.length));
+    const kryss = [];
+    for (let k = 1; k < bredde; k++) {
+      const celler = rader.map(r => r[k]).filter(c => c && c.tag === "td");
+      if (celler.length && celler.every(c => c.merke)) kryss.push(k);
+    }
+    // Minst én kolonne må ha et kryss i fasiten, ellers er det ikke en kryssoppgave.
+    if (!kryss.some(k => rader.some(r => r[k] && r[k].merke && r[k].merke[1]))) return tab;
+    let i = 0;
+    return tab.replace(/<tr\b([^>]*)>([\s\S]*?)<\/tr>/g, (rad, trAttr, inn) => {
+      const r = rader[i++] || [];
+      const antall = kryss.filter(k => r[k] && r[k].merke && r[k].merke[1]).length;
+      let k = -1;
+      inn = inn.replace(/<(td|th)\b([^>]*)>/g, (m, tag, attr) => {
+        k++;
+        return tag === "td" && kryss.includes(k) ? `<td${attr} data-kryss>` : m;
+      });
+      return `<tr${trAttr}${antall <= 1 && /data-kryss/.test(inn) ? " data-en" : ""}>${inn}</tr>`;
+    });
+  });
+}
+
 for (const fil of filer) {
-  const s = fs.readFileSync(path.join(__dirname, fil), "utf8");
+  let s = fs.readFileSync(path.join(__dirname, fil), "utf8");
+  if (!erProve(fil) && fil !== "index.html") s = merkKryss(s);
   const ut = [[path.join(UT, LAERER_STI), vedlegg(tegningTilBilde(laererversjon(s, fil), fil, true), fil, true)]];
   if (!erProve(fil)) ut.push([UT, vedlegg(tegningTilBilde(elevversjon(s), fil, false), fil, false)]);
   for (let [mappe, innhold] of ut) {

@@ -64,6 +64,7 @@ Alle oppgaver er utfyllingsoppgaver: eleven skriver svarene rett på nettsiden o
 
 - `.svar` (svarlinje), `.luke` (luke i tekst) og tomme tabellceller blir skrivefelt. `______` i teksten blir også en skrivelinje.
 - `.valg` (sett ring rundt): eleven trykker på et alternativ. `.ordbank`: trykk på et ord, så skrives det i luka.
+- Kryssoppgaver: i en tabell der kolonnene bare har tomme ruter og fasit ✗ (eller «✗ forklaring», «(✗)»), kan eleven bare sette kryss.
 - En oppgave i en liste (`li`) uten svarplass får en svarlinje.
 
 Svarene lagres i elevens nettleser til eleven trykker «🗑 Tøm svarene». Fasit står som før inne i svarplassene (`span.fasit`).

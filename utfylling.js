@@ -2,12 +2,12 @@
 // bygg.js legger skriptet nederst på alle leksjoner og Steg for steg-sider (ikke prøver).
 // Svarplassene finnes av seg selv, så leksjonene trenger ingen endring:
 //   .svar, .luke og tomme tabellceller blir skrivefelt, ______ i teksten blir en skrivelinje,
-//   trykk på et alternativ i .valg setter ring rundt, trykk på et ord i .ordbank skriver det i luka,
-//   og en oppgave (li) uten svarplass får en svarlinje.
+//   trykk på et alternativ i .valg setter ring rundt, trykk i en kryssrute (td[data-kryss]) setter kryss,
+//   trykk på et ord i .ordbank skriver det i luka, og en oppgave (li) uten svarplass får en svarlinje.
 // Svarene lagres i nettleseren (localStorage), så de er der når eleven åpner siden igjen.
 (function () {
   var OPPG = "#oppgaver, #oppgavetekst, .sheet, .oppg, .oppgave";
-  var NOKKEL = "utfylling:" + location.pathname;
+  var NOKKEL = "utfylling2:" + location.pathname;
 
   function start() {
     var omr = [].filter.call(document.querySelectorAll(OPPG), function (e) {
@@ -24,6 +24,9 @@
       ".luke>.skriv{min-width:100%;text-align:center}" +
       ".valg>span{cursor:pointer;user-select:none}" +
       ".valg>span[data-ring]{outline:3px solid #1c7ed6;outline-offset:3px}" +
+      "td[data-kryss]{cursor:pointer;user-select:none;text-align:center;vertical-align:middle}" +
+      "td[data-kryss]:hover{background:rgba(28,126,214,.08)}" +
+      ".kryssmerke{font-weight:800;font-size:1.3em}" +
       "@media print{.skriv,.skriv:focus{background:none!important;box-shadow:none!important}.utfylling-knapp{display:none!important}}";
     document.head.appendChild(st);
 
@@ -70,6 +73,20 @@
       boks.insertBefore(f, fasit || null);
     }
 
+    // Krysset er ekte tekst (ikke bare utseende), så det blir med når oppgavene kopieres til OneNote.
+    function farge(e) {
+      var på = e.hasAttribute("data-ring");
+      e.setAttribute("aria-pressed", på);
+      if (e.tagName !== "TD") return;
+      var m = e.querySelector(".kryssmerke");
+      if (på && !m) {
+        m = document.createElement("span");
+        m.className = "kryssmerke";
+        m.textContent = "✗";
+        e.insertBefore(m, e.firstChild);
+      } else if (!på && m) m.remove();
+    }
+
     // Tom celle: ingen tekst, og ingen andre element enn fasit og linjeskift.
     function tom(td) {
       return [].every.call(td.childNodes, function (n) {
@@ -102,7 +119,7 @@
       });
 
       o.querySelectorAll(".svar, .luke, td").forEach(function (e) {
-        if (e.tagName === "TD" && !tom(e)) return;
+        if (e.tagName === "TD" && (e.hasAttribute("data-kryss") || !tom(e))) return;
         settInn(e, !e.classList.contains("luke"));
       });
 
@@ -116,14 +133,20 @@
         settInn(d, true);
       });
 
-      // Sett ring rundt: trykk på et alternativ (trykk igjen for å ta bort ringen).
-      o.querySelectorAll(".valg > span").forEach(function (s) {
+      // Sett ring rundt eller kryss: trykk på et alternativ (trykk igjen for å ta det bort).
+      // I en kryssrad med data-en (ett riktig svar) kan bare én rute ha kryss.
+      o.querySelectorAll(".valg > span, td[data-kryss]").forEach(function (s) {
         valg.push(s);
         s.setAttribute("role", "button");
+        s.setAttribute("aria-label", s.tagName === "TD" ? "Kryss" : s.textContent.trim());
         s.tabIndex = 0;
         var bytt = function () {
-          if (s.hasAttribute("data-ring")) s.removeAttribute("data-ring"); else s.setAttribute("data-ring", "");
-          s.setAttribute("aria-pressed", s.hasAttribute("data-ring"));
+          var på = !s.hasAttribute("data-ring");
+          if (på && s.parentElement.hasAttribute("data-en")) {
+            s.parentElement.querySelectorAll("td[data-kryss]").forEach(function (c) { c.removeAttribute("data-ring"); farge(c); });
+          }
+          if (på) s.setAttribute("data-ring", ""); else s.removeAttribute("data-ring");
+          farge(s);
           lagre();
         };
         s.addEventListener("click", bytt);
@@ -148,7 +171,7 @@
 
     // Henter svarene fra forrige gang.
     (lagret.t || []).forEach(function (t, i) { if (felt[i] && t) felt[i].textContent = t; });
-    (lagret.v || []).forEach(function (v, i) { if (valg[i] && v) { valg[i].setAttribute("data-ring", ""); valg[i].setAttribute("aria-pressed", "true"); } });
+    (lagret.v || []).forEach(function (v, i) { if (valg[i] && v) { valg[i].setAttribute("data-ring", ""); farge(valg[i]); } });
 
     // Knappene legges ved siden av «Vis fasit» (den finnes, men er skjult, også på elevsiden).
     var fasitKnapp = document.querySelector("#fasitBtn, #btnFasit");
@@ -177,7 +200,7 @@
     knapp("🗑 Tøm svarene", function () {
       if (!confirm("Vil du slette alle svarene dine på denne siden?")) return;
       felt.forEach(function (f) { f.textContent = ""; });
-      valg.forEach(function (v) { v.removeAttribute("data-ring"); v.setAttribute("aria-pressed", "false"); });
+      valg.forEach(function (v) { v.removeAttribute("data-ring"); farge(v); });
       lagre();
     });
   }
