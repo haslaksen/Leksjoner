@@ -183,22 +183,15 @@ function kopierFiler(dir, laerer) {
 
 fs.rmSync(UT, { recursive: true, force: true });
 for (const trinn of ["vg1", "vg2", "vg3"]) { kopierFiler(trinn, false); kopierFiler(trinn, true); }
-// Kryssoppgaver og «sett ring rundt»: riktig svar må finnes også på elevsiden, så eleven får grønt
-// eller rødt med en gang (se utfylling.js). Svaret skrives kodet i data-sjekk, så det ikke kan leses i teksten.
-//   Tabeller: en kolonne der alle cellene er tomme eller har fasit som starter med ✗ (eller ✓, X, «(✗)»), er en kryssekolonne.
-//   .valg: hvert alternativ får data-sjekk, riktig er det som har fasit ✓.
+// Kryssoppgaver: rutene blir kryssruter i stedet for skrivefelt (se utfylling.js). Svaret skrives ikke på elevsiden.
+//   En kolonne der alle cellene er tomme eller har fasit som starter med ✗ (eller ✓, X, «(✗)»), er en kryssekolonne.
+//   Rader med høyst ett kryss i fasiten får data-en: der kan eleven bare krysse av i én rute.
 const MERKE = /^\s*(?:<span class="fasit" hidden>\s*\(?([✗✓✔Xx×])(?![\wæøåÆØÅ0-9,.])(?:(?!<\/?span)[\s\S])*<\/span>)?\s*$/;
-function kode(salt, riktig) {
-  let h = 2166136261;
-  for (const c of salt + (riktig ? "j" : "n")) h = Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0;
-  return salt + ":" + h.toString(36);
-}
 function merkKryss(s) {
-  let nr = 0;
-  s = s.replace(/<table\b[^>]*>[\s\S]*?<\/table>/g, tab => {
+  return s.replace(/<table\b[^>]*>[\s\S]*?<\/table>/g, tab => {
     if (/colspan|rowspan|<table\b[\s\S]*<table\b/.test(tab.slice(1))) return tab;
     const rader = [...tab.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/g)].map(r =>
-      [...r[1].matchAll(/<(td|th)\b([^>]*)>([\s\S]*?)<\/\1>/g)].map(c => ({ tag: c[1], attr: c[2], inn: c[3], merke: c[1] === "td" && c[3].match(MERKE) })));
+      [...r[1].matchAll(/<(td|th)\b([^>]*)>([\s\S]*?)<\/\1>/g)].map(c => ({ tag: c[1], merke: c[1] === "td" && c[3].match(MERKE) })));
     const bredde = Math.max(0, ...rader.map(r => r.length));
     const kryss = [];
     for (let k = 1; k < bredde; k++) {
@@ -208,33 +201,16 @@ function merkKryss(s) {
     // Minst én kolonne må ha et kryss i fasiten, ellers er det ikke en kryssoppgave.
     if (!kryss.some(k => rader.some(r => r[k] && r[k].merke && r[k].merke[1]))) return tab;
     let i = 0;
-    return tab.replace(/<tr\b[^>]*>([\s\S]*?)<\/tr>/g, rad => {
+    return tab.replace(/<tr\b([^>]*)>([\s\S]*?)<\/tr>/g, (rad, trAttr, inn) => {
       const r = rader[i++] || [];
-      const harSvar = kryss.some(k => r[k] && r[k].merke && r[k].merke[1]);
+      const antall = kryss.filter(k => r[k] && r[k].merke && r[k].merke[1]).length;
       let k = -1;
-      return rad.replace(/<(td|th)\b([^>]*)>/g, (m, tag, attr) => {
+      inn = inn.replace(/<(td|th)\b([^>]*)>/g, (m, tag, attr) => {
         k++;
-        if (tag !== "td" || !kryss.includes(k)) return m;
-        const k2 = harSvar ? ` data-sjekk="${kode("k" + nr++, r[k].merke[1])}"` : "";
-        return `<td${attr} data-kryss${k2}>`;
+        return tag === "td" && kryss.includes(k) ? `<td${attr} data-kryss>` : m;
       });
+      return `<tr${trAttr}${antall <= 1 && /data-kryss/.test(inn) ? " data-en" : ""}>${inn}</tr>`;
     });
-  });
-  // <div class="valg">: alternativene er spennene rett under diven.
-  return s.replace(/(<div\b[^>]*class="valg"[^>]*>)([\s\S]*?)(<\/div>)/g, (hel, start, inn, slutt) => {
-    if (!inn.includes('class="fasit"')) return hel;
-    let ut = "", dybde = 0, pos = 0;
-    for (const m of inn.matchAll(/<(\/?)span\b[^>]*>/g)) {
-      if (!m[1]) {
-        if (dybde++ === 0) { ut += inn.slice(pos, m.index); pos = m.index; }
-      } else if (--dybde === 0) {
-        const slutten = m.index + m[0].length, hele = inn.slice(pos, slutten);
-        const riktig = /<span class="fasit" hidden>\s*[✓✔]/.test(hele);
-        ut += hele.replace(/^<span\b/, `<span data-sjekk="${kode("v" + nr++, riktig)}"`);
-        pos = slutten;
-      }
-    }
-    return start + ut + inn.slice(pos) + slutt;
   });
 }
 

@@ -4,8 +4,6 @@
 //   .svar, .luke og tomme tabellceller blir skrivefelt, ______ i teksten blir en skrivelinje,
 //   trykk på et alternativ i .valg setter ring rundt, trykk i en kryssrute (td[data-kryss]) setter kryss,
 //   trykk på et ord i .ordbank skriver det i luka, og en oppgave (li) uten svarplass får en svarlinje.
-// Kryss og ring blir grønne når svaret er riktig og røde når det er feil. bygg.js skriver svaret kodet
-// i data-sjekk, så fasiten aldri vises på elevsiden.
 // Svarene lagres i nettleseren (localStorage), så de er der når eleven åpner siden igjen.
 (function () {
   var OPPG = "#oppgaver, #oppgavetekst, .sheet, .oppg, .oppgave";
@@ -29,10 +27,6 @@
       "td[data-kryss]{cursor:pointer;user-select:none;text-align:center;vertical-align:middle}" +
       "td[data-kryss]:hover{background:rgba(28,126,214,.08)}" +
       "td[data-kryss][data-ring]::before{content:'✗';font-weight:800;font-size:1.3em}" +
-      "[data-ring].rett{outline:3px solid #2f9e44!important;background:rgba(47,158,68,.22)!important;color:#1b5e20}" +
-      "[data-ring].feil{outline:3px solid #e03131!important;background:rgba(224,49,49,.2)!important;color:#a61e1e}" +
-      "td[data-ring].rett,td[data-ring].feil{outline-offset:-3px}" +
-      ".rett,.feil{-webkit-print-color-adjust:exact;print-color-adjust:exact}" +
       "@media print{.skriv,.skriv:focus{background:none!important;box-shadow:none!important}.utfylling-knapp{display:none!important}}";
     document.head.appendChild(st);
 
@@ -79,19 +73,7 @@
       boks.insertBefore(f, fasit || null);
     }
 
-    // Er alternativet riktig? Samme koding som kode() i bygg.js.
-    function riktig(e) {
-      var k = (e.getAttribute("data-sjekk") || "").split(":"), h = 2166136261, t = k[0] + "j";
-      for (var i = 0; i < t.length; i++) h = Math.imul(h ^ t.charCodeAt(i), 16777619) >>> 0;
-      return h.toString(36) === k[1];
-    }
-    // Viser grønt eller rødt (bare når alternativet har et svar å sjekke mot).
-    function farge(e) {
-      var på = e.hasAttribute("data-ring"), sjekk = på && e.hasAttribute("data-sjekk");
-      e.classList.toggle("rett", sjekk && riktig(e));
-      e.classList.toggle("feil", sjekk && !riktig(e));
-      e.setAttribute("aria-pressed", på);
-    }
+    function farge(e) { e.setAttribute("aria-pressed", e.hasAttribute("data-ring")); }
 
     // Tom celle: ingen tekst, og ingen andre element enn fasit og linjeskift.
     function tom(td) {
@@ -140,7 +122,7 @@
       });
 
       // Sett ring rundt eller kryss: trykk på et alternativ (trykk igjen for å ta det bort).
-      // I en kryssrad med ett riktig svar kan bare én rute ha kryss.
+      // I en kryssrad med data-en (ett riktig svar) kan bare én rute ha kryss.
       o.querySelectorAll(".valg > span, td[data-kryss]").forEach(function (s) {
         valg.push(s);
         s.setAttribute("role", "button");
@@ -148,9 +130,8 @@
         s.tabIndex = 0;
         var bytt = function () {
           var på = !s.hasAttribute("data-ring");
-          if (på && s.tagName === "TD") {
-            var rad = [].filter.call(s.parentElement.children, function (c) { return c.hasAttribute("data-kryss"); });
-            if (rad.filter(riktig).length <= 1) rad.forEach(function (c) { c.removeAttribute("data-ring"); farge(c); });
+          if (på && s.parentElement.hasAttribute("data-en")) {
+            s.parentElement.querySelectorAll("td[data-kryss]").forEach(function (c) { c.removeAttribute("data-ring"); farge(c); });
           }
           if (på) s.setAttribute("data-ring", ""); else s.removeAttribute("data-ring");
           farge(s);
