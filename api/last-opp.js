@@ -7,7 +7,7 @@ const crypto = require("crypto");
 
 const REPO = "haslaksen/leksjoner", GREN = "main";
 const MAKS = 3 * 1024 * 1024; // Vercel tar imot opptil 4,5 MB per forespørsel (base64 gjør filen 1/3 større).
-const TYPER = /\.(jpe?g|png|gif|webp|svg|mp4|webm|pdf|docx?|xlsx?|pptx?|txt|zip|stl|step|stp|dxf|dwg)$/i;
+const TYPER = /\.(jpe?g|png|gif|webp|svg|mp4|webm|pdf|docx?|xlsx?|pptx?|txt|zip|stl|step|stp|dxf|dwg|url)$/i;
 const MIME = { "image/jpeg": ".jpg", "image/png": ".png", "image/gif": ".gif", "image/webp": ".webp", "image/svg+xml": ".svg", "application/pdf": ".pdf", "video/mp4": ".mp4" };
 
 // Bare innloggede lærere: samme informasjonskapsel som middleware.js setter ved innlogging.
@@ -73,7 +73,13 @@ module.exports = async (req, res) => {
     return res.status(400).json({ feil: "Ugyldig mappe eller del" });
 
   try {
-    const fil = adresse ? await hentFraNett(adresse) : { data: Buffer.from(innhold || "", "base64"), navn: filnavn || "" };
+    let fil = adresse ? await hentFraNett(adresse).catch(e => { if (bilde) throw e; return null; }) : { data: Buffer.from(innhold || "", "base64"), navn: filnavn || "" };
+    // En nettside (eller noe som ikke kan lastes ned som fil) lagres som lenke: <navn>.url med adressen inni.
+    if (adresse && !bilde && (!fil || !TYPER.test(fil.navn) || fil.data.length > MAKS)) {
+      const u = new URL(adresse);
+      if (!/^https?:$/.test(u.protocol)) throw new Error("Adressen må starte med https://");
+      fil = { data: Buffer.from(`[InternetShortcut]\r\nURL=${u.href}\r\n`), navn: (tekst ? "" : u.hostname.replace(/^www\./, "")) + ".url" };
+    }
     if (!fil.data.length) throw new Error("Filen er tom");
     if (fil.data.length > MAKS) throw new Error("Filen er for stor (over 3 MB). Last den opp på GitHub i stedet.");
     const type = (fil.navn.match(TYPER) || [""])[0].toLowerCase();
