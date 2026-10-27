@@ -137,6 +137,10 @@ function vedlegg(s, fil, laerer) {
       const sti = laerer ? ` data-sti="${esc(path.dirname(fil).replace(/\\/g, "/"))}/${FILER}/${esc(f)}"` : "";
       if (BILDE.test(f)) return `<figure${sti} style="margin:0;flex:1 1 260px;max-width:520px"><img data-fullskjerm src="${url}" alt="${navn}" loading="lazy" decoding="async" style="cursor:zoom-in;width:100%;height:auto;border-radius:10px;border:1px solid var(--line,#d9dfe6)">${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
       if (VIDEO.test(f)) return `<figure${sti} style="margin:0;flex:1 1 260px;max-width:520px"><video src="${url}" controls preload="metadata" style="width:100%;border-radius:10px"></video>${navn || merke ? `<figcaption style="${TEKST};margin-top:4px">${navn}${merke}</figcaption>` : ""}</figure>`;
+      if (f.endsWith(".url")) {
+        const lenke = (fs.readFileSync(path.join(mappe, f), "utf8").match(/^URL=(https?:\/\/\S+)/m) || [])[1];
+        if (lenke) return `<a${sti} href="${esc(lenke)}" target="_blank" rel="noopener" style="flex:0 0 auto;display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--line,#d9dfe6);border-radius:10px;background:var(--panel,#fff);color:var(--ink,#14181d);font:600 15px/1.3 system-ui,sans-serif;text-decoration:none">🔗 ${navn || esc(lenke)}${merke}</a>`;
+      }
       return `<a${sti} href="${url}" download style="flex:0 0 auto;display:inline-flex;gap:8px;align-items:center;padding:10px 14px;border:1px solid var(--line,#d9dfe6);border-radius:10px;background:var(--panel,#fff);color:var(--ink,#14181d);font:600 15px/1.3 system-ui,sans-serif;text-decoration:none">📎 ${navn || esc(f)}${merke}</a>`;
     });
     if (laerer) deler.push(`<div class="filplass no-print" data-mappe="${esc(path.dirname(fil).replace(/\\/g, "/"))}" data-prefiks="${esc(prefiks)}" style="flex:1 1 100%;${TEKST};border:2px dashed var(--line,#d9dfe6);border-radius:10px;padding:8px 12px">📎 Legg til her, eller dra en fil hit</div>`);
