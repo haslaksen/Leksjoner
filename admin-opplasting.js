@@ -1,6 +1,6 @@
 // Opplasting fra lærersiden (bygg.js legger dette inn på lærerversjonen av leksjonene).
 // Knappen «Last opp» i de stiplede boksene åpner et vindu der admin velger en fil fra PC-en
-// eller limer inn en nettadresse. Filen sendes til api/last-opp.js, som bare godtar innloggede lærere (lærerpassordet).
+// eller limer inn en nettadresse. Man kan også dra en fil rett inn i boksen eller på tegningen. Filen sendes til api/last-opp.js, som bare godtar innloggede lærere (lærerpassordet).
 (function () {
   const d = document.createElement("dialog");
   d.style.cssText = "max-width:440px;width:92vw;border:0;border-radius:14px;padding:18px 20px;font:500 15px/1.45 system-ui,sans-serif;color:#14181d";
@@ -94,7 +94,31 @@
     if (el.tagName === "A") el.after(knapp); else el.appendChild(knapp);
   });
 
+  // Dra og slipp: en fil som slippes på boksen eller tegningen, velges i vinduet. Så trykker man «Last opp».
+  const påSlipp = (mål, åpneHer) => {
+    const av = () => { mål.style.outline = ""; };
+    mål.addEventListener("dragover", e => {
+      if (!document.body.classList.contains("vis-filplass") || ![...e.dataTransfer.types].includes("Files")) return;
+      e.preventDefault(); e.stopPropagation();
+      mål.style.outline = "3px solid #c92a2a"; mål.style.outlineOffset = "2px";
+    });
+    mål.addEventListener("dragleave", av);
+    mål.addEventListener("drop", e => {
+      av();
+      if (!document.body.classList.contains("vis-filplass") || !e.dataTransfer.files.length) return;
+      e.preventDefault(); e.stopPropagation();
+      åpneHer();
+      f.fil.files = e.dataTransfer.files;
+      melding.textContent = `Valgt: ${e.dataTransfer.files[0].name}. Trykk «Last opp».`;
+    });
+  };
+  // En fil som slippes utenfor boksene, skal ikke åpnes i nettleseren (da forsvinner lærersiden).
+  ["dragover", "drop"].forEach(t => document.addEventListener(t, e => {
+    if (document.body.classList.contains("vis-filplass") && [...e.dataTransfer.types].includes("Files")) e.preventDefault();
+  }));
+
   document.querySelectorAll(".filplass[data-prefiks]").forEach(b => {
+    påSlipp(b, () => åpne(b));
     const knapp = document.createElement("button");
     knapp.textContent = "⬆ Last opp";
     knapp.style.cssText = "margin-left:8px;font:700 14px system-ui,sans-serif;padding:3px 12px;border-radius:99px;border:1px solid #c92a2a;background:#fff;color:#c92a2a;cursor:pointer";
@@ -103,7 +127,11 @@
   });
 
   // Tegninger som kan byttes med bilde (bygg.js lager knappene).
-  document.querySelectorAll("button[data-bytt]").forEach(k => { k.onclick = () => åpne(k, k.dataset.bytt); });
+  document.querySelectorAll("button[data-bytt]").forEach(k => {
+    k.onclick = () => åpne(k, k.dataset.bytt);
+    påSlipp(k, () => åpne(k, k.dataset.bytt));
+    if (k.previousElementSibling) påSlipp(k.previousElementSibling, () => åpne(k, k.dataset.bytt));
+  });
   document.querySelectorAll("button[data-tegning]").forEach(k => {
     k.onclick = async () => {
       if (!confirm("Fjerne bildet og vise tegningen igjen?")) return;
