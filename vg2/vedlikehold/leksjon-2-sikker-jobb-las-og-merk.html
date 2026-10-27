@@ -93,6 +93,9 @@ table.t th{background:var(--steel-soft)}
 .pairwrap.solo .scene{max-height:200px}
 .hot{cursor:pointer}
 .ecard h3{font-size:1.5rem}
+.lov .ikon{font-size:2.2rem; line-height:1}
+.lov .card h3{margin:.3rem 0}
+.lov .trinn{margin:.5rem 0 0; font-size:.8rem; font-weight:700; color:var(--blue)}
 .ecard .row{display:grid; grid-template-columns:2.2rem 1fr; gap:.4rem; margin:.5rem 0; font-size:1rem}
 .ecard .row b{font-size:1.3rem}
 .checks{display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.6rem}
@@ -196,6 +199,7 @@ table.t th{background:var(--steel-soft)}
         <li><b>Lås og merk</b> (LOTO) i sju trinn</li>
         <li><b>Gruppelås</b> når flere jobber</li>
         <li>Trygt <b>tilbake i drift</b></li>
+        <li>Hva sier <b>loven</b>?</li>
       </ol>
     </div>
     <div>
@@ -249,7 +253,8 @@ table.t th{background:var(--steel-soft)}
           <tr><td>0–8 min</td><td>Del 6: LOTO i sju trinn</td></tr>
           <tr><td>8–14 min</td><td>Del 7–8: gruppelås</td></tr>
           <tr><td>14–20 min</td><td>Del 9: tilbake i drift</td></tr>
-          <tr><td>20–43 min</td><td>Oppgave 4–6</td></tr>
+          <tr><td>20–24 min</td><td>Del 10: hvem sier hva?</td></tr>
+          <tr><td>24–43 min</td><td>Oppgave 4–7</td></tr>
           <tr><td>43–45 min</td><td>Exit-lapp</td></tr>
         </table>
       </div>
@@ -522,6 +527,23 @@ table.t th{background:var(--steel-soft)}
   </div>
 </section>
 
+<!-- LOV OG FORSKRIFT -->
+<section class="slide" id="lov" data-nav="10 Hvem sier hva?">
+  <div class="wrap">
+    <div class="kicker">Del 10 · ca. 4 min</div>
+    <h2>Hvem sier hva? Lov og forskrift</h2>
+    <p class="lead">Lås og merk er ikke bare lurt. Det er <b>krav</b>.</p>
+    <div class="mini3 lov">
+      <div class="card"><div class="ikon">📘</div><h3>Arbeidsmiljøloven</h3><p class="short">Bedriften lager <b>rutiner</b>. Du <b>følger</b> dem og <b>sier fra</b>.</p><p class="trinn">§ 2-3 og § 3-1</p></div>
+      <div class="card"><div class="ikon">🔧</div><h3>Forskrift om utførelse av arbeid</h3><p class="short">Vedlikehold: maskinen <b>står stille</b> og <b>kan ikke startes</b>.</p><p class="trinn">§ 12-6</p></div>
+      <div class="card"><div class="ikon">⚡</div><h3>FSE</h3><p class="short">Elektrisk: <b>koble fra</b>, <b>lås</b>, <b>sjekk</b> at det er spenningsløst.</p><p class="trinn">Elektro 1: fem sikkerhetsregler</p></div>
+      <div class="card"><div class="ikon">🏭</div><h3>Maskinforskriften</h3><p class="short">Maskinen skal ha <b>låsbar</b> hovedbryter for alle energier.</p><p class="trinn">Krav til den som lager maskinen</p></div>
+      <div class="card"><div class="ikon">📋</div><h3>Internkontrollforskriften</h3><p class="short">Rutinene står <b>skriftlig</b> i HMS-systemet.</p><p class="trinn">Krav til bedriften</p></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary><b>Arbeidsmiljøloven</b> § 3-1: arbeidsgiver skal kartlegge farer, vurdere risiko og ha rutiner (systematisk HMS-arbeid). § 2-3: arbeidstaker skal medvirke, bruke verneutstyr, følge rutinene og si fra om fare. <b>Forskrift om utførelse av arbeid</b> kap. 12, § 12-6: vedlikehold av arbeidsutstyr skal gjøres når utstyret er stanset, og det skal sikres mot utilsiktet start. Går det ikke, må det gjøres andre tiltak. Dette er den direkte hjemmelen for lås og merk. <b>FSE</b> (forskrift om sikkerhet ved arbeid i og drift av elektriske anlegg) gjelder elektrisk arbeid: frakobling, sikring mot innkobling, kontroll av spenningsløshet, jording og kortslutning, avskjerming. Det er de fem sikkerhetsreglene fra Elektro 1. <b>Maskinforskriften</b> (vedlegg I, 1.6.3) sier at maskiner skal ha innretninger for å koble fra alle energikilder, og at de skal kunne låses. Det er dette som gjør lås og merk mulig. <b>Internkontrollforskriften</b>: bedriften skal ha skriftlige HMS-rutiner, og LOTO-prosedyren er en av dem. Fullteksten finnes på lovdata.no og arbeidstilsynet.no.</details>
+  </div>
+</section>
+
 <!-- OPPSUMMERING -->
 <section class="slide" id="oppsummering" data-nav="Oppsummering">
   <div class="wrap">
@@ -543,7 +565,7 @@ table.t th{background:var(--steel-soft)}
       <div>
         <div class="card">
           <h3>Nøkkelord</h3>
-          <div class="chips"><span>LOTO</span><span>lås og merk</span><span>energikilde</span><span>restenergi</span><span>isolasjonspunkt</span><span>hovedbryter</span><span>akkumulator</span><span>manometer</span><span>sikringskloss</span><span>personlig lås</span><span>merkelapp</span><span>låsehasp</span><span>låseboks</span><span>prøvestart</span><span>oppstart</span></div>
+          <div class="chips"><span>LOTO</span><span>lås og merk</span><span>energikilde</span><span>restenergi</span><span>isolasjonspunkt</span><span>hovedbryter</span><span>akkumulator</span><span>manometer</span><span>sikringskloss</span><span>personlig lås</span><span>merkelapp</span><span>låsehasp</span><span>låseboks</span><span>prøvestart</span><span>oppstart</span><span>arbeidsmiljøloven</span><span>FSE</span></div>
         </div>
         <div class="card" style="margin-top:1rem">
           <h3>Neste leksjon</h3>
@@ -657,6 +679,19 @@ table.t th{background:var(--steel-soft)}
           <tr><td class="tom"><span class="fasit" hidden>3</span></td><td>Sjekk at ingen er i faresonen</td></tr>
           <tr><td class="tom"><span class="fasit" hidden>5</span></td><td>Varsle operatøren</td></tr>
         </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 7 – Hvem sier hva? <small>Time 2 · 4 min</small></h3>
+        <p>a) Skriv riktig lov eller forskrift. Velg mellom: <b>arbeidsmiljøloven</b>, <b>forskrift om utførelse av arbeid</b>, <b>FSE</b>, <b>maskinforskriften</b>.</p>
+        <table class="ot">
+          <tr><th>Krav</th><th style="width:40%">Lov / forskrift</th></tr>
+          <tr><td>Maskinen skal ha en hovedbryter som kan låses.</td><td class="tom"><span class="fasit" hidden>Maskinforskriften</span></td></tr>
+          <tr><td>Du skal følge rutinene og si fra om fare.</td><td class="tom"><span class="fasit" hidden>Arbeidsmiljøloven</span></td></tr>
+          <tr><td>Sjekk at anlegget er spenningsløst før du tar i det.</td><td class="tom"><span class="fasit" hidden>FSE</span></td></tr>
+          <tr><td>Ved vedlikehold skal maskinen stå stille og være sikret mot start.</td><td class="tom"><span class="fasit" hidden>Forskrift om utførelse av arbeid</span></td></tr>
+        </table>
+        <p>b) Lederen sier: «Vi har dårlig tid. Hopp over låsen i dag.» Hva svarer du?</p><div class="svar"><span class="fasit" hidden>Nei. Lås og merk er et krav i forskriften og i bedriftens rutiner. Jeg sier fra og låser likevel. Arbeidstakeren har plikt til å si fra om fare.</span></div>
       </div>
 
       <div class="oppgave">
