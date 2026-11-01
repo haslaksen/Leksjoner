@@ -130,7 +130,7 @@ svg text{font-family:var(--body)}
 </div>
 <p class="navn">Navn: ______________________ Klasse: ________ Dato: ________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
 
-<details class="laerer no-print"><summary>Lærernotat</summary>Prøven dekker CNC leksjon 1 (akser, nullpunkt, trygg kjøring) og leksjon 2 (programlinjer, G0/G1/G2/G3, simulering). Kompetansemål T8 og T1, T6. 26 poeng. Oppgave 9 er Ekstra. Forslag til grenser: 13 p = bestått, 22 p = svært godt. Skriv ut uten fasit for elevene. Trykk «Vis fasit» og skriv ut på nytt for en fasit til deg selv.</details>
+<details class="laerer no-print"><summary>Lærernotat</summary>Prøven dekker CNC leksjon 1 (akser, nullpunkt, trygg kjøring) leksjon 2 (programlinjer, G0/G1/G2/G3, simulering) og leksjon 3 (verktøykompensasjon, nesradius). Kompetansemål T8 og T1, T6. 29 poeng. Oppgave 10 er Ekstra. Forslag til grenser: 15 p = bestått, 25 p = svært godt. Skriv ut uten fasit for elevene. Trykk «Vis fasit» og skriv ut på nytt for en fasit til deg selv.</details>
 
 <div class="oppg">
  <h2><span class="nr">1</span>Hvilken akse er pilen? Skriv X eller Z.<span class="poeng">2 p</span></h2>
@@ -221,7 +221,15 @@ svg text{font-family:var(--body)}
 </div>
 
 <div class="oppg">
- <h2><span class="nr">9</span>Buen går mot klokka. G2 eller G3? Sett ring rundt.<span class="ekstra">Ekstra</span><span class="poeng">3 p</span></h2>
+ <h2><span class="nr">9</span>Verktøykompensasjon<span class="poeng">3 p</span></h2>
+  <table class="jn">
+    <tr><td class="ikon"><b>a</b></td><td>Programmet er uten kompensasjon (G40). Hvorfor blir fasen 2 × 45° feil?<div class="svar"><span class="fasit" hidden>Skjæret har nesradius. Maskinen styrer den tenkte spissen P, så på skrå linjer blir det stål igjen. Fasen blir for liten. (2 p)</span></div></td></tr>
+    <tr><td class="ikon"><b>b</b></td><td>Skjæret er CNMG 120408. Hva skal stå som R i offsettabellen?<div class="svar"><span class="fasit" hidden>0,8 mm (1 p)</span></div></td></tr>
+  </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">10</span>Buen går mot klokka. G2 eller G3? Sett ring rundt.<span class="ekstra">Ekstra</span><span class="poeng">3 p</span></h2>
   <div class="regn">
     <svg viewBox="0 0 200 140" aria-label="Avrundet kant med radius 3, buen går mot klokka">
       <path d="M20 110 H100 A50 50 0 0 0 150 60 V20" fill="none" stroke="var(--blue)" stroke-width="5"/>
@@ -236,7 +244,7 @@ svg text{font-family:var(--body)}
   </div>
 </div>
 
-<p class="sum">Sum: ______ / 26 poeng</p>
+<p class="sum">Sum: ______ / 29 poeng</p>
 
 </div>
 
