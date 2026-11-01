@@ -335,6 +335,7 @@ kbd{font-family:inherit; font-size:.85em; border:1px solid var(--line); border-b
 <pre class="kode" id="kode"><span class="k">FART = 1.0   # sekunder per bevegelse</span><span class="k">SEKVENS = [</span><span data-i="0">    {'A1': 0,  'A2': 0,  'A3': 90},   # Hjem</span><span data-i="1">    {'A2': 30, 'A3': 110},            # Over delen</span><span data-i="2">    {'A2': 40, 'A3': 120},            # Ned og grip</span><span data-i="3">    {'A2': 20, 'A3': 100},            # Løft</span><span data-i="4">    {'A1': 90},                       # Sving</span><span data-i="5">    {'A2': 40, 'A3': 120},            # Ned og slipp</span><span data-i="6">    {'A1': 0,  'A2': 0,  'A3': 90},   # Hjem</span><span class="k">]</span></pre>
         <div class="controls no-print"><button class="btn orange" id="koKjor">▶ Kjør koden</button></div>
         <div class="card" style="margin-top:.8rem"><b>Les koden:</b> <code>{'A2': 30}</code> betyr «sett A2 til 30°». Akser som ikke står i punktet, blir stående. Alt etter <code>#</code> er en kommentar som maskinen ikke leser.</div>
+        <a class="simlink no-print" data-sim="robotarm"><span class="ico">🦾</span><span><b>Prøv selv: Robotarm</b><small>Lagre punkter, og få koden ferdig skrevet. Kopier den til Fusion.</small></span><span class="pil">→</span></a>
       </div>
       <div class="fig">
         <svg id="koSvg" viewBox="0 0 560 360" role="img" aria-label="Robotarm som kjører koden"></svg>
@@ -668,6 +669,9 @@ $("btnCopy").onclick = async () => {
   }
 };
 })();
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
 </script>
 </body>
 </html>
