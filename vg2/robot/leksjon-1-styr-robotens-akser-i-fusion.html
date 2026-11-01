@@ -1,0 +1,673 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Robot og automasjon 1 – Styr robotens akser i Fusion</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#e0a800; --yellow-soft:#fff8db;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:66ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2 > *, .hero > *{min-width:0}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg, .fig canvas{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.8rem; font-weight:600}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+details.laerer{margin-top:1.2rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+@media (prefers-reduced-motion: reduce){ .scene *, .hero-fig *{animation:none!important} }
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.75rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.legend{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin:.2rem 0 .3rem}
+.legend i{display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:.4rem}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem; line-height:1.7}
+.steps .res{color:var(--orange); font-weight:700; font-size:1.1rem}
+.formula{font-family:"Cascadia Mono", Consolas, monospace; font-size:1.5rem; font-weight:700; text-align:center; padding:.6rem; background:var(--bg); border-radius:10px; margin:.4rem 0}
+
+/* Repetisjon */
+.flip{cursor:pointer; text-align:left; font:inherit; color:inherit; width:100%; min-height:9rem; display:flex; flex-direction:column; justify-content:space-between}
+.flip .q{font-weight:650; font-size:1.05rem}
+.flip .a{display:none; color:var(--green); font-weight:600; margin-top:.6rem}
+.flip.show .a{display:block}
+.flip .hint{font-size:.75rem; color:var(--muted); margin-top:.6rem}
+.flip.show .hint{display:none}
+
+.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
+/* Tabs */
+.tabs{display:flex; gap:.4rem; flex-wrap:wrap}
+.tabs .btn{font-size:.9rem; padding:.5rem 1rem}
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.oppfig{max-width:620px; margin:.4rem 0; background:#fff; border:1px solid #999; border-radius:6px}
+.oppfig svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr 1fr}
+  .readout{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .paper{overflow-x:auto} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+
+</style>
+<style>
+/* Robot og automasjon */
+.kode{font-family:"Cascadia Mono", Consolas, monospace; font-size:.85rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem .9rem; margin:0; line-height:1.6; overflow-x:auto; white-space:pre}
+.kode span{display:block; border-radius:6px; padding:0 .3rem; transition:background .2s}
+.kode span.on{background:var(--orange-soft); color:var(--orange); font-weight:700}
+.kode .k{color:var(--muted)}
+.akse{display:grid; grid-template-columns:3.2em 1fr 4.5em; gap:.6rem; align-items:center; margin-top:.35rem}
+.akse b{color:var(--orange)}
+.akse output{font-variant-numeric:tabular-nums; text-align:right; font-weight:650}
+.akse input[type=range]{width:100%}
+.punkter{font-family:"Cascadia Mono", Consolas, monospace; font-size:.85rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.5rem .8rem; min-height:4.5rem; margin-top:.6rem; white-space:pre-line}
+.steg{counter-reset:s; list-style:none; padding:0; margin:0}
+.steg li{counter-increment:s; display:grid; grid-template-columns:2rem 1fr; gap:.6rem; align-items:start; margin:.55rem 0}
+.steg li::before{content:counter(s); display:grid; place-items:center; width:1.8rem; height:1.8rem; border-radius:50%; background:var(--orange); color:#fff; font-weight:800; font-size:.85rem}
+.steg li span{min-width:0}
+kbd{font-family:inherit; font-size:.85em; border:1px solid var(--line); border-bottom-width:2px; border-radius:5px; padding:0 .3em; background:var(--panel)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">Robot og automasjon · <span>Leksjon 1</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+<main>
+
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · Robot og automasjon</div>
+      <h1>Leksjon 1<br>Styr robotens akser i Fusion</h1>
+      <p class="lead">En robot er ledd som roterer. Du bygger en robot i Fusion, styrer aksene og lager et program som flytter en del fra A til B.</p>
+      <ol class="goals">
+        <li><b>Akser</b> og ledd</li>
+        <li><b>Rotasjonsledd</b> og grenser i Fusion</li>
+        <li><b>Kjør</b> aksene og lag en sekvens</li>
+        <li><b>Lagre punkter</b> (teach)</li>
+        <li><b>Styr</b> roboten med kode</li>
+      </ol>
+    </div>
+    <div>
+      <div class="hero-fig"><svg id="heroSvg" viewBox="0 0 560 360" role="img" aria-label="Robotarm med tre akser som beveger seg"></svg></div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <p style="margin:.6rem 0">Ha Fusion åpent på storskjerm med en ferdig robotmodell (tre deler og tre rotasjonsledd). Kjør en sekvens med en gang, så elevene ser målet for timen.</p>
+      <div class="card" style="margin-top:.6rem">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p><i>«anvende program for simulering og styring av robot og automasjon»</i> (T14)</p><p><i>«bruke digitale verktøy til å utarbeide modeller, tegninger, skjemaer, arbeidsbeskrivelser og kvalitetssikringssystemer i planlegging og produksjon»</i> (T6)</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Bygger på Vg1 Styring og automasjon 2 (robot og automasjon) og Vg2 Tegning og DAK 2 (sammenstilling og koblinger). Fulle læringsmål: forklare akse, ledd, TCP og arbeidsområde · lage rotasjonsledd med aksegrenser i Fusion · kjøre aksene med Drive Joints og Motion Study · lagre punkter og kjøre en sekvens · lese og endre en enkel robotsekvens skrevet i Python · forklare forskjellen på å regne fra vinkler til posisjon og fra posisjon til vinkler.</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan"><tr><th colspan="2">Time 1</th></tr><tr><td>0–5 min</td><td>Repetisjon fra Vg1</td></tr><tr><td>5–15 min</td><td>Del 1: akser og ledd</td></tr><tr><td>15–25 min</td><td>Del 2–3: bygg og kjør roboten i Fusion</td></tr><tr><td>25–45 min</td><td>Oppgave 1–2, og bygg roboten i Fusion</td></tr><tr><th colspan="2">Time 2</th></tr><tr><td>0–8 min</td><td>Del 4: lagre punkter</td></tr><tr><td>8–18 min</td><td>Del 5: styr med kode</td></tr><tr><td>18–23 min</td><td>Del 6: simuler først</td></tr><tr><td>23–42 min</td><td>Oppgave 3–5 (skriv og kjør en sekvens i Fusion)</td></tr><tr><td>42–45 min</td><td>Exit-lapp</td></tr></table>
+        <p style="font-size:.85rem; color:var(--muted); margin:.5rem 0 0">Scriptene til Fusion ligger som nedlasting under Del 5. Prøv dem på skolens PC-er før timen.</p>
+      </div>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" id="rep" data-nav="Repetisjon">
+  <div class="wrap">
+    <div class="kicker">Repetisjon · ca. 5 min</div>
+    <h2>Husker du?</h2>
+    <p class="lead">Svar med sidemannen – klikk for svar.</p>
+    <div class="grid4" style="margin-top:1.2rem"><button class="card flip"><span class="q">Hvilke tre deler har et automatisk anlegg?</span><span class="a">Noe som måler (sensor), noe som bestemmer (styring) og noe som gjør jobben (motor eller sylinder).</span><span class="hint">Klikk for svar</span></button><button class="card flip"><span class="q">Hva er en kobling (joint) i Fusion?</span><span class="a">Den bestemmer hvordan to deler sitter sammen og kan bevege seg.</span><span class="hint">Klikk for svar</span></button><button class="card flip"><span class="q">Hva er en sekvens?</span><span class="a">Steg som skjer i en bestemt rekkefølge, ett etter ett.</span><span class="hint">Klikk for svar</span></button><button class="card flip"><span class="q">Hvorfor simulerer vi før vi bygger?</span><span class="a">Vi finner feil på skjermen. Det er billigere og tryggere enn å finne dem på maskinen.</span><span class="hint">Klikk for svar</span></button></div>
+    <div class="tip o"><b>I dag:</b> Få en robot i Fusion til å flytte en del fra A til B, først med musa og så med kode.</div>
+  </div>
+</section>
+
+<section class="slide" id="akser" data-nav="1 Akser">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 10 min</div>
+    <h2>Hver akse er et ledd som roterer</h2>
+    <p class="lead">Roboten under har tre <b>akser</b>. Hver akse er et <b>ledd</b> med en motor. Når vinklene endres, flytter griperen seg.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="akSvg" viewBox="0 0 560 360" role="img" aria-label="Robotarm sett fra siden og ovenfra"></svg>
+        <div id="akCtrl"></div>
+        <div class="readout" id="akRead"></div>
+        <div class="controls no-print"><button class="btn" id="akHjem">⌂ Hjem</button></div>
+        <div class="status info" id="akTxt">Dra i glidebryterne.</div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem"><b>Akse:</b> én bevegelse roboten kan gjøre. Navnene er A1, A2, A3 …</div>
+        <div class="card" style="margin-bottom:.8rem"><b>Ledd:</b> stedet der to deler av armen er koblet sammen og kan rotere. På engelsk heter det <i>joint</i>.</div>
+        <div class="card" style="margin-bottom:.8rem; border-left:6px solid var(--orange)"><b>TCP</b> (tool center point): punktet midt i verktøyet, her mellom fingrene på griperen. Det er TCP du vil flytte.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>Aksegrense:</b> hvor langt en akse får rotere. Grensen beskytter kabler og hindrer at armen slår i seg selv.</div>
+        <div class="tip">En vanlig industrirobot har <b>seks</b> akser. Tre akser flytter armen, tre vrir verktøyet.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>A1 roterer hele roboten rundt foten, og vises derfor bare i bildet «ovenfra». A2 er skulderen og A3 albuen. Spør: «Hvilken akse bruker du for å nå lenger ut?» (A2 og A3 sammen). Arbeidsområdet er alle punktene TCP kan nå. Det blir mindre når aksene har grenser.</details>
+  </div>
+</section>
+
+<section class="slide" id="fusion" data-nav="2 Bygg i Fusion">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 6 min</div>
+    <h2>Bygg roboten i Fusion</h2>
+    <p class="lead">Roboten er en <b>sammenstilling</b>. Hver del blir en komponent, og et <b>rotasjonsledd</b> (Revolute joint) kobler dem sammen.</p>
+    <div class="grid2 wide-left">
+      <div class="card">
+        <ol class="steg">
+          <li><span>Lag hver del som en egen <b>komponent</b>: fot, overarm, underarm og griper.</span></li>
+          <li><span>Høyreklikk foten og velg <b>Ground</b>. Da står den fast i bakken.</span></li>
+          <li><span><b>Assemble → Joint</b>, type <b>Revolute</b>. Klikk på midten av et hull eller en sylinder. Der blir rotasjonsaksen.</span></li>
+          <li><span>Gi leddene navn i nettleseren til venstre: <b>A1</b>, <b>A2</b>, <b>A3</b>.</span></li>
+          <li><span>Høyreklikk leddet → <b>Edit Joint Limits</b>. Sett minste og største vinkel, og hjemvinkel (<i>Rest</i>).</span></li>
+        </ol>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem"><b>Komponent:</b> en del i sammenstillingen som kan bevege seg for seg selv.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>Ground:</b> låser komponenten fast. Uten Ground kan hele roboten flyte bort når du drar i den.</div>
+        <div class="card" style="margin-bottom:.8rem; border-left:6px solid var(--orange)"><b>Revolute joint</b> = rotasjonsledd. Det tillater bare rotasjon rundt én akse, akkurat som et robotledd.</div>
+        <div class="tip o">Navn som A1, A2, A3 gjør det mulig for kode å finne leddene senere.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>En enkel robot holder: fot (sylinder), overarm og underarm (avlange bokser med hull i endene) og en enkel griper. Klikk på midten av hullet når leddet lages, ellers havner aksen feil. Sjekk retningen: hvis armen roterer feil vei, bytt retning med <i>Flip</i> i joint-dialogen. Med grenser på alle akser kan ikke elevene «brekke» roboten.</details>
+  </div>
+</section>
+
+<section class="slide" id="kjor" data-nav="3 Kjør aksene">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 4 min</div>
+    <h2>Fire måter å kjøre aksene på</h2>
+    <p class="lead">Alt ligger i <b>Assemble</b>-menyen i Fusion.</p>
+    <div class="grid4" style="margin-top:1rem">
+      <div class="card"><div style="font-size:1.8rem">🖱️</div><b>Dra med musa</b><p class="short">Ta tak i en del og dra. Leddet bestemmer hvordan den kan bevege seg.</p></div>
+      <div class="card"><div style="font-size:1.8rem">🎯</div><b>Drive Joints</b><p class="short">Velg et ledd og skriv inn vinkelen. Nøyaktig, men én akse om gangen.</p></div>
+      <div class="card"><div style="font-size:1.8rem">🎬</div><b>Motion Study</b><p class="short">Sett vinkler på en tidslinje og trykk play. Flere akser kan bevege seg samtidig.</p></div>
+      <div class="card"><div style="font-size:1.8rem">🔗</div><b>Motion Link</b><p class="short">Kobler to ledd, for eksempel to fingre på griperen som går like mye.</p></div>
+    </div>
+    <div class="tip">Slå på <b>Contact Sets</b> hvis delene ikke skal kunne gå gjennom hverandre. Da ser du om roboten kolliderer.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Vis Drive Joints først (én akse), deretter Motion Study med tre punkter på tidslinjen. Motion Study er Fusions egen sekvens: punktene på tidslinjen er robotens posisjoner. Contact Sets gjør Fusion tregere, så slå det bare på når dere leter etter kollisjoner.</details>
+  </div>
+</section>
+
+<section class="slide" id="teach" data-nav="4 Lagre punkter">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 8 min</div>
+    <h2>Lagre punkter, og kjør dem</h2>
+    <p class="lead">På en ekte robot kjører du armen med en håndholdt styreenhet og trykker «lagre». Det heter å <b>teache</b> roboten. Prøv selv.</p>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg id="teSvg" viewBox="0 0 560 360" role="img" aria-label="Robotarm som kan lagre og kjøre punkter"></svg>
+        <div id="teCtrl"></div>
+        <div class="controls no-print"><button class="btn primary" id="teLagre">＋ Lagre punkt</button><button class="btn orange" id="teKjor">▶ Kjør</button><button class="btn" id="teTom">Tøm</button></div>
+        <div class="punkter" id="tePunkter">Ingen punkter lagret.</div>
+      </div>
+      <div>
+        <div class="card" style="margin-bottom:.8rem"><b>Punkt:</b> en lagret posisjon, altså vinkelen på hver akse.</div>
+        <div class="card" style="margin-bottom:.8rem"><b>Sekvens:</b> punktene etter hverandre. Roboten kjører fra punkt til punkt.</div>
+        <div class="card" style="margin-bottom:.8rem; border-left:6px solid var(--orange)"><b>Prøv:</b> Lagre «hjem», «over delen», «ned», «opp» og «hjem». Trykk Kjør.</div>
+        <div class="tip">Scriptet <b>RobotAkser</b> gjør det samme inne i Fusion: én glidebryter per akse, og knappene Lagre punkt og Kjør sekvens.</div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Robotene går myk fra punkt til punkt: de starter og stopper rolig. Det skåner motorene og delen i griperen. Spør: «Hva skjer hvis du glemmer punktet over delen og går rett fra hjem til ned?» Armen kan treffe delen eller bordet på veien.</details>
+  </div>
+</section>
+
+<section class="slide" id="script" data-nav="5 Kode">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 10 min</div>
+    <h2>Styr aksene med kode</h2>
+    <p class="lead">I Fusion kan du skrive små programmer i <b>Python</b>. Programmet under er en liste med punkter. Roboten kjører dem ett for ett.</p>
+    <div class="grid2">
+      <div>
+<pre class="kode" id="kode"><span class="k">FART = 1.0   # sekunder per bevegelse</span><span class="k">SEKVENS = [</span><span data-i="0">    {'A1': 0,  'A2': 0,  'A3': 90},   # Hjem</span><span data-i="1">    {'A2': 30, 'A3': 110},            # Over delen</span><span data-i="2">    {'A2': 40, 'A3': 120},            # Ned og grip</span><span data-i="3">    {'A2': 20, 'A3': 100},            # Løft</span><span data-i="4">    {'A1': 90},                       # Sving</span><span data-i="5">    {'A2': 40, 'A3': 120},            # Ned og slipp</span><span data-i="6">    {'A1': 0,  'A2': 0,  'A3': 90},   # Hjem</span><span class="k">]</span></pre>
+        <div class="controls no-print"><button class="btn orange" id="koKjor">▶ Kjør koden</button></div>
+        <div class="card" style="margin-top:.8rem"><b>Les koden:</b> <code>{'A2': 30}</code> betyr «sett A2 til 30°». Akser som ikke står i punktet, blir stående. Alt etter <code>#</code> er en kommentar som maskinen ikke leser.</div>
+      </div>
+      <div class="fig">
+        <svg id="koSvg" viewBox="0 0 560 360" role="img" aria-label="Robotarm som kjører koden"></svg>
+        <div class="status info" id="koTxt">Trykk «Kjør koden».</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1rem">
+      <h3>Slik kjører du scriptet i Fusion</h3>
+      <ol class="steg">
+        <li><span>Last ned og pakk ut <b>robotscript for fusion</b> (nederst på siden).</span></li>
+        <li><span>I Fusion: <b>Utilities → Add-Ins → Scripts and Add-Ins</b>. Trykk <b>+</b> og velg mappa <b>RobotSekvens</b> (eller <b>RobotAkser</b>).</span></li>
+        <li><span>Åpne robotmodellen. Velg scriptet og trykk <b>Run</b>. Endre listen med <b>Edit</b>.</span></li>
+      </ol>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary><ul><li><b>RobotSekvens</b>: elevene endrer listen <code>SEKVENS</code> og kjører. Navnene i listen må være de samme som navnene på leddene i Fusion. Skrivefeil gir en melding som viser hvilke navn som finnes.</li><li><b>RobotAkser</b>: dialog med glidebrytere, Hjem, Lagre punkt og Kjør sekvens. Bra for å finne vinklene før de skrives i koden.</li><li>Vinklene i eksempelet passer til roboten på denne siden. Elevenes robot kan ha andre nullpunkter og rotasjonsretninger, så vinklene må finnes med glidebryterne først.</li><li>Scriptene stopper ved aksegrensene som er satt i Fusion. Etter kjøring kan Fusion spørre om <i>Capture Position</i>; velg Revert for å gå tilbake.</li></ul></details>
+  </div>
+</section>
+
+<section class="slide" id="simuler" data-nav="6 Simuler først">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 5 min</div>
+    <h2>Simuler først, kjør ekte robot etterpå</h2>
+    <p class="lead">Fusion regner fra <b>vinkler til posisjon</b>. En ekte robot kan også regne baklengs: fra posisjon til vinkler.</p>
+    <div class="grid2">
+      <div class="card"><h3>Vinkler → posisjon</h3><p class="short">Du bestemmer vinklene. Programmet viser hvor griperen havner. Det kan Fusion.</p><p class="caption">Fagordet er <i>foroverkinematikk</i>.</p></div>
+      <div class="card" style="border-left:6px solid var(--orange)"><h3>Posisjon → vinkler</h3><p class="short">Du bestemmer hvor griperen skal være. Programmet finner vinklene. Det kan robotprogram som RoboDK og robotens egen styring.</p><p class="caption">Fagordet er <i>inverskinematikk</i>.</p></div>
+    </div>
+    <div class="grid4" style="margin-top:1rem">
+      <button class="card flip"><span class="q">Hvorfor kjøre programmet i simulering først?</span><span class="a">Du ser kollisjoner og feil før de skjer på den ekte roboten.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hvorfor setter vi aksegrenser?</span><span class="a">Så armen ikke slår i seg selv, river av kabler eller går utenfor det motoren tåler.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva gjør du før du kjører en ekte robot første gang?</span><span class="a">Kjører sakte, står utenfor arbeidsområdet og har nødstoppen klar.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva er forskjellen på simulering og virkelighet?</span><span class="a">I virkeligheten finnes vekt, slakk og unøyaktighet. Simuleringen viser bare geometrien.</span><span class="hint">Klikk for svar</span></button>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>RoboDK (gratis prøveversjon, rimelig skolelisens) har et tillegg til Fusion og lager program for ABB, KUKA, Fanuc med flere. Sikkerhet rundt ekte roboter (inngjerding, nødstopp, redusert fart ved teaching) er gjennomgått i Vg1 Styring og automasjon 2.</details>
+  </div>
+</section>
+
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <ol style="font-size:1.08rem">
+        <li><b>Akse</b>: én bevegelse. Hver akse er et <b>ledd</b> som roterer.</li>
+        <li>I Fusion: komponenter, <b>Ground</b> og <b>Revolute joint</b> med navn A1, A2, A3.</li>
+        <li><b>Aksegrenser</b> beskytter roboten.</li>
+        <li>Et <b>punkt</b> er vinkelen på alle aksene. Punktene etter hverandre er en <b>sekvens</b>.</li>
+        <li>Med <b>kode</b> skriver du sekvensen som en liste.</li>
+        <li><b>Simuler</b> før du kjører en ekte robot.</li>
+      </ol>
+      <div>
+        <div class="card"><h3>Nøkkelord</h3>
+          <div class="chips"><span>akse</span><span>ledd</span><span>TCP</span><span>aksegrense</span><span>Ground</span><span>Revolute joint</span><span>Motion Study</span><span>punkt</span><span>sekvens</span><span>teach</span><span>Python</span><span>simulering</span></div></div>
+        <div class="card" style="margin-top:1rem"><h3>Neste steg</h3><p style="margin:0">Fra simulering til ekte robot: programmer i robotprogram eller på styreenheten til en ekte robot.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 40 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+    <div id="oppgavetekst">
+      <h2>Robot og automasjon 1 – Styr robotens akser i Fusion · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+      <p style="font-size:.9rem">Oppgave 1–4 gjør du uten Fusion. Oppgave 5 gjør du i Fusion.</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Ord om roboter <small>Time 1 · 6 min</small></h3>
+        <p>Ord: akse · ledd · TCP · aksegrense · Ground · sekvens</p>
+        <table class="ot">
+          <tr><th style="width:62%">Forklaring</th><th>Ord</th></tr>
+          <tr><td>1. Punktet midt i verktøyet, det du vil flytte.</td><td class="tom"><span class="fasit" hidden>TCP</span></td></tr>
+          <tr><td>2. Hvor langt en akse får rotere.</td><td class="tom"><span class="fasit" hidden>aksegrense</span></td></tr>
+          <tr><td>3. Låser en komponent fast i Fusion.</td><td class="tom"><span class="fasit" hidden>Ground</span></td></tr>
+          <tr><td>4. Én bevegelse roboten kan gjøre, for eksempel A2.</td><td class="tom"><span class="fasit" hidden>akse</span></td></tr>
+          <tr><td>5. Punkter som kjøres etter hverandre.</td><td class="tom"><span class="fasit" hidden>sekvens</span></td></tr>
+          <tr><td>6. Der to deler av armen er koblet sammen og kan rotere.</td><td class="tom"><span class="fasit" hidden>ledd</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Aksegrenser <small>Time 1 · 6 min</small></h3>
+        <p>Akse A2 har grensene <b>−30°</b> og <b>90°</b>.</p>
+        <p>a) Du skriver <code>{'A2': 120}</code> i koden. Hvor stopper armen?</p><div class="svar"><span class="fasit" hidden>På 90°. Den kan ikke gå forbi grensen.</span></div>
+        <p>b) Hvor mange grader kan A2 rotere til sammen?</p><div class="svar"><span class="fasit" hidden>120° (fra −30° til 90°).</span></div>
+        <p>c) Gi to grunner til at roboter har aksegrenser.</p><div class="svar"><span class="fasit" hidden>Armen skal ikke slå i seg selv eller bordet, og kabler skal ikke rives av. Motoren og mekanikken har også grenser.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Les koden <small>Time 2 · 6 min</small></h3>
+        <p>Se på koden i Del 5 (FART = 1.0).</p>
+        <p>a) Hvilke akser beveger seg i punktet «Sving»?</p><div class="svar"><span class="fasit" hidden>Bare A1. A2 og A3 står stille.</span></div>
+        <p>b) Hva skjer med A1 i punktet «Over delen»?</p><div class="svar"><span class="fasit" hidden>Ingenting. A1 står ikke i punktet, så den blir stående på 0°.</span></div>
+        <p>c) Hvor lang tid tar hele sekvensen?</p><div class="svar"><span class="fasit" hidden>Ca. 7 sekunder: 7 punkter × 1 sekund.</span></div>
+        <p>d) Du vil at roboten skal gå saktere. Hva endrer du?</p><div class="svar"><span class="fasit" hidden>Setter FART høyere, for eksempel 2.0 (flere sekunder per bevegelse).</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – Skriv sekvensen <small>Time 2 · 8 min</small></h3>
+        <p>Delen ligger ved <b>A1 = 0°</b>. Den skal legges i kassa ved <b>A1 = −90°</b>. Bruk de samme vinklene for A2 og A3 som i koden i Del 5. Skriv «–» der aksen ikke skal endres.</p>
+        <table class="ot">
+          <tr><th>Punkt</th><th>A1</th><th>A2</th><th>A3</th></tr>
+          <tr><td>1. Hjem</td><td>0</td><td>0</td><td>90</td></tr>
+          <tr><td>2. Over delen</td><td class="tom"><span class="fasit" hidden>–</span></td><td class="tom"><span class="fasit" hidden>30</span></td><td class="tom"><span class="fasit" hidden>110</span></td></tr>
+          <tr><td>3. Ned og grip</td><td class="tom"><span class="fasit" hidden>–</span></td><td class="tom"><span class="fasit" hidden>40</span></td><td class="tom"><span class="fasit" hidden>120</span></td></tr>
+          <tr><td>4. Løft</td><td class="tom"><span class="fasit" hidden>–</span></td><td class="tom"><span class="fasit" hidden>20</span></td><td class="tom"><span class="fasit" hidden>100</span></td></tr>
+          <tr><td>5. Sving til kassa</td><td class="tom"><span class="fasit" hidden>−90</span></td><td class="tom"><span class="fasit" hidden>–</span></td><td class="tom"><span class="fasit" hidden>–</span></td></tr>
+          <tr><td>6. Ned og slipp</td><td class="tom"><span class="fasit" hidden>–</span></td><td class="tom"><span class="fasit" hidden>40</span></td><td class="tom"><span class="fasit" hidden>120</span></td></tr>
+          <tr><td>7. Hjem</td><td class="tom"><span class="fasit" hidden>0</span></td><td class="tom"><span class="fasit" hidden>0</span></td><td class="tom"><span class="fasit" hidden>90</span></td></tr>
+        </table>
+        <p>Hvorfor løfter roboten delen <b>før</b> den svinger?</p><div class="svar"><span class="fasit" hidden>Ellers kan delen eller griperen treffe bordet eller noe annet på veien.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Kjør i Fusion <small>Time 2 · 15 min</small></h3>
+        <p>Bygg eller åpne en robot med tre rotasjonsledd som heter A1, A2 og A3. Sett grenser på alle tre.</p>
+        <p>a) Hvilke grenser satte du på A2?</p><div class="svar"><span class="fasit" hidden>Eget svar, for eksempel −30° til 90°.</span></div>
+        <p>b) Finn vinklene til «over delen» og «ned» med glidebryterne i RobotAkser. Skriv dem her.</p><div class="svar"><span class="fasit" hidden>Eget svar. Vinklene avhenger av hvordan roboten er bygget.</span></div>
+        <p>c) Skriv sekvensen fra oppgave 4 med dine vinkler i RobotSekvens og kjør den. Hva måtte du endre for at det skulle virke?</p><div class="svar"><span class="fasit" hidden>Eget svar, for eksempel navn på leddene, fortegn på vinklene eller et ekstra punkt over delen.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 3 min</small></h3>
+        <p>1. Hva er en akse på en robot?</p><div class="svar"><span class="fasit" hidden>Én bevegelse roboten kan gjøre, et ledd som roterer.</span></div>
+        <p>2. Hvilken type joint bruker du for et robotledd i Fusion?</p><div class="svar"><span class="fasit" hidden>Revolute (rotasjonsledd).</span></div>
+        <p>3. Hva er et punkt i en robotsekvens?</p><div class="svar"><span class="fasit" hidden>En lagret posisjon: vinkelen på alle aksene.</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function setStatus(id, txt, cls){ const s=$(id); s.textContent=txt; s.className="status "+cls; }
+const fmt = x => Math.round(x).toLocaleString("nb-NO");
+
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName) && e.target.type!=="range") return;
+  if (e.target.type==="range" && ["ArrowUp","ArrowDown"].includes(e.key)) return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  const i = Math.max(0, Math.min(slides.length-1, currentIndex()+dir));
+  slides[i].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.classList.toggle("show"));
+
+/* ---------- Robotarmen ---------- */
+// Forenklet robot: A1 roterer foten (vises ovenfra), A2 er skulderen, A3 albuen (vises fra siden).
+const LIM = {A1:[-170,170], A2:[-30,90], A3:[0,150]};
+const HJEM = {A1:0, A2:0, A3:90};
+const AKSER = ["A1","A2","A3"];
+const NAVN = {A1:"fot", A2:"skulder", A3:"albue"};
+const S = {x:190, y:282}, L1 = 125, L2 = 110, G = 30, GULV = 330, MM = 4;  // 1 px = 4 mm
+const rad = d => d*Math.PI/180;
+const begrens = (k, v) => Math.min(LIM[k][1], Math.max(LIM[k][0], v));
+
+function posisjon(a){
+  const t1 = rad(a.A2), t2 = rad(a.A2 + a.A3);
+  const p1 = {x:S.x + L1*Math.sin(t1), y:S.y - L1*Math.cos(t1)};
+  const p2 = {x:p1.x + L2*Math.sin(t2), y:p1.y - L2*Math.cos(t2)};
+  const tcp = {x:p2.x + G*Math.sin(t2), y:p2.y - G*Math.cos(t2)};
+  return {t1, t2, p1, p2, tcp};
+}
+function bue(cx, cy, r, fra, til){ // vinkler fra loddrett, med klokka
+  const p = v => [cx + r*Math.sin(rad(v)), cy - r*Math.cos(rad(v))];
+  const [x0,y0] = p(fra), [x1,y1] = p(til);
+  return `M${x0.toFixed(1)} ${y0.toFixed(1)} A${r} ${r} 0 ${til-fra>180?1:0} 1 ${x1.toFixed(1)} ${y1.toFixed(1)}`;
+}
+function tegnArm(svg, a, opt){
+  opt = opt || {};
+  const {t1, t2, p1, p2, tcp} = posisjon(a);
+  const arm = (fra, til, b) => `<line x1="${fra.x}" y1="${fra.y}" x2="${til.x}" y2="${til.y}" style="stroke:var(--steel-dark);stroke-width:${b+4};stroke-linecap:round"/><line x1="${fra.x}" y1="${fra.y}" x2="${til.x}" y2="${til.y}" style="stroke:var(--steel);stroke-width:${b};stroke-linecap:round"/>`;
+  const nx = Math.cos(t2), ny = Math.sin(t2), apen = opt.apen === undefined ? 1 : opt.apen;
+  const f = (s) => { const bx = p2.x + s*nx*(6+5*apen), by = p2.y + s*ny*(6+5*apen); return `<line x1="${bx}" y1="${by}" x2="${bx + G*Math.sin(t2)}" y2="${by - G*Math.cos(t2)}" style="stroke:var(--steel-dark);stroke-width:6;stroke-linecap:round"/>`; };
+  let s = `<rect x="20" y="${GULV}" width="520" height="16" style="fill:var(--steel-soft)"/><line x1="20" y1="${GULV}" x2="540" y2="${GULV}" style="stroke:var(--steel-dark);stroke-width:2"/>`;
+  s += `<text x="24" y="24" font-size="13" font-weight="700" style="fill:var(--muted)">Fra siden</text>`;
+  if (opt.grenser){
+    s += `<path d="${bue(S.x, S.y, 46, LIM.A2[0], LIM.A2[1])}" style="fill:none;stroke:var(--orange);stroke-width:3;stroke-dasharray:5 5;opacity:.7"/>`;
+    s += `<path d="${bue(p1.x, p1.y, 36, a.A2 + LIM.A3[0], a.A2 + LIM.A3[1])}" style="fill:none;stroke:var(--orange);stroke-width:3;stroke-dasharray:5 5;opacity:.7"/>`;
+  }
+  s += `<path d="M${S.x-42} ${GULV} L${S.x-30} ${S.y+8} H${S.x+30} L${S.x+42} ${GULV} Z" style="fill:var(--steel);stroke:var(--steel-dark);stroke-width:2"/>`;
+  s += arm(S, p1, 22) + arm(p1, p2, 18);
+  s += f(1) + f(-1);
+  s += `<circle cx="${S.x}" cy="${S.y}" r="15" style="fill:var(--panel);stroke:var(--orange);stroke-width:4"/><circle cx="${p1.x}" cy="${p1.y}" r="13" style="fill:var(--panel);stroke:var(--orange);stroke-width:4"/>`;
+  s += `<text x="${S.x-60}" y="${S.y+6}" font-size="15" font-weight="800" style="fill:var(--orange)">A2</text><text x="${p1.x + (p1.x < S.x+30 ? -48 : 20)}" y="${p1.y-14}" font-size="15" font-weight="800" style="fill:var(--orange)">A3</text>`;
+  s += `<circle cx="${tcp.x}" cy="${tcp.y}" r="5" style="fill:var(--blue)"/><text x="${tcp.x+9}" y="${tcp.y-8}" font-size="13" font-weight="700" style="fill:var(--blue)">TCP</text>`;
+  // Ovenfra: A1
+  const C = {x:470, y:92}, R = 58, rek = Math.min(R - 6, Math.max(0, tcp.x - S.x) / 128 * R * .8);
+  s += `<text x="${C.x}" y="${C.y-R-14}" text-anchor="middle" font-size="13" font-weight="700" style="fill:var(--muted)">Ovenfra</text>`;
+  s += `<circle cx="${C.x}" cy="${C.y}" r="${R}" style="fill:var(--panel);stroke:var(--line);stroke-width:2;stroke-dasharray:4 4"/>`;
+  (opt.steder || []).forEach(([v, t]) => { const x = C.x + R*.8*Math.cos(rad(v)), y = C.y - R*.8*Math.sin(rad(v));
+    s += `<rect x="${x-9}" y="${y-9}" width="18" height="18" rx="3" style="fill:var(--yellow-soft);stroke:var(--yellow);stroke-width:2"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="12" font-weight="800" style="fill:var(--ink)">${t}</text>`; });
+  const ex = C.x + Math.max(rek, 14)*Math.cos(rad(a.A1)), ey = C.y - Math.max(rek, 14)*Math.sin(rad(a.A1));
+  s += `<line x1="${C.x}" y1="${C.y}" x2="${ex}" y2="${ey}" style="stroke:var(--steel-dark);stroke-width:12;stroke-linecap:round"/><circle cx="${ex}" cy="${ey}" r="4" style="fill:var(--blue)"/>`;
+  s += `<circle cx="${C.x}" cy="${C.y}" r="11" style="fill:var(--panel);stroke:var(--orange);stroke-width:4"/><text x="${C.x}" y="${C.y+R+22}" text-anchor="middle" font-size="15" font-weight="800" style="fill:var(--orange)">A1 = ${fmt(a.A1)}°</text>`;
+  svg.innerHTML = s;
+  return {rekkevidde: (tcp.x - S.x)*MM, hoyde: (GULV - tcp.y)*MM};
+}
+
+// Glidebrytere for de tre aksene
+function lagGlidere(boks, a, endret){
+  boks.innerHTML = AKSER.map(k => `<div class="akse"><b>${k}</b><input type="range" min="${LIM[k][0]}" max="${LIM[k][1]}" step="1" value="${a[k]}" aria-label="${k} ${NAVN[k]}"><output>${a[k]}°</output></div>`).join("");
+  const inp = [...boks.querySelectorAll("input")], out = [...boks.querySelectorAll("output")];
+  inp.forEach((r, i) => r.oninput = () => { a[AKSER[i]] = +r.value; out[i].textContent = r.value + "°"; endret(AKSER[i]); });
+  return () => inp.forEach((r, i) => { r.value = Math.round(a[AKSER[i]]); out[i].textContent = Math.round(a[AKSER[i]]) + "°"; });
+}
+
+// Myk bevegelse fra punkt til punkt (samme som i Fusion-scriptene)
+function kjorSekvens(a, punkter, tegn, vedPunkt, ferdig){
+  let i = 0;
+  const neste = () => {
+    if (i >= punkter.length){ if (ferdig) ferdig(); return; }
+    const fra = {...a}, til = {...a};
+    for (const k in punkter[i]) if (k in LIM) til[k] = begrens(k, punkter[i][k]);
+    if (vedPunkt) vedPunkt(i);
+    const t0 = performance.now(), varighet = 900;
+    const steg = n => {
+      const t = Math.min(1, (n - t0)/varighet), e = .5 - .5*Math.cos(Math.PI*t);
+      AKSER.forEach(k => a[k] = fra[k] + (til[k] - fra[k])*e);
+      tegn();
+      if (t < 1) requestAnimationFrame(steg); else { i++; setTimeout(neste, 200); }
+    };
+    requestAnimationFrame(steg);
+  };
+  neste();
+}
+
+/* Forsiden: armen går en runde av seg selv */
+const helt = {...HJEM};
+const heltSekv = [{A2:30, A3:110}, {A2:40, A3:120}, {A2:20, A3:100}, {A1:90}, {A2:40, A3:120}, {A1:0, A2:0, A3:90}];
+const reduser = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const tegnHelt = () => tegnArm($("heroSvg"), helt, {steder:[[0,"A"],[90,"B"]]});
+tegnHelt();
+if (!reduser) (function loop(){ kjorSekvens(helt, heltSekv, tegnHelt, null, () => setTimeout(loop, 1200)); })();
+
+/* Del 1: akser */
+const ak = {...HJEM};
+function akTegn(endret){
+  const r = tegnArm($("akSvg"), ak, {grenser:true});
+  $("akRead").innerHTML = `<div><span>TCP ut fra foten</span><b>${fmt(r.rekkevidde)} mm</b></div><div><span>TCP over gulvet</span><b>${fmt(r.hoyde)} mm</b></div><div><span>Grense A2</span><b>${LIM.A2[0]}° til ${LIM.A2[1]}°</b></div><div><span>Grense A3</span><b>${LIM.A3[0]}° til ${LIM.A3[1]}°</b></div>`;
+  const kant = AKSER.find(k => Math.round(ak[k]) === LIM[k][0] || Math.round(ak[k]) === LIM[k][1]);
+  if (r.hoyde < 0) setStatus("akTxt", "Kollisjon! Griperen er under gulvet.", "bad");
+  else if (kant) setStatus("akTxt", `${kant} står på aksegrensen (${LIM[kant][0]}° til ${LIM[kant][1]}°). Den kan ikke gå lenger.`, "warn");
+  else if (endret) setStatus("akTxt", `Du flyttet ${endret} (${NAVN[endret]}). Se hvor TCP havner.`, "info");
+}
+const akOppdater = lagGlidere($("akCtrl"), ak, akTegn);
+$("akHjem").onclick = () => { $("akHjem").disabled = true; kjorSekvens(ak, [HJEM], () => { akTegn(); akOppdater(); }, null, () => { $("akHjem").disabled = false; setStatus("akTxt", "Roboten står i hjemposisjon.", "ok"); }); };
+akTegn();
+
+/* Del 4: lagre punkter */
+const te = {...HJEM}, tePunkter = [];
+let teKjorer = false;
+const teTegn = () => tegnArm($("teSvg"), te, {steder:[[0,"A"],[90,"B"]]});
+const teOppdater = lagGlidere($("teCtrl"), te, teTegn);
+function teVis(aktiv){
+  $("tePunkter").textContent = tePunkter.length ? tePunkter.map((p, i) => `${i===aktiv ? "▶ " : ""}P${i+1}: A1 ${fmt(p.A1)}°  A2 ${fmt(p.A2)}°  A3 ${fmt(p.A3)}°`).join("\n") : "Ingen punkter lagret.";
+}
+$("teLagre").onclick = () => { if (teKjorer) return; tePunkter.push({A1:Math.round(te.A1), A2:Math.round(te.A2), A3:Math.round(te.A3)}); teVis(); };
+$("teTom").onclick = () => { if (teKjorer) return; tePunkter.length = 0; teVis(); };
+$("teKjor").onclick = () => {
+  if (teKjorer) return;
+  if (!tePunkter.length){ toast("Lagre minst ett punkt først"); return; }
+  teKjorer = true; ["teLagre","teKjor","teTom"].forEach(id => $(id).disabled = true);
+  kjorSekvens(te, tePunkter, () => { teTegn(); teOppdater(); }, i => teVis(i), () => { teKjorer = false; teVis(); ["teLagre","teKjor","teTom"].forEach(id => $(id).disabled = false); });
+};
+teTegn();
+
+/* Del 5: kode */
+const KODE = [{A1:0, A2:0, A3:90}, {A2:30, A3:110}, {A2:40, A3:120}, {A2:20, A3:100}, {A1:90}, {A2:40, A3:120}, {A1:0, A2:0, A3:90}];
+const KOMM = ["Hjem", "Over delen", "Ned og grip", "Løft", "Sving", "Ned og slipp", "Hjem"];
+const ko = {...HJEM};
+const koLinjer = [...document.querySelectorAll("#kode span[data-i]")];
+const koTegn = () => tegnArm($("koSvg"), ko, {steder:[[0,"A"],[90,"B"]]});
+koTegn();
+$("koKjor").onclick = () => {
+  $("koKjor").disabled = true;
+  kjorSekvens(ko, KODE, koTegn, i => { koLinjer.forEach((l, j) => l.classList.toggle("on", j===i)); setStatus("koTxt", `Linje ${i+1}: ${KOMM[i]}`, "info"); },
+    () => { koLinjer.forEach(l => l.classList.remove("on")); setStatus("koTxt", "Ferdig! Delen er flyttet fra A til B.", "ok"); $("koKjor").disabled = false; });
+};
+
+/* ---------- Oppgaver ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+$("btnCopy").onclick = async () => {
+  const clone = $("oppgavetekst").cloneNode(true);
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>

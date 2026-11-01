@@ -32,6 +32,7 @@ vg2/<emne>/leksjon-N-<navn>.html
 | Vg2 | Måleteknikk og kvalitet | 1 Måleverktøy |
 | Vg2 | Tegning og DAK | 1 Arbeidstegninger · 2 Fra 3D-modell til arbeidstegning · 3 Sveisesymboler · 4 Geometriske toleranser |
 | Vg2 | Pneumatikk | 1 Grunnleggende pneumatikk · 2 Styring og fart |
+| Vg2 | Robot og automasjon | 1 Styr robotens akser i Fusion |
 | Vg2 | Vedlikehold | 1 Vedlikeholdssystemer · 2 Sikker jobb – lås og merk · 3 Smøring |
 | Vg2 | YFF | 1 Veien til læreplass |
 
