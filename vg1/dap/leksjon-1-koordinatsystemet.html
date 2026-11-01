@@ -154,7 +154,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 <body>
 <header class="top">
   <div class="brand">DAP og CNC Vg1 · <span>Leksjon 1</span></div>
-  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#punkt">Et punkt</a><a href="#fres">Fres</a><a href="#dreiebenk">Dreiebenk</a><a href="#regel">Huskeregel</a><a href="#finn">Finn punktet</a><a href="#oppgaver">Oppgaver</a></nav>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#punkt">Et punkt</a><a href="#finn">Finn punktet</a><a href="#fres">Fres</a><a href="#dreiebenk">Dreiebenk</a><a href="#regel">Huskeregel</a><a href="#oppgaver">Oppgaver</a></nav>
   <div class="tools no-print">
     <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
     <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
@@ -190,9 +190,9 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
       <dl class="plan2">
         <dt>0–10</dt><dd>Start: «Hvordan forteller du en venn hvor du står på en fotballbane?»</dd>
-        <dt>10–20</dt><dd>Et punkt = X og Y. La elevene trykke på rutenettet. Del A.</dd>
+        <dt>10–20</dt><dd>Et punkt = X og Y. La elevene trykke på rutenettet, så «Finn punktet» i fellesskap. Del A.</dd>
         <dt>20–35</dt><dd>Fresen og dreiebenken. Vis gjerne aksene på maskinene i verkstedet.</dd>
-        <dt>35–45</dt><dd>Huskeregel og «Finn punktet» i fellesskap.</dd>
+        <dt>35–45</dt><dd>Huskeregel. La elevene prøve CNC-koordinater-simulatoren.</dd>
         <dt>45–55</dt><dd>Pause</dd>
         <dt>55–85</dt><dd>Oppgavene B–E.</dd>
         <dt>85–90</dt><dd>Exit-lapp.</dd>
@@ -216,8 +216,22 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
   <details class="laerer no-print"><summary>Lærernotat</summary>Som et kart: først bortover, så opp. Negative tall (minus) betyr motsatt vei av pila. Det trenger vi for Z.</details>
 </section>
 
+<section id="finn">
+  <div class="tag">Del 2 · Finn punktet</div>
+  <h2>Hvor er verktøyet?</h2>
+  <div class="benk">
+    <svg id="finnFig" viewBox="0 0 430 260" role="img" aria-label="Rutenett med et punkt. Velg riktige koordinater."></svg>
+    <div style="display:grid;gap:14px">
+      <p style="font-size:1.15rem">Velg riktig svar.</p>
+      <div class="svar-knapper" id="finnSvar"></div>
+      <p id="finnTekst" style="font-size:1.1rem;min-height:1.6em"></p>
+      <button type="button" id="finnNeste">Nytt punkt ▶</button>
+    </div>
+  </div>
+</section>
+
 <section id="fres">
-  <div class="tag">Del 2 · Fresen</div>
+  <div class="tag">Del 3 · Fresen</div>
   <h2>Fresen har tre akser: <span class="xk">X</span>, <span class="yk">Y</span> og <span class="zk">Z</span></h2>
   <div class="benk">
     <svg id="fresFig" viewBox="0 20 420 280" role="img" aria-label="Emne på fresebordet med X-, Y- og Z-akse og verktøyet over"></svg>
@@ -231,7 +245,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 </section>
 
 <section id="dreiebenk">
-  <div class="tag">Del 3 · Dreiebenken</div>
+  <div class="tag">Del 4 · Dreiebenken</div>
   <h2>Dreiebenken har to akser: <span class="xk">X</span> og <span class="zk">Z</span></h2>
   <div class="benk">
     <svg id="akseFig" viewBox="40 36 420 248" role="img" aria-label="Aksel i chucken med Z-akse langs senter, X-akse opp og nullpunkt midt på endeflaten"></svg>
@@ -245,12 +259,12 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
       <div class="teller" id="punktVerdi">Velg et punkt</div>
     </div>
   </div>
-  <a class="simlink no-print" data-sim="cnc-dreiebenk"><span class="ico">⚙️</span><span><b>Prøv selv: CNC-dreiebenk</b><small>Se X og Z på skjermen mens maskinen kjører.</small></span><span class="pil">→</span></a>
+  <a class="simlink no-print" data-sim="cnc-koordinater"><span class="ico">🖥️</span><span><b>Prøv selv: CNC-koordinater</b><small>Velg Dreiebenk. Skriv inn X og Z, og se verktøyet flytte seg.</small></span><span class="pil">→</span></a>
   <details class="laerer no-print"><summary>Lærernotat</summary>Hvorfor diameter? Fordi vi måler diameter med skyvelære og mikrometer. Står det X30, blir akselen Ø30. Y trengs ikke på en vanlig dreiebenk.</details>
 </section>
 
 <section id="regel">
-  <div class="tag">Del 4 · Huskeregel</div>
+  <div class="tag">Del 5 · Huskeregel</div>
   <h2>Z er alltid spindelen</h2>
   <div class="to">
     <div class="q U">
@@ -265,20 +279,6 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     </div>
   </div>
   <p class="regel"><b>Z minus</b> = inn i materialet. Ned i fresen, inn mot chucken i dreiebenken.</p>
-</section>
-
-<section id="finn">
-  <div class="tag">Del 5 · Finn punktet</div>
-  <h2>Hvor er verktøyet?</h2>
-  <div class="benk">
-    <svg id="finnFig" viewBox="0 0 430 260" role="img" aria-label="Rutenett med et punkt. Velg riktige koordinater."></svg>
-    <div style="display:grid;gap:14px">
-      <p style="font-size:1.15rem">Velg riktig svar.</p>
-      <div class="svar-knapper" id="finnSvar"></div>
-      <p id="finnTekst" style="font-size:1.1rem;min-height:1.6em"></p>
-      <button type="button" id="finnNeste">Nytt punkt ▶</button>
-    </div>
-  </div>
 </section>
 
 <section id="oppgaver">
