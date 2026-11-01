@@ -1,0 +1,960 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CNC 3 – Verktøykompensasjon og skjærradius</title>
+<style>
+:root{
+  --bg:#f5f7fa; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --blue:#1c6fd1; --blue-soft:#e4eefc; --orange:#e8590c; --orange-soft:#fff0e5;
+  --green:#2b8a3e; --green-soft:#e7f5ea; --red:#c92a2a; --red-soft:#fdeaea;
+  --purple:#7048e8; --purple-soft:#efebff; --yellow:#e0a800; --yellow-soft:#fff8db;
+  --steel:#9aa5b1; --steel-dark:#5f6b78; --steel-soft:#eceff3;
+  --radius:14px; --scale:1;
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --blue:#5aa2f5; --blue-soft:#1b2c42; --orange:#ff8a3d; --orange-soft:#3a2516;
+  --green:#51cf66; --green-soft:#183020; --red:#ff6b6b; --red-soft:#3a1c1c;
+  --purple:#9775fa; --purple-soft:#2a2342; --yellow:#ffd43b; --yellow-soft:#3a3214;
+  --steel:#8d99a6; --steel-dark:#c4ccd5; --steel-soft:#262e37;
+}
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif; line-height:1.5}
+h1,h2,h3{line-height:1.15; margin:0 0 .5em}
+h1{font-size:3rem} h2{font-size:2.1rem} h3{font-size:1.35rem}
+p{margin:0 0 .8em}
+a{color:var(--blue)}
+b,strong{font-weight:650}
+svg text{font-family:"Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif}
+
+.top{position:sticky; top:0; z-index:20; background:var(--panel); border-bottom:1px solid var(--line); display:flex; align-items:center; gap:.8rem; padding:.45rem 1rem; height:56px}
+.top .brand{font-weight:700; white-space:nowrap; font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex; gap:.3rem; overflow-x:auto; flex:1; scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap; text-decoration:none; color:var(--muted); font-size:.75rem; padding:.3rem .65rem; border-radius:99px; border:1px solid transparent}
+.top nav a.active{color:var(--blue); border-color:var(--blue); background:var(--blue-soft)}
+.top .tools{display:flex; gap:.3rem}
+.btn{font:inherit; font-size:.8rem; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); border-radius:10px; padding:.45rem .8rem}
+.btn:hover{border-color:var(--blue)}
+.btn:disabled{opacity:.4; cursor:not-allowed}
+.btn.primary{background:var(--blue); color:#fff; border-color:var(--blue)}
+.btn.orange{background:var(--orange); color:#fff; border-color:var(--orange)}
+.btn.small{font-size:.72rem; padding:.3rem .6rem}
+.btn.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+
+.slide{min-height:calc(100vh - 56px); scroll-margin-top:56px; padding:3rem 2.5rem; border-bottom:1px solid var(--line); display:flex; flex-direction:column; justify-content:center}
+.wrap{max-width:1250px; width:100%; margin:0 auto}
+.kicker{display:inline-block; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--orange); margin-bottom:.4rem}
+.lead{font-size:1.2rem; color:var(--muted); max-width:66ch}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:start}
+.grid2 > *, .hero > *{min-width:0}
+.grid2.wide-left{grid-template-columns:1.35fr 1fr}
+.grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+.grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:1rem}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.2rem}
+.card h3{margin-bottom:.35em}
+.fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.fig svg, .fig canvas{display:block; width:100%; height:auto}
+.caption{font-size:.8rem; color:var(--muted); margin-top:.5rem}
+.controls{display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:.8rem}
+.controls label{font-size:.85rem; color:var(--muted)}
+input[type=range]{width:min(360px,100%); accent-color:var(--orange)}
+.pill{display:inline-block; padding:.15rem .6rem; border-radius:99px; font-size:.8rem; font-weight:600}
+.status{font-weight:650; padding:.55rem .9rem; border-radius:10px; margin-top:.7rem}
+.status.ok{background:var(--green-soft); color:var(--green)}
+.status.warn{background:var(--orange-soft); color:var(--orange)}
+.status.bad{background:var(--red-soft); color:var(--red)}
+.status.info{background:var(--blue-soft); color:var(--blue)}
+.tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1rem 0}
+.tip.o{border-color:var(--orange); background:var(--orange-soft)}
+table.t{border-collapse:collapse; width:100%; font-size:.9rem}
+table.t th, table.t td{border:1px solid var(--line); padding:.45rem .6rem; text-align:left}
+table.t th{background:var(--steel-soft)}
+.hero{display:grid; grid-template-columns:1.2fr 1fr; gap:2.5rem; align-items:center}
+.goals li{margin:.4rem 0}
+.plan td:first-child{white-space:nowrap; font-weight:600}
+.hero-fig{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1rem}
+.hero-fig svg{display:block; width:100%; height:auto}
+.goals{font-size:1.15rem}
+.short{font-size:1.05rem; margin:0}
+.scene{display:block; width:100%; height:auto; margin-bottom:.5rem}
+details.laerer{margin-top:1.2rem; font-size:.85rem; color:var(--muted)}
+details.laerer summary{cursor:pointer; font-weight:600}
+details.laerer ul{margin:.4rem 0; padding-left:1.1rem}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:1.2rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+@media (prefers-reduced-motion: reduce){ .scene *, .hero-fig *{animation:none!important} }
+.readout{display:grid; grid-template-columns:repeat(4,1fr); gap:.5rem; margin-top:.6rem}
+.readout div{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.4rem .7rem}
+.readout span{display:block; font-size:.75rem; color:var(--muted)}
+.readout b{font-size:1.15rem; font-variant-numeric:tabular-nums}
+.chips{display:flex; flex-wrap:wrap; gap:.4rem}
+.chips span{background:var(--blue-soft); color:var(--blue); padding:.25rem .7rem; border-radius:99px; font-size:.85rem; font-weight:600}
+.legend{display:flex; gap:1.1rem; flex-wrap:wrap; font-size:.85rem; color:var(--muted); margin:.2rem 0 .3rem}
+.legend i{display:inline-block; width:22px; border-top:3px solid; vertical-align:middle; margin-right:.4rem}
+.steps{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:.7rem 1rem; margin-top:.7rem; line-height:1.7}
+.steps .res{color:var(--orange); font-weight:700; font-size:1.1rem}
+.formula{font-family:"Cascadia Mono", Consolas, monospace; font-size:1.5rem; font-weight:700; text-align:center; padding:.6rem; background:var(--bg); border-radius:10px; margin:.4rem 0}
+
+/* Repetisjon */
+.flip{cursor:pointer; text-align:left; font:inherit; color:inherit; width:100%; min-height:9rem; display:flex; flex-direction:column; justify-content:space-between}
+.flip .q{font-weight:650; font-size:1.05rem}
+.flip .a{display:none; color:var(--green); font-weight:600; margin-top:.6rem}
+.flip.show .a{display:block}
+.flip .hint{font-size:.75rem; color:var(--muted); margin-top:.6rem}
+.flip.show .hint{display:none}
+
+.ekstra{margin-top:1rem; border:2px dashed var(--line); border-radius:12px; padding:.7rem 1rem; font-size:.92rem}
+.ekstra summary{cursor:pointer; font-weight:650; color:var(--purple)}
+/* Tabs */
+.tabs{display:flex; gap:.4rem; flex-wrap:wrap}
+.tabs .btn{font-size:.9rem; padding:.5rem 1rem}
+/* Oppgaver */
+#oppgaver{justify-content:flex-start}
+.taskbar{display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.5rem}
+.oppgave{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:1.1rem 1.3rem; margin-bottom:1rem}
+.oppgave h3{display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.oppgave h3 small{font-size:.75rem; color:var(--muted); font-weight:600}
+.svar{border-bottom:1px solid var(--muted); min-height:2rem; padding:.45rem .2rem .1rem}
+.fasit{color:var(--green); font-weight:600; font-size:.9rem; line-height:1.35}
+.fasit b{color:inherit}
+.luke{display:inline-block; min-width:3.5em; border-bottom:1px solid var(--muted); text-align:center; padding:0 .3em}
+.fasit-svg{display:none}
+#oppgavetekst.vis-fasit .fasit-svg{display:inline}
+.ot{border-collapse:collapse; width:100%; margin:.5rem 0; font-size:.92rem}
+.ot td, .ot th{border:1px solid var(--muted); padding:.4rem .5rem; vertical-align:top}
+.ot th{background:var(--steel-soft); text-align:left}
+.ot td.tom{height:2.4rem}
+.oppfig{max-width:620px; margin:.4rem 0; background:#fff; border:1px solid #999; border-radius:6px}
+.oppfig svg{display:block; width:100%; height:auto}
+.toast{position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:.6rem 1.1rem; border-radius:10px; font-size:.9rem; opacity:0; transition:opacity .3s; pointer-events:none; z-index:50}
+.toast.show{opacity:1}
+
+@media (max-width:900px){
+  .slide{min-height:auto; padding:2rem 1rem}
+  .grid2,.grid2.wide-left,.hero{grid-template-columns:1fr}
+  .grid3,.grid4{grid-template-columns:1fr 1fr}
+  .readout{grid-template-columns:1fr 1fr}
+  h1{font-size:2.2rem} h2{font-size:1.6rem}
+  .top .brand{display:none}
+}
+@media (max-width:600px){ .oppgave{overflow-x:auto} .grid3,.grid4{grid-template-columns:1fr} .card{overflow-wrap:anywhere} .paper{overflow-x:auto} }
+
+@media print{
+  :root{--bg:#fff; --panel:#fff; --ink:#000; --muted:#444; --line:#999}
+  html{font-size:11pt}
+  .top,.no-print,.toast{display:none!important}
+  .slide{display:none!important}
+  #oppgaver{display:block!important; min-height:0; padding:0; border:0}
+  .oppgave{border:1px solid #999; break-inside:avoid-page}
+  .oppgave h3, .oppgave p{break-after:avoid}
+  .ot, .ot tr{break-inside:avoid}
+  .fasit[hidden]{display:none!important}
+  h2{font-size:18pt}
+}
+
+
+/* CNC */
+.controls .btn.small.on{background:var(--orange); color:#fff; border-color:var(--orange)}
+.mono{font-family:"Cascadia Mono", Consolas, monospace}
+.ord{display:flex; flex-wrap:wrap; gap:.5rem; margin:.4rem 0 1rem}
+.ord button{font:700 1.7rem/1 "Cascadia Mono", Consolas, monospace; cursor:pointer; padding:.6rem .9rem; border-radius:10px; border:2px solid var(--line); background:var(--panel); color:var(--ink)}
+#ordBtns button{font-size:clamp(1.6rem,4vw,3.2rem); padding:.8rem 1.3rem}
+.ord button.on{border-color:var(--orange); background:var(--orange-soft); color:var(--orange)}
+.kode{font-family:"Cascadia Mono", Consolas, monospace; font-size:.9rem; background:#1d2126; color:#e8eaed; border-radius:10px; padding:.6rem 0; margin:0; list-style:none; line-height:1.55}
+.kode li{padding:0 .9rem; border-left:5px solid transparent; white-space:pre; cursor:default}
+.kode li .k{color:#8d99a6}
+.kode li.na{background:rgba(232,89,12,.35); border-left-color:#ff8a3d}
+.kode li.ferdig{color:#9aa5b1}
+.kode li[data-del]{transition:background .3s}
+.kode li.del-on{background:rgba(90,162,245,.3)}
+.deler{display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:.6rem}
+.deler .btn{font-weight:700}
+.gkort{text-align:center}
+.gkort svg{max-height:110px}
+.gkort .g{font:800 1.8rem/1 "Cascadia Mono", Consolas, monospace; color:var(--orange)}
+.stepbar{display:flex; flex-wrap:wrap; gap:.4rem; align-items:center; margin-bottom:.5rem}
+.fxwrap{overflow-x:auto}
+.fx{min-width:780px;background:#fff;color:#3c3c3c;border:1px solid #b9c0c8;border-radius:10px;overflow:hidden;font:13px/1.3 "Segoe UI","Artifakt Element",system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.fx-top{display:flex;align-items:stretch;background:#f2f3f4;border-bottom:1px solid #d6dadf;height:34px}
+.fx-ws{position:relative;display:flex;align-items:center;gap:6px;padding:0 12px;font-weight:700;border-right:1px solid #d6dadf;background:#fff;cursor:default;min-width:170px}
+.fx-ws-ico{width:18px;height:18px;border-radius:3px;background:linear-gradient(135deg,#2b78c5,#5aa2e6)}
+.fx-ws.man .fx-ws-ico{background:linear-gradient(135deg,#7a45c8,#a77be8)}
+.fx-tabs{display:flex}
+.fx-tabs span{display:flex;align-items:center;padding:0 12px;font-weight:600;font-size:12px;color:#555;border-bottom:3px solid transparent}
+.fx-tabs span.aktiv{color:#0a6ebd;border-bottom-color:#0696d7;background:#fff}
+.fx-ribbon{display:flex;gap:0;background:#fff;border-bottom:1px solid #d6dadf;height:66px;padding:4px 6px}
+.fx-grp{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:0 8px;border-right:1px solid #e3e6ea}
+.fx-grp .ikoner{display:flex;gap:4px}
+.fx-grp .navn{font-size:10.5px;font-weight:700;color:#666;letter-spacing:.02em}
+.fx-btn{position:relative;width:34px;height:34px;border-radius:4px;display:grid;place-items:center}
+.fx-btn svg{width:28px;height:28px}
+@keyframes fxpuls{50%{outline-color:#ffb380}}
+.fx-main{display:grid;grid-template-columns:190px 1fr;position:relative;height:380px}
+.fx-tree{border-right:1px solid #d6dadf;background:#fafafa;padding:8px 6px;font-size:12px;overflow:hidden}
+.fx-tree .tt{font-weight:700;color:#666;font-size:11px;letter-spacing:.04em;margin-bottom:6px}
+.fx-tree div.rr{padding:2px 4px;white-space:nowrap;border-radius:3px}
+.fx-tree i{font-style:normal;display:inline-block;width:14px;height:12px;margin-right:4px;vertical-align:-1px;border-radius:2px}
+.fx-canvas{position:relative;background:linear-gradient(#ffffff,#dde4ec)}
+.fx-canvas svg{display:block;width:100%;height:380px}
+.fx-play{position:absolute;left:16px;right:16px;bottom:10px;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #c9ced6;border-radius:6px;padding:4px 10px;font-weight:700}
+.fx-play i{flex:1;height:6px;background:#dde3ea;border-radius:3px;overflow:hidden}
+.fx-play b{display:block;height:100%;width:0;background:#0696d7}
+.fx-dialog{position:absolute;right:10px;top:10px;width:290px;background:#fff;border:1px solid #b9c0c8;box-shadow:0 6px 18px rgba(0,0,0,.18);border-radius:4px;font-size:12px}
+.fx-dialog .hd{background:#f2f3f4;padding:6px 10px;font-weight:700;letter-spacing:.04em;border-bottom:1px solid #d6dadf}
+.fx-dialog .rr2{display:flex; justify-content:space-between; padding:5px 10px; border-bottom:1px solid #eef0f2}
+.fx-dialog .rr2.bad{color:#d93025; font-weight:700; background:#fdeaea}
+.fx-play b.rod{background:#d93025}
+@media (max-width:900px){ .ord button{font-size:1.2rem} }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">CNC · <span>Leksjon 3</span></div>
+  <nav id="nav"></nav>
+  <div class="tools no-print">
+    <button class="btn small" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button class="btn small" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<main>
+
+<!-- FORSIDE -->
+<section class="slide" id="start" data-nav="Start">
+  <div class="wrap hero">
+    <div>
+      <div class="kicker">Vg2 industriteknologi · CNC</div>
+      <h1>Leksjon 3<br>Verktøykompensasjon og skjærradius</h1>
+      <p class="lead">Hvorfor fasen og radien blir feil, og hvordan du får riktig mål.</p>
+      <ol class="goals">
+        <li>Skjæret er <b>rundt</b> på spissen</li>
+        <li><b>Rette</b> linjer blir riktige, <b>skrå</b> blir feil</li>
+        <li><b>G42</b>, <b>G41</b> og <b>G40</b></li>
+        <li>Legg inn <b>riktig radius</b></li>
+        <li>Radiusen i <b>Fusion</b></li>
+      </ol>
+    </div>
+    <div>
+      <div class="hero-fig">
+        <svg viewBox="0 0 520 330" role="img" aria-label="Spissen på et skjær forstørret. Spissen er en liten bue med radius r. Punktet P der kantene ville møttes, ligger utenfor skjæret.">
+          <path d="M150 170 A60 60 0 0 0 210 230 L480 215 L480 30 L156 30 Z" style="fill:#e3c578;stroke:#7a5c14;stroke-width:3"/>
+          <path d="M150 20 V290 M60 230 H480" style="stroke:var(--muted);stroke-width:2;stroke-dasharray:9 6;fill:none"/>
+          <circle cx="210" cy="170" r="5" style="fill:#7a5c14"/>
+          <line x1="210" y1="170" x2="168" y2="212" style="stroke:var(--orange);stroke-width:4"/>
+          <text x="196" y="205" font-size="26" font-weight="800" style="fill:var(--orange)">r</text>
+          <path d="M140 220 l20 20 M160 220 l-20 20" style="stroke:var(--red);stroke-width:4"/>
+          <text x="108" y="270" font-size="30" font-weight="800" style="fill:var(--red)">P</text>
+          <text x="290" y="130" font-size="22" font-weight="700" style="fill:#5b4210">Skjæret</text>
+          <text x="20" y="320" font-size="17" style="fill:var(--muted)">P = punktet maskinen tror er spissen</text>
+        </svg>
+      </div>
+      <details class="laerer no-print"><summary>For læreren: kompetansemål og plan</summary>
+      <p style="margin:.6rem 0">Hver del er én visning med én ting. Bla videre når klassen har forstått den. Innledning: Vis et vendeskjær og en aksel med fas. Spør: «Hvorfor ble fasen for liten?»</p>
+      <div class="card" style="margin-top:.6rem">
+        <h3>Kompetansemål (PIN02-03)</h3>
+        <p><i>«programmere, simulere og drifte styrte produksjonsmaskiner»</i> (T8)</p>
+        <p><i>«velge og bruke verktøy, maskiner og utstyr […] og vurdere kvaliteten på eget arbeid»</i> (T1). Her: velge skjær, kontrollere mål.</p>
+        <p style="font-size:.85rem; color:var(--muted); margin:0">Tredje leksjon i emnet CNC. Forutsetter leksjon 1 og 2 (X = diameter, offset, G1/G3), men ikke CNC fra Vg1. Husker du-delen repeterer det som trengs. Læringsmål: forklare at skjæret har nesradius og at maskinen styrer et tenkt punkt P · forklare hvorfor fas, kon og radius blir feil uten kompensasjon · velge G41, G42 og G40 · lese nesradiusen på skjæret og legge inn R og T i offsettabellen · vite hvor radiusen legges inn i Fusion.</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3>Plan for to skoletimer</h3>
+        <table class="t plan">
+          <tr><th colspan="2">Time 1</th></tr>
+          <tr><td>0–5 min</td><td>Husker du?</td></tr>
+          <tr><td>5–25 min</td><td>Del 1–5: skjæret er rundt, eska, rett og skrått, se feilen</td></tr>
+          <tr><td>25–45 min</td><td>Oppgave 1–3</td></tr>
+          <tr><th colspan="2">Time 2</th></tr>
+          <tr><td>0–20 min</td><td>Del 6–10: G41/G42/G40, programmet, offsettabellen, feil R, Fusion</td></tr>
+          <tr><td>20–42 min</td><td>Oppgave 4–6</td></tr>
+          <tr><td>42–45 min</td><td>Exit-lapp</td></tr>
+        </table>
+        <p style="font-size:.85rem; color:var(--muted); margin:.5rem 0 0">Oppgave 7 er ekstra. Ta med et vendeskjær og eska til det, og vis OFFSET-siden på maskinen.</p>
+      </div>
+      </details>
+      <p class="caption no-print">Bla med piltastene ↑ ↓ eller Page Up/Down. A+ gir større tekst på fremviser.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HUSKER DU -->
+<section class="slide" id="rep" data-nav="Husker du?">
+  <div class="wrap">
+    <div class="kicker">Repetisjon · ca. 5 min</div>
+    <h2>Husker du?</h2>
+    <p class="lead">Svar med sidemannen – klikk for svar.</p>
+    <div class="grid4" style="margin-top:1.2rem">
+      <button class="card flip"><span class="q">Hva betyr X30 på dreiebenken?</span><span class="a">Diameter 30 mm.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva er verktøyoffset?</span><span class="a">Tallene som sier maskinen hvor spissen på verktøyet er, i X og Z.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva gjør G1 X20 Z-2?</span><span class="a">Skjærer en rett, skrå linje til Ø20 og Z-2. Det blir en fas.</span><span class="hint">Klikk for svar</span></button>
+      <button class="card flip"><span class="q">Hva gjør G3 X30 Z-23 R3?</span><span class="a">Skjærer en bue mot klokka med radius 3 mm.</span><span class="hint">Klikk for svar</span></button>
+    </div>
+    <div class="tip o"><b>I dag:</b> Programmet er riktig, men fasen og radien blir likevel feil. Hvorfor?</div>
+  </div>
+</section>
+
+<!-- DEL 1 SKJÆRET ER RUNDT -->
+<section class="slide" id="rundt" data-nav="1 Skjæret er rundt">
+  <div class="wrap">
+    <div class="kicker">Del 1 · ca. 4 min</div>
+    <h2>Skjæret er rundt på spissen</h2>
+    <div class="grid2 wide-left">
+      <div class="fig">
+        <svg data-bilde="vendeskjaer-nesradius" data-alt="Vendeskjær på et dreiestål, spissen sett ovenfra" viewBox="0 0 600 320" role="img" aria-label="Dreiestål med vendeskjær. En lupe viser at spissen er en liten bue.">
+          <rect x="300" y="150" width="290" height="90" rx="6" style="fill:var(--steel-dark)"/>
+          <path d="M120 230 L300 150 L470 130 L290 210 Z" style="fill:#c5a14a;stroke:#7a5c14;stroke-width:3"/>
+          <circle cx="250" cy="190" r="12" style="fill:var(--steel-dark)"/>
+          <circle cx="128" cy="226" r="38" style="fill:none;stroke:var(--blue);stroke-width:4"/>
+          <line x1="100" y1="252" x2="70" y2="280" style="stroke:var(--blue);stroke-width:7;stroke-linecap:round"/>
+          <text x="40" y="40" font-size="22" font-weight="800" style="fill:var(--ink)">Vendeskjær</text>
+          <path d="M130 50 Q200 80 240 160" style="fill:none;stroke:var(--muted);stroke-width:2"/>
+          <text x="330" y="280" font-size="20" style="fill:var(--muted)">Dreiestål</text>
+        </svg>
+      </div>
+      <div class="fig">
+        <svg viewBox="0 0 320 320" role="img" aria-label="Lupe på spissen: en bue med radius r. Punktet P der kantene ville møttes.">
+          <defs><clipPath id="lupeKlipp"><circle cx="160" cy="160" r="148"/></clipPath></defs>
+          <circle cx="160" cy="160" r="150" style="fill:var(--panel);stroke:var(--blue);stroke-width:5"/>
+          <g clip-path="url(#lupeKlipp)">
+            <path d="M90 150 A60 60 0 0 0 150 210 L320 196 L320 0 L96 0 Z" style="fill:#e3c578;stroke:#7a5c14;stroke-width:3"/>
+            <path d="M90 20 V300 M20 210 H320" style="stroke:var(--muted);stroke-width:2;stroke-dasharray:8 6;fill:none"/>
+          </g>
+          <line x1="150" y1="150" x2="108" y2="192" style="stroke:var(--orange);stroke-width:4"/>
+          <text x="136" y="186" font-size="26" font-weight="800" style="fill:var(--orange)">r</text>
+          <path d="M80 200 l20 20 M100 200 l-20 20" style="stroke:var(--red);stroke-width:4"/>
+          <text x="52" y="252" font-size="28" font-weight="800" style="fill:var(--red)">P</text>
+        </svg>
+      </div>
+    </div>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="card"><h3 style="color:var(--orange)">r = nesradius</h3><p class="short">Vanlig: 0,4 · 0,8 · 1,2 mm.</p></div>
+      <div class="card"><h3 style="color:var(--red)">P = tenkt spiss</h3><p class="short">Maskinen styrer P. Men P er <b>luft</b>.</p></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>P kalles teoretisk eller tenkt skjærespiss. Når verktøyet måles inn, skraper vi diameter og endeflate. Da blir offseten målt til P, fordi skjæret berører emnet i én retning om gangen. Nesradiusen trengs for styrke og god overflate: større r = sterkere spiss og finere overflate, men mer trykk og mer vibrasjon.</details>
+  </div>
+</section>
+
+<!-- DEL 2 LES RADIUSEN -->
+<section class="slide" id="eska" data-nav="2 Les radiusen">
+  <div class="wrap">
+    <div class="kicker">Del 2 · ca. 3 min</div>
+    <h2>Les radiusen på eska</h2>
+    <p class="lead">De to siste tallene i koden er nesradiusen.</p>
+    <p class="mono" style="font-size:clamp(2.2rem,6vw,4.2rem); font-weight:800; margin:1.2rem 0; letter-spacing:.04em">CNMG 1204<span style="color:var(--orange); border-bottom:6px solid var(--orange)">08</span></p>
+    <div class="grid3">
+      <div class="card gkort"><div class="g">04</div><p style="font-size:1.3rem">r = <b>0,4 mm</b></p></div>
+      <div class="card gkort"><div class="g">08</div><p style="font-size:1.3rem">r = <b>0,8 mm</b></p></div>
+      <div class="card gkort"><div class="g">12</div><p style="font-size:1.3rem">r = <b>1,2 mm</b></p></div>
+    </div>
+    <div class="tip o">Står også på skjæret og i katalogen. <b>Nytt skjær med annen radius?</b> Da må tallet i maskinen endres.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>ISO-koden for vendeskjær: C = form (rombe 80°), N = klaring (0°), M = toleranse, G = sponbryter og hull, 12 = kantlengde (ca. 12 mm), 04 = tykkelse (4,76 mm), 08 = nesradius 0,8 mm. Elevene trenger bare de to siste tallene. Vis gjerne ei ekte eske.</details>
+  </div>
+</section>
+
+<!-- DEL 3 RETTE LINJER -->
+<section class="slide" id="rett" data-nav="3 Rett linje">
+  <div class="wrap">
+    <div class="kicker">Del 3 · ca. 3 min</div>
+    <h2>Rett langs Z eller X: riktig mål</h2>
+    <p class="lead">Skjæret berører stålet akkurat der P er i høyde eller lengde.</p>
+    <div class="grid2" style="margin-top:1rem">
+      <div class="card gkort">
+        <svg viewBox="0 0 300 200" style="max-height:260px" role="img" aria-label="Dreiing langs Z: buen på skjæret berører flaten i samme høyde som P.">
+          <rect x="10" y="120" width="280" height="70" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <path d="M120 80 A40 40 0 0 0 160 120 L290 112 L290 10 L124 10 Z" style="fill:#e3c578;stroke:#7a5c14;stroke-width:3"/>
+          <line x1="10" y1="120" x2="290" y2="120" style="stroke:var(--blue);stroke-width:3;stroke-dasharray:10 6"/>
+          <line x1="120" y1="20" x2="120" y2="130" style="stroke:var(--muted);stroke-width:2;stroke-dasharray:6 5"/>
+          <path d="M112 112 l16 16 M128 112 l-16 16" style="stroke:var(--red);stroke-width:4"/>
+          <text x="96" y="152" font-size="20" font-weight="800" style="fill:var(--red)">P</text>
+          <path d="M70 100 H20 m12 -8 l-12 8 l12 8" style="fill:none;stroke:var(--ink);stroke-width:3"/>
+          <text x="22" y="90" font-size="18" font-weight="700" style="fill:var(--ink)">−Z</text>
+        </svg>
+        <div class="g" style="color:var(--green)">✓</div><p class="short">Langs Z: riktig diameter.</p>
+      </div>
+      <div class="card gkort">
+        <svg viewBox="0 0 300 200" style="max-height:260px" role="img" aria-label="Plandreiing i X: buen på skjæret berører endeflaten i samme lengde som P.">
+          <rect x="10" y="10" width="110" height="180" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <path d="M120 110 A40 40 0 0 0 160 150 L290 142 L290 40 L124 40 Z" style="fill:#e3c578;stroke:#7a5c14;stroke-width:3"/>
+          <line x1="120" y1="10" x2="120" y2="195" style="stroke:var(--blue);stroke-width:3;stroke-dasharray:10 6"/>
+          <line x1="110" y1="150" x2="290" y2="150" style="stroke:var(--muted);stroke-width:2;stroke-dasharray:6 5"/>
+          <path d="M112 142 l16 16 M128 142 l-16 16" style="stroke:var(--red);stroke-width:4"/>
+          <text x="128" y="180" font-size="20" font-weight="800" style="fill:var(--red)">P</text>
+          <path d="M200 140 V40 m-8 12 l8 -12 l8 12" style="fill:none;stroke:var(--ink);stroke-width:3"/>
+          <text x="212" y="50" font-size="18" font-weight="700" style="fill:var(--ink)">+X</text>
+        </svg>
+        <div class="g" style="color:var(--green)">✓</div><p class="short">Plan endeflate: riktig lengde.</p>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Den blå stiplede linja er tegningen. På rette flater i Z eller X treffer skjæret flaten på samme sted som P ville gjort. Derfor merker vi ikke nesradiusen når vi bare dreier sylindre og endeflater. Den indre hjørnet mellom to flater får alltid en liten radius lik r.</details>
+  </div>
+</section>
+
+<!-- DEL 4 SKRÅ LINJER -->
+<section class="slide" id="skraa" data-nav="4 Skrått">
+  <div class="wrap">
+    <div class="kicker">Del 4 · ca. 3 min</div>
+    <h2>Skrått og bue: feil mål</h2>
+    <p class="lead">P følger tegningen. Men buen på skjæret kommer ikke helt ned.</p>
+    <div class="fig" style="max-width:820px">
+      <svg viewBox="0 0 600 330" role="img" aria-label="Fas på 45 grader. P går langs tegningen, men skjæret står litt utenfor. Det blir stål igjen.">
+        <path d="M20 320 V40 H300 L460 200 V320 Z" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+        <path d="M300 40 L335 40 L460 165 L460 200 Z" style="fill:var(--red);opacity:.6"/>
+        <path d="M20 40 H300 L460 200 V320" style="fill:none;stroke:var(--blue);stroke-width:3;stroke-dasharray:10 6"/>
+        <path d="M380 60 A60 60 0 0 0 440 120 L600 108 L600 0 L384 0 Z" style="fill:#e3c578;stroke:#7a5c14;stroke-width:3"/>
+        <path d="M380 0 V120 H600" style="stroke:var(--muted);stroke-width:2;stroke-dasharray:6 5;fill:none"/>
+        <path d="M372 112 l16 16 M388 112 l-16 16" style="stroke:var(--red);stroke-width:4"/>
+        <text x="344" y="140" font-size="26" font-weight="800" style="fill:var(--red)">P</text>
+        <text x="476" y="190" font-size="20" font-weight="700" style="fill:var(--red)">Stål igjen</text>
+        <path d="M474 184 L420 140" style="stroke:var(--red);stroke-width:2"/>
+        <text x="40" y="30" font-size="17" style="fill:var(--blue)">tegningen</text>
+      </svg>
+      <div class="legend"><span><i style="border-color:var(--blue);border-top-style:dashed"></i>Tegningen (P går her)</span><span><i style="border-color:var(--red)"></i>Stål som blir igjen</span></div>
+    </div>
+    <div class="tip o">Fas 2 × 45° med r = 0,8 blir bare ca. <b>1,5 × 45°</b>.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Figuren er sterkt forstørret. På en 45° fas står skjærets kant 0,41·r utenfor linja (vinkelrett på fasen). Målt i X og Z blir feilen 0,59·r: med r = 0,8 blir det ca. 0,47 mm, så fasen 2 × 45° blir ca. 1,5 × 45°. På kjegler (koner) blir diameteren feil, og på buer blir radien feil. Formelen ligger i Ekstra-oppgaven.</details>
+  </div>
+</section>
+
+<!-- DEL 5 SE FEILEN -->
+<section class="slide" id="feil" data-nav="5 Se feilen">
+  <div class="wrap">
+    <div class="kicker">Del 5 · ca. 6 min</div>
+    <h2>Se feilen på akselen</h2>
+    <p class="lead">Akselen fra leksjon 2: fas 2 × 45° og R3. Trykk «Kjør».</p>
+    <div class="fig" style="max-width:1050px">
+      <div class="controls no-print" style="margin-top:0"><label>Kompensasjon</label><button class="btn small on" data-a-komp="0">Av (G40)</button><button class="btn small" data-a-komp="1">På (G42)</button></div>
+      <div class="controls no-print" style="margin-top:.4rem"><label>Skjæret</label><button class="btn small" data-a-r="0.4">r 0,4</button><button class="btn small on" data-a-r="0.8">r 0,8</button><button class="btn small" data-a-r="1.2">r 1,2</button><button class="btn small primary" id="aKjor">▶ Kjør</button></div>
+      <svg id="aSvg" viewBox="0 0 600 310" role="img" aria-label="To forstørrede utsnitt av akselen: fasen og radien. Den blå stiplede linja er tegningen. Rødt er stål som blir igjen, oransje er stål som er tatt for mye."></svg>
+      <div class="legend"><span><i style="border-color:var(--blue);border-top-style:dashed"></i>Tegningen</span><span><i style="border-color:var(--red)"></i>Stål igjen</span><span><i style="border-color:var(--orange)"></i>For mye tatt</span><span><i style="border-color:var(--ink)"></i>✕ = P</span></div>
+      <div class="status info" id="aTxt"></div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Utsnittene er forstørret ca. 50 ganger. Se på krysset P: uten kompensasjon følger P tegningen, men skjæret gjør det ikke. Med G42 flytter maskinen P litt, slik at buen på skjæret følger tegningen. Prøv r 1,2 uten kompensasjon: større radius gir større feil. Hjørnet inni mellom Ø20 og planflaten får alltid radius r. Det er normalt.</details>
+  </div>
+</section>
+
+<!-- DEL 6 G41 G42 G40 -->
+<section class="slide" id="g42" data-nav="6 G41 og G42">
+  <div class="wrap">
+    <div class="kicker">Del 6 · ca. 4 min</div>
+    <h2>G42, G41 og G40</h2>
+    <p class="lead">Se <b>i den retningen verktøyet kjører</b>. Hvilken side av linja står verktøyet på?</p>
+    <div class="grid3" style="margin-top:1rem">
+      <div class="card gkort">
+        <svg viewBox="0 0 200 140" role="img" aria-label="Utvendig dreiing mot chucken. Verktøyet står til høyre for banen.">
+          <rect x="10" y="80" width="180" height="50" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <path d="M175 72 H30 m14 -9 l-14 9 l14 9" style="fill:none;stroke:var(--blue);stroke-width:4"/>
+          <circle cx="120" cy="52" r="14" style="fill:#e3c578;stroke:#7a5c14;stroke-width:3"/>
+          <text x="150" y="40" font-size="15" font-weight="700" style="fill:var(--ink)">høyre</text>
+        </svg>
+        <div class="g">G42</div><p class="short">Til <b>høyre</b> for banen.<br>Utvendig dreiing.</p>
+      </div>
+      <div class="card gkort">
+        <svg viewBox="0 0 200 140" role="img" aria-label="Innvendig dreiing (boring) mot chucken. Verktøyet står til venstre for banen.">
+          <rect x="10" y="10" width="180" height="50" style="fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:2"/>
+          <path d="M175 68 H30 m14 -9 l-14 9 l14 9" style="fill:none;stroke:var(--blue);stroke-width:4"/>
+          <circle cx="120" cy="88" r="14" style="fill:#e3c578;stroke:#7a5c14;stroke-width:3"/>
+          <text x="148" y="118" font-size="15" font-weight="700" style="fill:var(--ink)">venstre</text>
+          <line x1="10" y1="132" x2="190" y2="132" style="stroke:var(--muted);stroke-dasharray:10 4 2 4"/>
+        </svg>
+        <div class="g">G41</div><p class="short">Til <b>venstre</b> for banen.<br>Innvendig dreiing.</p>
+      </div>
+      <div class="card gkort">
+        <svg viewBox="0 0 200 140" role="img" aria-label="G40: kompensasjonen er av.">
+          <circle cx="100" cy="70" r="40" style="fill:none;stroke:var(--muted);stroke-width:5"/>
+          <path d="M100 22 V70" style="stroke:var(--muted);stroke-width:6;stroke-linecap:round"/>
+        </svg>
+        <div class="g" style="color:var(--muted)">G40</div><p class="short">Kompensasjon <b>av</b>.</p>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Regelen gjelder med X opp og Z mot høyre, slik delen er tegnet i leksjonene. Tenk at du går bak verktøyet i kjøreretningen. Står verktøyet på høyre side av banen, er det G42. Utvendig dreiing mot chucken er nesten alltid G42, innvendig dreiing mot chucken G41. Kjører du motsatt vei (fra chucken mot pinolen), bytter de plass.</details>
+  </div>
+</section>
+
+<!-- DEL 7 I PROGRAMMET -->
+<section class="slide" id="program" data-nav="7 I programmet">
+  <div class="wrap">
+    <div class="kicker">Del 7 · ca. 4 min</div>
+    <h2>Slik ser det ut i programmet</h2>
+    <div class="grid2 wide-left">
+      <ol class="kode" id="kode7" style="font-size:1.05rem"></ol>
+      <div>
+        <div class="card" style="border-left:6px solid var(--green)"><h3><span class="mono" style="color:var(--green)">G42</span> på</h3><p class="short">På en rett linje <b>før</b> konturen, utenfor stålet.</p></div>
+        <div class="card" style="border-left:6px solid var(--red); margin-top:1rem"><h3><span class="mono" style="color:var(--red)">G40</span> av</h3><p class="short">Når verktøyet kjører <b>bort</b>.</p></div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Maskinen trenger en rett bevegelse (G0 eller G1) for å flytte seg over på riktig side av banen. Derfor slås G42 på mens verktøyet kjører inn mot startpunktet, ikke på en bue. G40 står også i startlinja (N1) som en sikkerhet. Kompensasjonen virker bare på verktøyet som har R og T i offsettabellen (Del 8).</details>
+  </div>
+</section>
+
+<!-- DEL 8 OFFSETTABELLEN -->
+<section class="slide" id="tabell" data-nav="8 R og T">
+  <div class="wrap">
+    <div class="kicker">Del 8 · ca. 4 min</div>
+    <h2>Legg inn R og T i offsettabellen</h2>
+    <p class="lead">G42 virker bare hvis maskinen vet <b>hvor stor</b> radiusen er og <b>hvilken vei</b> spissen peker.</p>
+    <div class="grid2 wide-left">
+      <div class="card" style="background:#1d2126; color:#e8eaed; font-family:'Cascadia Mono',Consolas,monospace">
+        <div style="color:#8d99a6; margin-bottom:.4rem">OFFSET · GEOMETRI</div>
+        <table class="t" style="font-size:1.05rem; color:#e8eaed">
+          <tr><th style="color:#8d99a6;background:transparent">Nr.</th><th style="color:#8d99a6;background:transparent">X</th><th style="color:#8d99a6;background:transparent">Z</th><th style="color:#ff8a3d;background:transparent">R</th><th style="color:#ff8a3d;background:transparent">T</th></tr>
+          <tr><td>01</td><td>−182,410</td><td>−250,120</td><td style="background:rgba(232,89,12,.35)"><b>0,800</b></td><td style="background:rgba(232,89,12,.35)"><b>3</b></td></tr>
+          <tr><td>02</td><td>−180,950</td><td>−262,300</td><td style="background:rgba(232,89,12,.35)"><b>0,400</b></td><td style="background:rgba(232,89,12,.35)"><b>3</b></td></tr>
+          <tr><td>03</td><td>−95,000</td><td>−301,450</td><td>0,000</td><td>0</td></tr>
+        </table>
+        <p style="color:#8d99a6; font-size:.8rem; margin:.4rem 0 0">Tallene er eksempler. T03 er et bor: ingen radius.</p>
+      </div>
+      <div>
+        <div class="card"><h3 style="color:var(--orange)">R = nesradius</h3><p class="short">Fra eska: 08 → <b>0,8</b>.</p></div>
+        <div class="card" style="margin-top:1rem">
+          <h3 style="color:var(--orange)">T = spissretning</h3>
+          <svg viewBox="0 0 200 110" style="max-height:120px; display:block" role="img" aria-label="Spissretning 3: spissen peker ned mot venstre, mot chucken og mot senter.">
+            <path d="M70 50 A30 30 0 0 0 100 80 L190 74 L190 5 L74 5 Z" style="fill:#e3c578;stroke:#7a5c14;stroke-width:3"/>
+            <path d="M100 50 L48 96 m3 -14 l-3 14 l14 -3" style="fill:none;stroke:var(--orange);stroke-width:4"/>
+            <text x="22" y="104" font-size="24" font-weight="800" style="fill:var(--orange)">3</text>
+          </svg>
+          <p class="short">Vanlig utvendig dreiestål: <b>3</b>.</p>
+        </div>
+      </div>
+    </div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>T er «imaginary tool tip» (tenkt spiss) på Fanuc-styringer: et tall fra 0 til 9 som sier hvor P ligger i forhold til sentrum av nesradiusen. 3 er vanlig for utvendig dreiestål med X opp, 2 for bore-stål. Sjekk i manualen til skolens maskin (på Mazak heter det «nose R» og spissretning i verktøydataene). Feil T gir feil retning på korreksjonen og kan gi like store feil som ingen kompensasjon.</details>
+  </div>
+</section>
+
+<!-- DEL 9 FEIL R -->
+<section class="slide" id="feilr" data-nav="9 Feil R">
+  <div class="wrap">
+    <div class="kicker">Del 9 · ca. 5 min</div>
+    <h2>Feil R i tabellen = feil mål</h2>
+    <p class="lead">G42 er på. Velg skjæret som sitter i maskinen og tallet i tabellen.</p>
+    <div class="fig" style="max-width:1050px">
+      <div class="controls no-print" style="margin-top:0"><label>Skjæret (eska)</label><button class="btn small" data-b-r="0.4">r 0,4</button><button class="btn small on" data-b-r="0.8">r 0,8</button><button class="btn small" data-b-r="1.2">r 1,2</button></div>
+      <div class="controls no-print" style="margin-top:.4rem"><label>R i tabellen</label><button class="btn small" data-b-rt="0">0</button><button class="btn small on" data-b-rt="0.4">0,4</button><button class="btn small" data-b-rt="0.8">0,8</button><button class="btn small" data-b-rt="1.2">1,2</button><button class="btn small primary" id="bKjor">▶ Kjør</button></div>
+      <svg id="bSvg" viewBox="0 0 600 310" role="img" aria-label="To forstørrede utsnitt av akselen: fasen og radien. Feil R i tabellen gir stål igjen eller for mye tatt."></svg>
+      <div class="legend"><span><i style="border-color:var(--blue);border-top-style:dashed"></i>Tegningen</span><span><i style="border-color:var(--red)"></i>Stål igjen</span><span><i style="border-color:var(--orange)"></i>For mye tatt</span></div>
+      <div class="status info" id="bTxt"></div>
+    </div>
+    <div class="tip o"><b>Byttet skjær?</b> Sjekk radiusen på eska og R i tabellen.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>For liten R i tabellen gir stål igjen (som uten kompensasjon, bare mindre). For stor R gir for mye tatt: fasen blir for stor, og radien for liten. Det kan gjøre delen til vrak. Diametre og lengder blir riktige uansett, så feilen merkes først på faser, koner og radier.</details>
+  </div>
+</section>
+
+<!-- DEL 10 FUSION -->
+<section class="slide" id="fusion" data-nav="10 Fusion">
+  <div class="wrap">
+    <div class="kicker">Del 10 · ca. 4 min</div>
+    <h2>Radiusen i Fusion</h2>
+    <p class="lead">Fusion må også vite radiusen. Den står i <b>verktøyet</b>.</p>
+    <div class="grid2">
+      <div class="fx" style="min-width:0">
+        <div class="fx-dialog" style="position:static; width:auto; box-shadow:none; border:0">
+          <div class="hd">TOOL LIBRARY · INSERT</div>
+          <div class="rr2"><span>Shape</span><span>C (80°)</span></div>
+          <div class="rr2"><span>Inscribed circle</span><span>12.7 mm</span></div>
+          <div class="rr2 bad"><span>Corner radius</span><span>0.8 mm</span></div>
+          <div class="rr2"><span>Thickness</span><span>4.76 mm</span></div>
+        </div>
+        <div class="fx-dialog" style="position:static; width:auto; box-shadow:none; border:0; border-top:1px solid #d6dadf">
+          <div class="hd">PROFILE FINISHING · PASSES</div>
+          <div class="rr2 bad"><span>Compensation type</span><span>In computer ▾</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="card"><h3>In computer <small style="color:var(--muted)">(vanlig)</small></h3><p class="short">Fusion regner selv. Ingen G42 i koden. <b>Corner radius må stemme med skjæret.</b></p></div>
+        <div class="card" style="margin-top:1rem"><h3>In control</h3><p class="short">Fusion skriver G42. Maskinen bruker <b>R i tabellen</b>.</p></div>
+      </div>
+    </div>
+    <div class="tip o">Uansett: radiusen må være <b>riktig ett sted</b>. Ikke begge steder, og ikke ingen steder.</div>
+    <details class="laerer no-print"><summary>Lærernotat</summary>Corner radius finnes i fanen Insert når du redigerer dreieverktøyet i Tool Library. Compensation type finnes i fanen Passes i dreieoperasjonene. In computer: verktøybanen i Fusion er allerede flyttet for radiusen, og R i maskinen skal da stå 0 (eller kompensasjonen være av). In control: Fusion lager G41/G42, og maskinen bruker R og T. Wear / Inverse wear brukes når maskinen bare skal justere for slitasje. Bruker man In control og glemmer R i maskinen, blir det som uten kompensasjon. Har man radius både i Fusion (In computer) og R i maskinen med G42 aktiv, blir det kompensert to ganger.</details>
+  </div>
+</section>
+
+<!-- OPPSUMMERING -->
+<section class="slide" id="oppsummering" data-nav="Oppsummering">
+  <div class="wrap">
+    <div class="kicker">Oppsummering</div>
+    <h2>Dette skal du huske</h2>
+    <div class="grid2">
+      <div>
+        <ol style="font-size:1.08rem">
+          <li>Skjæret har <b>nesradius r</b>. Maskinen styrer det tenkte punktet <b>P</b>.</li>
+          <li>Rett i Z og X: riktig mål. <b>Fas, kon og bue: feil</b> uten kompensasjon.</li>
+          <li><b>G42</b> utvendig, <b>G41</b> innvendig, <b>G40</b> av.</li>
+          <li>Les r på eska (CNMG 1204<b>08</b> = 0,8). Legg inn <b>R og T</b>.</li>
+          <li>I Fusion: <b>Corner radius</b> må stemme med skjæret.</li>
+        </ol>
+      </div>
+      <div>
+        <div class="card">
+          <h3>Nøkkelord</h3>
+          <div class="chips"><span>nesradius</span><span>tenkt spiss P</span><span>verktøykompensasjon</span><span>G40</span><span>G41</span><span>G42</span><span>R</span><span>T (spissretning)</span><span>offsettabell</span><span>Corner radius</span><span>In computer</span><span>In control</span></div>
+        </div>
+        <a class="simlink no-print" data-sim="cnc-dreiebenk"><span class="ico">🖥️</span><span><b>CNC-dreiebenk-simulatoren</b><small>Øv på betjeningspanelet og OFFSET.</small></span><span class="pil">→</span></a>
+        <p class="caption">Slå opp mer i <a href="https://verkstedhandboka.vercel.app/#maskinering" target="_blank" rel="noopener">Verkstedhåndboka, emne Maskinering</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- OPPGAVER -->
+<section class="slide" id="oppgaver" data-nav="Oppgaver">
+  <div class="wrap">
+    <div class="kicker no-print">Oppgaver · ca. 45 min totalt</div>
+    <div class="taskbar no-print">
+      <button class="btn primary" id="btnPrint">🖨 Skriv ut oppgaver</button>
+      <button class="btn" id="btnCopy">📋 Kopier til OneNote</button>
+      <button class="btn" id="btnFasit">👁 Vis fasit</button>
+    </div>
+
+    <div id="oppgavetekst">
+      <h2>CNC 3 – Verktøykompensasjon og skjærradius · Oppgaver</h2>
+      <p>Navn: ______________________________ &nbsp; Klasse: ________ &nbsp; Dato: ____________</p>
+
+      <div class="oppgave">
+        <h3>Oppgave 1 – Skjæret <small>Time 1 · 5 min</small></h3>
+        <div class="oppfig" style="max-width:340px">
+          <svg viewBox="0 0 320 220" role="img" aria-label="Spissen på et skjær med to piler: A peker på buen, B peker på punktet der kantene ville møttes.">
+            <path d="M90 100 A60 60 0 0 0 150 160 L310 150 L310 10 L96 10 Z" style="fill:#e3c578;stroke:#7a5c14;stroke-width:3"/>
+            <path d="M90 10 V215 M30 160 H310" style="stroke:#777;stroke-width:2;stroke-dasharray:8 6;fill:none"/>
+            <path d="M50 70 L104 138" style="stroke:#e8590c;stroke-width:3"/><text x="32" y="64" font-size="24" font-weight="800" fill="#e8590c">A</text>
+            <path d="M40 200 L84 166" style="stroke:#c92a2a;stroke-width:3"/><text x="20" y="214" font-size="24" font-weight="800" fill="#c92a2a">B</text>
+            <text class="fasit-svg" x="150" y="190" font-size="15" fill="#2b8a3e">A = nesradius r</text>
+            <text class="fasit-svg" x="150" y="212" font-size="15" fill="#2b8a3e">B = tenkt spiss P</text>
+          </svg>
+        </div>
+        <p>Hva heter A?</p><div class="svar"><span class="fasit" hidden>Nesradius (skjærradius), r</span></div>
+        <p>Hva heter B, og hvorfor er det et problem?</p><div class="svar"><span class="fasit" hidden>Tenkt spiss P. Maskinen styrer P, men P er luft. Skjæret skjærer med buen.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 2 – Les eska <small>Time 1 · 4 min</small></h3>
+        <table class="ot" style="max-width:520px">
+          <tr><th>Skjær</th><th>Nesradius r (mm)</th></tr>
+          <tr><td class="mono">CNMG 120408</td><td class="tom"><span class="fasit" hidden>0,8</span></td></tr>
+          <tr><td class="mono">DNMG 150604</td><td class="tom"><span class="fasit" hidden>0,4</span></td></tr>
+          <tr><td class="mono">VBMT 160412</td><td class="tom"><span class="fasit" hidden>1,2</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 3 – Riktig eller feil mål? <small>Time 1 · 6 min</small></h3>
+        <p>Programmet er uten kompensasjon (G40). Kryss av.</p>
+        <table class="ot" style="max-width:620px">
+          <tr><th style="width:60%">Det som dreies</th><th>Riktig mål</th><th>Feil mål</th></tr>
+          <tr><td>Ø30 (rett langs Z)</td><td class="tom"><span class="fasit" hidden>✗</span></td><td class="tom"></td></tr>
+          <tr><td>Fas 2 × 45°</td><td class="tom"></td><td class="tom"><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>Plan endeflate (rett i X)</td><td class="tom"><span class="fasit" hidden>✗</span></td><td class="tom"></td></tr>
+          <tr><td>Radius R3</td><td class="tom"></td><td class="tom"><span class="fasit" hidden>✗</span></td></tr>
+          <tr><td>Kon (kjegle) 10°</td><td class="tom"></td><td class="tom"><span class="fasit" hidden>✗</span></td></tr>
+        </table>
+        <p>Fasen skulle være 2 × 45°. Blir den for stor eller for liten?</p>
+        <div class="svar"><span class="fasit" hidden>For liten (ca. 1,5 × 45° med r 0,8). Det blir stål igjen.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 4 – G41, G42 eller G40? <small>Time 2 · 5 min</small></h3>
+        <table class="ot" style="max-width:620px">
+          <tr><th style="width:65%">Situasjon</th><th>Kode</th></tr>
+          <tr><td>Utvendig dreiing av en aksel, mot chucken</td><td class="tom"><span class="fasit" hidden>G42</span></td></tr>
+          <tr><td>Innvendig dreiing av et hull, mot chucken</td><td class="tom"><span class="fasit" hidden>G41</span></td></tr>
+          <tr><td>Verktøyet kjører bort til verktøyskift</td><td class="tom"><span class="fasit" hidden>G40</span></td></tr>
+        </table>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 5 – Fyll inn programmet <small>Time 2 · 7 min</small></h3>
+        <p>Skriv G40 eller G42 der det mangler.</p>
+        <table class="ot" style="max-width:620px">
+          <tr><th>Linje</th><th style="width:30%">Mangler</th></tr>
+          <tr><td class="mono">N1 G21 ___ G99</td><td class="tom"><span class="fasit" hidden>G40</span></td></tr>
+          <tr><td class="mono">N3 T0101 (FINSTÅL R0.8)</td><td>–</td></tr>
+          <tr><td class="mono">N7 G0 ___ X14 Z1</td><td class="tom"><span class="fasit" hidden>G42</span></td></tr>
+          <tr><td class="mono">N8 G1 X20 Z-2 F0.15</td><td>–</td></tr>
+          <tr><td class="mono">N11 G3 X30 Z-23 R3</td><td>–</td></tr>
+          <tr><td class="mono">N14 G0 ___ X100 Z100</td><td class="tom"><span class="fasit" hidden>G40</span></td></tr>
+        </table>
+        <p>Hva må stå i offsettabellen for verktøy 01?</p>
+        <div class="svar"><span class="fasit" hidden>R = 0,8 (nesradius) og T = 3 (spissretning for utvendig dreiestål).</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Oppgave 6 – Byttet skjær <small>Time 2 · 6 min</small></h3>
+        <p>Ali bytter fra CNMG 120408 til CNMG 120404. Han endrer ikke R i tabellen. G42 er på.</p>
+        <p>1. Hva står i tabellen, og hva er riktig nå?</p>
+        <div class="svar"><span class="fasit" hidden>Tabellen: R 0,8. Riktig nå: R 0,4.</span></div>
+        <p>2. Blir det stål igjen, eller for mye tatt på fasen?</p>
+        <div class="svar"><span class="fasit" hidden>For mye tatt. Maskinen tror radiusen er større enn den er, så fasen blir for stor (og R3 for liten).</span></div>
+        <p>3. Blir Ø30 feil?</p>
+        <div class="svar"><span class="fasit" hidden>Nei. Rette diametre og lengder blir riktige.</span></div>
+        <p>4. Hvor må radiusen være riktig hvis han bruker Fusion med «In computer»?</p>
+        <div class="svar"><span class="fasit" hidden>I verktøyet i Fusion (Corner radius 0,4).</span></div>
+      </div>
+
+      <div class="oppgave" style="border-style:dashed">
+        <h3>Oppgave 7 – Ekstra: regn ut feilen <small>Ekstra / hjemme · 8 min</small></h3>
+        <p>På en 45° fas blir feilen i X og Z ca. <b>0,59 · r</b> uten kompensasjon.</p>
+        <p>1. Hvor stor blir feilen med r = 0,4 og r = 1,2?</p>
+        <div class="svar"><span class="fasit" hidden>0,59 · 0,4 ≈ 0,24 mm og 0,59 · 1,2 ≈ 0,71 mm</span></div>
+        <p>2. Tegningen sier fas 2 × 45°. Hvor stor blir fasen med r = 1,2?</p>
+        <div class="svar"><span class="fasit" hidden>2 − 0,71 ≈ 1,3 × 45°</span></div>
+        <p>3. Hvorfor bruker vi ikke bare et skjær uten radius?</p>
+        <div class="svar"><span class="fasit" hidden>En skarp spiss brekker lett og gir dårlig overflate. Radiusen gjør spissen sterkere og overflaten finere.</span></div>
+      </div>
+
+      <div class="oppgave">
+        <h3>Exit-lapp <small>Siste 3 min</small></h3>
+        <p>1. Hvorfor blir en fas feil uten kompensasjon?</p><div class="svar"><span class="fasit" hidden>Maskinen styrer den tenkte spissen P, men skjæret er rundt (nesradius). På skrå linjer står buen utenfor, så det blir stål igjen.</span></div>
+        <p>2. Hva betyr G42?</p><div class="svar"><span class="fasit" hidden>Kompensasjon på, verktøyet til høyre for banen (utvendig dreiing).</span></div>
+        <p>3. Hvor finner du nesradiusen?</p><div class="svar"><span class="fasit" hidden>De to siste tallene i koden på eska/skjæret, for eksempel 08 = 0,8 mm.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div class="toast" id="toast"></div>
+<script>
+(function(){
+"use strict";
+const $ = id => document.getElementById(id);
+const NS = "http://www.w3.org/2000/svg";
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+const fmt = (x, d=2) => x.toLocaleString("nb-NO", {minimumFractionDigits:d, maximumFractionDigits:d});
+const fmtT = (x, d=2) => x.toLocaleString("nb-NO", {maximumFractionDigits:d});
+function el(tag, attrs, parent, text){
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (text !== undefined) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+function setStatus(id, txt, cls){ const s=$(id); s.textContent=txt; s.className="status "+cls; }
+/* ---------- Navigasjon ---------- */
+const slides = [...document.querySelectorAll(".slide")];
+const nav = $("nav");
+slides.forEach(s => { const a=document.createElement("a"); a.href="#"+s.id; a.textContent=s.dataset.nav; nav.appendChild(a); });
+const links = [...nav.querySelectorAll("a")];
+const navIO = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+    const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+}), {rootMargin:"-45% 0px -50% 0px"});
+slides.forEach(s => navIO.observe(s));
+function currentIndex(){ let best=0, bd=Infinity; slides.forEach((s,i)=>{ const d=Math.abs(s.getBoundingClientRect().top-56); if(d<bd){bd=d;best=i;} }); return best; }
+document.addEventListener("keydown", e => {
+  if (["INPUT","SELECT","TEXTAREA"].includes(e.target.tagName) && e.target.type!=="range") return;
+  let dir = 0;
+  if (["ArrowDown","PageDown"].includes(e.key)) dir = 1;
+  if (["ArrowUp","PageUp"].includes(e.key)) dir = -1;
+  if (!dir) return;
+  e.preventDefault();
+  const i = Math.max(0, Math.min(slides.length-1, currentIndex()+dir));
+  slides[i].scrollIntoView({behavior:"smooth"});
+});
+let scale = 1;
+$("btnSize").onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); $("btnSize").textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+$("btnTheme").onclick = () => { const r=document.documentElement; r.dataset.theme = r.dataset.theme==="dark" ? "light" : "dark"; };
+document.querySelectorAll(".flip").forEach(b => b.onclick = () => b.classList.toggle("show"));
+const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- Del 7: programmet ---------- */
+const PROG = [
+  ["N1 G21 G40 G99", ""], ["N2 G28 U0 W0", ""], ["N3 T0101 (FINSTÅL R0.8)", ""], ["N4 G50 S3000", ""], ["N5 G96 S200 M3", ""],
+  ["N6 G0 X10 Z5", ""], ["N7 G0 G42 X14 Z1", "pa"], ["N8 G1 X20 Z-2 F0.15", ""], ["N9 Z-20", ""], ["N10 X24", ""],
+  ["N11 G3 X30 Z-23 R3", ""], ["N12 G1 Z-40", ""], ["N13 X34", ""], ["N14 G0 G40 X100 Z100", "av"], ["N15 M5", ""], ["N16 M30", ""]
+];
+PROG.forEach(([k, m]) => {
+  const li = document.createElement("li");
+  li.innerHTML = k.replace(/(G42|G40)/, m ? '<b style="color:' + (m === "pa" ? "#51cf66" : "#ff6b6b") + '">$1</b>' : "$1");
+  if (m) li.style.background = m === "pa" ? "rgba(43,138,62,.3)" : "rgba(201,42,42,.3)";
+  $("kode7").appendChild(li);
+});
+
+/* ---------- Del 5 og 9: se feilen ---------- */
+// Akselen fra leksjon 2, i mm. z = lengde (minus inn i emnet), r = radius (halve X).
+// Tegningen: fas fra (z1, r7) til (z-2, r10), Ø20 til Z-20, plan til r12, bue R3 (senter z-23 r12) til r15, Ø30 til Z-40.
+const O = {z:-23, r:12};
+function bane(R){
+  // Senterbanen til en nesradius R som følger tegningen på utsiden (forskjøvet R ut fra tegningen).
+  const p = [], s = 0.02, n1 = Math.SQRT1_2;
+  const linje = (a, b) => { const L = Math.hypot(b.z-a.z, b.r-a.r), n = Math.max(1, Math.ceil(L/s)); for (let i=0;i<=n;i++) p.push({z:a.z+(b.z-a.z)*i/n, r:a.r+(b.r-a.r)*i/n}); };
+  const bue = (c, rad, v0, v1) => { const n = Math.max(1, Math.ceil(rad*Math.abs(v1-v0)/s)); for (let i=0;i<=n;i++){ const v=v0+(v1-v0)*i/n; p.push({z:c.z+rad*Math.cos(v), r:c.r+rad*Math.sin(v)}); } };
+  linje({z:1+R*n1, r:7+R*n1}, {z:-2+R*n1, r:10+R*n1});
+  if (R > 0) bue({z:-2, r:10}, R, Math.PI/4, Math.PI/2);
+  linje({z:-2, r:10+R}, {z:-20+R, r:10+R});
+  linje({z:-20+R, r:10+R}, {z:-20+R, r:12});
+  bue(O, 3+R, 0, Math.PI/2);
+  linje({z:-23, r:15+R}, {z:-41, r:15+R});
+  return p;
+}
+function tegning(z){ // radius på tegningen
+  if (z > 0) return null;
+  if (z >= -2) return 8 - z;
+  if (z >= -20) return 10;
+  if (z >= -23) return 12 + Math.sqrt(Math.max(0, 9 - (z+23)*(z+23)));
+  return 15;
+}
+const DZ = 0.01, Z0 = 1.5, ZN = 4300; // z-rutenett fra 1,5 til -41,5
+const zAv = i => Z0 - i*DZ;
+// Utsnitt (mm): fasen og buen
+const VIN = [
+  {navn:"Fasen 2 × 45°", z0:-4.2, z1:1.3, r0:5.8, r1:11.3, x:10, vz:-1, vr:9},
+  {navn:"Radius R3", z0:-25, z1:-19.5, r0:10.8, r1:16.3, x:310, vz:-23+3*Math.SQRT1_2, vr:12+3*Math.SQRT1_2}
+];
+const VW = 280, VH = 280, VY = 24;
+function lagSim(pre){
+  const svg = $(pre+"Svg");
+  const st = {komp:pre==="b", r:0.8, rt:0.4, anim:0, s:null, sentre:[], i:0};
+  const px = (w, z, r) => [w.x + (z - w.z0)/(w.z1 - w.z0)*VW, VY + (w.r1 - r)/(w.r1 - w.r0)*VH];
+  function beregn(){
+    const Rk = st.komp ? (pre==="b" ? st.rt : st.r) : 0;
+    st.sentre = bane(Rk).map(q => ({z:q.z + (st.r - Rk), r:q.r + (st.r - Rk)}));
+    st.s = new Float64Array(ZN).fill(16);
+    for (let i=0;i<ZN;i++) if (zAv(i) > 0) st.s[i] = -99;
+    st.i = 0;
+  }
+  function skjaer(c){
+    const r = st.r, i0 = Math.max(0, Math.floor((Z0 - (c.z + r))/DZ)), i1 = Math.min(ZN-1, Math.ceil((Z0 - (c.z - r))/DZ));
+    for (let i=i0;i<=i1;i++){ const dz = zAv(i) - c.z; if (Math.abs(dz) <= r){ const h = c.r - Math.sqrt(r*r - dz*dz); if (h < st.s[i]) st.s[i] = h; } }
+  }
+  function tegn(){
+    svg.innerHTML = "";
+    const defs = el("defs", {}, svg);
+    VIN.forEach((w, k) => {
+      const cp = el("clipPath", {id:pre+"klipp"+k}, defs); el("rect", {x:w.x, y:VY, width:VW, height:VH}, cp);
+      el("rect", {x:w.x, y:VY, width:VW, height:VH, rx:8, style:"fill:var(--panel);stroke:var(--line);stroke-width:2"}, svg);
+      el("text", {x:w.x+8, y:16, "font-size":15, "font-weight":700, style:"fill:var(--ink)"}, svg, w.navn);
+      const g = el("g", {"clip-path":"url(#"+pre+"klipp"+k+")"}, svg);
+      // stålet
+      let d = "", rod = "", ora = "";
+      const ia = Math.floor((Z0 - w.z1)/DZ), ib = Math.ceil((Z0 - w.z0)/DZ);
+      const pts = [];
+      for (let i=ia;i<=ib;i+=2){ const z = zAv(i), s = Math.max(w.r0-1, st.s[i]); pts.push([z, s]); }
+      d = "M" + px(w, w.z1, w.r0-1).join(" ") + pts.map(q => "L" + px(w, q[0], q[1]).map(v=>v.toFixed(1)).join(" ")).join("") + "L" + px(w, w.z0, w.r0-1).join(" ") + "Z";
+      el("path", {d, style:"fill:var(--steel-soft);stroke:var(--steel-dark);stroke-width:1.5"}, g);
+      // avvik fra tegningen (bare når skjæret har vært der)
+      const fyll = (tegnTegn, farge) => {
+        let ps = "", inne = false;
+        const seg = [];
+        for (let i=ia;i<=ib;i+=2){ const z = zAv(i), t = tegning(z); if (t === null) continue; const s = st.s[i];
+          const ok = s < 15.99 && (tegnTegn ? s > t + 0.01 : s < t - 0.01) && !(z > -20 && z < -19.98 + st.r && t <= 10.001);
+          if (ok){ if (!inne){ seg.push([]); inne = true; } seg[seg.length-1].push([z, s, t]); } else inne = false; }
+        seg.forEach(sg => { if (sg.length < 2) return;
+          ps += "M" + sg.map(q => px(w, q[0], q[1]).map(v=>v.toFixed(1)).join(" ")).join("L") + "L" + sg.slice().reverse().map(q => px(w, q[0], q[2]).map(v=>v.toFixed(1)).join(" ")).join("L") + "Z"; });
+        if (ps) el("path", {d:ps, style:"fill:"+farge+";opacity:.75"}, g);
+      };
+      fyll(true, "var(--red)"); fyll(false, "var(--orange)");
+      // tegningen
+      const tp = [px(w, 0, w.r0-1)];
+      for (let i=ia;i<=ib;i+=4){ const z = zAv(i), t = tegning(z); if (t !== null) tp.push(px(w, z, t)); }
+      el("path", {d:"M"+tp.map(q=>q.map(v=>v.toFixed(1)).join(" ")).join("L"), style:"fill:none;stroke:var(--blue);stroke-width:2.5;stroke-dasharray:8 5"}, g);
+      // skjæret
+      let c = null;
+      if (st.kjorer) c = st.sentre[st.i];
+      else if (st.sentre.length){ // vis skjæret midt på fasen eller buen
+        const m = {z:w.vz + st.r*Math.SQRT1_2, r:w.vr + st.r*Math.SQRT1_2}; let bd = 1e9;
+        st.sentre.forEach(q => { const d = (q.z-m.z)**2 + (q.r-m.r)**2; if (d < bd){ bd = d; c = q; } });
+      }
+      if (c){
+        const r = st.r, a1 = Math.PI - 5*Math.PI/180, a2 = 1.5*Math.PI - 5*Math.PI/180;
+        let q = [];
+        for (let v=a1; v<=a2+1e-9; v+=Math.PI/36) q.push([c.z + r*Math.cos(v), c.r + r*Math.sin(v)]);
+        const L = 8; q.push([c.z + L, c.r - r + L*0.09]); q.push([c.z + L, c.r + L]); q.push([c.z - r + L*0.09, c.r + L]);
+        el("path", {d:"M"+q.map(p=>px(w, p[0], p[1]).map(v=>v.toFixed(1)).join(" ")).join("L")+"Z", style:"fill:#e3c578;stroke:#7a5c14;stroke-width:2;opacity:.95"}, g);
+        const [Px, Py] = px(w, c.z - r, c.r - r);
+        el("path", {d:`M${Px-7} ${Py-7} l14 14 M${Px+7} ${Py-7} l-14 14`, style:"stroke:var(--ink);stroke-width:3"}, g);
+      }
+    });
+  }
+  function maal(){
+    // fasen: lengde i Z fra endeflaten til der Ø20 begynner
+    let zf = null;
+    for (let i=0;i<ZN;i++){ const z = zAv(i); if (z <= 0 && z > -10 && st.s[i] >= 9.995){ zf = z; break; } }
+    const fas = zf === null ? null : -zf;
+    // buen: radius målt fra senteret, midt på (45°)
+    let rb = null; const u = Math.SQRT1_2;
+    for (let t=2; t<=4.5; t+=0.002){ const z = O.z + t*u, r = O.r + t*u, i = Math.round((Z0 - z)/DZ); if (r >= st.s[i]){ rb = t; break; } }
+    return {fas, rb};
+  }
+  function tekst(){
+    const {fas, rb} = maal(), f = v => fmt(v, 1), tx = $(pre+"Txt");
+    const fOk = fas !== null && Math.abs(fas - 2) < 0.05, bOk = rb !== null && Math.abs(rb - 3) < 0.03;
+    let t = `Fasen blir ${f(fas)} × 45° (skal være 2 × 45°). Midt på buen: ${rb > 3 ? fmt(rb-3,2)+" mm stål igjen" : rb < 3 ? fmt(3-rb,2)+" mm for mye tatt" : "riktig"}.`;
+    if (fOk && bOk) t = "Riktig mål! Fasen blir 2 × 45° og radien R3. Skjæret følger tegningen.";
+    else if (pre==="a" && !st.komp) t += " P følger tegningen, men skjæret gjør det ikke.";
+    else if (pre==="b" && st.rt < st.r) t += " R i tabellen er for liten.";
+    else if (pre==="b" && st.rt > st.r) t += " R i tabellen er for stor.";
+    tx.textContent = t; tx.className = "status " + (fOk && bOk ? "ok" : "bad");
+  }
+  function ferdig(){ st.sentre.forEach(skjaer); st.i = st.sentre.length-1; tegn(); tekst(); }
+  function oppdater(){ cancelAnimationFrame(st.anim); st.kjorer = false; beregn(); ferdig(); }
+  function kjor(){
+    cancelAnimationFrame(st.anim); beregn();
+    if (reduceMotion){ ferdig(); return; }
+    $(pre+"Txt").textContent = "Skjæret kjører …"; $(pre+"Txt").className = "status info";
+    const inne = c => VIN.some(w => c.z > w.z0 - 2 && c.z < w.z1 + 2 && c.r < w.r1 + 2);
+    st.kjorer = true;
+    const steg = () => {
+      let n = 0;
+      while (st.i < st.sentre.length && n < (inne(st.sentre[st.i]) ? 3 : 40)){ skjaer(st.sentre[st.i]); st.i++; n++; }
+      if (st.i >= st.sentre.length){ st.kjorer = false; st.i = st.sentre.length-1; tegn(); tekst(); return; }
+      tegn(); st.anim = requestAnimationFrame(steg);
+    };
+    st.anim = requestAnimationFrame(steg);
+  }
+  const knapper = (attr, felt) => document.querySelectorAll(`[${attr}]`).forEach(b => b.onclick = () => {
+    document.querySelectorAll(`[${attr}]`).forEach(x => x.classList.toggle("on", x === b));
+    st[felt] = felt === "komp" ? b.getAttribute(attr) === "1" : +b.getAttribute(attr); oppdater();
+  });
+  if (pre === "a"){ knapper("data-a-komp", "komp"); knapper("data-a-r", "r"); }
+  else { knapper("data-b-r", "r"); knapper("data-b-rt", "rt"); }
+  $(pre+"Kjor").onclick = kjor;
+  // Tegnes først når delen kommer på skjermen
+  let laget = false;
+  new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting && !laget){ laget = true; oppdater(); } }), {rootMargin:"200px"}).observe(svg);
+}
+lagSim("a"); lagSim("b");
+/* ---------- Oppgaver ---------- */
+let fasitOn = false;
+$("btnFasit").onclick = () => { fasitOn = !fasitOn; document.querySelectorAll(".fasit").forEach(f => f.hidden = !fasitOn); $("oppgavetekst").classList.toggle("vis-fasit", fasitOn); $("btnFasit").textContent = fasitOn ? "🙈 Skjul fasit" : "👁 Vis fasit"; };
+$("btnPrint").onclick = () => window.print();
+async function svgToImg(svg){
+  const vb = svg.viewBox.baseVal, str = new XMLSerializer().serializeToString(svg);
+  const img = new Image(); await new Promise(r => { img.onload = r; img.onerror = r; img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(str); });
+  const c = document.createElement("canvas"); c.width = vb.width*2; c.height = vb.height*2; const x = c.getContext("2d"); x.fillStyle="#fff"; x.fillRect(0,0,c.width,c.height); x.drawImage(img,0,0,c.width,c.height);
+  const im = document.createElement("img"); im.src = c.toDataURL("image/png"); im.width = vb.width; im.height = vb.height; return im;
+}
+$("btnCopy").onclick = async () => {
+  const orig = $("oppgavetekst"), clone = orig.cloneNode(true);
+  const os = [...orig.querySelectorAll("svg")], cs = [...clone.querySelectorAll("svg")];
+  for (let i=0;i<os.length;i++){ try { cs[i].replaceWith(await svgToImg(os[i])); } catch(e){} }
+  clone.querySelectorAll(".fasit").forEach(f => { if (f.hidden) f.remove(); });
+  clone.querySelectorAll(".svar").forEach(s => { const p=document.createElement("p"); const t=s.textContent.trim(); p.textContent = t ? t : "_____________________________________________________________"; s.replaceWith(p); });
+  clone.querySelectorAll("table").forEach(t => { t.setAttribute("border","1"); t.style.borderCollapse="collapse"; t.querySelectorAll("td,th").forEach(c => { c.style.border="1px solid #777"; c.style.padding="4px 6px"; c.style.minWidth="60px"; if (c.classList.contains("tom") && !c.querySelector(".fasit")) c.innerHTML="&nbsp;<br>&nbsp;"; }); });
+  clone.querySelectorAll("h3 small").forEach(s => s.textContent = " (" + s.textContent + ")");
+  const html = clone.innerHTML, text = clone.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({"text/html":new Blob([html],{type:"text/html"}),"text/plain":new Blob([text],{type:"text/plain"})})]);
+    toast("Kopiert! Lim inn i OneNote med Ctrl+V");
+  } catch(err){
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.position="fixed"; box.style.left="-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    toast(ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere – merk teksten og bruk Ctrl+C");
+  }
+};
+})();
+</script>
+</body>
+</html>
