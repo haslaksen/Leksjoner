@@ -255,8 +255,8 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
       <dl class="plan2">
-        <dt>0–5</dt><dd>Kort repetisjon fra leksjon 1 og 3: X, Y og Z på fresen, Z0 på toppen. Del A og C.</dd>
-        <dt>5–30</dt><dd>«I Fusion, steg for steg» på storskjerm. Elevene gjør det samme i Fusion. Del B og D.</dd>
+        <dt>0–5</dt><dd>Kort repetisjon fra leksjon 1 og 3: X, Y og Z på fresen, Z0 på toppen. Del A og B.</dd>
+        <dt>5–30</dt><dd>«I Fusion, steg for steg» på storskjerm. Elevene gjør det samme i Fusion. Del C og D.</dd>
         <dt>30–40</dt><dd>Simulate og Post Process, Del 3–4. Kjenn igjen G0 og G1 i koden. Oppgaver del E.</dd>
         <dt>40–50</dt><dd>Pause</dd>
         <dt>50–88</dt><dd>Del F i Fusion: elevene lager platen og freseprogrammet selv. Raske elever tar Ekstra-oppgaven.</dd>
@@ -288,6 +288,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
       <div class="teller" id="punktVerdi">Velg et punkt</div>
     </div>
   </div>
+  <a class="simlink no-print" data-sim="cnc-koordinater"><span class="ico">🖥️</span><span><b>Prøv selv: CNC-koordinater</b><small>Velg Fres. Skriv inn X, Y og Z, og se fresen flytte seg.</small></span><span class="pil">→</span></a>
   <a class="simlink no-print" href="leksjon-1-koordinatsystemet.html"><span class="ico">📍</span><span><b>Repeter: Koordinatsystemet</b><small>Leksjon 1: fres og dreiebenk</small></span><span class="pil">→</span></a>
   <details class="laerer no-print"><summary>Lærernotat</summary>Nullpunktet (G54) legges ofte i et hjørne på toppen av emnet. Da er X og Y positive på delen, og Z er negativ nede i materialet. I Fusion settes det i Setup med «Stock box point». Sjekk at det stemmer med hvordan dere nuller maskinen.</details>
 </section>
@@ -398,21 +399,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     </div>
 
     <div>
-      <h3>Del B · Sett knappene i riktig rekkefølge</h3>
-      <div class="tablewrap"><table>
-        <tr><th>Knapp i Fusion</th><th>Nr.</th></tr>
-        <tr><td>Drill</td><td class="blank x"><span class="fasit" hidden>5</span></td></tr>
-        <tr><td>New Setup</td><td class="blank x"><span class="fasit" hidden>1</span></td></tr>
-        <tr><td>Post Process</td><td class="blank x"><span class="fasit" hidden>7</span></td></tr>
-        <tr><td>2D Adaptive Clearing</td><td class="blank x"><span class="fasit" hidden>3</span></td></tr>
-        <tr><td>Face</td><td class="blank x"><span class="fasit" hidden>2</span></td></tr>
-        <tr><td>Simulate</td><td class="blank x"><span class="fasit" hidden>6</span></td></tr>
-        <tr><td>2D Contour</td><td class="blank x"><span class="fasit" hidden>4</span></td></tr>
-      </table></div>
-    </div>
-
-    <div>
-      <h3>Del C · Les av X og Y</h3>
+      <h3>Del B · Les av X og Y</h3>
       <p>Platen sett ovenfra. Én rute = 10 mm. Nullpunktet ⊕ er i hjørnet.</p>
       <svg class="oppgfig" viewBox="120 30 360 260" role="img" aria-label="Platen sett ovenfra med rutenett og punktene D, E og F">
         <g stroke="var(--line)" stroke-width="1">
@@ -443,13 +430,27 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     </div>
 
     <div>
-      <h3>Del D · Hvilken knapp i Fusion?</h3>
+      <h3>Del C · Hvilken knapp i Fusion?</h3>
       <div class="tablewrap"><table>
         <tr><th>Hva skjer?</th><th>Knapp</th></tr>
         <tr><td>Borer hullene</td><td class="blank"><span class="fasit" hidden>Drill (boring)</span></td></tr>
         <tr><td>Gjør toppen plan</td><td class="blank"><span class="fasit" hidden>Face (planfresing)</span></td></tr>
         <tr><td>Freser rundt kanten av delen</td><td class="blank"><span class="fasit" hidden>2D Contour (konturfresing)</span></td></tr>
         <tr><td>Fjerner materialet i lomma raskt</td><td class="blank"><span class="fasit" hidden>2D Adaptive Clearing (lommefresing)</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Sett knappene i riktig rekkefølge</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Knapp i Fusion</th><th>Nr.</th></tr>
+        <tr><td>Drill</td><td class="blank x"><span class="fasit" hidden>5</span></td></tr>
+        <tr><td>New Setup</td><td class="blank x"><span class="fasit" hidden>1</span></td></tr>
+        <tr><td>Post Process</td><td class="blank x"><span class="fasit" hidden>7</span></td></tr>
+        <tr><td>2D Adaptive Clearing</td><td class="blank x"><span class="fasit" hidden>3</span></td></tr>
+        <tr><td>Face</td><td class="blank x"><span class="fasit" hidden>2</span></td></tr>
+        <tr><td>Simulate</td><td class="blank x"><span class="fasit" hidden>6</span></td></tr>
+        <tr><td>2D Contour</td><td class="blank x"><span class="fasit" hidden>4</span></td></tr>
       </table></div>
     </div>
 
