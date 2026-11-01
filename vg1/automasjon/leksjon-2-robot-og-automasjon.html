@@ -88,8 +88,6 @@ details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px 
 .plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
 .flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
 @keyframes flow{to{stroke-dashoffset:-18}}
-.pulse{animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{50%{opacity:.55}}
 
 /* kort */
 .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -175,7 +173,7 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
 .blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
 
 @media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
-@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media (prefers-reduced-motion:reduce){.flow,.blaas{animation:none}.glid{transition:none}}
 @media print{
   .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
   body{background:#fff;color:#000;font-size:12pt}
@@ -204,7 +202,7 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
 <body>
 <header class="top">
   <div class="brand">Styring og automasjon Vg1 · <span>Leksjon 2</span></div>
-  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#tre">Sanse, tenke, gjøre</a><a href="#sorter">Sorteringsanlegg</a><a href="#robot">Programmer roboten</a><a href="#hms">Sikkerhet</a><a href="#oppgaver">Oppgaver</a></nav>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#tre">Sanse, tenke, gjøre</a><a href="#sorter">Sorteringsanlegg</a><a href="#robot">Programmer roboten</a><a href="#robotarm">Robotarmen</a><a href="#hms">Sikkerhet</a><a href="#oppgaver">Oppgaver</a></nav>
   <div class="tools no-print">
     <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
     <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
@@ -246,7 +244,8 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (TIP01-03, Konstruksjons- og styringsteknikk)</h3>
       <p><b>Mål 8 (delvis):</b> «anvende grunnleggende programmering av styringssystemer innenfor robotisering, automatisering og CNC». Her: automatisering (HVIS–SÅ, PLS) og robot (program med steg). CNC er dekket i DAP og CNC 1–4.</p>
-      <p><b>Mål 1 (delvis):</b> sikkerhet rundt automatiserte anlegg (Del 4).</p>
+      <p><b>Mål 4 (delvis):</b> «bruke egnede simuleringsprogrammer … til testing av styringssystemer». Her: sorteringsanlegget og simulatoren Robotarm (Del 2–4).</p>
+      <p><b>Mål 1 (delvis):</b> sikkerhet rundt automatiserte anlegg (Del 5).</p>
     </div>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
@@ -256,8 +255,9 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
         <dt>15–30</dt><dd>Del 2: sorteringsanlegget. Finn to regler som virker.</dd>
         <dt>30–45</dt><dd>Del 3: programmer roboten. La elevene feile, det er lov.</dd>
         <dt>45–55</dt><dd>Pause</dd>
-        <dt>55–60</dt><dd>Del 4: sikkerhet.</dd>
-        <dt>60–85</dt><dd>Oppgavene A–D, deretter Robotlab-simulatoren for de som blir ferdige.</dd>
+        <dt>55–65</dt><dd>Del 4: robotarmen. Vis simulatoren Robotarm på tavla.</dd>
+        <dt>65–70</dt><dd>Del 5: sikkerhet.</dd>
+        <dt>70–85</dt><dd>Oppgavene A–E, deretter simulatoren Robotarm eller Robotlab for de som blir ferdige.</dd>
         <dt>85–90</dt><dd>Exit-lapp.</dd>
       </dl>
     </div>
@@ -269,8 +269,8 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
   <div class="tag">Del 1 · Sanse, tenke, gjøre</div>
   <h2>Alle automatiske anlegg har tre deler</h2>
   <div class="trio">
-    <div class="q U"><svg data-bilde="sensor" data-alt="Sensor" viewBox="0 0 200 110" aria-hidden="true"><rect x="20" y="40" width="30" height="30" rx="4" fill="var(--wire)"/><circle cx="50" cy="55" r="6" fill="var(--bad)"/><path d="M56 55 H170" stroke="var(--bad)" stroke-width="3" stroke-dasharray="6 5" class="flow"/><rect x="170" y="40" width="20" height="30" rx="4" fill="var(--wire)"/></svg><h3>👁️ Sensor</h3><p>Merker noe. Som <b>øynene</b>.</p><p class="caption">Fotocelle, trykknapp, endebryter</p></div>
-    <div class="q I"><svg data-bilde="styring" data-alt="Styring (PLS)" viewBox="0 0 200 110" aria-hidden="true"><rect x="50" y="20" width="100" height="74" rx="8" fill="var(--wire)"/><g class="pulse"><circle cx="72" cy="40" r="6" fill="var(--r)"/><circle cx="92" cy="40" r="6" fill="var(--glow)"/><circle cx="112" cy="40" r="6" fill="var(--r)"/></g><text x="100" y="80" text-anchor="middle" font-size="20" font-weight="800" fill="var(--surface)">PLS</text></svg><h3>🧠 Styring</h3><p>Bestemmer. Som <b>hjernen</b>.</p><p class="caption">PLS eller datamaskin med program</p></div>
+    <div class="q U"><svg data-bilde="sensor" data-alt="Sensor" viewBox="0 0 200 110" aria-hidden="true"><rect x="20" y="40" width="30" height="30" rx="4" fill="var(--wire)"/><circle cx="50" cy="55" r="6" fill="var(--bad)"/><path d="M56 55 H170" stroke="var(--bad)" stroke-width="3" stroke-dasharray="6 5"/><rect x="170" y="40" width="20" height="30" rx="4" fill="var(--wire)"/></svg><h3>👁️ Sensor</h3><p>Merker noe. Som <b>øynene</b>.</p><p class="caption">Fotocelle, trykknapp, endebryter</p></div>
+    <div class="q I"><svg data-bilde="styring" data-alt="Styring (PLS)" viewBox="0 0 200 110" aria-hidden="true"><rect x="50" y="20" width="100" height="74" rx="8" fill="var(--wire)"/><g><circle cx="72" cy="40" r="6" fill="var(--r)"/><circle cx="92" cy="40" r="6" fill="var(--glow)"/><circle cx="112" cy="40" r="6" fill="var(--r)"/></g><text x="100" y="80" text-anchor="middle" font-size="20" font-weight="800" fill="var(--surface)">PLS</text></svg><h3>🧠 Styring</h3><p>Bestemmer. Som <b>hjernen</b>.</p><p class="caption">PLS eller datamaskin med program</p></div>
     <div class="q R"><svg data-bilde="aktuator" data-alt="Aktuator" viewBox="0 0 200 110" aria-hidden="true"><rect x="20" y="38" width="100" height="34" rx="4" fill="var(--blue-soft)" stroke="var(--wire)" stroke-width="2.5"/><g><animateTransform attributeName="transform" type="translate" values="0 0;40 0;0 0" dur="2s" repeatCount="indefinite"/><rect x="26" y="40" width="7" height="30" fill="var(--wire)"/><rect x="33" y="50" width="110" height="10" fill="var(--wire)"/></g></svg><h3>💪 Aktuator</h3><p>Gjør jobben. Som <b>musklene</b>.</p><p class="caption">Sylinder, motor, lampe</p></div>
   </div>
   <p class="regel"><b>Sensor</b> merker → <b>PLS</b> bestemmer → <b>aktuator</b> gjør.</p>
@@ -312,8 +312,42 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
   <details class="laerer no-print"><summary>Lærernotat</summary>Et riktig program: Flytt til A, Kjør ned, Lukk griper, Kjør opp, Flytt til B, Kjør ned, Åpne griper, Kjør opp (8 steg, det siste er valgfritt). Vanlige feil: flytte mens griperen er nede (krasj), åpne griperen oppe (delen faller), glemme å kjøre ned. Industriroboter programmeres på samme måte, med punkter og kommandoer. CNC-programmet i <a href="../dap/leksjon-2-cnc-og-g-kode.html">DAP og CNC 2</a> er også steg i rekkefølge.</details>
 </section>
 
+<section id="robotarm">
+  <div class="tag">Del 4 · Robotarmen</div>
+  <h2>En robotarm har <span style="color:var(--orange)">akser</span></h2>
+  <div class="benk">
+    <svg data-bilde="industrirobot" data-alt="Industrirobot med akser" viewBox="0 0 520 300" role="img" aria-label="Robotarm sett fra siden med aksene A1, A2 og A3, griperen og TCP">
+      <rect x="20" y="262" width="480" height="14" fill="var(--line)"/>
+      <path d="M118 262 L130 232 H210 L222 262 Z" fill="var(--waterbg)" stroke="var(--wire)" stroke-width="3"/>
+      <ellipse cx="170" cy="232" rx="58" ry="12" fill="none" stroke="var(--orange)" stroke-width="3"/>
+      <path d="M222 236 l10 -6 l-2 11" fill="none" stroke="var(--orange)" stroke-width="3"/>
+      <text x="236" y="250" font-size="22" font-weight="800" fill="var(--orange)">A1</text>
+      <line x1="170" y1="210" x2="250" y2="100" stroke="var(--wire)" stroke-width="30" stroke-linecap="round"/>
+      <line x1="170" y1="210" x2="250" y2="100" stroke="var(--waterbg)" stroke-width="22" stroke-linecap="round"/>
+      <line x1="250" y1="100" x2="370" y2="140" stroke="var(--wire)" stroke-width="26" stroke-linecap="round"/>
+      <line x1="250" y1="100" x2="370" y2="140" stroke="var(--waterbg)" stroke-width="18" stroke-linecap="round"/>
+      <line x1="370" y1="140" x2="370" y2="170" stroke="var(--wire)" stroke-width="10"/>
+      <path d="M352 170 H388 M352 170 V204 M388 170 V204" fill="none" stroke="var(--wire)" stroke-width="7" stroke-linecap="round"/>
+      <circle cx="170" cy="210" r="15" fill="var(--surface)" stroke="var(--orange)" stroke-width="5"/>
+      <circle cx="250" cy="100" r="14" fill="var(--surface)" stroke="var(--orange)" stroke-width="5"/>
+      <text x="108" y="206" font-size="22" font-weight="800" fill="var(--orange)">A2</text>
+      <text x="238" y="72" font-size="22" font-weight="800" fill="var(--orange)">A3</text>
+      <circle cx="370" cy="198" r="6" fill="var(--blue)"/>
+      <text x="400" y="204" font-size="18" font-weight="800" fill="var(--blue)">TCP</text>
+      <text x="400" y="176" font-size="18" font-weight="700" fill="var(--ink)">griper</text>
+    </svg>
+    <div style="display:grid;gap:12px">
+      <p style="font-size:1.15rem;margin:0"><b style="color:var(--orange)">A1</b> snur foten. <b style="color:var(--orange)">A2</b> er skulderen. <b style="color:var(--orange)">A3</b> er albuen.</p>
+      <p style="font-size:1.15rem;margin:0"><b style="color:var(--blue)">TCP</b> er punktet mellom fingrene på griperen.</p>
+      <a class="simlink no-print" data-sim="robotarm"><span class="ico">🦾</span><span><b>Prøv selv: Robotarm</b><small>Flytt klossen fra A til B. Lagre punkter og kjør programmet.</small></span><span class="pil">→</span></a>
+    </div>
+  </div>
+  <p class="regel">Programmet er en liste med <b>punkter</b>. Hvert punkt er en vinkel på hver akse.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Industriroboter har ofte 6 akser; her bruker vi 3 for å gjøre det enkelt. I simulatoren Robotarm lagrer elevene punkter (hjem, over, ned, grip, løft, sving, ned, slipp) og kjører dem. Treffer armen bordet, stopper programmet. Simulatoren lager også Python-kode som Fusion kan kjøre; det er stoffet i Vg2 Robot og automasjon 1, og trengs ikke på Vg1. Godt spørsmål: «Hvorfor lagrer vi et punkt <i>over</i> klossen før vi kjører ned?»</details>
+</section>
+
 <section id="hms">
-  <div class="tag">Del 4 · Sikkerhet</div>
+  <div class="tag">Del 5 · Sikkerhet</div>
   <h2>Trygt rundt roboter: riktig eller galt?</h2>
   <p class="lead">Trykk på kortene.</p>
   <div class="hms" id="hmsKort"></div>
@@ -377,6 +411,18 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
         <li>Automatdøra på butikken: HVIS … SÅ …<div class="svar"><span class="fasit" hidden>HVIS sensoren ser en person, SÅ åpner døra.</span></div></li>
         <li>Lyset i gangen på skolen: HVIS … SÅ …<div class="svar"><span class="fasit" hidden>HVIS bevegelsesmelderen merker noen, SÅ slås lyset på.</span></div></li>
       </ol>
+    </div>
+
+    <div>
+      <h3>Del E · Robotarmen</h3>
+      <p>Skriv A1, A2, A3 eller TCP.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Hva er det?</th><th>Svar</th></tr>
+        <tr><td>Snur hele roboten rundt</td><td class="blank x"><span class="fasit" hidden>A1</span></td></tr>
+        <tr><td>Skulderen</td><td class="blank x"><span class="fasit" hidden>A2</span></td></tr>
+        <tr><td>Albuen</td><td class="blank x"><span class="fasit" hidden>A3</span></td></tr>
+        <tr><td>Punktet mellom fingrene på griperen</td><td class="blank x"><span class="fasit" hidden>TCP</span></td></tr>
+      </table></div>
     </div>
 
     <div>
