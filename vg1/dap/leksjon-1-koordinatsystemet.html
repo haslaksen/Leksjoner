@@ -154,7 +154,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
 <body>
 <header class="top">
   <div class="brand">DAP og CNC Vg1 · <span>Leksjon 1</span></div>
-  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#punkt">Et punkt</a><a href="#finn">Finn punktet</a><a href="#fres">Fres</a><a href="#dreiebenk">Dreiebenk</a><a href="#regel">Huskeregel</a><a href="#oppgaver">Oppgaver</a></nav>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#punkt">Et punkt</a><a href="#finn">Finn punktet</a><a href="#fres">Fres</a><a href="#dreiebenk">Dreiebenk</a><a href="#regel">Huskeregel</a><a href="#mnull">M</a><a href="#rnull">R</a><a href="#wnull">W</a><a href="#oppgaver">Oppgaver</a></nav>
   <div class="tools no-print">
     <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
     <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
@@ -172,7 +172,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
       <li><span class="n u">1</span><span>Et punkt = <b>X</b> og <b>Y</b></span></li>
       <li><span class="n i">2</span><span>Fresen: <b>X, Y og Z</b></span></li>
       <li><span class="n r">3</span><span>Dreiebenken: <b>X og Z</b></span></li>
-      <li><span class="n" style="color:var(--orange)">4</span><span><b>Nullpunktet</b>: her starter vi å telle</span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span>Tre nullpunkt: <b>M</b>, <b>R</b> og <b>W</b></span></li>
     </ul>
   </div>
   <div>
@@ -192,9 +192,9 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
         <dt>0–10</dt><dd>Start: «Hvordan forteller du en venn hvor du står på en fotballbane?»</dd>
         <dt>10–20</dt><dd>Et punkt = X og Y. La elevene trykke på rutenettet, så «Finn punktet» i fellesskap. Del A.</dd>
         <dt>20–35</dt><dd>Fresen og dreiebenken. Vis gjerne aksene på maskinene i verkstedet.</dd>
-        <dt>35–45</dt><dd>Huskeregel. La elevene prøve CNC-koordinater-simulatoren.</dd>
+        <dt>35–45</dt><dd>Huskeregel, så de tre nullpunktene M, R og W (Del 6–8). Vis gjerne HOME på maskinen i verkstedet.</dd>
         <dt>45–55</dt><dd>Pause</dd>
-        <dt>55–85</dt><dd>Oppgavene B–E.</dd>
+        <dt>55–85</dt><dd>Oppgavene B–F. La elevene prøve CNC-koordinater-simulatoren.</dd>
         <dt>85–90</dt><dd>Exit-lapp.</dd>
       </dl>
     </div>
@@ -253,7 +253,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
       <ul class="goals" style="margin:0;font-size:1.05rem">
         <li><span class="n zk">Z</span><span>langs <b>senterlinja</b>. Minus inn mot chucken.</span></li>
         <li><span class="n xk">X</span><span>er <b>diameteren</b>.</span></li>
-        <li><span class="n r">⊕</span><span><b>Nullpunkt</b>: midt på endeflaten.</span></li>
+        <li><span class="n r">⊕</span><span><b>Programnullpunkt W</b>: midt på endeflaten.</span></li>
       </ul>
       <div class="valgknapper" id="punktKnapper" role="group" aria-label="Velg punkt"></div>
       <div class="teller" id="punktVerdi">Velg et punkt</div>
@@ -279,6 +279,58 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
     </div>
   </div>
   <p class="regel"><b>Z minus</b> = inn i materialet. Ned i fresen, inn mot chucken i dreiebenken.</p>
+</section>
+
+<section id="mnull">
+  <div class="tag">Del 6 · Maskinnullpunktet</div>
+  <h2><span style="color:var(--ink)">M</span> · maskinnullpunktet</h2>
+  <div class="benk">
+    <svg viewBox="0 0 600 290" role="img" aria-label="Dreiebenk sett fra siden. Maskinnullpunktet M ligger midt i spindelen, der chucken sitter."><rect x="10" y="40" width="80" height="210" rx="6" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/><text x="50" y="272" text-anchor="middle" font-size="14" fill="var(--muted)">Spindel</text><rect x="90" y="95" width="45" height="110" rx="4" fill="var(--surface)" stroke="var(--wire)" stroke-width="2"/><text x="112" y="225" text-anchor="middle" font-size="14" fill="var(--muted)">Chuck</text><rect x="135" y="120" width="200" height="60" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2.5"/><text x="235" y="200" text-anchor="middle" font-size="14" fill="var(--muted)">Emne</text><path d="M20 150 H360" stroke="var(--wire)" stroke-width="1.5" stroke-dasharray="14 4 3 4"/><path d="M10 250 H590" stroke="var(--wire)" stroke-width="3"/><g><rect x="520" y="30" width="60" height="40" rx="4" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/><path d="M520 70 h20 l-20 15 z" fill="var(--wire)"/></g><g><circle cx="90" cy="150" r="11" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/><path d="M90 139 A11 11 0 0 1 101 150 H90 Z M90 161 A11 11 0 0 1 79 150 H90 Z" fill="var(--ink)"/><text x="72" y="128" font-size="22" font-weight="800" fill="var(--ink)">M</text></g></svg>
+    <div style="display:grid;gap:14px">
+      <ul class="goals" style="margin:0;font-size:1.1rem">
+        <li><span class="n">M</span><span>ligger <b>fast</b> i maskinen.</span></li>
+        <li><span class="n">🏭</span><span>Satt av <b>produsenten</b>. Du kan ikke flytte det.</span></li>
+      </ul>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>På dreiebenken ligger M vanligvis på senterlinja, på planflaten av spindelnesen der chucken festes. På fresen ligger M fast inne i maskinen, ofte ytterst i aksene. Maskinen regner alle sine mål fra M, men verktøyet kan som regel ikke kjøre dit. Derfor trengs R, som kommer på neste visning.</details>
+</section>
+
+<section id="rnull">
+  <div class="tag">Del 7 · Referansepunktet</div>
+  <h2><span style="color:var(--r)">R</span> · referansepunktet (HOME)</h2>
+  <div class="benk">
+    <svg viewBox="0 0 600 290" role="img" aria-label="Når du trykker HOME, kjører verktøyet ut til referansepunktet R, ytterst oppe til høyre."><rect x="10" y="40" width="80" height="210" rx="6" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/><text x="50" y="272" text-anchor="middle" font-size="14" fill="var(--muted)">Spindel</text><rect x="90" y="95" width="45" height="110" rx="4" fill="var(--surface)" stroke="var(--wire)" stroke-width="2"/><text x="112" y="225" text-anchor="middle" font-size="14" fill="var(--muted)">Chuck</text><rect x="135" y="120" width="200" height="60" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2.5"/><text x="235" y="200" text-anchor="middle" font-size="14" fill="var(--muted)">Emne</text><path d="M20 150 H360" stroke="var(--wire)" stroke-width="1.5" stroke-dasharray="14 4 3 4"/><path d="M10 250 H590" stroke="var(--wire)" stroke-width="3"/><g opacity=".35"><rect x="330" y="55" width="60" height="40" rx="4" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/><path d="M330 95 h20 l-20 15 z" fill="var(--wire)"/></g><path d="M398 80 Q450 60 500 82" fill="none" stroke="var(--r)" stroke-width="3" stroke-dasharray="7 6"/><path d="M506 85 l-13 -2 l7 -11 z" fill="var(--r)"/><g><rect x="520" y="30" width="60" height="40" rx="4" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/><path d="M520 70 h20 l-20 15 z" fill="var(--wire)"/></g><g opacity=".45"><circle cx="90" cy="150" r="11" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/><path d="M90 139 A11 11 0 0 1 101 150 H90 Z M90 161 A11 11 0 0 1 79 150 H90 Z" fill="var(--ink)"/><text x="72" y="128" font-size="22" font-weight="800" fill="var(--ink)">M</text></g><g><circle cx="520" cy="85" r="11" fill="var(--surface)" stroke="var(--r)" stroke-width="2.5"/><path d="M509 85 H531 M520 74 V96" stroke="var(--r)" stroke-width="2.5"/><text x="492" y="122" font-size="22" font-weight="800" fill="var(--r)">R</text></g></svg>
+    <div style="display:grid;gap:14px">
+      <ul class="goals" style="margin:0;font-size:1.1rem">
+        <li><span class="n">🔌</span><span>Maskinen er slått på. Den vet <b>ikke</b> hvor verktøyet er.</span></li>
+        <li><span class="n">🏠</span><span>Trykk <b>HOME</b>. Verktøyet kjører ut til <b style="color:var(--r)">R</b>.</span></li>
+        <li><span class="n">✅</span><span>Nå vet maskinen hvor den er.</span></li>
+      </ul>
+    </div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>R ligger fast, ytterst i plussretning på aksene. Avstanden fra M til R er målt av produsenten. Etter oppstart, strømbrudd eller nødstopp må maskinen kjøre til R (HOME, referansekjøring) før målesystemet stemmer. Maskiner med absolutte målesystemer trenger det ikke alltid. Vis gjerne HOME på skolens maskin.</details>
+</section>
+
+<section id="wnull">
+  <div class="tag">Del 8 · Programnullpunktet</div>
+  <h2><span style="color:var(--orange)">W</span> · programnullpunktet</h2>
+  <div class="benk">
+    <svg viewBox="0 0 600 290" role="img" aria-label="M og R ligger fast i maskinen. Programnullpunktet W ligger midt på endeflaten av emnet."><rect x="10" y="40" width="80" height="210" rx="6" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/><text x="50" y="272" text-anchor="middle" font-size="14" fill="var(--muted)">Spindel</text><rect x="90" y="95" width="45" height="110" rx="4" fill="var(--surface)" stroke="var(--wire)" stroke-width="2"/><text x="112" y="225" text-anchor="middle" font-size="14" fill="var(--muted)">Chuck</text><rect x="135" y="120" width="200" height="60" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2.5"/><text x="235" y="200" text-anchor="middle" font-size="14" fill="var(--muted)">Emne</text><path d="M20 150 H360" stroke="var(--wire)" stroke-width="1.5" stroke-dasharray="14 4 3 4"/><path d="M10 250 H590" stroke="var(--wire)" stroke-width="3"/><g><rect x="520" y="30" width="60" height="40" rx="4" fill="var(--line)" stroke="var(--wire)" stroke-width="2"/><path d="M520 70 h20 l-20 15 z" fill="var(--wire)"/></g><g opacity=".45"><circle cx="90" cy="150" r="11" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/><path d="M90 139 A11 11 0 0 1 101 150 H90 Z M90 161 A11 11 0 0 1 79 150 H90 Z" fill="var(--ink)"/><text x="72" y="128" font-size="22" font-weight="800" fill="var(--ink)">M</text></g><g opacity=".45"><circle cx="520" cy="85" r="11" fill="var(--surface)" stroke="var(--r)" stroke-width="2.5"/><path d="M509 85 H531 M520 74 V96" stroke="var(--r)" stroke-width="2.5"/><text x="492" y="122" font-size="22" font-weight="800" fill="var(--r)">R</text></g><g><circle cx="335" cy="150" r="11" fill="var(--surface)" stroke="var(--orange)" stroke-width="2.5"/><path d="M335 139 A11 11 0 0 1 346 150 H335 Z M335 161 A11 11 0 0 1 324 150 H335 Z" fill="var(--orange)"/><text x="343" y="180" font-size="22" font-weight="800" fill="var(--orange)">W</text></g></svg>
+    <div style="display:grid;gap:14px">
+      <ul class="goals" style="margin:0;font-size:1.1rem">
+        <li><span class="n" style="color:var(--orange)">W</span><span>ligger på <b>emnet</b>. <b>Du</b> velger det.</span></li>
+        <li><span class="n">⊕</span><span>Det er dette nullpunktet vi teller fra i programmet.</span></li>
+      </ul>
+      <table style="font-size:1rem">
+        <tr><td><b>M</b></td><td>Maskinnullpunkt. Fast.</td></tr>
+        <tr><td><b style="color:var(--r)">R</b></td><td>Referansepunkt. Fast. HOME.</td></tr>
+        <tr><td><b style="color:var(--orange)">W</b></td><td>Programnullpunkt. Du velger.</td></tr>
+      </table>
+    </div>
+  </div>
+  <p class="regel">Dreiebenk: W midt på endeflaten. Fres: W i et hjørne på toppen av emnet.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>W kalles også arbeidsnullpunkt eller emnenullpunkt. Det settes ved å berøre (skrape) emnet med verktøyet og lagre posisjonen, for eksempel i G54. Nytt emne i chucken eller skrustikka betyr at W må stilles inn på nytt. Programmet blir det samme, fordi alle mål i programmet regnes fra W. I Fusion er dette «Origin» i Setup (leksjon 3 og 4).</details>
 </section>
 
 <section id="oppgaver">
@@ -343,6 +395,17 @@ button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid
         <tr><td>Z−5 i fresen betyr 5 mm ned i emnet.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
         <tr><td>Vi skriver Y først, så X.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
         <tr><td>X30 på dreiebenken gir en aksel med Ø30.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del F · M, R eller W?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>M</th><th>R</th><th>W</th></tr>
+        <tr><td>Ligger på emnet. Du velger det.</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Maskinen kjører dit når du trykker HOME.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Satt av produsenten, midt i spindelen.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
+        <tr><td>Programmet teller fra dette punktet.</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
       </table></div>
     </div>
 
