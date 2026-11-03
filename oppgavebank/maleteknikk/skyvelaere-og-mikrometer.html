@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oppgavebank · Skyvelære og mikrometer</title>
+<style>
+/* Oppgavebank: ekstra oppgaver. Figurene er skjermbilder fra simulatorene (simulatorer.vercel.app). */
+/* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{font-size:clamp(18px,0.6vw + 13px,24px)}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 64px}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin:0}
+h2{font-size:1.3rem;margin:0;display:flex;align-items:center;gap:.6rem}
+p{margin:0}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.2rem 0}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+button{font:700 .9rem/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+.tools{display:flex;gap:.5rem;flex-wrap:wrap}
+.navn{margin:.4rem 0 1.2rem}
+
+.oppg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,28px);display:grid;gap:16px;margin-top:18px;break-inside:avoid}
+.nr{display:inline-grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;flex:none}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body)}
+
+.tre{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kort{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;align-content:start;text-align:center}
+.kort svg{max-height:110px}
+.kort .valg{justify-content:center;flex-wrap:nowrap;gap:8px}
+.kort .valg>span{min-width:0;padding:.5rem .8rem}
+
+/* valg: sett ring rundt */
+.valg{display:flex;flex-wrap:wrap;gap:12px}
+.valg>span{position:relative;display:inline-grid;place-items:center;min-width:4.2rem;padding:.55rem 1rem;border:2px solid var(--line);border-radius:12px;font-weight:700;font-size:1.15rem}
+.valg>span:has(.fasit:not([hidden])){border-color:var(--r);background:var(--r-soft);box-shadow:0 0 0 4px var(--r)}
+.valg .fasit{position:absolute;top:-.8rem;right:-.6rem;background:var(--r);color:#fff;border-radius:50%;width:1.5rem;height:1.5rem;display:grid;place-items:center;font-size:.9rem}
+
+.to{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.to>div{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;justify-items:center}
+.to svg{max-height:160px}
+.bokstav{font:800 1.6rem/1 var(--body)}
+
+/* luker og svarruter */
+.luke{display:inline-block;min-width:5.5em;border-bottom:2px solid var(--ink);text-align:center;padding:0 .3em;margin:0 .2em}
+.fasit{color:var(--r);font-weight:700}
+.ordbank{display:flex;flex-wrap:wrap;gap:8px}
+.ordbank span{padding:.3rem .8rem;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700}
+.setning{font-size:1.15rem;line-height:2.4}
+
+.regn{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:20px;align-items:center}
+.linje{font:700 1.5rem/2.2 var(--mono)}
+.linje .luke{min-width:3em}
+
+.jn{width:100%;border-collapse:collapse;font-size:1.1rem}
+.jn td{border-bottom:1px solid var(--line);padding:10px 6px;vertical-align:middle}
+.jn td.ikon{width:3rem;font-size:1.8rem;text-align:center}
+.jn .valg{flex-wrap:nowrap;justify-content:flex-end}
+
+
+.del{display:flex;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:8px solid var(--orange);border-radius:18px;padding:14px 18px;margin-top:28px}
+.del h2{color:var(--orange);font-size:1.6rem}
+.steg{margin-top:.3rem} .steg span{display:inline-grid;place-items:center;width:1.4em;height:1.4em;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;font-size:.8em;margin-right:.3em}
+.del a{color:var(--blue);font-weight:700;overflow-wrap:anywhere}
+.qr{width:96px;height:96px;flex:none;image-rendering:pixelated;background:#fff;border-radius:6px}
+.merke{font:700 .75rem/1 var(--body);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:.35rem .7rem}
+.merke.sim{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.bilde{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.regning{font-size:1.15rem;line-height:2.2;text-align:center}
+.regning .luke{min-width:3.5em}
+.mikgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 18px}
+.mik .bilde{max-height:240px;object-fit:cover}
+.sum{width:100%;border-collapse:collapse}
+.sum td{padding:4px 0} .sum td:last-child{text-align:right;white-space:nowrap}
+.sum .luke{min-width:3.5em}
+.sum .tot td{border-top:2px solid var(--ink);padding-top:8px;font-weight:800}
+.tabell{width:100%;border-collapse:collapse}
+.tabell th,.tabell td{border:1px solid var(--line);padding:10px;text-align:left;height:2.6em}
+.tabell th{background:var(--bg)}
+@media (max-width:620px){.qr{display:none}}
+@media print{html{font-size:12px} .tools{display:none} body{background:#fff} .oppg{margin-top:8px;padding:10px;gap:8px;border-color:#999} .del{margin-top:10px;break-before:page} .del.forst{break-before:auto} .mik .bilde{max-height:150px} .bilde{max-height:170px;object-fit:contain}}
+</style>
+</head>
+<body>
+<div class="wrap" id="oppgavetekst">
+
+<div class="top">
+  <div>
+    <p class="tag">Oppgavebank · Måleteknikk · Vg1 og Vg2</p>
+    <h1>Skyvelære og mikrometer</h1>
+  </div>
+  <div class="tools">
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+  </div>
+</div>
+<p class="navn">Navn: ______________________</p>
+
+<div class="del forst">
+  <img class="qr" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27105%27%20height%3D%27105%27%20class%3D%27segno%27%3E%3Cpath%20transform%3D%27scale%283%29%27%20class%3D%27qrline%27%20stroke%3D%27%23000%27%20d%3D%27M1%201.5h7m7%200h1m1%200h1m1%200h1m3%200h1m3%200h7m-33%201h1m5%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m2%200h2m1%200h1m1%200h1m1%200h1m5%200h1m-33%201h1m1%200h3m1%200h1m2%200h1m2%200h5m3%200h3m3%200h1m1%200h3m1%200h1m-33%201h1m1%200h3m1%200h1m1%200h2m1%200h3m3%200h1m2%200h2m1%200h2m1%200h1m1%200h3m1%200h1m-33%201h1m1%200h3m1%200h1m1%200h3m1%200h1m2%200h1m1%200h3m1%200h1m4%200h1m1%200h3m1%200h1m-33%201h1m5%200h1m3%200h1m3%200h4m4%200h2m2%200h1m5%200h1m-33%201h7m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h7m-25%201h1m2%200h3m5%200h1m2%200h1m-22%201h1m1%200h4m1%200h1m1%200h2m1%200h1m2%200h2m1%200h2m3%200h3m1%200h2m1%200h1m-30%201h2m4%200h1m3%200h1m1%200h2m1%200h1m1%200h1m3%200h1m4%200h3m-30%201h2m1%200h1m1%200h2m1%200h2m3%200h2m1%200h1m2%200h2m1%200h1m1%200h1m2%200h5m-33%201h4m1%200h1m1%200h2m1%200h2m4%200h5m2%200h1m1%200h3m2%200h2m-32%201h1m1%200h1m1%200h3m2%200h5m2%200h3m4%200h2m1%200h2m4%200h1m-32%201h1m2%200h2m3%200h4m2%200h1m2%200h1m4%200h1m5%200h1m-30%201h3m1%200h1m1%200h2m3%200h2m2%200h1m1%200h1m1%200h1m1%200h1m2%200h1m1%200h3m1%200h1m-29%201h1m4%200h1m1%200h2m1%200h1m3%200h3m1%200h1m1%200h2m1%200h1m2%200h1m1%200h1m1%200h1m-33%201h3m1%200h1m1%200h1m1%200h3m1%200h2m1%200h1m2%200h3m1%200h2m1%200h5m-29%201h2m4%200h1m1%200h4m1%200h1m1%200h2m1%200h1m2%200h1m2%200h2m1%200h1m1%200h1m1%200h1m-32%201h2m3%200h2m1%200h2m1%200h2m1%200h2m1%200h4m1%200h1m1%200h3m1%200h2m1%200h1m-33%201h2m1%200h3m1%200h1m3%200h1m1%200h1m3%200h2m1%200h1m1%200h1m5%200h3m-31%201h3m1%200h3m3%200h2m3%200h5m3%200h1m5%200h1m1%200h1m-32%201h5m3%200h1m3%200h3m2%200h3m1%200h1m1%200h1m3%200h3m-30%201h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h2m1%200h1m1%200h1m2%200h1m1%200h1m1%200h2m2%200h2m1%200h1m1%200h2m-33%201h1m1%200h3m6%200h2m1%200h1m1%200h1m1%200h3m2%200h4m1%200h1m1%200h1m1%200h1m-33%201h2m2%200h1m1%200h1m1%200h1m4%200h4m7%200h6m-22%201h2m2%200h2m1%200h1m1%200h2m3%200h1m1%200h1m3%200h1m1%200h2m-32%201h7m2%200h4m1%200h2m1%200h1m1%200h2m1%200h3m1%200h1m1%200h1m1%200h1m-31%201h1m5%200h1m1%200h1m3%200h2m4%200h1m3%200h3m3%200h3m-31%201h1m1%200h3m1%200h1m1%200h1m1%200h4m2%200h1m1%200h1m1%200h1m1%200h7m3%200h1m-33%201h1m1%200h3m1%200h1m1%200h1m2%200h4m1%200h4m2%200h1m1%200h2m1%200h1m1%200h2m1%200h1m-33%201h1m1%200h3m1%200h1m2%200h1m3%200h2m2%200h1m1%200h1m2%200h2m1%200h1m1%200h2m1%200h3m-33%201h1m5%200h1m1%200h1m2%200h1m2%200h2m3%200h1m3%200h1m1%200h1m1%200h6m-33%201h7m2%200h1m2%200h3m4%200h1m3%200h2m1%200h4%27%2F%3E%3C%2Fsvg%3E" alt="QR-kode til skyvelæresimulatoren">
+  <div>
+    <h2>Skyvelære</h2>
+    <p>Simulator: <a href="https://simulatorer.vercel.app/skyvelaere.html">simulatorer.vercel.app/skyvelaere.html</a></p>
+    <div class="steg"><p><span>1</span> <b>Hovedskala:</b> hele mm til venstre for <b>0</b> på noniusen.</p><p><span>2</span> <b>Nonius:</b> finn streken som står i flukt.</p><p><span>3</span> <b>Legg sammen.</b></p></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">1</span>Les av skyvelæren <span class="merke">0,1 mm nonius</span></h2>
+ <img class="bilde" src="filer/skyvelaere-1.webp" alt="Skyvelære med 0,1 mm nonius, oppgave 1" width="1400" height="419" loading="lazy" decoding="async">
+ <p class="regning">Hovedskala <span class="luke"><span class="fasit" hidden>23</span></span> mm + nonius <span class="luke"><span class="fasit" hidden>0,4</span></span> mm = <b><span class="luke"><span class="fasit" hidden>23,4</span></span> mm</b></p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">2</span>Les av skyvelæren <span class="merke">0,1 mm nonius</span></h2>
+ <img class="bilde" src="filer/skyvelaere-2.webp" alt="Skyvelære med 0,1 mm nonius, oppgave 2" width="1400" height="419" loading="lazy" decoding="async">
+ <p class="regning">Hovedskala <span class="luke"><span class="fasit" hidden>47</span></span> mm + nonius <span class="luke"><span class="fasit" hidden>0,8</span></span> mm = <b><span class="luke"><span class="fasit" hidden>47,8</span></span> mm</b></p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">3</span>Les av skyvelæren <span class="merke">0,05 mm nonius</span></h2>
+ <img class="bilde" src="filer/skyvelaere-3.webp" alt="Skyvelære med 0,05 mm nonius, oppgave 3" width="1400" height="419" loading="lazy" decoding="async">
+ <p class="regning">Hovedskala <span class="luke"><span class="fasit" hidden>12</span></span> mm + nonius <span class="luke"><span class="fasit" hidden>0,35</span></span> mm = <b><span class="luke"><span class="fasit" hidden>12,35</span></span> mm</b></p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">4</span>Les av skyvelæren <span class="merke">0,05 mm nonius</span></h2>
+ <img class="bilde" src="filer/skyvelaere-4.webp" alt="Skyvelære med 0,05 mm nonius, oppgave 4" width="1400" height="419" loading="lazy" decoding="async">
+ <p class="regning">Hovedskala <span class="luke"><span class="fasit" hidden>68</span></span> mm + nonius <span class="luke"><span class="fasit" hidden>0,70</span></span> mm = <b><span class="luke"><span class="fasit" hidden>68,70</span></span> mm</b></p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">5</span>Les av skyvelæren <span class="merke">0,02 mm nonius</span></h2>
+ <img class="bilde" src="filer/skyvelaere-5.webp" alt="Skyvelære med 0,02 mm nonius, oppgave 5" width="1400" height="419" loading="lazy" decoding="async">
+ <p class="regning">Hovedskala <span class="luke"><span class="fasit" hidden>31</span></span> mm + nonius <span class="luke"><span class="fasit" hidden>0,46</span></span> mm = <b><span class="luke"><span class="fasit" hidden>31,46</span></span> mm</b></p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">6</span>Les av skyvelæren <span class="merke">0,02 mm nonius</span></h2>
+ <img class="bilde" src="filer/skyvelaere-6.webp" alt="Skyvelære med 0,02 mm nonius, oppgave 6" width="1400" height="419" loading="lazy" decoding="async">
+ <p class="regning">Hovedskala <span class="luke"><span class="fasit" hidden>85</span></span> mm + nonius <span class="luke"><span class="fasit" hidden>0,08</span></span> mm = <b><span class="luke"><span class="fasit" hidden>85,08</span></span> mm</b></p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">7</span>Øv i simulatoren <span class="merke sim">Simulator</span></h2>
+ <p>Velg <b>Øving</b> og <b>0,05</b>. Gjør 4 oppgaver. Skriv svaret ditt, trykk <b>Sjekk</b>. Skriv ✓ hvis det er riktig.</p>
+ <table class="tabell"><tr><th>Oppgave</th><th>Min avlesning (mm)</th><th>✓</th></tr><tr><td>1</td><td></td><td></td></tr><tr><td>2</td><td></td><td></td></tr><tr><td>3</td><td></td><td></td></tr><tr><td>4</td><td></td><td></td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">8</span>Kan det stemme? <span class="merke">0,02 mm nonius</span></h2>
+ <p>Sett ring rundt målene som <b>kan</b> stemme med 0,02 mm nonius. Tips: se på siste siffer.</p>
+ <div class="valg"><span>23,34<span class="fasit" hidden>✓</span></span><span>23,35</span><span>40,10<span class="fasit" hidden>✓</span></span><span>17,07</span><span>9,98<span class="fasit" hidden>✓</span></span><span>56,81</span></div>
+</div>
+
+<div class="del">
+  <img class="qr" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%27105%27%20height%3D%27105%27%20class%3D%27segno%27%3E%3Cpath%20transform%3D%27scale%283%29%27%20class%3D%27qrline%27%20stroke%3D%27%23000%27%20d%3D%27M1%201.5h7m7%200h1m1%200h1m1%200h1m3%200h1m3%200h7m-33%201h1m5%200h1m1%200h2m2%200h2m2%200h1m2%200h2m1%200h1m1%200h1m1%200h1m5%200h1m-33%201h1m1%200h3m1%200h1m2%200h2m1%200h1m2%200h2m3%200h2m4%200h1m1%200h3m1%200h1m-33%201h1m1%200h3m1%200h1m1%200h4m1%200h1m2%200h2m2%200h2m1%200h2m1%200h1m1%200h3m1%200h1m-33%201h1m1%200h3m1%200h1m1%200h2m2%200h1m1%200h1m2%200h3m1%200h1m4%200h1m1%200h3m1%200h1m-33%201h1m5%200h1m3%200h2m2%200h1m1%200h2m4%200h2m2%200h1m5%200h1m-33%201h7m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h1m1%200h7m-25%201h1m4%200h1m2%200h1m2%200h1m2%200h2m-23%201h1m1%200h4m1%200h1m1%200h1m2%200h1m1%200h3m1%200h2m2%200h4m1%200h2m1%200h1m-32%201h1m1%200h2m4%200h1m3%200h4m1%200h1m1%200h1m3%200h1m4%200h3m-31%201h1m1%200h1m2%200h3m7%200h1m1%200h1m2%200h4m1%200h1m2%200h5m-33%201h1m1%200h3m2%200h2m2%200h1m1%200h1m2%200h5m2%200h1m1%200h3m2%200h2m-32%201h1m1%200h1m1%200h1m1%200h1m1%200h1m2%200h2m1%200h1m2%200h2m4%200h2m1%200h2m4%200h1m-30%201h3m2%200h4m2%200h3m1%200h1m3%200h2m1%200h1m3%200h1m-30%201h2m1%200h2m1%200h3m3%200h1m2%200h3m1%200h1m1%200h1m2%200h1m1%200h3m1%200h1m-29%201h2m3%200h1m1%200h2m1%200h1m2%200h4m1%200h1m1%200h4m2%200h1m1%200h1m1%200h1m-33%201h2m2%200h1m1%200h1m1%200h6m1%200h1m2%200h3m1%200h2m1%200h5m-30%201h3m1%200h1m2%200h1m2%200h5m1%200h2m1%200h1m2%200h1m2%200h2m1%200h1m1%200h1m1%200h1m-31%201h1m1%200h4m1%200h2m1%200h6m1%200h3m1%200h1m3%200h1m1%200h2m1%200h1m-30%201h3m1%200h1m1%200h3m1%200h1m3%200h2m1%200h1m5%200h1m1%200h3m-31%201h1m1%200h1m2%200h2m2%200h8m2%200h1m3%200h1m5%200h1m1%200h1m-32%201h1m3%200h2m1%200h1m2%200h1m2%200h2m2%200h1m1%200h1m1%200h3m3%200h3m-30%201h1m2%200h2m1%200h3m1%200h2m1%200h1m1%200h1m2%200h1m1%200h1m1%200h2m2%200h2m1%200h1m1%200h2m-33%201h1m2%200h2m2%200h1m6%200h1m3%200h3m3%200h3m1%200h1m1%200h1m1%200h1m-33%201h3m1%200h1m1%200h1m1%200h1m2%200h1m1%200h4m7%200h6m-22%201h2m2%200h2m1%200h1m1%200h2m3%200h1m1%200h1m3%200h1m1%200h2m-32%201h7m2%200h1m1%200h2m2%200h1m3%200h3m1%200h2m1%200h1m1%200h1m1%200h1m-31%201h1m5%200h1m1%200h1m3%200h1m1%200h1m2%200h2m4%200h2m3%200h3m-31%201h1m1%200h3m1%200h1m1%200h1m1%200h3m1%200h1m1%200h1m3%200h1m1%200h7m3%200h1m-33%201h1m1%200h3m1%200h1m1%200h1m2%200h4m1%200h4m4%200h2m1%200h1m1%200h2m1%200h1m-33%201h1m1%200h3m1%200h1m2%200h1m1%200h1m1%200h2m2%200h1m1%200h2m1%200h2m1%200h1m1%200h2m1%200h3m-33%201h1m5%200h1m1%200h1m2%200h1m2%200h1m5%200h1m4%200h1m1%200h6m-33%201h7m2%200h1m2%200h3m4%200h1m3%200h2m2%200h3%27%2F%3E%3C%2Fsvg%3E" alt="QR-kode til mikrometersimulatoren">
+  <div>
+    <h2>Mikrometer</h2>
+    <p>Simulator: <a href="https://simulatorer.vercel.app/mikrometer.html">simulatorer.vercel.app/mikrometer.html</a></p>
+    <div class="steg"><p><span>1</span> <b>Øvre skala</b> på hylsa: hele mm.</p><p><span>2</span> <b>Nedre skala:</b> ser du en halv-mm-strek etter? Legg til 0,50.</p><p><span>3</span> <b>Trommelen:</b> tallet ved den stiplede linjen × 0,01 mm.</p><p><span>4</span> <b>Legg sammen.</b></p></div>
+  </div>
+</div>
+
+<div class="mikgrid">
+<div class="oppg mik">
+ <h2><span class="nr">1</span>Les av <span class="merke">0–25 mm</span></h2>
+ <img class="bilde" src="filer/mikrometer-1.webp" alt="Mikrometer 0–25 mm, oppgave 1" width="780" height="600" loading="lazy" decoding="async">
+ <table class="sum"><tr><td>Øvre skala (hele mm)</td><td><span class="luke"><span class="fasit" hidden>5</span></span></td></tr><tr><td>Nedre skala (0 eller 0,50)</td><td>+ <span class="luke"><span class="fasit" hidden>0,50</span></span></td></tr><tr><td>Trommel</td><td>+ <span class="luke"><span class="fasit" hidden>0,28</span></span></td></tr><tr class="tot"><td>Mål</td><td>= <span class="luke"><span class="fasit" hidden>5,78</span></span> mm</td></tr></table>
+</div>
+<div class="oppg mik">
+ <h2><span class="nr">2</span>Les av <span class="merke">0–25 mm</span></h2>
+ <img class="bilde" src="filer/mikrometer-2.webp" alt="Mikrometer 0–25 mm, oppgave 2" width="780" height="600" loading="lazy" decoding="async">
+ <table class="sum"><tr><td>Øvre skala (hele mm)</td><td><span class="luke"><span class="fasit" hidden>12</span></span></td></tr><tr><td>Nedre skala (0 eller 0,50)</td><td>+ <span class="luke"><span class="fasit" hidden>0,50</span></span></td></tr><tr><td>Trommel</td><td>+ <span class="luke"><span class="fasit" hidden>0,14</span></span></td></tr><tr class="tot"><td>Mål</td><td>= <span class="luke"><span class="fasit" hidden>12,64</span></span> mm</td></tr></table>
+</div>
+<div class="oppg mik">
+ <h2><span class="nr">3</span>Les av <span class="merke">0–25 mm</span></h2>
+ <img class="bilde" src="filer/mikrometer-3.webp" alt="Mikrometer 0–25 mm, oppgave 3" width="780" height="600" loading="lazy" decoding="async">
+ <table class="sum"><tr><td>Øvre skala (hele mm)</td><td><span class="luke"><span class="fasit" hidden>7</span></span></td></tr><tr><td>Nedre skala (0 eller 0,50)</td><td>+ <span class="luke"><span class="fasit" hidden>0</span></span></td></tr><tr><td>Trommel</td><td>+ <span class="luke"><span class="fasit" hidden>0,23</span></span></td></tr><tr class="tot"><td>Mål</td><td>= <span class="luke"><span class="fasit" hidden>7,23</span></span> mm</td></tr></table>
+</div>
+<div class="oppg mik">
+ <h2><span class="nr">4</span>Les av <span class="merke">0–25 mm</span></h2>
+ <img class="bilde" src="filer/mikrometer-4.webp" alt="Mikrometer 0–25 mm, oppgave 4" width="780" height="600" loading="lazy" decoding="async">
+ <table class="sum"><tr><td>Øvre skala (hele mm)</td><td><span class="luke"><span class="fasit" hidden>18</span></span></td></tr><tr><td>Nedre skala (0 eller 0,50)</td><td>+ <span class="luke"><span class="fasit" hidden>0,50</span></span></td></tr><tr><td>Trommel</td><td>+ <span class="luke"><span class="fasit" hidden>0,07</span></span></td></tr><tr class="tot"><td>Mål</td><td>= <span class="luke"><span class="fasit" hidden>18,57</span></span> mm</td></tr></table>
+</div>
+<div class="oppg mik">
+ <h2><span class="nr">5</span>Les av <span class="merke">0–25 mm</span></h2>
+ <img class="bilde" src="filer/mikrometer-5.webp" alt="Mikrometer 0–25 mm, oppgave 5" width="780" height="600" loading="lazy" decoding="async">
+ <table class="sum"><tr><td>Øvre skala (hele mm)</td><td><span class="luke"><span class="fasit" hidden>3</span></span></td></tr><tr><td>Nedre skala (0 eller 0,50)</td><td>+ <span class="luke"><span class="fasit" hidden>0</span></span></td></tr><tr><td>Trommel</td><td>+ <span class="luke"><span class="fasit" hidden>0,05</span></span></td></tr><tr class="tot"><td>Mål</td><td>= <span class="luke"><span class="fasit" hidden>3,05</span></span> mm</td></tr></table>
+</div>
+<div class="oppg mik">
+ <h2><span class="nr">6</span>Les av <span class="merke">0–25 mm</span></h2>
+ <img class="bilde" src="filer/mikrometer-6.webp" alt="Mikrometer 0–25 mm, oppgave 6" width="780" height="600" loading="lazy" decoding="async">
+ <table class="sum"><tr><td>Øvre skala (hele mm)</td><td><span class="luke"><span class="fasit" hidden>21</span></span></td></tr><tr><td>Nedre skala (0 eller 0,50)</td><td>+ <span class="luke"><span class="fasit" hidden>0,50</span></span></td></tr><tr><td>Trommel</td><td>+ <span class="luke"><span class="fasit" hidden>0,46</span></span></td></tr><tr class="tot"><td>Mål</td><td>= <span class="luke"><span class="fasit" hidden>21,96</span></span> mm</td></tr></table>
+</div>
+<div class="oppg mik">
+ <h2><span class="nr">7</span>Les av <span class="merke">25–50 mm</span></h2>
+ <img class="bilde" src="filer/mikrometer-7.webp" alt="Mikrometer 25–50 mm, oppgave 7" width="780" height="600" loading="lazy" decoding="async">
+ <table class="sum"><tr><td>Øvre skala (hele mm)</td><td><span class="luke"><span class="fasit" hidden>37</span></span></td></tr><tr><td>Nedre skala (0 eller 0,50)</td><td>+ <span class="luke"><span class="fasit" hidden>0</span></span></td></tr><tr><td>Trommel</td><td>+ <span class="luke"><span class="fasit" hidden>0,42</span></span></td></tr><tr class="tot"><td>Mål</td><td>= <span class="luke"><span class="fasit" hidden>37,42</span></span> mm</td></tr></table>
+</div>
+<div class="oppg mik">
+ <h2><span class="nr">8</span>Still inn <span class="merke sim">Simulator</span></h2>
+ <p>Velg <b>Utforsk</b>. Still inn målet. Hva viser skalaene?</p>
+ <table class="tabell"><tr><th>Mål (mm)</th><th>Øvre</th><th>Nedre</th><th>Trommel</th></tr><tr><td><b>9,59</b></td><td class="tom"><span class="fasit" hidden>9</span></td><td class="tom"><span class="fasit" hidden>0,50</span></td><td class="tom"><span class="fasit" hidden>9</span></td></tr><tr><td><b>16,08</b></td><td class="tom"><span class="fasit" hidden>16</span></td><td class="tom"><span class="fasit" hidden>0</span></td><td class="tom"><span class="fasit" hidden>8</span></td></tr><tr><td><b>24,71</b></td><td class="tom"><span class="fasit" hidden>24</span></td><td class="tom"><span class="fasit" hidden>0,50</span></td><td class="tom"><span class="fasit" hidden>21</span></td></tr></table>
+</div>
+</div>
+
+</div>
+
+<script>
+const fb = document.getElementById("fasitBtn");
+fb.addEventListener("click", () => {
+  const på = fb.getAttribute("aria-pressed") !== "true";
+  fb.setAttribute("aria-pressed", på);
+  fb.textContent = på ? "Skjul fasit" : "Vis fasit";
+  document.querySelectorAll(".fasit").forEach(e => e.hidden = !på);
+});
+</script>
+</body>
+</html>
