@@ -18,7 +18,9 @@ function finn(dir) {
     else if (e.name.endsWith(".html")) leksjoner.push(rel);
   }
 }
-for (const trinn of ["vg1", "vg2", "vg3"]) finn(trinn);
+// Oppgavebank: ekstra oppgaveark, bygges som leksjonene (elevversjon uten fasit, lærerversjon med).
+const MAPPER = ["vg1", "vg2", "vg3", "oppgavebank"];
+for (const trinn of MAPPER) finn(trinn);
 const filer = ["index.html", ...leksjoner];
 
 // Fjerner <tag class="klasse ...">...</tag> med alt innhold (også nestede tag).
@@ -79,7 +81,7 @@ const LENKE = 'style="color:#fff;font-weight:700;text-decoration:underline"';
 const STEG = "-steg-for-steg.html";
 const erProve = fil => path.basename(fil).startsWith("prove-");
 function laererversjon(s, fil) {
-  const steg = fil.endsWith(STEG), stegFil = fil.replace(/\.html$/, STEG);
+  const steg = fil.endsWith(STEG), bank = fil.startsWith("oppgavebank"), stegFil = fil.replace(/\.html$/, STEG);
   s = s.replace(/<head>/i, '<head>\n<meta name="robots" content="noindex, nofollow">');
   const felt = fil === "index.html"
     ? `<b>Lærerversjon med fasit.</b> Ikke del denne adressen med elever.<br>` +
@@ -89,7 +91,7 @@ function laererversjon(s, fil) {
     ? `<a href="/${LAERER_STI}/" ${HJEM}>⌂ Hjem</a> <b>Prøve: finnes bare på lærersiden.</b> ` +
       `Skriv ut uten fasit (eller lagre som PDF), eller bruk «Kopier til OneNote».`
     : `<a href="/${LAERER_STI}/" ${HJEM}>⌂ Hjem</a> <b>Lærerversjon med fasit.</b> ` +
-      `<a href="/${fil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Elevversjon av denne ${steg ? "siden" : "leksjonen"}</a> (uten fasit, del denne med ${steg ? "eleven" : "klassen"}).` +
+      `<a href="/${fil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Elevversjon av denne ${steg || bank ? "siden" : "leksjonen"}</a> (uten fasit, del denne med ${steg ? "eleven" : "klassen"}).` +
       (/^leksjon-\d+-/.test(path.basename(fil)) && !steg ? ` · <button onclick="document.body.classList.toggle('vis-filplass')" style="font:inherit;color:#fff;background:none;border:1px solid #fff;border-radius:99px;padding:1px 10px;cursor:pointer">📎 Vis/skjul plass for filer</button>` : "") +
       (filer.includes(stegFil) ? ` · <a href="/${LAERER_STI}/${stegFil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Steg for steg</a> (tilpassede oppgaver)` : "");
   const ut = ` · <a href="/${LAERER_STI}/logg-ut" ${LENKE}>Logg ut</a>`;
@@ -186,7 +188,7 @@ function kopierFiler(dir, laerer) {
 }
 
 fs.rmSync(UT, { recursive: true, force: true });
-for (const trinn of ["vg1", "vg2", "vg3"]) { kopierFiler(trinn, false); kopierFiler(trinn, true); }
+for (const trinn of MAPPER) { kopierFiler(trinn, false); kopierFiler(trinn, true); }
 // Kryssoppgaver: rutene blir kryssruter i stedet for skrivefelt (se utfylling.js). Svaret skrives ikke på elevsiden.
 //   En kolonne der alle cellene er tomme eller har fasit som starter med ✗ (eller ✓, X, «(✗)»), er en kryssekolonne.
 //   Rader med høyst ett kryss i fasiten får data-en: der kan eleven bare krysse av i én rute.
