@@ -105,6 +105,9 @@ svg text{font-family:var(--body)}
 .tabell th{background:var(--bg)}
 @media (max-width:620px){.qr{display:none}}
 @media print{html{font-size:12px} .tools{display:none} body{background:#fff} .oppg{margin-top:8px;padding:10px;gap:8px;border-color:#999} .del{margin-top:10px;break-before:page} .del.forst{break-before:auto} .mik .bilde{max-height:150px} .bilde{max-height:170px;object-fit:contain}}
+.tilbake{display:inline-flex;flex-wrap:wrap;gap:.3rem .8rem;margin:0 0 .6rem;font-size:.95rem}
+.tilbake a{color:var(--blue);font-weight:700;text-decoration:none}
+.tilbake a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -118,13 +121,14 @@ svg text{font-family:var(--body)}
 .oppg .tabell.smal{max-width:420px}
 .mer{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .mer a{color:var(--blue);font-weight:700}
-@media print{.mer{display:none} .tegning{max-width:380px}}
+@media print{.mer,.tilbake{display:none} .tegning{max-width:380px}}
 @media (max-width:620px){.jn td.ikon{display:none} .jn .valg{flex-wrap:wrap;gap:6px} .jn .valg>span{min-width:0;padding:.4rem .6rem;font-size:1rem} .sporsmal td:last-child{width:7em}}
 </style>
 <div class="wrap" id="oppgavetekst">
 
 <div class="top">
   <div>
+    <p class="tilbake no-print"><a href="../../vg1/konstruksjon/leksjon-1-tekniske-tegninger.html">← Til leksjonene: Vg1 Tegning og DAK</a><a href="../../vg2/tegning/leksjon-1-tekniske-tegninger.html">Vg2 Tegning og DAK</a></p>
     <p class="tag">Oppgavebank · Tegning og DAK · Vg1 · Leksjon 1–7</p>
     <h1>Les og lag tekniske tegninger</h1>
   </div>
@@ -393,6 +397,10 @@ fb.addEventListener("click", () => {
   fb.textContent = på ? "Skjul fasit" : "Vis fasit";
   document.querySelectorAll(".fasit").forEach(e => e.hidden = !på);
 });
+</script>
+<script>
+/* Kom eleven fra en leksjon? Da viser første lenke «Tilbake til leksjonen». */
+(function(){try{var r=document.referrer,u=new URL(r);if(u.origin===location.origin&&/\/leksjon-[^/]*\.html$/.test(u.pathname)){var a=document.querySelector(".tilbake a");a.href=r;a.textContent="← Tilbake til leksjonen";var b=a.parentNode.querySelectorAll("a");for(var k=1;k<b.length;k++)b[k].remove();}}catch(e){}})();
 </script>
 </body>
 </html>
