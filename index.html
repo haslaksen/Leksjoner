@@ -49,6 +49,7 @@ ol.lessons a::before{content:counter(l); flex:none; width:1.7rem; height:1.7rem;
 ol.lessons a:hover{border-color:var(--blue); background:var(--blue-soft)}
 .sims{margin-top:.8rem; padding-top:.7rem; border-top:1px dashed var(--line); font-size:.85rem; color:var(--muted)}
 .sims a{display:inline-block; margin:.15rem .3rem 0 0; padding:.15rem .6rem; border-radius:99px; border:1px solid var(--line); text-decoration:none; font-weight:600; font-size:.8rem}
+.sims.bank{margin-top:.4rem; padding-top:0; border-top:0}
 .sims a:hover{border-color:var(--blue); background:var(--blue-soft)}
 .tip{border-left:5px solid var(--blue); background:var(--blue-soft); padding:.8rem 1rem; border-radius:0 10px 10px 0; margin:1.2rem 0 0}
 /* Kompetansemål: bare på lærersiden (bygg.js fjerner dem fra elevsiden) */
@@ -173,6 +174,7 @@ details.fag .grid{grid-template-columns:1fr; gap:.5rem}
             <li><a href="vg1/konstruksjon/leksjon-7-les-en-hel-arbeidstegning.html">Les en hel arbeidstegning</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="toleranser">Toleranser</a><a data-sim="cnc-dreiebenk">CNC-dreiebenk</a></div>
+          <div class="sims bank">📄 Oppgavebank: <a href="oppgavebank/tegning/les-og-lag-tekniske-tegninger.html">Les og lag tekniske tegninger</a></div>
           <div class="laerer prove">📝 <a href="vg1/konstruksjon/prove-tegning-og-dak.html">Prøve: Tegning og DAK</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="KST7">Mål 7</button><button class="mal-merke" data-mal="PT6">PT mål 6</button><p class="mal-tekst" aria-live="polite"></p></div>
         </details>
@@ -247,6 +249,7 @@ details.fag .grid{grid-template-columns:1fr; gap:.5rem}
             <li><a href="vg1/verktoy/leksjon-2-mal-og-les-av-tegningen.html">Mål og les av tegningen</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="mikrometer">Mikrometer</a><a data-sim="toleranser">Toleranser</a><a data-sim="skjaeredata">Skjæredata</a></div>
+          <div class="sims bank">📄 Oppgavebank: <a href="oppgavebank/maleteknikk/mal-og-les-av-tegningen.html">Mål og les av tegningen</a><a href="oppgavebank/maleteknikk/skyvelaere-og-mikrometer.html">Skyvelære og mikrometer</a></div>
           <div class="laerer prove">📝 <a href="vg1/verktoy/prove-verktoy-og-maling.html">Prøve: Verktøy og måling</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="PT3">Mål 3</button><button class="mal-merke" data-mal="PT11">Mål 11</button><p class="mal-tekst" aria-live="polite"></p></div>
         </details>
@@ -414,6 +417,7 @@ details.fag .grid{grid-template-columns:1fr; gap:.5rem}
             <li><a href="vg2/maleteknikk/leksjon-1-maleverktoy.html">Måleverktøy</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="mikrometer">Mikrometer</a><a data-sim="maleur">Måleur</a><a data-sim="toleranser">Toleranser</a></div>
+          <div class="sims bank">📄 Oppgavebank: <a href="oppgavebank/maleteknikk/skyvelaere-og-mikrometer.html">Skyvelære og mikrometer</a></div>
           <div class="laerer prove">📝 <a href="vg2/maleteknikk/prove-maleteknikk.html">Prøve: Måleteknikk og kvalitet</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T4">T4</button><p class="mal-tekst" aria-live="polite"></p></div>
         </details>
@@ -431,6 +435,7 @@ details.fag .grid{grid-template-columns:1fr; gap:.5rem}
             <li><a href="vg2/tegning/leksjon-9-les-en-hel-arbeidstegning.html">Les en hel arbeidstegning</a></li>
           </ol>
           <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="toleranser">Toleranser</a><a data-sim="gjenger">Gjenger</a><a data-sim="maleur">Måleur</a></div>
+          <div class="sims bank">📄 Oppgavebank: <a href="oppgavebank/tegning/les-og-lag-tekniske-tegninger.html">Les og lag tekniske tegninger</a></div>
           <div class="laerer prove">📝 <a href="vg2/tegning/prove-tegning-og-dak.html">Prøve: Tegning og DAK</a> (bare lærer)</div>
           <div class="laerer merker">Kompetansemål: <button class="mal-merke" data-mal="T6">T6</button><button class="mal-merke" data-mal="T7">T7</button><button class="mal-merke" data-mal="T4">T4</button><button class="mal-merke" data-mal="T10">T10</button><p class="mal-tekst" aria-live="polite"></p></div>
         </details>
@@ -650,7 +655,7 @@ details.fag .grid{grid-template-columns:1fr; gap:.5rem}
       <div class="grid">
         <div class="card">
           <h3>Les og lag tekniske tegninger</h3>
-          <p>15 oppgaver: riss, tittelfelt, snitt, gjenger, stykkliste, toleranser, basismål og Fusion. Vg1 Tegning og DAK 1–7 og Vg2 Tegning og DAK 1–6.</p>
+          <p>15 oppgaver: riss, tittelfelt, snitt, gjenger, stykkliste, toleranser, basismål og Fusion. Vg1 Tegning og DAK 1–7 og Vg2 Tegning og DAK 1–6 og 9.</p>
           <a class="btn" href="oppgavebank/tegning/les-og-lag-tekniske-tegninger.html" style="text-decoration:none; display:inline-block">Åpne oppgavene</a>
           <div class="sims">Simulator: <a data-sim="toleranser">Toleranser</a></div>
         </div>
