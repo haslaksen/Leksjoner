@@ -46,6 +46,7 @@ ol.lessons{list-style:none; padding:0; margin:0; counter-reset:l}
 ol.lessons li{counter-increment:l; margin:.3rem 0}
 ol.lessons a{display:flex; gap:.7rem; align-items:center; text-decoration:none; color:var(--ink); padding:.45rem .6rem; border-radius:10px; border:1px solid transparent}
 ol.lessons a::before{content:counter(l); flex:none; width:1.7rem; height:1.7rem; border-radius:50%; display:grid; place-items:center; font-weight:800; font-size:.85rem; background:var(--orange-soft); color:var(--orange)}
+ol.lessons a small{display:block; color:var(--muted); font-size:.8rem; font-weight:400}
 ol.lessons a:hover{border-color:var(--blue); background:var(--blue-soft)}
 .sims{margin-top:.8rem; padding-top:.7rem; border-top:1px dashed var(--line); font-size:.85rem; color:var(--muted)}
 .sims a{display:inline-block; margin:.15rem .3rem 0 0; padding:.15rem .6rem; border-radius:99px; border:1px solid var(--line); text-decoration:none; font-weight:600; font-size:.8rem}
@@ -632,34 +633,56 @@ details.fag .grid{grid-template-columns:1fr; gap:.5rem}
 <section id="oppgavebank">
   <div class="wrap">
     <h2>Oppgavebank</h2>
-    <p>Ekstra oppgaver. Fyll ut på skjermen, eller skriv ut / lagre som PDF.</p>
-    <details class="fag">
-      <summary class="fag-tittel">Måleteknikk <span class="antall"></span></summary>
-      <div class="grid">
-        <div class="card">
-          <h3>Skyvelære og mikrometer</h3>
-          <p>16 oppgaver: les av bilder fra simulatorene og øv i dem. Vg1 og Vg2.</p>
-          <a class="btn" href="oppgavebank/maleteknikk/skyvelaere-og-mikrometer.html" style="text-decoration:none; display:inline-block">Åpne oppgavene</a>
-          <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="mikrometer">Mikrometer</a></div>
+    <p>Ekstra oppgaver, delt inn som leksjonene. Fyll ut på skjermen, eller skriv ut / lagre som PDF.</p>
+    <details class="fag gruppe">
+      <summary class="fag-tittel">Vg1 Teknologi- og industrifag (TIF) <span class="antall"></span></summary>
+      <details class="fag">
+        <summary class="fag-tittel">Konstruksjons- og styringsteknikk <span class="antall"></span></summary>
+        <div class="grid">
+          <details class="card emne">
+            <summary><h3>Tegning og DAK</h3> <span class="antall"></span></summary>
+            <ol class="lessons">
+              <li><a href="oppgavebank/tegning/les-og-lag-tekniske-tegninger.html"><span>Les og lag tekniske tegninger<small>15 oppgaver: riss, snitt, gjenger, stykkliste, toleranser og Fusion · til leksjon 1–7</small></span></a></li>
+            </ol>
+            <div class="sims">Simulator: <a data-sim="toleranser">Toleranser</a></div>
+          </details>
         </div>
-        <div class="card">
-          <h3>Mål og les av tegningen</h3>
-          <p>10 oppgaver: les tegningen, toleranser, tabeller og velg måleverktøy. Vg1, leksjon 2 i Verktøy og måling.</p>
-          <a class="btn" href="oppgavebank/maleteknikk/mal-og-les-av-tegningen.html" style="text-decoration:none; display:inline-block">Åpne oppgavene</a>
-          <div class="sims">Simulatorer: <a data-sim="toleranser">Toleranser</a><a data-sim="skjaeredata">Skjæredata</a></div>
+      </details>
+      <details class="fag">
+        <summary class="fag-tittel">Produksjon og tjenester <span class="antall"></span></summary>
+        <div class="grid">
+          <details class="card emne">
+            <summary><h3>Verktøy og måling</h3> <span class="antall"></span></summary>
+            <ol class="lessons">
+              <li><a href="oppgavebank/maleteknikk/mal-og-les-av-tegningen.html"><span>Mål og les av tegningen<small>10 oppgaver: tegning, toleranser, tabeller og måleverktøy · til leksjon 2</small></span></a></li>
+              <li><a href="oppgavebank/maleteknikk/skyvelaere-og-mikrometer.html"><span>Skyvelære og mikrometer<small>16 oppgaver: les av bilder fra simulatorene og øv i dem · til leksjon 2</small></span></a></li>
+            </ol>
+            <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="mikrometer">Mikrometer</a><a data-sim="toleranser">Toleranser</a><a data-sim="skjaeredata">Skjæredata</a></div>
+          </details>
         </div>
-      </div>
+      </details>
     </details>
-    <details class="fag">
-      <summary class="fag-tittel">Tegning og DAK <span class="antall"></span></summary>
-      <div class="grid">
-        <div class="card">
-          <h3>Les og lag tekniske tegninger</h3>
-          <p>15 oppgaver: riss, tittelfelt, snitt, gjenger, stykkliste, toleranser, basismål og Fusion. Vg1 Tegning og DAK 1–7 og Vg2 Tegning og DAK 1–6 og 9.</p>
-          <a class="btn" href="oppgavebank/tegning/les-og-lag-tekniske-tegninger.html" style="text-decoration:none; display:inline-block">Åpne oppgavene</a>
-          <div class="sims">Simulator: <a data-sim="toleranser">Toleranser</a></div>
+    <details class="fag gruppe">
+      <summary class="fag-tittel">Vg2 Industriteknologi <span class="antall"></span></summary>
+      <details class="fag">
+        <summary class="fag-tittel">Teknologi <span class="antall"></span></summary>
+        <div class="grid">
+          <details class="card emne">
+            <summary><h3>Måleteknikk og kvalitet</h3> <span class="antall"></span></summary>
+            <ol class="lessons">
+              <li><a href="oppgavebank/maleteknikk/skyvelaere-og-mikrometer.html"><span>Skyvelære og mikrometer<small>16 oppgaver: les av bilder fra simulatorene og øv i dem · til leksjon 1</small></span></a></li>
+            </ol>
+            <div class="sims">Simulatorer: <a data-sim="skyvelaere">Skyvelære</a><a data-sim="mikrometer">Mikrometer</a></div>
+          </details>
+          <details class="card emne">
+            <summary><h3>Tegning og DAK</h3> <span class="antall"></span></summary>
+            <ol class="lessons">
+              <li><a href="oppgavebank/tegning/les-og-lag-tekniske-tegninger.html"><span>Les og lag tekniske tegninger<small>15 oppgaver: riss, snitt, gjenger, stykkliste, toleranser og Fusion · til leksjon 1–6 og 9</small></span></a></li>
+            </ol>
+            <div class="sims">Simulator: <a data-sim="toleranser">Toleranser</a></div>
+          </details>
         </div>
-      </div>
+      </details>
     </details>
   </div>
 </section>
@@ -712,7 +735,7 @@ document.querySelectorAll("details.fag:not(.gruppe)").forEach(f => {
 });
 document.querySelectorAll("details.emne").forEach(e => {
   const n = e.querySelectorAll("ol.lessons li").length;
-  e.querySelector(".antall").textContent = n + (n === 1 ? " leksjon" : " leksjoner");
+  e.querySelector(".antall").textContent = e.closest("#oppgavebank") ? n + " ark" : n + (n === 1 ? " leksjon" : " leksjoner");
 });
 // Faner: bare valgt trinn vises.
 const faner = document.querySelectorAll("nav.trinn a");
