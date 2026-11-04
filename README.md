@@ -35,7 +35,7 @@ vg2/<emne>/leksjon-N-<navn>.html
 | Vg2 | Robot og automasjon | 1 Styr robotens akser i Fusion |
 | Vg2 | Vedlikehold | 1 Vedlikeholdssystemer · 2 Sikker jobb – lås og merk · 3 Smøring |
 | Vg2 | YFF | 1 Veien til læreplass |
-| Vg3 | Løping etter Marius Bakken (vg3/loping) | 1 Rolig mengde er grunnmuren · 2 Terskel og laktat · 3 Dobbel terskel og treningsuka · 4 Lag din egen løpeplan |
+| Vg3 | Løping etter Marius Bakken (vg3/loping) | 1 Rolig mengde er grunnmuren · 2 Terskel og laktat · 3 Dobbel terskel og treningsuka · 4 Lag din egen løpeplan · 5 Løpeteknikk og løpsøkonomi · 6 Fra grunntrening til konkurranse · 7 Skadefri løping · 8 Tester for løpere · 9 Fartsdisponering og løpstaktikk |
 
 ## Ny leksjon
 
