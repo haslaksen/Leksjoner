@@ -12,6 +12,7 @@
   --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
   --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
   --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --s1:#23804f; --s2:#5f8a0e; --s3:#9a6f00; --s4:#d9480f; --s5:#c92a2a;
   --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
   --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
   --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
@@ -21,13 +22,15 @@
   --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
   --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
   --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
-  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark;
+  --s1:#5cc68e; --s2:#a6d84a; --s3:#f2c94c; --s4:#ff8a3d; --s5:#ff6b6b}}
 :root[data-theme="dark"]{
   --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
   --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
   --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
   --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
-  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark;
+  --s1:#5cc68e; --s2:#a6d84a; --s3:#f2c94c; --s4:#ff8a3d; --s5:#ff6b6b}
 [hidden]{display:none!important}
 
 *{box-sizing:border-box}
@@ -283,14 +286,14 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
   <div class="tag">Del 3 · Utholdenhet</div>
   <h2>Pulsen viser hvor hardt du trener</h2>
   <div class="benk">
-    <svg id="pulsFig" viewBox="0 0 600 250" role="img" aria-label="Tre pulssoner: rolig, terskel og intervall"></svg>
+    <svg id="pulsFig" viewBox="0 0 600 300" role="img" aria-label="Olympiatoppens fem intensitetssoner, I-1 til I-5, i prosent av makspuls"></svg>
     <div style="display:grid;gap:14px">
       <label class="slider">Din alder <input type="range" id="alder" min="15" max="60" value="17"> <span class="lw" id="alderTall">17 år</span></label>
       <p class="status" id="pulsTekst"></p>
     </div>
   </div>
-  <p class="regel">Makspuls ≈ <b>220 − alder</b>. Mest rolig trening, litt hard.</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>220 − alder er bare et grovt anslag (kan bomme med ±10 slag). En makspulstest gir sikrere tall. Sonene her er forenklet: rolig 60–72 %, terskel 82–87 %, intervall 88–95 % av makspuls. Eksempel på intervall: 4 × 4 minutter.</details>
+  <p class="regel">Fem soner: <b>I-1</b> rolig til <b>I-5</b> svært hardt. Mest <b>I-1</b>, litt <b>I-4</b> og <b>I-5</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>220 − alder er bare et grovt anslag (kan bomme med ±10 slag). En makspulstest gir sikrere tall. Sonene er Olympiatoppens intensitetsskala (olt-skala.nif.no, oppdatert 2024): I-1 55–72 %, I-2 72–82 %, I-3 82–87 % (terskel), I-4 87–92 %, I-5 over 92 % av makspuls. Pusten i figuren er snakketesten fra skalaen. Skalaen har også I-6 til I-8 (sprint og maks innsats over kort tid); de styres ikke med puls og er tatt med under hurtighet. Eksempel: 4 × 4 min intervall = I-4. Mest trening i I-1 og I-2 (ca. 80/20).</details>
 </section>
 
 <section id="hurtighet">
@@ -379,7 +382,8 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
       <h3>Del C · Regn ut pulsen</h3>
       <ol>
         <li>Du er 17 år. Hva er makspulsen omtrent? (220 − alder)<div class="svar"><span class="fasit" hidden>220 − 17 = 203 slag per minutt</span></div></li>
-        <li>Intervall skal være ca. 90 % av makspuls. Hvilken puls er det? (makspuls × 0,9)<div class="svar"><span class="fasit" hidden>203 × 0,9 ≈ 183 slag per minutt</span></div></li>
+        <li>Intervall 4 × 4 min er sone I-4, ca. 90 % av makspuls. Hvilken puls er det? (makspuls × 0,9)<div class="svar"><span class="fasit" hidden>203 × 0,9 ≈ 183 slag per minutt</span></div></li>
+        <li>En rolig langtur der du kan prate hele tiden. Hvilken sone (I-1 til I-5)?<div class="svar"><span class="fasit" hidden>I-1 (veldig lett)</span></div></li>
       </ol>
     </div>
 
@@ -389,7 +393,7 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
       <div class="tablewrap"><table>
         <tr><th>Viktigste egenskap</th><th>Treningsmetode og øvelse</th></tr>
         <tr><td class="blank"><span class="fasit" hidden>Eksempel håndball: hurtighet</span></td><td class="blank"><span class="fasit" hidden>Sprint 6 × 20 m med 2 min pause</span></td></tr>
-        <tr><td class="blank"><span class="fasit" hidden>Utholdenhet</span></td><td class="blank"><span class="fasit" hidden>Intervall 4 × 4 min, ca. 90 % av makspuls</span></td></tr>
+        <tr><td class="blank"><span class="fasit" hidden>Utholdenhet</span></td><td class="blank"><span class="fasit" hidden>Intervall 4 × 4 min i sone I-4 (ca. 90 % av makspuls)</span></td></tr>
       </table></div>
     </div>
 
@@ -452,20 +456,24 @@ details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
   }
 
   // ---------- del 3: pulssoner ----------
-  const SONER = [['Rolig', .60, .72, 'var(--r)'], ['Terskel', .82, .87, 'var(--i)'], ['Intervall', .88, .95, 'var(--bad)']];
+  // Olympiatoppens intensitetsskala (olt-skala.nif.no, 2024), % av makspuls
+  const SONER = [['I-1', 'Veldig lett · kan prate', .55, .72, 'var(--s1)'], ['I-2', 'Nokså lett · lange setninger', .72, .82, 'var(--s2)'],
+    ['I-3', 'Behagelig anstrengende · korte setninger', .82, .87, 'var(--s3)'], ['I-4', 'Anstrengende · noen få ord', .87, .92, 'var(--s4)'],
+    ['I-5', 'Veldig anstrengende · ett ord', .92, 1, 'var(--s5)']];
   function puls() {
-    const alder = +$('alder').value, maks = 220 - alder;
-    let h = `<text x="20" y="34" font-size="17" font-weight="800" fill="var(--ink)">Makspuls ≈ ${maks}</text>`;
-    SONER.forEach(([n, a, b, f], i) => {
-      const y = 60 + i * 62, x0 = 140 + (a - .5) * 700, x1 = 140 + (b - .5) * 700;
-      h += `<text x="20" y="${y + 30}" font-size="17" font-weight="700" fill="${f}">${n}</text>` +
-        `<rect x="140" y="${y + 6}" width="350" height="36" rx="8" fill="var(--bg)" stroke="var(--line)"/>` +
-        `<rect x="${x0}" y="${y + 6}" width="${x1 - x0}" height="36" rx="8" fill="${f}"/>` +
-        `<text x="500" y="${y + 30}" font-size="15" font-weight="700" fill="var(--ink)">${Math.round(maks * a)}–${Math.round(maks * b)}</text>`;
+    const alder = +$('alder').value, maks = 220 - alder, X = p => 90 + (p - .5) * 640;
+    let h = `<text x="20" y="30" font-size="17" font-weight="800" fill="var(--ink)">Makspuls ≈ ${maks}</text>`;
+    SONER.forEach(([n, t, a, b, f], i) => {
+      const y = 46 + i * 50;
+      h += `<text x="20" y="${y + 38}" font-size="20" font-weight="800" fill="${f}">${n}</text>` +
+        `<text x="${X(.5)}" y="${y + 14}" font-size="13" fill="var(--muted)">${t}</text>` +
+        `<rect x="${X(.5)}" y="${y + 20}" width="${X(1) - X(.5)}" height="26" rx="7" fill="var(--bg)" stroke="var(--line)"/>` +
+        `<rect x="${X(a)}" y="${y + 20}" width="${X(b) - X(a)}" height="26" rx="7" fill="${f}"/>` +
+        `<text x="${X(1) + 12}" y="${y + 39}" font-size="15" font-weight="700" fill="var(--ink)">${Math.round(maks * a)}–${Math.round(maks * b)}</text>`;
     });
     tegn($('pulsFig'), h);
     $('alderTall').textContent = alder + ' år';
-    $('pulsTekst').textContent = 'Intervall for deg: ca. ' + Math.round(maks * .88) + '–' + Math.round(maks * .95) + ' slag i minuttet.';
+    $('pulsTekst').textContent = 'Intervall 4 × 4 min er I-4. For deg: ca. ' + Math.round(maks * .87) + '–' + Math.round(maks * .92) + ' slag i minuttet.';
   }
   $('alder').oninput = puls;
   puls();
