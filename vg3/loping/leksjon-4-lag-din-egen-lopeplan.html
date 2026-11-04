@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Løping etter Marius Bakken · Leksjon 4: Lag din egen løpeplan</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --s1:#23804f; --s2:#5f8a0e; --s3:#9a6f00; --s4:#d9480f; --s5:#c92a2a;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark;
+  --s1:#5cc68e; --s2:#a6d84a; --s3:#f2c94c; --s4:#ff8a3d; --s5:#ff6b6b}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark;
+  --s1:#5cc68e; --s2:#a6d84a; --s3:#f2c94c; --s4:#ff8a3d; --s5:#ff6b6b}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+</style>
+<style>
+.fig svg{max-height:320px}
+.to .q{text-align:center;justify-items:center}
+.to .q svg{max-height:220px}
+.fem{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.fem .q{text-align:center;justify-items:center}
+.sorter .knapper{flex-wrap:wrap;justify-content:center}
+.sorter .knapper button{padding:8px 11px;font-size:14px}
+.liste{text-align:left;justify-self:start;margin:0;padding-left:1.2em;display:grid;gap:6px;font-size:1.05rem}
+</style>
+
+<style>
+.fig svg{max-height:340px}
+.to .q,.fem .q{text-align:center;justify-items:center}
+.fem{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.sorter .knapper{flex-wrap:wrap;justify-content:center}
+.sorter .knapper button{padding:8px 11px;font-size:14px}
+.big{font-size:2.6rem;line-height:1}
+.sitat{font-size:1.25rem;font-style:italic;max-width:46ch;border-left:5px solid var(--orange);padding-left:14px}
+
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Løping etter Marius Bakken · <span>Leksjon 4</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#krav">Hva krever 5 km?</a><a href="#finn">Finn terskelfarten</a><a href="#regler">Tre regler</a><a href="#planlegger">Lag uka</a><a href="#progresjon">Bygg over uker</a><a href="#varsel">Varseltegn</a><a href="#kilde">Kildekritikk</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Idrett Vg3 · Treningslære 2 · Løping etter Marius Bakken · Leksjon 4</div>
+    <h1 style="margin-top:10px">Lag din egen løpeplan</h1>
+    <p class="lead" style="margin-top:12px">Bruk Bakkens ideer i <b>din</b> uke.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Hva krever <b>5 km</b>?</span></li><li><span class="n i">2</span><span>Finn <b>terskelfarten</b></span></li><li><span class="n r">3</span><span>Lag <b>uka</b> di</span></li><li><span class="n ">4</span><span>Er kilden <b>pålitelig</b>?</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 220" role="img" aria-label="Notatblokk med en ukeplan og en blyant">
+      <rect x="90" y="20" width="250" height="185" rx="12" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/>
+      <g font-size="14" font-weight="700" fill="var(--ink)"><text x="110" y="55">Man</text><text x="110" y="85">Tir</text><text x="110" y="115">Ons</text><text x="110" y="145">Tor</text><text x="110" y="175">Fre</text></g>
+      <rect x="160" y="42" width="120" height="18" rx="5" fill="var(--s1)"/><rect x="160" y="72" width="120" height="18" rx="5" fill="var(--s3)"/><rect x="160" y="102" width="120" height="18" rx="5" fill="var(--line)"/><rect x="160" y="132" width="120" height="18" rx="5" fill="var(--s1)"/><rect x="160" y="162" width="120" height="18" rx="5" fill="var(--s3)"/>
+      <text x="330" y="200" font-size="46">✏️</text>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål, plan og kilder</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (IDR02-03, Treningslære 2)</h3>
+      <p><b>TL2 (delvis):</b> «utarbeide og begrunne arbeidskravs- og kapasitetsanalyse, treningsplaner og mål knyttet til prestasjonsutvikling i en valgt idrettsaktivitet»: arbeidskrav i 5 km og egen ukeplan (Del 1–5, oppgave A). Bygger på leksjon 6.</p>
+      <p><b>TL11 (delvis):</b> «vurdere påliteligheten av kilder knyttet til treningslære»: Bakkens nettside som kilde (Del 7, oppgave C). Bygger på leksjon 8.</p>
+      <p><b>TL12 (delvis):</b> «vurdere sammenheng mellom trening, helse og prestasjonsutvikling»: varseltegn og progresjon (Del 5–6, oppgave D).</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2"><dt>0–10</dt><dd>Start: «Hva skal til for å løpe 5 km raskere?»</dd><dt>10–30</dt><dd>Del 1–3: arbeidskrav, finn terskelfarten, tre regler.</dd><dt>30–45</dt><dd>Del 4: elevene lager uka i planleggeren og skriver den inn i oppgave A.</dd><dt>45–55</dt><dd>Pause</dd><dt>55–72</dt><dd>Del 5–7: progresjon, varseltegn, kildekritikk.</dd><dt>72–88</dt><dd>Oppgave B–D.</dd><dt>88–90</dt><dd>Exit-lapp.</dd></dl>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kilder (Marius Bakkens egne sider)</h3>
+      <ul style="margin:.2rem 0 0;padding-left:1.2em">
+        <li><a href="https://www.mariusbakken.com/" target="_blank" rel="noopener">mariusbakken.com</a> (forside: hovedidé, resultater)</li>
+        <li><a href="https://www.mariusbakken.com/the-norwegian-model.html" target="_blank" rel="noopener">The Norwegian model of lactate threshold training</a> (2022)</li>
+        <li><a href="https://www.mariusbakken.com/norwegian-model-revisited.html" target="_blank" rel="noopener">The Norwegian Model Revisited</a> (2025, treningsuka vinteren 2004)</li>
+        <li><a href="https://www.mariusbakken.com/double-threshold-training.html" target="_blank" rel="noopener">Double Threshold Training in Depth</a> (2026)</li>
+        <li>Pulssoner: <a href="https://olt-skala.nif.no/" target="_blank" rel="noopener">Olympiatoppens intensitetsskala</a> (I-1 til I-5)</li>
+      </ul>
+      <p style="margin-top:.4rem">Sidene er på engelsk. Sitater i leksjonen er oversatt. Råd til ungdom står ikke hos Bakken; de er lagt til ut fra vanlige treningsprinsipper (leksjon 1 Treningsprinsipper).</p>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="krav">
+  <div class="tag">Del 1 · Hva krever 5 km?</div>
+  <h2>Terskelen er det svake leddet</h2>
+  <div class="fig">
+    <svg viewBox="0 0 640 170" role="img" aria-label="Kjede med fire ledd: hjerte og lunger, teknikk, hode, og terskel. Terskel-leddet er rødt og tynnest">
+      <g fill="none" stroke-width="12">
+        <rect x="30" y="55" width="130" height="60" rx="30" stroke="var(--s1)"/><rect x="180" y="55" width="130" height="60" rx="30" stroke="var(--s1)"/>
+        <rect x="330" y="55" width="130" height="60" rx="30" stroke="var(--s1)"/><rect x="480" y="62" width="130" height="46" rx="23" stroke="var(--bad)" stroke-width="6"/>
+      </g>
+      <line x1="150" y1="85" x2="190" y2="85" stroke="var(--s1)" stroke-width="12"/><line x1="300" y1="85" x2="340" y2="85" stroke="var(--s1)" stroke-width="12"/><line x1="450" y1="85" x2="490" y2="85" stroke="var(--bad)" stroke-width="6"/>
+      <g font-size="15" font-weight="800" text-anchor="middle" fill="var(--ink)"><text x="95" y="150">Hjerte og lunger</text><text x="245" y="150">Teknikk</text><text x="395" y="150">Hodet</text><text x="545" y="150" fill="var(--bad)">Terskel</text></g>
+      <text x="545" y="40" text-anchor="middle" font-size="14" font-weight="700" fill="var(--bad)">svakeste ledd</text>
+    </svg>
+  </div>
+  <p class="regel">For de fleste på 5 og 10 km er <b>terskelen</b> det som begrenser.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>The Norwegian model: «The limiting performance factor for most 5k/10 runners is the anaerobic threshold.» Arbeidskravsanalysen fra leksjon 6: 5 km er en utholdenhetsøvelse der det aller meste av energien kommer aerobt, og terskelfarten avgjør hvor fort løperen kan holde over tid. Teknikk (leksjon 4) og mental styrke (leksjon 7) er også ledd i kjeden.</details>
+</section>
+
+<section id="finn">
+  <div class="tag">Del 2 · Finn terskelfarten</div>
+  <h2>Tre måter å treffe terskelen</h2>
+  <div class="fig">
+    <svg viewBox="0 0 640 220" role="img" aria-label="Tre blinker. Laktat treffer midt i. Puls og pust treffer i et litt større felt. Følelse treffer i et stort felt">
+      <g><circle cx="110" cy="100" r="70" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/><circle cx="110" cy="100" r="14" fill="var(--s3)"/>
+         <circle cx="320" cy="100" r="70" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/><circle cx="320" cy="100" r="34" fill="var(--s3)" opacity=".7"/>
+         <circle cx="530" cy="100" r="70" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/><circle cx="530" cy="100" r="58" fill="var(--s3)" opacity=".45"/></g>
+      <g font-size="16" font-weight="800" text-anchor="middle" fill="var(--ink)"><text x="110" y="195">🩸 Laktat</text><text x="320" y="195">⌚ Puls + 🗣️ pust</text><text x="530" y="195">🙂 Følelse</text></g>
+      <g font-size="13" text-anchor="middle" fill="var(--muted)"><text x="110" y="214">presist</text><text x="320" y="214">godt nok</text><text x="530" y="214">grovt: løp litt roligere</text></g>
+    </svg>
+  </div>
+  <p class="regel">Usikker? Velg den <b>roligste</b> farten som fortsatt føles kontrollert.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Repetisjon av leksjon 2 Del 5. Bakken: «the more inaccurate method you use for control, the larger the margins you must have». Uten laktatmåler: I-3 (82–87 % av makspuls), korte setninger, «behagelig anstrengende». Elevene kan finne terskelfart på bane: løp 3 × 8 min i I-3 og se hvilken fart de holder.</details>
+</section>
+
+<section id="regler">
+  <div class="tag">Del 3 · Tre regler</div>
+  <h2>Tre regler for uka di</h2>
+  <div class="fem">
+    <div class="q R"><span class="big">🙂</span><h3>1. Mest rolig</h3><p>De fleste øktene i I-1/I-2</p></div>
+    <div class="q" style="border-top:6px solid var(--s3)"><span class="big">🎯</span><h3>2. Maks 2 harde dager</h3><p>Terskel eller bakker</p></div>
+    <div class="q U"><span class="big">😴</span><h3>3. Aldri hardt to dager på rad</h3><p>og minst én hviledag</p></div>
+  </div>
+  <p class="regel">Reglene bygger på Bakken, men er tilpasset <b>elever</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Regel 1 og 3 er direkte fra Bakken (rolig skal være rolig; minst én rolig dag mellom harde dager). Regel 2 er en tilpasning for ungdom: Bakken selv hadde to doble terskeldager og et X-element, men med 180 km i uka. Hviledagen er lagt til for elever som også driver med andre idretter.</details>
+</section>
+
+<section id="planlegger">
+  <div class="tag">Del 4 · Lag uka</div>
+  <h2>Lag din egen uke</h2>
+  <div class="benk">
+    <div>
+      <div class="valgknapper" id="dager" style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px"></div>
+      <p class="caption" style="margin-top:8px">Trykk på en dag for å bytte: hvile → rolig → terskel → bakker</p>
+    </div>
+    <div style="display:grid;gap:10px">
+      <p class="teller" id="ukeTall"></p>
+      <p class="status" id="ukeTekst"></p>
+    </div>
+  </div>
+  <p class="regel">Skriv uka di inn i <b>oppgave A</b> når den er grønn.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Planleggeren sjekker de tre reglene fra Del 3. Den lagrer ingenting. La elevene ta utgangspunkt i sin egen hverdag: når har de trening i klubb, kroppsøving eller kamp? Kamp og harde klubbøkter teller som harde dager.</details>
+</section>
+
+<section id="progresjon">
+  <div class="tag">Del 5 · Bygg over uker</div>
+  <h2>Tre uker opp, én uke lett</h2>
+  <div class="fig">
+    <svg viewBox="0 0 640 220" role="img" aria-label="Søyler for fire uker: uke 1, 2 og 3 øker litt, uke 4 er lettere. Så starter en ny runde litt høyere">
+      <line x1="40" y1="180" x2="610" y2="180" stroke="var(--ink)" stroke-width="2"/>
+      <rect x="60" y="110" width="70" height="70" rx="6" fill="var(--s1)"/><rect x="150" y="96" width="70" height="84" rx="6" fill="var(--s1)"/><rect x="240" y="82" width="70" height="98" rx="6" fill="var(--s1)"/>
+      <rect x="330" y="128" width="70" height="52" rx="6" fill="var(--u)"/><rect x="420" y="100" width="70" height="80" rx="6" fill="var(--s1)" opacity=".65"/><rect x="510" y="86" width="70" height="94" rx="6" fill="var(--s1)" opacity=".65"/>
+      <g font-size="14" font-weight="700" text-anchor="middle" fill="var(--muted)"><text x="95" y="200">Uke 1</text><text x="185" y="200">Uke 2</text><text x="275" y="200">Uke 3</text><text x="365" y="200" fill="var(--u)">Uke 4</text><text x="455" y="200">Uke 5</text><text x="545" y="200">Uke 6</text></g>
+      <text x="365" y="118" text-anchor="middle" font-size="14" font-weight="800" fill="var(--u)">lett uke</text>
+      <path d="M95 100 L275 72" stroke="var(--orange)" stroke-width="3" marker-end="url(#pp)"/><text x="185" y="62" text-anchor="middle" font-size="14" font-weight="800" fill="var(--orange)">litt mer</text>
+      <defs><marker id="pp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--orange)"/></marker></defs>
+    </svg>
+  </div>
+  <p class="regel">Øk <b>litt</b>, hvil litt, øk igjen.</p>
+  <a class="simlink no-print" data-sim="formkurve"><span class="ico">📈</span><span>Simulator: Formkurve<small>Se hvordan lette uker gir bedre form</small></span><span class="pil">→</span></a>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Progresjon og restitusjon fra leksjon 1 Treningsprinsipper. 3 + 1-modellen er en vanlig måte å planlegge på, ikke noe Bakken skriver spesielt om. Han understreker likevel at overgangen til ny type trening (f.eks. sommer på bane) skal være «gradual, safe, and controlled» (Revisited).</details>
+</section>
+
+<section id="varsel">
+  <div class="tag">Del 6 · Varseltegn</div>
+  <h2>Kroppen sier ifra</h2>
+  <div class="fem">
+    <div class="q" style="border-top:6px solid var(--bad)"><span class="big">🦶</span><h3>Vondt som ikke går over</h3><p>legg, fot, kne</p></div>
+    <div class="q" style="border-top:6px solid var(--bad)"><span class="big">🫀</span><h3>Høy hvilepuls</h3><p>om morgenen</p></div>
+    <div class="q" style="border-top:6px solid var(--bad)"><span class="big">🧱</span><h3>Tunge bein</h3><p>flere dager på rad</p></div>
+    <div class="q" style="border-top:6px solid var(--bad)"><span class="big">😴</span><h3>Dårlig søvn</h3><p>og lite lyst</p></div>
+  </div>
+  <p class="regel">Ser du tegnene: ta <b>rolig</b> eller hvil. Snakk med trener eller lege ved smerte.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>TL12: trening, helse og prestasjon henger sammen. For mye og for hard trening gir belastningsskader og overtrening, og da faller både helse og prestasjon. Bakken (The Norwegian model) skriver at for mange terskeløkter tett på andre harde økter «wore the muscles more out in a longer time span». Varseltegnene er vanlige tegn på for lite restitusjon (leksjon 1).</details>
+</section>
+
+<section id="kilde">
+  <div class="tag">Del 7 · Kildekritikk</div>
+  <h2>Kan vi stole på Bakkens nettside?</h2>
+  <div class="to">
+    <div class="q R"><span class="big">👍</span><h3>Styrker</h3><ul class="liste" style="text-align:left;margin:0;padding-left:1.2em;display:grid;gap:6px"><li>Han har gjort det selv</li><li>Over 5500 laktatmålinger</li><li>Han er lege</li><li>Viser til forskning</li></ul></div>
+    <div class="q" style="border-top:6px solid var(--bad)"><span class="big">⚠️</span><h3>Svakheter</h3><ul class="liste" style="text-align:left;margin:0;padding-left:1.2em;display:grid;gap:6px"><li>Selger bok</li><li>Strid om hvem som fant opp metoden</li><li>Laget for eliteløpere</li><li>Egen nettside, ingen fagfelle har sjekket</li></ul></div>
+  </div>
+  <p class="regel">God førstehåndskilde, men <b>sjekk</b> med andre kilder også.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Bakken selger boka «The Norwegian Method Applied» og den norske «Løping! Raskere og skadefri for alle nivåer». I «Revisited» (2025) omtaler han at Gjert Ingebrigtsen i retten sa «This system is mine and only mine», noe Bakken er uenig i. Siden om dobbel terskel viser til en NTNU-studie (Talsnes m.fl. 2024, Frontiers in Physiology); elevene kan søke den opp og sammenligne. Andre kilder: Olympiatoppen (olt-skala.nif.no) og lærebøkene. Knytt til kildekritikk i leksjon 8.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 4: Lag din egen løpeplan</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+    <div>
+      <h3>Del A · Din uke</h3>
+      <p>Mål for perioden: ______________________________________</p>
+      <div class="tablewrap"><table>
+        <tr><th>Dag</th><th>Økt (hva gjør du?)</th><th>Sone (I-1 til I-5) eller hvile</th></tr>
+        <tr><td>Mandag</td><td class="blank"><span class="fasit" hidden>Rolig 30 min</span></td><td class="blank"><span class="fasit" hidden>I-1/I-2</span></td></tr>
+        <tr><td>Tirsdag</td><td class="blank"><span class="fasit" hidden>Terskel 5 × 5 min, 1 min pause</span></td><td class="blank"><span class="fasit" hidden>I-3</span></td></tr>
+        <tr><td>Onsdag</td><td class="blank"><span class="fasit" hidden>Hvile</span></td><td class="blank"><span class="fasit" hidden>Hvile</span></td></tr>
+        <tr><td>Torsdag</td><td class="blank"><span class="fasit" hidden>Rolig 40 min</span></td><td class="blank"><span class="fasit" hidden>I-1/I-2</span></td></tr>
+        <tr><td>Fredag</td><td class="blank"><span class="fasit" hidden>Terskel 10 × 400 m, kort pause</span></td><td class="blank"><span class="fasit" hidden>I-3</span></td></tr>
+        <tr><td>Lørdag</td><td class="blank"><span class="fasit" hidden>Rolig 30 min + 6 korte bakker</span></td><td class="blank"><span class="fasit" hidden>I-1/I-2</span></td></tr>
+        <tr><td>Søndag</td><td class="blank"><span class="fasit" hidden>Langtur 50–60 min</span></td><td class="blank"><span class="fasit" hidden>I-1/I-2</span></td></tr>
+      </table></div>
+      <p style="margin-top:8px">Begrunn uka di med Bakkens ideer.</p>
+      <div class="svar"><span class="fasit" hidden>Eksempel: mest rolig løping, to kontrollerte terskeløkter i I-3 med rolig dag mellom, én hviledag, langturen under én time.</span></div>
+    </div>
+
+    <div>
+      <h3>Del B · Hva gjør du? Sett kryss.</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Situasjon</th><th>Følg planen</th><th>Ta rolig / hvil</th></tr>
+        <tr><td>Litt stølhet dagen etter terskeløkt</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Vondt i leggen som har vart i fem dager</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Hvilepulsen er 10 slag høyere enn vanlig</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Uthvilt og i godt humør</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Kildekritikk</h3>
+      <ol>
+        <li>Nevn én grunn til å stole på mariusbakken.com.<div class="svar"><span class="fasit" hidden>Han har selv brukt metoden og løpt 13.06 på 5000 m, tatt over 5500 laktatmålinger, er lege og viser til forskning.</span></div></li>
+        <li>Nevn én grunn til å være kritisk.<div class="svar"><span class="fasit" hidden>Han selger bøker, er part i en strid om hvem som laget metoden, siden er ikke fagfellevurdert, og metoden er laget for eliteløpere.</span></div></li>
+        <li>Nevn en annen kilde du kan sjekke mot.<div class="svar"><span class="fasit" hidden>For eksempel Olympiatoppen (olt-skala.nif.no), NTNU-studien om dobbel terskel, læreboka eller en trener.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del D · Drøft</h3>
+      <ol>
+        <li>Hvordan henger trening, helse og prestasjon sammen i Bakkens metode?<div class="svar"><span class="fasit" hidden>Kontrollert intensitet og rolige dager gir lite skader og sykdom. Da kan løperen trene jevnt over lang tid, og det er jevn trening som gir best prestasjon. For hard trening gir skader og dårligere prestasjon.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hvilken av de tre reglene er vanskeligst for deg å følge? Hvorfor?<div class="svar"><span class="fasit" hidden>Eget svar.</span></div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</div>
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+})();
+
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  const tegn = (svg, h) => { svg.innerHTML = h; fixVars(svg); };
+  // ---------- sorter: trykk på riktig svar for hvert kort ----------
+  function sorter(boks, status, valg, kort) {
+    let riktige = 0;
+    kort.forEach(([e, n, r, f]) => {
+      const k = document.createElement('div'); k.className = 'q';
+      k.innerHTML = `<span class="emoji">${e}</span><h3>${n}</h3><div class="knapper"></div><p class="forkl"></p>`;
+      valg.forEach((s, j) => {
+        const b = document.createElement('button'); b.type = 'button'; b.textContent = s;
+        b.onclick = () => {
+          if (k.dataset.ok) return;
+          k.querySelectorAll('button').forEach(x => x.classList.remove('feil'));
+          if (j === r) { b.classList.add('ok'); k.dataset.ok = 1; riktige++; k.querySelector('.forkl').textContent = f; }
+          else { b.classList.add('feil'); k.querySelector('.forkl').textContent = 'Prøv igjen.'; }
+          $(status).textContent = riktige + ' av ' + kort.length + ' riktige';
+        };
+        k.querySelector('.knapper').appendChild(b);
+      });
+      $(boks).appendChild(k);
+    });
+  }
+
+
+  // ---------- del 4: ukeplanlegger ----------
+  const TYPER = [['Hvile', '😴', 'var(--line)'], ['Rolig', '🙂', 'var(--s1)'], ['Terskel', '🎯', 'var(--s3)'], ['Bakker', '⛰️', 'var(--s5)']];
+  const DAGER = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+  const uke = [1, 2, 0, 1, 2, 1, 1];
+  const knapper = DAGER.map((d, i) => {
+    const b = document.createElement('button'); b.type = 'button';
+    b.style.cssText = 'border-radius:12px;padding:10px 4px;display:grid;gap:4px;justify-items:center;font-size:.85rem;border-width:3px';
+    b.onclick = () => { uke[i] = (uke[i] + 1) % 4; vis(); };
+    $('dager').appendChild(b); return b;
+  });
+  function vis() {
+    knapper.forEach((b, i) => { const [n, e, f] = TYPER[uke[i]]; b.innerHTML = `<b>${DAGER[i]}</b><span style="font-size:1.6rem">${e}</span><span>${n}</span>`; b.style.borderColor = f; b.style.background = uke[i] ? 'var(--bg)' : 'var(--surface)'; });
+    const hard = uke.filter(t => t >= 2).length, hvile = uke.filter(t => t === 0).length, rolig = uke.filter(t => t === 1).length;
+    let rad = false; for (let i = 1; i < 7; i++) if (uke[i] >= 2 && uke[i - 1] >= 2) rad = true;
+    $('ukeTall').textContent = `🙂 ${rolig} rolige · 🎯 ${hard} harde · 😴 ${hvile} hvile`;
+    let t, ok = false;
+    if (hard === 0) t = 'Legg inn én terskeløkt.';
+    else if (hard > 2) t = 'For mange harde dager. Maks 2.';
+    else if (rad) t = 'To harde dager på rad. Legg en rolig dag mellom.';
+    else if (hvile < 1) t = 'Ta minst én hviledag.';
+    else if (rolig < hard) t = 'Mest rolig! Bytt en hard dag eller hviledag til rolig.';
+    else { t = '✓ Bra uke! Den følger alle tre reglene.'; ok = true; }
+    $('ukeTekst').textContent = t; $('ukeTekst').style.color = ok ? 'var(--r)' : 'var(--bad)';
+  }
+  vis();
+  fixVars(document);
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+
+</script>
+<script>
+// Adressen til simulatorene (samme som SIMULATORER i index.html)
+const SIMULATORER = "https://simulatorer.vercel.app/";
+document.querySelectorAll("[data-sim]").forEach(a => { const [navn, fane] = a.dataset.sim.split("#"); a.href = SIMULATORER + navn + ".html" + (fane ? "#" + fane : ""); a.target = "_blank"; a.rel = "noopener"; });
+</script>
+
+</body></html>
