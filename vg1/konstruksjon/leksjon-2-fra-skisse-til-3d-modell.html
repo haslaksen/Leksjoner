@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Konstruksjon Vg1 · Leksjon 2: Fra skisse til 3D-modell</title>
+<title>Tegning og DAK Vg1 · Leksjon 2: Fra skisse til 3D-modell</title>
 <style>
 /* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
 :root{
@@ -185,8 +185,8 @@ input[type=range]{accent-color:var(--orange)}
 </head>
 <body>
 <header class="top">
-  <div class="brand">Konstruksjon Vg1 · <span>Leksjon 2</span></div>
-  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#dak">Hva er DAK?</a><a href="#gang">Arbeidsgang</a><a href="#ekstruder">Ekstruder</a><a href="#revolve">Revolve</a><a href="#revolvecut">Revolve cut</a><a href="#tegning">Til tegning</a><a href="#hode">Tegningshode</a><a href="#dap">Til maskin</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="brand">Tegning og DAK Vg1 · <span>Leksjon 2</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#dak">Hva er DAK?</a><a href="#gang">Arbeidsgang</a><a href="#ekstruder">Ekstruder</a><a href="#revolve">Revolve</a><a href="#revolvecut">Revolve cut</a><a href="#las">Lås skissen</a><a href="#param">Parameters</a><a href="#oppgaver">Oppgaver</a></nav>
   <div class="tools no-print">
     <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
     <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
@@ -197,14 +197,14 @@ input[type=range]{accent-color:var(--orange)}
 
 <header class="hero" id="start">
   <div>
-    <div class="tag">Konstruksjon og styringsteknikk Vg1 · Leksjon 2</div>
+    <div class="tag">Tegning og DAK Vg1 · Leksjon 2</div>
     <h1 style="margin-top:10px">Fra skisse til <span style="color:var(--orange)">3D-modell</span></h1>
     <p class="lead" style="margin-top:12px">Tegn på PC. Dra eller drei skissen til 3D.</p>
     <ul class="goals">
       <li><span class="n u">1</span><span>Hva <b>DAK</b> er</span></li>
       <li><span class="n i">2</span><span>Arbeidsgangen: <b>skisse → 3D</b> (Extrude og Revolve)</span></li>
-      <li><span class="n r">3</span><span>Fra modell til <b>tegning</b></span></li>
-      <li><span class="n" style="color:var(--orange)">4</span><span>Fra modell til <b>maskin</b> (DAP)</span></li>
+      <li><span class="n r">3</span><span><b>Extrude</b>, <b>Revolve</b> og <b>Revolve cut</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span><b>Lås skissen</b> og endre mål med <b>Parameters</b></span></li>
     </ul>
   </div>
   <div>
@@ -217,7 +217,7 @@ input[type=range]{accent-color:var(--orange)}
   <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Mål</h3>
-      <p>Konstruksjon og styringsteknikk Vg1 (TIP01-03): «bruke programmer for 2D- og 3D-dataassistert konstruksjon (DAK) og dataassistert produksjon (DAP) til grunnleggende tegning og dokumentasjon». Vi bruker Autodesk Fusion. Figurene ligner skjermbildene i Fusion, så elevene kjenner igjen knappene.</p>
+      <p>KST7 (TIP01-03): «bruke programmer for 2D- og 3D-dataassistert konstruksjon (DAK) og dataassistert produksjon (DAP) til grunnleggende tegning og dokumentasjon». Vi bruker Autodesk Fusion. Figurene ligner skjermbildene i Fusion, så elevene kjenner igjen knappene. Elevene bør ha hatt leksjon 1 (tre riss).</p>
     </div>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
@@ -225,9 +225,9 @@ input[type=range]{accent-color:var(--orange)}
         <dt>0–10</dt><dd>Start: vis tegningen av klossen fra leksjon 1. «Hvordan får vi den inn på PC?»</dd>
         <dt>10–20</dt><dd>Del 1–2 · Hva er DAK og arbeidsgangen. Oppgave A og B.</dd>
         <dt>20–35</dt><dd>Del 3–5 · Extrude, Revolve og Revolve cut. Oppgave C og D.</dd>
-        <dt>35–45</dt><dd>Del 6–8 · Fra modell til tegning og til maskin. Oppgave E.</dd>
+        <dt>35–45</dt><dd>Oppgave E. Åpne Fusion og vis knappene på storskjerm.</dd>
         <dt>45–55</dt><dd>Pause</dd>
-        <dt>55–88</dt><dd>Oppgave F på PC: modeller klossen og lag tegning. Raske elever lager akselen med Revolve. Vis på storskjerm først.</dd>
+        <dt>55–88</dt><dd>Oppgave F på PC: modeller klossen. Raske elever lager akselen med Revolve. Vis på storskjerm først.</dd>
         <dt>88–90</dt><dd>Exit-lapp.</dd>
       </dl>
     </div>
@@ -293,7 +293,7 @@ input[type=range]{accent-color:var(--orange)}
   <p class="lead">Runde deler: tegn <b>halve</b> profilen og en <b>akse</b>.</p>
   <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxRevolve" role="img" aria-label="Fusion: Revolve dreier en halv profil rundt aksen, og det blir en aksel"></svg></div></div>
   <p class="vei">I Fusion: <b>SOLID</b> → <b>CREATE</b> → <b>Revolve</b> → velg profil og akse → <b>OK</b></p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Revolve passer for alt som kan lages i dreiebenken: aksler, bolter, flenser og hjul. Profilen skal ligge på den ene siden av aksen og ikke krysse den. Type «Full» gir 360°. Akselen er samme type del som elevene lager i DAP og CNC leksjon 3.</details>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Revolve passer for alt som kan lages i dreiebenken: aksler, bolter, flenser og hjul. Profilen skal ligge på den ene siden av aksen og ikke krysse den. Type «Full» gir 360°. Akselen er samme type del som elevene lager i DAP og CNC leksjon 3, og som leses i leksjon 5.</details>
 </section>
 
 <section id="revolvecut">
@@ -302,100 +302,25 @@ input[type=range]{accent-color:var(--orange)}
   <p class="lead">Samme kommando. Velg <b>Cut</b>, så blir materialet fjernet.</p>
   <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxRevolveCut" role="img" aria-label="Fusion: Revolve med Operation Cut lager et spor rundt akselen"></svg></div></div>
   <p class="vei">I Fusion: <b>Revolve</b> → <b>Operation: Cut</b> → <b>OK</b></p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Fusion har ingen egen knapp for Revolve cut. Man velger Operation «Cut» i Revolve-vinduet (Fusion foreslår ofte Cut selv når profilen ligger inni delen). Slik lages spor, gjengeriller (leksjon 4) og fas rundt en aksel.</details>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Fusion har ingen egen knapp for Revolve cut. Man velger Operation «Cut» i Revolve-vinduet (Fusion foreslår ofte Cut selv når profilen ligger inni delen). Slik lages spor, gjengeriller (leksjon 5) og fas rundt en aksel.</details>
 </section>
 
-<section id="tegning">
-  <div class="tag">Del 6 · Fra modell til tegning</div>
-  <h2>Programmet lager rissene for deg</h2>
-  <div class="fig"><div class="tablewrap"><div style="min-width:560px">
-  <svg viewBox="0 0 760 240" role="img" aria-label="3D-modellen blir til en tegning med tre riss og tegningshode">
-    <g transform="translate(-100 0) scale(.85)">
-      <polygon points="200,72 257,105 200,138 143,105" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
-      <polygon points="257,149 314,182 257,215 200,182" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
-      <polygon points="257,105 200,138 200,182 257,149" fill="var(--r-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
-      <polygon points="314,182 257,215 257,259 314,226" fill="var(--r-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
-      <polygon points="143,193 257,259 257,215 200,182 200,138 143,105" fill="var(--u-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
-    </g>
-    <text x="80" y="232" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">3D-modell</text>
-    <path d="M200 120 H300" stroke="var(--orange)" stroke-width="5"/>
-    <path d="M296 108 l14 12 l-14 12" fill="none" stroke="var(--orange)" stroke-width="5"/>
-    <rect x="330" y="10" width="410" height="220" rx="4" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/>
-    <g fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round">
-      <path d="M360 110 H450 V80 H405 V50 H360 Z"/>
-      <path d="M360 132 H450 V177 H360 Z M405 132 V177"/>
-      <path d="M480 50 H525 V110 H480 Z"/>
-    </g>
-    <path d="M480 80 H525" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="6 4"/>
-    <g font-size="12" fill="var(--ink)">
-      <rect x="570" y="170" width="170" height="60" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
-      <path d="M570 190 H740 M655 190 V230" stroke="var(--ink)" stroke-width="1"/>
-      <text x="578" y="185" font-weight="700">Kloss</text>
-      <text x="578" y="206">Mål: 1:1</text>
-      <text x="578" y="222">Stål</text>
-      <text x="662" y="206">Tegnet: OH</text>
-      <text x="662" y="222">Nr. 001</text>
-    </g>
-    <text x="655" y="160" text-anchor="middle" font-size="12" fill="var(--muted)">Tegningshode</text>
-  </svg>
-  </div></div></div>
-  <p style="color:var(--muted)">Endrer du modellen, endres tegningen også.</p>
+<section id="las">
+  <div class="tag">Del 6 · Lås skissen</div>
+  <h2>Svart skisse = låst skisse</h2>
+  <p class="lead">Gi skissen mål og regler til alle linjene er svarte.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxLas" role="img" aria-label="Fusion: blå skisse er ikke låst, svart skisse med mål 60 og 30 er låst (fully constrained)"></svg></div></div>
+  <p class="vei">I Fusion: <b>SKETCH</b> → <b>Sketch Dimension</b> (tast D) og <b>CONSTRAINTS</b> til alle linjer er svarte</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Blå linje = kan flyttes (mangler mål eller regel). Svart linje = låst. Når hele skissen er svart, er den «fully constrained», og Fusion viser en lås på skissen i nettleseren. Da endrer ikke skissen seg ved et uhell. Regler (constraints): vannrett, loddrett, vinkelrett, parallell, lik, sammenfallende.</details>
 </section>
 
-<section id="hode">
-  <div class="tag">Del 7 · Tegningshode</div>
-  <h2>Tegningshodet forteller om delen</h2>
-  <p class="lead">Nede i hjørnet til høyre på hver tegning.</p>
-  <div class="fig" style="max-width:640px">
-  <svg viewBox="0 0 440 190" role="img" aria-label="Tegningshode med navn, målestokk, materiale, tegnet av og tegningsnummer">
-    <rect x="20" y="20" width="400" height="120" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
-    <path d="M20 60 H420 M220 60 V140 M20 100 H420" stroke="var(--ink)" stroke-width="1.5"/>
-    <g font-size="20" fill="var(--ink)">
-      <text x="34" y="48" font-weight="800">Kloss</text>
-      <text x="34" y="88">1:1</text>
-      <text x="34" y="128">Stål</text>
-      <text x="234" y="88">Tegnet: OH</text>
-      <text x="234" y="128">Nr. 001</text>
-    </g>
-    <g font-size="14" font-weight="700">
-      <text x="150" y="46" fill="var(--u)">← navn på delen</text>
-      <text x="90" y="86" fill="var(--orange)">← målestokk</text>
-      <text x="100" y="126" fill="var(--i)">← materiale</text>
-    </g>
-    <g font-size="14" fill="var(--muted)" text-anchor="middle">
-      <text x="120" y="170">Hva og hvor stort</text>
-      <text x="320" y="170">Hvem og hvilken tegning</text>
-    </g>
-  </svg>
-  </div>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Tegningshodet har navn på delen, målestokk, materiale, hvem som har tegnet og tegningsnummer. De fleste DAK-program har en ferdig mal.</details>
-</section>
-
-<section id="dap">
-  <div class="tag">Del 8 · DAP = dataassistert produksjon</div>
-  <h2>Fra modell til maskin</h2>
-  <div class="fig"><div class="tablewrap"><div style="min-width:560px">
-  <svg viewBox="0 0 760 170" role="img" aria-label="3D-modell, så verktøybane, så CNC-program, så maskin">
-    <g font-weight="700" font-size="15" text-anchor="middle">
-      <rect x="20" y="30" width="140" height="100" rx="12" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/>
-      <path d="M55 105 V65 H90 V85 H125 V105 Z" fill="var(--surface)" stroke="var(--u)" stroke-width="3"/>
-      <text x="90" y="155" fill="var(--u)">DAK-modell</text>
-      <rect x="215" y="30" width="140" height="100" rx="12" fill="var(--i-soft)" stroke="var(--i)" stroke-width="3"/>
-      <path d="M240 105 V60 H330" fill="none" stroke="var(--i)" stroke-width="3" stroke-dasharray="6 5"/>
-      <circle r="6" fill="var(--orange)"><animateMotion dur="3s" repeatCount="indefinite" path="M240 105 V60 H330"/></circle>
-      <text x="285" y="155" fill="var(--i)">Verktøybane</text>
-      <rect x="410" y="30" width="140" height="100" rx="12" fill="var(--surface)" stroke="var(--wire)" stroke-width="3"/>
-      <g font-family="var(--mono)" font-size="13" font-weight="400" text-anchor="start" fill="var(--ink)"><text x="425" y="58">G0 X0 Z2</text><text x="425" y="80">G1 Z-20 F0.2</text><text x="425" y="102">G1 X30</text></g>
-      <text x="480" y="155" fill="var(--ink)">CNC-program</text>
-      <rect x="605" y="30" width="140" height="100" rx="12" fill="var(--r-soft)" stroke="var(--r)" stroke-width="3"/>
-      <g><circle cx="675" cy="80" r="28" fill="none" stroke="var(--r)" stroke-width="8" stroke-dasharray="8 6"/></g>
-      <text x="675" y="155" fill="var(--r)">Maskin</text>
-    </g>
-    <g stroke="var(--wire)" stroke-width="4"><path d="M165 80 H210 M360 80 H405 M555 80 H600"/></g>
-  </svg>
-  </div></div></div>
-  <a class="simlink no-print" data-sim="cnc-dreiebenk"><span class="ico">⚙️</span><span><b>Prøv selv: CNC-dreiebenk</b><small>Se hvordan et program styrer maskinen.</small></span><span class="pil">→</span></a>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Programmering av CNC og roboter (kompetansemål 8) kommer i egne leksjoner. Her er målet bare at elevene ser sammenhengen: modell, verktøybane, program, maskin.</details>
+<section id="param">
+  <div class="tag">Del 7 · Parameters</div>
+  <h2>Endre ett mål, hele delen følger med</h2>
+  <p class="lead">Gi målene navn. Endre dem på ett sted.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxParam" role="img" aria-label="Fusion: vinduet Parameters med lengde 60, bredde 30 og høyde 20"></svg></div></div>
+  <p class="vei">I Fusion: <b>MODIFY</b> → <b>Change Parameters</b> → <b>+</b> (User Parameter) → skriv navn og verdi</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Skriv navnet i stedet for tallet når du setter mål, for eksempel «lengde». Endrer du lengde fra 60 til 80 i Parameters, oppdateres skisse, modell og tegning. Nyttig når samme del skal lages i flere størrelser.</details>
 </section>
 
 <section id="oppgaver">
@@ -413,7 +338,6 @@ input[type=range]{accent-color:var(--orange)}
     <div>
       <h3>Del A · Fyll inn</h3>
       <p>DAK står for <span class="luke"><span class="fasit" hidden>dataassistert konstruksjon</span></span>.</p>
-      <p>DAP står for <span class="luke"><span class="fasit" hidden>dataassistert produksjon</span></span>.</p>
       <p>En 2D-tegning i programmet heter en <span class="luke"><span class="fasit" hidden>skisse</span></span>.</p>
       <p>Å dra en skisse ut i 3D heter å <span class="luke"><span class="fasit" hidden>ekstrudere</span></span>.</p>
       <p>Å dreie en halv profil rundt en akse heter <span class="luke"><span class="fasit" hidden>Revolve</span></span> i Fusion.</p>
@@ -461,27 +385,31 @@ input[type=range]{accent-color:var(--orange)}
       <div class="tablewrap"><table>
         <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
         <tr><td>Endrer jeg et mål i modellen, må jeg tegne tegningen på nytt.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
-        <tr><td>En DAK-modell kan brukes til å lage CNC-program.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Profilen til Revolve skal ligge på den ene siden av aksen.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
         <tr><td>Skissen bør ha mål før jeg ekstruderer.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
-        <tr><td>Tegningshodet viser navn, målestokk og materiale.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
         <tr><td>Med Revolve tegner jeg hele profilen, på begge sider av aksen.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
       </table></div>
     </div>
 
     <div>
-      <h3>Del F · Modeller klossen på PC</h3>
+      <h3>Del F · Lås skissen og Parameters</h3>
+      <p>En linje som kan flyttes, er <span class="luke"><span class="fasit" hidden>blå</span></span>.</p>
+      <p>Når alle linjene er svarte, er skissen <span class="luke"><span class="fasit" hidden>låst</span></span> (fully constrained).</p>
+      <p>Mål som jeg vil endre på ett sted, legger jeg i <span class="luke"><span class="fasit" hidden>Parameters</span></span>.</p>
+    </div>
+
+    <div>
+      <h3>Del G · Modeller klossen på PC</h3>
       <p>Lag klossen fra leksjon 1: 60 lang, 40 høy, 30 dyp, med trinn 30 × 20. Kryss av.</p>
       <div class="tablewrap"><table>
         <tr><th>Jeg har …</th><th>✓</th></tr>
         <tr><td>tegnet L-skissen og satt alle mål</td><td class="blank x"></td></tr>
         <tr><td>ekstrudert 30 mm</td><td class="blank x"></td></tr>
-        <tr><td>laget tegning med tre riss og mål</td><td class="blank x"></td></tr>
-        <tr><td>fylt ut tegningshodet</td><td class="blank x"></td></tr>
         <tr><td>Ekstra: laget akselen fra Del 4 med Revolve (Ø20 × 20, Ø30 × 30, Ø20 × 25)</td><td class="blank x"></td></tr>
         <tr><td>Ekstra: laget et spor 4 mm bredt og Ø24 med Revolve cut</td><td class="blank x"></td></tr>
       </table></div>
-      <p style="margin-top:8px">Ekstra: lag et hull Ø10 gjennom den lave delen. Hvordan vises hullet forfra?</p>
-      <div class="svar"><span class="fasit" hidden>Som stiplede linjer (skjult kant) med senterlinje</span></div>
+      <p style="margin-top:8px">Ekstra: lag et hull Ø10 gjennom den lave delen. Hvilket steg i arbeidsgangen er det?</p>
+      <div class="svar"><span class="fasit" hidden>Steg 4: hull og kutt</span></div>
     </div>
 
     <div>
@@ -694,6 +622,20 @@ input[type=range]{accent-color:var(--orange)}
     $('ekTekst').textContent = d===0 ? 'Bare skissen: 60 × 40 mm. Dra i glidebryteren.' : (d===30 ? 'Riktig dybde for klossen fra leksjon 1!' : 'Skissen er dratt ut '+d+' mm.');
   }
   ek.addEventListener('input',tegnEk); tegnEk();
+
+
+  fusjon($('fxLas'), { ws:'DESIGN', hl:'sketch', tips:'Sketch', tre:['Kloss v1','  Origin','  Bodies','  Sketches','*    Sketch1 (låst)'],
+    c: '<rect x="185" y="175" width="120" height="90" fill="none" stroke="#1a73e8" stroke-width="2.5"/>' +
+       '<text x="245" y="310" text-anchor="middle" font-size="15" font-weight="700" fill="#1a73e8">Blå: ikke låst</text>' +
+       '<rect x="370" y="175" width="160" height="80" fill="none" stroke="#111" stroke-width="2.5"/>' +
+       '<path d="M370 168 V140 M530 168 V140 M370 148 H530 M540 175 H570 M540 255 H570 M562 175 V255" stroke="#111" stroke-width="1"/>' +
+       '<text x="450" y="142" text-anchor="middle" font-size="15" font-weight="700" fill="#111">60</text><text x="548" y="220" font-size="15" font-weight="700" fill="#111" transform="rotate(-90 548 220)">30</text>' +
+       '<text x="380" y="198" font-size="13" fill="#3a9a5b">⊥</text><text x="447" y="250" font-size="13" fill="#3a9a5b">═</text>' +
+       '<text x="450" y="310" text-anchor="middle" font-size="15" font-weight="700" fill="#111">Svart: låst</text>' });
+  fusjon($('fxParam'), { ws:'DESIGN', tre:['Kloss v1','  Origin','  Bodies','    Body1','  Sketches','    Sketch1'],
+    dlg:{ t:'PARAMETERS', r:[['lengde','60 mm',1],['bredde','30 mm'],['hoyde','20 mm']] },
+    c: '<polygon points="210,220 390,220 390,300 210,300" fill="#c3c9d1" stroke="#5b6470" stroke-width="1.5"/><polygon points="210,220 250,190 430,190 390,220" fill="#d7dce2" stroke="#5b6470" stroke-width="1.5"/><polygon points="390,220 430,190 430,270 390,300" fill="#aab2bc" stroke="#5b6470" stroke-width="1.5"/>' +
+       '<text x="300" y="330" text-anchor="middle" font-size="15" font-weight="700" fill="#e8590c">lengde = 60</text>' });
 
   // Adressen til simulatorene (samme som SIMULATORER i index.html)
   const SIMULATORER = "https://simulatorer.vercel.app/";

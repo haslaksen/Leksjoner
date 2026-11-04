@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tegning og DAK Vg1 · Leksjon 3: Steg for steg</title>
+<title>Tegning og DAK Vg1 · Leksjon 5: Steg for steg</title>
 <style>
 /* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
 :root{
@@ -114,8 +114,8 @@ svg text{font-family:var(--body)}
 
 <div class="top">
   <div>
-    <p class="tag">Tegning og DAK Vg1 · Leksjon 3</p>
-    <h1>Steg for steg: Speiling, hullsirkel og snitt</h1>
+    <p class="tag">Tegning og DAK Vg1 · Leksjon 5</p>
+    <h1>Steg for steg: Gjenger og sammenstilling</h1>
   </div>
   <div class="tools">
     <button type="button" id="copyBtn">Kopier til OneNote</button>
@@ -126,53 +126,46 @@ svg text{font-family:var(--body)}
 <p class="navn">Navn: ______________________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
 
 <div class="oppg">
- <h2><span class="nr">1</span>Se inn i delen. Skriv ordene.</h2>
+ <h2><span class="nr">1</span>Gjenger. Skriv ordene.</h2>
   <div class="fig">
-    <svg viewBox="0 0 400 170" aria-label="Snitt av en flens: skåret materiale er skravert"><defs><pattern id="s1" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V8" stroke="var(--ink)" stroke-width="1.3"/></pattern></defs>
-      <polygon points="150,20 190,20 190,55 250,55 250,75 150,75" fill="url(#s1)" stroke="var(--ink)" stroke-width="3"/>
-      <polygon points="150,95 250,95 250,115 190,115 190,150 150,150" fill="url(#s1)" stroke="var(--ink)" stroke-width="3"/>
-      <path d="M130 85 H270" stroke="var(--r)" stroke-width="1.5" stroke-dasharray="14 3 2 3"/>
-      <text x="290" y="60" font-size="15" font-weight="700" fill="var(--orange)">← materiale</text>
-      <text x="290" y="90" font-size="15" font-weight="700" fill="var(--u)">← hull</text>
+    <svg viewBox="0 0 400 130" aria-label="Aksel med gjenge M12 og gjengerille">
+      <path d="M40 45 H160 V85 H40 Z" fill="none" stroke="var(--ink)" stroke-width="3"/><path d="M40 52 H160 M40 78 H160" stroke="var(--ink)" stroke-width="1.2"/>
+      <rect x="160" y="50" width="16" height="30" fill="var(--orange)" fill-opacity=".35" stroke="var(--ink)" stroke-width="3"/>
+      <path d="M176 30 H360 V100 H176 Z" fill="none" stroke="var(--ink)" stroke-width="3"/>
+      <text x="80" y="30" font-size="18" font-weight="700" fill="var(--ink)">M12</text>
+      <text x="150" y="122" font-size="15" font-weight="700" fill="var(--orange)">rillen</text>
     </svg>
   </div>
-  <p class="setning">Når jeg skjærer delen på tegningen, heter det et <span class="luke"><span class="fasit" hidden>snitt</span></span>. Materialet får <span class="luke"><span class="fasit" hidden>skravering</span></span>.</p>
-  <div class="ordbank"><span>skravering</span><span>snitt</span></div>
+  <p class="setning">M12 betyr at gjengen er <span class="luke"><span class="fasit" hidden>12</span></span> mm tykk. Sporet ved gjengen heter <span class="luke"><span class="fasit" hidden>gjengerille</span></span>.</p>
+  <div class="ordbank"><span>gjengerille</span><span>12</span></div>
 </div>
 
 <div class="oppg">
- <h2><span class="nr">2</span>Hvilken kommando? Sett ring rundt.</h2>
-  <div class="bilder">
-    <div class="kort"><svg viewBox="0 0 120 90"><circle cx="60" cy="45" r="40" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/><g fill="var(--surface)" stroke="var(--blue)" stroke-width="3"><circle cx="60" cy="17" r="7"/><circle cx="88" cy="45" r="7"/><circle cx="60" cy="73" r="7"/><circle cx="32" cy="45" r="7"/></g></svg><b>Fire like hull</b><div class="valg"><span>Mirror</span><span>Circular Pattern<span class="fasit" hidden>✓</span></span></div></div>
-    <div class="kort"><svg viewBox="0 0 120 90"><path d="M15 80 V15 H40 V45 H60 V80 Z" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/><path d="M105 80 V15 H80 V45 H60 V80 Z" fill="none" stroke="var(--blue)" stroke-width="3" stroke-dasharray="6 4"/><path d="M60 5 V88" stroke="var(--orange)" stroke-width="2"/></svg><b>Lik på begge sider</b><div class="valg"><span>Mirror<span class="fasit" hidden>✓</span></span><span>Detail View</span></div></div>
-    <div class="kort"><svg viewBox="0 0 120 90"><circle cx="30" cy="35" r="12" fill="none" stroke="var(--blue)" stroke-width="3"/><path d="M42 38 L70 50" stroke="var(--blue)" stroke-dasharray="4 3"/><circle cx="90" cy="55" r="28" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/><text x="90" y="62" text-anchor="middle" font-size="16" font-weight="700" fill="var(--blue)">5:1</text></svg><b>Vis noe lite større</b><div class="valg"><span>Section View</span><span>Detail View<span class="fasit" hidden>✓</span></span></div></div>
-  </div>
+ <h2><span class="nr">2</span>Skriv ordene.</h2>
+  <p class="setning">Gjenger lager jeg med <span class="luke"><span class="fasit" hidden>Thread</span></span>. Delene setter jeg sammen med <span class="luke"><span class="fasit" hidden>Joint</span></span>.</p>
+  <div class="ordbank"><span>Joint</span><span>Thread</span></div>
 </div>
 
 <div class="oppg">
- <h2><span class="nr">3</span>Les tegningen. Skriv tallene.</h2>
-  <div class="regn">
-    <svg viewBox="0 0 220 200" aria-label="Flens med fire hull 4× Ø9 på hullsirkel Ø76">
-      <circle cx="90" cy="100" r="80" fill="none" stroke="var(--ink)" stroke-width="3"/><circle cx="90" cy="100" r="18" fill="none" stroke="var(--ink)" stroke-width="3"/>
-      <circle cx="90" cy="100" r="60" fill="none" stroke="var(--r)" stroke-width="1.5" stroke-dasharray="14 3 2 3"/>
-      <g fill="none" stroke="var(--ink)" stroke-width="3"><circle cx="90" cy="40" r="8"/><circle cx="150" cy="100" r="8"/><circle cx="90" cy="160" r="8"/><circle cx="30" cy="100" r="8"/></g>
-      <path d="M155 94 L185 40 h30" stroke="var(--ink)" fill="none"/><text x="160" y="34" font-size="16" font-weight="700" fill="var(--ink)">4× Ø9</text>
-    </svg>
-    <div>
-      <p class="setning">Antall hull: <span class="luke"><span class="fasit" hidden>4</span></span></p>
-      <p class="setning">Hvert hull er Ø <span class="luke"><span class="fasit" hidden>9</span></span> mm</p>
-    </div>
-  </div>
+ <h2><span class="nr">3</span>Stykklisten. Skriv tallet.</h2>
+  <table class="jn">
+    <tr><td><b>Pos.</b></td><td><b>Antall</b></td><td><b>Navn</b></td></tr>
+    <tr><td>1</td><td>1</td><td>Flens</td></tr>
+    <tr><td>2</td><td>1</td><td>Aksel</td></tr>
+    <tr><td>3</td><td>4</td><td>Skrue M8</td></tr>
+  </table>
+  <p class="setning">Det er <span class="luke"><span class="fasit" hidden>4</span></span> skruer.</p>
 </div>
 
 <div class="oppg">
  <h2><span class="nr">4</span>Stemmer det? Sett ring rundt Ja eller Nei.</h2>
   <table class="jn">
-    <tr><td class="ikon">⬜</td><td>Hull og luft i et snitt skal skraveres.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
-    <tr><td class="ikon">🔍</td><td>Et detaljriss viser noe lite større.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
-    <tr><td class="ikon">➗</td><td>Symmetrilinjen viser midten av delen.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">🔩</td><td>M12 betyr at gjengen er 12 mm tykk.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">🔗</td><td>Rigid betyr at delene sitter fast.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">📋</td><td>Stykklisten viser hvilke deler som er med.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
   </table>
 </div>
+
 
 </div>
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tegning og DAK Vg1 · Leksjon 3: Speiling, hullsirkel og snitt</title>
+<title>Tegning og DAK Vg1 · Leksjon 4: Snitt og detaljriss</title>
 <style>
 /* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
 :root{
@@ -185,12 +185,15 @@ input[type=range]{accent-color:var(--orange)}
 .fig2 svg{display:block;width:100%;height:auto}
 .fig2 h3{font-size:1.1rem}
 @media (max-width:860px){.fig2{grid-template-columns:1fr}}
+.tab{border-collapse:collapse;width:100%;background:var(--surface)}
+.tab th,.tab td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+.tab th{background:var(--bg)}
 </style>
 </head>
 <body>
 <header class="top">
-  <div class="brand">Tegning og DAK Vg1 · <span>Leksjon 3</span></div>
-  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#speil">Mirror</a><a href="#symmetri">Symmetrilinje</a><a href="#monster">Hull i sirkel</a><a href="#hullsirkel">Hullsirkel</a><a href="#snitt">Snitt</a><a href="#skravering">Skravering</a><a href="#detalj">Detaljriss</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="brand">Tegning og DAK Vg1 · <span>Leksjon 4</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hvorfor">Hvorfor snitt?</a><a href="#snitt">Snittlinje</a><a href="#skravering">Skravering</a><a href="#detalj">Detaljriss</a><a href="#fxsnitt">Section View</a><a href="#fxdetalj">Detail View</a><a href="#oppgaver">Oppgaver</a></nav>
   <div class="tools no-print">
     <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
     <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
@@ -201,88 +204,61 @@ input[type=range]{accent-color:var(--orange)}
 
 <header class="hero" id="start">
   <div>
-    <div class="tag">Konstruksjon og styringsteknikk Vg1 · Leksjon 3</div>
-    <h1 style="margin-top:10px">Speiling, hullsirkel og <span style="color:var(--orange)">snitt</span></h1>
-    <p class="lead" style="margin-top:12px">Modeller smart i Fusion. Vis hva som er inni delen.</p>
+    <div class="tag">Tegning og DAK Vg1 · Leksjon 4</div>
+    <h1 style="margin-top:10px">Snitt og <span style="color:var(--orange)">detaljriss</span></h1>
+    <p class="lead" style="margin-top:12px">Skjær delen på tegningen. Se inn i den.</p>
     <ul class="goals">
-      <li><span class="n u">1</span><span><b>Mirror</b> og <b>symmetrilinje</b></span></li>
-      <li><span class="n i">2</span><span>Hull i sirkel: <b>hullsirkel</b></span></li>
-      <li><span class="n r">3</span><span><b>Snitt</b> og <b>skravering</b></span></li>
-      <li><span class="n" style="color:var(--orange)">4</span><span><b>Detaljriss</b>: forstørr det som er lite</span></li>
+      <li><span class="n u">1</span><span>Hvorfor vi bruker <b>snitt</b></span></li>
+      <li><span class="n i">2</span><span><b>Snittlinjen</b> A–A og <b>skravering</b></span></li>
+      <li><span class="n r">3</span><span><b>Detaljriss</b>: forstørr det som er lite</span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span>I Fusion: <b>Section View</b> og <b>Detail View</b></span></li>
     </ul>
   </div>
   <div>
   <div class="hero-fig">
-    <svg id="heroFig" viewBox="0 0 400 270" role="img" aria-label="Tegning av en flens forfra og i snitt A–A"></svg>
+    <svg id="heroFig" viewBox="0 0 400 270" role="img" aria-label="Flens forfra og i snitt A–A"></svg>
   </div>
   <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Mål</h3>
-      <p>KST7: «bruke programmer for 2D- og 3D-dataassistert konstruksjon (DAK) og dataassistert produksjon (DAP) til grunnleggende tegning og dokumentasjon». PT6: «beskrive arbeidsoppgaver innenfor produksjon og tjenester basert på tegningsunderlag og prosedyrer» (lese snitt og hullsirkel). Bygger på leksjon 2 (Revolve). Vi bruker Autodesk Fusion.</p>
+      <p>KST7: «bruke programmer for 2D- og 3D-dataassistert konstruksjon (DAK) og dataassistert produksjon (DAP) til grunnleggende tegning og dokumentasjon». PT6: «beskrive arbeidsoppgaver innenfor produksjon og tjenester basert på tegningsunderlag og prosedyrer». Del 1–4 er uten PC. Del 5–6 gjør det samme i Fusion. Bygger på leksjon 3 (flensen og tegningen av den).</p>
     </div>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
       <dl class="plan2">
-        <dt>0–5</dt><dd>Start: vis flensen. «Hvordan viser vi hullet inni?»</dd>
-        <dt>5–20</dt><dd>Del 1–2 · Mirror og symmetrilinje. Oppgave A.</dd>
-        <dt>20–35</dt><dd>Del 3–4 · Hull i sirkel. Oppgave C.</dd>
-        <dt>35–45</dt><dd>Del 5–7 · Snitt, skravering og detaljriss. Oppgave B og D.</dd>
+        <dt>0–5</dt><dd>Start: hold opp en flens eller et rør. «Hvordan viser vi hullet inni?»</dd>
+        <dt>5–30</dt><dd>Del 1–4 · Snitt, skravering og detaljriss. Oppgave A–C.</dd>
+        <dt>30–45</dt><dd>Del 5–6 · Section View og Detail View i Fusion.</dd>
         <dt>45–55</dt><dd>Pause</dd>
-        <dt>55–88</dt><dd>Oppgave E på PC: modeller flensen og lag tegning med snitt. Vis på storskjerm først.</dd>
-        <dt>88–90</dt><dd>Exit-lapp.</dd>
+        <dt>55–85</dt><dd>Oppgave D–E på PC: snitt og detaljriss av flensen.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
       </dl>
     </div>
   </details>
   </div>
 </header>
 
-<section id="speil">
-  <div class="tag">Del 1 · Mirror</div>
-  <h2>Tegn halve, speil resten</h2>
-  <p class="lead">Delen er lik på begge sider. Da sparer du halve jobben.</p>
-  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxSpeil" role="img" aria-label="Fusion: Mirror speiler halve braketten om et plan"></svg></div></div>
-  <p class="vei">I Fusion: <b>SOLID</b> → <b>CREATE</b> → <b>Mirror</b> → velg delen → velg <b>planet</b> i midten</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Mirror kan speile features (hull, kutt) eller hele bodies. Speilplanet er ofte et av origoplanene (Origin i Browser). Endrer du den ene halvdelen, følger den speilede med.</details>
-</section>
-
-<section id="symmetri">
-  <div class="tag">Del 2 · Symmetrilinje</div>
-  <h2>Symmetrilinjen viser midten</h2>
-  <p class="lead">Tynn strek-prikk-linje med to små streker i hver ende.</p>
-  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxSymmetri" role="img" aria-label="Fusion Drawing: Centerline gir symmetrilinje midt på braketten"></svg></div></div>
-  <p class="vei">I Fusion Drawing: <b>GEOMETRY</b> → <b>Centerline</b> → klikk på de to kantene</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Symmetrisymbolet (to korte, parallelle streker i hver ende av senterlinjen) betyr at delen er lik på begge sider. Da kan man også tegne bare halve delen. Fusion tegner senterlinjen, men symbolet må ofte legges til for hånd (Sketch på tegningen) eller nevnes muntlig.</details>
-</section>
-
-<section id="monster">
-  <div class="tag">Del 3 · Hull i sirkel</div>
-  <h2>Lag ett hull. Fusion lager resten.</h2>
-  <p class="lead">Circular Pattern kopierer hullet rundt midten.</p>
-  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxMonster" role="img" aria-label="Fusion: Circular Pattern lager fire hull i sirkel på flensen"></svg></div></div>
-  <p class="vei">I Fusion: <b>CREATE</b> → <b>Hole</b> (ett hull) → <b>Pattern</b> → <b>Circular Pattern</b> → <b>Quantity 4</b></p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Flensen modelleres med Revolve (leksjon 2): halv profil med nav og boring. Så ett hull Ø9 med Hole, og Circular Pattern rundt aksen. Bytt Quantity til 6 og vis at alt følger med.</details>
-</section>
-
-<section id="hullsirkel">
-  <div class="tag">Del 4 · Hullsirkel på tegningen</div>
-  <h2>Hullsirkelen samler hullene</h2>
-  <p class="lead">Strek-prikk-sirkel gjennom hullene. Ett mål for alle.</p>
-  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxHullsirkel" role="img" aria-label="Fusion Drawing: Center Mark Pattern gir hullsirkel Ø76 og målet 4× Ø9"></svg></div></div>
-  <p class="vei">I Fusion Drawing: <b>GEOMETRY</b> → <b>Center Mark Pattern</b> → velg hullene</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>«4× Ø9» betyr fire hull med diameter 9 mm. «Ø76» er diameteren på hullsirkelen (delesirkelen). Hullene står likt fordelt: 360° : 4 = 90° mellom hullene. Sjekk mot oppgave C.</details>
+<section id="hvorfor">
+  <div class="tag">Del 1 · Hvorfor snitt?</div>
+  <h2>Mange stiplede linjer er vanskelige å lese</h2>
+  <p class="lead">Med snitt ser vi inn i delen.</p>
+  <div class="fig2">
+    <div><h3>Uten snitt</h3><svg id="utenSnitt" viewBox="0 0 300 285" role="img" aria-label="Flensen fra siden med mange stiplede linjer"></svg></div>
+    <div><h3>Med snitt</h3><svg id="medSnitt" viewBox="0 0 300 285" role="img" aria-label="Flensen i snitt: materialet er skravert, hullene er blanke"></svg></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Samme flens begge steder. Til venstre er hull og boring skjulte kanter (stiplet). Til høyre er delen skåret, og alt inni blir tydelig.</details>
 </section>
 
 <section id="snitt">
-  <div class="tag">Del 5 · Snitt</div>
-  <h2>Skjær delen, se inn i den</h2>
-  <p class="lead">Snittlinjen A–A viser hvor vi skjærer. Pilene viser hvilken vei vi ser.</p>
-  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxSnitt" role="img" aria-label="Fusion Drawing: Section View gir snitt A–A av flensen"></svg></div></div>
-  <p class="vei">I Fusion Drawing: <b>CREATE</b> → <b>Section View</b> → tegn linjen → plasser riss</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Snitt erstatter mange stiplede linjer. Snittlinjen er tynn strek-prikk med tykke ender. Bokstavene (A–A) knytter linjen og risset sammen. Fusion skraverer snittflaten automatisk.</details>
+  <div class="tag">Del 2 · Snittlinje</div>
+  <h2>Snittlinjen A–A viser hvor vi skjærer</h2>
+  <p class="lead">Pilene viser hvilken vei vi ser.</p>
+  <div class="fig" style="max-width:820px"><svg id="snittFig" viewBox="0 0 520 300" role="img" aria-label="Flens forfra med snittlinje A–A, og snitt A–A ved siden av"></svg></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Snittlinjen er tynn strek-prikk med tykke ender. Pilene viser hvilken vei vi ser. Bokstavene (A–A) knytter linjen og risset sammen.</details>
 </section>
 
 <section id="skravering">
-  <div class="tag">Del 6 · Skravering</div>
+  <div class="tag">Del 3 · Skravering</div>
   <h2>Skravert = her er det materiale</h2>
   <div class="fig" style="max-width:760px">
     <svg id="skrFig" viewBox="0 0 640 380" role="img" aria-label="Snitt A–A: skåret materiale er skravert med tynne linjer på 45 grader, hullet er ikke skravert"></svg>
@@ -296,12 +272,29 @@ input[type=range]{accent-color:var(--orange)}
 </section>
 
 <section id="detalj">
-  <div class="tag">Del 7 · Detaljriss</div>
+  <div class="tag">Del 4 · Detaljriss</div>
+  <h2>Forstørr det som er lite</h2>
+  <p class="lead">Ring rundt en liten del. Vis den større ved siden av.</p>
+  <div class="fig" style="max-width:820px"><svg id="detFig" viewBox="0 0 520 300" role="img" aria-label="Snitt med ring B rundt fasen, og detaljriss B i målestokk 5:1"></svg></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Detaljrisset får egen bokstav og egen målestokk, her B (5:1): fem ganger større enn virkeligheten. Fasen 1 × 45° er nesten usynlig i snittet, men tydelig i detaljen. Koble til målestokk fra leksjon 1.</details>
+</section>
+
+<section id="fxsnitt">
+  <div class="tag">Del 5 · Snitt i Fusion</div>
+  <h2>Skjær delen, se inn i den</h2>
+  <p class="lead">Snittlinjen A–A viser hvor vi skjærer. Pilene viser hvilken vei vi ser.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxSnitt" role="img" aria-label="Fusion Drawing: Section View gir snitt A–A av flensen"></svg></div></div>
+  <p class="vei">I Fusion Drawing: <b>CREATE</b> → <b>Section View</b> → tegn linjen → plasser riss</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Snitt erstatter mange stiplede linjer. Snittlinjen er tynn strek-prikk med tykke ender. Bokstavene (A–A) knytter linjen og risset sammen. Fusion skraverer snittflaten automatisk.</details>
+</section>
+
+<section id="fxdetalj">
+  <div class="tag">Del 6 · Detaljriss i Fusion</div>
   <h2>Forstørr det som er lite</h2>
   <p class="lead">Ring rundt en liten del. Vis den større ved siden av.</p>
   <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxDetalj" role="img" aria-label="Fusion Drawing: Detail View B i målestokk 5:1 viser fasen i boringen"></svg></div></div>
   <p class="vei">I Fusion Drawing: <b>CREATE</b> → <b>Detail View</b> → klikk midt i området → dra ringen → plasser riss</p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Detaljrisset får egen bokstav og egen målestokk, her B (5:1): fem ganger større enn virkeligheten. Fasen 1 × 45° er nesten usynlig i snittet, men tydelig i detaljen. Koble til målestokk fra leksjon 1.</details>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Detaljrisset får egen bokstav og egen målestokk, her B (5:1): fem ganger større enn virkeligheten. Fasen 1 × 45° er nesten usynlig i snittet, men tydelig i detaljen. Se del 4.</details>
 </section>
 
 <section id="oppgaver">
@@ -312,64 +305,59 @@ input[type=range]{accent-color:var(--orange)}
   </div>
   <div class="sheet" id="sheet">
     <div>
-      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 3: Speiling, hullsirkel og snitt</h2>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 4: Snitt og detaljriss</h2>
       <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
     </div>
 
     <div>
       <h3>Del A · Fyll inn</h3>
-      <p>Section View heter <span class="luke"><span class="fasit" hidden>snitt</span></span> på norsk.</p>
-      <p>Detail View heter <span class="luke"><span class="fasit" hidden>detaljriss</span></span> på norsk.</p>
-      <p>Mirror betyr å <span class="luke"><span class="fasit" hidden>speile</span></span>.</p>
-      <p>Skåret materiale i et snitt vises med <span class="luke"><span class="fasit" hidden>skravering</span></span>.</p>
+      <p>Når vi skjærer delen på tegningen, heter det et <span class="luke"><span class="fasit" hidden>snitt</span></span>.</p>
+      <p>Skåret materiale vises med <span class="luke"><span class="fasit" hidden>skravering</span></span>.</p>
       <p>Skraveringen er tynne linjer på <span class="luke"><span class="fasit" hidden>45</span></span> grader.</p>
+      <p>Et <span class="luke"><span class="fasit" hidden>detaljriss</span></span> viser et lite område større.</p>
     </div>
 
     <div>
-      <h3>Del B · Hvilken kommando i Fusion?</h3>
-      <div class="tablewrap"><table>
-        <tr><th>Jeg vil …</th><th>Kommando</th></tr>
-        <tr><td>lage fire like hull rundt midten</td><td class="blank"><span class="fasit" hidden>Circular Pattern</span></td></tr>
-        <tr><td>tegne halve delen og kopiere den andre halvdelen</td><td class="blank"><span class="fasit" hidden>Mirror</span></td></tr>
-        <tr><td>vise hvordan delen ser ut inni</td><td class="blank"><span class="fasit" hidden>Section View</span></td></tr>
-        <tr><td>vise et lite område større</td><td class="blank"><span class="fasit" hidden>Detail View</span></td></tr>
-      </table></div>
-    </div>
-
-    <div>
-      <h3>Del C · Les tegningen</h3>
-      <svg id="oppgFlens" class="oppfig" viewBox="0 0 300 260" role="img" aria-label="Flens forfra med hullsirkel Ø76 og 4× Ø9"></svg>
+      <h3>Del B · Les snittet</h3>
+      <svg id="oppgSnitt" class="oppfig" viewBox="0 0 300 285" role="img" aria-label="Snitt A–A av flensen"></svg>
       <ol>
-        <li>Hvor mange hull er det i hullsirkelen? <span class="luke"><span class="fasit" hidden>4</span></span></li>
-        <li>Hvor stor diameter har hvert hull? <span class="luke"><span class="fasit" hidden>9 mm</span></span></li>
-        <li>Hvor stor diameter har hullsirkelen? <span class="luke"><span class="fasit" hidden>76 mm</span></span></li>
-        <li>Hvor mange grader er det mellom to hull? <span class="luke"><span class="fasit" hidden>90° (360 : 4)</span></span></li>
+        <li>Er boringen i midten skravert? <span class="luke"><span class="fasit" hidden>Nei</span></span></li>
+        <li>Hvorfor ikke? <span class="luke" style="min-width:12em"><span class="fasit" hidden>Det er luft (hull), ikke materiale</span></span></li>
+        <li>Detaljriss B er i målestokk 5:1. Hvor mye større er det enn delen? <span class="luke"><span class="fasit" hidden>5 ganger</span></span></li>
       </ol>
     </div>
 
     <div>
-      <h3>Del D · Riktig eller galt</h3>
+      <h3>Del C · Riktig eller galt</h3>
       <div class="tablewrap"><table>
         <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Snitt gir færre stiplede linjer.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
         <tr><td>Hull og luft i et snitt skal skraveres.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
         <tr><td>Pilene på snittlinjen viser hvilken vei vi ser.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
         <tr><td>Et detaljriss i 5:1 er fem ganger større enn delen.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
-        <tr><td>Symmetrilinjen er en tykk heltrukket linje.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
-        <tr><td>Endrer jeg den ene halvdelen, følger den speilede halvdelen med.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+
+    <div>
+      <h3>Del D · Riktig eller galt i Fusion</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Snitt lager jeg med Section View.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Fusion skraverer snittet selv.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Detail View gjør et lite område mindre.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
       </table></div>
     </div>
 
     <div>
-      <h3>Del E · Modeller flensen på PC</h3>
-      <p>Flens: Ø100 × 12, nav Ø50, total lengde 30, boring Ø20, fire hull Ø9 på hullsirkel Ø76. Kryss av.</p>
+      <h3>Del E · På PC</h3>
+      <p>Åpne tegningen av flensen fra leksjon 3. Kryss av.</p>
       <div class="tablewrap"><table>
         <tr><th>Jeg har …</th><th>✓</th></tr>
-        <tr><td>laget flensen med Revolve</td><td class="blank x"></td></tr>
-        <tr><td>laget ett hull Ø9 med Hole</td><td class="blank x"></td></tr>
-        <tr><td>laget fire hull med Circular Pattern</td><td class="blank x"></td></tr>
-        <tr><td>laget tegning med hullsirkel og målet 4× Ø9</td><td class="blank x"></td></tr>
-        <tr><td>laget snitt A–A</td><td class="blank x"></td></tr>
-        <tr><td>Ekstra: laget fas 1 × 45° i boringen og detaljriss B (5:1)</td><td class="blank x"></td></tr>
+        <tr><td>laget snitt A–A med Section View</td><td class="blank x"></td></tr>
+        <tr><td>sjekket at boringen og hullene ikke er skravert</td><td class="blank x"></td></tr>
+        <tr><td>laget detaljriss B (5:1) av fasen med Detail View</td><td class="blank x"></td></tr>
+        <tr><td>Ekstra: satt målet 1 × 45° på fasen i detaljrisset</td><td class="blank x"></td></tr>
       </table></div>
     </div>
 
@@ -379,6 +367,7 @@ input[type=range]{accent-color:var(--orange)}
         <li>Hvorfor bruker vi snitt på tegninger?<div class="svar"><span class="fasit" hidden>For å vise hvordan delen ser ut inni (hull og hulrom), uten mange stiplede linjer</span></div></li>
       </ol>
     </div>
+
   </div>
 </section>
 
@@ -507,7 +496,6 @@ input[type=range]{accent-color:var(--orange)}
     });
     return h;
   }
-
   // ---------- Tegninger (mål i mm) ----------
   const SLD = 'stroke-width="1.2" stroke-dasharray="14 3 2 3" fill="none"';
   const pil = (x, y) => '<path d="M'+x+' '+y+' v34" stroke="#e8590c" stroke-width="4"/><path d="M'+(x-9)+' '+(y+28)+' l9 12 l9 -12" fill="none" stroke="#e8590c" stroke-width="4"/>';
@@ -578,58 +566,57 @@ input[type=range]{accent-color:var(--orange)}
   }
 
   const SV = '#1b1b1b';   // svart strek på Fusion-tegningen
-  // Hero: flens forfra + snitt
-  const hero = $('heroFig');
-  hero.innerHTML = '<defs><pattern id="skrH" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V7" stroke="var(--ink)" stroke-width="1"/></pattern></defs>' +
-    flensFront(130, 130, 2.0, 'var(--ink)', { snittlinje:true, sl:'var(--r)' }) + flensSnitt(290, 130, 2.0, 'var(--ink)', 'url(#skrH)') +
-    txt(298, 262, 'A–A', 'var(--ink)', 'font-weight="700" font-size="16"');
+  // Aksel: M12 × 20 med fas, gjengerille 3 × Ø9, Ø20 × 40, Ø30 × 10, Ø20 × 27 med fas 1 × 45°
+  const AK = [[0,5],[1,6],[20,6],[20,4.5],[23,4.5],[23,10],[63,10],[63,15],[73,15],[73,10],[99,10],[100,9]];
+  const KANTER = [[1,6],[20,6],[23,10],[63,15],[73,15],[99,10]];
+  function aksel(ox, oy, s, k, o){
+    o = o || {};
+    const X = x => ox+x*s, Y = r => oy-r*s;
+    const pts = AK.map(([x,r]) => X(x)+','+Y(r)).concat(AK.slice().reverse().map(([x,r]) => X(x)+','+Y(-r)));
+    let h = '<polygon points="'+pts.join(' ')+'" fill="'+(o.fyll||'none')+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    KANTER.forEach(([x,r]) => { h += '<path d="M'+X(x)+' '+Y(r)+' V'+Y(-r)+'" stroke="'+k+'" stroke-width="2.5"/>'; });
+    h += '<path d="M'+X(0.4)+' '+Y(4.9)+' H'+X(20)+' M'+X(0.4)+' '+Y(-4.9)+' H'+X(20)+'" stroke="'+k+'" stroke-width="1.2"/>';
+    h += '<path d="M'+(X(0)-12)+' '+oy+' H'+(X(100)+12)+'" stroke="'+(o.sl||k)+'" '+SLD+'/>';
+    if (o.m12) h += '<path d="M'+X(8)+' '+(Y(6)-2)+' L'+X(2)+' '+(Y(6)-36)+' h-36" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(X(8),Y(6)-2,X(8)-X(2),34,k)+txt(X(2)-36, Y(6)-41, 'M12', k, 'font-weight="700"');
+    if (o.tol){
+      const x = X(43);
+      h += '<path d="M'+x+' '+Y(10)+' V'+Y(-10)+'" stroke="'+o.tol+'" stroke-width="1.4"/>'+pilspiss(x,Y(10),0,-1,o.tol)+pilspiss(x,Y(-10),0,1,o.tol);
+      h += '<text transform="translate('+(x-9)+' '+oy+') rotate(-90)" text-anchor="middle" font-size="14" font-weight="700" fill="'+o.tol+'">Ø20 ±0,1</text>';
+    }
+    if (o.ra){
+      const x = X(50), y = Y(10), c = o.ra;
+      h += '<path d="M'+(x-7)+' '+(y-12)+' L'+x+' '+y+' L'+(x+14)+' '+(y-28)+' H'+(x+48)+' M'+(x-7)+' '+(y-12)+' H'+(x+6)+'" fill="none" stroke="'+c+'" stroke-width="1.6"/>'+txt(x+16, y-32, 'Ra 0,8', c, 'font-weight="700"');
+    }
+    return h;
+  }
 
-  // Del 1: Mirror
-  fusjon($('fxSpeil'), { ws:'DESIGN', hl:'mirror', tips:'Mirror', tre:['Brakett v1','  Origin','  Bodies','*    Body1','  Sketches','    Sketch1'],
-    dlg:{ t:'MIRROR', r:[['Pattern Type','Bodies'],['Objects','1 selected'],['Mirror Plane','1 selected',1],['Operation','Join']] },
-    c: prisme(BR_V, [[-27.5,25]], 290, 300, 2.4, 20, '#c3c9d1', '#5b6470') +
-       (() => { const P = (y,z) => [290+z*1.2, 300-y*2.4-z*0.96].map(v => v.toFixed(1)).join(','); return '<polygon points="'+[P(-12,-14),P(64,-14),P(64,34),P(-12,34)].join(' ')+'" fill="#e8590c" fill-opacity=".14" stroke="#e8590c" stroke-width="2" stroke-dasharray="8 4"/>'; })() +
-       prisme(BR_H, [[27.5,25]], 290, 300, 2.4, 20, '#cfe3fb', '#1a73e8', .85) +
-       txt(190, 130, 'Halv del', '#3c3c3c', 'font-weight="700"') + txt(345, 130, 'Speilet (forhåndsvisning)', '#0a6ebd', 'font-weight="700"') +
-       txt(300, 360, 'Speilplan', '#e8590c', 'font-weight="700"') });
 
-  // Del 2: symmetrilinje på tegningen
-  const bx = 430, by = 320, bs = 2.4;
-  const brTegn = (() => {
-    let h = '<polygon points="'+BR.map(([x,y]) => (bx+x*bs)+','+(by-y*bs)).join(' ')+'" fill="none" stroke="'+SV+'" stroke-width="2.5" stroke-linejoin="round"/>';
-    [-27.5,27.5].forEach(x => { const X = bx+x*bs, Y = by-25*bs; h += '<circle cx="'+X+'" cy="'+Y+'" r="'+(4*bs)+'" fill="none" stroke="'+SV+'" stroke-width="2.5"/><path d="M'+(X-16)+' '+Y+' H'+(X+16)+' M'+X+' '+(Y-16)+' V'+(Y+16)+'" stroke="'+SV+'" stroke-width="1"/>'; });
-    const t = by-50*bs-22, b = by+22;
-    h += '<path d="M'+bx+' '+t+' V'+b+'" stroke="#0a6ebd" stroke-width="1.6" stroke-dasharray="16 4 3 4"/>';
-    [t+2, t+7, b-2, b-7].forEach(y => { h += '<path d="M'+(bx-8)+' '+y+' H'+(bx+8)+'" stroke="#0a6ebd" stroke-width="1.6"/>'; });
-    return h + txt(bx+18, t+8, 'Symmetrilinje', '#0a6ebd', 'font-weight="700"');
-  })();
-  fusjon($('fxSymmetri'), { ws:'DRAWING', hl:'centerline', tips:'Centerline', tre:['Brakett tegning','  Sheets','    Sheet1','*      Front view'], c: brTegn });
-
-  // Del 3: Circular Pattern
-  fusjon($('fxMonster'), { ws:'DESIGN', hl:'pattern', tips:'Circular Pattern', tre:['Flens v1','  Origin','  Bodies','    Body1','  Sketches','    Sketch1'],
-    dlg:{ t:'CIRCULAR PATTERN', r:[['Pattern Type','Features'],['Objects','Hole1'],['Axis','1 selected'],['Type','Full'],['Quantity','4',1]] },
-    c: (() => {
-      const cx = 360, cy = 236, s = 2.0;
-      let h = '<circle cx="'+cx+'" cy="'+cy+'" r="'+(50*s)+'" fill="#c3c9d1" stroke="#5b6470" stroke-width="2"/><circle cx="'+cx+'" cy="'+cy+'" r="'+(25*s)+'" fill="#d7dce2" stroke="#5b6470" stroke-width="2"/><circle cx="'+cx+'" cy="'+cy+'" r="'+(10*s)+'" fill="#eef1f5" stroke="#5b6470" stroke-width="2"/>';
-      h += '<path d="M'+cx+' '+(cy-38*s)+' A'+(38*s)+' '+(38*s)+' 0 0 1 '+(cx+38*s*0.94)+' '+(cy-38*s*0.34)+'" fill="none" stroke="#e8590c" stroke-width="2.5" stroke-dasharray="6 4"/>';
-      HULL.forEach(([a,b],i) => { h += '<circle cx="'+(cx+a*38*s)+'" cy="'+(cy+b*38*s)+'" r="'+(4.5*s)+'" fill="'+(i?'#cfe3fb':'#eef1f5')+'" stroke="'+(i?'#1a73e8':'#5b6470')+'" stroke-width="2.2"/>'; });
-      return h + txt(cx-70, cy-38*s-6, 'Hole1', '#3c3c3c', 'font-weight="700"') + '<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#e8590c"/>' + txt(cx-22, cy+40, 'Akse', '#e8590c', 'font-weight="700"');
-    })() });
-
-  // Del 4: hullsirkel på tegningen
-  fusjon($('fxHullsirkel'), { ws:'DRAWING', hl:'cmpattern', tips:'Center Mark Pattern', tre:['Flens tegning','  Sheets','    Sheet1','*      Front view'],
-    c: flensFront(380, 236, 2.0, SV, { hullsirkel:true, mal:true, sl:'#0a6ebd' }) });
-
-  // Del 5: snitt
-  fusjon($('fxSnitt'), { ws:'DRAWING', hl:'section', tips:'Section View', tre:['Flens tegning','  Sheets','    Sheet1','      Front view','*      Section A-A'],
-    c: flensFront(300, 236, 2.0, SV, { snittlinje:true }) + flensSnitt(520, 236, 2.0, SV, '#SKR') + txt(530, 364, 'A–A', SV, 'font-weight="700" font-size="16"') });
-
+  const D = 'stroke-dasharray="8 5" stroke-width="1.6" fill="none"';
+  const sideUten = (x0, cy, s, k) => {
+    const P = pts => pts.map(([x,r]) => (x0+x*s)+','+(cy-r*s)).join(' ');
+    let h = '<polygon points="'+P([[0,-50],[0,50],[12,50],[12,25],[30,25],[30,-25],[12,-25],[12,-50]])+'" fill="none" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    [10,-10].forEach(r => { h += '<path d="M'+x0+' '+(cy-r*s)+' H'+(x0+30*s)+'" stroke="'+k+'" '+D+'/>'; });
+    [33.5,42.5,-33.5,-42.5,4.5,-4.5].forEach(r => { h += '<path d="M'+x0+' '+(cy-r*s)+' H'+(x0+12*s)+'" stroke="'+k+'" '+D+'/>'; });
+    return h + '<path d="M'+(x0-14)+' '+cy+' H'+(x0+30*s+14)+'" stroke="var(--r)" '+SLD+'/>';
+  };
+  $('heroFig').innerHTML = '<defs><pattern id="skrH" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V8" stroke="var(--ink)" stroke-width="1.2"/></pattern></defs>' + flensFront(130, 130, 2.0, 'var(--ink)', { snittlinje:true, sl:'var(--r)' }) + flensSnitt(290, 130, 2.0, 'var(--ink)', 'url(#skrH)') + txt(298, 262, 'A–A', 'var(--ink)', 'font-weight="700" font-size="16"');
+  $('utenSnitt').innerHTML = sideUten(110, 130, 2.4, 'var(--ink)');
+  $('medSnitt').innerHTML = '<defs><pattern id="skrM" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V8" stroke="var(--ink)" stroke-width="1.2"/></pattern></defs>' + flensSnitt(110, 130, 2.4, 'var(--ink)', 'url(#skrM)') + txt(120, 280, 'A–A', 'var(--ink)', 'font-weight="700" font-size="16"');
+  $('snittFig').innerHTML = '<defs><pattern id="skrS" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V8" stroke="var(--ink)" stroke-width="1.2"/></pattern></defs>' + flensFront(150, 150, 2.0, 'var(--ink)', { snittlinje:true, sl:'var(--r)' }) + flensSnitt(370, 150, 2.0, 'var(--ink)', 'url(#skrS)') + txt(378, 286, 'A–A', 'var(--ink)', 'font-weight="700" font-size="16"');
+  $('detFig').innerHTML = '<defs><pattern id="skrD" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V8" stroke="var(--ink)" stroke-width="1.2"/></pattern></defs>' + flensSnitt(140, 150, 2.0, 'var(--ink)', 'url(#skrD)') + txt(150, 286, 'A–A', 'var(--ink)', 'font-weight="700" font-size="16"') +
+    '<circle cx="140" cy="130" r="14" fill="none" stroke="var(--u)" stroke-width="2"/>' + txt(104, 120, 'B', 'var(--u)', 'font-weight="700" font-size="16"') +
+    '<path d="M154 134 L296 150" stroke="var(--u)" stroke-width="1" stroke-dasharray="5 4"/>' + flensDetalj(390, 150, 10, 'var(--ink)', 'url(#skrD)', 'dB2') + txt(360, 245, 'B (5:1)', 'var(--u)', 'font-weight="700" font-size="16"');
+  $('oppgSnitt').innerHTML = '<defs><pattern id="skrO" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V8" stroke="var(--ink)" stroke-width="1.2"/></pattern></defs>' + flensSnitt(110, 130, 2.4, 'var(--ink)', 'url(#skrO)') + txt(120, 280, 'A–A', 'var(--ink)', 'font-weight="700" font-size="16"');
   // Del 6: skravering (stor)
   $('skrFig').innerHTML = '<defs><pattern id="skr6" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V9" stroke="var(--ink)" stroke-width="1.3"/></pattern></defs>' +
     flensSnitt(140, 190, 3.2, 'var(--ink)', 'url(#skr6)') + txt(150, 372, 'A–A', 'var(--ink)', 'font-weight="700" font-size="18"') +
     '<path d="M330 120 H212" stroke="var(--orange)" stroke-width="2.5"/>' + pilspiss(200, 120, -1, 0, 'var(--orange)') + txt(338, 125, 'Skåret materiale: skravert', 'var(--orange)', 'font-weight="700" font-size="17"') +
     '<path d="M330 190 H218" stroke="var(--u)" stroke-width="2.5"/>' + pilspiss(206, 190, -1, 0, 'var(--u)') + txt(338, 195, 'Boringen (luft): blank', 'var(--u)', 'font-weight="700" font-size="17"') +
     '<path d="M330 66 H200" stroke="var(--u)" stroke-width="2.5"/>' + pilspiss(188, 66, -1, 0, 'var(--u)') + txt(338, 71, 'Hullet: blankt', 'var(--u)', 'font-weight="700" font-size="17"');
+
+  // Del 5: snitt
+  fusjon($('fxSnitt'), { ws:'DRAWING', hl:'section', tips:'Section View', tre:['Flens tegning','  Sheets','    Sheet1','      Front view','*      Section A-A'],
+    c: flensFront(300, 236, 2.0, SV, { snittlinje:true }) + flensSnitt(520, 236, 2.0, SV, '#SKR') + txt(530, 364, 'A–A', SV, 'font-weight="700" font-size="16"') });
 
   // Del 7: detaljriss
   fusjon($('fxDetalj'), { ws:'DRAWING', hl:'detail', tips:'Detail View', tre:['Flens tegning','  Sheets','    Sheet1','      Section A-A','*      Detail B'],
@@ -638,13 +625,10 @@ input[type=range]{accent-color:var(--orange)}
        '<path d="M294 220 L496 240" stroke="#0a6ebd" stroke-width="1" stroke-dasharray="5 4"/>' +
        flensDetalj(560, 236, 10, SV, '#SKR', 'dB') + txt(530, 330, 'B (5:1)', '#0a6ebd', 'font-weight="700" font-size="16"') });
 
-  // Oppgave C: flens med hullsirkel
-  $('oppgFlens').innerHTML = flensFront(120, 130, 1.8, 'var(--ink)', { hullsirkel:true, mal:true, sl:'var(--r)' });
 
   // Adressen til simulatorene (samme som SIMULATORER i index.html)
   const SIMULATORER = "https://simulatorer.vercel.app/";
   document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
-
 
   fixVars(document);
   // ---------- oppgaver: fasit + kopier ----------

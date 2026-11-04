@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tegning og DAK Vg1 · Leksjon 3: Tegningsark, symmetri og hull</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+/* steg for steg */
+.stepper{display:flex;flex-wrap:wrap;gap:8px}
+.stepper button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.steg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(160px,260px) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.steg>*{min-width:0}
+.steg svg{width:100%;height:auto;display:block}
+.steg ul{margin:.6rem 0 0;padding-left:1.2em;display:grid;gap:6px;font-size:1.1rem}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--orange);transition:width .4s}
+
+/* verneutstyr */
+.vern{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.vern>*{min-width:0}
+.vern svg{width:100%;height:auto;display:block}
+.vern .knapper{display:flex;flex-wrap:wrap;gap:8px}
+.vern .knapper button[aria-pressed="true"]{background:var(--r-soft);border-color:var(--r);color:var(--r)}
+.vern g.utstyr{opacity:0;transition:opacity .3s}
+.vern g.utstyr.paa{opacity:1}
+.teller{font:700 1.4rem/1.2 var(--mono)}
+.regler{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.regler>div{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--orange);border-radius:14px;padding:14px 16px;display:grid;gap:4px}
+.regler .ico{font-size:2rem}
+
+/* riktig eller galt */
+.measure{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mcard{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.mcard .ico{font-size:2.2rem}
+.mcard .verdict{font:700 18px/1.25 var(--display);min-height:1.2em}
+.mcard[data-shown="ok"]{border-color:var(--r);background:var(--r-soft)}
+.mcard[data-shown="bad"]{border-color:var(--bad);background:var(--bad-soft)}
+.mcard[data-shown="ok"] .verdict{color:var(--r)} .mcard[data-shown="bad"] .verdict{color:var(--bad)}
+
+/* logg */
+.logg{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(20px,4vw,56px);align-items:center}
+.logg>*{min-width:0}
+.sporsmal{display:grid;gap:10px;padding:0;margin:0;list-style:none;font-size:1.1rem}
+.sporsmal li{display:flex;gap:12px;align-items:baseline}
+.sporsmal .n{font:800 1.3em var(--display);color:var(--orange);min-width:1.2em}
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+@media (max-width:860px){
+  .hero,.steg,.vern,.logg{grid-template-columns:1fr}
+  .trio,.measure,.regler{grid-template-columns:1fr}
+}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+
+/* Konstruksjon: riss og tegning */
+.flate{fill:var(--surface);stroke:var(--wire);stroke-width:2.5;stroke-linejoin:round;transition:fill .3s}
+.flate.lys{fill:var(--orange-soft);stroke:var(--orange)}
+.synspil{opacity:0;transition:opacity .3s}
+.synspil.paa{opacity:1}
+.regler.fire svg{width:100%;height:auto;max-height:30px}
+.rutenett{display:block;max-width:440px;width:100%;height:auto;margin:8px 0}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.regler.fire{grid-template-columns:repeat(4,1fr)}
+@media (max-width:860px){.regler.fire{grid-template-columns:1fr 1fr}}
+input[type=range]{accent-color:var(--orange)}
+/* Fusion-vinduet og tegninger */
+.fxs{display:block;width:100%;height:auto;border:1px solid #b9c0c8;border-radius:10px;background:#fff;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.vei{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.05rem;max-width:none}
+.vei b{font-family:var(--mono);background:var(--blue-soft);color:var(--blue);border-radius:6px;padding:.1em .45em}
+.fig2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fig2>div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem;display:grid;gap:8px;align-content:start}
+.fig2 svg{display:block;width:100%;height:auto}
+.fig2 h3{font-size:1.1rem}
+@media (max-width:860px){.fig2{grid-template-columns:1fr}}
+.tab{border-collapse:collapse;width:100%;background:var(--surface)}
+.tab th,.tab td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+.tab th{background:var(--bg)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Tegning og DAK Vg1 · <span>Leksjon 3</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#ark">Arkstørrelse</a><a href="#hode">Tittelfelt</a><a href="#symmetri">Symmetri</a><a href="#hullsirkel">Hullsirkel</a><a href="#vinkel">Vinkel</a><a href="#fas">Fas</a><a href="#speil">Mirror</a><a href="#monster">Pattern</a><a href="#base">Base View</a><a href="#fxsymmetri">Centerline</a><a href="#fxhullsirkel">Center Mark</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Tegning og DAK Vg1 · Leksjon 3</div>
+    <h1 style="margin-top:10px">Tegningshode, symmetri og <span style="color:var(--orange)">hull</span></h1>
+    <p class="lead" style="margin-top:12px">Mer du kan lese på en tegning.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span><b>Arkstørrelse</b> og <b>tittelfelt</b></span></li>
+      <li><span class="n i">2</span><span><b>Symmetrilinje</b> og <b>hullsirkel</b></span></li>
+      <li><span class="n r">3</span><span><b>Vinkelmål</b> og <b>fas</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span>I Fusion: <b>Mirror</b>, <b>Circular Pattern</b> og <b>Base View</b></span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg id="heroFig" viewBox="0 0 400 270" role="img" aria-label="Flens forfra med hullsirkel og målet 4× Ø9"></svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Mål</h3>
+      <p>KST7: «bruke programmer for 2D- og 3D-dataassistert konstruksjon (DAK) og dataassistert produksjon (DAP) til grunnleggende tegning og dokumentasjon». PT6: «beskrive arbeidsoppgaver innenfor produksjon og tjenester basert på tegningsunderlag og prosedyrer». Del 1–6 er uten PC. Del 7–11 gjør det samme i Fusion. Bygger på leksjon 1 (riss og mål) og leksjon 2 (Revolve).</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–5</dt><dd>Start: vis en ekte tegning. Hvor stort er arket? Hva står i tittelfeltet?</dd>
+        <dt>5–30</dt><dd>Del 1–6 · Ark, tittelfelt, symmetri, hullsirkel, vinkel og fas. Oppgave A–D.</dd>
+        <dt>30–45</dt><dd>Del 7–11 · Det samme i Fusion. Vis på storskjerm.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–85</dt><dd>Oppgave E–G på PC: lag flensen med fire hull og tegningen av den på A4.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="ark">
+  <div class="tag">Del 1 · Arkstørrelse</div>
+  <h2>Tegningen lages på A4 eller A3</h2>
+  <p class="lead">Hvert A-format er to av det neste. Tittelfeltet står nede til høyre.</p>
+  <div class="fig2">
+    <div><h3>A3 = to A4</h3>
+    <svg viewBox="0 0 300 230" role="img" aria-label="Et A3-ark delt i to A4-ark">
+      <rect x="24" y="16" width="252" height="178" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+      <path d="M150 16 V194" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="8 5"/>
+      <g text-anchor="middle" fill="var(--ink)"><text x="87" y="104" font-size="26" font-weight="800">A4</text><text x="213" y="104" font-size="26" font-weight="800">A4</text>
+      <text x="87" y="128" font-size="14" fill="var(--muted)">210 × 297</text><text x="213" y="128" font-size="14" fill="var(--muted)">210 × 297</text>
+      <text x="150" y="220" font-size="17" font-weight="700" fill="var(--orange)">A3 = 297 × 420 mm</text></g>
+    </svg></div>
+    <div><h3>Ramme og tittelfelt</h3>
+    <svg viewBox="0 0 300 230" role="img" aria-label="A4-ark med ramme og tittelfelt nede til høyre">
+      <rect x="60" y="10" width="147" height="208" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.5"/>
+      <rect x="74" y="17" width="126" height="194" fill="none" stroke="var(--ink)" stroke-width="2.5"/>
+      <rect x="128" y="185" width="72" height="26" fill="var(--orange)" fill-opacity=".25" stroke="var(--ink)" stroke-width="1.5"/>
+      <path d="M200 70 H222" stroke="var(--u)" stroke-width="1.5"/><text x="226" y="75" font-size="15" font-weight="700" fill="var(--u)">Ramme</text>
+      <path d="M200 198 H222" stroke="var(--orange)" stroke-width="1.5"/><text x="226" y="203" font-size="15" font-weight="700" fill="var(--orange)">Tittelfelt</text>
+    </svg></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>A-formatene: A4 210 × 297 mm, A3 297 × 420 mm, A2 420 × 594 mm. Hvert format er to av det neste. Rammen har 20 mm marg til venstre (plass til hull i perm) og 10 mm ellers. Tittelfeltet står alltid nede til høyre. Velg arket etter delen og målestokken.</details>
+</section>
+
+<section id="hode">
+  <div class="tag">Del 2 · Tittelfelt</div>
+  <h2>Dette skal stå i tittelfeltet</h2>
+  <p class="lead">Tittelfeltet (tegningshodet) er tegningens ID-kort.</p>
+  <div class="fig" style="max-width:760px">
+    <svg viewBox="0 0 620 240" role="img" aria-label="Tittelfelt med skole, projeksjon, arkstørrelse, navn, tegningsnummer, revisjon, materiale, målestokk, generelle toleranser, tegnet av, kontrollert og ark">
+      <rect x="10" y="10" width="600" height="220" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+      <path d="M10 65 H610 M10 120 H610 M10 175 H610 M210 10 V230 M410 10 V230" stroke="var(--ink)" stroke-width="1.2"/>
+      <text x="20" y="28" font-size="12" fill="var(--muted)">Skole / firma</text>
+      <text x="20" y="54" font-size="20" font-weight="800" fill="var(--ink)">TIF Vg1</text>
+      <text x="220" y="28" font-size="12" fill="var(--muted)">Projeksjon (europeisk)</text>
+      <text x="420" y="28" font-size="12" fill="var(--muted)">Arkstørrelse</text>
+      <text x="420" y="54" font-size="20" font-weight="800" fill="var(--ink)">A4</text>
+      <text x="20" y="83" font-size="12" fill="var(--u)" font-weight="700">Navn på delen</text>
+      <text x="20" y="109" font-size="20" font-weight="800" fill="var(--ink)">Flens</text>
+      <text x="220" y="83" font-size="12" fill="var(--u)" font-weight="700">Tegningsnummer</text>
+      <text x="220" y="109" font-size="20" font-weight="800" fill="var(--ink)">014</text>
+      <text x="420" y="83" font-size="12" fill="var(--muted)">Revisjon</text>
+      <text x="420" y="109" font-size="20" font-weight="800" fill="var(--ink)">A</text>
+      <text x="20" y="138" font-size="12" fill="var(--i)" font-weight="700">Materiale</text>
+      <text x="20" y="164" font-size="20" font-weight="800" fill="var(--ink)">S355</text>
+      <text x="220" y="138" font-size="12" fill="var(--orange)" font-weight="700">Målestokk</text>
+      <text x="220" y="164" font-size="20" font-weight="800" fill="var(--ink)">1:2</text>
+      <text x="420" y="138" font-size="12" fill="var(--r)" font-weight="700">Generelle toleranser</text>
+      <text x="420" y="164" font-size="20" font-weight="800" fill="var(--ink)">ISO 2768-m</text>
+      <text x="20" y="193" font-size="12" fill="var(--muted)">Tegnet av / dato</text>
+      <text x="20" y="219" font-size="20" font-weight="800" fill="var(--ink)">HA 04.11.2026</text>
+      <text x="220" y="193" font-size="12" fill="var(--muted)">Kontrollert av</text>
+      <text x="220" y="219" font-size="20" font-weight="800" fill="var(--ink)">OH</text>
+      <text x="420" y="193" font-size="12" fill="var(--muted)">Ark</text>
+      <text x="420" y="219" font-size="20" font-weight="800" fill="var(--ink)">1 av 1</text>
+      <polygon points="305,44 328,38 328,62 305,56" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <circle cx="360" cy="50" r="12" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="360" cy="50" r="6" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <path d="M298 50 H335 M341 50 H379 M360 34 V64" stroke="var(--ink)" stroke-width="1" stroke-dasharray="8 3 2 3"/>
+    </svg>
+  </div>
+  <div class="regler">
+    <div><span class="ico">🏷️</span><b>Hva: navn og nummer</b></div>
+    <div><span class="ico">📏</span><b>Hvor stort: målestokk og ark</b></div>
+    <div><span class="ico">🔩</span><b>Hvordan: materiale og toleranser</b></div>
+    <div><span class="ico">✍️</span><b>Hvem og når: tegnet, kontrollert, revisjon</b></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Tittelfeltet (tegningshodet) bør ha: navn på delen, tegningsnummer, revisjon, materiale, målestokk, arkstørrelse, projeksjonsmetode (symbolet for europeisk projeksjon), generelle toleranser (for eksempel ISO 2768-m, se leksjon 6), tegnet av og dato, kontrollert av, og skole eller firma. De fleste DAK-program har en ferdig mal (Title Block i Fusion).</details>
+</section>
+
+<section id="symmetri">
+  <div class="tag">Del 3 · Symmetrilinje</div>
+  <h2>Symmetrilinjen viser midten</h2>
+  <p class="lead">Tynn strek-prikk-linje med to små streker i hver ende.</p>
+  <div class="fig" style="max-width:640px"><svg id="symFig" viewBox="0 0 440 250" role="img" aria-label="Brakett med symmetrilinje midt på"></svg></div>
+  <p style="color:var(--muted)">Delen er lik på begge sider av linjen.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Symmetrisymbolet er to korte, parallelle streker i hver ende av senterlinjen. Det betyr at delen er lik på begge sider, og da kan man tegne bare halve delen.</details>
+</section>
+
+<section id="hullsirkel">
+  <div class="tag">Del 4 · Hullsirkel</div>
+  <h2>Hullsirkelen samler hullene</h2>
+  <p class="lead">Strek-prikk-sirkel gjennom hullene. Ett mål for alle.</p>
+  <div class="fig" style="max-width:640px"><svg id="hsFig" viewBox="0 0 480 300" role="img" aria-label="Flens med hullsirkel Ø76 og målet 4× Ø9"></svg></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>«4× Ø9» betyr fire hull med diameter 9 mm. «Ø76» er diameteren på hullsirkelen (delesirkelen). Hullene står likt fordelt: 360° : 4 = 90° mellom hullene. Sjekk mot oppgave C.</details>
+</section>
+
+<section id="vinkel">
+  <div class="tag">Del 5 · Vinkelmål</div>
+  <h2>Vinkler måles i grader</h2>
+  <p class="lead">Buen viser hvilken vinkel målet gjelder.</p>
+  <div class="fig" style="max-width:480px"><svg id="grVinkel" viewBox="0 0 300 200" role="img" aria-label="Kile med vinkelmål 30 grader"></svg></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Vinkelmålet tegnes som en bue mellom de to linjene, med piler. Vinkelen kan måles med vinkelmåler eller gradskive.</details>
+</section>
+
+<section id="fas">
+  <div class="tag">Del 6 · Fas</div>
+  <h2>Fas: hjørnet er skrådd av</h2>
+  <p class="lead">2 × 45° = 2 mm skrådd av i 45°.</p>
+  <div class="fig" style="max-width:480px"><svg id="grFas" viewBox="0 0 300 200" role="img" aria-label="Hjørne med fas 2 × 45°"></svg></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Fas skrives som lengde × vinkel. 2 × 45° betyr at 2 mm er skrådd av i 45°. Fas fjerner skarpe kanter og gjør det lett å montere.</details>
+</section>
+
+<section id="speil">
+  <div class="tag">Del 7 · Mirror i Fusion</div>
+  <h2>Tegn halve, speil resten</h2>
+  <p class="lead">Delen er lik på begge sider. Da sparer du halve jobben.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxSpeil" role="img" aria-label="Fusion: Mirror speiler halve braketten om et plan"></svg></div></div>
+  <p class="vei">I Fusion: <b>SOLID</b> → <b>CREATE</b> → <b>Mirror</b> → velg delen → velg <b>planet</b> i midten</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Mirror kan speile features (hull, kutt) eller hele bodies. Speilplanet er ofte et av origoplanene (Origin i Browser). Endrer du den ene halvdelen, følger den speilede med.</details>
+</section>
+
+<section id="monster">
+  <div class="tag">Del 8 · Circular Pattern i Fusion</div>
+  <h2>Lag ett hull. Fusion lager resten.</h2>
+  <p class="lead">Circular Pattern kopierer hullet rundt midten.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxMonster" role="img" aria-label="Fusion: Circular Pattern lager fire hull i sirkel på flensen"></svg></div></div>
+  <p class="vei">I Fusion: <b>CREATE</b> → <b>Hole</b> (ett hull) → <b>Pattern</b> → <b>Circular Pattern</b> → <b>Quantity 4</b></p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Flensen modelleres med Revolve (leksjon 2): halv profil med nav og boring. Så ett hull Ø9 med Hole, og Circular Pattern rundt aksen. Bytt Quantity til 6 og vis at alt følger med.</details>
+</section>
+
+<section id="base">
+  <div class="tag">Del 9 · Base View i Fusion</div>
+  <h2>Fusion lager rissene for deg</h2>
+  <p class="lead">Velg modellen. Fusion tegner rissene.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxBase" role="img" aria-label="Fusion Drawing: Base View og Projected View av flensen"></svg></div></div>
+  <p class="vei">I Fusion: <b>DESIGN ▾</b> → <b>DRAWING</b> → <b>From Design</b> → <b>Standard: ISO</b>, <b>Sheet Size: A4</b> → plasser forfra-risset → <b>Projected View</b></p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Base View er det første risset (ofte forfra). Projected View lager de andre rissene ut fra det, etter samme regler som i leksjon 1. Tittelfeltet fylles ut i Title Block. Endrer man modellen, endres tegningen.</details>
+</section>
+
+<section id="fxsymmetri">
+  <div class="tag">Del 10 · Centerline i Fusion</div>
+  <h2>Symmetrilinjen viser midten</h2>
+  <p class="lead">Tynn strek-prikk-linje med to små streker i hver ende.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxSymmetri" role="img" aria-label="Fusion Drawing: Centerline gir symmetrilinje midt på braketten"></svg></div></div>
+  <p class="vei">I Fusion Drawing: <b>GEOMETRY</b> → <b>Centerline</b> → klikk på de to kantene</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Symmetrisymbolet (to korte, parallelle streker i hver ende av senterlinjen) betyr at delen er lik på begge sider. Da kan man også tegne bare halve delen. Fusion tegner senterlinjen, men symbolet må ofte legges til for hånd (Sketch på tegningen) eller nevnes muntlig.</details>
+</section>
+
+<section id="fxhullsirkel">
+  <div class="tag">Del 11 · Center Mark i Fusion</div>
+  <h2>Hullsirkelen samler hullene</h2>
+  <p class="lead">Strek-prikk-sirkel gjennom hullene. Ett mål for alle.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxHullsirkel" role="img" aria-label="Fusion Drawing: Center Mark Pattern gir hullsirkel Ø76 og målet 4× Ø9"></svg></div></div>
+  <p class="vei">I Fusion Drawing: <b>GEOMETRY</b> → <b>Center Mark Pattern</b> → velg hullene</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>«4× Ø9» betyr fire hull med diameter 9 mm. «Ø76» er diameteren på hullsirkelen (delesirkelen). Hullene står likt fordelt: 360° : 4 = 90° mellom hullene. Se del 4.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 3: Tegningsark, symmetri og hull</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p>Tittelfeltet står nede til <span class="luke"><span class="fasit" hidden>høyre</span></span> på tegningen.</p>
+      <p>Symmetrilinjen er en tynn <span class="luke"><span class="fasit" hidden>strek-prikk</span></span>-linje.</p>
+      <p>Vinkler måles i <span class="luke"><span class="fasit" hidden>grader</span></span>.</p>
+      <p>Fas 1 × 45° betyr at <span class="luke"><span class="fasit" hidden>1</span></span> mm er skrådd av.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Ark og tittelfelt</h3>
+      <p>Et A4-ark er <span class="luke"><span class="fasit" hidden>210</span></span> × <span class="luke"><span class="fasit" hidden>297</span></span> mm.</p>
+      <p>To A4-ark er like store som ett <span class="luke"><span class="fasit" hidden>A3</span></span>-ark.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Hva skal stå i tittelfeltet?</th><th>Eksempel</th></tr>
+        <tr><td>Navn på delen</td><td class="blank"><span class="fasit" hidden>Flens</span></td></tr>
+        <tr><td>Tegningsnummer</td><td class="blank"><span class="fasit" hidden>014</span></td></tr>
+        <tr><td>Materiale</td><td class="blank"><span class="fasit" hidden>S355</span></td></tr>
+        <tr><td>Målestokk</td><td class="blank"><span class="fasit" hidden>1:2</span></td></tr>
+        <tr><td>Hvem som har tegnet, og dato</td><td class="blank"><span class="fasit" hidden>HA 04.11.2026</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Les tittelfeltet</h3>
+      <svg class="oppfig" viewBox="0 0 440 150" role="img" aria-label="Tegningshode: Flens, 1:2, S355, Tegnet: HA, Nr. 014">
+        <rect x="20" y="10" width="400" height="120" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+        <path d="M20 50 H420 M220 50 V130 M20 90 H420" stroke="var(--ink)" stroke-width="1.5"/>
+        <g font-size="20" fill="var(--ink)"><text x="34" y="38" font-weight="800">Flens</text><text x="34" y="78">1:2</text><text x="34" y="118">S355</text><text x="234" y="78">Tegnet: HA</text><text x="234" y="118">Nr. 014</text></g>
+      </svg>
+      <div class="tablewrap"><table>
+        <tr><th>Spørsmål</th><th>Svar</th></tr>
+        <tr><td>Hva heter delen?</td><td class="blank"><span class="fasit" hidden>Flens</span></td></tr>
+        <tr><td>Hvilken målestokk?</td><td class="blank"><span class="fasit" hidden>1:2</span></td></tr>
+        <tr><td>Hvilket materiale?</td><td class="blank"><span class="fasit" hidden>S355 (stål)</span></td></tr>
+        <tr><td>Hvilket tegningsnummer?</td><td class="blank"><span class="fasit" hidden>014</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Les tegningen</h3>
+      <svg id="oppgFlens" class="oppfig" viewBox="0 0 300 260" role="img" aria-label="Flens forfra med hullsirkel Ø76 og 4× Ø9"></svg>
+      <ol>
+        <li>Hvor mange hull er det i hullsirkelen? <span class="luke"><span class="fasit" hidden>4</span></span></li>
+        <li>Hvor stor diameter har hvert hull? <span class="luke"><span class="fasit" hidden>9 mm</span></span></li>
+        <li>Hvor stor diameter har hullsirkelen? <span class="luke"><span class="fasit" hidden>76 mm</span></span></li>
+        <li>Hvor mange grader er det mellom to hull? <span class="luke"><span class="fasit" hidden>90° (360 : 4)</span></span></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del E · Riktig eller galt</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Tittelfeltet står øverst til venstre.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Symmetrilinjen er en tykk heltrukket linje.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>4× Ø9 betyr fire hull med diameter 9 mm.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Fas 2 × 45° betyr at 2 mm er skrådd av i 45°.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+
+    <div>
+      <h3>Del F · Hvilken kommando i Fusion?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Jeg vil …</th><th>Kommando</th></tr>
+        <tr><td>tegne halve delen og kopiere den andre halvdelen</td><td class="blank"><span class="fasit" hidden>Mirror</span></td></tr>
+        <tr><td>lage fire like hull rundt midten</td><td class="blank"><span class="fasit" hidden>Circular Pattern</span></td></tr>
+        <tr><td>lage det første risset på tegningen</td><td class="blank"><span class="fasit" hidden>Base View</span></td></tr>
+        <tr><td>sette strek-prikk-sirkel gjennom hullene</td><td class="blank"><span class="fasit" hidden>Center Mark Pattern</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del G · Riktig eller galt i Fusion</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Endrer jeg den ene halvdelen, følger den speilede halvdelen med.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Med Circular Pattern må jeg tegne alle hullene selv.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Endrer jeg modellen, endres tegningen også.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del H · På PC</h3>
+      <p>Flens: Ø100 × 12, nav Ø50, total lengde 30, boring Ø20, fire hull Ø9 på Ø76. Kryss av.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Jeg har …</th><th>✓</th></tr>
+        <tr><td>laget flensen med Revolve</td><td class="blank x"></td></tr>
+        <tr><td>laget ett hull Ø9 med Hole</td><td class="blank x"></td></tr>
+        <tr><td>laget fire hull med Circular Pattern</td><td class="blank x"></td></tr>
+        <tr><td>laget tegning på A4 med Base View og Projected View</td><td class="blank x"></td></tr>
+        <tr><td>satt Center Mark Pattern og målet 4× Ø9</td><td class="blank x"></td></tr>
+        <tr><td>fylt ut tittelfeltet</td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Nevn fire ting som skal stå i tittelfeltet.<div class="svar"><span class="fasit" hidden>For eksempel: navn på delen, tegningsnummer, materiale, målestokk (også: tegnet av, dato, arkstørrelse, generelle toleranser)</span></div></li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  // ---------- Fusion-vinduet ----------
+  // Tegnet etter Autodesk Fusion (Design og Drawing). Faste lyse farger som i Fusion, også i mørk modus.
+  const FXI = {
+    sketch:'<rect x="3" y="5" width="15" height="15" fill="none" stroke="#5b6470" stroke-width="1.5"/><path d="M10 20 L21 6 l2.5 2 L12.5 22 z" fill="#f6c344" stroke="#5b6470"/>',
+    extrude:'<path d="M3 19 L12 23 L22 19 L13 15 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M12.5 14 V3 M8.5 7 l4 -4 l4 4" fill="none" stroke="#1a73e8" stroke-width="2"/>',
+    revolve:'<path d="M4 20 V10 H9 V6 H13 V20 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M2 22 H23" stroke="#5b6470" stroke-dasharray="3 2"/><path d="M18 5 a5 5 0 1 1 -1 9" fill="none" stroke="#1a73e8" stroke-width="2"/><path d="M14 12 l3 2.5 l2 -3.5" fill="none" stroke="#1a73e8" stroke-width="2"/>',
+    hole:'<path d="M2 15 L12 19 L23 15 L13 11 Z" fill="#cfd6de" stroke="#5b6470"/><ellipse cx="12.5" cy="15" rx="4" ry="2" fill="#fff" stroke="#1a73e8" stroke-width="1.8"/><path d="M12.5 2 V12" stroke="#1a73e8" stroke-width="2"/>',
+    thread:'<rect x="4" y="9" width="17" height="11" fill="#cfd6de" stroke="#5b6470"/><path d="M4 9 l2 -3 l2 3 l2 -3 l2 3 l2 -3 l2 3 l2 -3 l2 3 l1 -2" fill="none" stroke="#1a73e8" stroke-width="1.6"/>',
+    pattern:'<circle cx="12.5" cy="12.5" r="8" fill="none" stroke="#5b6470" stroke-dasharray="3 2"/><g fill="#1a73e8"><circle cx="12.5" cy="4.5" r="2.6"/><circle cx="20.5" cy="12.5" r="2.6"/><circle cx="12.5" cy="20.5" r="2.6"/><circle cx="4.5" cy="12.5" r="2.6"/></g>',
+    mirror:'<path d="M3 20 V6 L10 13 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M22 20 V6 L15 13 Z" fill="#cfe3fb" stroke="#1a73e8"/><path d="M12.5 2 V23" stroke="#e8590c" stroke-width="1.5" stroke-dasharray="3 2"/>',
+    joint:'<rect x="2" y="12" width="10" height="9" fill="#cfd6de" stroke="#5b6470"/><rect x="13" y="4" width="10" height="9" fill="#cfd6de" stroke="#5b6470"/><circle cx="12.5" cy="12.5" r="3.2" fill="#f6c344" stroke="#5b6470"/>',
+    component:'<path d="M4 8 L12.5 4 L21 8 V17 L12.5 21 L4 17 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M4 8 L12.5 12 L21 8 M12.5 12 V21" fill="none" stroke="#5b6470"/>',
+    base:'<rect x="2" y="3" width="21" height="19" fill="#fff" stroke="#5b6470"/><rect x="6" y="8" width="9" height="9" fill="#cfd6de" stroke="#5b6470"/>',
+    projected:'<rect x="2" y="3" width="21" height="19" fill="#fff" stroke="#5b6470"/><rect x="4" y="12" width="7" height="7" fill="#cfd6de" stroke="#5b6470"/><rect x="14" y="12" width="7" height="7" fill="#fff" stroke="#1a73e8"/><path d="M11 15.5 H14" stroke="#1a73e8"/>',
+    section:'<rect x="4" y="5" width="17" height="15" fill="#fff" stroke="#5b6470"/><path d="M4 12 L11 5 M4 19 L18 5 M9 20 L21 8 M16 20 L21 15" stroke="#5b6470"/><path d="M12.5 1 V24" stroke="#1a73e8" stroke-width="2" stroke-dasharray="4 2"/>',
+    detail:'<circle cx="10" cy="10" r="7" fill="#fff" stroke="#1a73e8" stroke-width="2"/><path d="M15 15 L22 22" stroke="#5b6470" stroke-width="3"/>',
+    centerline:'<path d="M2 12.5 H23" stroke="#1a73e8" stroke-width="2" stroke-dasharray="7 2 2 2"/><path d="M5 7 H20 M5 18 H20" stroke="#5b6470"/>',
+    centermark:'<path d="M12.5 2 V23 M2 12.5 H23" stroke="#1a73e8" stroke-width="1.6" stroke-dasharray="6 2 2 2"/><circle cx="12.5" cy="12.5" r="5" fill="none" stroke="#5b6470"/>',
+    cmpattern:'<circle cx="12.5" cy="12.5" r="8" fill="none" stroke="#1a73e8" stroke-width="1.6" stroke-dasharray="5 2 1 2"/><g fill="#fff" stroke="#5b6470"><circle cx="12.5" cy="4.5" r="2.4"/><circle cx="12.5" cy="20.5" r="2.4"/><circle cx="4.5" cy="12.5" r="2.4"/><circle cx="20.5" cy="12.5" r="2.4"/></g>',
+    dim:'<path d="M3 16 H22 M3 11 V21 M22 11 V21" stroke="#5b6470"/><path d="M3 16 l4 -2 v4z M22 16 l-4 -2 v4z" fill="#1a73e8"/><text x="7" y="12" font-size="7.5" fill="#1a73e8" font-family="Arial" font-weight="700">50</text>',
+    surface:'<path d="M3 13 L7.5 21 L14 4 H23" fill="none" stroke="#1a73e8" stroke-width="2"/>',
+    text:'<text x="6" y="20" font-size="18" font-weight="700" fill="#5b6470" font-family="Arial">A</text>',
+    fcf:'<rect x="2" y="7" width="21" height="11" fill="#fff" stroke="#5b6470"/><path d="M9 7 V18" stroke="#5b6470"/><circle cx="5.5" cy="12.5" r="2.4" fill="none" stroke="#1a73e8"/>',
+    pdf:'<path d="M5 2 H16 L21 7 V23 H5 Z" fill="#fff" stroke="#5b6470"/><text x="6" y="18" font-size="7" font-weight="700" fill="#d93025" font-family="Arial">PDF</text>',
+    gr:'<rect x="4" y="4" width="17" height="17" rx="3" fill="#e3e7ec" stroke="#b9c0c8"/>'
+  };
+  const DESIGN_GRP = (hl) => [['CREATE',['sketch','extrude','revolve','hole','thread','pattern','mirror']],['MODIFY',['gr','gr']],['ASSEMBLE',['component','joint']],['CONSTRUCT',['gr']],['INSPECT',['gr']]];
+  const DRAWING_GRP = () => [['CREATE',['base','projected','section','detail']],['MODIFY',['gr','gr']],['GEOMETRY',['centermark','cmpattern','centerline']],['DIMENSIONS',['dim']],['TEXT',['text']],['SYMBOLS',['surface','fcf']],['EXPORT',['pdf']]];
+  let fxNr = 0;
+  // o = {ws:'DESIGN'|'DRAWING', hl:'ikon', tips:'Navn', tre:['Navn', '*uthevet'], dlg:{t, r:[[etikett, verdi, uthevet]], ok}, c:'innhold (x 150–800, y 92–380)'}
+  function fusjon(svg, o){
+    const id = 'fx' + (++fxNr), tegn = o.ws === 'DRAWING';
+    let h = '<defs><linearGradient id="'+id+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe2ea"/></linearGradient>'+
+      '<pattern id="'+id+'s" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V7" stroke="#222" stroke-width="1"/></pattern></defs>';
+    h += '<g font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#3c3c3c">';
+    h += '<rect width="800" height="380" fill="#fff"/><rect width="800" height="30" fill="#f2f3f4"/><path d="M0 30.5 H800" stroke="#d6dadf"/>';
+    h += '<rect x="0" y="0" width="160" height="30" fill="#fff"/><path d="M160.5 0 V30" stroke="#d6dadf"/>';
+    h += '<rect x="10" y="7" width="16" height="16" rx="3" fill="'+(tegn ? '#3a9a5b' : '#2b78c5')+'"/><text x="34" y="20" font-weight="700">'+o.ws+' ▾</text>';
+    if (!tegn){
+      let x = 172;
+      ['SOLID','SURFACE','MESH','SHEET METAL','PLASTIC','UTILITIES','MANAGE'].forEach((t,i) => {
+        const w = t.length*7.4 + 18;
+        if (i===0) h += '<rect x="'+(x-2)+'" y="0" width="'+w+'" height="30" fill="#fff"/><path d="M'+(x-2)+' 28.5 h'+w+'" stroke="#0696d7" stroke-width="3"/>';
+        h += '<text x="'+(x+7)+'" y="20" font-size="11" font-weight="700" fill="'+(i===0?'#0a6ebd':'#666')+'">'+t+'</text>'; x += w;
+      });
+    }
+    // båndet med knapper
+    const grupper = tegn ? DRAWING_GRP() : DESIGN_GRP();
+    let x = 8, hlx = null;
+    grupper.forEach(([navn, ks]) => {
+      const bredde = Math.max(ks.length*32, navn.length*7 + 22), start = x + (bredde - ks.length*32)/2;
+      ks.forEach((k,i) => {
+        const bx = start + i*32;
+        h += '<g transform="translate('+(bx+2)+' 37) scale(1.12)">'+FXI[k]+'</g>';
+        if (k === o.hl){ hlx = bx; h += '<rect x="'+(bx-1)+'" y="34" width="34" height="34" rx="4" fill="none" stroke="#e8590c" stroke-width="3"/>'; }
+      });
+      h += '<text x="'+(x+bredde/2)+'" y="84" text-anchor="middle" font-size="10" font-weight="700" fill="#666">'+navn+' ▾</text>';
+      x += bredde + 12; h += '<path d="M'+(x-6)+'.5 36 V86" stroke="#e3e6ea"/>';
+    });
+    h += '<path d="M0 92.5 H800" stroke="#d6dadf"/>';
+    // nettleser til venstre og arbeidsflaten
+    h += '<rect x="0" y="93" width="150" height="287" fill="#fafafa"/><path d="M150.5 93 V380" stroke="#d6dadf"/><text x="10" y="112" font-size="10.5" font-weight="700" fill="#666">BROWSER</text>';
+    (o.tre||[]).forEach((t,i) => {
+      const ny = t[0]==='*', tx = ny ? t.slice(1) : t, inn = (tx.match(/^ +/)||[''])[0].length;
+      if (ny) h += '<rect x="6" y="'+(119+i*21)+'" width="138" height="19" rx="3" fill="#e5f1fb"/>';
+      h += '<text x="'+(12+inn*8)+'" y="'+(133+i*21)+'" font-size="11.5" '+(ny?'font-weight="700" fill="#0a6ebd"':'')+'>'+tx.trim()+'</text>';
+    });
+    if (tegn) h += '<rect x="151" y="93" width="649" height="287" fill="#8d959e"/><rect x="165" y="100" width="620" height="272" fill="#fff" stroke="#5b6470"/>';
+    else h += '<rect x="151" y="93" width="649" height="287" fill="url(#'+id+'g)"/><g transform="translate(742 104)"><polygon points="0,8 18,0 36,8 18,16" fill="#eef1f5" stroke="#8a929c"/><polygon points="0,8 18,16 18,38 0,30" fill="#dfe4ea" stroke="#8a929c"/><polygon points="18,16 36,8 36,30 18,38" fill="#e8ecf1" stroke="#8a929c"/><text x="4" y="27" font-size="6" fill="#5b6470">FRONT</text></g>';
+    h += (o.c||'').replace(/#SKR/g, 'url(#'+id+'s)');
+    if (o.dlg){
+      const d = o.dlg, dx = 572, dw = 220, rh = 25;
+      h += '<g><rect x="'+dx+'" y="100" width="'+dw+'" height="'+(64+d.r.length*rh)+'" rx="3" fill="#fff" stroke="#b9c0c8"/><rect x="'+dx+'" y="100" width="'+dw+'" height="24" fill="#f2f3f4"/><text x="'+(dx+10)+'" y="117" font-weight="700" font-size="11.5">'+d.t+'</text>';
+      d.r.forEach((r,i) => {
+        const y = 130 + i*rh;
+        if (r[2]) h += '<rect x="'+(dx+1)+'" y="'+(y-2)+'" width="'+(dw-2)+'" height="'+rh+'" fill="#fff0e5"/>';
+        h += '<text x="'+(dx+10)+'" y="'+(y+14)+'" font-size="11">'+r[0]+'</text><rect x="'+(dx+102)+'" y="'+(y+1)+'" width="108" height="18" rx="2" fill="#fff" stroke="'+(r[2]?'#e8590c':'#c3c9d0')+'" stroke-width="'+(r[2]?2:1)+'"/><text x="'+(dx+107)+'" y="'+(y+14)+'" font-size="11">'+r[1]+'</text>';
+      });
+      const fy = 136 + d.r.length*rh;
+      h += '<rect x="'+(dx+dw-130)+'" y="'+fy+'" width="56" height="20" rx="2" fill="#0696d7"/><text x="'+(dx+dw-102)+'" y="'+(fy+14)+'" text-anchor="middle" fill="#fff" font-weight="700" font-size="11">'+(d.ok||'OK')+'</text>';
+      h += '<rect x="'+(dx+dw-66)+'" y="'+fy+'" width="56" height="20" rx="2" fill="#fff" stroke="#b9c0c8"/><text x="'+(dx+dw-38)+'" y="'+(fy+14)+'" text-anchor="middle" font-size="11">Cancel</text></g>';
+    }
+    if (hlx !== null && o.tips){
+      const w = o.tips.length*7 + 16, tx = Math.min(Math.max(hlx+17-w/2, 4), 796-w);
+      h += '<rect x="'+tx+'" y="72" width="'+w+'" height="20" rx="3" fill="#2d2d2d"/><text x="'+(tx+w/2)+'" y="86" text-anchor="middle" fill="#fff" font-weight="700" font-size="11.5">'+o.tips+'</text>';
+    }
+    svg.setAttribute('viewBox','0 0 800 380');
+    svg.innerHTML = h + '</g>';
+  }
+
+  // Sylindre etter hverandre langs en akse, sett litt fra høyre (3D-inntrykk). segs = [[x0, x1, r], ...] i mm.
+  function sylindre(segs, ox, oy, s, fill, kant, ende){
+    let h = '';
+    segs.forEach(([a,b,r]) => {
+      const X0 = ox+a*s, X1 = ox+b*s, R = r*s, e = R*0.28;
+      h += '<path d="M'+X0+' '+(oy-R)+' L'+X1+' '+(oy-R)+' A'+e+' '+R+' 0 0 1 '+X1+' '+(oy+R)+' L'+X0+' '+(oy+R)+' A'+e+' '+R+' 0 0 1 '+X0+' '+(oy-R)+' Z" fill="'+fill+'" stroke="'+kant+'" stroke-width="1.6"/>';
+      h += '<ellipse cx="'+X1+'" cy="'+oy+'" rx="'+e+'" ry="'+R+'" fill="'+(ende||fill)+'" stroke="'+kant+'" stroke-width="1.6"/>';
+    });
+    return h;
+  }
+  // ---------- Tegninger (mål i mm) ----------
+  const SLD = 'stroke-width="1.2" stroke-dasharray="14 3 2 3" fill="none"';
+  const pil = (x, y) => '<path d="M'+x+' '+y+' v34" stroke="#e8590c" stroke-width="4"/><path d="M'+(x-9)+' '+(y+28)+' l9 12 l9 -12" fill="none" stroke="#e8590c" stroke-width="4"/>';
+  const txt = (x, y, t, k, ekstra) => '<text x="'+x+'" y="'+y+'" fill="'+k+'" font-size="14" '+(ekstra||'')+'>'+t+'</text>';
+  const pilspiss = (x, y, vx, vy, k) => { const n = Math.hypot(vx,vy), ux = vx/n, uy = vy/n; return '<path d="M'+x+' '+y+' L'+(x-ux*10-uy*4)+' '+(y-uy*10+ux*4)+' L'+(x-ux*10+uy*4)+' '+(y-uy*10-ux*4)+' Z" fill="'+k+'"/>'; };
+
+  // Flens: Ø100 × 12, nav Ø50, lengde 30, boring Ø20 med fas 1 × 45°, 4 hull Ø9 på Ø76
+  const F = { R:50, nav:25, bor:10, pcd:38, hull:4.5 };
+  const HULL = [[0,-1],[1,0],[0,1],[-1,0]];
+  function flensFront(cx, cy, s, k, o){
+    o = o || {};
+    const c = r => '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*s)+'" fill="none" stroke="'+k+'" stroke-width="2.5"/>';
+    let h = c(F.R) + c(F.nav) + c(F.bor);
+    HULL.forEach(([a,b]) => { h += '<circle cx="'+(cx+a*F.pcd*s)+'" cy="'+(cy+b*F.pcd*s)+'" r="'+(F.hull*s)+'" fill="none" stroke="'+k+'" stroke-width="2.5"/>'; });
+    const L = (F.R+6)*s, sl = o.sl || k;
+    h += '<path d="M'+(cx-L)+' '+cy+' H'+(cx+L)+' M'+cx+' '+(cy-L)+' V'+(cy+L)+'" stroke="'+sl+'" '+SLD+'/>';
+    if (o.hullsirkel) h += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(F.pcd*s)+'" stroke="'+sl+'" '+SLD+'/>';
+    if (o.mal){
+      // 4× Ø9: fra hullet til høyre, skrått opp
+      const hx = cx+F.pcd*s+F.hull*s*0.7, hy = cy-F.hull*s*0.7, ex = cx+(F.R+8)*s, ey = cy-(F.R*0.55)*s;
+      h += '<path d="M'+hx+' '+hy+' L'+ex+' '+ey+' h52" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(hx,hy,hx-ex,hy-ey,k)+txt(ex+4, ey-5, '4× Ø9', k, 'font-weight="700"');
+      // Ø76: fra hullsirkelen, skrått ned
+      const px = cx+F.pcd*s*0.707, py = cy+F.pcd*s*0.707, qx = cx+(F.R+8)*s, qy = cy+(F.R*0.85)*s;
+      h += '<path d="M'+px+' '+py+' L'+qx+' '+qy+' h40" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(px,py,px-qx,py-qy,k)+txt(qx+4, qy-5, 'Ø76', k, 'font-weight="700"');
+    }
+    if (o.snittlinje){
+      const t = cy-(F.R+6)*s, b = cy+(F.R+6)*s;
+      h += '<path d="M'+cx+' '+(t-14)+' V'+t+' M'+cx+' '+b+' V'+(b+14)+'" stroke="'+k+'" stroke-width="4"/>';
+      [[t-14,-1],[b+14,1]].forEach(([y]) => { h += '<path d="M'+cx+' '+y+' H'+(cx+24)+'" stroke="'+k+'" stroke-width="1.6"/>'+pilspiss(cx+26,y,1,0,k)+txt(cx+30, y+5, 'A', k, 'font-weight="700" font-size="16"'); });
+    }
+    return h;
+  }
+  // Snitt A–A av flensen: x langs aksen (0 = flensflaten), r = radius
+  const SN1 = [[0,11],[0,33.5],[12,33.5],[12,25],[30,25],[30,10],[1,10]], SN2 = [[0,42.5],[0,50],[12,50],[12,42.5]];
+  function flensSnitt(x0, cy, s, k, fyll){
+    const P = (pts, sgn) => pts.map(([x,r]) => (x0+x*s).toFixed(1)+','+(cy-sgn*r*s).toFixed(1)).join(' ');
+    let h = '';
+    [1,-1].forEach(g => [SN1,SN2].forEach(p => { h += '<polygon points="'+P(p,g)+'" fill="'+fyll+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>'; }));
+    h += '<path d="M'+(x0+s)+' '+(cy-10*s)+' V'+(cy+10*s)+' M'+(x0+30*s)+' '+(cy-10*s)+' V'+(cy+10*s)+'" stroke="'+k+'" stroke-width="2.5"/>';
+    h += '<path d="M'+(x0-14)+' '+cy+' H'+(x0+30*s+14)+' M'+(x0-8)+' '+(cy-38*s)+' H'+(x0+12*s+8)+' M'+(x0-8)+' '+(cy+38*s)+' H'+(x0+12*s+8)+'" stroke="'+k+'" '+SLD+'/>';
+    return h;
+  }
+  // Detalj B rundt hjørnet i boringen (x = 0, r = 10), målestokk k2 px per mm
+  function flensDetalj(dx, dy, k2, k, fyll, id){
+    const P = pts => pts.map(([x,r]) => (dx+x*k2).toFixed(1)+','+(dy-(r-10)*k2).toFixed(1)).join(' ');
+    let h = '<clipPath id="'+id+'"><circle cx="'+dx+'" cy="'+dy+'" r="'+(6*k2)+'"/></clipPath><g clip-path="url(#'+id+')">';
+    h += '<polygon points="'+P(SN1)+'" fill="'+fyll+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    h += '<path d="M'+(dx+k2)+' '+dy+' V'+(dy+7*k2)+'" stroke="'+k+'" stroke-width="2.5"/></g>';
+    h += '<circle cx="'+dx+'" cy="'+dy+'" r="'+(6*k2)+'" fill="none" stroke="'+k+'" stroke-width="1.2"/>';
+    // fasmål
+    const fx = dx+0.5*k2, fy = dy-0.5*k2;
+    h += '<path d="M'+fx+' '+fy+' L'+(dx-3.5*k2)+' '+(dy-4.5*k2)+' h-34" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(fx,fy,1,1,k);
+    h += txt(dx-3.5*k2-80, dy-4.5*k2-6, '1 × 45°', k, 'font-weight="700"');
+    return h;
+  }
+  // Brakett (U-form), symmetrisk om x = 0
+  const BR = [[-40,0],[40,0],[40,50],[15,50],[15,20],[-15,20],[-15,50],[-40,50]];
+  const BR_V = [[-40,0],[0,0],[0,20],[-15,20],[-15,50],[-40,50]], BR_H = BR_V.map(([x,y]) => [-x,y]);
+  function prisme(pts, hull, ox, oy, s, d, fyll, kant, opac){
+    const P = (x,y,z) => [ox+x*s+z*0.5*s, oy-y*s-z*0.4*s];
+    const pp = (z) => pts.map(([x,y]) => P(x,y,z).map(v => v.toFixed(1)).join(',')).join(' ');
+    let h = '<g fill="'+fyll+'" stroke="'+kant+'" stroke-width="1.6" stroke-linejoin="round" fill-opacity="'+(opac||1)+'">';
+    h += '<polygon points="'+pp(d)+'"/>';
+    pts.forEach((a,i) => { const b = pts[(i+1)%pts.length]; h += '<polygon points="'+[P(a[0],a[1],0),P(b[0],b[1],0),P(b[0],b[1],d),P(a[0],a[1],d)].map(p => p.map(v => v.toFixed(1)).join(',')).join(' ')+'"/>'; });
+    h += '<polygon points="'+pp(0)+'"/>';
+    hull.forEach(([x,y]) => { const [hx,hy] = P(x,y,0); h += '<circle cx="'+hx+'" cy="'+hy+'" r="'+(4*s)+'" fill="#eef1f5" fill-opacity="1"/>'; });
+    return h + '</g>';
+  }
+
+  const SV = '#1b1b1b';   // svart strek på Fusion-tegningen
+  // Aksel: M12 × 20 med fas, gjengerille 3 × Ø9, Ø20 × 40, Ø30 × 10, Ø20 × 27 med fas 1 × 45°
+  const AK = [[0,5],[1,6],[20,6],[20,4.5],[23,4.5],[23,10],[63,10],[63,15],[73,15],[73,10],[99,10],[100,9]];
+  const KANTER = [[1,6],[20,6],[23,10],[63,15],[73,15],[99,10]];
+  function aksel(ox, oy, s, k, o){
+    o = o || {};
+    const X = x => ox+x*s, Y = r => oy-r*s;
+    const pts = AK.map(([x,r]) => X(x)+','+Y(r)).concat(AK.slice().reverse().map(([x,r]) => X(x)+','+Y(-r)));
+    let h = '<polygon points="'+pts.join(' ')+'" fill="'+(o.fyll||'none')+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    KANTER.forEach(([x,r]) => { h += '<path d="M'+X(x)+' '+Y(r)+' V'+Y(-r)+'" stroke="'+k+'" stroke-width="2.5"/>'; });
+    h += '<path d="M'+X(0.4)+' '+Y(4.9)+' H'+X(20)+' M'+X(0.4)+' '+Y(-4.9)+' H'+X(20)+'" stroke="'+k+'" stroke-width="1.2"/>';
+    h += '<path d="M'+(X(0)-12)+' '+oy+' H'+(X(100)+12)+'" stroke="'+(o.sl||k)+'" '+SLD+'/>';
+    if (o.m12) h += '<path d="M'+X(8)+' '+(Y(6)-2)+' L'+X(2)+' '+(Y(6)-36)+' h-36" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(X(8),Y(6)-2,X(8)-X(2),34,k)+txt(X(2)-36, Y(6)-41, 'M12', k, 'font-weight="700"');
+    if (o.tol){
+      const x = X(43);
+      h += '<path d="M'+x+' '+Y(10)+' V'+Y(-10)+'" stroke="'+o.tol+'" stroke-width="1.4"/>'+pilspiss(x,Y(10),0,-1,o.tol)+pilspiss(x,Y(-10),0,1,o.tol);
+      h += '<text transform="translate('+(x-9)+' '+oy+') rotate(-90)" text-anchor="middle" font-size="14" font-weight="700" fill="'+o.tol+'">Ø20 ±0,1</text>';
+    }
+    if (o.ra){
+      const x = X(50), y = Y(10), c = o.ra;
+      h += '<path d="M'+(x-7)+' '+(y-12)+' L'+x+' '+y+' L'+(x+14)+' '+(y-28)+' H'+(x+48)+' M'+(x-7)+' '+(y-12)+' H'+(x+6)+'" fill="none" stroke="'+c+'" stroke-width="1.6"/>'+txt(x+16, y-32, 'Ra 0,8', c, 'font-weight="700"');
+    }
+    return h;
+  }
+
+
+  const brakett = (bx, by, bs, k, sl) => {
+    let h = '<polygon points="'+BR.map(([x,y]) => (bx+x*bs)+','+(by-y*bs)).join(' ')+'" fill="none" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    [-27.5,27.5].forEach(x => { const X = bx+x*bs, Y = by-25*bs; h += '<circle cx="'+X+'" cy="'+Y+'" r="'+(4*bs)+'" fill="none" stroke="'+k+'" stroke-width="2.5"/><path d="M'+(X-16)+' '+Y+' H'+(X+16)+' M'+X+' '+(Y-16)+' V'+(Y+16)+'" stroke="'+k+'" stroke-width="1"/>'; });
+    const t = by-50*bs-22, b = by+22;
+    h += '<path d="M'+bx+' '+t+' V'+b+'" stroke="'+sl+'" stroke-width="1.6" stroke-dasharray="16 4 3 4"/>';
+    [t+2, t+7, b-2, b-7].forEach(y => { h += '<path d="M'+(bx-8)+' '+y+' H'+(bx+8)+'" stroke="'+sl+'" stroke-width="1.6"/>'; });
+    return h + txt(bx+18, t+8, 'Symmetrilinje', sl, 'font-weight="700"');
+  };
+  $('heroFig').innerHTML = flensFront(160, 135, 2.0, 'var(--ink)', { hullsirkel:true, mal:true, sl:'var(--r)' });
+  $('symFig').innerHTML = brakett(220, 205, 2.4, 'var(--ink)', 'var(--u)');
+  $('hsFig').innerHTML = flensFront(180, 150, 2.2, 'var(--ink)', { hullsirkel:true, mal:true, sl:'var(--r)' });
+  $('oppgFlens').innerHTML = flensFront(120, 130, 1.8, 'var(--ink)', { hullsirkel:true, mal:true, sl:'var(--r)' });
+  // Del 4: gradmål
+  $('grVinkel').innerHTML = (() => {
+    const k = 'var(--ink)', ox = 40, oy = 170, L = 220, H = L*Math.tan(Math.PI/6);
+    let h = '<polygon points="'+ox+','+oy+' '+(ox+L)+','+oy+' '+(ox+L)+','+(oy-H)+'" fill="none" stroke="'+k+'" stroke-width="3" stroke-linejoin="round"/>';
+    const r = 120, ax = ox+r*Math.cos(Math.PI/6), ay = oy-r*Math.sin(Math.PI/6);
+    h += '<path d="M'+(ox+r)+' '+oy+' A'+r+' '+r+' 0 0 0 '+ax+' '+ay+'" fill="none" stroke="var(--orange)" stroke-width="1.6"/>'+pilspiss(ox+r,oy-1,0,1,'var(--orange)')+pilspiss(ax,ay,-Math.sin(Math.PI/6),-Math.cos(Math.PI/6),'var(--orange)');
+    return h + txt(ox+r+8, oy-26, '30°', 'var(--orange)', 'font-weight="800" font-size="20"');
+  })();
+  $('grFas').innerHTML = (() => {
+    const k = 'var(--ink)';
+    let h = '<path d="M30 180 V40 H210 L250 80 V180" fill="none" stroke="'+k+'" stroke-width="3" stroke-linejoin="round"/>';
+    h += '<path d="M230 60 L180 20 h-60" stroke="var(--orange)" stroke-width="1.6" fill="none"/>'+pilspiss(230,60,50,40,'var(--orange)');
+    return h + txt(122, 15, '2 × 45°', 'var(--orange)', 'font-weight="800" font-size="20"');
+  })();
+
+  // Del 1: Mirror
+  fusjon($('fxSpeil'), { ws:'DESIGN', hl:'mirror', tips:'Mirror', tre:['Brakett v1','  Origin','  Bodies','*    Body1','  Sketches','    Sketch1'],
+    dlg:{ t:'MIRROR', r:[['Pattern Type','Bodies'],['Objects','1 selected'],['Mirror Plane','1 selected',1],['Operation','Join']] },
+    c: prisme(BR_V, [[-27.5,25]], 290, 300, 2.4, 20, '#c3c9d1', '#5b6470') +
+       (() => { const P = (y,z) => [290+z*1.2, 300-y*2.4-z*0.96].map(v => v.toFixed(1)).join(','); return '<polygon points="'+[P(-12,-14),P(64,-14),P(64,34),P(-12,34)].join(' ')+'" fill="#e8590c" fill-opacity=".14" stroke="#e8590c" stroke-width="2" stroke-dasharray="8 4"/>'; })() +
+       prisme(BR_H, [[27.5,25]], 290, 300, 2.4, 20, '#cfe3fb', '#1a73e8', .85) +
+       txt(190, 130, 'Halv del', '#3c3c3c', 'font-weight="700"') + txt(345, 130, 'Speilet (forhåndsvisning)', '#0a6ebd', 'font-weight="700"') +
+       txt(300, 360, 'Speilplan', '#e8590c', 'font-weight="700"') });
+
+  // Del 3: Circular Pattern
+  fusjon($('fxMonster'), { ws:'DESIGN', hl:'pattern', tips:'Circular Pattern', tre:['Flens v1','  Origin','  Bodies','    Body1','  Sketches','    Sketch1'],
+    dlg:{ t:'CIRCULAR PATTERN', r:[['Pattern Type','Features'],['Objects','Hole1'],['Axis','1 selected'],['Type','Full'],['Quantity','4',1]] },
+    c: (() => {
+      const cx = 360, cy = 236, s = 2.0;
+      let h = '<circle cx="'+cx+'" cy="'+cy+'" r="'+(50*s)+'" fill="#c3c9d1" stroke="#5b6470" stroke-width="2"/><circle cx="'+cx+'" cy="'+cy+'" r="'+(25*s)+'" fill="#d7dce2" stroke="#5b6470" stroke-width="2"/><circle cx="'+cx+'" cy="'+cy+'" r="'+(10*s)+'" fill="#eef1f5" stroke="#5b6470" stroke-width="2"/>';
+      h += '<path d="M'+cx+' '+(cy-38*s)+' A'+(38*s)+' '+(38*s)+' 0 0 1 '+(cx+38*s*0.94)+' '+(cy-38*s*0.34)+'" fill="none" stroke="#e8590c" stroke-width="2.5" stroke-dasharray="6 4"/>';
+      HULL.forEach(([a,b],i) => { h += '<circle cx="'+(cx+a*38*s)+'" cy="'+(cy+b*38*s)+'" r="'+(4.5*s)+'" fill="'+(i?'#cfe3fb':'#eef1f5')+'" stroke="'+(i?'#1a73e8':'#5b6470')+'" stroke-width="2.2"/>'; });
+      return h + txt(cx-70, cy-38*s-6, 'Hole1', '#3c3c3c', 'font-weight="700"') + '<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#e8590c"/>' + txt(cx-22, cy+40, 'Akse', '#e8590c', 'font-weight="700"');
+    })() });
+
+  const sideRiss = (x0, cy, s, k) => '<polygon points="'+[[0,-50],[0,50],[12,50],[12,25],[30,25],[30,-25],[12,-25],[12,-50]].map(([x,r]) => (x0+x*s)+','+(cy-r*s)).join(' ')+'" fill="none" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+  fusjon($('fxBase'), { ws:'DRAWING', hl:'base', tips:'Base View', tre:['Flens tegning','  Sheets','    Sheet1','*      Base view','*      Projected view'],
+    dlg:{ t:'DRAWING VIEW', r:[['Orientation','Front',1],['Style','Visible Edges'],['Scale','1:2']] },
+    c: flensFront(300, 236, 1.8, SV, { sl:'#0a6ebd' }) + sideRiss(440, 236, 1.8, SV) + '<path d="M410 236 H510" stroke="#0a6ebd" stroke-width="1.2" stroke-dasharray="14 3 2 3"/>' +
+       txt(270, 352, 'Base View', '#3c3c3c', 'font-weight="700"') + txt(420, 352, 'Projected View', '#3c3c3c', 'font-weight="700"') });
+  const bx = 430, by = 320, bs = 2.4;
+  const brTegn = (() => {
+    let h = '<polygon points="'+BR.map(([x,y]) => (bx+x*bs)+','+(by-y*bs)).join(' ')+'" fill="none" stroke="'+SV+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    [-27.5,27.5].forEach(x => { const X = bx+x*bs, Y = by-25*bs; h += '<circle cx="'+X+'" cy="'+Y+'" r="'+(4*bs)+'" fill="none" stroke="'+SV+'" stroke-width="2.5"/><path d="M'+(X-16)+' '+Y+' H'+(X+16)+' M'+X+' '+(Y-16)+' V'+(Y+16)+'" stroke="'+SV+'" stroke-width="1"/>'; });
+    const t = by-50*bs-22, b = by+22;
+    h += '<path d="M'+bx+' '+t+' V'+b+'" stroke="#0a6ebd" stroke-width="1.6" stroke-dasharray="16 4 3 4"/>';
+    [t+2, t+7, b-2, b-7].forEach(y => { h += '<path d="M'+(bx-8)+' '+y+' H'+(bx+8)+'" stroke="#0a6ebd" stroke-width="1.6"/>'; });
+    return h + txt(bx+18, t+8, 'Symmetrilinje', '#0a6ebd', 'font-weight="700"');
+  })();
+  fusjon($('fxSymmetri'), { ws:'DRAWING', hl:'centerline', tips:'Centerline', tre:['Brakett tegning','  Sheets','    Sheet1','*      Front view'], c: brTegn });
+
+  // Del 4: hullsirkel på tegningen
+  fusjon($('fxHullsirkel'), { ws:'DRAWING', hl:'cmpattern', tips:'Center Mark Pattern', tre:['Flens tegning','  Sheets','    Sheet1','*      Front view'],
+    c: flensFront(380, 236, 2.0, SV, { hullsirkel:true, mal:true, sl:'#0a6ebd' }) });
+
+
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
