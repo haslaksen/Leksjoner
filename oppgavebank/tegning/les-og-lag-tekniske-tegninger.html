@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oppgavebank · Les og lag tekniske tegninger</title>
+<style>
+/* Oppgavebank: ekstra oppgaver til Vg1 Verktøy og måling, leksjon 2 «Mål og les av tegningen». Tegningene er rene diagrammer (ingen data-bilde). */
+/* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{font-size:clamp(18px,0.6vw + 13px,24px)}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 64px}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin:0}
+h2{font-size:1.3rem;margin:0;display:flex;align-items:center;gap:.6rem}
+p{margin:0}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.2rem 0}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+button{font:700 .9rem/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+.tools{display:flex;gap:.5rem;flex-wrap:wrap}
+.navn{margin:.4rem 0 1.2rem}
+
+.oppg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,28px);display:grid;gap:16px;margin-top:18px;break-inside:avoid}
+.nr{display:inline-grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;flex:none}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body)}
+
+.tre{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kort{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;align-content:start;text-align:center}
+.kort svg{max-height:110px}
+.kort .valg{justify-content:center;flex-wrap:nowrap;gap:8px}
+.kort .valg>span{min-width:0;padding:.5rem .8rem}
+
+/* valg: sett ring rundt */
+.valg{display:flex;flex-wrap:wrap;gap:12px}
+.valg>span{position:relative;display:inline-grid;place-items:center;min-width:4.2rem;padding:.55rem 1rem;border:2px solid var(--line);border-radius:12px;font-weight:700;font-size:1.15rem}
+.valg>span:has(.fasit:not([hidden])){border-color:var(--r);background:var(--r-soft);box-shadow:0 0 0 4px var(--r)}
+.valg .fasit{position:absolute;top:-.8rem;right:-.6rem;background:var(--r);color:#fff;border-radius:50%;width:1.5rem;height:1.5rem;display:grid;place-items:center;font-size:.9rem}
+
+.to{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.to>div{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;justify-items:center}
+.to svg{max-height:160px}
+.bokstav{font:800 1.6rem/1 var(--body)}
+
+/* luker og svarruter */
+.luke{display:inline-block;min-width:5.5em;border-bottom:2px solid var(--ink);text-align:center;padding:0 .3em;margin:0 .2em}
+.fasit{color:var(--r);font-weight:700}
+.ordbank{display:flex;flex-wrap:wrap;gap:8px}
+.ordbank span{padding:.3rem .8rem;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700}
+.setning{font-size:1.15rem;line-height:2.4}
+
+.regn{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:20px;align-items:center}
+.linje{font:700 1.5rem/2.2 var(--mono)}
+.linje .luke{min-width:3em}
+
+.jn{width:100%;border-collapse:collapse;font-size:1.1rem}
+.jn td{border-bottom:1px solid var(--line);padding:10px 6px;vertical-align:middle}
+.jn td.ikon{width:3rem;font-size:1.8rem;text-align:center}
+.jn .valg{flex-wrap:nowrap;justify-content:flex-end}
+
+
+.del{display:flex;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:8px solid var(--orange);border-radius:18px;padding:14px 18px;margin-top:28px}
+.del h2{color:var(--orange);font-size:1.6rem}
+.steg{margin-top:.3rem} .steg span{display:inline-grid;place-items:center;width:1.4em;height:1.4em;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;font-size:.8em;margin-right:.3em}
+.del a{color:var(--blue);font-weight:700;overflow-wrap:anywhere}
+.qr{width:96px;height:96px;flex:none;image-rendering:pixelated;background:#fff;border-radius:6px}
+.merke{font:700 .75rem/1 var(--body);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:.35rem .7rem}
+.merke.sim{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.bilde{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.regning{font-size:1.15rem;line-height:2.2;text-align:center}
+.regning .luke{min-width:3.5em}
+.mikgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 18px}
+.mik .bilde{max-height:240px;object-fit:cover}
+.sum{width:100%;border-collapse:collapse}
+.sum td{padding:4px 0} .sum td:last-child{text-align:right;white-space:nowrap}
+.sum .luke{min-width:3.5em}
+.sum .tot td{border-top:2px solid var(--ink);padding-top:8px;font-weight:800}
+.tabell{width:100%;border-collapse:collapse}
+.tabell th,.tabell td{border:1px solid var(--line);padding:10px;text-align:left;height:2.6em}
+.tabell th{background:var(--bg)}
+@media (max-width:620px){.qr{display:none}}
+@media print{html{font-size:12px} .tools{display:none} body{background:#fff} .oppg{margin-top:8px;padding:10px;gap:8px;border-color:#999} .del{margin-top:10px;break-before:page} .del.forst{break-before:auto} .mik .bilde{max-height:150px} .bilde{max-height:170px;object-fit:contain}}
+</style>
+</head>
+<body>
+<style>
+.tegning{max-width:560px;margin:0 auto;width:100%}
+.tegning svg text{font-weight:700;fill:var(--ink)}
+.sporsmal{width:100%;border-collapse:collapse;font-size:1.1rem}
+.sporsmal td{border-bottom:1px solid var(--line);padding:10px 6px}
+.sporsmal td:last-child{text-align:right;width:9em}
+.sporsmal .luke{min-width:4em}
+.oppg .tabell.smal{max-width:420px}
+.mer{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.mer a{color:var(--blue);font-weight:700}
+@media print{.mer{display:none} .tegning{max-width:380px}}
+@media (max-width:620px){.jn td.ikon{display:none} .jn .valg{flex-wrap:wrap;gap:6px} .jn .valg>span{min-width:0;padding:.4rem .6rem;font-size:1rem} .sporsmal td:last-child{width:7em}}
+</style>
+<div class="wrap" id="oppgavetekst">
+
+<div class="top">
+  <div>
+    <p class="tag">Oppgavebank · Tegning og DAK · Vg1 · Leksjon 1–7</p>
+    <h1>Les og lag tekniske tegninger</h1>
+  </div>
+  <div class="tools">
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+  </div>
+</div>
+<p class="navn">Navn: ______________________</p>
+
+<div class="del forst">
+  <div>
+    <h2>Riss, linjer og målestokk</h2>
+    <div class="steg"><p><span>1</span> Alle mål er i <b>mm</b>.</p><p><span>2</span> 1:2 = halvparten så stor. 2:1 = dobbelt så stor.</p></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">1</span>Hva betyr linjen?</h2>
+ <table class="tabell">
+  <tr><th>Linje</th><th>Betyr</th></tr>
+  <tr><td>Tykk, heltrukket</td><td><span class="fasit" hidden>Synlig kant</span></td></tr>
+  <tr><td>Stiplet</td><td><span class="fasit" hidden>Skjult kant</span></td></tr>
+  <tr><td>Tynn strek-prikk</td><td><span class="fasit" hidden>Senterlinje / symmetrilinje</span></td></tr>
+  <tr><td>Tynn, heltrukket med piler</td><td><span class="fasit" hidden>Mållinje</span></td></tr>
+ </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">2</span>Målestokk. Regn ut.</h2>
+ <table class="sporsmal">
+  <tr><td>En del er 80 mm. Tegningen er 1:2. Hvor lang er streken?</td><td><span class="luke"><span class="fasit" hidden>40</span></span> mm</td></tr>
+  <tr><td>En del er 15 mm. Tegningen er 2:1. Hvor lang er streken?</td><td><span class="luke"><span class="fasit" hidden>30</span></span> mm</td></tr>
+  <tr><td>Streken er 50 mm. Tegningen er 1:5. Hvor lang er delen?</td><td><span class="luke"><span class="fasit" hidden>250</span></span> mm</td></tr>
+ </table>
+</div>
+
+<div class="del">
+  <div>
+    <h2>Tegningsark, symmetri og hull</h2>
+    <div class="steg"><p><span>1</span> Tittelfeltet står <b>nede til høyre</b>.</p><p><span>2</span> Hullsirkel: 360° delt på antall hull.</p></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">3</span>Les tittelfeltet</h2>
+ <div class="tegning"><svg viewBox="0 0 620 240" role="img" aria-label="Tittelfelt med skole, projeksjon, arkstørrelse, navn, tegningsnummer, revisjon, materiale, målestokk, generelle toleranser, tegnet av, kontrollert og ark">
+      <rect x="10" y="10" width="600" height="220" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+      <path d="M10 65 H610 M10 120 H610 M10 175 H610 M210 10 V230 M410 10 V230" stroke="var(--ink)" stroke-width="1.2"/>
+      <text x="20" y="28" font-size="12" fill="var(--muted)">Skole / firma</text>
+      <text x="20" y="54" font-size="20" font-weight="800" fill="var(--ink)">TIF Vg1</text>
+      <text x="220" y="28" font-size="12" fill="var(--muted)">Projeksjon (europeisk)</text>
+      <text x="420" y="28" font-size="12" fill="var(--muted)">Arkstørrelse</text>
+      <text x="420" y="54" font-size="20" font-weight="800" fill="var(--ink)">A4</text>
+      <text x="20" y="83" font-size="12" fill="var(--u)" font-weight="700">Navn på delen</text>
+      <text x="20" y="109" font-size="20" font-weight="800" fill="var(--ink)">Flens</text>
+      <text x="220" y="83" font-size="12" fill="var(--u)" font-weight="700">Tegningsnummer</text>
+      <text x="220" y="109" font-size="20" font-weight="800" fill="var(--ink)">014</text>
+      <text x="420" y="83" font-size="12" fill="var(--muted)">Revisjon</text>
+      <text x="420" y="109" font-size="20" font-weight="800" fill="var(--ink)">A</text>
+      <text x="20" y="138" font-size="12" fill="var(--i)" font-weight="700">Materiale</text>
+      <text x="20" y="164" font-size="20" font-weight="800" fill="var(--ink)">S355</text>
+      <text x="220" y="138" font-size="12" fill="var(--orange)" font-weight="700">Målestokk</text>
+      <text x="220" y="164" font-size="20" font-weight="800" fill="var(--ink)">1:2</text>
+      <text x="420" y="138" font-size="12" fill="var(--r)" font-weight="700">Generelle toleranser</text>
+      <text x="420" y="164" font-size="20" font-weight="800" fill="var(--ink)">ISO 2768-m</text>
+      <text x="20" y="193" font-size="12" fill="var(--muted)">Tegnet av / dato</text>
+      <text x="20" y="219" font-size="20" font-weight="800" fill="var(--ink)">HA 04.11.2026</text>
+      <text x="220" y="193" font-size="12" fill="var(--muted)">Kontrollert av</text>
+      <text x="220" y="219" font-size="20" font-weight="800" fill="var(--ink)">OH</text>
+      <text x="420" y="193" font-size="12" fill="var(--muted)">Ark</text>
+      <text x="420" y="219" font-size="20" font-weight="800" fill="var(--ink)">1 av 1</text>
+      <polygon points="305,44 328,38 328,62 305,56" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <circle cx="360" cy="50" r="12" fill="none" stroke="var(--ink)" stroke-width="2"/><circle cx="360" cy="50" r="6" fill="none" stroke="var(--ink)" stroke-width="2"/>
+      <path d="M298 50 H335 M341 50 H379 M360 34 V64" stroke="var(--ink)" stroke-width="1" stroke-dasharray="8 3 2 3"/>
+    </svg></div>
+ <table class="sporsmal">
+  <tr><td>Hva heter delen?</td><td><span class="luke"><span class="fasit" hidden>Flens</span></span></td></tr>
+  <tr><td>Hvilket materiale?</td><td><span class="luke"><span class="fasit" hidden>S355</span></span></td></tr>
+  <tr><td>Hvilken målestokk?</td><td><span class="luke"><span class="fasit" hidden>1:2</span></span></td></tr>
+  <tr><td>Hvor stort er arket?</td><td><span class="luke"><span class="fasit" hidden>A4</span></span></td></tr>
+  <tr><td>Hvilke generelle toleranser?</td><td><span class="luke"><span class="fasit" hidden>ISO 2768-m</span></span></td></tr>
+ </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">4</span>Hullsirkel</h2>
+ <table class="sporsmal">
+  <tr><td>6× Ø11 på Ø120. Hvor mange hull?</td><td><span class="luke"><span class="fasit" hidden>6</span></span></td></tr>
+  <tr><td>Hvor mange grader mellom to hull?</td><td><span class="luke"><span class="fasit" hidden>60</span></span> °</td></tr>
+  <tr><td>8× Ø9. Hvor mange grader mellom to hull?</td><td><span class="luke"><span class="fasit" hidden>45</span></span> °</td></tr>
+ </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">5</span>Ark</h2>
+ <p class="setning">Et A4-ark er <span class="luke"><span class="fasit" hidden>210</span></span> × <span class="luke"><span class="fasit" hidden>297</span></span> mm. To A4-ark er like store som ett <span class="luke"><span class="fasit" hidden>A3</span></span>-ark.</p>
+</div>
+
+<div class="del">
+  <div>
+    <h2>Snitt og detaljriss</h2>
+    <div class="steg"><p><span>1</span> Skravert = <b>materiale</b>.</p><p><span>2</span> Hull og luft er <b>ikke</b> skravert.</p></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">6</span>Stemmer det? Sett ring rundt.</h2>
+ <table class="jn">
+  <tr><td class="ikon" aria-hidden="true">▨</td><td>Skraveringen er tynne linjer på 45°.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+  <tr><td class="ikon" aria-hidden="true">⬜</td><td>Boringen i en flens skal skraveres i snittet.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
+  <tr><td class="ikon" aria-hidden="true">🔍</td><td>Detaljriss C (4:1) er fire ganger større enn delen.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+  <tr><td class="ikon" aria-hidden="true">✂️</td><td>Pilene på snittlinjen viser hvilken vei vi ser.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+ </table>
+</div>
+
+<div class="del">
+  <div>
+    <h2>Gjenger, hull og stykkliste</h2>
+    <div class="steg"><p><span>1</span> <b>M</b> = metrisk gjenge. Tallet er ytre diameter.</p><p><span>2</span> Stykklisten: posisjon, antall, navn, materiale.</p></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">7</span>Hva betyr det på tegningen?</h2>
+ <table class="tabell">
+  <tr><th>På tegningen</th><th>Betyr</th></tr>
+  <tr><td>M10</td><td><span class="fasit" hidden>Metrisk gjenge, Ø10 mm</span></td></tr>
+  <tr><td>M16 × 1,5</td><td><span class="fasit" hidden>Metrisk fingjenge Ø16, stigning 1,5 mm</span></td></tr>
+  <tr><td>M8 × 15 dyp</td><td><span class="fasit" hidden>Gjengehull M8, 15 mm dypt</span></td></tr>
+  <tr><td>Ø6 × 10 dyp</td><td><span class="fasit" hidden>Blindhull Ø6, 10 mm dypt</span></td></tr>
+  <tr><td>2 × Ø7</td><td><span class="fasit" hidden>Gjengerille: 2 mm bred, Ø7</span></td></tr>
+ </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">8</span>Les stykklisten</h2>
+ <table class="tabell">
+  <tr><th>Pos.</th><th>Antall</th><th>Navn</th><th>Materiale</th></tr>
+  <tr><td>1</td><td>1</td><td>Bunnplate</td><td>S235</td></tr>
+  <tr><td>2</td><td>2</td><td>Vinkel</td><td>S235</td></tr>
+  <tr><td>3</td><td>8</td><td>Sekskantskrue M6 × 16</td><td>Stål 8.8</td></tr>
+  <tr><td>4</td><td>8</td><td>Mutter M6</td><td>Stål 8</td></tr>
+ </table>
+ <table class="sporsmal">
+  <tr><td>Hvor mange skruer trengs?</td><td><span class="luke"><span class="fasit" hidden>8</span></span></td></tr>
+  <tr><td>Hvilken posisjon har vinkelen?</td><td><span class="luke"><span class="fasit" hidden>2</span></span></td></tr>
+  <tr><td>Hvor mange deler er det til sammen?</td><td><span class="luke"><span class="fasit" hidden>19</span></span></td></tr>
+ </table>
+</div>
+
+<div class="del">
+  <div>
+    <h2>Toleranser og overflate</h2>
+    <div class="steg"><p><span>1</span> Største mål = mål + øvre avvik. Minste mål = mål − nedre avvik.</p><p><span>2</span> Ingen toleranse ved målet? Bruk tittelfeltet (ISO 2768-m).</p></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">9</span>Største og minste mål</h2>
+ <table class="tabell">
+  <tr><th>Mål på tegningen</th><th>Største mål</th><th>Minste mål</th></tr>
+  <tr><td>Ø25 ±0,05</td><td><span class="fasit" hidden>25,05</span></td><td><span class="fasit" hidden>24,95</span></td></tr>
+  <tr><td>Ø25 +0,1 / −0,2</td><td><span class="fasit" hidden>25,1</span></td><td><span class="fasit" hidden>24,8</span></td></tr>
+  <tr><td>40 +0,3 / 0</td><td><span class="fasit" hidden>40,3</span></td><td><span class="fasit" hidden>40,0</span></td></tr>
+  <tr><td>Grensemål 12,05 / 11,95</td><td><span class="fasit" hidden>12,05</span></td><td><span class="fasit" hidden>11,95</span></td></tr>
+ </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">10</span>Mål uten toleranse (ISO 2768-m)</h2>
+ <table class="tabell">
+  <tr><th>Målet er</th><th>ISO 2768-m</th></tr>
+  <tr><td>over 0,5 til 6 mm</td><td>±0,1</td></tr>
+  <tr><td>over 6 til 30 mm</td><td>±0,2</td></tr>
+  <tr><td>over 30 til 120 mm</td><td>±0,3</td></tr>
+  <tr><td>over 120 til 400 mm</td><td>±0,5</td></tr>
+ </table>
+ <table class="sporsmal">
+  <tr><td>Målet 8. Toleranse?</td><td>±<span class="luke"><span class="fasit" hidden>0,2</span></span></td></tr>
+  <tr><td>Målet 150. Toleranse?</td><td>±<span class="luke"><span class="fasit" hidden>0,5</span></span></td></tr>
+  <tr><td>Målet 3. Største mål?</td><td><span class="luke"><span class="fasit" hidden>3,1</span></span> mm</td></tr>
+  <tr><td>Målet 60. Minste mål?</td><td><span class="luke"><span class="fasit" hidden>59,7</span></span> mm</td></tr>
+ </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">11</span>Basismål eller kjedemål?</h2>
+ <div class="tegning"><svg viewBox="0 0 300 200" role="img" aria-label="Kjedemål 20, 30, 30: hvert mål starter der det forrige slutter">
+      <rect x="20" y="110" width="260" height="60" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/><circle cx="72" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M72 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><circle cx="150" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M150 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><circle cx="228" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M228 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><path d="M20 106 V74 M72 106 V74" stroke="var(--ink)" stroke-width="1"/><path d="M20 80 H72" stroke="var(--ink)" stroke-width="1.2"/><path d="M20 80 l9 -3.5 v7 Z M72 80 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="46" y="75" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">20</text><path d="M72 106 V74 M150 106 V74" stroke="var(--ink)" stroke-width="1"/><path d="M72 80 H150" stroke="var(--ink)" stroke-width="1.2"/><path d="M72 80 l9 -3.5 v7 Z M150 80 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="111" y="75" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">30</text><path d="M150 106 V74 M228 106 V74" stroke="var(--ink)" stroke-width="1"/><path d="M150 80 H228" stroke="var(--ink)" stroke-width="1.2"/><path d="M150 80 l9 -3.5 v7 Z M228 80 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="189" y="75" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">30</text>
+      <text x="150" y="194" text-anchor="middle" font-size="14" fill="var(--muted)">Feilen hoper seg opp</text>
+    </svg></div>
+ <table class="sporsmal">
+  <tr><td>Kjedemålene har ±0,2 hver. Hvor stor kan feilen bli på det siste hullet?</td><td>±<span class="luke"><span class="fasit" hidden>0,6</span></span></td></tr>
+  <tr><td>Med basismål ±0,2. Hvor stor kan feilen bli på det siste hullet?</td><td>±<span class="luke"><span class="fasit" hidden>0,2</span></span></td></tr>
+  <tr><td>Hvilken målsetting er best når hullene skal passe?</td><td><span class="luke"><span class="fasit" hidden>Basismål</span></span></td></tr>
+ </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">12</span>Hvilken flate er glattest? Sett ring rundt.</h2>
+ <table class="jn">
+  <tr><td class="ikon" aria-hidden="true">√</td><td>Ra 6,3 · Ra 1,6 · Ra 0,4</td><td><div class="valg"><span>Ra 6,3</span><span>Ra 1,6</span><span>Ra 0,4<span class="fasit" hidden>✓</span></span></div></td></tr>
+ </table>
+</div>
+
+<div class="del">
+  <div>
+    <h2>Fra tegning til arbeid</h2>
+    <div class="steg"><p><span>1</span> Les tegningen i fast rekkefølge.</p><p><span>2</span> Mål og sjekk mot toleransene.</p></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">13</span>Sett i riktig rekkefølge. Skriv 1–5.</h2>
+ <table class="tabell">
+  <tr><th>Arbeid</th><th>Nr.</th></tr>
+  <tr><td>Drei delen</td><td><span class="fasit" hidden>3</span></td></tr>
+  <tr><td>Les tegningen</td><td><span class="fasit" hidden>1</span></td></tr>
+  <tr><td>Lever delen</td><td><span class="fasit" hidden>5</span></td></tr>
+  <tr><td>Hent riktig materiale</td><td><span class="fasit" hidden>2</span></td></tr>
+  <tr><td>Mål Ø20 ±0,1 med mikrometer</td><td><span class="fasit" hidden>4</span></td></tr>
+ </table>
+</div>
+
+<div class="del">
+  <div>
+    <h2>I Fusion</h2>
+    <div class="steg"><p><span>1</span> Lås skissen: alle linjer <b>svarte</b>.</p><p><span>2</span> Lagre tegningen som <b>PDF</b>.</p></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">14</span>Lag platen på PC</h2>
+ <div class="tegning"><svg viewBox="0 0 300 200" role="img" aria-label="Basismål 20, 50 og 80 målt fra venstre kant">
+      <rect x="20" y="110" width="260" height="60" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/><circle cx="72" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M72 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><circle cx="150" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M150 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><circle cx="228" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M228 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><path d="M20 106 V80 M72 106 V80" stroke="var(--ink)" stroke-width="1"/><path d="M20 86 H72" stroke="var(--ink)" stroke-width="1.2"/><path d="M20 86 l9 -3.5 v7 Z M72 86 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="46" y="81" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">20</text><path d="M20 106 V52 M150 106 V52" stroke="var(--ink)" stroke-width="1"/><path d="M20 58 H150" stroke="var(--ink)" stroke-width="1.2"/><path d="M20 58 l9 -3.5 v7 Z M150 58 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="85" y="53" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">50</text><path d="M20 106 V24 M228 106 V24" stroke="var(--ink)" stroke-width="1"/><path d="M20 30 H228" stroke="var(--ink)" stroke-width="1.2"/><path d="M20 30 l9 -3.5 v7 Z M228 30 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="124" y="25" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">80</text>
+      <path d="M20 100 V178" stroke="var(--orange)" stroke-width="4"/><text x="26" y="194" font-size="14" font-weight="700" fill="var(--orange)">Basis</text>
+      <text x="190" y="194" text-anchor="middle" font-size="14" fill="var(--muted)">Alle mål fra én kant</text>
+    </svg></div>
+ <p>Plate 100 × 23 × 10 mm med tre hull Ø6 (basismål 20, 50, 80). Kryss av.</p>
+ <table class="tabell">
+  <tr><th>Jeg har …</th><th>✓</th></tr>
+  <tr><td>laget skissen og låst den (alle linjer svarte)</td><td></td></tr>
+  <tr><td>laget platen med Extrude 10 mm</td><td></td></tr>
+  <tr><td>laget ett hull og kopiert det</td><td></td></tr>
+  <tr><td>lagt lengden i Parameters og endret den til 120</td><td></td></tr>
+  <tr><td>laget tegning på A4 med tittelfelt og basismål</td><td></td></tr>
+  <tr><td>lagret tegningen som PDF</td><td></td></tr>
+ </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">15</span>Exit-lapp</h2>
+ <p>Du får en ny tegning. Hva sjekker du først, og hvorfor?</p>
+ <div class="svar"><span class="fasit" hidden>Tittelfeltet: navn, materiale, målestokk og tegningsnummer. Da vet jeg hva jeg skal lage og av hva.</span></div>
+</div>
+
+<p class="mer">Leksjonene: <a href="../../vg1/konstruksjon/leksjon-1-tekniske-tegninger.html">Tegning og DAK 1–7</a> · <a href="https://simulatorer.vercel.app/toleranser.html">Toleranse-simulatoren</a></p>
+
+</div>
+
+<script>
+const fb = document.getElementById("fasitBtn");
+fb.addEventListener("click", () => {
+  const på = fb.getAttribute("aria-pressed") !== "true";
+  fb.setAttribute("aria-pressed", på);
+  fb.textContent = på ? "Skjul fasit" : "Vis fasit";
+  document.querySelectorAll(".fasit").forEach(e => e.hidden = !på);
+});
+</script>
+</body>
+</html>

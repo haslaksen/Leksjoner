@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tekniske tegninger Vg1 · Leksjon 4: Steg for steg</title>
+<title>Tegning og DAK Vg1 · Leksjon 5: Steg for steg</title>
 <style>
 /* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
 :root{
@@ -114,8 +114,8 @@ svg text{font-family:var(--body)}
 
 <div class="top">
   <div>
-    <p class="tag">Tekniske tegninger Vg1 · Leksjon 4</p>
-    <h1>Steg for steg: Gjenger, toleranser og overflate</h1>
+    <p class="tag">Tegning og DAK Vg1 · Leksjon 5</p>
+    <h1>Steg for steg: Gjenger og sammenstilling</h1>
   </div>
   <div class="tools">
     <button type="button" id="copyBtn">Kopier til OneNote</button>
@@ -141,33 +141,31 @@ svg text{font-family:var(--body)}
 </div>
 
 <div class="oppg">
- <h2><span class="nr">2</span>Toleranse. Regn ut.</h2>
-  <div class="regn">
-    <svg viewBox="0 0 200 120" aria-label="Målet Ø20 ±0,1"><rect x="20" y="30" width="160" height="60" fill="var(--blue-soft)" stroke="var(--ink)" stroke-width="3"/><path d="M100 30 V90" stroke="var(--orange)" stroke-width="2"/><text x="100" y="20" text-anchor="middle" font-size="18" font-weight="800" fill="var(--orange)">Ø20 ±0,1</text></svg>
-    <div>
-      <p class="linje">20 + 0,1 = <span class="luke"><span class="fasit" hidden>20,1</span></span></p>
-      <p class="linje">20 − 0,1 = <span class="luke"><span class="fasit" hidden>19,9</span></span></p>
-    </div>
-  </div>
+ <h2><span class="nr">2</span>Skriv ordene.</h2>
+  <p class="setning">Gjenger lager jeg med <span class="luke"><span class="fasit" hidden>Thread</span></span>. Delene setter jeg sammen med <span class="luke"><span class="fasit" hidden>Joint</span></span>.</p>
+  <div class="ordbank"><span>Joint</span><span>Thread</span></div>
 </div>
 
 <div class="oppg">
- <h2><span class="nr">3</span>Hva betyr tegnet? Sett ring rundt.</h2>
-  <div class="bilder">
-    <div class="kort"><svg viewBox="0 0 120 70"><path d="M30 40 L40 60 L60 15 H100" fill="none" stroke="var(--blue)" stroke-width="4"/><text x="64" y="12" font-size="13" font-weight="700" fill="var(--blue)">Ra 0,8</text></svg><div class="valg"><span>Overflate<span class="fasit" hidden>✓</span></span><span>Vinkel</span></div></div>
-    <div class="kort"><svg viewBox="0 0 120 70"><path d="M15 60 H105 M15 60 L95 15" stroke="var(--blue)" stroke-width="4"/><text x="70" y="52" font-size="16" font-weight="700" fill="var(--blue)">30°</text></svg><div class="valg"><span>Vinkel<span class="fasit" hidden>✓</span></span><span>Gjenge</span></div></div>
-    <div class="kort"><svg viewBox="0 0 120 70"><text x="60" y="45" text-anchor="middle" font-size="30" font-weight="800" fill="var(--blue)">M12</text></svg><div class="valg"><span>Gjenge<span class="fasit" hidden>✓</span></span><span>Overflate</span></div></div>
-  </div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">4</span>Tegningen sier Ø20 ±0,1. Er delen god nok? Sett ring rundt.</h2>
+ <h2><span class="nr">3</span>Stykklisten. Skriv tallet.</h2>
   <table class="jn">
-    <tr><td class="ikon">📏</td><td>Jeg måler 20,05</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
-    <tr><td class="ikon">📏</td><td>Jeg måler 19,8</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
-    <tr><td class="ikon">📏</td><td>Jeg måler 20,1</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td><b>Pos.</b></td><td><b>Antall</b></td><td><b>Navn</b></td></tr>
+    <tr><td>1</td><td>1</td><td>Flens</td></tr>
+    <tr><td>2</td><td>1</td><td>Aksel</td></tr>
+    <tr><td>3</td><td>4</td><td>Skrue M8</td></tr>
+  </table>
+  <p class="setning">Det er <span class="luke"><span class="fasit" hidden>4</span></span> skruer.</p>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">4</span>Stemmer det? Sett ring rundt Ja eller Nei.</h2>
+  <table class="jn">
+    <tr><td class="ikon">🔩</td><td>M12 betyr at gjengen er 12 mm tykk.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">🔗</td><td>Rigid betyr at delene sitter fast.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">📋</td><td>Stykklisten viser hvilke deler som er med.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
   </table>
 </div>
+
 
 </div>
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tekniske tegninger Vg1 · Leksjon 4: Gjenger, toleranser og overflate</title>
+<title>Tegning og DAK Vg1 · Leksjon 6: Toleranser og overflate</title>
 <style>
 /* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
 :root{
@@ -185,12 +185,15 @@ input[type=range]{accent-color:var(--orange)}
 .fig2 svg{display:block;width:100%;height:auto}
 .fig2 h3{font-size:1.1rem}
 @media (max-width:860px){.fig2{grid-template-columns:1fr}}
+.tab{border-collapse:collapse;width:100%;background:var(--surface)}
+.tab th,.tab td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+.tab th{background:var(--bg)}
 </style>
 </head>
 <body>
 <header class="top">
-  <div class="brand">Tekniske tegninger Vg1 · <span>Leksjon 4</span></div>
-  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#gjenge">Gjenger</a><a href="#angivelse">Gjengeangivelse</a><a href="#rille">Gjengerille</a><a href="#toleranse">Toleranse</a><a href="#overflate">Overflate</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="brand">Tegning og DAK Vg1 · <span>Leksjon 6</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#toleranse">Toleranse</a><a href="#angivelse">Skrivemåter</a><a href="#generell">Uten toleranse</a><a href="#basis">Basismål</a><a href="#overflate">Overflate</a><a href="#fxtoleranse">Tolerance</a><a href="#fxoverflate">Surface Texture</a><a href="#oppgaver">Oppgaver</a></nav>
   <div class="tools no-print">
     <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
     <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
@@ -201,14 +204,14 @@ input[type=range]{accent-color:var(--orange)}
 
 <header class="hero" id="start">
   <div>
-    <div class="tag">Tekniske tegninger Vg1 · Leksjon 4</div>
-    <h1 style="margin-top:10px">Gjenger, toleranser og <span style="color:var(--orange)">overflate</span></h1>
+    <div class="tag">Tegning og DAK Vg1 · Leksjon 6</div>
+    <h1 style="margin-top:10px">Toleranser og <span style="color:var(--orange)">overflate</span></h1>
     <p class="lead" style="margin-top:12px">Tegningen sier hvor nøyaktig og hvor glatt.</p>
     <ul class="goals">
-      <li><span class="n u">1</span><span><b>Gjenger</b> og <b>gjengeangivelse</b></span></li>
-      <li><span class="n i">2</span><span><b>Gjengerille</b></span></li>
-      <li><span class="n r">3</span><span><b>Toleranse</b>: hvor mye målet kan bomme</span></li>
-      <li><span class="n" style="color:var(--orange)">4</span><span><b>Overflatesymbol</b>: hvor glatt</span></li>
+      <li><span class="n u">1</span><span><b>Toleranse</b>: hvor mye målet kan bomme</span></li>
+      <li><span class="n i">2</span><span><b>Angivelse</b> av toleranser</span></li>
+      <li><span class="n r">3</span><span><b>Generelle toleranser</b> og <b>basismål</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span><b>Overflatesymbol</b>, og alt dette i Fusion</span></li>
     </ul>
   </div>
   <div>
@@ -218,17 +221,16 @@ input[type=range]{accent-color:var(--orange)}
   <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Mål</h3>
-      <p>PT6: «beskrive arbeidsoppgaver innenfor produksjon og tjenester basert på tegningsunderlag og prosedyrer» (lese gjenger, toleranser og overflatekrav). PT3/PT11: måleverktøy og tabeller (gjengetabell). Ingen PC trengs.</p>
+      <p>KST7: «bruke programmer for 2D- og 3D-dataassistert konstruksjon (DAK) og dataassistert produksjon (DAP) til grunnleggende tegning og dokumentasjon». PT6: «beskrive arbeidsoppgaver innenfor produksjon og tjenester basert på tegningsunderlag og prosedyrer». PT3: måleverktøy (skyvelære/mikrometer mot toleransen). Del 1–5 er uten PC. Del 6–7 i Fusion. Passninger (H7/g6) er Vg2-stoff.</p>
     </div>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
       <dl class="plan2">
-        <dt>0–5</dt><dd>Start: vis en bolt, en mutter og en aksel.</dd>
-        <dt>5–25</dt><dd>Del 1–3 · Gjenger, gjengeangivelse og gjengerille. Oppgave A.</dd>
-        <dt>25–40</dt><dd>Del 4 · Toleranse. Oppgave B og C.</dd>
-        <dt>40–45</dt><dd>Del 5 · Overflate.</dd>
-        <dt>45–55</dt><dd>Pause</dd>
-        <dt>55–85</dt><dd>Oppgave D og E. Mål en aksel med skyvelære og sjekk mot toleransen.</dd>
+        <dt>0–5</dt><dd>Start: mål en aksel med skyvelære. Er den 20,00?</dd>
+        <dt>5–30</dt><dd>Del 1–5 · Toleranse, skrivemåter, generelle toleranser, basismål og overflate. Oppgave A–F.</dd>
+        <dt>30–40</dt><dd>Del 6–7 · Tolerance og Surface Texture i Fusion.</dd>
+        <dt>40–55</dt><dd>Pause</dd>
+        <dt>55–85</dt><dd>Oppgave F–G: mål ekte deler og sjekk mot tegningen. Tegning av akselen i Fusion.</dd>
         <dt>85–90</dt><dd>Exit-lapp.</dd>
       </dl>
     </div>
@@ -236,57 +238,8 @@ input[type=range]{accent-color:var(--orange)}
   </div>
 </header>
 
-<section id="gjenge">
-  <div class="tag">Del 1 · Gjenger</div>
-  <h2>Gjenger holder delene sammen</h2>
-  <p class="lead">M12 × 1,75 sier alt om gjengen.</p>
-  <div class="fig" style="max-width:420px">
-    <svg data-bilde="bolt-og-mutter" data-alt="Bolt og mutter med gjenger" viewBox="0 0 360 140" role="img" aria-label="Bolt og mutter med gjenger">
-      <rect x="20" y="30" width="40" height="80" rx="3" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5"/>
-      <path d="M20 57 H60 M20 83 H60" stroke="var(--wire)" stroke-width="1.5"/>
-      <rect x="60" y="52" width="240" height="36" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5"/>
-      <path d="M170 52 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 M170 88 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5" fill="none" stroke="var(--wire)" stroke-width="1.5"/>
-      <path d="M176 52 l12 36 M188 52 l12 36 M200 52 l12 36 M212 52 l12 36 M236 52 l12 36 M260 52 l12 36 M272 52 l12 36 M284 52 l12 36" stroke="var(--wire)" stroke-width="1"/>
-      <rect x="220" y="30" width="34" height="80" rx="3" fill="var(--u-soft)" stroke="var(--wire)" stroke-width="2.5"/>
-      <path d="M220 57 H254 M220 83 H254" stroke="var(--wire)" stroke-width="1.5"/>
-      <text x="40" y="132" text-anchor="middle" font-size="14" fill="var(--muted)">Bolt</text>
-      <text x="237" y="132" text-anchor="middle" font-size="14" fill="var(--muted)">Mutter</text>
-    </svg>
-  </div>
-  <div class="regler">
-    <div><span class="ico">🔩</span><b>M = metrisk gjenge</b></div>
-    <div><span class="ico">📏</span><b>12 = ytre diameter i mm</b></div>
-    <div><span class="ico">🔄</span><b>1,75 = stigning i mm</b></div>
-  </div>
-  <details class="laerer no-print"><summary>Lærernotat</summary>M12 × 1,75: metrisk gjenge, ytre diameter 12 mm, stigning 1,75 mm (så langt mutteren flytter seg på én omdreining). Vanlig stigning skrives ofte ikke: M12. Gjengetabell finnes i Verkstedhåndboka.</details>
-</section>
-
-<section id="angivelse">
-  <div class="tag">Del 2 · Gjengeangivelse</div>
-  <h2>Slik ser gjenger ut på tegningen</h2>
-  <div class="fig2">
-    <div><h3>Utvendig gjenge (bolt)</h3><svg id="gjUt" viewBox="0 0 300 200" role="img" aria-label="Utvendig gjenge: tykk linje ytterst, tynn linje innenfor, merket M12"></svg></div>
-    <div><h3>Innvendig gjenge (hull)</h3><svg id="gjInn" viewBox="0 0 300 200" role="img" aria-label="Innvendig gjenge sett forfra: tykk sirkel inne, tynn tre fjerdedels sirkel ute, merket M12"></svg></div>
-  </div>
-  <div class="regler">
-    <div><span class="ico">✏️</span><b>Tykk linje: der du kan ta på</b></div>
-    <div><span class="ico">〰️</span><b>Tynn linje: bunnen av gjengen</b></div>
-    <div><span class="ico">🔩</span><b>M12 = metrisk, Ø12 mm</b></div>
-  </div>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Utvendig gjenge: tykk linje på ytre diameter, tynn linje på kjernediameteren. Innvendig gjenge forfra: tykk sirkel på borediameteren (Ø10,2 for M12), tynn tre fjerdedels sirkel på M12.</details>
-</section>
-
-<section id="rille">
-  <div class="tag">Del 3 · Gjengerille</div>
-  <h2>Gjengerillen gir plass der gjengen slutter</h2>
-  <div class="fig" style="max-width:820px">
-    <svg id="rilleFig" viewBox="0 0 640 250" role="img" aria-label="Aksel med gjengerille 3 × Ø9 mellom gjengen og den tykkere delen. Gjengestålet slutter i rillen"></svg>
-  </div>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Uten rille blir de siste gjengene halve, og mutteren går ikke helt inn til ansatsen. Rillen er litt mindre enn kjernediameteren (her Ø9 mot ca. Ø9,9 for M12). På tegningen skrives den ofte som bredde × diameter: 3 × Ø9.</details>
-</section>
-
 <section id="toleranse">
-  <div class="tag">Del 4 · Toleranse</div>
+  <div class="tag">Del 1 · Toleranse</div>
   <h2>Hvor mye kan målet bomme?</h2>
   <p class="lead">Ingen kan lage nøyaktig 20,000 mm. Toleransen sier hva som er godt nok.</p>
   <div class="fig" style="max-width:700px"><svg id="tolTegn" viewBox="0 0 420 200" role="img" aria-label="Aksel med målet Ø20 ±0,1"></svg></div>
@@ -295,6 +248,69 @@ input[type=range]{accent-color:var(--orange)}
   </div>
   <a class="simlink no-print" data-sim="toleranser"><span class="ico">📏</span><span><b>Prøv selv: Toleranser</b><small>Er delen godkjent eller ikke?</small></span><span class="pil">→</span></a>
   <details class="laerer no-print"><summary>Lærernotat</summary>Ø20 ±0,1: største mål 20,1, minste mål 19,9. Passninger (H7/g6) er Vg2-stoff.</details>
+</section>
+
+<section id="angivelse">
+  <div class="tag">Del 2 · Angivelse av toleranser</div>
+  <h2>Tre måter å skrive toleranse på</h2>
+  <p class="lead">Alle tre gir et største og et minste mål.</p>
+  <div class="fig" style="max-width:820px">
+    <svg viewBox="0 0 660 200" role="img" aria-label="Tre måter å skrive toleranse: Ø20 ±0,1, Ø20 +0,2 −0,1 og grensemål 20,1 og 19,9">
+      <path d="M220 15 V190 M440 15 V190" stroke="var(--line)" stroke-width="2"/>
+      <text x="110" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="var(--muted)">Likt opp og ned</text><text x="110" y="104" text-anchor="middle" font-size="30" font-weight="800" fill="var(--orange)">Ø20 ±0,1</text><text x="110" y="160" text-anchor="middle" font-size="15" fill="var(--ink)">Største mål <tspan font-weight="800">20,1</tspan></text><text x="110" y="186" text-anchor="middle" font-size="15" fill="var(--ink)">Minste mål <tspan font-weight="800">19,9</tspan></text>
+      <text x="330" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="var(--muted)">Ulikt opp og ned</text><text x="326" y="104" text-anchor="end" font-size="30" font-weight="800" fill="var(--orange)">Ø20</text><text x="330" y="84" font-size="18" font-weight="800" fill="var(--orange)">+0,2</text><text x="330" y="110" font-size="18" font-weight="800" fill="var(--orange)">−0,1</text><text x="330" y="160" text-anchor="middle" font-size="15" fill="var(--ink)">Største mål <tspan font-weight="800">20,2</tspan></text><text x="330" y="186" text-anchor="middle" font-size="15" fill="var(--ink)">Minste mål <tspan font-weight="800">19,9</tspan></text>
+      <text x="550" y="30" text-anchor="middle" font-size="15" font-weight="700" fill="var(--muted)">Grensemål</text><text x="550" y="82" text-anchor="middle" font-size="22" font-weight="800" fill="var(--orange)">20,1</text><path d="M520 92 H580" stroke="var(--orange)" stroke-width="1.5"/><text x="550" y="114" text-anchor="middle" font-size="22" font-weight="800" fill="var(--orange)">19,9</text><text x="550" y="160" text-anchor="middle" font-size="15" fill="var(--ink)">Største mål <tspan font-weight="800">20,1</tspan></text><text x="550" y="186" text-anchor="middle" font-size="15" fill="var(--ink)">Minste mål <tspan font-weight="800">19,9</tspan></text>
+    </svg>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Symmetrisk: ±0,1. Ulike avvik: øvre avvik står over, nedre under (+0,2 / −0,1). Grensemål: største og minste mål skrevet rett ut. Alle tre sier hvor stort og hvor lite målet kan være. ISO-toleranser som Ø20 H7 er Vg2-stoff.</details>
+</section>
+
+<section id="generell">
+  <div class="tag">Del 3 · Generelle toleranser</div>
+  <h2>Mål uten toleranse følger tittelfeltet</h2>
+  <p class="lead">Står det ingen toleranse ved målet, gjelder tittelfeltet.</p>
+  <div class="fig" style="max-width:640px">
+    <svg viewBox="0 0 480 140" role="img" aria-label="Målet 50 uten toleranse betyr 50 ±0,3 etter ISO 2768-m">
+      <rect x="30" y="70" width="250" height="44" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+      <path d="M30 40 H280 M30 30 V64 M280 30 V64" stroke="var(--ink)" stroke-width="1.2"/>
+      <path d="M30 40 l12 -4 v8 Z M280 40 l-12 -4 v8 Z" fill="var(--ink)"/>
+      <text x="155" y="33" text-anchor="middle" font-size="18" font-weight="800" fill="var(--ink)">50</text>
+      <text x="300" y="88" font-size="22" font-weight="800" fill="var(--orange)">= 50 ±0,3</text>
+      <text x="300" y="112" font-size="14" fill="var(--muted)">fra tittelfeltet: ISO 2768-m</text>
+    </svg>
+  </div>
+  <div class="tablewrap" style="max-width:640px"><table class="tab">
+    <tr><th>Målet er</th><th>ISO 2768-m</th></tr>
+    <tr><td>over 0,5 til 6 mm</td><td>±0,1</td></tr>
+    <tr><td>over 6 til 30 mm</td><td>±0,2</td></tr>
+    <tr><td>over 30 til 120 mm</td><td>±0,3</td></tr>
+    <tr><td>over 120 til 400 mm</td><td>±0,5</td></tr>
+  </table></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Generelle toleranser (ISO 2768) gjelder alle mål som ikke har egen toleranse. Klassen står i tittelfeltet: f (fin), m (middels), c (grov). Tabellen viser m, som er vanligst i verksted. Jo større mål, jo større toleranse.</details>
+</section>
+
+<section id="basis">
+  <div class="tag">Del 4 · Basismål</div>
+  <h2>Mål fra én kant</h2>
+  <p class="lead">Da hoper ikke feilene seg opp.</p>
+  <div class="fig2">
+    <div><h3>Kjedemål</h3>
+    <svg viewBox="0 0 300 200" role="img" aria-label="Kjedemål 20, 30, 30: hvert mål starter der det forrige slutter">
+      <rect x="20" y="110" width="260" height="60" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/><circle cx="72" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M72 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><circle cx="150" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M150 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><circle cx="228" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M228 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><path d="M20 106 V74 M72 106 V74" stroke="var(--ink)" stroke-width="1"/><path d="M20 80 H72" stroke="var(--ink)" stroke-width="1.2"/><path d="M20 80 l9 -3.5 v7 Z M72 80 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="46" y="75" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">20</text><path d="M72 106 V74 M150 106 V74" stroke="var(--ink)" stroke-width="1"/><path d="M72 80 H150" stroke="var(--ink)" stroke-width="1.2"/><path d="M72 80 l9 -3.5 v7 Z M150 80 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="111" y="75" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">30</text><path d="M150 106 V74 M228 106 V74" stroke="var(--ink)" stroke-width="1"/><path d="M150 80 H228" stroke="var(--ink)" stroke-width="1.2"/><path d="M150 80 l9 -3.5 v7 Z M228 80 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="189" y="75" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">30</text>
+      <text x="150" y="194" text-anchor="middle" font-size="14" fill="var(--muted)">Feilen hoper seg opp</text>
+    </svg></div>
+    <div><h3>Basismål</h3>
+    <svg viewBox="0 0 300 200" role="img" aria-label="Basismål 20, 50 og 80 målt fra venstre kant">
+      <rect x="20" y="110" width="260" height="60" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/><circle cx="72" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M72 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><circle cx="150" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M150 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><circle cx="228" cy="140" r="8" fill="none" stroke="var(--ink)" stroke-width="2"/><path d="M228 126 V154" stroke="var(--r)" stroke-width="1" stroke-dasharray="6 2 2 2"/><path d="M20 106 V80 M72 106 V80" stroke="var(--ink)" stroke-width="1"/><path d="M20 86 H72" stroke="var(--ink)" stroke-width="1.2"/><path d="M20 86 l9 -3.5 v7 Z M72 86 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="46" y="81" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">20</text><path d="M20 106 V52 M150 106 V52" stroke="var(--ink)" stroke-width="1"/><path d="M20 58 H150" stroke="var(--ink)" stroke-width="1.2"/><path d="M20 58 l9 -3.5 v7 Z M150 58 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="85" y="53" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">50</text><path d="M20 106 V24 M228 106 V24" stroke="var(--ink)" stroke-width="1"/><path d="M20 30 H228" stroke="var(--ink)" stroke-width="1.2"/><path d="M20 30 l9 -3.5 v7 Z M228 30 l-9 -3.5 v7 Z" fill="var(--ink)"/><text x="124" y="25" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">80</text>
+      <path d="M20 100 V178" stroke="var(--orange)" stroke-width="4"/><text x="26" y="194" font-size="14" font-weight="700" fill="var(--orange)">Basis</text>
+      <text x="190" y="194" text-anchor="middle" font-size="14" fill="var(--muted)">Alle mål fra én kant</text>
+    </svg></div>
+  </div>
+  <div class="regler">
+    <div><span class="ico">📍</span><b>Mål fra én kant (basis)</b></div>
+    <div><span class="ico">🚫</span><b>Samme mål skal ikke stå to ganger</b></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Kjedemål: hvert mål starter der det forrige slutter. Toleransene legges sammen: 3 mål med ±0,2 kan gi ±0,6 på siste hull. Basismål: alle mål fra samme kant (basis), så hvert hull er innenfor ±0,2. Velg basis der delen skal ligge an eller måles fra. Et mål som kan regnes ut fra andre mål skal ikke stå (dobbeltmål). Det kan stå i parentes som hjelpemål.</details>
 </section>
 
 <section id="overflate">
@@ -308,6 +324,23 @@ input[type=range]{accent-color:var(--orange)}
   <details class="laerer no-print"><summary>Lærernotat</summary>Ra er ruheten i mikrometer (µm). Lavt tall = glatt. Streken over haken betyr at materialet skal bearbeides (dreies, freses eller slipes). Ra 0,8 på lagerflaten, fordi den skal passe i en flens eller et lager.</details>
 </section>
 
+<section id="fxtoleranse">
+  <div class="tag">Del 6 · Toleranse i Fusion</div>
+  <h2>Legg toleranse på et mål</h2>
+  <p class="lead">Dobbeltklikk på målet. Velg Tolerance.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxToleranse" role="img" aria-label="Fusion Drawing: målet Ø20 får toleranse pluss minus 0,1"></svg></div></div>
+  <p class="vei">I Fusion Drawing: <b>DIMENSIONS</b> → <b>Dimension</b> → dobbeltklikk på målet → <b>Tolerance: Symmetric</b> → <b>0.1</b> (eller <b>Deviation</b> / <b>Limits</b>)</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>I Fusion: dobbeltklikk på målet, velg Tolerance «Symmetric» og skriv 0.1. Ø20 ±0,1: største mål 20,1, minste mål 19,9. Passninger (H7/g6) er Vg2-stoff.</details>
+</section>
+
+<section id="fxoverflate">
+  <div class="tag">Del 7 · Overflate i Fusion</div>
+  <h2>Sett overflatesymbolet på tegningen</h2>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxOverflate" role="img" aria-label="Fusion Drawing: Surface Texture setter Ra 0,8 på lagerflaten"></svg></div></div>
+  <p class="vei">I Fusion Drawing: <b>SYMBOLS</b> → <b>Surface Texture</b> → klikk på flaten → skriv Ra</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Ra er ruheten i mikrometer (µm). Lavt tall = glatt. Streken over haken betyr at materialet skal bearbeides (dreies, freses eller slipes). Ra 0,8 på lagerflaten, fordi den skal passe i flensen.</details>
+</section>
+
 <section id="oppgaver">
   <div class="toolbar">
     <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
@@ -316,15 +349,14 @@ input[type=range]{accent-color:var(--orange)}
   </div>
   <div class="sheet" id="sheet">
     <div>
-      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 4: Gjenger, toleranser og overflate</h2>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 6: Toleranser og overflate</h2>
       <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
     </div>
 
     <div>
       <h3>Del A · Fyll inn</h3>
-      <p>M12 er en gjenge med ytre diameter <span class="luke"><span class="fasit" hidden>12</span></span> mm.</p>
-      <p>Sporet der gjengen slutter, heter <span class="luke"><span class="fasit" hidden>gjengerille</span></span>.</p>
-      <p>Vinkler måles i <span class="luke"><span class="fasit" hidden>grader (°)</span></span>.</p>
+      <p>Toleransen sier hvor mye målet kan <span class="luke"><span class="fasit" hidden>avvike</span></span>.</p>
+      <p>Mål uten toleranse følger de generelle toleransene i <span class="luke"><span class="fasit" hidden>tittelfeltet</span></span>.</p>
       <p>Jo lavere Ra-tall, jo <span class="luke"><span class="fasit" hidden>glattere</span></span> flate.</p>
       <p>Haken √ på en tegning er et krav til <span class="luke"><span class="fasit" hidden>overflaten</span></span>.</p>
     </div>
@@ -334,8 +366,9 @@ input[type=range]{accent-color:var(--orange)}
       <div class="tablewrap"><table>
         <tr><th>Mål på tegningen</th><th>Største mål</th><th>Minste mål</th></tr>
         <tr><td>Ø20 ±0,1</td><td class="blank"><span class="fasit" hidden>20,1</span></td><td class="blank"><span class="fasit" hidden>19,9</span></td></tr>
-        <tr><td>Ø30 ±0,2</td><td class="blank"><span class="fasit" hidden>30,2</span></td><td class="blank"><span class="fasit" hidden>29,8</span></td></tr>
         <tr><td>50 ±0,05</td><td class="blank"><span class="fasit" hidden>50,05</span></td><td class="blank"><span class="fasit" hidden>49,95</span></td></tr>
+        <tr><td>Ø30 +0,2 / −0,1</td><td class="blank"><span class="fasit" hidden>30,2</span></td><td class="blank"><span class="fasit" hidden>29,9</span></td></tr>
+        <tr><td>Grensemål 40,2 / 39,8</td><td class="blank"><span class="fasit" hidden>40,2</span></td><td class="blank"><span class="fasit" hidden>39,8</span></td></tr>
       </table></div>
     </div>
 
@@ -351,26 +384,47 @@ input[type=range]{accent-color:var(--orange)}
     </div>
 
     <div>
-      <h3>Del D · Hva betyr det på tegningen?</h3>
+      <h3>Del D · Mål uten toleranse (ISO 2768-m)</h3>
+      <p>Tittelfeltet sier ISO 2768-m. Bruk tabellen i del 3.</p>
       <div class="tablewrap"><table>
-        <tr><th>På tegningen</th><th>Betyr</th></tr>
-        <tr><td>M12</td><td class="blank"><span class="fasit" hidden>Metrisk gjenge, Ø12 mm</span></td></tr>
-        <tr><td>3 × Ø9 (ved gjengen)</td><td class="blank"><span class="fasit" hidden>Gjengerille, 3 mm bred, Ø9</span></td></tr>
-        <tr><td>30°</td><td class="blank"><span class="fasit" hidden>Vinkelmål, 30 grader</span></td></tr>
-        <tr><td>1 × 45°</td><td class="blank"><span class="fasit" hidden>Fas: 1 mm skrådd av i 45°</span></td></tr>
-        <tr><td>√ Ra 0,8</td><td class="blank"><span class="fasit" hidden>Overflaten skal være glatt (bearbeidet), ruhet Ra 0,8</span></td></tr>
+        <tr><th>Mål på tegningen</th><th>Toleranse</th><th>Største mål</th><th>Minste mål</th></tr>
+        <tr><td>50</td><td class="blank"><span class="fasit" hidden>±0,3</span></td><td class="blank"><span class="fasit" hidden>50,3</span></td><td class="blank"><span class="fasit" hidden>49,7</span></td></tr>
+        <tr><td>12</td><td class="blank"><span class="fasit" hidden>±0,2</span></td><td class="blank"><span class="fasit" hidden>12,2</span></td><td class="blank"><span class="fasit" hidden>11,8</span></td></tr>
+        <tr><td>4</td><td class="blank"><span class="fasit" hidden>±0,1</span></td><td class="blank"><span class="fasit" hidden>4,1</span></td><td class="blank"><span class="fasit" hidden>3,9</span></td></tr>
       </table></div>
     </div>
 
+    <div>
+      <h3>Del E · Basismål og kjedemål</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Basismål måles fra én kant.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Med kjedemål kan feilen hope seg opp.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Det er lurt å skrive samme mål to ganger.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
 
     <div>
-      <h3>Del E · Les akseltegningen</h3>
+      <h3>Del F · Les akseltegningen</h3>
       <svg id="oppgAksel" class="oppfig" viewBox="0 0 400 200" role="img" aria-label="Akseltegning med M12, Ø20 ±0,1 og Ra 0,8"></svg>
       <ol>
-        <li>Hvilken gjenge har akselen? <span class="luke"><span class="fasit" hidden>M12</span></span></li>
         <li>Hvilken diameter har toleranse? <span class="luke"><span class="fasit" hidden>Ø20</span></span></li>
+        <li>Hva er største og minste mål for den? <span class="luke"><span class="fasit" hidden>20,1 og 19,9</span></span></li>
         <li>Hvor glatt skal den flaten være? <span class="luke"><span class="fasit" hidden>Ra 0,8</span></span></li>
       </ol>
+    </div>
+
+    <div>
+      <h3>Del G · På PC</h3>
+      <p>Lag tegning av akselen fra leksjon 5. Kryss av.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Jeg har …</th><th>✓</th></tr>
+        <tr><td>laget Base View av akselen</td><td class="blank x"></td></tr>
+        <tr><td>satt målet Ø20 med Tolerance ±0,1</td><td class="blank x"></td></tr>
+        <tr><td>satt Surface Texture Ra 0,8 på lagerflaten</td><td class="blank x"></td></tr>
+        <tr><td>skrevet ISO 2768-m i tittelfeltet</td><td class="blank x"></td></tr>
+        <tr><td>Ekstra: skrevet ett mål som grensemål (Limits)</td><td class="blank x"></td></tr>
+      </table></div>
     </div>
 
     <div>
@@ -408,6 +462,106 @@ input[type=range]{accent-color:var(--orange)}
   const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
     ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
   });
+  // ---------- Fusion-vinduet ----------
+  // Tegnet etter Autodesk Fusion (Design og Drawing). Faste lyse farger som i Fusion, også i mørk modus.
+  const FXI = {
+    sketch:'<rect x="3" y="5" width="15" height="15" fill="none" stroke="#5b6470" stroke-width="1.5"/><path d="M10 20 L21 6 l2.5 2 L12.5 22 z" fill="#f6c344" stroke="#5b6470"/>',
+    extrude:'<path d="M3 19 L12 23 L22 19 L13 15 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M12.5 14 V3 M8.5 7 l4 -4 l4 4" fill="none" stroke="#1a73e8" stroke-width="2"/>',
+    revolve:'<path d="M4 20 V10 H9 V6 H13 V20 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M2 22 H23" stroke="#5b6470" stroke-dasharray="3 2"/><path d="M18 5 a5 5 0 1 1 -1 9" fill="none" stroke="#1a73e8" stroke-width="2"/><path d="M14 12 l3 2.5 l2 -3.5" fill="none" stroke="#1a73e8" stroke-width="2"/>',
+    hole:'<path d="M2 15 L12 19 L23 15 L13 11 Z" fill="#cfd6de" stroke="#5b6470"/><ellipse cx="12.5" cy="15" rx="4" ry="2" fill="#fff" stroke="#1a73e8" stroke-width="1.8"/><path d="M12.5 2 V12" stroke="#1a73e8" stroke-width="2"/>',
+    thread:'<rect x="4" y="9" width="17" height="11" fill="#cfd6de" stroke="#5b6470"/><path d="M4 9 l2 -3 l2 3 l2 -3 l2 3 l2 -3 l2 3 l2 -3 l2 3 l1 -2" fill="none" stroke="#1a73e8" stroke-width="1.6"/>',
+    pattern:'<circle cx="12.5" cy="12.5" r="8" fill="none" stroke="#5b6470" stroke-dasharray="3 2"/><g fill="#1a73e8"><circle cx="12.5" cy="4.5" r="2.6"/><circle cx="20.5" cy="12.5" r="2.6"/><circle cx="12.5" cy="20.5" r="2.6"/><circle cx="4.5" cy="12.5" r="2.6"/></g>',
+    mirror:'<path d="M3 20 V6 L10 13 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M22 20 V6 L15 13 Z" fill="#cfe3fb" stroke="#1a73e8"/><path d="M12.5 2 V23" stroke="#e8590c" stroke-width="1.5" stroke-dasharray="3 2"/>',
+    joint:'<rect x="2" y="12" width="10" height="9" fill="#cfd6de" stroke="#5b6470"/><rect x="13" y="4" width="10" height="9" fill="#cfd6de" stroke="#5b6470"/><circle cx="12.5" cy="12.5" r="3.2" fill="#f6c344" stroke="#5b6470"/>',
+    component:'<path d="M4 8 L12.5 4 L21 8 V17 L12.5 21 L4 17 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M4 8 L12.5 12 L21 8 M12.5 12 V21" fill="none" stroke="#5b6470"/>',
+    base:'<rect x="2" y="3" width="21" height="19" fill="#fff" stroke="#5b6470"/><rect x="6" y="8" width="9" height="9" fill="#cfd6de" stroke="#5b6470"/>',
+    projected:'<rect x="2" y="3" width="21" height="19" fill="#fff" stroke="#5b6470"/><rect x="4" y="12" width="7" height="7" fill="#cfd6de" stroke="#5b6470"/><rect x="14" y="12" width="7" height="7" fill="#fff" stroke="#1a73e8"/><path d="M11 15.5 H14" stroke="#1a73e8"/>',
+    section:'<rect x="4" y="5" width="17" height="15" fill="#fff" stroke="#5b6470"/><path d="M4 12 L11 5 M4 19 L18 5 M9 20 L21 8 M16 20 L21 15" stroke="#5b6470"/><path d="M12.5 1 V24" stroke="#1a73e8" stroke-width="2" stroke-dasharray="4 2"/>',
+    detail:'<circle cx="10" cy="10" r="7" fill="#fff" stroke="#1a73e8" stroke-width="2"/><path d="M15 15 L22 22" stroke="#5b6470" stroke-width="3"/>',
+    centerline:'<path d="M2 12.5 H23" stroke="#1a73e8" stroke-width="2" stroke-dasharray="7 2 2 2"/><path d="M5 7 H20 M5 18 H20" stroke="#5b6470"/>',
+    centermark:'<path d="M12.5 2 V23 M2 12.5 H23" stroke="#1a73e8" stroke-width="1.6" stroke-dasharray="6 2 2 2"/><circle cx="12.5" cy="12.5" r="5" fill="none" stroke="#5b6470"/>',
+    cmpattern:'<circle cx="12.5" cy="12.5" r="8" fill="none" stroke="#1a73e8" stroke-width="1.6" stroke-dasharray="5 2 1 2"/><g fill="#fff" stroke="#5b6470"><circle cx="12.5" cy="4.5" r="2.4"/><circle cx="12.5" cy="20.5" r="2.4"/><circle cx="4.5" cy="12.5" r="2.4"/><circle cx="20.5" cy="12.5" r="2.4"/></g>',
+    dim:'<path d="M3 16 H22 M3 11 V21 M22 11 V21" stroke="#5b6470"/><path d="M3 16 l4 -2 v4z M22 16 l-4 -2 v4z" fill="#1a73e8"/><text x="7" y="12" font-size="7.5" fill="#1a73e8" font-family="Arial" font-weight="700">50</text>',
+    surface:'<path d="M3 13 L7.5 21 L14 4 H23" fill="none" stroke="#1a73e8" stroke-width="2"/>',
+    text:'<text x="6" y="20" font-size="18" font-weight="700" fill="#5b6470" font-family="Arial">A</text>',
+    fcf:'<rect x="2" y="7" width="21" height="11" fill="#fff" stroke="#5b6470"/><path d="M9 7 V18" stroke="#5b6470"/><circle cx="5.5" cy="12.5" r="2.4" fill="none" stroke="#1a73e8"/>',
+    pdf:'<path d="M5 2 H16 L21 7 V23 H5 Z" fill="#fff" stroke="#5b6470"/><text x="6" y="18" font-size="7" font-weight="700" fill="#d93025" font-family="Arial">PDF</text>',
+    gr:'<rect x="4" y="4" width="17" height="17" rx="3" fill="#e3e7ec" stroke="#b9c0c8"/>'
+  };
+  const DESIGN_GRP = (hl) => [['CREATE',['sketch','extrude','revolve','hole','thread','pattern','mirror']],['MODIFY',['gr','gr']],['ASSEMBLE',['component','joint']],['CONSTRUCT',['gr']],['INSPECT',['gr']]];
+  const DRAWING_GRP = () => [['CREATE',['base','projected','section','detail']],['MODIFY',['gr','gr']],['GEOMETRY',['centermark','cmpattern','centerline']],['DIMENSIONS',['dim']],['TEXT',['text']],['SYMBOLS',['surface','fcf']],['EXPORT',['pdf']]];
+  let fxNr = 0;
+  // o = {ws:'DESIGN'|'DRAWING', hl:'ikon', tips:'Navn', tre:['Navn', '*uthevet'], dlg:{t, r:[[etikett, verdi, uthevet]], ok}, c:'innhold (x 150–800, y 92–380)'}
+  function fusjon(svg, o){
+    const id = 'fx' + (++fxNr), tegn = o.ws === 'DRAWING';
+    let h = '<defs><linearGradient id="'+id+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe2ea"/></linearGradient>'+
+      '<pattern id="'+id+'s" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V7" stroke="#222" stroke-width="1"/></pattern></defs>';
+    h += '<g font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#3c3c3c">';
+    h += '<rect width="800" height="380" fill="#fff"/><rect width="800" height="30" fill="#f2f3f4"/><path d="M0 30.5 H800" stroke="#d6dadf"/>';
+    h += '<rect x="0" y="0" width="160" height="30" fill="#fff"/><path d="M160.5 0 V30" stroke="#d6dadf"/>';
+    h += '<rect x="10" y="7" width="16" height="16" rx="3" fill="'+(tegn ? '#3a9a5b' : '#2b78c5')+'"/><text x="34" y="20" font-weight="700">'+o.ws+' ▾</text>';
+    if (!tegn){
+      let x = 172;
+      ['SOLID','SURFACE','MESH','SHEET METAL','PLASTIC','UTILITIES','MANAGE'].forEach((t,i) => {
+        const w = t.length*7.4 + 18;
+        if (i===0) h += '<rect x="'+(x-2)+'" y="0" width="'+w+'" height="30" fill="#fff"/><path d="M'+(x-2)+' 28.5 h'+w+'" stroke="#0696d7" stroke-width="3"/>';
+        h += '<text x="'+(x+7)+'" y="20" font-size="11" font-weight="700" fill="'+(i===0?'#0a6ebd':'#666')+'">'+t+'</text>'; x += w;
+      });
+    }
+    // båndet med knapper
+    const grupper = tegn ? DRAWING_GRP() : DESIGN_GRP();
+    let x = 8, hlx = null;
+    grupper.forEach(([navn, ks]) => {
+      const bredde = Math.max(ks.length*32, navn.length*7 + 22), start = x + (bredde - ks.length*32)/2;
+      ks.forEach((k,i) => {
+        const bx = start + i*32;
+        h += '<g transform="translate('+(bx+2)+' 37) scale(1.12)">'+FXI[k]+'</g>';
+        if (k === o.hl){ hlx = bx; h += '<rect x="'+(bx-1)+'" y="34" width="34" height="34" rx="4" fill="none" stroke="#e8590c" stroke-width="3"/>'; }
+      });
+      h += '<text x="'+(x+bredde/2)+'" y="84" text-anchor="middle" font-size="10" font-weight="700" fill="#666">'+navn+' ▾</text>';
+      x += bredde + 12; h += '<path d="M'+(x-6)+'.5 36 V86" stroke="#e3e6ea"/>';
+    });
+    h += '<path d="M0 92.5 H800" stroke="#d6dadf"/>';
+    // nettleser til venstre og arbeidsflaten
+    h += '<rect x="0" y="93" width="150" height="287" fill="#fafafa"/><path d="M150.5 93 V380" stroke="#d6dadf"/><text x="10" y="112" font-size="10.5" font-weight="700" fill="#666">BROWSER</text>';
+    (o.tre||[]).forEach((t,i) => {
+      const ny = t[0]==='*', tx = ny ? t.slice(1) : t, inn = (tx.match(/^ +/)||[''])[0].length;
+      if (ny) h += '<rect x="6" y="'+(119+i*21)+'" width="138" height="19" rx="3" fill="#e5f1fb"/>';
+      h += '<text x="'+(12+inn*8)+'" y="'+(133+i*21)+'" font-size="11.5" '+(ny?'font-weight="700" fill="#0a6ebd"':'')+'>'+tx.trim()+'</text>';
+    });
+    if (tegn) h += '<rect x="151" y="93" width="649" height="287" fill="#8d959e"/><rect x="165" y="100" width="620" height="272" fill="#fff" stroke="#5b6470"/>';
+    else h += '<rect x="151" y="93" width="649" height="287" fill="url(#'+id+'g)"/><g transform="translate(742 104)"><polygon points="0,8 18,0 36,8 18,16" fill="#eef1f5" stroke="#8a929c"/><polygon points="0,8 18,16 18,38 0,30" fill="#dfe4ea" stroke="#8a929c"/><polygon points="18,16 36,8 36,30 18,38" fill="#e8ecf1" stroke="#8a929c"/><text x="4" y="27" font-size="6" fill="#5b6470">FRONT</text></g>';
+    h += (o.c||'').replace(/#SKR/g, 'url(#'+id+'s)');
+    if (o.dlg){
+      const d = o.dlg, dx = 572, dw = 220, rh = 25;
+      h += '<g><rect x="'+dx+'" y="100" width="'+dw+'" height="'+(64+d.r.length*rh)+'" rx="3" fill="#fff" stroke="#b9c0c8"/><rect x="'+dx+'" y="100" width="'+dw+'" height="24" fill="#f2f3f4"/><text x="'+(dx+10)+'" y="117" font-weight="700" font-size="11.5">'+d.t+'</text>';
+      d.r.forEach((r,i) => {
+        const y = 130 + i*rh;
+        if (r[2]) h += '<rect x="'+(dx+1)+'" y="'+(y-2)+'" width="'+(dw-2)+'" height="'+rh+'" fill="#fff0e5"/>';
+        h += '<text x="'+(dx+10)+'" y="'+(y+14)+'" font-size="11">'+r[0]+'</text><rect x="'+(dx+102)+'" y="'+(y+1)+'" width="108" height="18" rx="2" fill="#fff" stroke="'+(r[2]?'#e8590c':'#c3c9d0')+'" stroke-width="'+(r[2]?2:1)+'"/><text x="'+(dx+107)+'" y="'+(y+14)+'" font-size="11">'+r[1]+'</text>';
+      });
+      const fy = 136 + d.r.length*rh;
+      h += '<rect x="'+(dx+dw-130)+'" y="'+fy+'" width="56" height="20" rx="2" fill="#0696d7"/><text x="'+(dx+dw-102)+'" y="'+(fy+14)+'" text-anchor="middle" fill="#fff" font-weight="700" font-size="11">'+(d.ok||'OK')+'</text>';
+      h += '<rect x="'+(dx+dw-66)+'" y="'+fy+'" width="56" height="20" rx="2" fill="#fff" stroke="#b9c0c8"/><text x="'+(dx+dw-38)+'" y="'+(fy+14)+'" text-anchor="middle" font-size="11">Cancel</text></g>';
+    }
+    if (hlx !== null && o.tips){
+      const w = o.tips.length*7 + 16, tx = Math.min(Math.max(hlx+17-w/2, 4), 796-w);
+      h += '<rect x="'+tx+'" y="72" width="'+w+'" height="20" rx="3" fill="#2d2d2d"/><text x="'+(tx+w/2)+'" y="86" text-anchor="middle" fill="#fff" font-weight="700" font-size="11.5">'+o.tips+'</text>';
+    }
+    svg.setAttribute('viewBox','0 0 800 380');
+    svg.innerHTML = h + '</g>';
+  }
+
+  // Sylindre etter hverandre langs en akse, sett litt fra høyre (3D-inntrykk). segs = [[x0, x1, r], ...] i mm.
+  function sylindre(segs, ox, oy, s, fill, kant, ende){
+    let h = '';
+    segs.forEach(([a,b,r]) => {
+      const X0 = ox+a*s, X1 = ox+b*s, R = r*s, e = R*0.28;
+      h += '<path d="M'+X0+' '+(oy-R)+' L'+X1+' '+(oy-R)+' A'+e+' '+R+' 0 0 1 '+X1+' '+(oy+R)+' L'+X0+' '+(oy+R)+' A'+e+' '+R+' 0 0 1 '+X0+' '+(oy-R)+' Z" fill="'+fill+'" stroke="'+kant+'" stroke-width="1.6"/>';
+      h += '<ellipse cx="'+X1+'" cy="'+oy+'" rx="'+e+'" ry="'+R+'" fill="'+(ende||fill)+'" stroke="'+kant+'" stroke-width="1.6"/>';
+    });
+    return h;
+  }
   // ---------- Tegninger (mål i mm) ----------
   const SLD = 'stroke-width="1.2" stroke-dasharray="14 3 2 3" fill="none"';
   const pil = (x, y) => '<path d="M'+x+' '+y+' v34" stroke="#e8590c" stroke-width="4"/><path d="M'+(x-9)+' '+(y+28)+' l9 12 l9 -12" fill="none" stroke="#e8590c" stroke-width="4"/>';
@@ -503,50 +657,14 @@ input[type=range]{accent-color:var(--orange)}
   }
 
 
-  $('heroFig').innerHTML = aksel(40, 110, 3.1, 'var(--ink)', { m12:true, tol:'var(--orange)', ra:'var(--u)', sl:'var(--r)' }) +
-    '<rect x="'+(40+20*3.1)+'" y="'+(110-6*3.1)+'" width="'+(3*3.1)+'" height="'+(12*3.1)+'" fill="var(--orange)" fill-opacity=".25"/>';
+  $('heroFig').innerHTML = aksel(40, 110, 3.1, 'var(--ink)', { tol:'var(--orange)', ra:'var(--u)', sl:'var(--r)' });
   $('tolTegn').innerHTML = aksel(40, 100, 3.4, 'var(--ink)', { tol:'var(--orange)', sl:'var(--r)' });
   $('raTegn').innerHTML = aksel(40, 120, 3.4, 'var(--ink)', { ra:'var(--u)', sl:'var(--r)' });
   $('oppgAksel').innerHTML = aksel(40, 110, 3.1, 'var(--ink)', { m12:true, tol:'var(--orange)', ra:'var(--u)', sl:'var(--r)' });
-  // Del 2: gjengeangivelse
-  $('gjUt').innerHTML = (() => {
-    const ox = 30, oy = 100, s = 6, k = 'var(--ink)';
-    let h = '<path d="M'+ox+' '+(oy-6*s)+' H'+(ox+40*s)+' M'+ox+' '+(oy+6*s)+' H'+(ox+40*s)+' M'+(ox+40*s)+' '+(oy-6*s)+' V'+(oy+6*s)+'" stroke="'+k+'" stroke-width="3"/>';
-    h += '<path d="M'+ox+' '+(oy-6*s)+' V'+(oy+6*s)+'" stroke="'+k+'" stroke-width="3"/>';
-    h += '<path d="M'+ox+' '+(oy-4.9*s)+' H'+(ox+40*s)+' M'+ox+' '+(oy+4.9*s)+' H'+(ox+40*s)+'" stroke="'+k+'" stroke-width="1.2"/>';
-    h += '<path d="M'+(ox-12)+' '+oy+' H'+(ox+40*s+12)+'" stroke="var(--r)" '+SLD+'/>';
-    h += '<path d="M'+(ox+150)+' '+(oy-36)+' L'+(ox+130)+' '+(oy-75)+' h-40" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(ox+150,oy-36,20,39,k)+txt(ox+92, oy-80, 'M12', k, 'font-weight="700" font-size="18"');
-    h += txt(ox+175, oy-48, 'tykk', 'var(--orange)', 'font-weight="700"') + txt(ox+175, oy-14, 'tynn', 'var(--u)', 'font-weight="700"');
-    return h;
-  })();
-  $('gjInn').innerHTML = (() => {
-    const cx = 150, cy = 100, s = 7, k = 'var(--ink)';
-    let h = '<rect x="20" y="10" width="260" height="180" fill="none" stroke="'+k+'" stroke-width="3"/>';
-    h += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(5.1*s)+'" fill="var(--surface)" stroke="'+k+'" stroke-width="3"/>';
-    const R = 6*s;
-    h += '<path d="M'+(cx+R)+' '+cy+' A'+R+' '+R+' 0 1 1 '+cx+' '+(cy-R)+'" fill="none" stroke="'+k+'" stroke-width="1.4"/>';
-    h += '<path d="M'+(cx-58)+' '+cy+' H'+(cx+58)+' M'+cx+' '+(cy-58)+' V'+(cy+58)+'" stroke="var(--r)" '+SLD+'/>';
-    h += '<path d="M'+(cx-R*0.7)+' '+(cy+R*0.7)+' L'+(cx-80)+' '+(cy+70)+' h-24" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(cx-R*0.7,cy+R*0.7,80-R*0.7,R*0.7-70,k)+txt(cx-118, cy+64, 'M12', k, 'font-weight="700" font-size="18"');
-    h += txt(cx+48, cy-38, 'tynn ¾', 'var(--u)', 'font-weight="700"') + txt(cx+20, cy+56, 'tykk', 'var(--orange)', 'font-weight="700"');
-    return h;
-  })();
-
-  // Del 3: gjengerille
-  $('rilleFig').innerHTML = (() => {
-    const ox = 40, oy = 140, s = 5.4, k = 'var(--ink)';
-    const X = x => ox+x*s, Y = r => oy-r*s;
-    let h = '<rect x="'+X(20)+'" y="'+Y(6)+'" width="'+(3*s)+'" height="'+(1.5*s)+'" fill="var(--orange)" fill-opacity=".5"/><rect x="'+X(20)+'" y="'+Y(-4.5)+'" width="'+(3*s)+'" height="'+(1.5*s)+'" fill="var(--orange)" fill-opacity=".5"/>';
-    h += aksel(ox, oy, s, k, { sl:'var(--r)' });
-    // gjengestål
-    const gx = X(21.5);
-    h += '<polygon points="'+gx+','+(Y(4.8))+' '+(gx-12)+','+(Y(6)-40)+' '+(gx+12)+','+(Y(6)-40)+'" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2.5"/><rect x="'+(gx-12)+'" y="'+(Y(6)-90)+'" width="24" height="50" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2.5"/>';
-    h += txt(gx+22, Y(6)-62, 'Gjengestålet slutter her', 'var(--u)', 'font-weight="700" font-size="16"');
-    h += '<path d="M'+(X(21.5))+' '+(Y(-6)+4)+' L'+(X(21.5)+40)+' '+(Y(-6)+40)+' h20" stroke="var(--orange)" stroke-width="1.6" fill="none"/>'+pilspiss(X(21.5),Y(-6)+4,-40,-36,'var(--orange)');
-    h += txt(X(21.5)+64, Y(-6)+45, 'Gjengerille 3 × Ø9', 'var(--orange)', 'font-weight="700" font-size="16"');
-    return h;
-  })();
-
   // Del 5: toleranse
+  fusjon($('fxToleranse'), { ws:'DRAWING', hl:'dim', tips:'Dimension', tre:['Aksel tegning','  Sheets','    Sheet1','*      Front view'],
+    dlg:{ t:'DIMENSION', r:[['Value','Ø20'],['Tolerance','Symmetric',1],['Upper','0.1',1],['Precision','0.0']] },
+    c: aksel(200, 236, 3.4, SV, { tol:'#e8590c', sl:'#0a6ebd' }) });
   $('tolBar').innerHTML = (() => {
     const X = v => 40 + (v-19.8)*1200;
     let h = '<rect x="'+X(19.9)+'" y="40" width="'+(X(20.1)-X(19.9))+'" height="34" rx="6" fill="var(--r-soft)" stroke="var(--r)" stroke-width="2"/>';
@@ -558,6 +676,9 @@ input[type=range]{accent-color:var(--orange)}
   })();
 
   // Del 6: overflate
+  fusjon($('fxOverflate'), { ws:'DRAWING', hl:'surface', tips:'Surface Texture', tre:['Aksel tegning','  Sheets','    Sheet1','*      Front view'],
+    dlg:{ t:'SURFACE TEXTURE', r:[['Symbol Type','Removal required'],['Roughness Ra','0.8',1]] },
+    c: aksel(200, 250, 3.4, SV, { ra:'#0a6ebd', sl:'#0a6ebd' }) });
   $('raFig').innerHTML = (() => {
     let h = '';
     [['Ra 6,3','grov',14],['Ra 3,2','middels',7],['Ra 0,8','glatt',2]].forEach(([t,o,a],i) => {

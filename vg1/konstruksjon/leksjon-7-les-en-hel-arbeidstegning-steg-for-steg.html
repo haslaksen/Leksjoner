@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DAK i Fusion Vg1 · Leksjon 1: Steg for steg</title>
+<title>Tegning og DAK Vg1 · Leksjon 7: Steg for steg</title>
 <style>
 /* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
 :root{
@@ -106,6 +106,7 @@ svg text{font-family:var(--body)}
 .rekke li{display:grid;grid-template-columns:3rem 1fr;gap:12px;align-items:center;font-size:1.1rem}
 .rekke .luke{min-width:2.4em}
 .jn td .luke{min-width:7em}
+.kort .valg>span{font-size:.95rem;padding:.4rem .5rem}
 </style>
 </head>
 <body>
@@ -113,8 +114,8 @@ svg text{font-family:var(--body)}
 
 <div class="top">
   <div>
-    <p class="tag">DAK i Fusion Vg1 · Leksjon 1</p>
-    <h1>Steg for steg: Fra skisse til 3D-modell</h1>
+    <p class="tag">Tegning og DAK Vg1 · Leksjon 7</p>
+    <h1>Steg for steg: Les en hel arbeidstegning</h1>
   </div>
   <div class="tools">
     <button type="button" id="copyBtn">Kopier til OneNote</button>
@@ -125,49 +126,39 @@ svg text{font-family:var(--body)}
 <p class="navn">Navn: ______________________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
 
 <div class="oppg">
- <h2><span class="nr">1</span>Fra skisse til 3D. Skriv ordene.</h2>
+ <h2><span class="nr">1</span>Tittelfeltet. Skriv ordene.</h2>
   <div class="fig">
-    <svg viewBox="0 0 400 140" aria-label="Et flatt rektangel blir dratt ut til en kloss">
-      <rect x="20" y="40" width="110" height="70" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/>
-      <text x="75" y="130" text-anchor="middle" font-size="15" fill="var(--muted)">2D</text>
-      <path d="M150 75 H220" stroke="var(--orange)" stroke-width="5"/><path d="M220 75 l-14 -9 v18 z" fill="var(--orange)"/>
-      <g><polygon points="250,50 340,50 370,25 280,25" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/>
-      <polygon points="340,50 370,25 370,95 340,120" fill="var(--u-soft)" stroke="var(--blue)" stroke-width="3"/>
-      <rect x="250" y="50" width="90" height="70" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/></g>
-      <text x="310" y="138" text-anchor="middle" font-size="15" fill="var(--muted)">3D</text>
+    <svg viewBox="0 0 440 150" aria-label="Tittelfelt: Flens, 1:2, Stål">
+      <rect x="20" y="10" width="400" height="120" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+      <path d="M20 50 H420 M220 50 V130 M20 90 H420" stroke="var(--ink)" stroke-width="1.5"/>
+      <g font-size="22" fill="var(--ink)"><text x="34" y="38" font-weight="800">Flens</text><text x="34" y="78">1:2</text><text x="34" y="118">Stål</text><text x="234" y="78">Tegnet: HA</text><text x="234" y="118">Nr. 014</text></g>
     </svg>
   </div>
-  <p class="setning">Først tegner jeg en <span class="luke"><span class="fasit" hidden>skisse</span></span>. Så <span class="luke"><span class="fasit" hidden>ekstruderer</span></span> jeg den til 3D.</p>
-<div class="ordbank"><span>ekstruderer</span><span>skisse</span></div>
+  <p class="setning">Delen heter <span class="luke"><span class="fasit" hidden>flens</span></span>. Den er laget av <span class="luke"><span class="fasit" hidden>stål</span></span>. Målestokken er <span class="luke"><span class="fasit" hidden>1:2</span></span>.</p>
+  <div class="ordbank"><span>1:2</span><span>stål</span><span>flens</span></div>
 </div>
 
 <div class="oppg">
- <h2><span class="nr">2</span>Hvilken skisse trenger du? Sett ring rundt.</h2>
-  <div class="bilder">
-    <div class="kort"><svg viewBox="0 0 120 70"><ellipse cx="20" cy="35" rx="12" ry="25" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/><path d="M20 10 H100 M20 60 H100" stroke="var(--blue)" stroke-width="3"/><ellipse cx="100" cy="35" rx="12" ry="25" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/></svg><b>Rundstav</b><div class="valg"><span>○<span class="fasit" hidden>✓</span></span><span>▭</span><span>L</span></div></div>
-    <div class="kort"><svg viewBox="0 0 120 70"><rect x="10" y="20" width="100" height="30" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/></svg><b>Flattstål</b><div class="valg"><span>○</span><span>▭<span class="fasit" hidden>✓</span></span><span>L</span></div></div>
-    <div class="kort"><svg viewBox="0 0 120 70"><path d="M15 10 V60 H105 V50 H25 V10 Z" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/></svg><b>Vinkeljern</b><div class="valg"><span>○</span><span>▭</span><span>L<span class="fasit" hidden>✓</span></span></div></div>
-  </div>
+ <h2><span class="nr">2</span>Toleranse. Skriv tallene.</h2>
+  <p class="setning">Tegningen sier Ø20 ±0,1. Største mål er <span class="luke"><span class="fasit" hidden>20,1</span></span>. Minste mål er <span class="luke"><span class="fasit" hidden>19,9</span></span>.</p>
+  <div class="ordbank"><span>19,9</span><span>20,1</span></div>
 </div>
 
 <div class="oppg">
- <h2><span class="nr">3</span>Sett stegene i rekkefølge. Skriv 1, 2 og 3.</h2>
-  <ul class="rekke">
-    <li><span class="luke"><span class="fasit" hidden>2</span></span> <span>Ekstruder skissen</span></li>
-    <li><span class="luke"><span class="fasit" hidden>3</span></span> <span>Lag tegning med tre riss</span></li>
-    <li><span class="luke"><span class="fasit" hidden>1</span></span> <span>Tegn en skisse med mål</span></li>
-  </ul>
+ <h2><span class="nr">3</span>Fra tegning til arbeid. Skriv ordene.</h2>
+  <p class="setning">Akselen lager jeg i en <span class="luke"><span class="fasit" hidden>dreiebenk</span></span>. Ø20 måler jeg med <span class="luke"><span class="fasit" hidden>mikrometer</span></span>.</p>
+  <div class="ordbank"><span>mikrometer</span><span>dreiebenk</span></div>
 </div>
 
 <div class="oppg">
  <h2><span class="nr">4</span>Stemmer det? Sett ring rundt Ja eller Nei.</h2>
   <table class="jn">
-    <tr><td class="ikon">📏</td><td>Skissen bør ha mål før jeg ekstruderer.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
-    <tr><td class="ikon">🤖</td><td>3D-modellen kan brukes til å lage CNC-program.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
-    <tr><td class="ikon">🔄</td><td>Med Revolve dreier jeg skissen rundt en akse.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
-    <tr><td class="ikon">✏️</td><td>Endrer jeg et mål, må jeg tegne alt på nytt.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
+    <tr><td class="ikon">📋</td><td>Jeg leser tittelfeltet først.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">📄</td><td>Tegningen lagrer jeg som PDF.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">🖨️</td><td>Til 3D-printer lagrer jeg som STL.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
   </table>
 </div>
+
 
 </div>
 
