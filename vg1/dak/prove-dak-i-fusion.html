@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Prøve: Tegning og DAK · Vg1 teknologi- og industrifag</title>
+<title>Prøve: DAK i Fusion</title>
 <style>
 /* Prøve for emnet. Vises bare på lærersiden (bygg.js), skrives ut eller kopieres til OneNote. */
 :root{
@@ -119,8 +119,8 @@ svg text{font-family:var(--body)}
 
 <div class="top">
   <div>
-    <p class="tag">Tegning og DAK · Vg1 TIF · Leksjon 1–4</p>
-    <h1>Prøve: Tegning og DAK</h1>
+    <p class="tag">DAK i Fusion · Vg1 TIF · Leksjon 1–3</p>
+    <h1>Prøve: DAK i Fusion</h1>
   </div>
   <div class="tools">
     <button type="button" id="copyBtn">Kopier til OneNote</button>
@@ -130,58 +130,16 @@ svg text{font-family:var(--body)}
 </div>
 <p class="navn">Navn: ______________________ Klasse: ________ Dato: ________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
 
-<details class="laerer no-print"><summary>Lærernotat</summary>Prøven dekker leksjon 1 (tre riss, plassering, linjetyper, mål i mm, målestokk), leksjon 2 (DAK, Extrude og Revolve, arbeidsgang, tegningshode, DAP), leksjon 3 (hullsirkel, snitt og skravering) og leksjon 4 (gjenger, toleranse, overflate, fas). Kompetansemål KST7 og PT6. 36 poeng. Oppgave 14 er Ekstra. Har klassen bare hatt leksjon 1–2, stryk oppgave 10–13 (da 25 poeng). Forslag til grenser: halvparten = bestått, 85 % = svært godt. Skriv ut uten fasit for elevene. Trykk «Vis fasit» og skriv ut på nytt for en fasit til deg selv.</details>
+<details class="laerer no-print"><summary>Lærernotat</summary>Prøven dekker DAK i Fusion leksjon 1 (DAK og DAP, skisse, Extrude og Revolve, arbeidsgang), 2 (Mirror, Circular Pattern, Thread, Joint) og 3 (Section View, Detail View). Kompetansemål KST7. 19 poeng. Prøv gjerne også en praktisk oppgave i Fusion. Forslag til grenser: halvparten = bestått, 85 % = svært godt. Skriv ut uten fasit for elevene. Trykk «Vis fasit» og skriv ut på nytt for en fasit til deg selv.</details>
 
 <div class="oppg">
- <h2><span class="nr">1</span>Hva betyr linjen? Skriv ordet.<span class="poeng">4 p</span></h2>
-  <div class="bilder">
-    <div class="kort"><svg viewBox="0 0 160 40" aria-label="Tykk heltrukket linje"><line x1="10" y1="20" x2="150" y2="20" stroke="var(--ink)" stroke-width="6"/></svg><span class="luke"><span class="fasit" hidden>synlig kant</span></span></div>
-    <div class="kort"><svg viewBox="0 0 160 40" aria-label="Stiplet linje"><line x1="10" y1="20" x2="150" y2="20" stroke="var(--ink)" stroke-width="3" stroke-dasharray="12 8"/></svg><span class="luke"><span class="fasit" hidden>skjult kant</span></span></div>
-    <div class="kort"><svg viewBox="0 0 160 40" aria-label="Strek-prikk-linje"><line x1="10" y1="20" x2="150" y2="20" stroke="var(--blue)" stroke-width="2" stroke-dasharray="22 6 3 6"/></svg><span class="luke"><span class="fasit" hidden>senterlinje</span></span></div>
-    <div class="kort"><svg viewBox="0 0 160 40" aria-label="Tynn linje med piler og tallet 60"><path d="M10 20 H150 M10 20 l12 -6 v12 z M150 20 l-12 -6 v12 z" stroke="var(--ink)" stroke-width="2" fill="var(--ink)"/><text x="80" y="14" text-anchor="middle" font-size="13" fill="var(--ink)">60</text></svg><span class="luke"><span class="fasit" hidden>mållinje</span></span></div>
-  </div>
-  <div class="ordbank"><span>skjult kant</span><span>mållinje</span><span>synlig kant</span><span>senterlinje</span></div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">2</span>Hvor står rissene? Skriv i rutene.<span class="poeng">2 p</span></h2>
-  <svg viewBox="0 0 360 250" style="max-width:480px" aria-label="Risset forfra øverst til venstre, en tom rute under og en tom rute til høyre">
-    <rect x="20" y="20" width="140" height="90" rx="6" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/>
-    <text x="90" y="72" text-anchor="middle" font-size="20" font-weight="800" fill="var(--blue)">forfra</text>
-    <rect x="20" y="140" width="140" height="90" rx="6" fill="none" stroke="var(--line)" stroke-width="3" stroke-dasharray="8 6"/>
-    <rect x="200" y="20" width="140" height="90" rx="6" fill="none" stroke="var(--line)" stroke-width="3" stroke-dasharray="8 6"/>
-  </svg>
-  <p class="setning">Under: <span class="luke"><span class="fasit" hidden>ovenfra</span></span> &nbsp; Til høyre: <span class="luke"><span class="fasit" hidden>fra venstre</span></span></p>
-  <div class="ordbank"><span>fra venstre</span><span>ovenfra</span></div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">3</span>Mål på tegninger står i … Sett ring rundt.<span class="poeng">1 p</span></h2>
-  <div class="valg"><span>meter</span><span>centimeter</span><span>millimeter<span class="fasit" hidden>✓</span></span></div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">4</span>Målestokk. Hvor lang blir streken på papiret?<span class="poeng">2 p</span></h2>
-  <div class="fig">
-    <svg viewBox="0 0 360 110" aria-label="1:2 betyr halvparten, 2:1 betyr dobbelt">
-      <text x="10" y="30" font-size="18" font-weight="800" fill="var(--ink)">1:2</text>
-      <line x1="60" y1="24" x2="140" y2="24" stroke="var(--blue)" stroke-width="8"/><text x="150" y="30" font-size="16" fill="var(--muted)">halvparten</text>
-      <text x="10" y="85" font-size="18" font-weight="800" fill="var(--ink)">2:1</text>
-      <line x1="60" y1="79" x2="240" y2="79" stroke="var(--orange)" stroke-width="8"/><text x="250" y="85" font-size="16" fill="var(--muted)">dobbelt</text>
-    </svg>
-  </div>
-  <div class="linje">200 mm i 1:2 = <span class="luke"><span class="fasit" hidden>100</span></span> mm</div>
-  <div class="linje">15 mm i 2:1 = <span class="luke"><span class="fasit" hidden>30</span></span> mm</div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">5</span>Hva står forkortelsen for?<span class="poeng">2 p</span></h2>
+ <h2><span class="nr">1</span>Hva står forkortelsen for?<span class="poeng">2 p</span></h2>
   <div class="linje">DAK = <span class="luke" style="min-width:12em"><span class="fasit" hidden>dataassistert konstruksjon</span></span></div>
   <div class="linje">DAP = <span class="luke" style="min-width:12em"><span class="fasit" hidden>dataassistert produksjon</span></span></div>
 </div>
 
 <div class="oppg">
- <h2><span class="nr">6</span>Hvilken skisse ekstruderer du? Sett ring rundt.<span class="poeng">3 p</span></h2>
+ <h2><span class="nr">2</span>Hvilken skisse ekstruderer du? Sett ring rundt.<span class="poeng">3 p</span></h2>
   <div class="tre">
     <div class="kort"><svg viewBox="0 0 140 90" aria-label="Rundstav"><path d="M25 30 H115 M25 60 H115" stroke="var(--blue)" stroke-width="3"/><ellipse cx="25" cy="45" rx="8" ry="15" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/><path d="M115 30 A8 15 0 0 1 115 60" fill="none" stroke="var(--blue)" stroke-width="3"/></svg><p>Rundstav</p><div class="valg"><span>○<span class="fasit" hidden>✓</span></span><span>▭</span><span>L</span></div></div>
     <div class="kort"><svg viewBox="0 0 140 90" aria-label="Flattstål"><polygon points="20,50 100,50 120,38 40,38" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/><polygon points="20,50 100,50 100,58 20,58" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/><polygon points="100,50 120,38 120,46 100,58" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/></svg><p>Flattstål</p><div class="valg"><span>○</span><span>▭<span class="fasit" hidden>✓</span></span><span>L</span></div></div>
@@ -190,7 +148,7 @@ svg text{font-family:var(--body)}
 </div>
 
 <div class="oppg">
- <h2><span class="nr">7</span>Sett stegene i rekkefølge. Skriv 1, 2 og 3.<span class="poeng">3 p</span></h2>
+ <h2><span class="nr">3</span>Sett stegene i rekkefølge. Skriv 1, 2 og 3.<span class="poeng">3 p</span></h2>
   <ul class="rekke">
     <li><span class="luke"><span class="fasit" hidden>2</span></span>Ekstruder skissen til 3D</li>
     <li><span class="luke"><span class="fasit" hidden>3</span></span>Lag tegning med tre riss</li>
@@ -199,26 +157,7 @@ svg text{font-family:var(--body)}
 </div>
 
 <div class="oppg">
- <h2><span class="nr">8</span>Hva står i tegningshodet? Sett ring rundt de tre som står der.<span class="poeng">3 p</span></h2>
-  <div class="fig"><svg viewBox="0 0 400 120" aria-label="Tegning med tegningshode nede i høyre hjørne">
-    <rect x="10" y="10" width="380" height="100" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/>
-    <rect x="230" y="60" width="160" height="50" fill="var(--orange)" opacity=".18" stroke="var(--orange)" stroke-width="3"/>
-    <text x="310" y="91" text-anchor="middle" font-size="16" font-weight="800" fill="var(--orange)">Tegningshode</text>
-  </svg></div>
-  <div class="valg"><span>navn på delen<span class="fasit" hidden>✓</span></span><span>pris</span><span>målestokk<span class="fasit" hidden>✓</span></span><span>farge på maskinen</span><span>materiale<span class="fasit" hidden>✓</span></span></div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">9</span>Stemmer det? Sett ring rundt Ja eller Nei.<span class="poeng">3 p</span></h2>
-  <table class="jn">
-    <tr><td class="ikon">📏</td><td>Målet på tegningen er alltid det ekte målet, uansett målestokk.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
-    <tr><td class="ikon">🤖</td><td>3D-modellen kan brukes til å lage CNC-program.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
-    <tr><td class="ikon">✏️</td><td>Endrer jeg et mål i DAK, må jeg tegne alt på nytt.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
-  </table>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">10</span>Extrude eller Revolve? Sett ring rundt.<span class="poeng">2 p</span></h2>
+ <h2><span class="nr">4</span>Extrude eller Revolve? Sett ring rundt.<span class="poeng">2 p</span></h2>
   <div class="bilder">
     <div class="kort"><svg viewBox="0 0 160 70" aria-label="Aksel med tre diametre"><path d="M10 25 H50 V15 H110 V25 H150 V45 H110 V55 H50 V45 H10 Z" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/></svg><b>Aksel</b><div class="valg"><span>Extrude</span><span>Revolve<span class="fasit" hidden>✓</span></span></div></div>
     <div class="kort"><svg viewBox="0 0 160 70" aria-label="Flattstål"><rect x="10" y="22" width="140" height="26" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="3"/></svg><b>Flattstål</b><div class="valg"><span>Extrude<span class="fasit" hidden>✓</span></span><span>Revolve</span></div></div>
@@ -226,45 +165,26 @@ svg text{font-family:var(--body)}
 </div>
 
 <div class="oppg">
- <h2><span class="nr">11</span>Les tegningen.<span class="poeng">3 p</span></h2>
-  <div class="regn">
-    <svg viewBox="0 0 220 200" aria-label="Flens med fire hull 4× Ø9 på hullsirkel Ø76">
-      <circle cx="90" cy="100" r="80" fill="none" stroke="var(--ink)" stroke-width="3"/><circle cx="90" cy="100" r="18" fill="none" stroke="var(--ink)" stroke-width="3"/>
-      <circle cx="90" cy="100" r="60" fill="none" stroke="var(--blue)" stroke-width="1.5" stroke-dasharray="14 3 2 3"/>
-      <g fill="none" stroke="var(--ink)" stroke-width="3"><circle cx="90" cy="40" r="8"/><circle cx="150" cy="100" r="8"/><circle cx="90" cy="160" r="8"/><circle cx="30" cy="100" r="8"/></g>
-      <path d="M155 94 L185 40 h30" stroke="var(--ink)" fill="none"/><text x="160" y="34" font-size="16" font-weight="700" fill="var(--ink)">4× Ø9</text>
-    </svg>
-    <div>
-      <p class="setning">Antall hull: <span class="luke"><span class="fasit" hidden>4</span></span></p>
-      <p class="setning">Hvert hull er Ø <span class="luke"><span class="fasit" hidden>9</span></span> mm</p>
-      <p class="setning">Strek-prikk-sirkelen heter <span class="luke"><span class="fasit" hidden>hullsirkel</span></span></p>
-    </div>
-  </div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">12</span>Tegningen sier Ø20 ±0,1.<span class="poeng">3 p</span></h2>
-  <p class="setning">Største mål: <span class="luke"><span class="fasit" hidden>20,1</span></span> &nbsp; Minste mål: <span class="luke"><span class="fasit" hidden>19,9</span></span></p>
-  <p class="setning">Jeg måler 20,15. Er delen godkjent? <span class="valg" style="display:inline-flex;vertical-align:middle"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></span></p>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">13</span>Hva betyr det på tegningen? Skriv ordet.<span class="poeng">3 p</span></h2>
+ <h2><span class="nr">5</span>Hvilken knapp i Fusion? Skriv navnet.<span class="poeng">6 p</span></h2>
   <table class="jn">
-    <tr><td class="ikon" style="width:6rem;font-size:1.2rem"><b>M12</b></td><td><span class="luke"><span class="fasit" hidden>gjenge</span></span></td></tr>
-    <tr><td class="ikon" style="width:6rem;font-size:1.2rem"><b>√ Ra 0,8</b></td><td><span class="luke"><span class="fasit" hidden>overflate (glatt)</span></span></td></tr>
-    <tr><td class="ikon" style="width:6rem;font-size:1.2rem"><b>////</b></td><td><span class="luke"><span class="fasit" hidden>skravering (skåret materiale)</span></span></td></tr>
+    <tr><td>Tegne halve delen og speile resten</td><td><span class="luke" style="min-width:9em"><span class="fasit" hidden>Mirror</span></span></td></tr>
+    <tr><td>Lage fire like hull rundt midten</td><td><span class="luke" style="min-width:9em"><span class="fasit" hidden>Circular Pattern</span></span></td></tr>
+    <tr><td>Lage gjenge M12</td><td><span class="luke" style="min-width:9em"><span class="fasit" hidden>Thread</span></span></td></tr>
+    <tr><td>Sette sammen akselen og flensen</td><td><span class="luke" style="min-width:9em"><span class="fasit" hidden>Joint</span></span></td></tr>
+    <tr><td>Lage snitt A–A på tegningen</td><td><span class="luke" style="min-width:9em"><span class="fasit" hidden>Section View</span></span></td></tr>
+    <tr><td>Vise et lite område større</td><td><span class="luke" style="min-width:9em"><span class="fasit" hidden>Detail View</span></span></td></tr>
   </table>
-  <div class="ordbank"><span>skravering</span><span>gjenge</span><span>overflate</span></div>
+  <div class="ordbank"><span>Joint</span><span>Section View</span><span>Mirror</span><span>Detail View</span><span>Thread</span><span>Circular Pattern</span></div>
 </div>
-
 <div class="oppg">
- <h2><span class="nr">14</span>Målestokk. Regn ut.<span class="ekstra">Ekstra</span><span class="poeng">2 p</span></h2>
-  <p class="setning">Delen er 250 mm. Målestokk 1:5. Streken blir <span class="luke"><span class="fasit" hidden>50</span></span> mm</p>
-  <p class="setning">Delen er 8 mm. Målestokk 5:1. Streken blir <span class="luke"><span class="fasit" hidden>40</span></span> mm</p>
+ <h2><span class="nr">6</span>Stemmer det? Sett ring rundt Ja eller Nei.<span class="poeng">3 p</span></h2>
+  <table class="jn">
+    <tr><td class="ikon">🤖</td><td>3D-modellen kan brukes til å lage CNC-program.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">✏️</td><td>Endrer jeg et mål i modellen, må jeg tegne tegningen på nytt.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
+    <tr><td class="ikon">🔄</td><td>Revolve cut fjerner materiale rundt en akse.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+  </table>
 </div>
-
-<p class="sum">Sum: ______ / 36 poeng</p>
+<p class="sum">Sum: ______ / 19 poeng</p>
 
 </div>
 

@@ -1,0 +1,546 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tekniske tegninger Vg1 · Leksjon 2: Tegningshode, symmetri og hull</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+/* steg for steg */
+.stepper{display:flex;flex-wrap:wrap;gap:8px}
+.stepper button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.steg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(160px,260px) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.steg>*{min-width:0}
+.steg svg{width:100%;height:auto;display:block}
+.steg ul{margin:.6rem 0 0;padding-left:1.2em;display:grid;gap:6px;font-size:1.1rem}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--orange);transition:width .4s}
+
+/* verneutstyr */
+.vern{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.vern>*{min-width:0}
+.vern svg{width:100%;height:auto;display:block}
+.vern .knapper{display:flex;flex-wrap:wrap;gap:8px}
+.vern .knapper button[aria-pressed="true"]{background:var(--r-soft);border-color:var(--r);color:var(--r)}
+.vern g.utstyr{opacity:0;transition:opacity .3s}
+.vern g.utstyr.paa{opacity:1}
+.teller{font:700 1.4rem/1.2 var(--mono)}
+.regler{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.regler>div{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--orange);border-radius:14px;padding:14px 16px;display:grid;gap:4px}
+.regler .ico{font-size:2rem}
+
+/* riktig eller galt */
+.measure{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mcard{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.mcard .ico{font-size:2.2rem}
+.mcard .verdict{font:700 18px/1.25 var(--display);min-height:1.2em}
+.mcard[data-shown="ok"]{border-color:var(--r);background:var(--r-soft)}
+.mcard[data-shown="bad"]{border-color:var(--bad);background:var(--bad-soft)}
+.mcard[data-shown="ok"] .verdict{color:var(--r)} .mcard[data-shown="bad"] .verdict{color:var(--bad)}
+
+/* logg */
+.logg{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(20px,4vw,56px);align-items:center}
+.logg>*{min-width:0}
+.sporsmal{display:grid;gap:10px;padding:0;margin:0;list-style:none;font-size:1.1rem}
+.sporsmal li{display:flex;gap:12px;align-items:baseline}
+.sporsmal .n{font:800 1.3em var(--display);color:var(--orange);min-width:1.2em}
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+@media (max-width:860px){
+  .hero,.steg,.vern,.logg{grid-template-columns:1fr}
+  .trio,.measure,.regler{grid-template-columns:1fr}
+}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+
+/* Konstruksjon: riss og tegning */
+.flate{fill:var(--surface);stroke:var(--wire);stroke-width:2.5;stroke-linejoin:round;transition:fill .3s}
+.flate.lys{fill:var(--orange-soft);stroke:var(--orange)}
+.synspil{opacity:0;transition:opacity .3s}
+.synspil.paa{opacity:1}
+.regler.fire svg{width:100%;height:auto;max-height:30px}
+.rutenett{display:block;max-width:440px;width:100%;height:auto;margin:8px 0}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.regler.fire{grid-template-columns:repeat(4,1fr)}
+@media (max-width:860px){.regler.fire{grid-template-columns:1fr 1fr}}
+input[type=range]{accent-color:var(--orange)}
+/* Fusion-vinduet og tegninger */
+.fxs{display:block;width:100%;height:auto;border:1px solid #b9c0c8;border-radius:10px;background:#fff;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.vei{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.05rem;max-width:none}
+.vei b{font-family:var(--mono);background:var(--blue-soft);color:var(--blue);border-radius:6px;padding:.1em .45em}
+.fig2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fig2>div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem;display:grid;gap:8px;align-content:start}
+.fig2 svg{display:block;width:100%;height:auto}
+.fig2 h3{font-size:1.1rem}
+@media (max-width:860px){.fig2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Tekniske tegninger Vg1 · <span>Leksjon 2</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hode">Tegningshode</a><a href="#symmetri">Symmetrilinje</a><a href="#hullsirkel">Hullsirkel</a><a href="#vinkel">Vinkelmål</a><a href="#fas">Fas</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Tekniske tegninger Vg1 · Leksjon 2</div>
+    <h1 style="margin-top:10px">Tegningshode, symmetri og <span style="color:var(--orange)">hull</span></h1>
+    <p class="lead" style="margin-top:12px">Mer du kan lese på en tegning.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span><b>Tegningshodet</b></span></li>
+      <li><span class="n i">2</span><span><b>Symmetrilinje</b></span></li>
+      <li><span class="n r">3</span><span><b>Hullsirkel</b>: mange like hull</span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span><b>Vinkelmål</b> og <b>fas</b></span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg id="heroFig" viewBox="0 0 400 270" role="img" aria-label="Flens forfra med hullsirkel og målet 4× Ø9"></svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Mål</h3>
+      <p>PT6: «beskrive arbeidsoppgaver innenfor produksjon og tjenester basert på tegningsunderlag og prosedyrer». KST7: «… til grunnleggende tegning og dokumentasjon». Bygger på leksjon 1 (riss, linjer, mål). Ingen PC trengs.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–5</dt><dd>Start: vis en ekte tegning med tegningshode.</dd>
+        <dt>5–20</dt><dd>Del 1 · Tegningshodet. Oppgave A og B.</dd>
+        <dt>20–35</dt><dd>Del 2–3 · Symmetrilinje og hullsirkel. Oppgave C.</dd>
+        <dt>35–45</dt><dd>Del 4–5 · Vinkelmål og fas.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–85</dt><dd>Oppgave D. Mål opp en ekte del (for eksempel en flens) og skisser den med hullsirkel og mål.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="hode">
+  <div class="tag">Del 1 · Tegningshode</div>
+  <h2>Tegningshodet forteller om delen</h2>
+  <p class="lead">Nede i hjørnet til høyre på hver tegning.</p>
+  <div class="fig" style="max-width:640px">
+  <svg viewBox="0 0 440 190" role="img" aria-label="Tegningshode med navn, målestokk, materiale, tegnet av og tegningsnummer">
+    <rect x="20" y="20" width="400" height="120" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+    <path d="M20 60 H420 M220 60 V140 M20 100 H420" stroke="var(--ink)" stroke-width="1.5"/>
+    <g font-size="20" fill="var(--ink)">
+      <text x="34" y="48" font-weight="800">Kloss</text>
+      <text x="34" y="88">1:1</text>
+      <text x="34" y="128">Stål</text>
+      <text x="234" y="88">Tegnet: OH</text>
+      <text x="234" y="128">Nr. 001</text>
+    </g>
+    <g font-size="14" font-weight="700">
+      <text x="150" y="46" fill="var(--u)">← navn på delen</text>
+      <text x="90" y="86" fill="var(--orange)">← målestokk</text>
+      <text x="100" y="126" fill="var(--i)">← materiale</text>
+    </g>
+    <g font-size="14" fill="var(--muted)" text-anchor="middle">
+      <text x="120" y="170">Hva og hvor stort</text>
+      <text x="320" y="170">Hvem og hvilken tegning</text>
+    </g>
+  </svg>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Tegningshodet har navn på delen, målestokk, materiale, hvem som har tegnet og tegningsnummer. De fleste DAK-program har en ferdig mal.</details>
+</section>
+
+<section id="symmetri">
+  <div class="tag">Del 2 · Symmetrilinje</div>
+  <h2>Symmetrilinjen viser midten</h2>
+  <p class="lead">Tynn strek-prikk-linje med to små streker i hver ende.</p>
+  <div class="fig" style="max-width:640px"><svg id="symFig" viewBox="0 0 440 250" role="img" aria-label="Brakett med symmetrilinje midt på"></svg></div>
+  <p style="color:var(--muted)">Delen er lik på begge sider av linjen.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Symmetrisymbolet er to korte, parallelle streker i hver ende av senterlinjen. Det betyr at delen er lik på begge sider, og da kan man tegne bare halve delen.</details>
+</section>
+
+<section id="hullsirkel">
+  <div class="tag">Del 3 · Hullsirkel</div>
+  <h2>Hullsirkelen samler hullene</h2>
+  <p class="lead">Strek-prikk-sirkel gjennom hullene. Ett mål for alle.</p>
+  <div class="fig" style="max-width:640px"><svg id="hsFig" viewBox="0 0 480 300" role="img" aria-label="Flens med hullsirkel Ø76 og målet 4× Ø9"></svg></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>«4× Ø9» betyr fire hull med diameter 9 mm. «Ø76» er diameteren på hullsirkelen (delesirkelen). Hullene står likt fordelt: 360° : 4 = 90° mellom hullene. Sjekk mot oppgave C.</details>
+</section>
+
+<section id="vinkel">
+  <div class="tag">Del 4 · Vinkelmål</div>
+  <h2>Vinkler måles i grader</h2>
+  <p class="lead">Buen viser hvilken vinkel målet gjelder.</p>
+  <div class="fig" style="max-width:480px"><svg id="grVinkel" viewBox="0 0 300 200" role="img" aria-label="Kile med vinkelmål 30 grader"></svg></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Vinkelmålet tegnes som en bue mellom de to linjene, med piler. Vinkelen kan måles med vinkelmåler eller gradskive.</details>
+</section>
+
+<section id="fas">
+  <div class="tag">Del 5 · Fas</div>
+  <h2>Fas: hjørnet er skrådd av</h2>
+  <p class="lead">2 × 45° = 2 mm skrådd av i 45°.</p>
+  <div class="fig" style="max-width:480px"><svg id="grFas" viewBox="0 0 300 200" role="img" aria-label="Hjørne med fas 2 × 45°"></svg></div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Fas skrives som lengde × vinkel. 2 × 45° betyr at 2 mm er skrådd av i 45°. Fas fjerner skarpe kanter og gjør det lett å montere.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 2: Tegningshode, symmetri og hull</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p>Tegningshodet står nede til <span class="luke"><span class="fasit" hidden>høyre</span></span> på tegningen.</p>
+      <p>Symmetrilinjen er en tynn <span class="luke"><span class="fasit" hidden>strek-prikk</span></span>-linje.</p>
+      <p>Vinkler måles i <span class="luke"><span class="fasit" hidden>grader</span></span>.</p>
+      <p>Fas 1 × 45° betyr at <span class="luke"><span class="fasit" hidden>1</span></span> mm er skrådd av.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Les tegningshodet</h3>
+      <svg class="oppfig" viewBox="0 0 440 150" role="img" aria-label="Tegningshode: Flens, 1:2, S355, Tegnet: HA, Nr. 014">
+        <rect x="20" y="10" width="400" height="120" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
+        <path d="M20 50 H420 M220 50 V130 M20 90 H420" stroke="var(--ink)" stroke-width="1.5"/>
+        <g font-size="20" fill="var(--ink)"><text x="34" y="38" font-weight="800">Flens</text><text x="34" y="78">1:2</text><text x="34" y="118">S355</text><text x="234" y="78">Tegnet: HA</text><text x="234" y="118">Nr. 014</text></g>
+      </svg>
+      <div class="tablewrap"><table>
+        <tr><th>Spørsmål</th><th>Svar</th></tr>
+        <tr><td>Hva heter delen?</td><td class="blank"><span class="fasit" hidden>Flens</span></td></tr>
+        <tr><td>Hvilken målestokk?</td><td class="blank"><span class="fasit" hidden>1:2</span></td></tr>
+        <tr><td>Hvilket materiale?</td><td class="blank"><span class="fasit" hidden>S355 (stål)</span></td></tr>
+        <tr><td>Hvilket tegningsnummer?</td><td class="blank"><span class="fasit" hidden>014</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Les tegningen</h3>
+      <svg id="oppgFlens" class="oppfig" viewBox="0 0 300 260" role="img" aria-label="Flens forfra med hullsirkel Ø76 og 4× Ø9"></svg>
+      <ol>
+        <li>Hvor mange hull er det i hullsirkelen? <span class="luke"><span class="fasit" hidden>4</span></span></li>
+        <li>Hvor stor diameter har hvert hull? <span class="luke"><span class="fasit" hidden>9 mm</span></span></li>
+        <li>Hvor stor diameter har hullsirkelen? <span class="luke"><span class="fasit" hidden>76 mm</span></span></li>
+        <li>Hvor mange grader er det mellom to hull? <span class="luke"><span class="fasit" hidden>90° (360 : 4)</span></span></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del D · Riktig eller galt</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Tegningshodet står øverst til venstre.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Symmetrilinjen er en tykk heltrukket linje.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>4× Ø9 betyr fire hull med diameter 9 mm.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Fas 2 × 45° betyr at 2 mm er skrådd av i 45°.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hvorfor står det 4× Ø9 i stedet for fire like mål?<div class="svar"><span class="fasit" hidden>Det er kortere og ryddigere: ett mål gjelder for alle de like hullene</span></div></li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  // ---------- Tegninger (mål i mm) ----------
+  const SLD = 'stroke-width="1.2" stroke-dasharray="14 3 2 3" fill="none"';
+  const pil = (x, y) => '<path d="M'+x+' '+y+' v34" stroke="#e8590c" stroke-width="4"/><path d="M'+(x-9)+' '+(y+28)+' l9 12 l9 -12" fill="none" stroke="#e8590c" stroke-width="4"/>';
+  const txt = (x, y, t, k, ekstra) => '<text x="'+x+'" y="'+y+'" fill="'+k+'" font-size="14" '+(ekstra||'')+'>'+t+'</text>';
+  const pilspiss = (x, y, vx, vy, k) => { const n = Math.hypot(vx,vy), ux = vx/n, uy = vy/n; return '<path d="M'+x+' '+y+' L'+(x-ux*10-uy*4)+' '+(y-uy*10+ux*4)+' L'+(x-ux*10+uy*4)+' '+(y-uy*10-ux*4)+' Z" fill="'+k+'"/>'; };
+
+  // Flens: Ø100 × 12, nav Ø50, lengde 30, boring Ø20 med fas 1 × 45°, 4 hull Ø9 på Ø76
+  const F = { R:50, nav:25, bor:10, pcd:38, hull:4.5 };
+  const HULL = [[0,-1],[1,0],[0,1],[-1,0]];
+  function flensFront(cx, cy, s, k, o){
+    o = o || {};
+    const c = r => '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*s)+'" fill="none" stroke="'+k+'" stroke-width="2.5"/>';
+    let h = c(F.R) + c(F.nav) + c(F.bor);
+    HULL.forEach(([a,b]) => { h += '<circle cx="'+(cx+a*F.pcd*s)+'" cy="'+(cy+b*F.pcd*s)+'" r="'+(F.hull*s)+'" fill="none" stroke="'+k+'" stroke-width="2.5"/>'; });
+    const L = (F.R+6)*s, sl = o.sl || k;
+    h += '<path d="M'+(cx-L)+' '+cy+' H'+(cx+L)+' M'+cx+' '+(cy-L)+' V'+(cy+L)+'" stroke="'+sl+'" '+SLD+'/>';
+    if (o.hullsirkel) h += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(F.pcd*s)+'" stroke="'+sl+'" '+SLD+'/>';
+    if (o.mal){
+      // 4× Ø9: fra hullet til høyre, skrått opp
+      const hx = cx+F.pcd*s+F.hull*s*0.7, hy = cy-F.hull*s*0.7, ex = cx+(F.R+8)*s, ey = cy-(F.R*0.55)*s;
+      h += '<path d="M'+hx+' '+hy+' L'+ex+' '+ey+' h52" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(hx,hy,hx-ex,hy-ey,k)+txt(ex+4, ey-5, '4× Ø9', k, 'font-weight="700"');
+      // Ø76: fra hullsirkelen, skrått ned
+      const px = cx+F.pcd*s*0.707, py = cy+F.pcd*s*0.707, qx = cx+(F.R+8)*s, qy = cy+(F.R*0.85)*s;
+      h += '<path d="M'+px+' '+py+' L'+qx+' '+qy+' h40" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(px,py,px-qx,py-qy,k)+txt(qx+4, qy-5, 'Ø76', k, 'font-weight="700"');
+    }
+    if (o.snittlinje){
+      const t = cy-(F.R+6)*s, b = cy+(F.R+6)*s;
+      h += '<path d="M'+cx+' '+(t-14)+' V'+t+' M'+cx+' '+b+' V'+(b+14)+'" stroke="'+k+'" stroke-width="4"/>';
+      [[t-14,-1],[b+14,1]].forEach(([y]) => { h += '<path d="M'+cx+' '+y+' H'+(cx+24)+'" stroke="'+k+'" stroke-width="1.6"/>'+pilspiss(cx+26,y,1,0,k)+txt(cx+30, y+5, 'A', k, 'font-weight="700" font-size="16"'); });
+    }
+    return h;
+  }
+  // Snitt A–A av flensen: x langs aksen (0 = flensflaten), r = radius
+  const SN1 = [[0,11],[0,33.5],[12,33.5],[12,25],[30,25],[30,10],[1,10]], SN2 = [[0,42.5],[0,50],[12,50],[12,42.5]];
+  function flensSnitt(x0, cy, s, k, fyll){
+    const P = (pts, sgn) => pts.map(([x,r]) => (x0+x*s).toFixed(1)+','+(cy-sgn*r*s).toFixed(1)).join(' ');
+    let h = '';
+    [1,-1].forEach(g => [SN1,SN2].forEach(p => { h += '<polygon points="'+P(p,g)+'" fill="'+fyll+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>'; }));
+    h += '<path d="M'+(x0+s)+' '+(cy-10*s)+' V'+(cy+10*s)+' M'+(x0+30*s)+' '+(cy-10*s)+' V'+(cy+10*s)+'" stroke="'+k+'" stroke-width="2.5"/>';
+    h += '<path d="M'+(x0-14)+' '+cy+' H'+(x0+30*s+14)+' M'+(x0-8)+' '+(cy-38*s)+' H'+(x0+12*s+8)+' M'+(x0-8)+' '+(cy+38*s)+' H'+(x0+12*s+8)+'" stroke="'+k+'" '+SLD+'/>';
+    return h;
+  }
+  // Detalj B rundt hjørnet i boringen (x = 0, r = 10), målestokk k2 px per mm
+  function flensDetalj(dx, dy, k2, k, fyll, id){
+    const P = pts => pts.map(([x,r]) => (dx+x*k2).toFixed(1)+','+(dy-(r-10)*k2).toFixed(1)).join(' ');
+    let h = '<clipPath id="'+id+'"><circle cx="'+dx+'" cy="'+dy+'" r="'+(6*k2)+'"/></clipPath><g clip-path="url(#'+id+')">';
+    h += '<polygon points="'+P(SN1)+'" fill="'+fyll+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    h += '<path d="M'+(dx+k2)+' '+dy+' V'+(dy+7*k2)+'" stroke="'+k+'" stroke-width="2.5"/></g>';
+    h += '<circle cx="'+dx+'" cy="'+dy+'" r="'+(6*k2)+'" fill="none" stroke="'+k+'" stroke-width="1.2"/>';
+    // fasmål
+    const fx = dx+0.5*k2, fy = dy-0.5*k2;
+    h += '<path d="M'+fx+' '+fy+' L'+(dx-3.5*k2)+' '+(dy-4.5*k2)+' h-34" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(fx,fy,1,1,k);
+    h += txt(dx-3.5*k2-80, dy-4.5*k2-6, '1 × 45°', k, 'font-weight="700"');
+    return h;
+  }
+  // Brakett (U-form), symmetrisk om x = 0
+  const BR = [[-40,0],[40,0],[40,50],[15,50],[15,20],[-15,20],[-15,50],[-40,50]];
+  const BR_V = [[-40,0],[0,0],[0,20],[-15,20],[-15,50],[-40,50]], BR_H = BR_V.map(([x,y]) => [-x,y]);
+  function prisme(pts, hull, ox, oy, s, d, fyll, kant, opac){
+    const P = (x,y,z) => [ox+x*s+z*0.5*s, oy-y*s-z*0.4*s];
+    const pp = (z) => pts.map(([x,y]) => P(x,y,z).map(v => v.toFixed(1)).join(',')).join(' ');
+    let h = '<g fill="'+fyll+'" stroke="'+kant+'" stroke-width="1.6" stroke-linejoin="round" fill-opacity="'+(opac||1)+'">';
+    h += '<polygon points="'+pp(d)+'"/>';
+    pts.forEach((a,i) => { const b = pts[(i+1)%pts.length]; h += '<polygon points="'+[P(a[0],a[1],0),P(b[0],b[1],0),P(b[0],b[1],d),P(a[0],a[1],d)].map(p => p.map(v => v.toFixed(1)).join(',')).join(' ')+'"/>'; });
+    h += '<polygon points="'+pp(0)+'"/>';
+    hull.forEach(([x,y]) => { const [hx,hy] = P(x,y,0); h += '<circle cx="'+hx+'" cy="'+hy+'" r="'+(4*s)+'" fill="#eef1f5" fill-opacity="1"/>'; });
+    return h + '</g>';
+  }
+
+  const SV = '#1b1b1b';   // svart strek på Fusion-tegningen
+  // Aksel: M12 × 20 med fas, gjengerille 3 × Ø9, Ø20 × 40, Ø30 × 10, Ø20 × 27 med fas 1 × 45°
+  const AK = [[0,5],[1,6],[20,6],[20,4.5],[23,4.5],[23,10],[63,10],[63,15],[73,15],[73,10],[99,10],[100,9]];
+  const KANTER = [[1,6],[20,6],[23,10],[63,15],[73,15],[99,10]];
+  function aksel(ox, oy, s, k, o){
+    o = o || {};
+    const X = x => ox+x*s, Y = r => oy-r*s;
+    const pts = AK.map(([x,r]) => X(x)+','+Y(r)).concat(AK.slice().reverse().map(([x,r]) => X(x)+','+Y(-r)));
+    let h = '<polygon points="'+pts.join(' ')+'" fill="'+(o.fyll||'none')+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    KANTER.forEach(([x,r]) => { h += '<path d="M'+X(x)+' '+Y(r)+' V'+Y(-r)+'" stroke="'+k+'" stroke-width="2.5"/>'; });
+    h += '<path d="M'+X(0.4)+' '+Y(4.9)+' H'+X(20)+' M'+X(0.4)+' '+Y(-4.9)+' H'+X(20)+'" stroke="'+k+'" stroke-width="1.2"/>';
+    h += '<path d="M'+(X(0)-12)+' '+oy+' H'+(X(100)+12)+'" stroke="'+(o.sl||k)+'" '+SLD+'/>';
+    if (o.m12) h += '<path d="M'+X(8)+' '+(Y(6)-2)+' L'+X(2)+' '+(Y(6)-36)+' h-36" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(X(8),Y(6)-2,X(8)-X(2),34,k)+txt(X(2)-36, Y(6)-41, 'M12', k, 'font-weight="700"');
+    if (o.tol){
+      const x = X(43);
+      h += '<path d="M'+x+' '+Y(10)+' V'+Y(-10)+'" stroke="'+o.tol+'" stroke-width="1.4"/>'+pilspiss(x,Y(10),0,-1,o.tol)+pilspiss(x,Y(-10),0,1,o.tol);
+      h += '<text transform="translate('+(x-9)+' '+oy+') rotate(-90)" text-anchor="middle" font-size="14" font-weight="700" fill="'+o.tol+'">Ø20 ±0,1</text>';
+    }
+    if (o.ra){
+      const x = X(50), y = Y(10), c = o.ra;
+      h += '<path d="M'+(x-7)+' '+(y-12)+' L'+x+' '+y+' L'+(x+14)+' '+(y-28)+' H'+(x+48)+' M'+(x-7)+' '+(y-12)+' H'+(x+6)+'" fill="none" stroke="'+c+'" stroke-width="1.6"/>'+txt(x+16, y-32, 'Ra 0,8', c, 'font-weight="700"');
+    }
+    return h;
+  }
+
+
+  const brakett = (bx, by, bs, k, sl) => {
+    let h = '<polygon points="'+BR.map(([x,y]) => (bx+x*bs)+','+(by-y*bs)).join(' ')+'" fill="none" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    [-27.5,27.5].forEach(x => { const X = bx+x*bs, Y = by-25*bs; h += '<circle cx="'+X+'" cy="'+Y+'" r="'+(4*bs)+'" fill="none" stroke="'+k+'" stroke-width="2.5"/><path d="M'+(X-16)+' '+Y+' H'+(X+16)+' M'+X+' '+(Y-16)+' V'+(Y+16)+'" stroke="'+k+'" stroke-width="1"/>'; });
+    const t = by-50*bs-22, b = by+22;
+    h += '<path d="M'+bx+' '+t+' V'+b+'" stroke="'+sl+'" stroke-width="1.6" stroke-dasharray="16 4 3 4"/>';
+    [t+2, t+7, b-2, b-7].forEach(y => { h += '<path d="M'+(bx-8)+' '+y+' H'+(bx+8)+'" stroke="'+sl+'" stroke-width="1.6"/>'; });
+    return h + txt(bx+18, t+8, 'Symmetrilinje', sl, 'font-weight="700"');
+  };
+  $('heroFig').innerHTML = flensFront(160, 135, 2.0, 'var(--ink)', { hullsirkel:true, mal:true, sl:'var(--r)' });
+  $('symFig').innerHTML = brakett(220, 205, 2.4, 'var(--ink)', 'var(--u)');
+  $('hsFig').innerHTML = flensFront(180, 150, 2.2, 'var(--ink)', { hullsirkel:true, mal:true, sl:'var(--r)' });
+  $('oppgFlens').innerHTML = flensFront(120, 130, 1.8, 'var(--ink)', { hullsirkel:true, mal:true, sl:'var(--r)' });
+  // Del 4: gradmål
+  $('grVinkel').innerHTML = (() => {
+    const k = 'var(--ink)', ox = 40, oy = 170, L = 220, H = L*Math.tan(Math.PI/6);
+    let h = '<polygon points="'+ox+','+oy+' '+(ox+L)+','+oy+' '+(ox+L)+','+(oy-H)+'" fill="none" stroke="'+k+'" stroke-width="3" stroke-linejoin="round"/>';
+    const r = 120, ax = ox+r*Math.cos(Math.PI/6), ay = oy-r*Math.sin(Math.PI/6);
+    h += '<path d="M'+(ox+r)+' '+oy+' A'+r+' '+r+' 0 0 0 '+ax+' '+ay+'" fill="none" stroke="var(--orange)" stroke-width="1.6"/>'+pilspiss(ox+r,oy-1,0,1,'var(--orange)')+pilspiss(ax,ay,-Math.sin(Math.PI/6),-Math.cos(Math.PI/6),'var(--orange)');
+    return h + txt(ox+r+8, oy-26, '30°', 'var(--orange)', 'font-weight="800" font-size="20"');
+  })();
+  $('grFas').innerHTML = (() => {
+    const k = 'var(--ink)';
+    let h = '<path d="M30 180 V40 H210 L250 80 V180" fill="none" stroke="'+k+'" stroke-width="3" stroke-linejoin="round"/>';
+    h += '<path d="M230 60 L180 20 h-60" stroke="var(--orange)" stroke-width="1.6" fill="none"/>'+pilspiss(230,60,50,40,'var(--orange)');
+    return h + txt(122, 15, '2 × 45°', 'var(--orange)', 'font-weight="800" font-size="20"');
+  })();
+
+
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>

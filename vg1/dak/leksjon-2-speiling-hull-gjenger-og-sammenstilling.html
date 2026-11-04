@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Konstruksjon Vg1 · Leksjon 2: Fra skisse til 3D-modell</title>
+<title>DAK i Fusion Vg1 · Leksjon 2: Speiling, hull, gjenger og sammenstilling</title>
 <style>
 /* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
 :root{
@@ -180,13 +180,17 @@ input[type=range]{accent-color:var(--orange)}
 .fxs{display:block;width:100%;height:auto;border:1px solid #b9c0c8;border-radius:10px;background:#fff;box-shadow:0 6px 24px rgba(0,0,0,.12)}
 .vei{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.05rem;max-width:none}
 .vei b{font-family:var(--mono);background:var(--blue-soft);color:var(--blue);border-radius:6px;padding:.1em .45em}
+.fig2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fig2>div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem;display:grid;gap:8px;align-content:start}
+.fig2 svg{display:block;width:100%;height:auto}
+.fig2 h3{font-size:1.1rem}
+@media (max-width:860px){.fig2{grid-template-columns:1fr}}
 </style>
-
 </head>
 <body>
 <header class="top">
-  <div class="brand">Konstruksjon Vg1 · <span>Leksjon 2</span></div>
-  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#dak">Hva er DAK?</a><a href="#gang">Arbeidsgang</a><a href="#ekstruder">Ekstruder</a><a href="#revolve">Revolve</a><a href="#revolvecut">Revolve cut</a><a href="#tegning">Til tegning</a><a href="#hode">Tegningshode</a><a href="#dap">Til maskin</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="brand">DAK i Fusion Vg1 · <span>Leksjon 2</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#speil">Mirror</a><a href="#monster">Hull i sirkel</a><a href="#gjenge">Thread</a><a href="#montasje">Joint</a><a href="#oppgaver">Oppgaver</a></nav>
   <div class="tools no-print">
     <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
     <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
@@ -197,37 +201,33 @@ input[type=range]{accent-color:var(--orange)}
 
 <header class="hero" id="start">
   <div>
-    <div class="tag">Konstruksjon og styringsteknikk Vg1 · Leksjon 2</div>
-    <h1 style="margin-top:10px">Fra skisse til <span style="color:var(--orange)">3D-modell</span></h1>
-    <p class="lead" style="margin-top:12px">Tegn på PC. Dra eller drei skissen til 3D.</p>
+    <div class="tag">DAK i Fusion Vg1 · Leksjon 2</div>
+    <h1 style="margin-top:10px">Speiling, hull, gjenger og <span style="color:var(--orange)">sammenstilling</span></h1>
+    <p class="lead" style="margin-top:12px">Fire kommandoer som sparer deg for mye tegning.</p>
     <ul class="goals">
-      <li><span class="n u">1</span><span>Hva <b>DAK</b> er</span></li>
-      <li><span class="n i">2</span><span>Arbeidsgangen: <b>skisse → 3D</b> (Extrude og Revolve)</span></li>
-      <li><span class="n r">3</span><span>Fra modell til <b>tegning</b></span></li>
-      <li><span class="n" style="color:var(--orange)">4</span><span>Fra modell til <b>maskin</b> (DAP)</span></li>
+      <li><span class="n u">1</span><span><b>Mirror</b>: tegn halve</span></li>
+      <li><span class="n i">2</span><span><b>Circular Pattern</b>: hull i sirkel</span></li>
+      <li><span class="n r">3</span><span><b>Thread</b>: gjenger</span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span><b>Joint</b>: sett delene sammen</span></li>
     </ul>
   </div>
   <div>
   <div class="hero-fig">
-  <svg viewBox="0 0 400 270" role="img" aria-label="En L-formet skisse dratt ut til en 3D-kloss">
-    <g id="heroKloss"></g>
-    <text x="20" y="255" font-size="15" font-weight="700" fill="var(--u)" id="heroTekst">Skisse</text>
-  </svg>
+    <svg id="heroFig" viewBox="0 0 400 270" role="img" aria-label="Aksel og flens satt sammen"></svg>
   </div>
   <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Mål</h3>
-      <p>Konstruksjon og styringsteknikk Vg1 (TIP01-03): «bruke programmer for 2D- og 3D-dataassistert konstruksjon (DAK) og dataassistert produksjon (DAP) til grunnleggende tegning og dokumentasjon». Vi bruker Autodesk Fusion. Figurene ligner skjermbildene i Fusion, så elevene kjenner igjen knappene.</p>
+      <p>KST7: «bruke programmer for 2D- og 3D-dataassistert konstruksjon (DAK) og dataassistert produksjon (DAP) til grunnleggende tegning og dokumentasjon». Bygger på leksjon 1 (Revolve). Delene er de samme som i Tekniske tegninger 2–4 (flens og aksel).</p>
     </div>
     <div class="lcard">
       <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
       <dl class="plan2">
-        <dt>0–10</dt><dd>Start: vis tegningen av klossen fra leksjon 1. «Hvordan får vi den inn på PC?»</dd>
-        <dt>10–20</dt><dd>Del 1–2 · Hva er DAK og arbeidsgangen. Oppgave A og B.</dd>
-        <dt>20–35</dt><dd>Del 3–5 · Extrude, Revolve og Revolve cut. Oppgave C og D.</dd>
-        <dt>35–45</dt><dd>Del 6–8 · Fra modell til tegning og til maskin. Oppgave E.</dd>
+        <dt>0–5</dt><dd>Start: vis flensen og akselen satt sammen.</dd>
+        <dt>5–30</dt><dd>Del 1–2 · Mirror og Circular Pattern. Oppgave A og B.</dd>
+        <dt>30–45</dt><dd>Del 3–4 · Thread og Joint. Oppgave C.</dd>
         <dt>45–55</dt><dd>Pause</dd>
-        <dt>55–88</dt><dd>Oppgave F på PC: modeller klossen og lag tegning. Raske elever lager akselen med Revolve. Vis på storskjerm først.</dd>
+        <dt>55–88</dt><dd>Oppgave D på PC: flensen, akselen og sammenstillingen.</dd>
         <dt>88–90</dt><dd>Exit-lapp.</dd>
       </dl>
     </div>
@@ -235,167 +235,53 @@ input[type=range]{accent-color:var(--orange)}
   </div>
 </header>
 
-<section id="dak">
-  <div class="tag">Del 1 · Hva er DAK?</div>
-  <h2>DAK = dataassistert konstruksjon</h2>
-  <div class="trio">
-    <div class="q U">
-      <svg viewBox="0 0 200 110" aria-hidden="true"><rect x="40" y="12" width="120" height="74" rx="6" fill="var(--u-soft)" stroke="var(--u)" stroke-width="5"/><path d="M85 86 v14 h30 v-14 M70 100 h60" stroke="var(--u)" stroke-width="5" fill="none"/><path d="M65 70 V40 H95 V55 H135 V70 Z" fill="none" stroke="var(--u)" stroke-width="4"/></svg>
-      <h3>Tegn på PC</h3>
-      <p>Lag delen som en <b>3D-modell</b>.</p>
-    </div>
-    <div class="q I">
-      <svg viewBox="0 0 200 110" aria-hidden="true"><path d="M60 80 H140" stroke="var(--i)" stroke-width="3"/><path d="M60 70 v20 M140 70 v20" stroke="var(--i)" stroke-width="3"/><text x="100" y="65" text-anchor="middle" font-size="26" font-weight="800" fill="var(--i)">60</text><path d="M100 20 l0 18 M92 30 l8 8 l8 -8" stroke="var(--i)" stroke-width="4" fill="none" stroke-linecap="round"/></svg>
-      <h3>Endre raskt</h3>
-      <p>Bytt ett mål, og hele modellen <b>oppdateres</b>.</p>
-    </div>
-    <div class="q R">
-      <svg viewBox="0 0 200 110" aria-hidden="true"><rect x="30" y="35" width="40" height="40" rx="4" fill="var(--r-soft)" stroke="var(--r)" stroke-width="4"/><path d="M80 55 H120" stroke="var(--wire)" stroke-width="4"/><g><circle cx="150" cy="55" r="24" fill="none" stroke="var(--r)" stroke-width="8" stroke-dasharray="8 6"/></g></svg>
-      <h3>Rett til maskin</h3>
-      <p>Modellen kan styre en <b>CNC-maskin</b>.</p>
-    </div>
+<section id="speil">
+  <div class="tag">Del 1 · Mirror</div>
+  <h2>Tegn halve, speil resten</h2>
+  <p class="lead">Delen er lik på begge sider. Da sparer du halve jobben.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxSpeil" role="img" aria-label="Fusion: Mirror speiler halve braketten om et plan"></svg></div></div>
+  <p class="vei">I Fusion: <b>SOLID</b> → <b>CREATE</b> → <b>Mirror</b> → velg delen → velg <b>planet</b> i midten</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Mirror kan speile features (hull, kutt) eller hele bodies. Speilplanet er ofte et av origoplanene (Origin i Browser). Endrer du den ene halvdelen, følger den speilede med.</details>
+</section>
+
+<section id="monster">
+  <div class="tag">Del 2 · Hull i sirkel</div>
+  <h2>Lag ett hull. Fusion lager resten.</h2>
+  <p class="lead">Circular Pattern kopierer hullet rundt midten.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxMonster" role="img" aria-label="Fusion: Circular Pattern lager fire hull i sirkel på flensen"></svg></div></div>
+  <p class="vei">I Fusion: <b>CREATE</b> → <b>Hole</b> (ett hull) → <b>Pattern</b> → <b>Circular Pattern</b> → <b>Quantity 4</b></p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Flensen modelleres med Revolve (leksjon 1): halv profil med nav og boring. Så ett hull Ø9 med Hole, og Circular Pattern rundt aksen. Bytt Quantity til 6 og vis at alt følger med.</details>
+</section>
+
+<section id="gjenge">
+  <div class="tag">Del 3 · Gjenger i Fusion</div>
+  <h2>Thread legger gjenger på en sylinder</h2>
+  <p class="lead">Velg flaten. Fusion finner størrelsen selv.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxGjenge" role="img" aria-label="Fusion: Thread gir gjenge M12x1,75 på enden av akselen"></svg></div></div>
+  <p class="vei">I Fusion: <b>SOLID</b> → <b>CREATE</b> → <b>Thread</b> → klikk på flaten → <b>OK</b></p>
+  <div class="fig" style="max-width:420px">
+    <svg data-bilde="bolt-og-mutter" data-alt="Bolt og mutter med gjenger" viewBox="0 0 360 140" role="img" aria-label="Bolt og mutter med gjenger">
+      <rect x="20" y="30" width="40" height="80" rx="3" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M20 57 H60 M20 83 H60" stroke="var(--wire)" stroke-width="1.5"/>
+      <rect x="60" y="52" width="240" height="36" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M170 52 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 M170 88 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5" fill="none" stroke="var(--wire)" stroke-width="1.5"/>
+      <path d="M176 52 l12 36 M188 52 l12 36 M200 52 l12 36 M212 52 l12 36 M236 52 l12 36 M260 52 l12 36 M272 52 l12 36 M284 52 l12 36" stroke="var(--wire)" stroke-width="1"/>
+      <rect x="220" y="30" width="34" height="80" rx="3" fill="var(--u-soft)" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M220 57 H254 M220 83 H254" stroke="var(--wire)" stroke-width="1.5"/>
+      <text x="40" y="132" text-anchor="middle" font-size="14" fill="var(--muted)">Bolt</text>
+      <text x="237" y="132" text-anchor="middle" font-size="14" fill="var(--muted)">Mutter</text>
+    </svg>
   </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>La «Modeled» stå av. Da tegnes gjengen bare som et bilde på flaten (raskt), og den vises riktig på tegningen. Designation M12x1.75 betyr metrisk gjenge, ytre diameter 12 mm og stigning 1,75 mm. Gjengetabell finnes i Verkstedhåndboka.</details>
 </section>
 
-<section id="gang">
-  <div class="tag">Del 2 · Arbeidsgang</div>
-  <h2>Fem steg i alle DAK-program</h2>
-  <div class="stepper" id="stepper" role="group" aria-label="Velg steg"></div>
-  <div class="bar" aria-hidden="true"><i id="stegBar"></i></div>
-  <div class="steg">
-    <svg id="stegFig" viewBox="0 0 200 160" aria-hidden="true"></svg>
-    <div>
-      <h3 id="stegTittel"></h3>
-      <ul id="stegListe"></ul>
-    </div>
-  </div>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Navnene varierer litt: «Extrude» heter ekstruder, «Sketch» er skisse, «Constraint» er begrensning/lås, «Drawing» er tegning. Vis gjerne knappene i skolens program mens dere går gjennom stegene.</details>
-</section>
-
-<section id="ekstruder">
-  <div class="tag">Del 3 · Ekstruder selv</div>
-  <h2>Dra skissen ut i 3D</h2>
-  <div class="steg" style="grid-template-columns:minmax(0,1.3fr) 1fr">
-    <svg id="ekFig" viewBox="0 0 400 270" role="img" aria-label="L-formet skisse dratt ut til valgt dybde"></svg>
-    <div style="display:grid;gap:14px">
-      <label for="ekDybde" style="font-size:1.1rem"><b>Dybde</b></label>
-      <input type="range" id="ekDybde" min="0" max="60" step="5" value="30" style="width:100%">
-      <div class="teller"><span id="ekVerdi">30</span> mm</div>
-      <p id="ekTekst" style="font-size:1.1rem">Skissen er 60 × 40 mm.</p>
-    </div>
-  </div>
-  <a class="simlink no-print" href="leksjon-1-tekniske-tegninger.html"><span class="ico">📐</span><span><b>Se klossen i leksjon 1</b><small>Det er samme kloss som du tegnet tre riss av.</small></span><span class="pil">→</span></a>
-</section>
-
-<section id="revolve">
-  <div class="tag">Del 4 · Revolve</div>
-  <h2>Drei skissen rundt en akse</h2>
-  <p class="lead">Runde deler: tegn <b>halve</b> profilen og en <b>akse</b>.</p>
-  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxRevolve" role="img" aria-label="Fusion: Revolve dreier en halv profil rundt aksen, og det blir en aksel"></svg></div></div>
-  <p class="vei">I Fusion: <b>SOLID</b> → <b>CREATE</b> → <b>Revolve</b> → velg profil og akse → <b>OK</b></p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Revolve passer for alt som kan lages i dreiebenken: aksler, bolter, flenser og hjul. Profilen skal ligge på den ene siden av aksen og ikke krysse den. Type «Full» gir 360°. Akselen er samme type del som elevene lager i DAP og CNC leksjon 3.</details>
-</section>
-
-<section id="revolvecut">
-  <div class="tag">Del 5 · Revolve cut</div>
-  <h2>Drei bort et spor</h2>
-  <p class="lead">Samme kommando. Velg <b>Cut</b>, så blir materialet fjernet.</p>
-  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxRevolveCut" role="img" aria-label="Fusion: Revolve med Operation Cut lager et spor rundt akselen"></svg></div></div>
-  <p class="vei">I Fusion: <b>Revolve</b> → <b>Operation: Cut</b> → <b>OK</b></p>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Fusion har ingen egen knapp for Revolve cut. Man velger Operation «Cut» i Revolve-vinduet (Fusion foreslår ofte Cut selv når profilen ligger inni delen). Slik lages spor, gjengeriller (leksjon 4) og fas rundt en aksel.</details>
-</section>
-
-<section id="tegning">
-  <div class="tag">Del 6 · Fra modell til tegning</div>
-  <h2>Programmet lager rissene for deg</h2>
-  <div class="fig"><div class="tablewrap"><div style="min-width:560px">
-  <svg viewBox="0 0 760 240" role="img" aria-label="3D-modellen blir til en tegning med tre riss og tegningshode">
-    <g transform="translate(-100 0) scale(.85)">
-      <polygon points="200,72 257,105 200,138 143,105" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
-      <polygon points="257,149 314,182 257,215 200,182" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
-      <polygon points="257,105 200,138 200,182 257,149" fill="var(--r-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
-      <polygon points="314,182 257,215 257,259 314,226" fill="var(--r-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
-      <polygon points="143,193 257,259 257,215 200,182 200,138 143,105" fill="var(--u-soft)" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>
-    </g>
-    <text x="80" y="232" text-anchor="middle" font-size="15" font-weight="700" fill="var(--ink)">3D-modell</text>
-    <path d="M200 120 H300" stroke="var(--orange)" stroke-width="5"/>
-    <path d="M296 108 l14 12 l-14 12" fill="none" stroke="var(--orange)" stroke-width="5"/>
-    <rect x="330" y="10" width="410" height="220" rx="4" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/>
-    <g fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round">
-      <path d="M360 110 H450 V80 H405 V50 H360 Z"/>
-      <path d="M360 132 H450 V177 H360 Z M405 132 V177"/>
-      <path d="M480 50 H525 V110 H480 Z"/>
-    </g>
-    <path d="M480 80 H525" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="6 4"/>
-    <g font-size="12" fill="var(--ink)">
-      <rect x="570" y="170" width="170" height="60" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
-      <path d="M570 190 H740 M655 190 V230" stroke="var(--ink)" stroke-width="1"/>
-      <text x="578" y="185" font-weight="700">Kloss</text>
-      <text x="578" y="206">Mål: 1:1</text>
-      <text x="578" y="222">Stål</text>
-      <text x="662" y="206">Tegnet: OH</text>
-      <text x="662" y="222">Nr. 001</text>
-    </g>
-    <text x="655" y="160" text-anchor="middle" font-size="12" fill="var(--muted)">Tegningshode</text>
-  </svg>
-  </div></div></div>
-  <p style="color:var(--muted)">Endrer du modellen, endres tegningen også.</p>
-</section>
-
-<section id="hode">
-  <div class="tag">Del 7 · Tegningshode</div>
-  <h2>Tegningshodet forteller om delen</h2>
-  <p class="lead">Nede i hjørnet til høyre på hver tegning.</p>
-  <div class="fig" style="max-width:640px">
-  <svg viewBox="0 0 440 190" role="img" aria-label="Tegningshode med navn, målestokk, materiale, tegnet av og tegningsnummer">
-    <rect x="20" y="20" width="400" height="120" fill="var(--surface)" stroke="var(--ink)" stroke-width="2.5"/>
-    <path d="M20 60 H420 M220 60 V140 M20 100 H420" stroke="var(--ink)" stroke-width="1.5"/>
-    <g font-size="20" fill="var(--ink)">
-      <text x="34" y="48" font-weight="800">Kloss</text>
-      <text x="34" y="88">1:1</text>
-      <text x="34" y="128">Stål</text>
-      <text x="234" y="88">Tegnet: OH</text>
-      <text x="234" y="128">Nr. 001</text>
-    </g>
-    <g font-size="14" font-weight="700">
-      <text x="150" y="46" fill="var(--u)">← navn på delen</text>
-      <text x="90" y="86" fill="var(--orange)">← målestokk</text>
-      <text x="100" y="126" fill="var(--i)">← materiale</text>
-    </g>
-    <g font-size="14" fill="var(--muted)" text-anchor="middle">
-      <text x="120" y="170">Hva og hvor stort</text>
-      <text x="320" y="170">Hvem og hvilken tegning</text>
-    </g>
-  </svg>
-  </div>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Tegningshodet har navn på delen, målestokk, materiale, hvem som har tegnet og tegningsnummer. De fleste DAK-program har en ferdig mal.</details>
-</section>
-
-<section id="dap">
-  <div class="tag">Del 8 · DAP = dataassistert produksjon</div>
-  <h2>Fra modell til maskin</h2>
-  <div class="fig"><div class="tablewrap"><div style="min-width:560px">
-  <svg viewBox="0 0 760 170" role="img" aria-label="3D-modell, så verktøybane, så CNC-program, så maskin">
-    <g font-weight="700" font-size="15" text-anchor="middle">
-      <rect x="20" y="30" width="140" height="100" rx="12" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/>
-      <path d="M55 105 V65 H90 V85 H125 V105 Z" fill="var(--surface)" stroke="var(--u)" stroke-width="3"/>
-      <text x="90" y="155" fill="var(--u)">DAK-modell</text>
-      <rect x="215" y="30" width="140" height="100" rx="12" fill="var(--i-soft)" stroke="var(--i)" stroke-width="3"/>
-      <path d="M240 105 V60 H330" fill="none" stroke="var(--i)" stroke-width="3" stroke-dasharray="6 5"/>
-      <circle r="6" fill="var(--orange)"><animateMotion dur="3s" repeatCount="indefinite" path="M240 105 V60 H330"/></circle>
-      <text x="285" y="155" fill="var(--i)">Verktøybane</text>
-      <rect x="410" y="30" width="140" height="100" rx="12" fill="var(--surface)" stroke="var(--wire)" stroke-width="3"/>
-      <g font-family="var(--mono)" font-size="13" font-weight="400" text-anchor="start" fill="var(--ink)"><text x="425" y="58">G0 X0 Z2</text><text x="425" y="80">G1 Z-20 F0.2</text><text x="425" y="102">G1 X30</text></g>
-      <text x="480" y="155" fill="var(--ink)">CNC-program</text>
-      <rect x="605" y="30" width="140" height="100" rx="12" fill="var(--r-soft)" stroke="var(--r)" stroke-width="3"/>
-      <g><circle cx="675" cy="80" r="28" fill="none" stroke="var(--r)" stroke-width="8" stroke-dasharray="8 6"/></g>
-      <text x="675" y="155" fill="var(--r)">Maskin</text>
-    </g>
-    <g stroke="var(--wire)" stroke-width="4"><path d="M165 80 H210 M360 80 H405 M555 80 H600"/></g>
-  </svg>
-  </div></div></div>
-  <a class="simlink no-print" data-sim="cnc-dreiebenk"><span class="ico">⚙️</span><span><b>Prøv selv: CNC-dreiebenk</b><small>Se hvordan et program styrer maskinen.</small></span><span class="pil">→</span></a>
-  <details class="laerer no-print"><summary>Lærernotat</summary>Programmering av CNC og roboter (kompetansemål 8) kommer i egne leksjoner. Her er målet bare at elevene ser sammenhengen: modell, verktøybane, program, maskin.</details>
+<section id="montasje">
+  <div class="tag">Del 4 · Sammenstilling</div>
+  <h2>Sett delene sammen med Joint</h2>
+  <p class="lead">Akselen og flensen blir én sammenstilling.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxMontasje" role="img" aria-label="Fusion: Joint kobler akselen og flensen sammen"></svg></div></div>
+  <p class="vei">I Fusion: <b>ASSEMBLE</b> → <b>Joint</b> → klikk på akselen → klikk på flensen → <b>Motion: Rigid</b></p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Hver del må være en egen Component (eller settes inn med Insert into Current Design). Joint låser delene til hverandre. Rigid = sitter fast. Revolute = kan dreie, som et hjul på en aksel. Sammenstillingen viser om delene passer før noe lages.</details>
 </section>
 
 <section id="oppgaver">
@@ -406,90 +292,61 @@ input[type=range]{accent-color:var(--orange)}
   </div>
   <div class="sheet" id="sheet">
     <div>
-      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 2: Fra skisse til 3D-modell</h2>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 2: Speiling, hull, gjenger og sammenstilling</h2>
       <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
     </div>
 
     <div>
       <h3>Del A · Fyll inn</h3>
-      <p>DAK står for <span class="luke"><span class="fasit" hidden>dataassistert konstruksjon</span></span>.</p>
-      <p>DAP står for <span class="luke"><span class="fasit" hidden>dataassistert produksjon</span></span>.</p>
-      <p>En 2D-tegning i programmet heter en <span class="luke"><span class="fasit" hidden>skisse</span></span>.</p>
-      <p>Å dra en skisse ut i 3D heter å <span class="luke"><span class="fasit" hidden>ekstrudere</span></span>.</p>
-      <p>Å dreie en halv profil rundt en akse heter <span class="luke"><span class="fasit" hidden>Revolve</span></span> i Fusion.</p>
+      <p>Mirror betyr å <span class="luke"><span class="fasit" hidden>speile</span></span>.</p>
+      <p>Circular Pattern kopierer et hull rundt en <span class="luke"><span class="fasit" hidden>akse</span></span>.</p>
+      <p>Gjenger lager jeg med kommandoen <span class="luke"><span class="fasit" hidden>Thread</span></span>.</p>
+      <p>Deler settes sammen med kommandoen <span class="luke"><span class="fasit" hidden>Joint</span></span>.</p>
     </div>
 
     <div>
-      <h3>Del B · Sett stegene i riktig rekkefølge</h3>
+      <h3>Del B · Hvilken kommando i Fusion?</h3>
       <div class="tablewrap"><table>
-        <tr><th>Steg</th><th>Nr.</th></tr>
-        <tr><td>Ekstruder skissen</td><td class="blank x"><span class="fasit" hidden>3</span></td></tr>
-        <tr><td>Lag tegning med tre riss</td><td class="blank x"><span class="fasit" hidden>5</span></td></tr>
-        <tr><td>Tegn en skisse</td><td class="blank x"><span class="fasit" hidden>1</span></td></tr>
-        <tr><td>Lag hull og kutt</td><td class="blank x"><span class="fasit" hidden>4</span></td></tr>
-        <tr><td>Sett mål og lås skissen</td><td class="blank x"><span class="fasit" hidden>2</span></td></tr>
+        <tr><th>Jeg vil …</th><th>Kommando</th></tr>
+        <tr><td>lage fire like hull rundt midten</td><td class="blank"><span class="fasit" hidden>Circular Pattern</span></td></tr>
+        <tr><td>tegne halve delen og kopiere den andre halvdelen</td><td class="blank"><span class="fasit" hidden>Mirror</span></td></tr>
+        <tr><td>lage gjenge M12 på en aksel</td><td class="blank"><span class="fasit" hidden>Thread</span></td></tr>
+        <tr><td>sette akselen fast i flensen</td><td class="blank"><span class="fasit" hidden>Joint</span></td></tr>
       </table></div>
     </div>
 
     <div>
-      <h3>Del C · Hvilken skisse?</h3>
-      <p>Hvilken skisse ekstruderer du for å lage delen?</p>
-      <div class="tablewrap"><table>
-        <tr><th>Del</th><th>Skisse</th></tr>
-        <tr><td>Rundstav (aksel)</td><td class="blank"><span class="fasit" hidden>Sirkel</span></td></tr>
-        <tr><td>Rør</td><td class="blank"><span class="fasit" hidden>To sirkler inni hverandre (ring)</span></td></tr>
-        <tr><td>Vinkeljern</td><td class="blank"><span class="fasit" hidden>L-form</span></td></tr>
-        <tr><td>Flattstål</td><td class="blank"><span class="fasit" hidden>Rektangel</span></td></tr>
-      </table></div>
-    </div>
-
-    <div>
-      <h3>Del D · Extrude, Revolve eller Revolve cut?</h3>
-      <p>Kryss av for kommandoen du bruker.</p>
-      <div class="tablewrap"><table>
-        <tr><th>Del</th><th>Extrude</th><th>Revolve</th><th>Revolve cut</th></tr>
-        <tr><td>Aksel med flere diametre</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
-        <tr><td>Flattstål</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
-        <tr><td>Spor rundt en aksel</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
-        <tr><td>Vinkeljern</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
-        <tr><td>Hjul (trinse)</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
-      </table></div>
-    </div>
-
-    <div>
-      <h3>Del E · Riktig eller galt</h3>
+      <h3>Del C · Riktig eller galt</h3>
       <div class="tablewrap"><table>
         <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
-        <tr><td>Endrer jeg et mål i modellen, må jeg tegne tegningen på nytt.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
-        <tr><td>En DAK-modell kan brukes til å lage CNC-program.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
-        <tr><td>Skissen bør ha mål før jeg ekstruderer.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
-        <tr><td>Tegningshodet viser navn, målestokk og materiale.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
-        <tr><td>Med Revolve tegner jeg hele profilen, på begge sider av aksen.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Endrer jeg den ene halvdelen, følger den speilede halvdelen med.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Med Circular Pattern må jeg tegne alle hullene selv.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Rigid betyr at delene sitter fast sammen.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Hver del i en sammenstilling bør være en egen Component.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
       </table></div>
     </div>
 
     <div>
-      <h3>Del F · Modeller klossen på PC</h3>
-      <p>Lag klossen fra leksjon 1: 60 lang, 40 høy, 30 dyp, med trinn 30 × 20. Kryss av.</p>
+      <h3>Del D · På PC</h3>
+      <p>Flens: Ø100 × 12, nav Ø50, total lengde 30, boring Ø20, fire hull Ø9 på Ø76. Aksel: M12 × 20, rille 3 × Ø9, Ø20 × 40, Ø30 × 10, Ø20 × 27. Kryss av.</p>
       <div class="tablewrap"><table>
         <tr><th>Jeg har …</th><th>✓</th></tr>
-        <tr><td>tegnet L-skissen og satt alle mål</td><td class="blank x"></td></tr>
-        <tr><td>ekstrudert 30 mm</td><td class="blank x"></td></tr>
-        <tr><td>laget tegning med tre riss og mål</td><td class="blank x"></td></tr>
-        <tr><td>fylt ut tegningshodet</td><td class="blank x"></td></tr>
-        <tr><td>Ekstra: laget akselen fra Del 4 med Revolve (Ø20 × 20, Ø30 × 30, Ø20 × 25)</td><td class="blank x"></td></tr>
-        <tr><td>Ekstra: laget et spor 4 mm bredt og Ø24 med Revolve cut</td><td class="blank x"></td></tr>
+        <tr><td>laget flensen med Revolve</td><td class="blank x"></td></tr>
+        <tr><td>laget ett hull Ø9 med Hole</td><td class="blank x"></td></tr>
+        <tr><td>laget fire hull med Circular Pattern</td><td class="blank x"></td></tr>
+        <tr><td>laget akselen med Revolve og rillen med Revolve cut</td><td class="blank x"></td></tr>
+        <tr><td>laget gjengen M12 med Thread</td><td class="blank x"></td></tr>
+        <tr><td>Ekstra: satt sammen akselen og flensen med Joint</td><td class="blank x"></td></tr>
       </table></div>
-      <p style="margin-top:8px">Ekstra: lag et hull Ø10 gjennom den lave delen. Hvordan vises hullet forfra?</p>
-      <div class="svar"><span class="fasit" hidden>Som stiplede linjer (skjult kant) med senterlinje</span></div>
     </div>
 
     <div>
       <h3>Exit-lapp</h3>
       <ol>
-        <li>Hva er én fordel med DAK framfor å tegne for hånd?<div class="svar"><span class="fasit" hidden>For eksempel: lett å endre, tegningen lages automatisk, kan brukes til CNC</span></div></li>
+        <li>Hvorfor er det lurt å bruke Mirror og Circular Pattern?<div class="svar"><span class="fasit" hidden>Jeg tegner mindre, og alle kopiene blir like. Endrer jeg originalen, følger kopiene med.</span></div></li>
       </ol>
     </div>
+
   </div>
 </section>
 
@@ -518,8 +375,6 @@ input[type=range]{accent-color:var(--orange)}
   const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
     ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
   });
-
-
   // ---------- Fusion-vinduet ----------
   // Tegnet etter Autodesk Fusion (Design og Drawing). Faste lyse farger som i Fusion, også i mørk modus.
   const FXI = {
@@ -620,80 +475,139 @@ input[type=range]{accent-color:var(--orange)}
     });
     return h;
   }
-
-  // Del 4 og 5: aksel laget med Revolve (mål i mm, 2,6 px per mm)
-  const AKSEL = [[0,20,10],[20,50,15],[50,75,10]], SPOR = [[0,20,10],[20,32,15],[32,36,12],[36,50,15],[50,75,10]];
-  const akse = y => '<path d="M170 '+y+' H420" stroke="#5b6470" stroke-width="1.5" stroke-dasharray="14 4 3 4"/>';
+  // ---------- Tegninger (mål i mm) ----------
+  const SLD = 'stroke-width="1.2" stroke-dasharray="14 3 2 3" fill="none"';
   const pil = (x, y) => '<path d="M'+x+' '+y+' v34" stroke="#e8590c" stroke-width="4"/><path d="M'+(x-9)+' '+(y+28)+' l9 12 l9 -12" fill="none" stroke="#e8590c" stroke-width="4"/>';
-  const TRE_AKSEL = ['Aksel v1','  Origin','  Bodies','*    Body1','  Sketches','    Sketch1'];
-  fusjon($('fxRevolve'), { ws:'DESIGN', hl:'revolve', tips:'Revolve', tre:TRE_AKSEL,
-    dlg:{ t:'REVOLVE', r:[['Profile','1 selected'],['Axis','1 selected',1],['Type','Full'],['Angle','360.0 deg'],['Operation','New Body']] },
-    c: '<text x="190" y="128" font-weight="700" fill="#0a6ebd">Skisse: halv profil + akse</text>'+
-       '<path d="M190 200 V174 H242 V161 H320 V174 H385 V200 Z" fill="#cfe3fb" stroke="#1a73e8" stroke-width="2.5" stroke-linejoin="round"/>'+akse(200)+
-       '<text x="425" y="204" font-weight="700" fill="#5b6470">Akse</text>'+
-       '<path d="M400 182 a10 18 0 1 1 0 36" fill="none" stroke="#e8590c" stroke-width="2.5"/><path d="M395 214 l6 5 l-1 -8" fill="none" stroke="#e8590c" stroke-width="2.5"/>'+
-       pil(285, 212) + sylindre(AKSEL, 190, 310, 2.6, '#c3c9d1', '#5b6470', '#d7dce2') +
-       '<text x="420" y="314" font-weight="700" fill="#3c3c3c">Aksel</text>' });
-  fusjon($('fxRevolveCut'), { ws:'DESIGN', hl:'revolve', tips:'Revolve', tre:['Aksel v1','  Origin','  Bodies','    Body1','  Sketches','    Sketch1','*    Sketch2'],
-    dlg:{ t:'REVOLVE', r:[['Profile','1 selected'],['Axis','1 selected'],['Type','Full'],['Angle','360.0 deg'],['Operation','Cut',1]] },
-    c: '<text x="190" y="128" font-weight="700" fill="#0a6ebd">Skisse: lite rektangel + akse</text>'+
-       sylindre(AKSEL, 190, 200, 2.6, '#c3c9d1', '#5b6470', '#d7dce2') + akse(200) +
-       '<rect x="273.2" y="161" width="10.4" height="7.8" fill="#cfe3fb" stroke="#1a73e8" stroke-width="2.5"/>'+
-       pil(360, 232) + sylindre(SPOR, 190, 318, 2.6, '#c3c9d1', '#5b6470', '#d7dce2') +
-       '<path d="M278 262 V276" stroke="#e8590c" stroke-width="2"/><text x="262" y="257" font-weight="700" fill="#e8590c">Spor</text>' });
+  const txt = (x, y, t, k, ekstra) => '<text x="'+x+'" y="'+y+'" fill="'+k+'" font-size="14" '+(ekstra||'')+'>'+t+'</text>';
+  const pilspiss = (x, y, vx, vy, k) => { const n = Math.hypot(vx,vy), ux = vx/n, uy = vy/n; return '<path d="M'+x+' '+y+' L'+(x-ux*10-uy*4)+' '+(y-uy*10+ux*4)+' L'+(x-ux*10+uy*4)+' '+(y-uy*10-ux*4)+' Z" fill="'+k+'"/>'; };
 
-  // ---------- L-kloss i 3D (isometrisk), dybde d mm ----------
-  function kloss(d, ox, oy, s){
-    const P=(x,y,z)=>(ox+(x-y)*0.866*s).toFixed(1)+','+(oy+(x+y)*0.5*s-z*s).toFixed(1);
-    const poly=(pts,fill)=>'<polygon points="'+pts.map(p=>P(...p)).join(' ')+'" fill="'+fill+'" stroke="var(--wire)" stroke-width="2.5" stroke-linejoin="round"/>';
-    let h='';
-    if(d>0){
-      h+=poly([[0,0,40],[30,0,40],[30,d,40],[0,d,40]],'var(--i-soft)');
-      h+=poly([[30,0,20],[60,0,20],[60,d,20],[30,d,20]],'var(--i-soft)');
-      h+=poly([[30,0,40],[30,d,40],[30,d,20],[30,0,20]],'var(--r-soft)');
-      h+=poly([[60,0,20],[60,d,20],[60,d,0],[60,0,0]],'var(--r-soft)');
+  // Flens: Ø100 × 12, nav Ø50, lengde 30, boring Ø20 med fas 1 × 45°, 4 hull Ø9 på Ø76
+  const F = { R:50, nav:25, bor:10, pcd:38, hull:4.5 };
+  const HULL = [[0,-1],[1,0],[0,1],[-1,0]];
+  function flensFront(cx, cy, s, k, o){
+    o = o || {};
+    const c = r => '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*s)+'" fill="none" stroke="'+k+'" stroke-width="2.5"/>';
+    let h = c(F.R) + c(F.nav) + c(F.bor);
+    HULL.forEach(([a,b]) => { h += '<circle cx="'+(cx+a*F.pcd*s)+'" cy="'+(cy+b*F.pcd*s)+'" r="'+(F.hull*s)+'" fill="none" stroke="'+k+'" stroke-width="2.5"/>'; });
+    const L = (F.R+6)*s, sl = o.sl || k;
+    h += '<path d="M'+(cx-L)+' '+cy+' H'+(cx+L)+' M'+cx+' '+(cy-L)+' V'+(cy+L)+'" stroke="'+sl+'" '+SLD+'/>';
+    if (o.hullsirkel) h += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(F.pcd*s)+'" stroke="'+sl+'" '+SLD+'/>';
+    if (o.mal){
+      // 4× Ø9: fra hullet til høyre, skrått opp
+      const hx = cx+F.pcd*s+F.hull*s*0.7, hy = cy-F.hull*s*0.7, ex = cx+(F.R+8)*s, ey = cy-(F.R*0.55)*s;
+      h += '<path d="M'+hx+' '+hy+' L'+ex+' '+ey+' h52" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(hx,hy,hx-ex,hy-ey,k)+txt(ex+4, ey-5, '4× Ø9', k, 'font-weight="700"');
+      // Ø76: fra hullsirkelen, skrått ned
+      const px = cx+F.pcd*s*0.707, py = cy+F.pcd*s*0.707, qx = cx+(F.R+8)*s, qy = cy+(F.R*0.85)*s;
+      h += '<path d="M'+px+' '+py+' L'+qx+' '+qy+' h40" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(px,py,px-qx,py-qy,k)+txt(qx+4, qy-5, 'Ø76', k, 'font-weight="700"');
     }
-    h+=poly([[0,d,0],[60,d,0],[60,d,20],[30,d,20],[30,d,40],[0,d,40]],'var(--u-soft)');
+    if (o.snittlinje){
+      const t = cy-(F.R+6)*s, b = cy+(F.R+6)*s;
+      h += '<path d="M'+cx+' '+(t-14)+' V'+t+' M'+cx+' '+b+' V'+(b+14)+'" stroke="'+k+'" stroke-width="4"/>';
+      [[t-14,-1],[b+14,1]].forEach(([y]) => { h += '<path d="M'+cx+' '+y+' H'+(cx+24)+'" stroke="'+k+'" stroke-width="1.6"/>'+pilspiss(cx+26,y,1,0,k)+txt(cx+30, y+5, 'A', k, 'font-weight="700" font-size="16"'); });
+    }
+    return h;
+  }
+  // Snitt A–A av flensen: x langs aksen (0 = flensflaten), r = radius
+  const SN1 = [[0,11],[0,33.5],[12,33.5],[12,25],[30,25],[30,10],[1,10]], SN2 = [[0,42.5],[0,50],[12,50],[12,42.5]];
+  function flensSnitt(x0, cy, s, k, fyll){
+    const P = (pts, sgn) => pts.map(([x,r]) => (x0+x*s).toFixed(1)+','+(cy-sgn*r*s).toFixed(1)).join(' ');
+    let h = '';
+    [1,-1].forEach(g => [SN1,SN2].forEach(p => { h += '<polygon points="'+P(p,g)+'" fill="'+fyll+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>'; }));
+    h += '<path d="M'+(x0+s)+' '+(cy-10*s)+' V'+(cy+10*s)+' M'+(x0+30*s)+' '+(cy-10*s)+' V'+(cy+10*s)+'" stroke="'+k+'" stroke-width="2.5"/>';
+    h += '<path d="M'+(x0-14)+' '+cy+' H'+(x0+30*s+14)+' M'+(x0-8)+' '+(cy-38*s)+' H'+(x0+12*s+8)+' M'+(x0-8)+' '+(cy+38*s)+' H'+(x0+12*s+8)+'" stroke="'+k+'" '+SLD+'/>';
+    return h;
+  }
+  // Detalj B rundt hjørnet i boringen (x = 0, r = 10), målestokk k2 px per mm
+  function flensDetalj(dx, dy, k2, k, fyll, id){
+    const P = pts => pts.map(([x,r]) => (dx+x*k2).toFixed(1)+','+(dy-(r-10)*k2).toFixed(1)).join(' ');
+    let h = '<clipPath id="'+id+'"><circle cx="'+dx+'" cy="'+dy+'" r="'+(6*k2)+'"/></clipPath><g clip-path="url(#'+id+')">';
+    h += '<polygon points="'+P(SN1)+'" fill="'+fyll+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    h += '<path d="M'+(dx+k2)+' '+dy+' V'+(dy+7*k2)+'" stroke="'+k+'" stroke-width="2.5"/></g>';
+    h += '<circle cx="'+dx+'" cy="'+dy+'" r="'+(6*k2)+'" fill="none" stroke="'+k+'" stroke-width="1.2"/>';
+    // fasmål
+    const fx = dx+0.5*k2, fy = dy-0.5*k2;
+    h += '<path d="M'+fx+' '+fy+' L'+(dx-3.5*k2)+' '+(dy-4.5*k2)+' h-34" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(fx,fy,1,1,k);
+    h += txt(dx-3.5*k2-80, dy-4.5*k2-6, '1 × 45°', k, 'font-weight="700"');
+    return h;
+  }
+  // Brakett (U-form), symmetrisk om x = 0
+  const BR = [[-40,0],[40,0],[40,50],[15,50],[15,20],[-15,20],[-15,50],[-40,50]];
+  const BR_V = [[-40,0],[0,0],[0,20],[-15,20],[-15,50],[-40,50]], BR_H = BR_V.map(([x,y]) => [-x,y]);
+  function prisme(pts, hull, ox, oy, s, d, fyll, kant, opac){
+    const P = (x,y,z) => [ox+x*s+z*0.5*s, oy-y*s-z*0.4*s];
+    const pp = (z) => pts.map(([x,y]) => P(x,y,z).map(v => v.toFixed(1)).join(',')).join(' ');
+    let h = '<g fill="'+fyll+'" stroke="'+kant+'" stroke-width="1.6" stroke-linejoin="round" fill-opacity="'+(opac||1)+'">';
+    h += '<polygon points="'+pp(d)+'"/>';
+    pts.forEach((a,i) => { const b = pts[(i+1)%pts.length]; h += '<polygon points="'+[P(a[0],a[1],0),P(b[0],b[1],0),P(b[0],b[1],d),P(a[0],a[1],d)].map(p => p.map(v => v.toFixed(1)).join(',')).join(' ')+'"/>'; });
+    h += '<polygon points="'+pp(0)+'"/>';
+    hull.forEach(([x,y]) => { const [hx,hy] = P(x,y,0); h += '<circle cx="'+hx+'" cy="'+hy+'" r="'+(4*s)+'" fill="#eef1f5" fill-opacity="1"/>'; });
+    return h + '</g>';
+  }
+
+  const SV = '#1b1b1b';   // svart strek på Fusion-tegningen
+  // Aksel: M12 × 20 med fas, gjengerille 3 × Ø9, Ø20 × 40, Ø30 × 10, Ø20 × 27 med fas 1 × 45°
+  const AK = [[0,5],[1,6],[20,6],[20,4.5],[23,4.5],[23,10],[63,10],[63,15],[73,15],[73,10],[99,10],[100,9]];
+  const KANTER = [[1,6],[20,6],[23,10],[63,15],[73,15],[99,10]];
+  function aksel(ox, oy, s, k, o){
+    o = o || {};
+    const X = x => ox+x*s, Y = r => oy-r*s;
+    const pts = AK.map(([x,r]) => X(x)+','+Y(r)).concat(AK.slice().reverse().map(([x,r]) => X(x)+','+Y(-r)));
+    let h = '<polygon points="'+pts.join(' ')+'" fill="'+(o.fyll||'none')+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    KANTER.forEach(([x,r]) => { h += '<path d="M'+X(x)+' '+Y(r)+' V'+Y(-r)+'" stroke="'+k+'" stroke-width="2.5"/>'; });
+    h += '<path d="M'+X(0.4)+' '+Y(4.9)+' H'+X(20)+' M'+X(0.4)+' '+Y(-4.9)+' H'+X(20)+'" stroke="'+k+'" stroke-width="1.2"/>';
+    h += '<path d="M'+(X(0)-12)+' '+oy+' H'+(X(100)+12)+'" stroke="'+(o.sl||k)+'" '+SLD+'/>';
+    if (o.m12) h += '<path d="M'+X(8)+' '+(Y(6)-2)+' L'+X(2)+' '+(Y(6)-36)+' h-36" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(X(8),Y(6)-2,X(8)-X(2),34,k)+txt(X(2)-36, Y(6)-41, 'M12', k, 'font-weight="700"');
+    if (o.tol){
+      const x = X(43);
+      h += '<path d="M'+x+' '+Y(10)+' V'+Y(-10)+'" stroke="'+o.tol+'" stroke-width="1.4"/>'+pilspiss(x,Y(10),0,-1,o.tol)+pilspiss(x,Y(-10),0,1,o.tol);
+      h += '<text transform="translate('+(x-9)+' '+oy+') rotate(-90)" text-anchor="middle" font-size="14" font-weight="700" fill="'+o.tol+'">Ø20 ±0,1</text>';
+    }
+    if (o.ra){
+      const x = X(50), y = Y(10), c = o.ra;
+      h += '<path d="M'+(x-7)+' '+(y-12)+' L'+x+' '+y+' L'+(x+14)+' '+(y-28)+' H'+(x+48)+' M'+(x-7)+' '+(y-12)+' H'+(x+6)+'" fill="none" stroke="'+c+'" stroke-width="1.6"/>'+txt(x+16, y-32, 'Ra 0,8', c, 'font-weight="700"');
+    }
     return h;
   }
 
-  // hero: ferdig 3D-modell (stillestående; glideren i Del 3 viser ekstruderingen)
-  const heroK=$('heroKloss');
-  heroK.innerHTML=kloss(30,200,110,2.2); fixVars(heroK); $('heroTekst').textContent='3D-modell';
 
-  // ---------- arbeidsgang ----------
-  const L='fill="none" stroke="var(--u)" stroke-width="5" stroke-linejoin="round"';
-  const STEG = [
-    { t:"1 · Skisse", fig:'<rect x="20" y="15" width="160" height="130" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/><path d="M20 45 H180 M20 75 H180 M20 105 H180 M60 15 V145 M100 15 V145 M140 15 V145" stroke="var(--line)" stroke-width="1"/><path d="M50 125 H150 V95 H100 V45 H50 Z" '+L+'/>',
-      l:["Velg et plan (for eksempel forfra)","Tegn omrisset med linjer","Formen trenger ikke være nøyaktig ennå"] },
-    { t:"2 · Mål og lås", fig:'<path d="M50 125 H150 V95 H100 V45 H50 Z" '+L+'/><g stroke="var(--i)" stroke-width="2"><path d="M50 140 H150 M50 132 v16 M150 132 v16"/><path d="M35 45 V125 M27 45 h16 M27 125 h16"/></g><text x="100" y="157" text-anchor="middle" font-size="15" font-weight="700" fill="var(--i)">60</text><text x="22" y="90" font-size="15" font-weight="700" fill="var(--i)">40</text>',
-      l:["Sett <b>mål</b> på alle linjer","Lås at linjer er vannrette og loddrette","Skissen blir svart/låst når den er ferdig"] },
-    { t:"3 · Ekstruder", fig:'<polygon points="60,120 140,120 140,100 100,100 100,60 60,60" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/><path d="M100 60 l40 -30 M140 100 l40 -30" stroke="var(--orange)" stroke-width="4"/><path d="M150 40 l22 -16 M164 22 l9 2 l-2 9" stroke="var(--orange)" stroke-width="4" fill="none" stroke-linecap="round"/>',
-      l:["Velg skissen","Dra den ut i 3D","Skriv inn <b>dybden</b> (for eksempel 30 mm)"] },
-    { t:"4 · Hull og kutt", fig:'<polygon points="40,120 160,120 160,60 40,60" fill="var(--u-soft)" stroke="var(--u)" stroke-width="3"/><circle cx="100" cy="90" r="16" fill="var(--surface)" stroke="var(--u)" stroke-width="3"/><path d="M100 66 V114 M76 90 H124" stroke="var(--r)" stroke-width="1.5" stroke-dasharray="10 3 2 3"/>',
-      l:["Tegn en ny skisse på en flate","Kutt bort materiale, eller lag <b>hull</b>","Hull får senterlinje automatisk"] },
-    { t:"5 · Lag tegning", fig:'<rect x="20" y="15" width="160" height="130" rx="4" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><path d="M35 70 H95 V55 H65 V35 H35 Z M35 85 H95 V110 H35 Z M65 85 V110 M115 35 H140 V70 H115 Z" fill="none" stroke="var(--ink)" stroke-width="2.5"/><rect x="110" y="115" width="70" height="30" fill="none" stroke="var(--ink)" stroke-width="1.5"/>',
-      l:["Velg <b>tegning</b> fra modellen","Programmet lager rissene","Sett mål og fyll ut <b>tegningshodet</b>"] }
-  ];
-  const stepper = $('stepper');
-  STEG.forEach((s,i)=>{ const b=document.createElement('button'); b.type='button'; b.textContent=s.t; b.setAttribute('aria-pressed','false'); b.onclick=()=>visSteg(i); stepper.appendChild(b); });
-  function visSteg(i){
-    [...stepper.children].forEach((b,k)=>b.setAttribute('aria-pressed', k===i));
-    $('stegTittel').textContent = STEG[i].t;
-    $('stegListe').innerHTML = STEG[i].l.map(x=>'<li>'+x+'</li>').join('');
-    $('stegFig').innerHTML = STEG[i].fig; fixVars($('stegFig'));
-    $('stegBar').style.width = ((i+1)/STEG.length*100)+'%';
-  }
-  visSteg(0);
+  $('heroFig').innerHTML = sylindre([[0,20,6],[20,23,4.5],[23,33,10]], 70, 135, 2.2, 'var(--u-soft)', 'var(--wire)') + sylindre([[33,45,50],[45,63,25]], 70, 135, 2.2, 'var(--i-soft)', 'var(--wire)') + sylindre([[63,73,15],[73,100,10]], 70, 135, 2.2, 'var(--u-soft)', 'var(--wire)');
+  // Del 1: Mirror
+  fusjon($('fxSpeil'), { ws:'DESIGN', hl:'mirror', tips:'Mirror', tre:['Brakett v1','  Origin','  Bodies','*    Body1','  Sketches','    Sketch1'],
+    dlg:{ t:'MIRROR', r:[['Pattern Type','Bodies'],['Objects','1 selected'],['Mirror Plane','1 selected',1],['Operation','Join']] },
+    c: prisme(BR_V, [[-27.5,25]], 290, 300, 2.4, 20, '#c3c9d1', '#5b6470') +
+       (() => { const P = (y,z) => [290+z*1.2, 300-y*2.4-z*0.96].map(v => v.toFixed(1)).join(','); return '<polygon points="'+[P(-12,-14),P(64,-14),P(64,34),P(-12,34)].join(' ')+'" fill="#e8590c" fill-opacity=".14" stroke="#e8590c" stroke-width="2" stroke-dasharray="8 4"/>'; })() +
+       prisme(BR_H, [[27.5,25]], 290, 300, 2.4, 20, '#cfe3fb', '#1a73e8', .85) +
+       txt(190, 130, 'Halv del', '#3c3c3c', 'font-weight="700"') + txt(345, 130, 'Speilet (forhåndsvisning)', '#0a6ebd', 'font-weight="700"') +
+       txt(300, 360, 'Speilplan', '#e8590c', 'font-weight="700"') });
 
-  // ---------- ekstruder selv ----------
-  const ek=$('ekDybde');
-  function tegnEk(){
-    const d=+ek.value; $('ekVerdi').textContent=d;
-    $('ekFig').innerHTML=kloss(d,200,120,2.2); fixVars($('ekFig'));
-    $('ekTekst').textContent = d===0 ? 'Bare skissen: 60 × 40 mm. Dra i glidebryteren.' : (d===30 ? 'Riktig dybde for klossen fra leksjon 1!' : 'Skissen er dratt ut '+d+' mm.');
-  }
-  ek.addEventListener('input',tegnEk); tegnEk();
+  // Del 3: Circular Pattern
+  fusjon($('fxMonster'), { ws:'DESIGN', hl:'pattern', tips:'Circular Pattern', tre:['Flens v1','  Origin','  Bodies','    Body1','  Sketches','    Sketch1'],
+    dlg:{ t:'CIRCULAR PATTERN', r:[['Pattern Type','Features'],['Objects','Hole1'],['Axis','1 selected'],['Type','Full'],['Quantity','4',1]] },
+    c: (() => {
+      const cx = 360, cy = 236, s = 2.0;
+      let h = '<circle cx="'+cx+'" cy="'+cy+'" r="'+(50*s)+'" fill="#c3c9d1" stroke="#5b6470" stroke-width="2"/><circle cx="'+cx+'" cy="'+cy+'" r="'+(25*s)+'" fill="#d7dce2" stroke="#5b6470" stroke-width="2"/><circle cx="'+cx+'" cy="'+cy+'" r="'+(10*s)+'" fill="#eef1f5" stroke="#5b6470" stroke-width="2"/>';
+      h += '<path d="M'+cx+' '+(cy-38*s)+' A'+(38*s)+' '+(38*s)+' 0 0 1 '+(cx+38*s*0.94)+' '+(cy-38*s*0.34)+'" fill="none" stroke="#e8590c" stroke-width="2.5" stroke-dasharray="6 4"/>';
+      HULL.forEach(([a,b],i) => { h += '<circle cx="'+(cx+a*38*s)+'" cy="'+(cy+b*38*s)+'" r="'+(4.5*s)+'" fill="'+(i?'#cfe3fb':'#eef1f5')+'" stroke="'+(i?'#1a73e8':'#5b6470')+'" stroke-width="2.2"/>'; });
+      return h + txt(cx-70, cy-38*s-6, 'Hole1', '#3c3c3c', 'font-weight="700"') + '<circle cx="'+cx+'" cy="'+cy+'" r="4" fill="#e8590c"/>' + txt(cx-22, cy+40, 'Akse', '#e8590c', 'font-weight="700"');
+    })() });
+
+  // Del 1: Thread i Fusion
+  const SEG = [[0,20,6],[20,23,4.5],[23,63,10],[63,73,15],[73,100,10]];
+  fusjon($('fxGjenge'), { ws:'DESIGN', hl:'thread', tips:'Thread', tre:['Aksel v1','  Origin','  Bodies','*    Body1','  Sketches','    Sketch1'],
+    dlg:{ t:'THREAD', r:[['Faces','1 selected'],['Modeled','☐'],['Thread Type','ISO Metric profile'],['Size','12.0 mm'],['Designation','M12x1.75',1],['Class','6g']] },
+    c: sylindre(SEG, 190, 240, 3.2, '#c3c9d1', '#5b6470', '#d7dce2') +
+       (() => { let h = ''; for (let x = 2; x < 19; x += 1.75) h += '<path d="M'+(190+x*3.2)+' '+(240-19.2)+' l'+(1.75*3.2)+' 38.4" stroke="#1a73e8" stroke-width="1.4"/>'; return h; })() +
+       '<path d="M205 205 V170" stroke="#e8590c" stroke-width="2"/>' + txt(180, 162, 'Flaten med gjenge', '#e8590c', 'font-weight="700"') });
+
+  // Del 7: sammenstilling
+  fusjon($('fxMontasje'), { ws:'DESIGN', hl:'joint', tips:'Joint', tre:['Montasje v1','  Origin','*  Aksel:1','*  Flens:1','  Joints','    Rigid1'],
+    dlg:{ t:'JOINT', r:[['Component 1','1 selected'],['Component 2','1 selected'],['Motion','Rigid',1]] },
+    c: sylindre([[0,20,6],[20,23,4.5],[23,33,10]], 210, 236, 2.2, '#c3c9d1', '#5b6470', '#d7dce2') +
+       sylindre([[33,45,50],[45,63,25]], 210, 236, 2.2, '#e3b98f', '#8a5a2b', '#f0d2b4') +
+       sylindre([[63,73,15],[73,100,10]], 210, 236, 2.2, '#c3c9d1', '#5b6470', '#d7dce2') +
+       '<circle cx="'+(210+33*2.2)+'" cy="236" r="6" fill="#f6c344" stroke="#5b6470" stroke-width="1.5"/>' +
+       txt(190, 140, 'Aksel', '#3c3c3c', 'font-weight="700"') + txt(330, 135, 'Flens', '#8a5a2b', 'font-weight="700"') });
+
 
   // Adressen til simulatorene (samme som SIMULATORER i index.html)
   const SIMULATORER = "https://simulatorer.vercel.app/";
