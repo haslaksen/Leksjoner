@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tegning og DAK Vg2 · Leksjon 5: Gjenger og sammenstilling</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+/* steg for steg */
+.stepper{display:flex;flex-wrap:wrap;gap:8px}
+.stepper button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.steg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(160px,260px) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.steg>*{min-width:0}
+.steg svg{width:100%;height:auto;display:block}
+.steg ul{margin:.6rem 0 0;padding-left:1.2em;display:grid;gap:6px;font-size:1.1rem}
+.bar{height:10px;border-radius:99px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--orange);transition:width .4s}
+
+/* verneutstyr */
+.vern{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(200px,320px) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.vern>*{min-width:0}
+.vern svg{width:100%;height:auto;display:block}
+.vern .knapper{display:flex;flex-wrap:wrap;gap:8px}
+.vern .knapper button[aria-pressed="true"]{background:var(--r-soft);border-color:var(--r);color:var(--r)}
+.vern g.utstyr{opacity:0;transition:opacity .3s}
+.vern g.utstyr.paa{opacity:1}
+.teller{font:700 1.4rem/1.2 var(--mono)}
+.regler{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.regler>div{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--orange);border-radius:14px;padding:14px 16px;display:grid;gap:4px}
+.regler .ico{font-size:2rem}
+
+/* riktig eller galt */
+.measure{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.mcard{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.mcard .ico{font-size:2.2rem}
+.mcard .verdict{font:700 18px/1.25 var(--display);min-height:1.2em}
+.mcard[data-shown="ok"]{border-color:var(--r);background:var(--r-soft)}
+.mcard[data-shown="bad"]{border-color:var(--bad);background:var(--bad-soft)}
+.mcard[data-shown="ok"] .verdict{color:var(--r)} .mcard[data-shown="bad"] .verdict{color:var(--bad)}
+
+/* logg */
+.logg{display:grid;grid-template-columns:1.2fr 1fr;gap:clamp(20px,4vw,56px);align-items:center}
+.logg>*{min-width:0}
+.sporsmal{display:grid;gap:10px;padding:0;margin:0;list-style:none;font-size:1.1rem}
+.sporsmal li{display:flex;gap:12px;align-items:baseline}
+.sporsmal .n{font:800 1.3em var(--display);color:var(--orange);min-width:1.2em}
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+@media (max-width:860px){
+  .hero,.steg,.vern,.logg{grid-template-columns:1fr}
+  .trio,.measure,.regler{grid-template-columns:1fr}
+}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+
+/* Konstruksjon: riss og tegning */
+.flate{fill:var(--surface);stroke:var(--wire);stroke-width:2.5;stroke-linejoin:round;transition:fill .3s}
+.flate.lys{fill:var(--orange-soft);stroke:var(--orange)}
+.synspil{opacity:0;transition:opacity .3s}
+.synspil.paa{opacity:1}
+.regler.fire svg{width:100%;height:auto;max-height:30px}
+.rutenett{display:block;max-width:440px;width:100%;height:auto;margin:8px 0}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.regler.fire{grid-template-columns:repeat(4,1fr)}
+@media (max-width:860px){.regler.fire{grid-template-columns:1fr 1fr}}
+input[type=range]{accent-color:var(--orange)}
+/* Fusion-vinduet og tegninger */
+.fxs{display:block;width:100%;height:auto;border:1px solid #b9c0c8;border-radius:10px;background:#fff;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.vei{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:1.05rem;max-width:none}
+.vei b{font-family:var(--mono);background:var(--blue-soft);color:var(--blue);border-radius:6px;padding:.1em .45em}
+.fig2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fig2>div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem;display:grid;gap:8px;align-content:start}
+.fig2 svg{display:block;width:100%;height:auto}
+.fig2 h3{font-size:1.1rem}
+@media (max-width:860px){.fig2{grid-template-columns:1fr}}
+.tab{border-collapse:collapse;width:100%;background:var(--surface)}
+.tab th,.tab td{border:1px solid var(--line);padding:8px 12px;text-align:left}
+.tab th{background:var(--bg)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand">Tegning og DAK Vg2 · <span>Leksjon 5</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#gjenge">Gjenger</a><a href="#angivelse">Angivelse</a><a href="#rille">Gjengerille</a><a href="#hull">Hull</a><a href="#fxgjenge">Thread</a><a href="#montasje">Joint</a><a href="#bom">Stykkliste</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Tegning og DAK Vg2 · Leksjon 5</div>
+    <h1 style="margin-top:10px">Gjenger, toleranser og <span style="color:var(--orange)">overflate</span></h1>
+    <p class="lead" style="margin-top:12px">Tegningen sier hvor nøyaktig og hvor glatt.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span><b>Gjenger</b>, <b>gjengeangivelse</b> og <b>gjengerille</b></span></li>
+      <li><span class="n i">2</span><span><b>Hull</b>: gjennomgående, blindhull, forsenket og gjengehull</span></li>
+      <li><span class="n r">3</span><span>I Fusion: <b>Thread</b> og <b>Joint</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span><b>Stykkliste</b> (BOM)</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg id="heroFig" viewBox="0 0 400 200" role="img" aria-label="Akseltegning med gjenge M12, gjengerille, toleranse og overflatesymbol"></svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Mål</h3>
+      <p>Vg2 industriteknologi (PIN02-03). T6: «bruke digitale verktøy til å utarbeide modeller, tegninger, skjemaer, arbeidsbeskrivelser og kvalitetssikringssystemer i planlegging og produksjon». T7: «forklare og bruke riktig bearbeidingsmetode ut fra materialer, arbeidstegninger og spesifikasjoner». T10: «anvende sammenføyningsmetoder etter instruksjoner og arbeidsbeskrivelser». Del 1–4 er uten PC, del 5–6 i Fusion, del 7 begge deler. Akselen passer i flensen fra leksjon 3.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–5</dt><dd>Start: vis en bolt, en mutter og en aksel.</dd>
+        <dt>5–25</dt><dd>Del 1–4 · Gjenger, gjengerille og hull. Oppgave A–C.</dd>
+        <dt>25–40</dt><dd>Del 5–6 · Thread og Joint i Fusion.</dd>
+        <dt>40–45</dt><dd>Del 7 · Stykkliste. Oppgave D.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–85</dt><dd>Oppgave D–E på PC: akselen med gjenge, sett den i flensen, lag stykkliste.</dd>
+        <dt>85–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="gjenge">
+  <div class="tag">Del 1 · Gjenger</div>
+  <h2>Gjenger holder delene sammen</h2>
+  <p class="lead">M12 × 1,75 sier alt om gjengen.</p>
+  <div class="fig" style="max-width:420px">
+    <svg data-bilde="bolt-og-mutter" data-alt="Bolt og mutter med gjenger" viewBox="0 0 360 140" role="img" aria-label="Bolt og mutter med gjenger">
+      <rect x="20" y="30" width="40" height="80" rx="3" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M20 57 H60 M20 83 H60" stroke="var(--wire)" stroke-width="1.5"/>
+      <rect x="60" y="52" width="240" height="36" fill="var(--i-soft)" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M170 52 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 M170 88 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5 l6 -5 l6 5" fill="none" stroke="var(--wire)" stroke-width="1.5"/>
+      <path d="M176 52 l12 36 M188 52 l12 36 M200 52 l12 36 M212 52 l12 36 M236 52 l12 36 M260 52 l12 36 M272 52 l12 36 M284 52 l12 36" stroke="var(--wire)" stroke-width="1"/>
+      <rect x="220" y="30" width="34" height="80" rx="3" fill="var(--u-soft)" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M220 57 H254 M220 83 H254" stroke="var(--wire)" stroke-width="1.5"/>
+      <text x="40" y="132" text-anchor="middle" font-size="14" fill="var(--muted)">Bolt</text>
+      <text x="237" y="132" text-anchor="middle" font-size="14" fill="var(--muted)">Mutter</text>
+    </svg>
+  </div>
+  <div class="regler">
+    <div><span class="ico">🔩</span><b>M = metrisk gjenge</b></div>
+    <div><span class="ico">📏</span><b>12 = ytre diameter i mm</b></div>
+    <div><span class="ico">🔄</span><b>1,75 = stigning i mm</b></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>M12 × 1,75: metrisk gjenge, ytre diameter 12 mm, stigning 1,75 mm (så langt mutteren flytter seg på én omdreining). Vanlig stigning skrives ofte ikke: M12. Gjengetabell finnes i Verkstedhåndboka.</details>
+</section>
+
+<section id="angivelse">
+  <div class="tag">Del 2 · Gjengeangivelse</div>
+  <h2>Slik ser gjenger ut på tegningen</h2>
+  <div class="fig2">
+    <div><h3>Utvendig gjenge (bolt)</h3><svg id="gjUt" viewBox="0 0 300 200" role="img" aria-label="Utvendig gjenge: tykk linje ytterst, tynn linje innenfor, merket M12"></svg></div>
+    <div><h3>Innvendig gjenge (hull)</h3><svg id="gjInn" viewBox="0 0 300 200" role="img" aria-label="Innvendig gjenge sett forfra: tykk sirkel inne, tynn tre fjerdedels sirkel ute, merket M12"></svg></div>
+  </div>
+  <div class="regler">
+    <div><span class="ico">✏️</span><b>Tykk linje: der du kan ta på</b></div>
+    <div><span class="ico">〰️</span><b>Tynn linje: bunnen av gjengen</b></div>
+    <div><span class="ico">🔩</span><b>M12 = metrisk, Ø12 mm</b></div>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Utvendig gjenge: tykk linje på ytre diameter, tynn linje på kjernediameteren. Innvendig gjenge forfra: tykk sirkel på borediameteren (Ø10,2 for M12), tynn tre fjerdedels sirkel på M12.</details>
+</section>
+
+<section id="rille">
+  <div class="tag">Del 3 · Gjengerille</div>
+  <h2>Gjengerillen gir plass der gjengen slutter</h2>
+  <div class="fig" style="max-width:820px">
+    <svg id="rilleFig" viewBox="0 0 640 250" role="img" aria-label="Aksel med gjengerille 3 × Ø9 mellom gjengen og den tykkere delen. Gjengestålet slutter i rillen"></svg>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Uten rille blir de siste gjengene halve, og mutteren går ikke helt inn til ansatsen. Rillen er litt mindre enn kjernediameteren (her Ø9 mot ca. Ø9,9 for M12). På tegningen skrives den ofte som bredde × diameter: 3 × Ø9.</details>
+</section>
+
+<section id="hull">
+  <div class="tag">Del 4 · Hull på tegningen</div>
+  <h2>Fire slags hull</h2>
+  <p class="lead">Tegningen sier hvor stort, hvor dypt og hva slags.</p>
+  <div class="tablewrap"><div style="min-width:620px;max-width:860px"><svg viewBox="0 0 680 200" role="img" aria-label="Fire hull i snitt: gjennomgående Ø9, blindhull Ø8 × 12 dyp, forsenket hull og gjengehull M8 × 15 dyp">
+    <defs><pattern id="hHull" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V8" stroke="var(--ink)" stroke-width="1.1"/></pattern></defs>
+    <text x="85" y="24" text-anchor="middle" font-size="16" font-weight="800" fill="var(--ink)">Gjennomgående</text><polygon points="25,40 65,40 65,130 25,130" fill="url(#hHull)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/><polygon points="105,40 145,40 145,130 105,130" fill="url(#hHull)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/><path d="M85 34 V140" stroke="var(--r)" stroke-width="1" stroke-dasharray="10 3 2 3"/><text x="85" y="166" text-anchor="middle" font-size="17" font-weight="800" fill="var(--orange)">Ø9</text><text x="85" y="190" text-anchor="middle" font-size="14" fill="var(--muted)">helt gjennom</text>
+    <text x="255" y="24" text-anchor="middle" font-size="16" font-weight="800" fill="var(--ink)">Blindhull</text><polygon points="195,40 237,40 237,94 255,105 273,94 273,40 315,40 315,130 195,130" fill="url(#hHull)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/><path d="M255 34 V140" stroke="var(--r)" stroke-width="1" stroke-dasharray="10 3 2 3"/><text x="255" y="166" text-anchor="middle" font-size="17" font-weight="800" fill="var(--orange)">Ø8 × 12 dyp</text><text x="255" y="190" text-anchor="middle" font-size="14" fill="var(--muted)">ikke gjennom</text>
+    <text x="425" y="24" text-anchor="middle" font-size="16" font-weight="800" fill="var(--ink)">Forsenket</text><polygon points="365,40 385,40 405,60 405,130 365,130" fill="url(#hHull)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/><polygon points="485,40 465,40 445,60 445,130 485,130" fill="url(#hHull)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/><path d="M425 34 V140" stroke="var(--r)" stroke-width="1" stroke-dasharray="10 3 2 3"/><text x="425" y="166" text-anchor="middle" font-size="17" font-weight="800" fill="var(--orange)">Ø9 ⌵ Ø18 × 90°</text><text x="425" y="190" text-anchor="middle" font-size="14" fill="var(--muted)">for senkskrue</text>
+    <text x="595" y="24" text-anchor="middle" font-size="16" font-weight="800" fill="var(--ink)">Gjengehull</text><polygon points="535,40 580,40 580,116 595,125 610,116 610,40 655,40 655,130 535,130" fill="url(#hHull)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/><path d="M577 40 V107 M613 40 V107" stroke="var(--ink)" stroke-width="1.2"/><path d="M577 107 H613" stroke="var(--ink)" stroke-width="2.5"/><path d="M595 34 V140" stroke="var(--r)" stroke-width="1" stroke-dasharray="10 3 2 3"/><text x="595" y="166" text-anchor="middle" font-size="17" font-weight="800" fill="var(--orange)">M8 × 15 dyp</text><text x="595" y="190" text-anchor="middle" font-size="14" fill="var(--muted)">gjenge i hullet</text>
+  </svg></div></div>
+  <p class="vei">I Fusion: <b>SOLID</b> → <b>CREATE</b> → <b>Hole</b> → velg <b>Simple</b>, <b>Countersink</b> eller <b>Tapped</b> og <b>Extents: Distance</b></p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Gjennomgående: bare diameteren. Blindhull: diameter og dybde (borspissen gir 118° i bunnen). Forsenket (⌵): for senkskrue, Ø og vinkel 90°. Senket (⌴, counterbore) er for unbrakoskrue. Gjengehull: M8 × 15 dyp betyr gjenge 15 mm dyp. Kjernehullet bores Ø6,8 litt dypere (tabell i Verkstedhåndboka). På tegningen er gjengen tynn linje og kjernehullet tykk.</details>
+</section>
+
+<section id="fxgjenge">
+  <div class="tag">Del 5 · Gjenger i Fusion</div>
+  <h2>Thread legger gjenger på en sylinder</h2>
+  <p class="lead">Velg flaten. Fusion finner størrelsen selv.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxGjenge" role="img" aria-label="Fusion: Thread gir gjenge M12x1,75 på enden av akselen"></svg></div></div>
+  <p class="vei">I Fusion: <b>SOLID</b> → <b>CREATE</b> → <b>Thread</b> → klikk på flaten → <b>OK</b></p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>La «Modeled» stå av. Da tegnes gjengen bare som et bilde på flaten (raskt), og den vises riktig på tegningen. Designation M12x1.75 betyr metrisk gjenge, ytre diameter 12 mm og stigning 1,75 mm. Gjengetabell finnes i Verkstedhåndboka.</details>
+</section>
+
+<section id="montasje">
+  <div class="tag">Del 6 · Joint i Fusion</div>
+  <h2>Sett delene sammen med Joint</h2>
+  <p class="lead">Akselen og flensen blir én sammenstilling.</p>
+  <div class="tablewrap"><div style="min-width:620px"><svg class="fxs" id="fxMontasje" role="img" aria-label="Fusion: Joint kobler akselen og flensen sammen"></svg></div></div>
+  <p class="vei">I Fusion: <b>ASSEMBLE</b> → <b>Joint</b> → klikk på akselen → klikk på flensen → <b>Motion: Rigid</b></p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Hver del må være en egen Component (eller settes inn med Insert into Current Design). Joint låser delene til hverandre. Rigid = sitter fast. Revolute = kan dreie, som et hjul på en aksel. Sammenstillingen viser om delene passer før noe lages.</details>
+</section>
+
+
+<section id="bom">
+  <div class="tag">Del 7 · Stykkliste</div>
+  <h2>Stykklisten sier hvilke deler som er med</h2>
+  <p class="lead">Hver del får et nummer. Listen sier hva og hvor mange.</p>
+  <div class="fig" style="max-width:640px">
+    <svg viewBox="0 0 440 250" role="img" aria-label="Sammenstilling av flens, aksel og fire skruer med posisjonsnummer 1, 2 og 3">
+      <rect x="40" y="110" width="330" height="30" fill="var(--u-soft)" stroke="var(--ink)" stroke-width="2"/>
+      <path d="M190 30 H208 V85 H240 V165 H208 V220 H190 Z" fill="var(--i-soft)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>
+      <rect x="190" y="110" width="50" height="30" fill="var(--u-soft)" stroke="var(--ink)" stroke-width="2"/>
+      <g fill="var(--r-soft)" stroke="var(--ink)" stroke-width="1.8"><rect x="176" y="44" width="14" height="22"/><rect x="190" y="51" width="30" height="8"/><rect x="176" y="184" width="14" height="22"/><rect x="190" y="191" width="30" height="8"/></g>
+      <path d="M28 125 H382" stroke="var(--r)" stroke-width="1" stroke-dasharray="14 3 2 3"/>
+      <path d="M300 40 L235 92" stroke="var(--ink)" stroke-width="1.2"/><circle cx="235" cy="92" r="3" fill="var(--ink)"/><circle cx="300" cy="40" r="15" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.8"/><text x="300" y="46" text-anchor="middle" font-size="17" font-weight="800" fill="var(--ink)">1</text>
+      <path d="M90 200 L110 138" stroke="var(--ink)" stroke-width="1.2"/><circle cx="110" cy="138" r="3" fill="var(--ink)"/><circle cx="90" cy="200" r="15" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.8"/><text x="90" y="206" text-anchor="middle" font-size="17" font-weight="800" fill="var(--ink)">2</text>
+      <path d="M120 40 L180 52" stroke="var(--ink)" stroke-width="1.2"/><circle cx="180" cy="52" r="3" fill="var(--ink)"/><circle cx="120" cy="40" r="15" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.8"/><text x="120" y="46" text-anchor="middle" font-size="17" font-weight="800" fill="var(--ink)">3</text>
+    </svg>
+  </div>
+  <div class="tablewrap" style="max-width:640px"><table class="tab">
+    <tr><th>Pos.</th><th>Antall</th><th>Navn</th><th>Materiale</th></tr>
+    <tr><td>1</td><td>1</td><td>Flens</td><td>S355</td></tr>
+    <tr><td>2</td><td>1</td><td>Aksel</td><td>S355</td></tr>
+    <tr><td>3</td><td>4</td><td>Sekskantskrue M8 × 25</td><td>Stål 8.8</td></tr>
+  </table></div>
+  <p class="vei">I Fusion Drawing: tegning av montasjen → <b>TABLES</b> → <b>Table</b> → velg risset. Fusion lager stykkliste og nummer (ballonger).</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Stykkliste heter BOM på engelsk (Bill of Materials). Hver del får et posisjonsnummer (pos.) i en ring (ballong) på montasjetegningen. Stykklisten står like over tittelfeltet: posisjon, antall, navn, og materiale eller standard. Standarddeler som skruer kjøpes, og tegnes ikke.</details>
+</section>
+
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 5: Gjenger og sammenstilling</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p>M12 er en gjenge med ytre diameter <span class="luke"><span class="fasit" hidden>12</span></span> mm.</p>
+      <p>Sporet der gjengen slutter, heter <span class="luke"><span class="fasit" hidden>gjengerille</span></span>.</p>
+      <p>Gjenger lager jeg i Fusion med <span class="luke"><span class="fasit" hidden>Thread</span></span>.</p>
+      <p>Deler settes sammen i Fusion med <span class="luke"><span class="fasit" hidden>Joint</span></span>.</p>
+      <p>Listen over delene i en montasje heter <span class="luke"><span class="fasit" hidden>stykkliste</span></span> (BOM).</p>
+    </div>
+
+    <div>
+      <h3>Del B · Hva betyr det på tegningen?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>På tegningen</th><th>Betyr</th></tr>
+        <tr><td>M12</td><td class="blank"><span class="fasit" hidden>Metrisk gjenge, Ø12 mm</span></td></tr>
+        <tr><td>M12 × 1,75</td><td class="blank"><span class="fasit" hidden>Metrisk gjenge Ø12, stigning 1,75 mm</span></td></tr>
+        <tr><td>3 × Ø9 (ved gjengen)</td><td class="blank"><span class="fasit" hidden>Gjengerille, 3 mm bred, Ø9</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Hull på tegningen</h3>
+      <div class="tablewrap"><table>
+        <tr><th>På tegningen</th><th>Betyr</th></tr>
+        <tr><td>Ø8 × 12 dyp</td><td class="blank"><span class="fasit" hidden>Blindhull Ø8, 12 mm dypt</span></td></tr>
+        <tr><td>M8 × 15 dyp</td><td class="blank"><span class="fasit" hidden>Gjengehull M8, gjengen er 15 mm dyp</span></td></tr>
+        <tr><td>Ø9 (helt gjennom)</td><td class="blank"><span class="fasit" hidden>Gjennomgående hull Ø9</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Les stykklisten</h3>
+      <div class="tablewrap"><table>
+    <tr><th>Pos.</th><th>Antall</th><th>Navn</th><th>Materiale</th></tr>
+    <tr><td>1</td><td>1</td><td>Flens</td><td>S355</td></tr>
+    <tr><td>2</td><td>1</td><td>Aksel</td><td>S355</td></tr>
+    <tr><td>3</td><td>4</td><td>Sekskantskrue M8 × 25</td><td>Stål 8.8</td></tr>
+  </table></div>
+      <ol>
+        <li>Hvor mange skruer er det? <span class="luke"><span class="fasit" hidden>4</span></span></li>
+        <li>Hvilken del har posisjon 2? <span class="luke"><span class="fasit" hidden>Akselen</span></span></li>
+        <li>Hvilket materiale er flensen laget av? <span class="luke"><span class="fasit" hidden>S355 (stål)</span></span></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Del E · Riktig eller galt</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr>
+        <tr><td>Thread i Fusion legger gjenger på en sylinder.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Rigid betyr at delene sitter fast sammen.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Stykklisten står øverst til venstre på tegningen.</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Skruer står i stykklisten selv om vi ikke tegner dem selv.</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del F · På PC</h3>
+      <p>Aksel: M12 × 20, rille 3 × Ø9, Ø20 × 40, Ø30 × 10, Ø20 × 27. Kryss av.</p>
+      <div class="tablewrap"><table>
+        <tr><th>Jeg har …</th><th>✓</th></tr>
+        <tr><td>laget akselen med Revolve og rillen med Revolve cut</td><td class="blank x"></td></tr>
+        <tr><td>laget gjengen M12 med Thread</td><td class="blank x"></td></tr>
+        <tr><td>satt sammen akselen og flensen med Joint</td><td class="blank x"></td></tr>
+        <tr><td>laget tegning av montasjen med stykkliste</td><td class="blank x"></td></tr>
+        <tr><td>Ekstra: lagt til fire skruer M8 fra Insert → McMaster-Carr</td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hva er en stykkliste, og hva står i den?<div class="svar"><span class="fasit" hidden>En liste over delene i en montasje: posisjonsnummer, antall, navn og materiale</span></div></li>
+      </ol>
+    </div>
+
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  // ---------- Fusion-vinduet ----------
+  // Tegnet etter Autodesk Fusion (Design og Drawing). Faste lyse farger som i Fusion, også i mørk modus.
+  const FXI = {
+    sketch:'<rect x="3" y="5" width="15" height="15" fill="none" stroke="#5b6470" stroke-width="1.5"/><path d="M10 20 L21 6 l2.5 2 L12.5 22 z" fill="#f6c344" stroke="#5b6470"/>',
+    extrude:'<path d="M3 19 L12 23 L22 19 L13 15 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M12.5 14 V3 M8.5 7 l4 -4 l4 4" fill="none" stroke="#1a73e8" stroke-width="2"/>',
+    revolve:'<path d="M4 20 V10 H9 V6 H13 V20 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M2 22 H23" stroke="#5b6470" stroke-dasharray="3 2"/><path d="M18 5 a5 5 0 1 1 -1 9" fill="none" stroke="#1a73e8" stroke-width="2"/><path d="M14 12 l3 2.5 l2 -3.5" fill="none" stroke="#1a73e8" stroke-width="2"/>',
+    hole:'<path d="M2 15 L12 19 L23 15 L13 11 Z" fill="#cfd6de" stroke="#5b6470"/><ellipse cx="12.5" cy="15" rx="4" ry="2" fill="#fff" stroke="#1a73e8" stroke-width="1.8"/><path d="M12.5 2 V12" stroke="#1a73e8" stroke-width="2"/>',
+    thread:'<rect x="4" y="9" width="17" height="11" fill="#cfd6de" stroke="#5b6470"/><path d="M4 9 l2 -3 l2 3 l2 -3 l2 3 l2 -3 l2 3 l2 -3 l2 3 l1 -2" fill="none" stroke="#1a73e8" stroke-width="1.6"/>',
+    pattern:'<circle cx="12.5" cy="12.5" r="8" fill="none" stroke="#5b6470" stroke-dasharray="3 2"/><g fill="#1a73e8"><circle cx="12.5" cy="4.5" r="2.6"/><circle cx="20.5" cy="12.5" r="2.6"/><circle cx="12.5" cy="20.5" r="2.6"/><circle cx="4.5" cy="12.5" r="2.6"/></g>',
+    mirror:'<path d="M3 20 V6 L10 13 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M22 20 V6 L15 13 Z" fill="#cfe3fb" stroke="#1a73e8"/><path d="M12.5 2 V23" stroke="#e8590c" stroke-width="1.5" stroke-dasharray="3 2"/>',
+    joint:'<rect x="2" y="12" width="10" height="9" fill="#cfd6de" stroke="#5b6470"/><rect x="13" y="4" width="10" height="9" fill="#cfd6de" stroke="#5b6470"/><circle cx="12.5" cy="12.5" r="3.2" fill="#f6c344" stroke="#5b6470"/>',
+    component:'<path d="M4 8 L12.5 4 L21 8 V17 L12.5 21 L4 17 Z" fill="#cfd6de" stroke="#5b6470"/><path d="M4 8 L12.5 12 L21 8 M12.5 12 V21" fill="none" stroke="#5b6470"/>',
+    base:'<rect x="2" y="3" width="21" height="19" fill="#fff" stroke="#5b6470"/><rect x="6" y="8" width="9" height="9" fill="#cfd6de" stroke="#5b6470"/>',
+    projected:'<rect x="2" y="3" width="21" height="19" fill="#fff" stroke="#5b6470"/><rect x="4" y="12" width="7" height="7" fill="#cfd6de" stroke="#5b6470"/><rect x="14" y="12" width="7" height="7" fill="#fff" stroke="#1a73e8"/><path d="M11 15.5 H14" stroke="#1a73e8"/>',
+    section:'<rect x="4" y="5" width="17" height="15" fill="#fff" stroke="#5b6470"/><path d="M4 12 L11 5 M4 19 L18 5 M9 20 L21 8 M16 20 L21 15" stroke="#5b6470"/><path d="M12.5 1 V24" stroke="#1a73e8" stroke-width="2" stroke-dasharray="4 2"/>',
+    detail:'<circle cx="10" cy="10" r="7" fill="#fff" stroke="#1a73e8" stroke-width="2"/><path d="M15 15 L22 22" stroke="#5b6470" stroke-width="3"/>',
+    centerline:'<path d="M2 12.5 H23" stroke="#1a73e8" stroke-width="2" stroke-dasharray="7 2 2 2"/><path d="M5 7 H20 M5 18 H20" stroke="#5b6470"/>',
+    centermark:'<path d="M12.5 2 V23 M2 12.5 H23" stroke="#1a73e8" stroke-width="1.6" stroke-dasharray="6 2 2 2"/><circle cx="12.5" cy="12.5" r="5" fill="none" stroke="#5b6470"/>',
+    cmpattern:'<circle cx="12.5" cy="12.5" r="8" fill="none" stroke="#1a73e8" stroke-width="1.6" stroke-dasharray="5 2 1 2"/><g fill="#fff" stroke="#5b6470"><circle cx="12.5" cy="4.5" r="2.4"/><circle cx="12.5" cy="20.5" r="2.4"/><circle cx="4.5" cy="12.5" r="2.4"/><circle cx="20.5" cy="12.5" r="2.4"/></g>',
+    dim:'<path d="M3 16 H22 M3 11 V21 M22 11 V21" stroke="#5b6470"/><path d="M3 16 l4 -2 v4z M22 16 l-4 -2 v4z" fill="#1a73e8"/><text x="7" y="12" font-size="7.5" fill="#1a73e8" font-family="Arial" font-weight="700">50</text>',
+    surface:'<path d="M3 13 L7.5 21 L14 4 H23" fill="none" stroke="#1a73e8" stroke-width="2"/>',
+    text:'<text x="6" y="20" font-size="18" font-weight="700" fill="#5b6470" font-family="Arial">A</text>',
+    fcf:'<rect x="2" y="7" width="21" height="11" fill="#fff" stroke="#5b6470"/><path d="M9 7 V18" stroke="#5b6470"/><circle cx="5.5" cy="12.5" r="2.4" fill="none" stroke="#1a73e8"/>',
+    pdf:'<path d="M5 2 H16 L21 7 V23 H5 Z" fill="#fff" stroke="#5b6470"/><text x="6" y="18" font-size="7" font-weight="700" fill="#d93025" font-family="Arial">PDF</text>',
+    gr:'<rect x="4" y="4" width="17" height="17" rx="3" fill="#e3e7ec" stroke="#b9c0c8"/>'
+  };
+  const DESIGN_GRP = (hl) => [['CREATE',['sketch','extrude','revolve','hole','thread','pattern','mirror']],['MODIFY',['gr','gr']],['ASSEMBLE',['component','joint']],['CONSTRUCT',['gr']],['INSPECT',['gr']]];
+  const DRAWING_GRP = () => [['CREATE',['base','projected','section','detail']],['MODIFY',['gr','gr']],['GEOMETRY',['centermark','cmpattern','centerline']],['DIMENSIONS',['dim']],['TEXT',['text']],['SYMBOLS',['surface','fcf']],['EXPORT',['pdf']]];
+  let fxNr = 0;
+  // o = {ws:'DESIGN'|'DRAWING', hl:'ikon', tips:'Navn', tre:['Navn', '*uthevet'], dlg:{t, r:[[etikett, verdi, uthevet]], ok}, c:'innhold (x 150–800, y 92–380)'}
+  function fusjon(svg, o){
+    const id = 'fx' + (++fxNr), tegn = o.ws === 'DRAWING';
+    let h = '<defs><linearGradient id="'+id+'g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dbe2ea"/></linearGradient>'+
+      '<pattern id="'+id+'s" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V7" stroke="#222" stroke-width="1"/></pattern></defs>';
+    h += '<g font-family="Segoe UI,Arial,sans-serif" font-size="12" fill="#3c3c3c">';
+    h += '<rect width="800" height="380" fill="#fff"/><rect width="800" height="30" fill="#f2f3f4"/><path d="M0 30.5 H800" stroke="#d6dadf"/>';
+    h += '<rect x="0" y="0" width="160" height="30" fill="#fff"/><path d="M160.5 0 V30" stroke="#d6dadf"/>';
+    h += '<rect x="10" y="7" width="16" height="16" rx="3" fill="'+(tegn ? '#3a9a5b' : '#2b78c5')+'"/><text x="34" y="20" font-weight="700">'+o.ws+' ▾</text>';
+    if (!tegn){
+      let x = 172;
+      ['SOLID','SURFACE','MESH','SHEET METAL','PLASTIC','UTILITIES','MANAGE'].forEach((t,i) => {
+        const w = t.length*7.4 + 18;
+        if (i===0) h += '<rect x="'+(x-2)+'" y="0" width="'+w+'" height="30" fill="#fff"/><path d="M'+(x-2)+' 28.5 h'+w+'" stroke="#0696d7" stroke-width="3"/>';
+        h += '<text x="'+(x+7)+'" y="20" font-size="11" font-weight="700" fill="'+(i===0?'#0a6ebd':'#666')+'">'+t+'</text>'; x += w;
+      });
+    }
+    // båndet med knapper
+    const grupper = tegn ? DRAWING_GRP() : DESIGN_GRP();
+    let x = 8, hlx = null;
+    grupper.forEach(([navn, ks]) => {
+      const bredde = Math.max(ks.length*32, navn.length*7 + 22), start = x + (bredde - ks.length*32)/2;
+      ks.forEach((k,i) => {
+        const bx = start + i*32;
+        h += '<g transform="translate('+(bx+2)+' 37) scale(1.12)">'+FXI[k]+'</g>';
+        if (k === o.hl){ hlx = bx; h += '<rect x="'+(bx-1)+'" y="34" width="34" height="34" rx="4" fill="none" stroke="#e8590c" stroke-width="3"/>'; }
+      });
+      h += '<text x="'+(x+bredde/2)+'" y="84" text-anchor="middle" font-size="10" font-weight="700" fill="#666">'+navn+' ▾</text>';
+      x += bredde + 12; h += '<path d="M'+(x-6)+'.5 36 V86" stroke="#e3e6ea"/>';
+    });
+    h += '<path d="M0 92.5 H800" stroke="#d6dadf"/>';
+    // nettleser til venstre og arbeidsflaten
+    h += '<rect x="0" y="93" width="150" height="287" fill="#fafafa"/><path d="M150.5 93 V380" stroke="#d6dadf"/><text x="10" y="112" font-size="10.5" font-weight="700" fill="#666">BROWSER</text>';
+    (o.tre||[]).forEach((t,i) => {
+      const ny = t[0]==='*', tx = ny ? t.slice(1) : t, inn = (tx.match(/^ +/)||[''])[0].length;
+      if (ny) h += '<rect x="6" y="'+(119+i*21)+'" width="138" height="19" rx="3" fill="#e5f1fb"/>';
+      h += '<text x="'+(12+inn*8)+'" y="'+(133+i*21)+'" font-size="11.5" '+(ny?'font-weight="700" fill="#0a6ebd"':'')+'>'+tx.trim()+'</text>';
+    });
+    if (tegn) h += '<rect x="151" y="93" width="649" height="287" fill="#8d959e"/><rect x="165" y="100" width="620" height="272" fill="#fff" stroke="#5b6470"/>';
+    else h += '<rect x="151" y="93" width="649" height="287" fill="url(#'+id+'g)"/><g transform="translate(742 104)"><polygon points="0,8 18,0 36,8 18,16" fill="#eef1f5" stroke="#8a929c"/><polygon points="0,8 18,16 18,38 0,30" fill="#dfe4ea" stroke="#8a929c"/><polygon points="18,16 36,8 36,30 18,38" fill="#e8ecf1" stroke="#8a929c"/><text x="4" y="27" font-size="6" fill="#5b6470">FRONT</text></g>';
+    h += (o.c||'').replace(/#SKR/g, 'url(#'+id+'s)');
+    if (o.dlg){
+      const d = o.dlg, dx = 572, dw = 220, rh = 25;
+      h += '<g><rect x="'+dx+'" y="100" width="'+dw+'" height="'+(64+d.r.length*rh)+'" rx="3" fill="#fff" stroke="#b9c0c8"/><rect x="'+dx+'" y="100" width="'+dw+'" height="24" fill="#f2f3f4"/><text x="'+(dx+10)+'" y="117" font-weight="700" font-size="11.5">'+d.t+'</text>';
+      d.r.forEach((r,i) => {
+        const y = 130 + i*rh;
+        if (r[2]) h += '<rect x="'+(dx+1)+'" y="'+(y-2)+'" width="'+(dw-2)+'" height="'+rh+'" fill="#fff0e5"/>';
+        h += '<text x="'+(dx+10)+'" y="'+(y+14)+'" font-size="11">'+r[0]+'</text><rect x="'+(dx+102)+'" y="'+(y+1)+'" width="108" height="18" rx="2" fill="#fff" stroke="'+(r[2]?'#e8590c':'#c3c9d0')+'" stroke-width="'+(r[2]?2:1)+'"/><text x="'+(dx+107)+'" y="'+(y+14)+'" font-size="11">'+r[1]+'</text>';
+      });
+      const fy = 136 + d.r.length*rh;
+      h += '<rect x="'+(dx+dw-130)+'" y="'+fy+'" width="56" height="20" rx="2" fill="#0696d7"/><text x="'+(dx+dw-102)+'" y="'+(fy+14)+'" text-anchor="middle" fill="#fff" font-weight="700" font-size="11">'+(d.ok||'OK')+'</text>';
+      h += '<rect x="'+(dx+dw-66)+'" y="'+fy+'" width="56" height="20" rx="2" fill="#fff" stroke="#b9c0c8"/><text x="'+(dx+dw-38)+'" y="'+(fy+14)+'" text-anchor="middle" font-size="11">Cancel</text></g>';
+    }
+    if (hlx !== null && o.tips){
+      const w = o.tips.length*7 + 16, tx = Math.min(Math.max(hlx+17-w/2, 4), 796-w);
+      h += '<rect x="'+tx+'" y="72" width="'+w+'" height="20" rx="3" fill="#2d2d2d"/><text x="'+(tx+w/2)+'" y="86" text-anchor="middle" fill="#fff" font-weight="700" font-size="11.5">'+o.tips+'</text>';
+    }
+    svg.setAttribute('viewBox','0 0 800 380');
+    svg.innerHTML = h + '</g>';
+  }
+
+  // Sylindre etter hverandre langs en akse, sett litt fra høyre (3D-inntrykk). segs = [[x0, x1, r], ...] i mm.
+  function sylindre(segs, ox, oy, s, fill, kant, ende){
+    let h = '';
+    segs.forEach(([a,b,r]) => {
+      const X0 = ox+a*s, X1 = ox+b*s, R = r*s, e = R*0.28;
+      h += '<path d="M'+X0+' '+(oy-R)+' L'+X1+' '+(oy-R)+' A'+e+' '+R+' 0 0 1 '+X1+' '+(oy+R)+' L'+X0+' '+(oy+R)+' A'+e+' '+R+' 0 0 1 '+X0+' '+(oy-R)+' Z" fill="'+fill+'" stroke="'+kant+'" stroke-width="1.6"/>';
+      h += '<ellipse cx="'+X1+'" cy="'+oy+'" rx="'+e+'" ry="'+R+'" fill="'+(ende||fill)+'" stroke="'+kant+'" stroke-width="1.6"/>';
+    });
+    return h;
+  }
+  // ---------- Tegninger (mål i mm) ----------
+  const SLD = 'stroke-width="1.2" stroke-dasharray="14 3 2 3" fill="none"';
+  const pil = (x, y) => '<path d="M'+x+' '+y+' v34" stroke="#e8590c" stroke-width="4"/><path d="M'+(x-9)+' '+(y+28)+' l9 12 l9 -12" fill="none" stroke="#e8590c" stroke-width="4"/>';
+  const txt = (x, y, t, k, ekstra) => '<text x="'+x+'" y="'+y+'" fill="'+k+'" font-size="14" '+(ekstra||'')+'>'+t+'</text>';
+  const pilspiss = (x, y, vx, vy, k) => { const n = Math.hypot(vx,vy), ux = vx/n, uy = vy/n; return '<path d="M'+x+' '+y+' L'+(x-ux*10-uy*4)+' '+(y-uy*10+ux*4)+' L'+(x-ux*10+uy*4)+' '+(y-uy*10-ux*4)+' Z" fill="'+k+'"/>'; };
+
+  // Flens: Ø100 × 12, nav Ø50, lengde 30, boring Ø20 med fas 1 × 45°, 4 hull Ø9 på Ø76
+  const F = { R:50, nav:25, bor:10, pcd:38, hull:4.5 };
+  const HULL = [[0,-1],[1,0],[0,1],[-1,0]];
+  function flensFront(cx, cy, s, k, o){
+    o = o || {};
+    const c = r => '<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*s)+'" fill="none" stroke="'+k+'" stroke-width="2.5"/>';
+    let h = c(F.R) + c(F.nav) + c(F.bor);
+    HULL.forEach(([a,b]) => { h += '<circle cx="'+(cx+a*F.pcd*s)+'" cy="'+(cy+b*F.pcd*s)+'" r="'+(F.hull*s)+'" fill="none" stroke="'+k+'" stroke-width="2.5"/>'; });
+    const L = (F.R+6)*s, sl = o.sl || k;
+    h += '<path d="M'+(cx-L)+' '+cy+' H'+(cx+L)+' M'+cx+' '+(cy-L)+' V'+(cy+L)+'" stroke="'+sl+'" '+SLD+'/>';
+    if (o.hullsirkel) h += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(F.pcd*s)+'" stroke="'+sl+'" '+SLD+'/>';
+    if (o.mal){
+      // 4× Ø9: fra hullet til høyre, skrått opp
+      const hx = cx+F.pcd*s+F.hull*s*0.7, hy = cy-F.hull*s*0.7, ex = cx+(F.R+8)*s, ey = cy-(F.R*0.55)*s;
+      h += '<path d="M'+hx+' '+hy+' L'+ex+' '+ey+' h52" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(hx,hy,hx-ex,hy-ey,k)+txt(ex+4, ey-5, '4× Ø9', k, 'font-weight="700"');
+      // Ø76: fra hullsirkelen, skrått ned
+      const px = cx+F.pcd*s*0.707, py = cy+F.pcd*s*0.707, qx = cx+(F.R+8)*s, qy = cy+(F.R*0.85)*s;
+      h += '<path d="M'+px+' '+py+' L'+qx+' '+qy+' h40" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(px,py,px-qx,py-qy,k)+txt(qx+4, qy-5, 'Ø76', k, 'font-weight="700"');
+    }
+    if (o.snittlinje){
+      const t = cy-(F.R+6)*s, b = cy+(F.R+6)*s;
+      h += '<path d="M'+cx+' '+(t-14)+' V'+t+' M'+cx+' '+b+' V'+(b+14)+'" stroke="'+k+'" stroke-width="4"/>';
+      [[t-14,-1],[b+14,1]].forEach(([y]) => { h += '<path d="M'+cx+' '+y+' H'+(cx+24)+'" stroke="'+k+'" stroke-width="1.6"/>'+pilspiss(cx+26,y,1,0,k)+txt(cx+30, y+5, 'A', k, 'font-weight="700" font-size="16"'); });
+    }
+    return h;
+  }
+  // Snitt A–A av flensen: x langs aksen (0 = flensflaten), r = radius
+  const SN1 = [[0,11],[0,33.5],[12,33.5],[12,25],[30,25],[30,10],[1,10]], SN2 = [[0,42.5],[0,50],[12,50],[12,42.5]];
+  function flensSnitt(x0, cy, s, k, fyll){
+    const P = (pts, sgn) => pts.map(([x,r]) => (x0+x*s).toFixed(1)+','+(cy-sgn*r*s).toFixed(1)).join(' ');
+    let h = '';
+    [1,-1].forEach(g => [SN1,SN2].forEach(p => { h += '<polygon points="'+P(p,g)+'" fill="'+fyll+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>'; }));
+    h += '<path d="M'+(x0+s)+' '+(cy-10*s)+' V'+(cy+10*s)+' M'+(x0+30*s)+' '+(cy-10*s)+' V'+(cy+10*s)+'" stroke="'+k+'" stroke-width="2.5"/>';
+    h += '<path d="M'+(x0-14)+' '+cy+' H'+(x0+30*s+14)+' M'+(x0-8)+' '+(cy-38*s)+' H'+(x0+12*s+8)+' M'+(x0-8)+' '+(cy+38*s)+' H'+(x0+12*s+8)+'" stroke="'+k+'" '+SLD+'/>';
+    return h;
+  }
+  // Detalj B rundt hjørnet i boringen (x = 0, r = 10), målestokk k2 px per mm
+  function flensDetalj(dx, dy, k2, k, fyll, id){
+    const P = pts => pts.map(([x,r]) => (dx+x*k2).toFixed(1)+','+(dy-(r-10)*k2).toFixed(1)).join(' ');
+    let h = '<clipPath id="'+id+'"><circle cx="'+dx+'" cy="'+dy+'" r="'+(6*k2)+'"/></clipPath><g clip-path="url(#'+id+')">';
+    h += '<polygon points="'+P(SN1)+'" fill="'+fyll+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    h += '<path d="M'+(dx+k2)+' '+dy+' V'+(dy+7*k2)+'" stroke="'+k+'" stroke-width="2.5"/></g>';
+    h += '<circle cx="'+dx+'" cy="'+dy+'" r="'+(6*k2)+'" fill="none" stroke="'+k+'" stroke-width="1.2"/>';
+    // fasmål
+    const fx = dx+0.5*k2, fy = dy-0.5*k2;
+    h += '<path d="M'+fx+' '+fy+' L'+(dx-3.5*k2)+' '+(dy-4.5*k2)+' h-34" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(fx,fy,1,1,k);
+    h += txt(dx-3.5*k2-80, dy-4.5*k2-6, '1 × 45°', k, 'font-weight="700"');
+    return h;
+  }
+  // Brakett (U-form), symmetrisk om x = 0
+  const BR = [[-40,0],[40,0],[40,50],[15,50],[15,20],[-15,20],[-15,50],[-40,50]];
+  const BR_V = [[-40,0],[0,0],[0,20],[-15,20],[-15,50],[-40,50]], BR_H = BR_V.map(([x,y]) => [-x,y]);
+  function prisme(pts, hull, ox, oy, s, d, fyll, kant, opac){
+    const P = (x,y,z) => [ox+x*s+z*0.5*s, oy-y*s-z*0.4*s];
+    const pp = (z) => pts.map(([x,y]) => P(x,y,z).map(v => v.toFixed(1)).join(',')).join(' ');
+    let h = '<g fill="'+fyll+'" stroke="'+kant+'" stroke-width="1.6" stroke-linejoin="round" fill-opacity="'+(opac||1)+'">';
+    h += '<polygon points="'+pp(d)+'"/>';
+    pts.forEach((a,i) => { const b = pts[(i+1)%pts.length]; h += '<polygon points="'+[P(a[0],a[1],0),P(b[0],b[1],0),P(b[0],b[1],d),P(a[0],a[1],d)].map(p => p.map(v => v.toFixed(1)).join(',')).join(' ')+'"/>'; });
+    h += '<polygon points="'+pp(0)+'"/>';
+    hull.forEach(([x,y]) => { const [hx,hy] = P(x,y,0); h += '<circle cx="'+hx+'" cy="'+hy+'" r="'+(4*s)+'" fill="#eef1f5" fill-opacity="1"/>'; });
+    return h + '</g>';
+  }
+
+  const SV = '#1b1b1b';   // svart strek på Fusion-tegningen
+  // Aksel: M12 × 20 med fas, gjengerille 3 × Ø9, Ø20 × 40, Ø30 × 10, Ø20 × 27 med fas 1 × 45°
+  const AK = [[0,5],[1,6],[20,6],[20,4.5],[23,4.5],[23,10],[63,10],[63,15],[73,15],[73,10],[99,10],[100,9]];
+  const KANTER = [[1,6],[20,6],[23,10],[63,15],[73,15],[99,10]];
+  function aksel(ox, oy, s, k, o){
+    o = o || {};
+    const X = x => ox+x*s, Y = r => oy-r*s;
+    const pts = AK.map(([x,r]) => X(x)+','+Y(r)).concat(AK.slice().reverse().map(([x,r]) => X(x)+','+Y(-r)));
+    let h = '<polygon points="'+pts.join(' ')+'" fill="'+(o.fyll||'none')+'" stroke="'+k+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    KANTER.forEach(([x,r]) => { h += '<path d="M'+X(x)+' '+Y(r)+' V'+Y(-r)+'" stroke="'+k+'" stroke-width="2.5"/>'; });
+    h += '<path d="M'+X(0.4)+' '+Y(4.9)+' H'+X(20)+' M'+X(0.4)+' '+Y(-4.9)+' H'+X(20)+'" stroke="'+k+'" stroke-width="1.2"/>';
+    h += '<path d="M'+(X(0)-12)+' '+oy+' H'+(X(100)+12)+'" stroke="'+(o.sl||k)+'" '+SLD+'/>';
+    if (o.m12) h += '<path d="M'+X(8)+' '+(Y(6)-2)+' L'+X(2)+' '+(Y(6)-36)+' h-36" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(X(8),Y(6)-2,X(8)-X(2),34,k)+txt(X(2)-36, Y(6)-41, 'M12', k, 'font-weight="700"');
+    if (o.tol){
+      const x = X(43);
+      h += '<path d="M'+x+' '+Y(10)+' V'+Y(-10)+'" stroke="'+o.tol+'" stroke-width="1.4"/>'+pilspiss(x,Y(10),0,-1,o.tol)+pilspiss(x,Y(-10),0,1,o.tol);
+      h += '<text transform="translate('+(x-9)+' '+oy+') rotate(-90)" text-anchor="middle" font-size="14" font-weight="700" fill="'+o.tol+'">Ø20 ±0,1</text>';
+    }
+    if (o.ra){
+      const x = X(50), y = Y(10), c = o.ra;
+      h += '<path d="M'+(x-7)+' '+(y-12)+' L'+x+' '+y+' L'+(x+14)+' '+(y-28)+' H'+(x+48)+' M'+(x-7)+' '+(y-12)+' H'+(x+6)+'" fill="none" stroke="'+c+'" stroke-width="1.6"/>'+txt(x+16, y-32, 'Ra 0,8', c, 'font-weight="700"');
+    }
+    return h;
+  }
+
+
+  $('heroFig').innerHTML = aksel(40, 110, 3.1, 'var(--ink)', { m12:true, sl:'var(--r)' }) +
+    '<rect x="'+(40+20*3.1)+'" y="'+(110-6*3.1)+'" width="'+(3*3.1)+'" height="'+(12*3.1)+'" fill="var(--orange)" fill-opacity=".25"/>';
+  // Del 2: gjengeangivelse
+  $('gjUt').innerHTML = (() => {
+    const ox = 30, oy = 100, s = 6, k = 'var(--ink)';
+    let h = '<path d="M'+ox+' '+(oy-6*s)+' H'+(ox+40*s)+' M'+ox+' '+(oy+6*s)+' H'+(ox+40*s)+' M'+(ox+40*s)+' '+(oy-6*s)+' V'+(oy+6*s)+'" stroke="'+k+'" stroke-width="3"/>';
+    h += '<path d="M'+ox+' '+(oy-6*s)+' V'+(oy+6*s)+'" stroke="'+k+'" stroke-width="3"/>';
+    h += '<path d="M'+ox+' '+(oy-4.9*s)+' H'+(ox+40*s)+' M'+ox+' '+(oy+4.9*s)+' H'+(ox+40*s)+'" stroke="'+k+'" stroke-width="1.2"/>';
+    h += '<path d="M'+(ox-12)+' '+oy+' H'+(ox+40*s+12)+'" stroke="var(--r)" '+SLD+'/>';
+    h += '<path d="M'+(ox+150)+' '+(oy-36)+' L'+(ox+130)+' '+(oy-75)+' h-40" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(ox+150,oy-36,20,39,k)+txt(ox+92, oy-80, 'M12', k, 'font-weight="700" font-size="18"');
+    h += txt(ox+175, oy-48, 'tykk', 'var(--orange)', 'font-weight="700"') + txt(ox+175, oy-14, 'tynn', 'var(--u)', 'font-weight="700"');
+    return h;
+  })();
+  $('gjInn').innerHTML = (() => {
+    const cx = 150, cy = 100, s = 7, k = 'var(--ink)';
+    let h = '<rect x="20" y="10" width="260" height="180" fill="none" stroke="'+k+'" stroke-width="3"/>';
+    h += '<circle cx="'+cx+'" cy="'+cy+'" r="'+(5.1*s)+'" fill="var(--surface)" stroke="'+k+'" stroke-width="3"/>';
+    const R = 6*s;
+    h += '<path d="M'+(cx+R)+' '+cy+' A'+R+' '+R+' 0 1 1 '+cx+' '+(cy-R)+'" fill="none" stroke="'+k+'" stroke-width="1.4"/>';
+    h += '<path d="M'+(cx-58)+' '+cy+' H'+(cx+58)+' M'+cx+' '+(cy-58)+' V'+(cy+58)+'" stroke="var(--r)" '+SLD+'/>';
+    h += '<path d="M'+(cx-R*0.7)+' '+(cy+R*0.7)+' L'+(cx-80)+' '+(cy+70)+' h-24" stroke="'+k+'" stroke-width="1.2" fill="none"/>'+pilspiss(cx-R*0.7,cy+R*0.7,80-R*0.7,R*0.7-70,k)+txt(cx-118, cy+64, 'M12', k, 'font-weight="700" font-size="18"');
+    h += txt(cx+48, cy-38, 'tynn ¾', 'var(--u)', 'font-weight="700"') + txt(cx+20, cy+56, 'tykk', 'var(--orange)', 'font-weight="700"');
+    return h;
+  })();
+
+  // Del 3: gjengerille
+  $('rilleFig').innerHTML = (() => {
+    const ox = 40, oy = 140, s = 5.4, k = 'var(--ink)';
+    const X = x => ox+x*s, Y = r => oy-r*s;
+    let h = '<rect x="'+X(20)+'" y="'+Y(6)+'" width="'+(3*s)+'" height="'+(1.5*s)+'" fill="var(--orange)" fill-opacity=".5"/><rect x="'+X(20)+'" y="'+Y(-4.5)+'" width="'+(3*s)+'" height="'+(1.5*s)+'" fill="var(--orange)" fill-opacity=".5"/>';
+    h += aksel(ox, oy, s, k, { sl:'var(--r)' });
+    // gjengestål
+    const gx = X(21.5);
+    h += '<polygon points="'+gx+','+(Y(4.8))+' '+(gx-12)+','+(Y(6)-40)+' '+(gx+12)+','+(Y(6)-40)+'" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2.5"/><rect x="'+(gx-12)+'" y="'+(Y(6)-90)+'" width="24" height="50" fill="var(--u-soft)" stroke="var(--u)" stroke-width="2.5"/>';
+    h += txt(gx+22, Y(6)-62, 'Gjengestålet slutter her', 'var(--u)', 'font-weight="700" font-size="16"');
+    h += '<path d="M'+(X(21.5))+' '+(Y(-6)+4)+' L'+(X(21.5)+40)+' '+(Y(-6)+40)+' h20" stroke="var(--orange)" stroke-width="1.6" fill="none"/>'+pilspiss(X(21.5),Y(-6)+4,-40,-36,'var(--orange)');
+    h += txt(X(21.5)+64, Y(-6)+45, 'Gjengerille 3 × Ø9', 'var(--orange)', 'font-weight="700" font-size="16"');
+    return h;
+  })();
+
+  // Del 1: Thread i Fusion
+  const SEG = [[0,20,6],[20,23,4.5],[23,63,10],[63,73,15],[73,100,10]];
+  fusjon($('fxGjenge'), { ws:'DESIGN', hl:'thread', tips:'Thread', tre:['Aksel v1','  Origin','  Bodies','*    Body1','  Sketches','    Sketch1'],
+    dlg:{ t:'THREAD', r:[['Faces','1 selected'],['Modeled','☐'],['Thread Type','ISO Metric profile'],['Size','12.0 mm'],['Designation','M12x1.75',1],['Class','6g']] },
+    c: sylindre(SEG, 190, 240, 3.2, '#c3c9d1', '#5b6470', '#d7dce2') +
+       (() => { let h = ''; for (let x = 2; x < 19; x += 1.75) h += '<path d="M'+(190+x*3.2)+' '+(240-19.2)+' l'+(1.75*3.2)+' 38.4" stroke="#1a73e8" stroke-width="1.4"/>'; return h; })() +
+       '<path d="M205 205 V170" stroke="#e8590c" stroke-width="2"/>' + txt(180, 162, 'Flaten med gjenge', '#e8590c', 'font-weight="700"') });
+
+  // Del 7: sammenstilling
+  fusjon($('fxMontasje'), { ws:'DESIGN', hl:'joint', tips:'Joint', tre:['Montasje v1','  Origin','*  Aksel:1','*  Flens:1','  Joints','    Rigid1'],
+    dlg:{ t:'JOINT', r:[['Component 1','1 selected'],['Component 2','1 selected'],['Motion','Rigid',1]] },
+    c: sylindre([[0,20,6],[20,23,4.5],[23,33,10]], 210, 236, 2.2, '#c3c9d1', '#5b6470', '#d7dce2') +
+       sylindre([[33,45,50],[45,63,25]], 210, 236, 2.2, '#e3b98f', '#8a5a2b', '#f0d2b4') +
+       sylindre([[63,73,15],[73,100,10]], 210, 236, 2.2, '#c3c9d1', '#5b6470', '#d7dce2') +
+       '<circle cx="'+(210+33*2.2)+'" cy="236" r="6" fill="#f6c344" stroke="#5b6470" stroke-width="1.5"/>' +
+       txt(190, 140, 'Aksel', '#3c3c3c', 'font-weight="700"') + txt(330, 135, 'Flens', '#8a5a2b', 'font-weight="700"') });
+
+
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
