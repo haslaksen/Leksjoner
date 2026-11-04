@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tegning og DAK 2 · Vg2 industriteknologi: Steg for steg</title>
+<title>Tegning og DAK Vg2 · Leksjon 6: Steg for steg</title>
 <style>
 /* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
 :root{
@@ -106,6 +106,7 @@ svg text{font-family:var(--body)}
 .rekke li{display:grid;grid-template-columns:3rem 1fr;gap:12px;align-items:center;font-size:1.1rem}
 .rekke .luke{min-width:2.4em}
 .jn td .luke{min-width:7em}
+.kort .valg>span{font-size:.95rem;padding:.4rem .5rem}
 </style>
 </head>
 <body>
@@ -113,8 +114,8 @@ svg text{font-family:var(--body)}
 
 <div class="top">
   <div>
-    <p class="tag">Tegning og DAK 2 · Vg2 industriteknologi</p>
-    <h1>Steg for steg: Fra 3D-modell til arbeidstegning</h1>
+    <p class="tag">Tegning og DAK Vg2 · Leksjon 6</p>
+    <h1>Steg for steg: Toleranser og overflate</h1>
   </div>
   <div class="tools">
     <button type="button" id="copyBtn">Kopier til OneNote</button>
@@ -125,39 +126,47 @@ svg text{font-family:var(--body)}
 <p class="navn">Navn: ______________________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
 
 <div class="oppg">
- <h2><span class="nr">1</span>Hva heter delen? Skriv ordet.</h2>
-  <div class="bilder">
-    <div class="kort P"><svg viewBox="0 0 120 120" aria-label="Skrue"><path d="M30 20 H90 V42 H30 Z" fill="var(--bg)" stroke="var(--wire)" stroke-width="3"/><rect x="50" y="42" width="20" height="66" fill="var(--bg)" stroke="var(--wire)" stroke-width="3"/><path d="M50 60 h20 M50 70 h20 M50 80 h20 M50 90 h20 M50 100 h20" stroke="var(--wire)" stroke-width="1.5"/></svg><span class="luke"><span class="fasit" hidden>skrue</span></span></div>
-    <div class="kort P"><svg viewBox="0 0 120 120" aria-label="Skive"><circle cx="60" cy="60" r="40" fill="var(--bg)" stroke="var(--wire)" stroke-width="3"/><circle cx="60" cy="60" r="16" fill="var(--surface)" stroke="var(--wire)" stroke-width="3"/></svg><span class="luke"><span class="fasit" hidden>skive</span></span></div>
-    <div class="kort P"><svg viewBox="0 0 120 120" aria-label="Mutter"><polygon points="60,18 97,39 97,81 60,102 23,81 23,39" fill="var(--bg)" stroke="var(--wire)" stroke-width="3"/><circle cx="60" cy="60" r="18" fill="var(--surface)" stroke="var(--wire)" stroke-width="3"/></svg><span class="luke"><span class="fasit" hidden>mutter</span></span></div>
+ <h2><span class="nr">1</span>Toleranse. Regn ut.</h2>
+  <div class="regn">
+    <svg viewBox="0 0 200 120" aria-label="Målet Ø20 ±0,1"><rect x="20" y="30" width="160" height="60" fill="var(--blue-soft)" stroke="var(--ink)" stroke-width="3"/><path d="M100 30 V90" stroke="var(--orange)" stroke-width="2"/><text x="100" y="20" text-anchor="middle" font-size="18" font-weight="800" fill="var(--orange)">Ø20 ±0,1</text></svg>
+    <div>
+      <p class="linje">20 + 0,1 = <span class="luke"><span class="fasit" hidden>20,1</span></span></p>
+      <p class="linje">20 − 0,1 = <span class="luke"><span class="fasit" hidden>19,9</span></span></p>
+    </div>
   </div>
-  <div class="ordbank"><span>mutter</span><span>skrue</span><span>skive</span></div>
 </div>
 
 <div class="oppg">
- <h2><span class="nr">2</span>Les stykklisten. Hvor mange skiver trenger du?</h2>
+ <h2><span class="nr">2</span>Tegningen sier Ø20 ±0,1. Er delen god nok? Sett ring rundt.</h2>
   <table class="jn">
-    <tr><td><b>Pos.</b></td><td><b>Navn</b></td><td><b>Antall</b></td></tr>
-    <tr><td>3</td><td>Skrue M10</td><td>1</td></tr>
-    <tr><td>4</td><td>Skive M10</td><td>2</td></tr>
-    <tr><td>5</td><td>Mutter M10</td><td>1</td></tr>
-  </table>
-  <div class="linje">Skiver: <span class="luke"><span class="fasit" hidden>2</span></span></div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">3</span>Du skal printe i 3D-printeren. Hvilken fil? Sett ring rundt.</h2>
-  <div class="valg"><span>STL<span class="fasit" hidden>✓</span></span><span>DXF</span><span>PDF</span></div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">4</span>Stemmer det? Sett ring rundt Ja eller Nei.</h2>
-  <table class="jn">
-    <tr><td class="ikon">📐</td><td>Endrer jeg et mål, endres tegningen også.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
-    <tr><td class="ikon">🔒</td><td>En låst skisse kan flytte seg.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
-    <tr><td class="ikon">💥</td><td>En sprengskisse viser hvordan delene monteres.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">📏</td><td>Jeg måler 20,05</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">📏</td><td>Jeg måler 19,8</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
+    <tr><td class="ikon">📏</td><td>Jeg måler 20,1</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
   </table>
 </div>
+
+<div class="oppg">
+ <h2><span class="nr">3</span>Mål uten toleranse. Skriv tallet.</h2>
+  <p class="setning">Tittelfeltet sier ISO 2768-m. Målet 50 har ingen toleranse. Da er toleransen ±<span class="luke"><span class="fasit" hidden>0,3</span></span>.</p>
+  <div class="ordbank"><span>0,3</span></div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">4</span>Hva betyr tegnet? Sett ring rundt.</h2>
+  <div class="bilder">
+    <div class="kort"><svg viewBox="0 0 120 70"><path d="M30 40 L40 60 L60 15 H100" fill="none" stroke="var(--blue)" stroke-width="4"/><text x="64" y="12" font-size="13" font-weight="700" fill="var(--blue)">Ra 0,8</text></svg><div class="valg"><span>Overflate<span class="fasit" hidden>✓</span></span><span>Vinkel</span></div></div>
+    <div class="kort"><svg viewBox="0 0 120 70"><path d="M15 60 H105 M15 60 L95 15" stroke="var(--blue)" stroke-width="4"/><text x="70" y="52" font-size="16" font-weight="700" fill="var(--blue)">30°</text></svg><div class="valg"><span>Vinkel<span class="fasit" hidden>✓</span></span><span>Gjenge</span></div></div>
+    <div class="kort"><svg viewBox="0 0 120 70"><text x="60" y="45" text-anchor="middle" font-size="30" font-weight="800" fill="var(--blue)">M12</text></svg><div class="valg"><span>Gjenge<span class="fasit" hidden>✓</span></span><span>Overflate</span></div></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">5</span>Hvilken knapp i Fusion? Sett ring rundt.</h2>
+  <div class="bilder">
+    <div class="kort"><svg viewBox="0 0 120 90"><path d="M30 50 L40 70 L60 20 H100" fill="none" stroke="var(--blue)" stroke-width="4"/><text x="64" y="16" font-size="13" font-weight="700" fill="var(--blue)">Ra 0,8</text></svg><b>Hvor glatt</b><div class="valg"><span>Surface Texture<span class="fasit" hidden>✓</span></span><span>Dimension</span></div></div>
+  </div>
+</div>
+
 
 </div>
 

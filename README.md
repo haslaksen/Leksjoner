@@ -14,7 +14,7 @@ vg2/<emne>/leksjon-N-<navn>.html
 |---|---|---|
 | Vg1 | Elektro | 1 Spenning, strøm og motstand · 2 Repetisjon og effekt · 3 Enkle styringer |
 | Vg1 | YFF | 1 Hva er YFF? |
-| Vg1 | Konstruksjon og styringsteknikk | 1 Tekniske tegninger · 2 Fra skisse til 3D-modell |
+| Vg1 | Konstruksjon og styringsteknikk | Tegning og DAK 1–7 (vg1/konstruksjon) |
 | Vg1 | DAP og CNC | 1 Koordinatsystemet · 2 CNC og G-kode · 3 Fusion: DAP for dreiing · 4 Fusion: DAP for fresing |
 | Vg1 | Pneumatikk og hydraulikk | 1 Luft og olje gir kraft |
 | Vg1 | Styring og automasjon | 1 Simuler før du bygger · 2 Robot og automasjon |
@@ -30,7 +30,7 @@ vg2/<emne>/leksjon-N-<navn>.html
 | Vg2 | Overflatebehandling | 1 Rust og overflatebehandling |
 | Vg2 | Maskinering | 1 Skjærehastighet, turtall og mating |
 | Vg2 | Måleteknikk og kvalitet | 1 Måleverktøy |
-| Vg2 | Tegning og DAK | 1 Arbeidstegninger · 2 Fra 3D-modell til arbeidstegning · 3 Sveisesymboler · 4 Geometriske toleranser |
+| Vg2 | Tegning og DAK | 1 Tekniske tegninger · 2 Fra skisse til 3D-modell · 3 Tegningsark, symmetri og hull · 4 Snitt og detaljriss · 5 Gjenger og sammenstilling · 6 Toleranser og overflate · 7 Geometriske toleranser · 8 Sveisesymboler · 9 Les en hel arbeidstegning |
 | Vg2 | Pneumatikk | 1 Grunnleggende pneumatikk · 2 Styring og fart |
 | Vg2 | Robot og automasjon | 1 Styr robotens akser i Fusion |
 | Vg2 | Vedlikehold | 1 Vedlikeholdssystemer · 2 Sikker jobb – lås og merk · 3 Smøring |
