@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bearbeiding og overflate Vg1 · Leksjon 1: Bearbeiding av materialer</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+
+/* Produksjon og tjenester: figurer man trykker på */
+.hms button[data-r]{min-height:7.5em}
+.velg{display:grid;gap:12px}
+.finn svg .spot{cursor:pointer;pointer-events:all}
+.finn svg .spot .ring{fill:transparent;stroke:transparent;stroke-width:5}
+.finn svg .spot:hover .ring{stroke:var(--line)}
+.finn svg .spot.funnet .ring{stroke:var(--bad)}
+.finn svg .spot:focus{outline:none}
+.finn svg .spot:focus-visible .ring{stroke:var(--u)}
+.rekkefolge{display:grid;gap:10px;max-width:640px}
+.rekkefolge button{display:flex;gap:14px;align-items:center;text-align:left;font-size:1.05rem;padding:14px 18px;border-radius:14px}
+.rekkefolge button .nrk{display:inline-grid;place-items:center;width:2rem;height:2rem;border-radius:50%;border:2px dashed var(--line);font-weight:800;flex:none}
+.rekkefolge button.ok .nrk{border:none;background:var(--r);color:#fff}
+.del3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.del3 .q{text-align:center;justify-items:center}
+.del3 .emoji{font-size:2.4rem;line-height:1}
+.del3 .knapper{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.del3 .knapper button{font-size:.85rem;padding:8px 10px}
+.del3 .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+.bildeliste{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.bildeliste .q{text-align:center;justify-items:center;gap:6px}
+.bildeliste svg{max-height:120px}
+.bildeliste .emoji{font-size:2.6rem;line-height:1}
+.bildeliste p{font-size:.92rem;color:var(--muted)}
+.matrise{display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px;max-width:620px}
+.matrise .ax{font-weight:700;font-size:.9rem;color:var(--muted);display:grid;place-items:center;text-align:center;padding:4px}
+.matrise button{border-radius:10px;min-height:3.6em;font-size:.95rem;border:2px solid transparent;color:#14181d}
+.matrise button.lav{background:#b7e4c7} .matrise button.mid{background:#ffe08a} .matrise button.hoy{background:#ffb3b3}
+.matrise button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 3px var(--ink)}
+
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Bearbeiding og overflate Vg1 · <span>Leksjon 1</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#maater">Tre måter</a><a href="#dreie">Dreie</a><a href="#frese">Frese</a><a href="#bore">Bore</a><a href="#turtall">Materialet</a><a href="#kjoling">Kjøling</a><a href="#boye">Bøye</a><a href="#plan">Arbeidsplan</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Produktivitet og kvalitetsstyring Vg1 · Bearbeiding og overflate · Leksjon 1</div>
+    <h1 style="margin-top:10px">Bearbeiding av materialer</h1>
+    <p class="lead" style="margin-top:12px">Fra rått emne til ferdig del. Velg <b>metode</b> etter <b>materialet</b>.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Ta bort, <b>forme</b> eller dele</span></li>
+      <li><span class="n r">2</span><span><b>Dreie</b>, frese og bore</span></li>
+      <li><span class="n i">3</span><span>Materialet bestemmer <b>turtallet</b></span></li>
+      <li><span class="n" style="color:var(--orange)">4</span><span><b>Bøye</b> og lage en arbeidsplan</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 200" role="img" aria-label="Et rått stålemne blir til en ferdig del med hull og bøy">
+      <rect x="20" y="80" width="140" height="44" rx="4" fill="#9aa3ad" stroke="var(--wire)" stroke-width="3"/>
+      <path d="M180 102 H240" stroke="var(--orange)" stroke-width="6" marker-end="url(#pilH)"/>
+      <defs><marker id="pilH" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--orange)"/></marker></defs>
+      <path d="M270 150 H390 V60 H366 V126 H270 Z" fill="#c5ccd4" stroke="var(--wire)" stroke-width="3" stroke-linejoin="round"/>
+      <circle cx="300" cy="138" r="6" fill="var(--bg)" stroke="var(--wire)" stroke-width="2"/><circle cx="340" cy="138" r="6" fill="var(--bg)" stroke="var(--wire)" stroke-width="2"/><circle cx="378" cy="90" r="6" fill="var(--bg)" stroke="var(--wire)" stroke-width="2"/>
+      <g font-size="15" font-weight="700" fill="var(--muted)" text-anchor="middle"><text x="90" y="150">Råemne</text><text x="330" y="182">Ferdig del</text></g>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (TIP01-03, Produktivitet og kvalitetsstyring)</h3>
+      <p><b>Mål 5:</b> «anvende og gjøre rede for bearbeiding av relevante materialer» (hele leksjonen).</p>
+      <p>Overflatebehandling (mål 4) kommer i leksjon 2. Maskinene er presentert kort i Produksjon og tjenester, Verktøy og måling L1. Her er vekten på metode og materiale.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: vis en ferdig del. «Hvordan ble den laget?»</dd>
+        <dt>10–35</dt><dd>Del 1–4: tre måter, dreie, frese, bore. Gå gjerne bort til maskinene.</dd>
+        <dt>35–45</dt><dd>Del 5–6: materiale, turtall og kjøling. Prøv skjæredatasimulatoren.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–70</dt><dd>Del 7–8: bøye og arbeidsplan.</dd>
+        <dt>70–88</dt><dd>Oppgavene A–D.</dd>
+        <dt>88–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="maater">
+  <div class="tag">Del 1 · Tre måter</div>
+  <h2>Ta bort, forme eller dele? Trykk på riktig.</h2>
+  <div class="del3">
+    <div class="q" data-svar="T" data-hvorfor="Dreiing lager spon. Materiale blir tatt bort."><span class="emoji" aria-hidden="true">🌀</span><b>Dreie en aksel</b><div class="knapper"><button type="button" data-v="T">✂️ Ta bort (spon)</button><button type="button" data-v="F">🫳 Forme</button><button type="button" data-v="D">🔪 Dele</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="F" data-hvorfor="Platen får ny form, men ingenting blir tatt bort."><span class="emoji" aria-hidden="true">📐</span><b>Bøye en plate</b><div class="knapper"><button type="button" data-v="T">✂️ Ta bort (spon)</button><button type="button" data-v="F">🫳 Forme</button><button type="button" data-v="D">🔪 Dele</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="D" data-hvorfor="Platesaksen deler platen i to."><span class="emoji" aria-hidden="true">✂️</span><b>Klippe en plate</b><div class="knapper"><button type="button" data-v="T">✂️ Ta bort (spon)</button><button type="button" data-v="F">🫳 Forme</button><button type="button" data-v="D">🔪 Dele</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="T" data-hvorfor="Fresing lager spon."><span class="emoji" aria-hidden="true">⚙️</span><b>Frese et spor</b><div class="knapper"><button type="button" data-v="T">✂️ Ta bort (spon)</button><button type="button" data-v="F">🫳 Forme</button><button type="button" data-v="D">🔪 Dele</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="F" data-hvorfor="Smiing former metallet med slag."><span class="emoji" aria-hidden="true">🔨</span><b>Smi en krok</b><div class="knapper"><button type="button" data-v="T">✂️ Ta bort (spon)</button><button type="button" data-v="F">🫳 Forme</button><button type="button" data-v="D">🔪 Dele</button></div><p class="forkl"></p></div>
+  </div>
+  <p class="regel">Spon = materiale som <b>tas bort</b>. Forming = <b>ingenting</b> blir borte.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Sponfraskillende bearbeiding: dreiing, fresing, boring, sliping, saging. Plastisk forming: bøying, valsing, smiing, pressing. Deling: klipping, stansing, termisk skjæring (plasma, laser, gass). Forming sparer materiale, sponfraskillende gir høy nøyaktighet.</details>
+</section>
+
+<section id="dreie">
+  <div class="tag">Del 2 · Dreie</div>
+  <h2>Hva roterer i dreiebenken?</h2>
+  <div class="benk">
+    <svg data-bilde="dreiebenk" data-alt="Dreiebenk med emne i chucken og dreiestål" viewBox="0 0 460 260" role="img" aria-label="Dreiebenk sett ovenfra. Emnet i chucken roterer. Dreiestålet står stille og flyttes langs emnet.">
+      <rect x="20" y="70" width="90" height="120" rx="8" fill="#5f6b78" stroke="var(--wire)" stroke-width="3"/>
+      <rect x="110" y="96" width="30" height="68" rx="4" fill="#7a8794" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="140" y="110" width="250" height="40" rx="4" fill="#c5ccd4" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M90 60 a40 40 0 0 1 40 0" fill="none" stroke="var(--orange)" stroke-width="4" marker-end="url(#pilD)"/>
+      <defs><marker id="pilD" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--orange)"/></marker><marker id="pilB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="var(--u)"/></marker></defs>
+      <path d="M300 150 L320 170 H340 V230 H300 Z" fill="#ffcf4a" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M350 205 H300" stroke="var(--u)" stroke-width="4" marker-end="url(#pilB)" transform="translate(-20 40)"/>
+      <g font-size="15" font-weight="700"><text x="80" y="40" fill="var(--orange)">Emnet roterer</text><text x="360" y="200" fill="var(--u)">Stålet</text><text x="360" y="220" fill="var(--u)">flyttes</text></g>
+    </svg>
+    <div class="velg">
+      <p class="stor"><b>Hva er det som roterer når du dreier?</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="1" data-svar="Riktig! Emnet roterer i chucken. Dreiestålet står stille og flyttes.">Emnet</button>
+        <button type="button" data-r="0" data-svar="Nei. Dreiestålet roterer ikke. Det er emnet som går rundt.">Dreiestålet</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <p class="regel">Dreie = <b>runde</b> deler: aksler, bolter, bøssinger.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Vis dreiebenken: chuck, dreiestål, support, pinoldokk. Typiske operasjoner: plandreiing, langdreiing, sporstikking, gjengeskjæring, boring i senter.</details>
+</section>
+
+<section id="frese">
+  <div class="tag">Del 3 · Frese</div>
+  <h2>Hva roterer i fresen?</h2>
+  <div class="benk">
+    <svg data-bilde="fres" data-alt="Fres med fresverktøy over et emne i skrustikke" viewBox="0 0 460 280" role="img" aria-label="Fres sett fra siden. Fresverktøyet roterer. Emnet ligger fast i skrustikka og flyttes med bordet.">
+      <rect x="170" y="20" width="120" height="90" rx="8" fill="#5f6b78" stroke="var(--wire)" stroke-width="3"/>
+      <rect x="215" y="110" width="30" height="40" fill="#7a8794" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="220" y="150" width="20" height="40" fill="#c5ccd4" stroke="var(--wire)" stroke-width="2.5"/>
+      <g stroke="var(--wire)" stroke-width="1.5"><path d="M220 158 l20 8"/><path d="M220 170 l20 8"/><path d="M220 182 l20 6"/></g>
+      <path d="M200 130 a30 12 0 1 0 60 0" fill="none" stroke="var(--orange)" stroke-width="4" marker-end="url(#pilD)"/>
+      <rect x="120" y="190" width="220" height="40" rx="4" fill="#ffcf4a" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="60" y="230" width="340" height="24" fill="#7a8794" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M150 268 H300" stroke="var(--u)" stroke-width="4" marker-end="url(#pilB)"/>
+      <g font-size="15" font-weight="700"><text x="300" y="140" fill="var(--orange)">Verktøyet roterer</text><text x="310" y="272" fill="var(--u)">Bordet flyttes</text></g>
+    </svg>
+    <div class="velg">
+      <p class="stor"><b>Hva roterer når du freser?</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="0" data-svar="Nei. Emnet sitter fast i skrustikka.">Emnet</button>
+        <button type="button" data-r="1" data-svar="Riktig! Fresverktøyet roterer. Emnet flyttes med bordet.">Fresverktøyet</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <p class="regel">Frese = <b>flate</b> sider, spor og lommer.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Motsatt av dreiing: i fresen roterer verktøyet. Endefres, planfres, skivefres. CNC-fresing kommer i Konstruksjons- og styringsteknikk (DAP og CNC).</details>
+</section>
+
+<section id="bore">
+  <div class="tag">Del 4 · Bore</div>
+  <h2>Kjørn før du borer</h2>
+  <div class="benk">
+    <svg viewBox="0 0 420 260" role="img" aria-label="Til venstre glir boret av uten kjørnemerke. Til høyre treffer boret kjørnemerket.">
+      <rect x="20" y="180" width="170" height="40" fill="#c5ccd4" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="230" y="180" width="170" height="40" fill="#c5ccd4" stroke="var(--wire)" stroke-width="2.5"/>
+      <g transform="rotate(14 100 120)"><rect x="92" y="40" width="16" height="130" fill="#9aa3ad" stroke="var(--wire)" stroke-width="2"/><path d="M92 170 L100 186 L108 170 Z" fill="#9aa3ad" stroke="var(--wire)" stroke-width="2"/></g>
+      <path d="M128 192 l10 -8" stroke="var(--bad)" stroke-width="3"/>
+      <rect x="307" y="40" width="16" height="130" fill="#9aa3ad" stroke="var(--wire)" stroke-width="2"/><path d="M307 170 L315 186 L323 170 Z" fill="#9aa3ad" stroke="var(--wire)" stroke-width="2"/>
+      <path d="M309 180 L315 188 L321 180" fill="none" stroke="var(--r)" stroke-width="3"/>
+      <g font-size="28" font-weight="800"><text x="60" y="250" fill="var(--bad)">✗</text><text x="300" y="250" fill="var(--r)">✓</text></g>
+      <g font-size="14" fill="var(--muted)"><text x="90" y="248">Uten merke</text><text x="330" y="248">Med merke</text></g>
+    </svg>
+    <div class="velg">
+      <p class="stor"><b>Hvorfor slår du et kjørnemerke før du borer?</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="1" data-svar="Riktig! Boret finner merket og glir ikke av. Hullet havner der det skal.">Så boret ikke glir</button>
+        <button type="button" data-r="0" data-svar="Nei. Det handler om hvor hullet havner.">Så hullet blir dypere</button>
+        <button type="button" data-r="0" data-svar="Nei. Merket hjelper boret å treffe riktig sted.">Så boret blir kaldt</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <p class="regel">Merk opp, <b>kjørn</b>, bor. Store hull: bor <b>lite</b> hull først.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Forbor med et lite bor (for eksempel 4–5 mm) før store hull. Spenn emnet fast i skrustikka, aldri hold det med hånda. Avgrad hullet etterpå.</details>
+</section>
+
+<section id="turtall">
+  <div class="tag">Del 5 · Materialet</div>
+  <h2>Hardt materiale, lavere turtall</h2>
+  <div class="benk">
+    <svg viewBox="0 0 420 260" role="img" aria-label="Tre søyler for turtall med samme bor: aluminium høyest, stål i midten, rustfritt stål lavest">
+      <path d="M50 220 H400" stroke="var(--wire)" stroke-width="3"/>
+      <rect x="80" y="50" width="70" height="170" rx="4" fill="#c5ccd4" stroke="var(--wire)" stroke-width="2"/>
+      <rect x="180" y="120" width="70" height="100" rx="4" fill="#7a8794" stroke="var(--wire)" stroke-width="2"/>
+      <rect x="280" y="160" width="70" height="60" rx="4" fill="#3d4752" stroke="var(--wire)" stroke-width="2"/>
+      <g font-size="15" font-weight="700" fill="var(--ink)" text-anchor="middle"><text x="115" y="245">Aluminium</text><text x="215" y="245">Stål</text><text x="315" y="245">Rustfritt</text></g>
+      <text x="40" y="40" font-size="14" font-weight="700" fill="var(--muted)">Turtall (samme bor)</text>
+    </svg>
+    <div class="velg">
+      <p class="stor"><b>Du har boret i aluminium. Nå skal du bore i rustfritt stål med samme bor. Hva gjør du med turtallet?</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="0" data-svar="Nei. Rustfritt er hardt og blir fort varmt. Høyere turtall ødelegger boret.">Setter det opp</button>
+        <button type="button" data-r="1" data-svar="Riktig! Hardt materiale tåler mindre skjærehastighet. Slå opp verdien i Verkstedhåndboka.">Setter det ned</button>
+        <button type="button" data-r="0" data-svar="Nei. Turtallet må passe materialet.">Lar det være</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <a class="simlink no-print" data-sim="skjaeredata"><span class="ico">🧪</span><span><b>Prøv selv: Skjæredata-simulatoren</b><small>Se hvordan materiale og diameter endrer turtallet.</small></span><span class="pil">→</span></a>
+  <p class="regel">Skjærehastigheten slår du opp i <b>Verkstedhåndboka</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Skjærehastighet v<sub>c</sub> avhenger av materiale og verktøy (HSS eller hardmetall). Turtallet regnes ut fra v<sub>c</sub> og diameter. Eleven slår opp v<sub>c</sub> og regner selv (se Verkstedhåndboka og skjæredatasimulatoren). Store bor gir lavere turtall enn små.</details>
+</section>
+
+<section id="kjoling">
+  <div class="tag">Del 6 · Kjøling</div>
+  <h2>Hvorfor kjølevæske?</h2>
+  <div class="hms">
+    <button type="button" data-r="1" data-svar="Riktig! Kjølevæsken tar bort varmen, så verktøyet holder lenger."><span class="ikon" aria-hidden="true">🌡️</span><span>Verktøyet blir mindre varmt.</span></button>
+    <button type="button" data-r="1" data-svar="Riktig! Den smører, så overflaten blir finere."><span class="ikon" aria-hidden="true">✨</span><span>Overflaten blir finere.</span></button>
+    <button type="button" data-r="0" data-svar="Galt! Kjølevæske er et kjemikalie. Unngå hudkontakt og les sikkerhetsdatabladet."><span class="ikon" aria-hidden="true">🖐️</span><span>Kjølevæske er ufarlig på huden.</span></button>
+    <button type="button" data-r="1" data-svar="Riktig! Den skyller sponet bort fra skjærestedet."><span class="ikon" aria-hidden="true">💧</span><span>Sponet blir spylt bort.</span></button>
+  </div>
+  <p class="regel">Kjøl, smør og spyl. Men <b>beskytt huden</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Skjærevæske (emulsjon) kan gi eksem. Bruk hansker der det er trygt (ikke ved roterende deler), hudkrem og vask hendene. Støpejern bearbeides ofte tørt. Aluminium trenger smøring for å unngå påsmøring på verktøyet.</details>
+</section>
+
+<section id="boye">
+  <div class="tag">Del 7 · Bøye</div>
+  <h2>Platen sprakk. Hvorfor?</h2>
+  <div class="benk">
+    <svg viewBox="0 0 420 260" role="img" aria-label="Til venstre en skarp bøy med sprekk på utsiden. Til høyre en bøy med stor radius uten sprekk.">
+      <path d="M30 60 V200 H170" fill="none" stroke="#9aa3ad" stroke-width="16" stroke-linejoin="miter"/>
+      <path d="M22 206 l12 -10 M28 212 l10 -12" stroke="var(--bad)" stroke-width="3"/>
+      <path d="M240 60 V160 A40 40 0 0 0 280 200 H390" fill="none" stroke="#9aa3ad" stroke-width="16"/>
+      <g font-size="28" font-weight="800"><text x="90" y="150" fill="var(--bad)">✗</text><text x="320" y="150" fill="var(--r)">✓</text></g>
+      <g font-size="14" fill="var(--muted)" text-anchor="middle"><text x="100" y="240">Skarp bøy</text><text x="315" y="240">Stor bøyeradius</text></g>
+    </svg>
+    <div class="velg">
+      <p class="stor"><b>Hvorfor sprakk platen til venstre?</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="0" data-svar="Nei. Det er ikke fargen som avgjør.">Den var for blank</button>
+        <button type="button" data-r="1" data-svar="Riktig! Utsiden blir strukket for mye. Bruk større bøyeradius.">Bøyeradiusen var for liten</button>
+        <button type="button" data-r="0" data-svar="Nei. En tynnere plate tåler mer, ikke mindre.">Platen var for tynn</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <p class="regel">Utsiden <b>strekkes</b>, innsiden <b>trykkes</b>. Hardt materiale trenger større radius.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Minste bøyeradius avhenger av materiale og tykkelse (tabell i Verkstedhåndboka eller hos leverandøren). Aluminium i hard tilstand sprekker lett. Bøy helst på tvers av valseretningen.</details>
+</section>
+
+<section id="plan">
+  <div class="tag">Del 8 · Arbeidsplan</div>
+  <h2>Lag en vinkel. Trykk i riktig rekkefølge.</h2>
+  <div class="benk">
+    <div class="rekkefolge">
+      <button type="button" data-n="4">🪛 Bor hullene</button>
+      <button type="button" data-n="1">📏 Merk opp etter tegningen</button>
+      <button type="button" data-n="6">📐 Bøy platen</button>
+      <button type="button" data-n="2">✂️ Klipp platen</button>
+      <button type="button" data-n="5">🧽 Avgrad kanter og hull</button>
+      <button type="button" data-n="3">🎯 Kjørn hullene</button>
+    </div>
+    <div style="display:grid;gap:14px">
+      <p class="status">Vinkelen har to hull og én bøy.</p>
+      <p style="color:var(--muted)">Tips: det er lettere å bore i en flat plate.</p>
+    </div>
+  </div>
+  <p class="regel">Planlegg <b>før</b> du starter. Rekkefølgen sparer tid.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>En arbeidsplan (operasjonsliste) beskriver rekkefølge, maskin, verktøy og skjæredata. Den sparer tid og gir jevn kvalitet (kobling til mål 6, effektivisering). Diskuter: hva skjer hvis du bøyer først?</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 1: Bearbeiding av materialer</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p><i>Ord: emnet · verktøyet · ned · kjørnemerke · bøyeradius</i></p>
+      <p>Når jeg dreier, roterer <span class="luke"><span class="fasit" hidden>emnet</span></span>.</p>
+      <p>Når jeg freser, roterer <span class="luke"><span class="fasit" hidden>verktøyet</span></span>.</p>
+      <p>Før jeg borer, slår jeg et <span class="luke"><span class="fasit" hidden>kjørnemerke</span></span>.</p>
+      <p>I hardt materiale setter jeg turtallet <span class="luke"><span class="fasit" hidden>ned</span></span>.</p>
+      <p>Platen sprekker hvis <span class="luke"><span class="fasit" hidden>bøyeradius</span></span> er for liten.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Ta bort, forme eller dele?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Metode</th><th>Ta bort (spon)</th><th>Forme</th><th>Dele</th></tr>
+        <tr><td>Bore</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
+        <tr><td>Valse et rør</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Plasmaskjære</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Slipe</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Hvilken maskin?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Del</th><th>Dreiebenk</th><th>Fres</th></tr>
+        <tr><td>En rund aksel</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Et spor i en flat kloss</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>En bøssing (rundt rør)</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>En firkantet lomme</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Arbeidsplan for vinkelen: skriv 1–6</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Operasjon</th><th>Nr.</th></tr>
+        <tr><td>Bøy platen</td><td class="blank"><span class="fasit" hidden>6</span></td></tr>
+        <tr><td>Merk opp</td><td class="blank"><span class="fasit" hidden>1</span></td></tr>
+        <tr><td>Bor hullene</td><td class="blank"><span class="fasit" hidden>4</span></td></tr>
+        <tr><td>Klipp platen</td><td class="blank"><span class="fasit" hidden>2</span></td></tr>
+        <tr><td>Avgrad</td><td class="blank"><span class="fasit" hidden>5</span></td></tr>
+        <tr><td>Kjørn</td><td class="blank"><span class="fasit" hidden>3</span></td></tr>
+      </table></div>
+    </div>
+
+    <div class="ekstra-oppg">
+      <h3>Ekstra · Slå opp og regn</h3>
+      <ol>
+        <li>Du skal bore et hull med Ø10 mm i stål med HSS-bor. Slå opp skjærehastigheten i Verkstedhåndboka og regn ut turtallet.<div class="svar"><span class="fasit" hidden>Med v<sub>c</sub> ≈ 25 m/min: n = 1000 · v<sub>c</sub> / (π · d) = 1000 · 25 / (π · 10) ≈ 800 o/min. Godta svar som passer verdien eleven fant.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Hvorfor er det lurt å bore hullene før du bøyer platen?<div class="svar"><span class="fasit" hidden>Det er lettere å merke, kjørne og spenne fast en flat plate, og hullene blir mer nøyaktige.</span></div></li>
+      </ol>
+    </div>
+  </div>
+  <div class="bank-lenker no-print" style="display:grid; gap:.6rem; margin:1.2rem 0 0">
+  <a class="simlink no-print" href="../../oppgavebank/produktivitet/klar-for-bestatt.html"><span class="ico">📄</span><span><b>Flere oppgaver: Klar for bestått?</b><small>20 oppgaver fra hele faget Produktivitet og kvalitetsstyring i oppgavebanken.</small></span><span class="pil">→</span></a>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+// Felles for figurene man trykker på (Produksjon og tjenester)
+(function(){
+  // Riktig eller galt-kort: <button data-r="1|0" data-svar="…">
+  document.querySelectorAll('.hms button[data-r]').forEach(b => {
+    b.insertAdjacentHTML('beforeend', '<span class="svar-hms">Trykk for svar</span>');
+    b.onclick = () => { b.classList.add(b.dataset.r === '1' ? 'ok' : 'feil'); b.querySelector('.svar-hms').textContent = b.dataset.svar; };
+  });
+  // Velg riktig svar: .velg med knapper data-r og en .status
+  document.querySelectorAll('.velg').forEach(v => {
+    const st = v.querySelector('.status');
+    v.querySelectorAll('button[data-r]').forEach(b => b.onclick = () => {
+      const ok = b.dataset.r === '1';
+      b.classList.add(ok ? 'ok' : 'feil');
+      if (st) st.textContent = b.dataset.svar || (ok ? 'Riktig!' : 'Prøv igjen.');
+    });
+  });
+  // Finn feilene i bildet: .finn med <g class="spot" data-navn="…"><… class="ring"/></g>
+  document.querySelectorAll('.finn').forEach(f => {
+    const spots = [...f.querySelectorAll('.spot')], t = f.querySelector('.teller'), st = f.querySelector('.status');
+    const vis = () => { t.textContent = f.querySelectorAll('.spot.funnet').length + ' av ' + spots.length + ' funnet'; };
+    spots.forEach(s => {
+      s.setAttribute('tabindex', '0'); s.setAttribute('role', 'button'); s.setAttribute('aria-label', 'Feil i bildet');
+      const go = () => { s.classList.add('funnet'); st.textContent = '❗ ' + s.dataset.navn; vis(); };
+      s.addEventListener('click', go);
+      s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    });
+    vis();
+  });
+  // Trykk i riktig rekkefølge: .rekkefolge med knapper data-n="1…"
+  document.querySelectorAll('.rekkefolge').forEach(r => {
+    let neste = 1; const st = r.parentElement.querySelector('.status'), alle = r.querySelectorAll('button');
+    alle.forEach(b => {
+      b.insertAdjacentHTML('afterbegin', '<span class="nrk"></span>');
+      b.onclick = () => {
+        if (b.classList.contains('ok')) return;
+        if (+b.dataset.n === neste) { b.classList.add('ok'); b.querySelector('.nrk').textContent = neste++; if (st) st.textContent = neste > alle.length ? 'Riktig rekkefølge! 🎉' : 'Riktig. Hva kommer så?'; }
+        else { b.classList.add('feil'); setTimeout(() => b.classList.remove('feil'), 600); if (st) st.textContent = 'Ikke ennå. Hva må skje først?'; }
+      };
+    });
+  });
+  // Sorter i tre (eller flere) grupper: .del3 med .q[data-svar] og knapper data-v
+  document.querySelectorAll('.del3 .q[data-svar]').forEach(k => {
+    k.querySelectorAll('button[data-v]').forEach(b => b.onclick = () => {
+      const ok = b.dataset.v === k.dataset.svar;
+      k.querySelectorAll('button').forEach(c => c.classList.remove('ok', 'feil'));
+      b.classList.add(ok ? 'ok' : 'feil');
+      k.querySelector('.forkl').textContent = ok ? 'Riktig! ' + (k.dataset.hvorfor || '') : 'Prøv igjen.';
+    });
+  });
+})();
+// Risikomatrise: .matrise med knapper data-tekst, svaret i .matrise-status
+document.querySelectorAll('.matrise').forEach(m => {
+  const st = m.parentElement.querySelector('.matrise-status');
+  m.querySelectorAll('button').forEach(b => b.onclick = () => {
+    m.querySelectorAll('button').forEach(c => c.setAttribute('aria-pressed', c === b));
+    st.textContent = b.dataset.tekst;
+  });
+});
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
+
