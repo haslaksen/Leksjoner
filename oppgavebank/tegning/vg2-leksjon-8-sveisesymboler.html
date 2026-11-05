@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oppgavebank · Sveisesymboler</title>
+<style>
+/* Oppgavebank: ekstra oppgaver til Vg2 Tegning og DAK, leksjon 8 «Sveisesymboler». */
+/* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{font-size:clamp(18px,0.6vw + 13px,24px)}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 64px}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin:0}
+h2{font-size:1.3rem;margin:0;display:flex;align-items:center;gap:.6rem}
+p{margin:0}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.2rem 0}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+button{font:700 .9rem/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+.tools{display:flex;gap:.5rem;flex-wrap:wrap}
+.navn{margin:.4rem 0 1.2rem}
+
+.oppg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,28px);display:grid;gap:16px;margin-top:18px;break-inside:avoid}
+.nr{display:inline-grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;flex:none}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body)}
+
+.tre{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kort{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;align-content:start;text-align:center}
+.kort svg{max-height:110px}
+.kort .valg{justify-content:center;flex-wrap:nowrap;gap:8px}
+.kort .valg>span{min-width:0;padding:.5rem .8rem}
+
+/* valg: sett ring rundt */
+.valg{display:flex;flex-wrap:wrap;gap:12px}
+.valg>span{position:relative;display:inline-grid;place-items:center;min-width:4.2rem;padding:.55rem 1rem;border:2px solid var(--line);border-radius:12px;font-weight:700;font-size:1.15rem}
+.valg>span:has(.fasit:not([hidden])){border-color:var(--r);background:var(--r-soft);box-shadow:0 0 0 4px var(--r)}
+.valg .fasit{position:absolute;top:-.8rem;right:-.6rem;background:var(--r);color:#fff;border-radius:50%;width:1.5rem;height:1.5rem;display:grid;place-items:center;font-size:.9rem}
+
+.to{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.to>div{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;justify-items:center}
+.to svg{max-height:160px}
+.bokstav{font:800 1.6rem/1 var(--body)}
+
+/* luker og svarruter */
+.luke{display:inline-block;min-width:5.5em;border-bottom:2px solid var(--ink);text-align:center;padding:0 .3em;margin:0 .2em}
+.fasit{color:var(--r);font-weight:700}
+.ordbank{display:flex;flex-wrap:wrap;gap:8px}
+.ordbank span{padding:.3rem .8rem;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700}
+.setning{font-size:1.15rem;line-height:2.4}
+
+.regn{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:20px;align-items:center}
+.linje{font:700 1.5rem/2.2 var(--mono)}
+.linje .luke{min-width:3em}
+
+.jn{width:100%;border-collapse:collapse;font-size:1.1rem}
+.jn td{border-bottom:1px solid var(--line);padding:10px 6px;vertical-align:middle}
+.jn td.ikon{width:3rem;font-size:1.8rem;text-align:center}
+.jn .valg{flex-wrap:nowrap;justify-content:flex-end}
+
+
+.del{display:flex;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:8px solid var(--orange);border-radius:18px;padding:14px 18px;margin-top:28px}
+.del h2{color:var(--orange);font-size:1.6rem}
+.steg{margin-top:.3rem} .steg span{display:inline-grid;place-items:center;width:1.4em;height:1.4em;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;font-size:.8em;margin-right:.3em}
+.del a{color:var(--blue);font-weight:700;overflow-wrap:anywhere}
+.qr{width:96px;height:96px;flex:none;image-rendering:pixelated;background:#fff;border-radius:6px}
+.merke{font:700 .75rem/1 var(--body);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:.35rem .7rem}
+.merke.sim{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.bilde{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.regning{font-size:1.15rem;line-height:2.2;text-align:center}
+.regning .luke{min-width:3.5em}
+.mikgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 18px}
+.mik .bilde{max-height:240px;object-fit:cover}
+.sum{width:100%;border-collapse:collapse}
+.sum td{padding:4px 0} .sum td:last-child{text-align:right;white-space:nowrap}
+.sum .luke{min-width:3.5em}
+.sum .tot td{border-top:2px solid var(--ink);padding-top:8px;font-weight:800}
+.tabell{width:100%;border-collapse:collapse}
+.tabell th,.tabell td{border:1px solid var(--line);padding:10px;text-align:left;height:2.6em}
+.tabell th{background:var(--bg)}
+@media (max-width:620px){.qr{display:none}}
+@media print{html{font-size:12px} .tools{display:none} body{background:#fff} .oppg{margin-top:8px;padding:10px;gap:8px;border-color:#999} .del{margin-top:10px;break-before:page} .del.forst{break-before:auto} .mik .bilde{max-height:150px} .bilde{max-height:170px;object-fit:contain}}
+.tilbake{display:inline-flex;flex-wrap:wrap;gap:.3rem .8rem;margin:0 0 .6rem;font-size:.95rem}
+.tilbake a{color:var(--blue);font-weight:700;text-decoration:none}
+.tilbake a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<style>
+.bilder{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.bilder .kort svg{max-height:120px}
+.fig{background:var(--bg);border-radius:14px;padding:12px}
+.fig svg{max-height:300px}
+.svar{border-bottom:2px solid var(--ink);min-height:2.2em;padding-top:6px}
+.tips{background:var(--blue-soft);border-radius:12px;padding:8px 14px;font-size:1rem}
+.sym svg{width:56px;height:56px;margin:0 auto}
+.ramme svg{max-width:240px;margin:0 auto}
+</style>
+<style>
+.tegning{max-width:560px;margin:0 auto;width:100%}
+.tegning svg text{font-weight:700;fill:var(--ink)}
+.sporsmal{width:100%;border-collapse:collapse;font-size:1.1rem}
+.sporsmal td{border-bottom:1px solid var(--line);padding:10px 6px}
+.sporsmal td:last-child{text-align:right;width:9em}
+.sporsmal .luke{min-width:4em}
+.oppg .tabell.smal{max-width:420px}
+.mer{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.mer a{color:var(--blue);font-weight:700}
+@media print{.mer,.tilbake{display:none} .tegning{max-width:380px}}
+@media (max-width:620px){.jn td.ikon{display:none} .jn .valg{flex-wrap:wrap;gap:6px} .jn .valg>span{min-width:0;padding:.4rem .6rem;font-size:1rem} .sporsmal td:last-child{width:7em}}
+</style>
+<div class="wrap" id="oppgavetekst">
+
+<div class="top">
+  <div>
+    <p class="tilbake no-print"><a href="../../vg2/tegning/leksjon-8-sveisesymboler.html">← Til leksjonen: Tegning og DAK 8</a></p>
+    <p class="tag">Oppgavebank · Tegning og DAK · Vg2 · Leksjon 8</p>
+    <h1>Sveisesymboler</h1>
+  </div>
+  <div class="tools">
+    <button type="button" id="copyBtn">Kopier til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+  </div>
+</div>
+<p class="navn">Navn: ______________________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
+
+<div class="del forst">
+  <div>
+    <h2>Symbolene</h2>
+    <div class="steg"><p><span>1</span> Symbolet <b>ligner</b> på sveisen.</p><p><span>2</span> Hel linje = <b>pilsiden</b>. Stiplet linje = <b>andre siden</b>.</p></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">1</span>Hva heter symbolet? Velg ord.</h2>
+ <div class="ordbank"><span>kilsveis</span><span>I-fuge</span><span>V-fuge</span><span>halv V-fuge</span><span>X-fuge</span></div><div class="bilder"><div class="kort"><svg viewBox="0 0 60 50" aria-hidden="true"><path d="M5 25 H55" stroke="var(--ink)" stroke-width="2"/><g transform="translate(30 25)" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"><path d="M-9 0 V-16 L7 0 Z"/></g></svg><p><span class="luke"><span class="fasit" hidden>kilsveis</span></span></p></div><div class="kort"><svg viewBox="0 0 60 50" aria-hidden="true"><path d="M5 25 H55" stroke="var(--ink)" stroke-width="2"/><g transform="translate(30 25)" style="fill:none;stroke:var(--ink);stroke-width:2.2"><path d="M-9 -16 L0 0 L9 -16"/><g transform="scale(1 -1)"><path d="M-9 -16 L0 0 L9 -16"/></g></g></svg><p><span class="luke"><span class="fasit" hidden>X-fuge</span></span></p></div><div class="kort"><svg viewBox="0 0 60 50" aria-hidden="true"><path d="M5 25 H55" stroke="var(--ink)" stroke-width="2"/><g transform="translate(30 25)" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"><path d="M-9 -16 L0 0 L9 -16"/></g></svg><p><span class="luke"><span class="fasit" hidden>V-fuge</span></span></p></div><div class="kort"><svg viewBox="0 0 60 50" aria-hidden="true"><path d="M5 25 H55" stroke="var(--ink)" stroke-width="2"/><g transform="translate(30 25)" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"><path d="M-5 0 V-16 M4 0 V-16"/></g></svg><p><span class="luke"><span class="fasit" hidden>I-fuge</span></span></p></div><div class="kort"><svg viewBox="0 0 60 50" aria-hidden="true"><path d="M5 25 H55" stroke="var(--ink)" stroke-width="2"/><g transform="translate(30 25)" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"><path d="M-6 0 V-16 M-6 0 L7 -16"/></g></svg><p><span class="luke"><span class="fasit" hidden>halv V-fuge</span></span></p></div></div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">2</span>Hvilken side sveiser du? Velg ord.</h2>
+ <div class="ordbank"><span>pilsiden</span><span>andre siden</span><span>begge sider</span></div><div class="tegning"><svg viewBox="-30 20 430 125" role="img" aria-label="Kilsveis over den hele linjen"><path d="M330 120 L240 70 H40" fill="none" stroke="var(--ink)" stroke-width="2"/><polygon points="330,120 318.4,107.9 313.6,116.6" fill="var(--ink)"/><path d="M40 78 H226" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="7 4"/><path d="M300 120 H390 M330 60 V120" stroke="var(--muted)" stroke-width="6"/><g transform="translate(130 70) scale(1.5)" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"><path d="M-9 0 V-16 L7 0 Z"/></g></svg></div><p class="setning">a) <span class="luke"><span class="fasit" hidden>pilsiden</span></span></p><div class="tegning"><svg viewBox="-30 20 430 125" role="img" aria-label="Kilsveis på begge sider av referanselinjen"><path d="M330 120 L240 70 H40" fill="none" stroke="var(--ink)" stroke-width="2"/><polygon points="330,120 318.4,107.9 313.6,116.6" fill="var(--ink)"/><path d="M300 120 H390 M330 60 V120" stroke="var(--muted)" stroke-width="6"/><g transform="translate(130 70) scale(1.5)" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"><path d="M-9 0 V-16 L7 0 Z"/></g><g transform="translate(130 70) scale(1.5 -1.5)" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"><path d="M-9 0 V-16 L7 0 Z"/></g></svg></div><p class="setning">b) <span class="luke"><span class="fasit" hidden>begge sider</span></span></p><div class="tegning"><svg viewBox="-30 20 430 125" role="img" aria-label="Kilsveis under den stiplede linjen"><path d="M330 120 L240 70 H40" fill="none" stroke="var(--ink)" stroke-width="2"/><polygon points="330,120 318.4,107.9 313.6,116.6" fill="var(--ink)"/><path d="M40 78 H226" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="7 4"/><path d="M300 120 H390 M330 60 V120" stroke="var(--muted)" stroke-width="6"/><g transform="translate(130 78) scale(1.5 -1.5)" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"><path d="M-9 0 V-16 L7 0 Z"/></g></svg></div><p class="setning">c) <span class="luke"><span class="fasit" hidden>andre siden</span></span></p>
+</div>
+
+<div class="del">
+  <div>
+    <h2>Les hele symbolet</h2>
+    <div class="steg"><p><span>1</span> a-mål til <b>venstre</b>, lengde til <b>høyre</b>.</p><p><span>2</span> Sirkel = rundt. Flagg = montasje. Hale = metode.</p></div>
+  </div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">3</span>Les symbolet</h2>
+ <div class="tegning"><svg viewBox="-30 20 430 125" role="img" aria-label="Kilsveis under den stiplede linjen, a5, lengde 200, flagg, hale 141"><path d="M330 120 L240 70 H40" fill="none" stroke="var(--ink)" stroke-width="2"/><polygon points="330,120 318.4,107.9 313.6,116.6" fill="var(--ink)"/><path d="M40 78 H226" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="7 4"/><path d="M300 120 H390 M330 60 V120" stroke="var(--muted)" stroke-width="6"/><g transform="translate(130 78) scale(1.5 -1.5)" style="fill:none;stroke:var(--ink);stroke-width:2.2;stroke-linejoin:round"><path d="M-9 0 V-16 L7 0 Z"/></g><text x="112" y="100" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="end">a5</text><text x="152" y="100" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="start">200</text><path d="M240 70 V40 L262 47 L240 54" fill="var(--ink)" stroke="var(--ink)" stroke-width="2"/><path d="M40 70 L28 60 M40 70 L28 80" stroke="var(--ink)" stroke-width="2"/><text x="24" y="75" font-size="15" font-weight="700" fill="var(--ink)" text-anchor="end">141</text></svg></div><table class="sporsmal"><tr><td>Hvilken type sveis?</td><td><span class="luke"><span class="fasit" hidden>kilsveis</span></span></td></tr><tr><td>Hvilken side?</td><td><span class="luke"><span class="fasit" hidden>andre siden</span></span></td></tr><tr><td>Hvor stort er a-målet?</td><td><span class="luke"><span class="fasit" hidden>5</span></span> mm</td></tr><tr><td>Hvor lang er sveisen?</td><td><span class="luke"><span class="fasit" hidden>200</span></span> mm</td></tr><tr><td>Hva betyr flagget?</td><td><span class="luke"><span class="fasit" hidden>sveises på montasjestedet</span></span></td></tr><tr><td>Hvilken metode?</td><td><span class="luke"><span class="fasit" hidden>141 = TIG</span></span></td></tr></table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">4</span>a-mål. Bruk a ≈ 0,7 × tynneste plate.</h2>
+ <table class="tabell"><tr><th>Plater</th><th>Tynneste</th><th>0,7 × tynneste</th><th>a-mål (rund ned)</th></tr><tr><td>8 mm og 12 mm</td><td><span class="fasit" hidden>8 mm</span></td><td><span class="fasit" hidden>5,6</span></td><td><span class="fasit" hidden>a5</span></td></tr><tr><td>5 mm og 5 mm</td><td><span class="fasit" hidden>5 mm</span></td><td><span class="fasit" hidden>3,5</span></td><td><span class="fasit" hidden>a3</span></td></tr><tr><td>10 mm og 15 mm</td><td><span class="fasit" hidden>10 mm</span></td><td><span class="fasit" hidden>7</span></td><td><span class="fasit" hidden>a7</span></td></tr><tr><td>6 mm og 20 mm</td><td><span class="fasit" hidden>6 mm</span></td><td><span class="fasit" hidden>4,2</span></td><td><span class="fasit" hidden>a4</span></td></tr></table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">5</span>Metode-nummer. Velg ord.</h2>
+ <div class="ordbank"><span>MMA (elektrode)</span><span>MIG</span><span>MAG</span><span>TIG</span></div><table class="tabell"><tr><th>I halen</th><th>Metode</th></tr><tr><td>111</td><td><span class="fasit" hidden>MMA (elektrode)</span></td></tr><tr><td>131</td><td><span class="fasit" hidden>MIG</span></td></tr><tr><td>135</td><td><span class="fasit" hidden>MAG</span></td></tr><tr><td>141</td><td><span class="fasit" hidden>TIG</span></td></tr></table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">6</span>Riktig eller galt</h2>
+ <table class="tabell"><tr><th>Påstand</th><th>Riktig</th><th>Galt</th></tr><tr><td>Står symbolet på den stiplede linjen, sveiser du på andre siden.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>Sirkelen betyr sveis hele veien rundt.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>a-målet står til høyre for symbolet.</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Halen kan utelates når metoden ikke er viktig.</td><td><span class="fasit" hidden>✗</span></td><td></td></tr></table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">7</span>Tegn symbolet</h2>
+ <p>Kilsveis på <b>pilsiden</b>, a4, 120 mm lang, <b>hele veien rundt</b>, sveises med <b>MAG</b>.</p><div class="tegning"><svg viewBox="-30 20 430 125" role="img" aria-label="Tom pil og referanselinje"><path d="M330 120 L240 70 H40" fill="none" stroke="var(--ink)" stroke-width="2"/><polygon points="330,120 318.4,107.9 313.6,116.6" fill="var(--ink)"/><path d="M40 78 H226" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="7 4"/><path d="M300 120 H390 M330 60 V120" stroke="var(--muted)" stroke-width="6"/></svg></div><div class="svar"><span class="fasit" hidden>Trekant over den hele linjen, a4 til venstre, 120 til høyre, sirkel i knekken, hale med 135.</span></div>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">8</span>Exit-lapp</h2>
+ <p>Hva betyr a4 i et sveisesymbol?</p><div class="svar"><span class="fasit" hidden>Halsmålet (tykkelsen) på kilsveisen er 4 mm.</span></div>
+</div>
+
+<p class="mer">Leksjonen: <a href="../../vg2/tegning/leksjon-8-sveisesymboler.html">Tegning og DAK 8: Sveisesymboler</a></p>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fb = $("fasitBtn");
+fb.addEventListener("click", () => {
+  const på = fb.getAttribute("aria-pressed") !== "true";
+  fb.setAttribute("aria-pressed", på);
+  fb.textContent = på ? "Skjul fasit" : "Vis fasit";
+  document.querySelectorAll(".fasit").forEach(e => e.hidden = !på);
+});
+
+// Kopier til OneNote (samme som på Steg for steg-siden): figurer blir bilder, valg blir ◯ (✔ når fasit vises), kort blir tabeller.
+async function svgTilPng(svg, farge) {
+  const vb = svg.viewBox.baseVal, w = Math.round(vb.width * 1.4), h = Math.round(vb.height * 1.4);
+  const c = svg.cloneNode(true);
+  c.setAttribute("xmlns", "http://www.w3.org/2000/svg"); c.setAttribute("width", w); c.setAttribute("height", h);
+  [c, ...c.querySelectorAll("*")].forEach(e => [...e.attributes].forEach(a => {
+    if (a.value.includes("var(")) e.setAttribute(a.name, a.value.replace(/var\((--[\w-]+)\)/g, (_, v) => farge(v)));
+  }));
+  c.querySelectorAll(".flow").forEach(e => e.removeAttribute("class"));
+  const img = new Image();
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, w, h); cx.drawImage(img, 0, 0, w, h);
+  return [cv.toDataURL("image/png"), Math.min(w, 420)];
+}
+$("copyBtn").addEventListener("click", async () => {
+  const msg = $("copyMsg"), rot = document.documentElement, tema = rot.dataset.theme;
+  rot.dataset.theme = "light"; // OneNote har hvit bakgrunn
+  const stil = getComputedStyle(rot), farge = v => stil.getPropertyValue(v).trim() || "#000";
+  const vis = fb.getAttribute("aria-pressed") === "true";
+  const src = $("oppgavetekst"), kl = src.cloneNode(true);
+  kl.querySelectorAll(".top,.navn,.no-print").forEach(e => e.remove());
+  const svgs = [...src.querySelectorAll("svg")], ks = [...kl.querySelectorAll("svg")];
+  for (let i = 0; i < svgs.length; i++) {
+    if (svgs[i].closest(".top")) continue;
+    try { const [url, w] = await svgTilPng(svgs[i], farge); const im = document.createElement("img"); im.src = url; im.width = svgs[i].closest(".kort,.to,.regn") ? Math.min(w, 200) : w; ks[i].replaceWith(im); }
+    catch (e) { ks[i].remove(); }
+  }
+  if (tema) rot.dataset.theme = tema; else delete rot.dataset.theme;
+  kl.querySelectorAll("img").forEach(i => { i.src = i.src; i.removeAttribute("loading"); i.removeAttribute("decoding");
+    if (i.width > 560) { i.height = Math.round(i.height * 560 / i.width); i.width = 560; } });
+  kl.querySelectorAll(".nr").forEach(n => n.textContent = n.textContent + ". ");
+  kl.querySelectorAll(".valg").forEach(v => {
+    const p = document.createElement("p");
+    p.textContent = [...v.children].map(s => {
+      const f = s.querySelector(".fasit"), riktig = f && vis; if (f) f.remove();
+      return (riktig ? "✔ " : "◯ ") + s.textContent.trim();
+    }).join("\u00a0\u00a0\u00a0\u00a0 ");
+    v.replaceWith(p);
+  });
+  kl.querySelectorAll(".fasit").forEach(f => { if (!vis) f.remove(); else f.style.color = "#2b8a3e"; });
+  kl.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "________"; });
+  kl.querySelectorAll(".svar").forEach(s => { const p = document.createElement("p"); p.textContent = s.textContent.trim() || "______________________________"; s.replaceWith(p); });
+  kl.querySelectorAll(".ordbank").forEach(o => { const p = document.createElement("p"); p.innerHTML = "<b>Ord:</b> " + [...o.children].map(s => s.textContent).join(" · "); o.replaceWith(p); });
+  kl.querySelectorAll(".tre,.bilder,.to").forEach(g => {
+    const t = document.createElement("table"), tr = t.insertRow();
+    [...g.children].forEach(k => { const td = tr.insertCell(); td.innerHTML = k.innerHTML; td.style.cssText = "border:1px solid #999;padding:6px;vertical-align:top;text-align:center"; });
+    g.replaceWith(t);
+  });
+  kl.querySelectorAll("table").forEach(t => { t.setAttribute("border", "1"); t.style.borderCollapse = "collapse"; t.querySelectorAll("td").forEach(c => { c.style.border = "1px solid #999"; c.style.padding = "4px 8px"; }); });
+  kl.querySelectorAll("[class]").forEach(e => e.removeAttribute("class"));
+  // Lenke til elevversjonen av denne siden (også når den kopieres fra lærersiden).
+  const lenke = location.origin + location.pathname.replace(/^\/laerer-[^/]+\//, "/").replace(/\.html$/, "");
+  const html = "<h2>" + document.querySelector("h1").textContent + "</h2><p>Navn: ______________________</p>" + kl.innerHTML +
+    '<p>Oppgavene på nett: <a href="' + lenke + '">' + lenke + "</a></p>", text = kl.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({ "text/html": new Blob([html], { type: "text/html" }), "text/plain": new Blob([text], { type: "text/plain" }) })]);
+    msg.textContent = "Kopiert! Lim inn i OneNote med Ctrl+V";
+  } catch (err) {
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.cssText = "position:fixed;left:-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    msg.textContent = ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere. Merk teksten og bruk Ctrl+C.";
+  }
+});
+
+</script>
+<script>
+/* Kom eleven fra en leksjon? Da viser første lenke «Tilbake til leksjonen». */
+(function(){try{var r=document.referrer,u=new URL(r);if(u.origin===location.origin&&/\/leksjon-[^/]*\.html$/.test(u.pathname)){var a=document.querySelector(".tilbake a");a.href=r;a.textContent="← Tilbake til leksjonen";var b=a.parentNode.querySelectorAll("a");for(var k=1;k<b.length;k++)b[k].remove();}}catch(e){}})();
+</script>
+</body>
+</html>
