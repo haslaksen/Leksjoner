@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Elektro Vg1 · Leksjon 3: Steg for steg</title>
+<title>Elektro Vg1 · Leksjon 4: Steg for steg</title>
 <style>
 /* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
 :root{
@@ -113,8 +113,8 @@ svg text{font-family:var(--body)}
 
 <div class="top">
   <div>
-    <p class="tag">Elektro Vg1 · Leksjon 3</p>
-    <h1>Steg for steg: Enkle styringer</h1>
+    <p class="tag">Elektro Vg1 · Leksjon 4</p>
+    <h1>Steg for steg: Måling med multimeter</h1>
   </div>
   <div class="tools">
     <button type="button" id="copyBtn">Kopier til OneNote</button>
@@ -125,37 +125,37 @@ svg text{font-family:var(--body)}
 <p class="navn">Navn: ______________________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
 
 <div class="oppg">
- <h2><span class="nr">1</span>Lyser lampa? Sett ring rundt Ja eller Nei.</h2>
+ <h2><span class="nr">1</span>Hva stiller du på? Sett ring rundt.</h2>
+  <table class="jn">
+    <tr><td class="ikon">🔋</td><td>Spenningen på et batteri</td><td><div class="valg"><span>V⎓<span class="fasit" hidden>✓</span></span><span>A</span><span>Ω</span></div></td></tr>
+    <tr><td class="ikon">💡</td><td>Strømmen til en lampe</td><td><div class="valg"><span>V⎓</span><span>A<span class="fasit" hidden>✓</span></span><span>Ω</span></div></td></tr>
+    <tr><td class="ikon">🟫</td><td>Motstanden i en motstand</td><td><div class="valg"><span>V⎓</span><span>A</span><span>Ω<span class="fasit" hidden>✓</span></span></div></td></tr>
+  </table>
+</div>
+
+<div class="oppg">
+ <h2><span class="nr">2</span>Du måler spenning over lampa. Hvilken er riktig? Sett ring rundt.</h2>
   <div class="to">
-    <div><svg viewBox="0 0 200 110" aria-label="Krets med åpen bryter"><path d="M30 30 V10 H170 V90 H30 V50" fill="none" stroke="var(--wire)" stroke-width="3"/><rect x="18" y="30" width="24" height="20" fill="var(--surface)"/><path d="M16 33 H44" stroke="var(--u)" stroke-width="3"/><path d="M23 47 H37" stroke="var(--u)" stroke-width="6"/><rect x="160" y="34" width="20" height="34" fill="var(--surface)"/><path d="M170 66 L150 40" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><circle cx="170" cy="66" r="3.5" fill="var(--ink)"/><circle cx="170" cy="34" r="3.5" fill="var(--ink)"/><circle cx="100" cy="10" r="12" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/><path d="M92 2 L108 18 M108 2 L92 18" stroke="var(--ink)" stroke-width="3"/></svg><b>Åpen bryter</b><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></div>
-    <div><svg viewBox="0 0 200 110" aria-label="Krets med lukket bryter"><path d="M30 30 V10 H170 V90 H30 V50" fill="none" stroke="var(--wire)" stroke-width="3"/><rect x="18" y="30" width="24" height="20" fill="var(--surface)"/><path d="M16 33 H44" stroke="var(--u)" stroke-width="3"/><path d="M23 47 H37" stroke="var(--u)" stroke-width="6"/><path d="M170 66 V36" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><circle cx="170" cy="66" r="3.5" fill="var(--ink)"/><circle cx="170" cy="34" r="3.5" fill="var(--ink)"/><circle cx="100" cy="10" r="12" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/><path d="M92 2 L108 18 M108 2 L92 18" stroke="var(--ink)" stroke-width="3"/></svg><b>Lukket bryter</b><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></div>
+    <div><svg viewBox="0 0 200 130" aria-label="A: spissene på hver side av lampa"><path d="M30 100 V20 H170 V100 Z" fill="none" stroke="var(--wire)" stroke-width="3"/><circle cx="170" cy="60" r="16" fill="var(--glow)" stroke="var(--ink)" stroke-width="3"/><path d="M170 36 C130 36 120 60 110 60 M170 84 C130 84 120 60 110 64" fill="none" stroke="var(--bad)" stroke-width="3"/><rect x="70" y="45" width="40" height="34" rx="5" fill="#f2c94c" stroke="var(--wire)" stroke-width="2"/><text x="90" y="68" text-anchor="middle" font-size="14" font-weight="800" fill="#1b2328">V</text></svg><div class="valg"><span>A<span class="fasit" hidden>✓</span></span></div></div>
+    <div><svg viewBox="0 0 200 130" aria-label="B: kretsen er åpnet og måleren er koblet inn i kretsen"><path d="M80 20 H30 V100 H170 V20 H120" fill="none" stroke="var(--wire)" stroke-width="3"/><circle cx="170" cy="60" r="16" fill="var(--glow)" stroke="var(--ink)" stroke-width="3"/><rect x="80" y="4" width="40" height="34" rx="5" fill="#f2c94c" stroke="var(--wire)" stroke-width="2"/><text x="100" y="27" text-anchor="middle" font-size="14" font-weight="800" fill="#1b2328">V</text></svg><div class="valg"><span>B</span></div></div>
   </div>
 </div>
 
 <div class="oppg">
- <h2><span class="nr">2</span>Skriv navnet under symbolet.</h2>
-  <div class="tre">
-    <div class="kort U"><svg viewBox="0 0 120 100" aria-label="Symbol"><path d="M10 50 H52 M68 50 H110" stroke="var(--ink)" stroke-width="3"/><path d="M52 28 V72" stroke="var(--ink)" stroke-width="3"/><path d="M68 38 V62" stroke="var(--ink)" stroke-width="8"/></svg><span class="luke"><span class="fasit" hidden>batteri</span></span></div>
-    <div class="kort I"><svg viewBox="0 0 120 100" aria-label="Symbol"><path d="M10 50 H38 M82 50 H110" stroke="var(--ink)" stroke-width="3"/><circle cx="60" cy="50" r="22" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/><path d="M45 35 L75 65 M75 35 L45 65" stroke="var(--ink)" stroke-width="3"/></svg><span class="luke"><span class="fasit" hidden>lampe</span></span></div>
-    <div class="kort R"><svg viewBox="0 0 120 100" aria-label="Symbol"><path d="M10 50 H40 M80 50 H110 M40 50 L78 30" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="50" r="3.5" fill="var(--ink)"/><circle cx="80" cy="50" r="3.5" fill="var(--ink)"/></svg><span class="luke"><span class="fasit" hidden>bryter</span></span></div>
-  </div>
-  <div class="ordbank"><span>lampe</span><span>bryter</span><span>batteri</span></div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">3</span>Lampa lyser ikke. Hvor er feilen? Sett ring rundt.</h2>
-  <div class="fig"><svg viewBox="0 0 320 180" aria-label="Krets der voltmeteret viser 12 V over bryteren"><path d="M40 70 V20 H280 V60 M280 110 V160 H40 V100" fill="none" stroke="var(--wire)" stroke-width="4"/><path d="M22 72 H58" stroke="var(--u)" stroke-width="4"/><path d="M30 96 H50" stroke="var(--u)" stroke-width="8"/><circle cx="160" cy="20" r="15" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/><path d="M150 10 L170 30 M170 10 L150 30" stroke="var(--ink)" stroke-width="3"/><path d="M280 110 V62" stroke="var(--ink)" stroke-width="4"/><circle cx="280" cy="110" r="4" fill="var(--ink)"/><circle cx="280" cy="60" r="4" fill="var(--ink)"/><path d="M280 60 Q230 85 280 110" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="4 4"/><rect x="170" y="62" width="72" height="44" rx="8" fill="var(--ink)"/><text x="206" y="93" text-anchor="middle" font-size="22" font-weight="800" fill="var(--glow)">12 V</text></svg></div>
-  <p class="setning">Voltmeteret viser 12 V over bryteren.</p>
-  <div class="valg"><span>Bryteren<span class="fasit" hidden>✓</span></span><span>Lampa</span></div>
+ <h2><span class="nr">3</span>Pipetest. Piper måleren? Sett ring rundt.</h2>
+  <table class="jn">
+    <tr><td class="ikon">〰️</td><td>Hel ledning</td><td><div class="valg"><span>Pip<span class="fasit" hidden>✓</span></span><span>Ingen pip</span></div></td></tr>
+    <tr><td class="ikon">✂️</td><td>Ledning med brudd</td><td><div class="valg"><span>Pip</span><span>Ingen pip<span class="fasit" hidden>✓</span></span></div></td></tr>
+  </table>
 </div>
 
 <div class="oppg">
  <h2><span class="nr">4</span>Er det trygt? Sett ring rundt Ja eller Nei.</h2>
   <table class="jn">
-    <tr><td class="ikon">🔌</td><td>Jeg slår av strømmen før jeg kobler.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
-    <tr><td class="ikon">💧</td><td>Jeg jobber med strøm med våte hender.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
-    <tr><td class="ikon">🔋</td><td>Vi øver med lav spenning, for eksempel 12 V.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
-    <tr><td class="ikon">✂️</td><td>Jeg bruker en kabel med skadet isolasjon.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
+    <tr><td class="ikon">✋</td><td>Jeg holder fingrene bak fingervernet.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
+    <tr><td class="ikon">🔌</td><td>Jeg måler i stikkontakten for å øve.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
+    <tr><td class="ikon">🩹</td><td>Jeg bruker en måleledning med sprekk.</td><td><div class="valg"><span>Ja</span><span>Nei<span class="fasit" hidden>✓</span></span></div></td></tr>
+    <tr><td class="ikon">🔍</td><td>Jeg sjekker bryter og kontakt før jeg måler.</td><td><div class="valg"><span>Ja<span class="fasit" hidden>✓</span></span><span>Nei</span></div></td></tr>
   </table>
 </div>
 
