@@ -12,7 +12,7 @@ vg2/<emne>/leksjon-N-<navn>.html
 
 | Trinn | Emne | Leksjoner |
 |---|---|---|
-| Vg1 | Elektro | 1 Spenning, strøm og motstand · 2 Repetisjon og effekt · 3 Enkle styringer · 4 Motorer og generatorer |
+| Vg1 | Elektro | 1 Spenning, strøm og motstand · 2 Repetisjon og effekt · 3 Likestrøm og vekselstrøm · 4 Måling med multimeter · 5 Enkle styringer · 6 Motorer og generatorer |
 | Vg1 | YFF | 1 Hva er YFF? |
 | Vg1 | Konstruksjon og styringsteknikk | Tegning og DAK 1–7 (vg1/konstruksjon) |
 | Vg1 | DAP og CNC | 1 Koordinatsystemet · 2 CNC og G-kode · 3 Fusion: DAP for dreiing · 4 Fusion: DAP for fresing |
