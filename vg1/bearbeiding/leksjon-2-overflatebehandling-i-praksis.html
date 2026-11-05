@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bearbeiding og overflate Vg1 · Leksjon 2: Overflatebehandling i praksis</title>
+<style>
+/* Vg2-stil: systemfont, lys/mørk palett. Blå = skole, kobber = bedrift, grønn = riktig, rød = galt/fare */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --panel:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --orange-soft:#fff0e5; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a; --water:#3b8fd6; --waterbg:#d7e8f6;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a; --scale:1;
+  --display:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --panel:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --orange-soft:#3a2516; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b; --water:#5aaef0; --waterbg:#173041;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+
+*{box-sizing:border-box}
+html{font-size:calc(clamp(16px, 0.55vw + 11px, 22px) * var(--scale)); scroll-behavior:smooth; scroll-padding-top:56px}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:1280px;margin:0 auto;padding-inline:clamp(16px,3vw,40px);padding-block:0 64px}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.12;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.2rem,4.4vw,3.2rem)}
+h2{font-size:clamp(1.6rem,2.8vw,2.1rem)}
+h3{font-size:clamp(1.15rem,1.6vw,1.35rem)}
+p{margin:0;max-width:62ch}
+b,strong{font-weight:650}
+svg text{font-family:inherit}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+p.tag{color:var(--muted);text-transform:none;letter-spacing:0;font-size:.9rem}
+
+/* toppmeny som i Vg2 */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:.8rem;padding:.45rem 1rem;height:56px}
+.top .brand{font-weight:700;white-space:nowrap;font-size:.9rem}
+.top .brand span{color:var(--orange)}
+.top nav{display:flex;gap:.3rem;overflow-x:auto;flex:1;scrollbar-width:none}
+.top nav::-webkit-scrollbar{display:none}
+.top nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-size:.75rem;padding:.3rem .65rem;border-radius:99px;border:1px solid transparent}
+.top nav a:hover{color:var(--ink)}
+.top nav a.active{color:var(--blue);border-color:var(--blue);background:var(--blue-soft)}
+.top .tools{display:flex;gap:.3rem}
+.top .tools button{font-size:.8rem;padding:.4rem .75rem;border-radius:10px;font-weight:600}
+@media (max-width:900px){.top .brand{display:none}}
+
+section>*{min-width:0}
+section{padding-block:clamp(40px,6vw,80px) 0;scroll-margin-top:56px;display:grid;gap:22px}
+.lead{font-size:1.15em;color:var(--muted)}
+details.laerer{font-size:.85rem;color:var(--muted)}
+details.laerer summary{cursor:pointer;font-weight:600}
+details.laerer .card,details.laerer .lcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem 1.2rem;margin-top:.6rem;color:var(--ink)}
+.caption{font-size:.8rem;color:var(--muted)}
+.simlink{display:flex; align-items:center; gap:.9rem; margin:.4rem 0 0; padding:.75rem 1.1rem; border:2px solid var(--blue); border-radius:12px; background:var(--blue-soft); color:var(--ink); text-decoration:none; max-width:560px}
+.simlink:hover{background:var(--panel)}
+.simlink .ico{font-size:1.6rem}
+.simlink small{display:block; color:var(--muted); font-size:.85rem}
+.simlink .pil{margin-left:auto; font-size:1.4rem; color:var(--blue)}
+.hint{display:block;color:var(--muted);font-size:.85em;margin-top:2px}
+.oppfig{display:block;max-width:420px;width:100%;height:auto;margin:8px 0}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(20px,4vw,56px);align-items:center;padding-block:clamp(28px,5vw,64px) 0}
+.hero>*{min-width:0}
+.goals{display:grid;gap:10px;margin-top:18px;padding:0;list-style:none;font-size:1.15rem}
+.goals li{display:flex;gap:12px;align-items:baseline}
+.goals .n{font-family:var(--display);font-weight:800;font-size:1.3em;min-width:1.2em}
+.hero-fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.hero-fig svg{display:block;width:100%;height:auto}
+.plan2{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:0}
+.plan2 dt{font:700 .85rem/1.5 var(--mono);color:var(--muted)}
+.plan2 dd{margin:0}
+.plan2 .t{grid-column:1/-1;font-weight:700;margin-top:6px}
+.flow{stroke-dasharray:3 15;animation:flow 1.1s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-18}}
+.pulse{animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.55}}
+
+/* kort */
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:10px;align-content:start}
+.q svg{width:100%;height:auto;max-height:120px}
+.q.U{border-top:6px solid var(--u)} .q.I{border-top:6px solid var(--i)} .q.R{border-top:6px solid var(--r)}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:1rem}
+.fig svg{display:block;width:100%;height:auto}
+button,.btn{font:700 16px/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+
+
+
+/* oppgaver */
+.sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(18px,3vw,40px);display:grid;gap:26px}
+.sheet h3{border-bottom:2px solid var(--ink);padding-bottom:6px}
+.sheet ol{margin:0;padding-left:1.4em;display:grid;gap:10px}
+.sheet table{border-collapse:collapse;width:100%}
+.sheet th,.sheet td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+.sheet th{background:var(--bg)}
+.sheet td.blank{height:2.4em;min-width:4em}
+.sheet td.x{text-align:center;width:6em}
+.tablewrap{overflow-x:auto}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fasit{color:var(--r);font-weight:700}
+.fasit-svg{display:none}
+.vis-fasit .fasit-svg{display:inline}
+.sheet .svar{border-bottom:1px solid var(--line);min-height:2em;padding-top:6px}
+.luke{display:inline-block;min-width:6em;border-bottom:1px solid var(--line);text-align:center;padding:0 .3em}
+#copyMsg{color:var(--muted);font-size:15px}
+
+
+/* felles for figurene */
+.benk{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(14px,2vw,26px);display:grid;grid-template-columns:minmax(0,1.5fr) 1fr;gap:clamp(16px,3vw,40px);align-items:center}
+.benk>*{min-width:0}
+.benk svg{width:100%;height:auto;display:block}
+.valgknapper{display:flex;flex-wrap:wrap;gap:8px}
+.valgknapper button[aria-pressed="true"]{background:var(--orange-soft);border-color:var(--orange);color:var(--orange)}
+.teller{font:700 1.4rem/1.3 var(--body)}
+.regel{background:var(--orange-soft);border:2px solid var(--orange);border-radius:14px;padding:14px 18px;font-size:1.2rem;font-weight:600;max-width:900px}
+.regel b{color:var(--orange)}
+.to{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.svar-knapper{display:flex;flex-wrap:wrap;gap:10px}
+.svar-knapper button{font-size:1.05rem;padding:12px 18px}
+button.ok{background:var(--r-soft)!important;border-color:var(--r)!important;color:var(--r)!important}
+button.feil{background:var(--bad-soft)!important;border-color:var(--bad)!important;color:var(--bad)!important}
+.oppgfig{display:block;max-width:560px;width:100%;height:auto;margin:8px 0}
+.stor{font-size:1.15rem}
+.status{font-size:1.1rem;min-height:1.6em;font-weight:600}
+.slider{display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600}
+.slider input{flex:1;min-width:160px;accent-color:var(--blue)}
+.lw{font:700 1.15rem/1 var(--mono);min-width:4.5em}
+.L{color:var(--blue)} .O{color:var(--i)}
+.q.L{border-top:6px solid var(--blue)} .q.O{border-top:6px solid var(--i)}
+
+/* sorter */
+.sorter{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sorter .q{text-align:center;justify-items:center}
+.sorter .emoji{font-size:2.6rem;line-height:1}
+.sorter .knapper{display:flex;gap:8px}
+.sorter .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+
+/* symboler */
+.symboler{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.symboler .q{text-align:center;justify-items:center;gap:6px}
+.symboler svg{max-height:110px}
+.symboler p{font-size:.92rem;color:var(--muted)}
+
+/* HMS-kort */
+.hms{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hms button{border-radius:14px;text-align:left;font:600 1rem/1.4 var(--body);padding:16px;display:grid;gap:8px;align-content:start;min-height:9em;white-space:normal}
+.hms button .ikon{font-size:2rem}
+.hms button .svar-hms{font-weight:400;font-size:.95rem}
+.hms button.ok .svar-hms,.hms button.feil .svar-hms{color:var(--ink)}
+
+details.ekstra{border:2px dashed var(--line);border-radius:12px;padding:.7rem 1rem;font-size:.95rem;max-width:900px}
+details.ekstra summary{cursor:pointer;font-weight:650;color:var(--u)}
+details.ekstra .formel{font:700 1.5rem/1.6 var(--mono);margin:.4rem 0}
+.sheet .ekstra-oppg{border:2px dashed var(--line);border-radius:12px;padding:14px 18px}
+.dotter circle{fill:var(--blue)}
+.glid{transition:transform .9s cubic-bezier(.3,.7,.3,1);transform-box:view-box}
+.blaas{stroke-dasharray:4 10;animation:flow .6s linear infinite}
+
+@media (max-width:860px){ .hero,.benk,.to{grid-template-columns:1fr} }
+@media (prefers-reduced-motion:reduce){.flow,.pulse,.blaas{animation:none}.glid{transition:none}}
+@media print{
+  .top,.no-print,.hero,section:not(#oppgaver),.toolbar{display:none!important}
+  body{background:#fff;color:#000;font-size:12pt}
+  .sheet{border:none;padding:0}
+  #oppgaver{padding:0}
+}
+
+/* Produksjon og tjenester: figurer man trykker på */
+.hms button[data-r]{min-height:7.5em}
+.velg{display:grid;gap:12px}
+.finn svg .spot{cursor:pointer;pointer-events:all}
+.finn svg .spot .ring{fill:transparent;stroke:transparent;stroke-width:5}
+.finn svg .spot:hover .ring{stroke:var(--line)}
+.finn svg .spot.funnet .ring{stroke:var(--bad)}
+.finn svg .spot:focus{outline:none}
+.finn svg .spot:focus-visible .ring{stroke:var(--u)}
+.rekkefolge{display:grid;gap:10px;max-width:640px}
+.rekkefolge button{display:flex;gap:14px;align-items:center;text-align:left;font-size:1.05rem;padding:14px 18px;border-radius:14px}
+.rekkefolge button .nrk{display:inline-grid;place-items:center;width:2rem;height:2rem;border-radius:50%;border:2px dashed var(--line);font-weight:800;flex:none}
+.rekkefolge button.ok .nrk{border:none;background:var(--r);color:#fff}
+.del3{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.del3 .q{text-align:center;justify-items:center}
+.del3 .emoji{font-size:2.4rem;line-height:1}
+.del3 .knapper{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.del3 .knapper button{font-size:.85rem;padding:8px 10px}
+.del3 .forkl{font-size:.9rem;color:var(--muted);min-height:2.6em}
+.bildeliste{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.bildeliste .q{text-align:center;justify-items:center;gap:6px}
+.bildeliste svg{max-height:120px}
+.bildeliste .emoji{font-size:2.6rem;line-height:1}
+.bildeliste p{font-size:.92rem;color:var(--muted)}
+.matrise{display:grid;grid-template-columns:auto repeat(3,1fr);gap:6px;max-width:620px}
+.matrise .ax{font-weight:700;font-size:.9rem;color:var(--muted);display:grid;place-items:center;text-align:center;padding:4px}
+.matrise button{border-radius:10px;min-height:3.6em;font-size:.95rem;border:2px solid transparent;color:#14181d}
+.matrise button.lav{background:#b7e4c7} .matrise button.mid{background:#ffe08a} .matrise button.hoy{background:#ffb3b3}
+.matrise button[aria-pressed="true"]{border-color:var(--ink);box-shadow:0 0 0 3px var(--ink)}
+
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand">Bearbeiding og overflate Vg1 · <span>Leksjon 2</span></div>
+  <nav id="nav" aria-label="Innhold"><a href="#start">Start</a><a href="#hvorfor">Hvorfor?</a><a href="#forarbeid">Forarbeid</a><a href="#slipe">Slipe</a><a href="#metoder">Metoder</a><a href="#materiale">Materialet</a><a href="#male">Male</a><a href="#feil">Lakkfeil</a><a href="#vern">Vern deg</a><a href="#oppgaver">Oppgaver</a></nav>
+  <div class="tools no-print">
+    <button type="button" id="btnSize" title="Større tekst for fremviser">A+</button>
+    <button type="button" id="btnTheme" title="Lys/mørk">☾</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+<header class="hero" id="start">
+  <div>
+    <div class="tag">Produktivitet og kvalitetsstyring Vg1 · Bearbeiding og overflate · Leksjon 2</div>
+    <h1 style="margin-top:10px">Overflatebehandling i praksis</h1>
+    <p class="lead" style="margin-top:12px">Godt <b>forarbeid</b> er halve jobben. Velg metode etter <b>materialet</b>.</p>
+    <ul class="goals">
+      <li><span class="n u">1</span><span>Hvorfor og <b>forarbeid</b></span></li>
+      <li><span class="n r">2</span><span><b>Slipe</b>: fra grovt til fint</span></li>
+      <li><span class="n i">3</span><span>Riktig <b>metode</b> til riktig materiale</span></li>
+      <li><span class="n" style="color:var(--bad)">4</span><span><b>Male</b> riktig, unngå feil, vern deg</span></li>
+    </ul>
+  </div>
+  <div>
+  <div class="hero-fig">
+    <svg viewBox="0 0 430 200" role="img" aria-label="Tre plater: rusten, slipt blank og malt">
+      <rect x="20" y="50" width="110" height="110" rx="6" fill="#a0522d" stroke="var(--wire)" stroke-width="3"/>
+      <g fill="#7a3a1a"><circle cx="50" cy="80" r="10"/><circle cx="95" cy="120" r="14"/><circle cx="60" cy="140" r="7"/></g>
+      <rect x="160" y="50" width="110" height="110" rx="6" fill="#d4d9df" stroke="var(--wire)" stroke-width="3"/>
+      <g stroke="#b5bcc4" stroke-width="2"><path d="M170 70 L260 64"/><path d="M170 100 L260 94"/><path d="M170 130 L260 124"/></g>
+      <rect x="300" y="50" width="110" height="110" rx="6" fill="#1c6fd1" stroke="var(--wire)" stroke-width="3"/>
+      <g font-size="15" font-weight="700" fill="var(--muted)" text-anchor="middle"><text x="75" y="185">Rust</text><text x="215" y="185">Slipt</text><text x="355" y="185">Malt</text></g>
+    </svg>
+  </div>
+  <details class="laerer no-print" style="margin-top:12px"><summary>For læreren: mål og plan</summary>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Kompetansemål (TIP01-03, Produktivitet og kvalitetsstyring)</h3>
+      <p><b>Mål 4:</b> «bruke metoder og teknikker for overflatebehandling av ulike materialer» (hele leksjonen).</p>
+      <p>Hvorfor stål ruster og hvordan sink beskytter står i Vg2 Overflatebehandling L1. Her er vekten på praktisk teknikk: forarbeid, sliping, maling og valg av metode.</p>
+    </div>
+    <div class="lcard">
+      <h3 style="font-size:1.05rem;margin-bottom:.4rem">Plan for to skoletimer (90 min)</h3>
+      <dl class="plan2">
+        <dt>0–10</dt><dd>Start: send rundt en rusten, en forsinket og en pulverlakkert del.</dd>
+        <dt>10–30</dt><dd>Del 1–3: hvorfor, forarbeid og sliping. Vis slipepapir med ulike korn.</dd>
+        <dt>30–45</dt><dd>Del 4–5: metoder og materiale.</dd>
+        <dt>45–55</dt><dd>Pause</dd>
+        <dt>55–70</dt><dd>Del 6–8: male, lakkfeil og verneutstyr. Gjerne en praktisk prøveplate.</dd>
+        <dt>70–88</dt><dd>Oppgavene A–D.</dd>
+        <dt>88–90</dt><dd>Exit-lapp.</dd>
+      </dl>
+    </div>
+  </details>
+  </div>
+</header>
+
+<section id="hvorfor">
+  <div class="tag">Del 1 · Hvorfor?</div>
+  <h2>Hva gir overflatebehandling? Trykk på kortene.</h2>
+  <div class="hms">
+    <button type="button" data-r="1" data-svar="Riktig! Den viktigste grunnen for stål."><span class="ikon" aria-hidden="true">🛡️</span><span>Delen ruster ikke.</span></button>
+    <button type="button" data-r="1" data-svar="Riktig! Farge og glans gjør produktet penere."><span class="ikon" aria-hidden="true">🎨</span><span>Delen ser bedre ut.</span></button>
+    <button type="button" data-r="1" data-svar="Riktig! For eksempel herding av overflaten eller harde belegg."><span class="ikon" aria-hidden="true">🪨</span><span>Overflaten tåler mer slitasje.</span></button>
+    <button type="button" data-r="0" data-svar="Galt! Overflatebehandling gjør ikke delen sterkere inni."><span class="ikon" aria-hidden="true">💪</span><span>Delen tåler større last.</span></button>
+  </div>
+  <p class="regel">Beskytte, <b>pynte</b> og tåle <b>slitasje</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Lengre levetid betyr mindre vedlikehold og mindre avfall (kobling til bærekraft og mål 7). Merk: noen overflatebehandlinger, som herding og nitrering, gjør overflaten hardere, men ikke hele delen sterkere.</details>
+</section>
+
+<section id="forarbeid">
+  <div class="tag">Del 2 · Forarbeid</div>
+  <h2>Male en rusten rekkverksdel. Trykk i riktig rekkefølge.</h2>
+  <div class="benk">
+    <div class="rekkefolge">
+      <button type="button" data-n="3">🧴 Vask og avfett</button>
+      <button type="button" data-n="1">🪥 Fjern løs rust og gammel maling</button>
+      <button type="button" data-n="5">🎨 Toppstrøk</button>
+      <button type="button" data-n="2">🧽 Slip overflaten matt</button>
+      <button type="button" data-n="4">🖌️ Grunning</button>
+    </div>
+    <div style="display:grid;gap:14px">
+      <p class="status">Maling fester ikke på rust, fett eller støv.</p>
+    </div>
+  </div>
+  <p class="regel">Maling fester bare på en <b>ren</b> og <b>tørr</b> overflate.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Avfetting etter sliping fjerner både slipestøv og fett fra fingrene. Grunning gir heft og rustbeskyttelse; toppstrøket gir farge og værbestandighet. Følg malingsprodusentens datablad for tørketid og temperatur.</details>
+</section>
+
+<section id="slipe">
+  <div class="tag">Del 3 · Slipe</div>
+  <h2>Fra grovt til fint</h2>
+  <div class="benk">
+    <svg viewBox="0 0 440 240" role="img" aria-label="Tre slipeark: korn 80 med store korn, korn 180 med middels korn, korn 400 med små korn">
+      <rect x="20" y="30" width="120" height="150" rx="6" fill="#c89b62" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="160" y="30" width="120" height="150" rx="6" fill="#d8b47e" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="300" y="30" width="120" height="150" rx="6" fill="#e8d0a6" stroke="var(--wire)" stroke-width="2.5"/>
+      <g fill="#6b4a22"><circle cx="45" cy="60" r="6"/><circle cx="80" cy="80" r="7"/><circle cx="115" cy="60" r="6"/><circle cx="50" cy="110" r="7"/><circle cx="95" cy="125" r="6"/><circle cx="60" cy="155" r="7"/><circle cx="115" cy="150" r="6"/></g>
+      <g fill="#8a6a3a"><circle cx="180" cy="55" r="3"/><circle cx="205" cy="70" r="3"/><circle cx="235" cy="55" r="3"/><circle cx="260" cy="75" r="3"/><circle cx="190" cy="100" r="3"/><circle cx="225" cy="110" r="3"/><circle cx="255" cy="120" r="3"/><circle cx="185" cy="145" r="3"/><circle cx="220" cy="160" r="3"/><circle cx="260" cy="155" r="3"/></g>
+      <g fill="#a8885a"><circle cx="315" cy="50" r="1.5"/><circle cx="335" cy="62" r="1.5"/><circle cx="360" cy="50" r="1.5"/><circle cx="390" cy="60" r="1.5"/><circle cx="405" cy="80" r="1.5"/><circle cx="320" cy="90" r="1.5"/><circle cx="350" cy="100" r="1.5"/><circle cx="380" cy="95" r="1.5"/><circle cx="330" cy="130" r="1.5"/><circle cx="365" cy="140" r="1.5"/><circle cx="400" cy="125" r="1.5"/><circle cx="345" cy="165" r="1.5"/><circle cx="390" cy="160" r="1.5"/></g>
+      <g font-size="20" font-weight="800" fill="var(--ink)" text-anchor="middle"><text x="80" y="212">P80</text><text x="220" y="212">P180</text><text x="360" y="212">P400</text></g>
+      <g font-size="13" fill="var(--muted)" text-anchor="middle"><text x="80" y="232">grovt</text><text x="220" y="232">middels</text><text x="360" y="232">fint</text></g>
+    </svg>
+    <div class="velg">
+      <p class="stor"><b>Høyt tall på slipepapiret betyr …</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="0" data-svar="Nei. Høyt tall = små korn = fint.">grovt papir</button>
+        <button type="button" data-r="1" data-svar="Riktig! Høyt tall = små korn = fin overflate. Start lavt, slutt høyt.">fint papir</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <p class="regel">Start <b>grovt</b> (lavt tall), slutt <b>fint</b> (høyt tall). Ikke hopp over for mange trinn.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Kornstørrelse (P-tall) = antall masker per tomme i sikten kornene siktes gjennom. Typisk: P80 for rust og sveis, P180–P240 før grunning, P400 og høyere mellom lakkstrøk. Bruk støvmaske og avsug ved sliping.</details>
+</section>
+
+<section id="metoder">
+  <div class="tag">Del 4 · Metoder</div>
+  <h2>Fem vanlige metoder</h2>
+  <div class="bildeliste">
+    <div class="q"><span class="emoji" aria-hidden="true">🖌️</span><h3>Maling</h3><p>Pensel, rull eller <b>sprøyte</b>. Lett å reparere.</p></div>
+    <div class="q"><span class="emoji" aria-hidden="true">🔥</span><h3>Pulverlakk</h3><p>Pulver sprayes på og <b>smeltes</b> i ovn. Slitesterkt.</p></div>
+    <div class="q"><span class="emoji" aria-hidden="true">🛁</span><h3>Varmforsinking</h3><p>Stål <b>dyppes</b> i flytende sink. For bruk ute.</p></div>
+    <div class="q"><span class="emoji" aria-hidden="true">⚡</span><h3>Anodisering</h3><p>Hardt, tett lag på <b>aluminium</b>. Kan farges.</p></div>
+    <div class="q"><span class="emoji" aria-hidden="true">🛢️</span><h3>Olje og voks</h3><p>Midlertidig vern, for eksempel på <b>verktøy</b>.</p></div>
+  </div>
+  <div class="velg" style="margin-top:16px">
+    <p class="stor"><b>Hvilken metode passer en skapdør i stål som skal tåle mye støt?</b></p>
+    <div class="svar-knapper">
+      <button type="button" data-r="0" data-svar="Nei. Olje er bare midlertidig.">Olje</button>
+      <button type="button" data-r="1" data-svar="Riktig! Pulverlakk er tykk, hard og slitesterk.">Pulverlakk</button>
+      <button type="button" data-r="0" data-svar="Nei. Anodisering er for aluminium, ikke stål.">Anodisering</button>
+    </div>
+    <p class="status"></p>
+  </div>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Pulverlakk og varmforsinking gjøres ofte hos en underleverandør. Det må planlegges i tid og kostnad (kobling til mål 6 og 7). Duplex = varmforsinking + pulverlakk, svært lang levetid.</details>
+</section>
+
+<section id="materiale">
+  <div class="tag">Del 5 · Materialet</div>
+  <h2>Hvilken metode passer? Trykk på riktig.</h2>
+  <div class="del3">
+    <div class="q" data-svar="V" data-hvorfor="Varmforsinking beskytter stål ute i mange år."><span class="emoji" aria-hidden="true">🚧</span><b>Rekkverk i stål, ute</b><div class="knapper"><button type="button" data-v="V">🛁 Varmforsinke</button><button type="button" data-v="A">⚡ Anodisere</button><button type="button" data-v="P">✨ Slipe og polere</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="A" data-hvorfor="Anodisering gir et hardt lag på aluminium."><span class="emoji" aria-hidden="true">📱</span><b>Deksel i aluminium</b><div class="knapper"><button type="button" data-v="V">🛁 Varmforsinke</button><button type="button" data-v="A">⚡ Anodisere</button><button type="button" data-v="P">✨ Slipe og polere</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="P" data-hvorfor="Rustfritt stål ruster ikke. En glatt overflate holder seg ren."><span class="emoji" aria-hidden="true">🍽️</span><b>Benk i rustfritt stål, storkjøkken</b><div class="knapper"><button type="button" data-v="V">🛁 Varmforsinke</button><button type="button" data-v="A">⚡ Anodisere</button><button type="button" data-v="P">✨ Slipe og polere</button></div><p class="forkl"></p></div>
+  </div>
+  <p class="regel">Stål <b>ruster</b>. Aluminium og rustfritt har sitt eget <b>skjold</b>, men det kan gjøres bedre.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Rustfritt stål beises etter sveising for å gjenopprette oksidlaget. Aluminium må ha egen grunning (etsprimer) hvis det skal males. Tre og plast har egne metoder (olje, lakk, beis); ta det med hvis elevene jobber med det.</details>
+</section>
+
+<section id="male">
+  <div class="tag">Del 6 · Male</div>
+  <h2>Sprøytemaling: hold riktig avstand</h2>
+  <div class="benk">
+    <svg viewBox="0 0 500 240" role="img" aria-label="Sprøytepistol holdt vinkelrett mot platen, cirka 20 centimeter unna, og beveget i jevne strøk">
+      <rect x="360" y="20" width="30" height="200" fill="#c5ccd4" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M60 110 h90 l20 -10 v20 Z" fill="#5f6b78" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="80" y="110" width="20" height="60" rx="4" fill="#5f6b78" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="40" y="60" width="50" height="40" rx="6" fill="#1c6fd1" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M172 110 L360 70 V150 Z" fill="#1c6fd1" opacity=".18"/>
+      <path d="M172 200 H358" stroke="var(--wire)" stroke-width="2" marker-end="url(#pilM)" marker-start="url(#pilM)"/>
+      <defs><marker id="pilM" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="var(--wire)"/></marker></defs>
+      <text x="265" y="225" text-anchor="middle" font-size="16" font-weight="700" fill="var(--ink)">ca. 20 cm</text>
+      <path d="M410 40 V200" stroke="var(--orange)" stroke-width="3" marker-end="url(#pilM)" marker-start="url(#pilM)"/>
+      <text x="420" y="125" font-size="14" font-weight="700" fill="var(--orange)">jevne</text><text x="420" y="143" font-size="14" font-weight="700" fill="var(--orange)">strøk</text>
+    </svg>
+    <div class="velg">
+      <p class="stor"><b>Du holder sprøyta for nær og går for sakte. Hva skjer?</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="1" data-svar="Riktig! For tykt lag gir renninger. Hold avstand og gå jevnt.">Malingen renner</button>
+        <button type="button" data-r="0" data-svar="Nei. Det skjer når du holder sprøyta for langt unna.">Overflaten blir ru og matt</button>
+        <button type="button" data-r="0" data-svar="Nei. Tørketiden blir lengre, ikke kortere.">Malingen tørker fortere</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <p class="regel">Flere <b>tynne</b> strøk er bedre enn ett tykt.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Avstand og hastighet varierer med utstyret; se databladet. Start strøket utenfor delen og slipp utenfor. Overlapp halve strøket. For langt unna gir «tørrsprøyt» (ru overflate).</details>
+</section>
+
+<section id="feil">
+  <div class="tag">Del 7 · Lakkfeil</div>
+  <h2>Hva gikk galt? Trykk på riktig.</h2>
+  <div class="del3">
+    <div class="q" data-svar="F" data-hvorfor="Fett eller olje på overflaten gir krater der malingen trekker seg bort."><span class="emoji" aria-hidden="true">🌑</span><b>Små krater i lakken</b><div class="knapper"><button type="button" data-v="F">🧴 Ikke avfettet</button><button type="button" data-v="T">💧 For tykt lag</button><button type="button" data-v="R">🟤 Rust under</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="T" data-hvorfor="For mye maling på en gang renner nedover."><span class="emoji" aria-hidden="true">🫗</span><b>Renninger nedover</b><div class="knapper"><button type="button" data-v="F">🧴 Ikke avfettet</button><button type="button" data-v="T">💧 For tykt lag</button><button type="button" data-v="R">🟤 Rust under</button></div><p class="forkl"></p></div>
+    <div class="q" data-svar="R" data-hvorfor="Rusten var ikke fjernet. Den vokser videre under malingen."><span class="emoji" aria-hidden="true">🫧</span><b>Blærer og flass etter et år</b><div class="knapper"><button type="button" data-v="F">🧴 Ikke avfettet</button><button type="button" data-v="T">💧 For tykt lag</button><button type="button" data-v="R">🟤 Rust under</button></div><p class="forkl"></p></div>
+  </div>
+  <p class="regel">De fleste lakkfeil kommer av dårlig <b>forarbeid</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Andre feil: appelsinhud (for høy viskositet / feil avstand), støvkorn (urent rom), matt flekk (fukt). Feil koster: delen må slipes ned og males på nytt (kobling til kvalitet og kostnad).</details>
+</section>
+
+<section id="vern">
+  <div class="tag">Del 8 · Vern deg</div>
+  <h2>Hva trenger du når du sprøytemaler?</h2>
+  <div class="benk">
+    <svg data-bilde="sproytemaler-verneutstyr" data-alt="Person med maske, briller og hansker som sprøytemaler i avtrekk" viewBox="0 0 400 300" role="img" aria-label="Person med halvmaske med filter, vernebriller, hansker og heldekkende dress">
+      <circle cx="160" cy="70" r="40" fill="#f1c9a0" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="128" y="56" width="64" height="18" rx="8" fill="#9ad0f5" stroke="var(--wire)" stroke-width="2.5"/>
+      <path d="M134 82 Q160 120 186 82 Z" fill="#5f6b78" stroke="var(--wire)" stroke-width="2.5"/>
+      <circle cx="132" cy="98" r="12" fill="#e8590c" stroke="var(--wire)" stroke-width="2"/><circle cx="188" cy="98" r="12" fill="#e8590c" stroke="var(--wire)" stroke-width="2"/>
+      <rect x="110" y="120" width="100" height="150" rx="16" fill="#f5f7fa" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="76" y="126" width="32" height="110" rx="14" fill="#f5f7fa" stroke="var(--wire)" stroke-width="2.5"/><rect x="212" y="126" width="32" height="110" rx="14" fill="#f5f7fa" stroke="var(--wire)" stroke-width="2.5"/>
+      <rect x="76" y="230" width="32" height="30" rx="10" fill="#23804f"/><rect x="212" y="230" width="32" height="30" rx="10" fill="#23804f"/>
+      <g stroke="var(--orange)" stroke-width="2.5"><path d="M200 66 H260"/><path d="M200 98 H260"/><path d="M244 245 H260"/><path d="M210 180 H260"/></g>
+      <g font-size="15" font-weight="700" fill="var(--ink)"><text x="266" y="71">Briller</text><text x="266" y="103">Maske</text><text x="266" y="121" font-size="13" font-weight="400">med filter</text><text x="266" y="185">Dress</text><text x="266" y="250">Hansker</text></g>
+    </svg>
+    <div class="velg">
+      <p class="stor"><b>Hvor finner du hvilket filter maska må ha?</b></p>
+      <div class="svar-knapper">
+        <button type="button" data-r="0" data-svar="Nei. Etiketten viser farene, men filteret står i databladet.">På malingsboksen</button>
+        <button type="button" data-r="1" data-svar="Riktig! Avsnitt 8 i sikkerhetsdatabladet sier hvilket verneutstyr du trenger.">I sikkerhetsdatabladet</button>
+        <button type="button" data-r="0" data-svar="Nei. Spør ikke. Les det i sikkerhetsdatabladet.">Spør en kollega</button>
+      </div>
+      <p class="status"></p>
+    </div>
+  </div>
+  <p class="regel">Mal i <b>avtrekk</b>. Bruk maske med <b>riktig filter</b>.</p>
+  <details class="laerer no-print"><summary>Lærernotat</summary>Løsemidler og isocyanater (i 2-komponent lakk) er helsefarlige. Isocyanater krever egen opplæring og ofte friskluftmaske. Pulverlakk: støv er brannfarlig og irriterende. Sikkerhetsdatablad er gjennomgått i Produksjon og tjenester, HMS og kjemikalier L2.</details>
+</section>
+
+<section id="oppgaver">
+  <div class="toolbar">
+    <button type="button" id="copyBtn">Kopier oppgavene til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+    <span id="copyMsg" role="status"></span>
+  </div>
+  <div class="sheet" id="sheet">
+    <div>
+      <h2 style="font-size:clamp(1.6rem,2.6vw,2rem)">Oppgaver · Leksjon 2: Overflatebehandling i praksis</h2>
+      <p style="margin-top:6px">Navn: ______________________ &nbsp; Dato: __________</p>
+    </div>
+
+    <div>
+      <h3>Del A · Fyll inn</h3>
+      <p><i>Ord: avfette · høyt · tynne · anodisering · sikkerhetsdatabladet</i></p>
+      <p>Før grunning skal jeg <span class="luke"><span class="fasit" hidden>avfette</span></span> overflaten.</p>
+      <p>Fint slipepapir har et <span class="luke"><span class="fasit" hidden>høyt</span></span> tall.</p>
+      <p>Flere <span class="luke"><span class="fasit" hidden>tynne</span></span> strøk er bedre enn ett tykt.</p>
+      <p>Aluminium kan få et hardt lag med <span class="luke"><span class="fasit" hidden>anodisering</span></span>.</p>
+      <p>Hvilket filter maska skal ha, står i <span class="luke"><span class="fasit" hidden>sikkerhetsdatabladet</span></span>.</p>
+    </div>
+
+    <div>
+      <h3>Del B · Forarbeid: skriv 1–5</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Steg</th><th>Nr.</th></tr>
+        <tr><td>Grunning</td><td class="blank"><span class="fasit" hidden>4</span></td></tr>
+        <tr><td>Fjern løs rust</td><td class="blank"><span class="fasit" hidden>1</span></td></tr>
+        <tr><td>Toppstrøk</td><td class="blank"><span class="fasit" hidden>5</span></td></tr>
+        <tr><td>Vask og avfett</td><td class="blank"><span class="fasit" hidden>3</span></td></tr>
+        <tr><td>Slip overflaten matt</td><td class="blank"><span class="fasit" hidden>2</span></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del C · Hvilken metode passer best?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Del</th><th>Varmforsinke</th><th>Pulverlakk</th><th>Anodisere</th><th>Olje</th></tr>
+        <tr><td>Gjerdestolpe i stål, ute</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td><td class="blank x"></td></tr>
+        <tr><td>Profil i aluminium til et vindu</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Nye bor som skal lagres</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+        <tr><td>Hylle i stål til et kontor</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
+      </table></div>
+    </div>
+
+    <div>
+      <h3>Del D · Lakkfeil: hva er årsaken?</h3>
+      <div class="tablewrap"><table>
+        <tr><th>Feil</th><th>Ikke avfettet</th><th>For tykt lag</th><th>Rust under</th></tr>
+        <tr><td>Renninger</td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td></tr>
+        <tr><td>Krater</td><td class="blank x"><span class="fasit" hidden>✗</span></td><td class="blank x"></td><td class="blank x"></td></tr>
+        <tr><td>Blærer etter et år</td><td class="blank x"></td><td class="blank x"></td><td class="blank x"><span class="fasit" hidden>✗</span></td></tr>
+      </table></div>
+    </div>
+
+    <div class="ekstra-oppg">
+      <h3>Ekstra · Tenk etter</h3>
+      <ol>
+        <li>En bedrift sparer tid ved å hoppe over avfettingen. Hvorfor kan det bli dyrere til slutt?<div class="svar"><span class="fasit" hidden>Malingen fester dårlig og flasser. Delen må slipes og males på nytt, eller kunden klager. Det koster mer enn avfettingen.</span></div></li>
+      </ol>
+    </div>
+
+    <div>
+      <h3>Exit-lapp</h3>
+      <ol>
+        <li>Skriv to ting du gjør før du maler en rusten del.<div class="svar"><span class="fasit" hidden>Fjerner løs rust, sliper matt, vasker og avfetter, grunner.</span></div></li>
+      </ol>
+    </div>
+  </div>
+  <div class="bank-lenker no-print" style="display:grid; gap:.6rem; margin:1.2rem 0 0">
+  <a class="simlink no-print" href="../../oppgavebank/produktivitet/klar-for-bestatt.html"><span class="ico">📄</span><span><b>Flere oppgaver: Klar for bestått?</b><small>20 oppgaver fra hele faget Produktivitet og kvalitetsstyring i oppgavebanken.</small></span><span class="pil">→</span></a>
+  </div>
+</section>
+
+</div>
+
+<script>
+// Toppmeny: aktiv lenke, større tekst og lys/mørk (som Vg2)
+(function(){
+  const nav = document.getElementById("nav");
+  const links = [...nav.querySelectorAll("a")];
+  const targets = links.map(l => document.querySelector(l.getAttribute("href"))).filter(Boolean);
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ links.forEach(l => l.classList.toggle("active", l.getAttribute("href")==="#"+e.target.id));
+      const act = nav.querySelector("a.active"); if (act) nav.scrollBy({left: act.getBoundingClientRect().left - nav.getBoundingClientRect().left - (nav.clientWidth - act.offsetWidth) / 2}); }
+  }), {rootMargin:"-45% 0px -50% 0px"});
+  targets.forEach(t => io.observe(t));
+  let scale = 1;
+  const bS = document.getElementById("btnSize"), bT = document.getElementById("btnTheme");
+  bS.onclick = () => { scale = scale>=1.3 ? 1 : +(scale+0.15).toFixed(2); document.documentElement.style.setProperty("--scale", scale); bS.textContent = scale===1 ? "A+" : "A" + Math.round(scale*100) + "%"; };
+  bT.onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme==="dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.querySelectorAll("svg").forEach(s => s.pauseAnimations && s.pauseAnimations());
+})();
+
+// Felles for figurene man trykker på (Produksjon og tjenester)
+(function(){
+  // Riktig eller galt-kort: <button data-r="1|0" data-svar="…">
+  document.querySelectorAll('.hms button[data-r]').forEach(b => {
+    b.insertAdjacentHTML('beforeend', '<span class="svar-hms">Trykk for svar</span>');
+    b.onclick = () => { b.classList.add(b.dataset.r === '1' ? 'ok' : 'feil'); b.querySelector('.svar-hms').textContent = b.dataset.svar; };
+  });
+  // Velg riktig svar: .velg med knapper data-r og en .status
+  document.querySelectorAll('.velg').forEach(v => {
+    const st = v.querySelector('.status');
+    v.querySelectorAll('button[data-r]').forEach(b => b.onclick = () => {
+      const ok = b.dataset.r === '1';
+      b.classList.add(ok ? 'ok' : 'feil');
+      if (st) st.textContent = b.dataset.svar || (ok ? 'Riktig!' : 'Prøv igjen.');
+    });
+  });
+  // Finn feilene i bildet: .finn med <g class="spot" data-navn="…"><… class="ring"/></g>
+  document.querySelectorAll('.finn').forEach(f => {
+    const spots = [...f.querySelectorAll('.spot')], t = f.querySelector('.teller'), st = f.querySelector('.status');
+    const vis = () => { t.textContent = f.querySelectorAll('.spot.funnet').length + ' av ' + spots.length + ' funnet'; };
+    spots.forEach(s => {
+      s.setAttribute('tabindex', '0'); s.setAttribute('role', 'button'); s.setAttribute('aria-label', 'Feil i bildet');
+      const go = () => { s.classList.add('funnet'); st.textContent = '❗ ' + s.dataset.navn; vis(); };
+      s.addEventListener('click', go);
+      s.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); } });
+    });
+    vis();
+  });
+  // Trykk i riktig rekkefølge: .rekkefolge med knapper data-n="1…"
+  document.querySelectorAll('.rekkefolge').forEach(r => {
+    let neste = 1; const st = r.parentElement.querySelector('.status'), alle = r.querySelectorAll('button');
+    alle.forEach(b => {
+      b.insertAdjacentHTML('afterbegin', '<span class="nrk"></span>');
+      b.onclick = () => {
+        if (b.classList.contains('ok')) return;
+        if (+b.dataset.n === neste) { b.classList.add('ok'); b.querySelector('.nrk').textContent = neste++; if (st) st.textContent = neste > alle.length ? 'Riktig rekkefølge! 🎉' : 'Riktig. Hva kommer så?'; }
+        else { b.classList.add('feil'); setTimeout(() => b.classList.remove('feil'), 600); if (st) st.textContent = 'Ikke ennå. Hva må skje først?'; }
+      };
+    });
+  });
+  // Sorter i tre (eller flere) grupper: .del3 med .q[data-svar] og knapper data-v
+  document.querySelectorAll('.del3 .q[data-svar]').forEach(k => {
+    k.querySelectorAll('button[data-v]').forEach(b => b.onclick = () => {
+      const ok = b.dataset.v === k.dataset.svar;
+      k.querySelectorAll('button').forEach(c => c.classList.remove('ok', 'feil'));
+      b.classList.add(ok ? 'ok' : 'feil');
+      k.querySelector('.forkl').textContent = ok ? 'Riktig! ' + (k.dataset.hvorfor || '') : 'Prøv igjen.';
+    });
+  });
+})();
+// Risikomatrise: .matrise med knapper data-tekst, svaret i .matrise-status
+document.querySelectorAll('.matrise').forEach(m => {
+  const st = m.parentElement.querySelector('.matrise-status');
+  m.querySelectorAll('button').forEach(b => b.onclick = () => {
+    m.querySelectorAll('button').forEach(c => c.setAttribute('aria-pressed', c === b));
+    st.textContent = b.dataset.tekst;
+  });
+});
+
+(function(){
+  const $ = id => document.getElementById(id);
+  const fixVars = root => root.querySelectorAll('[fill*="var("],[stroke*="var("]').forEach(el=>{
+    ['fill','stroke'].forEach(a=>{ const v=el.getAttribute(a); if(v&&v.includes('var(')) el.style.setProperty(a,v); });
+  });
+  // Adressen til simulatorene (samme som SIMULATORER i index.html)
+  const SIMULATORER = "https://simulatorer.vercel.app/";
+  document.querySelectorAll("[data-sim]").forEach(a => { a.href = SIMULATORER + a.dataset.sim + ".html"; a.target = "_blank"; a.rel = "noopener"; });
+
+  fixVars(document);
+  // ---------- oppgaver: fasit + kopier ----------
+  const fb=$('fasitBtn');
+  fb.addEventListener('click',()=>{ const on=fb.getAttribute('aria-pressed')!=='true'; fb.setAttribute('aria-pressed',on); fb.textContent=on?'Skjul fasit':'Vis fasit'; document.querySelectorAll('.fasit').forEach(e=>e.hidden=!on); $('sheet').classList.toggle('vis-fasit',on); });
+  $('copyBtn').addEventListener('click',()=>{
+    const src=$('sheet').cloneNode(true);
+    if(fb.getAttribute('aria-pressed')!=='true') src.querySelectorAll('.fasit,.fasit-svg').forEach(e=>e.remove());
+    src.querySelectorAll('.svar').forEach(e=>{ const p=document.createElement('p'); p.textContent=e.textContent.trim()||'______________________________________'; e.replaceWith(p); });
+    src.querySelectorAll('.luke').forEach(e=>{ if(!e.textContent.trim()) e.textContent='______'; });
+    src.querySelectorAll('table').forEach(t=>{ t.setAttribute('border','1'); t.setAttribute('cellpadding','6'); t.style.borderCollapse='collapse'; });
+    src.querySelectorAll('[class]').forEach(e=>e.removeAttribute('class'));
+    const html=src.innerHTML, text=src.innerText||src.textContent;
+    const msg=$('copyMsg');
+    const done=()=>{ msg.textContent='Kopiert. Lim inn i OneNote med Ctrl+V.'; };
+    const fallback=()=>{ const r=document.createRange(); r.selectNodeContents($('sheet')); const s=getSelection(); s.removeAllRanges(); s.addRange(r); msg.textContent='Teksten er markert. Trykk Ctrl+C for å kopiere.'; };
+    try{
+      if(window.ClipboardItem && navigator.clipboard && navigator.clipboard.write){
+        navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([html],{type:'text/html'}),'text/plain':new Blob([text],{type:'text/plain'})})]).then(done,()=>{ navigator.clipboard.writeText(text).then(done,fallback); });
+      } else if(navigator.clipboard){ navigator.clipboard.writeText(text).then(done,fallback); }
+      else fallback();
+    }catch(e){ fallback(); }
+  });
+})();
+</script>
+
+</body></html>
+
