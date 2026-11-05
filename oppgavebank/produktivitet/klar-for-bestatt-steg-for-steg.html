@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oppgavebank · Klar for bestått: Steg for steg</title>
+<style>
+/* Oppgavebank: «Klar for bestått» i Produktivitet og kvalitetsstyring (Vg1 TIF). Ett eller flere spørsmål per kompetansemål. Figurene er skilt og diagrammer (ingen data-bilde). */
+/* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{font-size:clamp(18px,0.6vw + 13px,24px)}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 64px}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin:0}
+h2{font-size:1.3rem;margin:0;display:flex;align-items:center;gap:.6rem}
+p{margin:0}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.2rem 0}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+button{font:700 .9rem/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+.tools{display:flex;gap:.5rem;flex-wrap:wrap}
+.navn{margin:.4rem 0 1.2rem}
+
+.oppg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,28px);display:grid;gap:16px;margin-top:18px;break-inside:avoid}
+.nr{display:inline-grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;flex:none}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body)}
+
+.tre{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kort{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;align-content:start;text-align:center}
+.kort svg{max-height:110px}
+.kort .valg{justify-content:center;flex-wrap:nowrap;gap:8px}
+.kort .valg>span{min-width:0;padding:.5rem .8rem}
+
+/* valg: sett ring rundt */
+.valg{display:flex;flex-wrap:wrap;gap:12px}
+.valg>span{position:relative;display:inline-grid;place-items:center;min-width:4.2rem;padding:.55rem 1rem;border:2px solid var(--line);border-radius:12px;font-weight:700;font-size:1.15rem}
+.valg>span:has(.fasit:not([hidden])){border-color:var(--r);background:var(--r-soft);box-shadow:0 0 0 4px var(--r)}
+.valg .fasit{position:absolute;top:-.8rem;right:-.6rem;background:var(--r);color:#fff;border-radius:50%;width:1.5rem;height:1.5rem;display:grid;place-items:center;font-size:.9rem}
+
+.to{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.to>div{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;justify-items:center}
+.to svg{max-height:160px}
+.bokstav{font:800 1.6rem/1 var(--body)}
+
+/* luker og svarruter */
+.luke{display:inline-block;min-width:5.5em;border-bottom:2px solid var(--ink);text-align:center;padding:0 .3em;margin:0 .2em}
+.fasit{color:var(--r);font-weight:700}
+.ordbank{display:flex;flex-wrap:wrap;gap:8px}
+.ordbank span{padding:.3rem .8rem;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700}
+.setning{font-size:1.15rem;line-height:2.4}
+
+.regn{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:20px;align-items:center}
+.linje{font:700 1.5rem/2.2 var(--mono)}
+.linje .luke{min-width:3em}
+
+.jn{width:100%;border-collapse:collapse;font-size:1.1rem}
+.jn td{border-bottom:1px solid var(--line);padding:10px 6px;vertical-align:middle}
+.jn td.ikon{width:3rem;font-size:1.8rem;text-align:center}
+.jn .valg{flex-wrap:nowrap;justify-content:flex-end}
+
+
+.del{display:flex;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:8px solid var(--orange);border-radius:18px;padding:14px 18px;margin-top:28px}
+.del h2{color:var(--orange);font-size:1.6rem}
+.steg{margin-top:.3rem} .steg span{display:inline-grid;place-items:center;width:1.4em;height:1.4em;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;font-size:.8em;margin-right:.3em}
+.del a{color:var(--blue);font-weight:700;overflow-wrap:anywhere}
+.qr{width:96px;height:96px;flex:none;image-rendering:pixelated;background:#fff;border-radius:6px}
+.merke{font:700 .75rem/1 var(--body);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:.35rem .7rem}
+.merke.sim{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.bilde{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.regning{font-size:1.15rem;line-height:2.2;text-align:center}
+.regning .luke{min-width:3.5em}
+.mikgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 18px}
+.mik .bilde{max-height:240px;object-fit:cover}
+.sum{width:100%;border-collapse:collapse}
+.sum td{padding:4px 0} .sum td:last-child{text-align:right;white-space:nowrap}
+.sum .luke{min-width:3.5em}
+.sum .tot td{border-top:2px solid var(--ink);padding-top:8px;font-weight:800}
+.tabell{width:100%;border-collapse:collapse}
+.tabell th,.tabell td{border:1px solid var(--line);padding:10px;text-align:left;height:2.6em}
+.tabell th{background:var(--bg)}
+@media (max-width:620px){.qr{display:none}}
+@media print{html{font-size:12px} .tools{display:none} body{background:#fff} .oppg{margin-top:8px;padding:10px;gap:8px;border-color:#999} .del{margin-top:10px;break-before:page} .del.forst{break-before:auto} .mik .bilde{max-height:150px} .bilde{max-height:170px;object-fit:contain}}
+.tilbake{display:inline-flex;flex-wrap:wrap;gap:.3rem .8rem;margin:0 0 .6rem;font-size:.95rem}
+.tilbake a{color:var(--blue);font-weight:700;text-decoration:none}
+.tilbake a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<style>
+.tegning{max-width:560px;margin:0 auto;width:100%}
+.tegning svg text{font-weight:700;fill:var(--ink)}
+.sporsmal{width:100%;border-collapse:collapse;font-size:1.1rem}
+.sporsmal td{border-bottom:1px solid var(--line);padding:10px 6px}
+.sporsmal td:last-child{text-align:right;width:9em}
+.sporsmal .luke{min-width:4em}
+.oppg .tabell.smal{max-width:420px}
+.mer{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.mer a{color:var(--blue);font-weight:700}
+@media print{.mer,.tilbake{display:none} .tegning{max-width:380px}}
+@media (max-width:620px){.jn td.ikon{display:none} .jn .valg{flex-wrap:wrap;gap:6px} .jn .valg>span{min-width:0;padding:.4rem .6rem;font-size:1rem} .sporsmal td:last-child{width:7em}}
+.kjede{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.kjede div{border:2px solid var(--line);border-radius:12px;padding:8px 10px;display:grid;gap:4px;justify-items:center;flex:1 1 120px}
+.kjede div b{display:inline-grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--orange);color:#fff}
+.kjede i{font-style:normal;font-weight:800;color:var(--muted)}
+.kjede .luke{min-width:6em}
+.tre>.kort{min-width:0} .tre .kort .valg{flex-wrap:wrap}
+.boble{background:var(--blue-soft);border-radius:14px;padding:10px 14px;font-style:italic}
+.to>div .valg{justify-content:center}
+.regn .sporsmal td:last-child{width:auto}
+.regn .sporsmal .valg{gap:6px;margin-top:6px;justify-content:flex-end}
+.regn .sporsmal .valg>span{min-width:0;padding:.35rem .6rem;font-size:1rem}
+.tre .kort span:not(.luke):not(.fasit):not(.sym){font-weight:700}
+details.laerer{font-size:.9rem;margin:0 0 .6rem;border:2px dashed var(--bad);border-radius:14px;padding:10px 14px}
+details.laerer summary{cursor:pointer;font-weight:700;color:var(--bad)}
+details.laerer p{margin:.5rem 0}
+.malnotat td,.malnotat th{height:auto;padding:4px 8px}
+@media (max-width:620px){.regn{grid-template-columns:1fr} .tre{grid-template-columns:1fr}}
+.hint{background:var(--bg);border-radius:12px;padding:8px 12px;color:var(--muted);font-size:.95rem}
+</style>
+<div class="wrap" id="oppgavetekst">
+
+<div class="top">
+  <div>
+    <p class="tilbake no-print"><a href="klar-for-bestatt.html">← Til hele arket</a></p>
+    <p class="tag">Oppgavebank · Produktivitet og kvalitetsstyring · Vg1</p>
+    <h1>Steg for steg: Klar for bestått?</h1>
+  </div>
+  <div class="tools">
+    <button type="button" id="copyBtn">Kopier til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+  </div>
+</div>
+<p class="navn">Navn: ______________________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
+
+<details class="laerer no-print"><summary>For læreren</summary>
+ <p>Kortversjon med hjelp: én eller to oppgaver per kompetansemål (mål 1: oppg. 1–2, mål 2: 3–4, mål 3: 5, mål 5: 6, mål 4: 7, mål 6: 8, mål 7: 9, mål 8: 10, mål 9: 11).</p>
+</details>
+
+<div class="oppg">
+ <h2><span class="nr">1</span>Hva betyr skiltet?</h2>
+ <p>Sett ring rundt riktig ord under hvert skilt.</p>
+ <div class="tre">
+  <div class="kort"><svg viewBox="0 0 120 120" role="img" aria-label="Blått rundt skilt med hvit figur som har vernebriller"><circle cx="60" cy="60" r="54" fill="#1c6fd1"/><circle cx="60" cy="46" r="20" fill="#fff"/><rect x="36" y="38" width="48" height="14" rx="7" fill="#fff" stroke="#1c6fd1" stroke-width="3"/><circle cx="49" cy="45" r="5" fill="#1c6fd1"/><circle cx="71" cy="45" r="5" fill="#1c6fd1"/><path d="M28 102 Q30 70 60 70 Q90 70 92 102 Z" fill="#fff"/></svg>
+   <div class="valg"><span>Påbud<span class="fasit" hidden>✓</span></span><span>Forbud</span><span>Fare</span></div></div>
+  <div class="kort"><svg viewBox="0 0 120 120" role="img" aria-label="Rundt skilt med rød ring og rød skråstrek over en hånd"><circle cx="60" cy="60" r="50" fill="#fff" stroke="#c92a2a" stroke-width="10"/><path d="M50 88 V48 a5 5 0 0 1 10 0 V40 a5 5 0 0 1 10 0 V48 a5 5 0 0 1 10 0 V74 Q80 92 64 92 Z" fill="#14181d"/><path d="M25 25 L95 95" stroke="#c92a2a" stroke-width="10"/></svg>
+   <div class="valg"><span>Påbud</span><span>Forbud<span class="fasit" hidden>✓</span></span><span>Fare</span></div></div>
+  <div class="kort"><svg viewBox="0 0 120 120" role="img" aria-label="Gul trekant med svart kant og et utropstegn"><path d="M60 10 L114 106 H6 Z" fill="#ffcf4a" stroke="#14181d" stroke-width="6" stroke-linejoin="round"/><rect x="55" y="42" width="10" height="38" rx="3" fill="#14181d"/><circle cx="60" cy="92" r="6" fill="#14181d"/></svg>
+   <div class="valg"><span>Påbud</span><span>Forbud</span><span>Fare<span class="fasit" hidden>✓</span></span></div></div>
+ </div>
+ <p class="hint">💡 Blå = du MÅ. Rød = du må IKKE. Gul = pass på.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">2</span>Du skal slipe med vinkelsliper</h2>
+ <p>Sett ring rundt <b>alt</b> du skal ha på deg.</p>
+ <div class="valg"><span>Vernebriller<span class="fasit" hidden>✓</span></span><span>Hørselvern<span class="fasit" hidden>✓</span></span><span>Hansker<span class="fasit" hidden>✓</span></span><span>Vernesko<span class="fasit" hidden>✓</span></span><span>Skjerf</span><span>Løst hår</span></div>
+ <p class="hint">💡 Gnister og støy: tenk på øyne, ører, hender og føtter.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">3</span>Noe er ødelagt. Hva skriver du?</h2>
+ <div class="ordbank"><span>avviksmelding</span><span>sjekkliste</span></div>
+ <p class="setning">Du finner en ødelagt kabel. Du skriver en <span class="luke"><span class="fasit" hidden>avviksmelding</span></span>.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">4</span>Hvor farlig?</h2>
+ <p>Spon i øyet uten briller: kan skje (sannsynlighet <b>2</b>), og det er alvorlig (konsekvens <b>3</b>).</p>
+ <p class="regning">Risiko = <span class="luke"><span class="fasit" hidden>6</span></span></p>
+ <p>6 eller mer er rødt: farlig. Hva gjør du? Sett ring.</p>
+ <div class="valg"><span>Bruker vernebriller<span class="fasit" hidden>✓</span></span><span>Jobber fortere</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">5</span>Hva bruker du?</h2>
+ <p>Sett ring rundt riktig verktøy.</p>
+ <table class="jn">
+  <tr><td class="ikon" aria-hidden="true">🔩</td><td>Stramme en bolt til 25 Nm</td><td><div class="valg"><span>Momentnøkkel<span class="fasit" hidden>✓</span></span><span>Multimeter</span><span>Mikrometer</span></div></td></tr>
+  <tr><td class="ikon" aria-hidden="true">⚡</td><td>Sjekke om en sikring er hel</td><td><div class="valg"><span>Momentnøkkel</span><span>Multimeter<span class="fasit" hidden>✓</span></span><span>Mikrometer</span></div></td></tr>
+  <tr><td class="ikon" aria-hidden="true">⚙️</td><td>Måle slitasje på en aksel, Ø25 ±0,02</td><td><div class="valg"><span>Momentnøkkel</span><span>Multimeter</span><span>Mikrometer<span class="fasit" hidden>✓</span></span></div></td></tr>
+ </table>
+ <p class="hint">💡 Nm = hvor hardt du strammer. Ω og sikring = strøm. Ø = diameter.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">6</span>Hvilken metode?</h2>
+ <div class="ordbank"><span>bore</span><span>kappe</span><span>file</span></div>
+ <table class="sporsmal">
+  <tr><td>🕳️ Lage et rundt hull</td><td><span class="luke"><span class="fasit" hidden>bore</span></span></td></tr>
+  <tr><td>✂️ Dele et flattstål i to</td><td><span class="luke"><span class="fasit" hidden>kappe</span></span></td></tr>
+  <tr><td>🔪 Fjerne skarpe kanter</td><td><span class="luke"><span class="fasit" hidden>file</span></span></td></tr>
+ </table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">7</span>Male et stålstativ</h2>
+ <p>Sett tallene 1–4 i riktig rekkefølge.</p>
+ <table class="tabell smal">
+  <tr><th>Nr.</th><th>Arbeid</th></tr>
+  <tr><td><span class="fasit" hidden>3</span></td><td>Grunning</td></tr>
+  <tr><td><span class="fasit" hidden>1</span></td><td>Fjerne rust (slipe eller blåse)</td></tr>
+  <tr><td><span class="fasit" hidden>4</span></td><td>Toppstrøk</td></tr>
+  <tr><td><span class="fasit" hidden>2</span></td><td>Vaske og avfette</td></tr>
+ </table>
+ <p class="hint">💡 Rent og rustfritt først. Maling til slutt.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">8</span>Hva koster jobben?</h2>
+ <p>Jobben tar <b>2 timer</b>. Timeprisen er <b>600 kr</b>. Materialene koster <b>300 kr</b>.</p>
+ <table class="sporsmal">
+  <tr><td>Arbeid (timer × timepris)</td><td><span class="luke"><span class="fasit" hidden>1200</span></span> kr</td></tr>
+  <tr><td>Materialer</td><td><span class="luke"><span class="fasit" hidden>300</span></span> kr</td></tr>
+  <tr><td><b>Totalt</b>: arbeid + materialer</td><td><span class="luke"><span class="fasit" hidden>1500</span></span> kr</td></tr>
+ </table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">9</span>Produktets vei</h2>
+ <div class="ordbank"><span>Gjenvinning</span><span>Innkjøp</span><span>Bruk</span><span>Produksjon</span><span>Lager</span><span>Salg og levering</span></div>
+ <div class="kjede">
+  <div><b>1</b><span class="luke"><span class="fasit" hidden>Innkjøp</span></span></div><i>→</i>
+  <div><b>2</b><span class="luke"><span class="fasit" hidden>Lager</span></span></div><i>→</i>
+  <div><b>3</b><span class="luke"><span class="fasit" hidden>Produksjon</span></span></div><i>→</i>
+  <div><b>4</b><span class="luke"><span class="fasit" hidden>Salg og levering</span></span></div><i>→</i>
+  <div><b>5</b><span class="luke"><span class="fasit" hidden>Bruk</span></span></div><i>→</i>
+  <div><b>6</b><span class="luke"><span class="fasit" hidden>Gjenvinning</span></span></div>
+ </div>
+ <p class="hint">💡 Først kjøper du inn. Til slutt blir produktet til nytt materiale.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">10</span>Hvem passer meldingen til?</h2>
+ <p>Du har funnet en sprekk i en aksel. Sett ring rundt hvem hver melding passer til.</p>
+ <div class="to">
+  <div><p class="boble">«Aksel pos. 3 har sprekk ved kilesporet, ca. 4 mm. Må byttes. Ny Ø40 h6 er bestilt.»</p>
+   <div class="valg"><span>Kunden</span><span>Kollega<span class="fasit" hidden>✓</span></span></div></div>
+  <div><p class="boble">«Vi fant en skade på en del i maskinen. Den må byttes for at maskinen skal være trygg. Vi er ferdige på fredag.»</p>
+   <div class="valg"><span>Kunden<span class="fasit" hidden>✓</span></span><span>Kollega</span></div></div>
+ </div>
+ <p class="hint">💡 Kunden kan ikke fagord. Kollegaen trenger mål og detaljer.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">11</span>Partene i arbeidslivet</h2>
+ <div class="ordbank"><span>Arbeidstakerne</span><span>Arbeidsgiverne</span><span>Staten</span></div>
+ <div class="tre">
+  <div class="kort"><span class="sym" aria-hidden="true">👷</span><span>LO, Fellesforbundet</span><span class="luke"><span class="fasit" hidden>Arbeidstakerne</span></span></div>
+  <div class="kort"><span class="sym" aria-hidden="true">🏭</span><span>NHO, Norsk Industri</span><span class="luke"><span class="fasit" hidden>Arbeidsgiverne</span></span></div>
+  <div class="kort"><span class="sym" aria-hidden="true">🏛️</span><span>Regjering og Storting</span><span class="luke"><span class="fasit" hidden>Staten</span></span></div>
+ </div>
+ <p>Samarbeidet mellom disse tre kalles <span class="luke"><span class="fasit" hidden>trepartssamarbeidet</span></span>.</p>
+ <p class="hint">💡 LO = fagforeninger for de ansatte. NHO = bedriftene.</p>
+</div>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fb = $("fasitBtn");
+fb.addEventListener("click", () => {
+  const på = fb.getAttribute("aria-pressed") !== "true";
+  fb.setAttribute("aria-pressed", på);
+  fb.textContent = på ? "Skjul fasit" : "Vis fasit";
+  document.querySelectorAll(".fasit").forEach(e => e.hidden = !på);
+});
+
+// Kopier til OneNote (samme som på Steg for steg-siden): figurer blir bilder, valg blir ◯ (✔ når fasit vises), kort blir tabeller.
+async function svgTilPng(svg, farge) {
+  const vb = svg.viewBox.baseVal, w = Math.round(vb.width * 1.4), h = Math.round(vb.height * 1.4);
+  const c = svg.cloneNode(true);
+  c.setAttribute("xmlns", "http://www.w3.org/2000/svg"); c.setAttribute("width", w); c.setAttribute("height", h);
+  [c, ...c.querySelectorAll("*")].forEach(e => [...e.attributes].forEach(a => {
+    if (a.value.includes("var(")) e.setAttribute(a.name, a.value.replace(/var\((--[\w-]+)\)/g, (_, v) => farge(v)));
+  }));
+  c.querySelectorAll(".flow").forEach(e => e.removeAttribute("class"));
+  const img = new Image();
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, w, h); cx.drawImage(img, 0, 0, w, h);
+  return [cv.toDataURL("image/png"), Math.min(w, 420)];
+}
+$("copyBtn").addEventListener("click", async () => {
+  const msg = $("copyMsg"), rot = document.documentElement, tema = rot.dataset.theme;
+  rot.dataset.theme = "light"; // OneNote har hvit bakgrunn
+  const stil = getComputedStyle(rot), farge = v => stil.getPropertyValue(v).trim() || "#000";
+  const vis = fb.getAttribute("aria-pressed") === "true";
+  const src = $("oppgavetekst"), kl = src.cloneNode(true);
+  kl.querySelectorAll(".top,.navn,.no-print").forEach(e => e.remove());
+  const svgs = [...src.querySelectorAll("svg")], ks = [...kl.querySelectorAll("svg")];
+  for (let i = 0; i < svgs.length; i++) {
+    if (svgs[i].closest(".top")) continue;
+    try { const [url, w] = await svgTilPng(svgs[i], farge); const im = document.createElement("img"); im.src = url; im.width = svgs[i].closest(".kort,.to,.regn") ? Math.min(w, 200) : w; ks[i].replaceWith(im); }
+    catch (e) { ks[i].remove(); }
+  }
+  if (tema) rot.dataset.theme = tema; else delete rot.dataset.theme;
+  kl.querySelectorAll("img").forEach(i => { i.src = i.src; i.removeAttribute("loading"); i.removeAttribute("decoding");
+    if (i.width > 560) { i.height = Math.round(i.height * 560 / i.width); i.width = 560; } });
+  kl.querySelectorAll(".nr").forEach(n => n.textContent = n.textContent + ". ");
+  kl.querySelectorAll(".valg").forEach(v => {
+    const p = document.createElement("p");
+    p.textContent = [...v.children].map(s => {
+      const f = s.querySelector(".fasit"), riktig = f && vis; if (f) f.remove();
+      return (riktig ? "✔ " : "◯ ") + s.textContent.trim();
+    }).join("\u00a0\u00a0\u00a0\u00a0 ");
+    v.replaceWith(p);
+  });
+  kl.querySelectorAll(".fasit").forEach(f => { if (!vis) f.remove(); else f.style.color = "#2b8a3e"; });
+  kl.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "________"; });
+  kl.querySelectorAll(".svar").forEach(s => { const p = document.createElement("p"); p.textContent = s.textContent.trim() || "______________________________"; s.replaceWith(p); });
+  kl.querySelectorAll(".ordbank").forEach(o => { const p = document.createElement("p"); p.innerHTML = "<b>Ord:</b> " + [...o.children].map(s => s.textContent).join(" · "); o.replaceWith(p); });
+  kl.querySelectorAll(".tre,.bilder,.to").forEach(g => {
+    const t = document.createElement("table"), tr = t.insertRow();
+    [...g.children].forEach(k => { const td = tr.insertCell(); td.innerHTML = k.innerHTML; td.style.cssText = "border:1px solid #999;padding:6px;vertical-align:top;text-align:center"; });
+    g.replaceWith(t);
+  });
+  kl.querySelectorAll("table").forEach(t => { t.setAttribute("border", "1"); t.style.borderCollapse = "collapse"; t.querySelectorAll("td").forEach(c => { c.style.border = "1px solid #999"; c.style.padding = "4px 8px"; }); });
+  kl.querySelectorAll("[class]").forEach(e => e.removeAttribute("class"));
+  // Lenke til elevversjonen av denne siden (også når den kopieres fra lærersiden).
+  const lenke = location.origin + location.pathname.replace(/^\/laerer-[^/]+\//, "/").replace(/\.html$/, "");
+  const html = "<h2>" + document.querySelector("h1").textContent + "</h2><p>Navn: ______________________</p>" + kl.innerHTML +
+    '<p>Oppgavene på nett: <a href="' + lenke + '">' + lenke + "</a></p>", text = kl.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({ "text/html": new Blob([html], { type: "text/html" }), "text/plain": new Blob([text], { type: "text/plain" }) })]);
+    msg.textContent = "Kopiert! Lim inn i OneNote med Ctrl+V";
+  } catch (err) {
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.cssText = "position:fixed;left:-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    msg.textContent = ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere. Merk teksten og bruk Ctrl+C.";
+  }
+});
+
+</script>
+<script>
+/* Kom eleven fra en leksjon? Da viser første lenke «Tilbake til leksjonen». */
+(function(){try{var r=document.referrer,u=new URL(r);if(u.origin===location.origin&&/\/leksjon-[^/]*\.html$/.test(u.pathname)){var a=document.querySelector(".tilbake a");a.href=r;a.textContent="← Tilbake til leksjonen";var b=a.parentNode.querySelectorAll("a");for(var k=1;k<b.length;k++)b[k].remove();}}catch(e){}})();
+</script>
+</body>
+</html>
