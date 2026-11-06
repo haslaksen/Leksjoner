@@ -63,12 +63,18 @@ function elevversjon(s) {
   s = fjernElement(s, "span", "fasit");
   s = fjernElement(s, "details", "laerer"); // Lærernotater
   s = fjernElement(s, "div", "laerer"); // Kompetansemål-merker på forsiden
+  // Henvisninger til Verkstedhåndboka: kapittel, tabell og lenke til riktig sted vises bare på lærersiden.
+  // Eleven får «Slå opp i Verkstedhåndboka» med lenke til forsiden og finner stedet selv.
+  s = fjernElement(s, "span", "hb-detalj");
+  s = s.replace(/https:\/\/verkstedhandboka\.vercel\.app\/?#[\w-]+/g, "https://verkstedhandboka.vercel.app/");
   // Linjer i skriptene som tegner fasit i SVG-figurer.
   s = s.split("\n").filter(l => !l.includes('class="fasit-svg"')).join("\n");
   s = fjernAns(s);
   // Fasitknappen skjules (den finnes fortsatt så skriptene virker).
   s = s.replace(/<button\b([^>]*id="(?:fasitBtn|btnFasit)"[^>]*)>/g, '<button$1 hidden style="display:none">');
   if (/class="(fasit|fasit-svg|laerer)[" ]|ans:\s*[\[t]/.test(s)) throw new Error("Fasit ble ikke fjernet helt");
+  const hb = s.replace(/<script[\s\S]*?<\/script>/g, "").replace(/<[^>]+>/g, "").match(/(?:Verksted)?[Hh]åndboka[\s,:]*(?:emne\s*)?\d[^\n]{0,40}/);
+  if (hb) throw new Error("Henvisning til Verkstedhåndboka på elevsiden (skal bare stå på lærersiden): " + hb[0]);
   return s;
 }
 
