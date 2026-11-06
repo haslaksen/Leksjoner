@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oppgavebank · Repetisjon før prøven: Produksjon og tjenester</title>
+<style>
+/* Oppgavebank: repetisjon før prøven. Bygget på lærerens egne prøver. Fasit bare på lærersiden. */
+/* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
+  --orange:#e8590c; --blue:#1c6fd1; --blue-soft:#e4eefc;
+  --u:#2257c4; --i:#b85a14; --r:#23804f; --bad:#c92a2a;
+  --u-soft:#e3ebfa; --i-soft:#f8e9dc; --r-soft:#dff1e6; --bad-soft:#fdeaea;
+  --wire:#3d4752; --glow:#ffcf4a;
+  --body:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12161b; --surface:#1b2128; --ink:#eef1f5; --muted:#a3adb9; --line:#2f3843;
+  --orange:#ff8a3d; --blue:#5aa2f5; --blue-soft:#1b2c42;
+  --u:#76a2ff; --i:#f0954f; --r:#5cc68e; --bad:#ff6b6b;
+  --u-soft:#1c2740; --i-soft:#33241a; --r-soft:#173326; --bad-soft:#3a1c1c;
+  --wire:#b9c3cf; --glow:#ffd75e; color-scheme:dark}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+html{font-size:clamp(18px,0.6vw + 13px,24px)}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.5 var(--body);margin:0}
+.wrap{max-width:900px;margin:0 auto;padding:0 16px 64px}
+h1{font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.15;margin:0}
+h2{font-size:1.3rem;margin:0;display:flex;align-items:center;gap:.6rem}
+p{margin:0}
+.u{color:var(--u)} .i{color:var(--i)} .r{color:var(--r)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;padding:1.2rem 0}
+.tag{font:700 .8rem/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--orange)}
+button{font:700 .9rem/1 var(--body);border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 16px;cursor:pointer}
+button:hover{border-color:var(--ink)}
+button:focus-visible{outline:3px solid var(--u);outline-offset:2px}
+.tools{display:flex;gap:.5rem;flex-wrap:wrap}
+.navn{margin:.4rem 0 1.2rem}
+
+.oppg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(16px,3vw,28px);display:grid;gap:16px;margin-top:18px;break-inside:avoid}
+.nr{display:inline-grid;place-items:center;width:2.1rem;height:2.1rem;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;flex:none}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--body)}
+
+.tre{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kort{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;align-content:start;text-align:center}
+.kort svg{max-height:110px}
+.kort .valg{justify-content:center;flex-wrap:nowrap;gap:8px}
+.kort .valg>span{min-width:0;padding:.5rem .8rem}
+
+/* valg: sett ring rundt */
+.valg{display:flex;flex-wrap:wrap;gap:12px}
+.valg>span{position:relative;display:inline-grid;place-items:center;min-width:4.2rem;padding:.55rem 1rem;border:2px solid var(--line);border-radius:12px;font-weight:700;font-size:1.15rem}
+.valg>span:has(.fasit:not([hidden])){border-color:var(--r);background:var(--r-soft);box-shadow:0 0 0 4px var(--r)}
+.valg .fasit{position:absolute;top:-.8rem;right:-.6rem;background:var(--r);color:#fff;border-radius:50%;width:1.5rem;height:1.5rem;display:grid;place-items:center;font-size:.9rem}
+
+.to{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.to>div{border:2px solid var(--line);border-radius:14px;padding:12px;display:grid;gap:8px;justify-items:center}
+.to svg{max-height:160px}
+.bokstav{font:800 1.6rem/1 var(--body)}
+
+/* luker og svarruter */
+.luke{display:inline-block;min-width:5.5em;border-bottom:2px solid var(--ink);text-align:center;padding:0 .3em;margin:0 .2em}
+.fasit{color:var(--r);font-weight:700}
+.ordbank{display:flex;flex-wrap:wrap;gap:8px}
+.ordbank span{padding:.3rem .8rem;border-radius:99px;background:var(--blue-soft);color:var(--blue);font-weight:700}
+.setning{font-size:1.15rem;line-height:2.4}
+
+.regn{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:20px;align-items:center}
+.linje{font:700 1.5rem/2.2 var(--mono)}
+.linje .luke{min-width:3em}
+
+.jn{width:100%;border-collapse:collapse;font-size:1.1rem}
+.jn td{border-bottom:1px solid var(--line);padding:10px 6px;vertical-align:middle}
+.jn td.ikon{width:3rem;font-size:1.8rem;text-align:center}
+.jn .valg{flex-wrap:nowrap;justify-content:flex-end}
+
+
+.del{display:flex;gap:16px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:8px solid var(--orange);border-radius:18px;padding:14px 18px;margin-top:28px}
+.del h2{color:var(--orange);font-size:1.6rem}
+.steg{margin-top:.3rem} .steg span{display:inline-grid;place-items:center;width:1.4em;height:1.4em;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;font-size:.8em;margin-right:.3em}
+.del a{color:var(--blue);font-weight:700;overflow-wrap:anywhere}
+.qr{width:96px;height:96px;flex:none;image-rendering:pixelated;background:#fff;border-radius:6px}
+.merke{font:700 .75rem/1 var(--body);background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:.35rem .7rem}
+.merke.sim{background:var(--blue-soft);color:var(--blue);border-color:transparent}
+.bilde{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--line)}
+.regning{font-size:1.15rem;line-height:2.2;text-align:center}
+.regning .luke{min-width:3.5em}
+.mikgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:0 18px}
+.mik .bilde{max-height:240px;object-fit:cover}
+.sum{width:100%;border-collapse:collapse}
+.sum td{padding:4px 0} .sum td:last-child{text-align:right;white-space:nowrap}
+.sum .luke{min-width:3.5em}
+.sum .tot td{border-top:2px solid var(--ink);padding-top:8px;font-weight:800}
+.tabell{width:100%;border-collapse:collapse}
+.tabell th,.tabell td{border:1px solid var(--line);padding:10px;text-align:left;height:2.6em}
+.tabell th{background:var(--bg)}
+@media (max-width:620px){.qr{display:none}}
+@media print{html{font-size:12px} .tools{display:none} body{background:#fff} .oppg{margin-top:8px;padding:10px;gap:8px;border-color:#999} .del{margin-top:10px;break-before:page} .del.forst{break-before:auto} .mik .bilde{max-height:150px} .bilde{max-height:170px;object-fit:contain}}
+.tilbake{display:inline-flex;flex-wrap:wrap;gap:.3rem .8rem;margin:0 0 .6rem;font-size:.95rem}
+.tilbake a{color:var(--blue);font-weight:700;text-decoration:none}
+.tilbake a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<style>
+.tegning{max-width:560px;margin:0 auto;width:100%}
+.tegning svg text{font-weight:700;fill:var(--ink)}
+.sporsmal{width:100%;border-collapse:collapse;font-size:1.1rem}
+.sporsmal td{border-bottom:1px solid var(--line);padding:10px 6px}
+.sporsmal td:last-child{text-align:right;width:9em}
+.sporsmal .luke{min-width:4em}
+.oppg .tabell.smal{max-width:420px}
+.mer{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.mer a{color:var(--blue);font-weight:700}
+@media print{.mer,.tilbake{display:none} .tegning{max-width:380px}}
+@media (max-width:620px){.jn td.ikon{display:none} .jn .valg{flex-wrap:wrap;gap:6px} .jn .valg>span{min-width:0;padding:.4rem .6rem;font-size:1rem} .sporsmal td:last-child{width:7em}}
+.kjede{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.kjede div{border:2px solid var(--line);border-radius:12px;padding:8px 10px;display:grid;gap:4px;justify-items:center;flex:1 1 120px}
+.kjede div b{display:inline-grid;place-items:center;width:1.6rem;height:1.6rem;border-radius:50%;background:var(--orange);color:#fff}
+.kjede i{font-style:normal;font-weight:800;color:var(--muted)}
+.kjede .luke{min-width:6em}
+.tre>.kort{min-width:0} .tre .kort .valg{flex-wrap:wrap} .to>div{min-width:0} .to .valg{flex-wrap:wrap;gap:6px}
+.boble{background:var(--blue-soft);border-radius:14px;padding:10px 14px;font-style:italic}
+.to>div .valg{justify-content:center}
+.regn .sporsmal td:last-child{width:auto}
+.regn .sporsmal .valg{gap:6px;margin-top:6px;justify-content:flex-end}
+.regn .sporsmal .valg>span{min-width:0;padding:.35rem .6rem;font-size:1rem}
+.tre .kort span:not(.luke):not(.fasit):not(.sym){font-weight:700}
+details.laerer{font-size:.9rem;margin:0 0 .6rem;border:2px dashed var(--bad);border-radius:14px;padding:10px 14px}
+details.laerer summary{cursor:pointer;font-weight:700;color:var(--bad)}
+details.laerer p{margin:.5rem 0}
+.malnotat td,.malnotat th{height:auto;padding:4px 8px}
+@media (max-width:620px){.regn{grid-template-columns:1fr} .tre{grid-template-columns:1fr} .tabell th,.tabell td{padding:6px 4px;font-size:.85rem}}
+</style>
+<div class="wrap" id="oppgavetekst">
+
+<div class="top">
+  <div>
+    <p class="tilbake no-print">Repeter: <a href="../../vg1/verktoy/leksjon-1-handverktoy-og-maskiner.html">Verktøy 1</a><a href="../../vg1/verktoy/leksjon-2-mal-og-les-av-tegningen.html">Verktøy 2</a><a href="../../vg1/maskinelementer/leksjon-1-demonter-og-monter.html">Maskinelementer</a><a href="../../vg1/sammenfoying/leksjon-1-skru-lim-og-sveis.html">Sammenføying</a><a href="../../vg1/materialer/leksjon-1-materialer-og-miljo.html">Materialer og miljø</a></p>
+    <p class="tag">Oppgavebank · Produksjon og tjenester · Vg1</p>
+    <h1>Repetisjon før prøven</h1>
+  </div>
+  <div class="tools">
+    <button type="button" id="copyBtn">Kopier til OneNote</button>
+    <button type="button" id="fasitBtn" aria-pressed="false">Vis fasit</button>
+  </div>
+</div>
+<p class="navn">Navn: ______________________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
+
+<details class="laerer no-print"><summary>For læreren: hva arket dekker</summary>
+ <p>Bygget på tre prøver: «Prøve desember» (spørsmål 20–33), «Oppgaver skjæredata» og «Avsluttende teoriprøve programfag». Spørsmål som ble like, er slått sammen. Bilder fra nettet er byttet med egne tegninger; skyvelære- og mikrometerbildet er fra «Prøve desember».</p>
+ <table class="tabell malnotat">
+  <tr><th>Mål (Produksjon og tjenester)</th><th>Oppgave</th></tr>
+  <tr><td>3 Verktøy, måleverktøy, maskiner, lese tegning</td><td>3, 4, 12, 13, 16, 19–24, 30</td></tr>
+  <tr><td>5 Demontere og montere maskinelementer</td><td>1, 2, 5, 6, 7, 8</td></tr>
+  <tr><td>6 Beskrive arbeid ut fra tegning og prosedyre</td><td>3, 19</td></tr>
+  <tr><td>7 Materialegenskaper</td><td>25, 26, 27, 28</td></tr>
+  <tr><td>9 Termisk, kjemisk og mekanisk sammenføying</td><td>7, 9, 10, 11</td></tr>
+  <tr><td>11 Digitale hjelpemidler og tabeller</td><td>2, 4, 5, 6, 14, 15, 18, 19</td></tr>
+  <tr><td>Utenfor PT-målene (står i prøven)</td><td>29 (hører til Konstruksjon, styring og tilvirkning)</td></tr>
+ </table>
+ <p>Fasit for turtall bruker midten av v<sub>c</sub>-området (S355 HM 230, rustfritt HM 160, messing HSS-bor 60 m/min). Godta svar som passer med v<sub>c</sub> eleven har valgt. Verkstedhåndboka har ikke v<sub>c</sub> for dreiing med HSS, så de spørsmålene er byttet med hardmetall og HSS-bor. j6 finnes ikke i håndboka, derfor js6.</p>
+ <p>Sjekk avlesningen av bildene: skyvelæret er lest til 110,00 mm og mikrometeret til 40,81 mm.</p>
+</details>
+
+<div class="del forst">
+  <div>
+    <h2>Gjenger og maskinelementer</h2>
+    <div class="steg"><p><span>1</span> Slå opp i Verkstedhåndboka.</p><p><span>2</span> Skriv mål i mm.</p></div>
+  </div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">1</span>Les gjengen</h2>
+ <table class="sporsmal"><tr><td><b>M24</b>: M betyr</td><td><span class="luke"><span class="fasit" hidden>metrisk ISO-gjenge</span></span></td></tr><tr><td><b>M24</b>: 24 betyr</td><td><span class="luke"><span class="fasit" hidden>ytre diameter 24 mm</span></span></td></tr><tr><td><b>UNF 1/2-20</b>: UNF betyr</td><td><span class="luke"><span class="fasit" hidden>Unified fin (tommegjenge)</span></span></td></tr><tr><td><b>UNF 1/2-20</b>: 1/2 betyr</td><td><span class="luke"><span class="fasit" hidden>diameter ½ tomme</span></span></td></tr><tr><td><b>UNF 1/2-20</b>: 20 betyr</td><td><span class="luke"><span class="fasit" hidden>20 gjenger per tomme</span></span></td></tr></table><p>Hvilke gjenger brukes mest?</p><div class="valg"><span>Høyregjenger<span class="fasit" hidden>✓</span></span><span>Venstregjenger</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">2</span>Tre M16-gjenger</h2>
+ <p>Slå opp i <a href="https://verkstedhandboka.vercel.app/#g6-metrisk" target="_blank" rel="noopener">Verkstedhåndboka 6.1</a>.</p><table class="sporsmal"><tr><td>Stigning M16</td><td><span class="luke"><span class="fasit" hidden>2</span></span> mm</td></tr><tr><td>Stigning M16×1,5</td><td><span class="luke"><span class="fasit" hidden>1,5</span></span> mm</td></tr><tr><td>Stigning M16×1</td><td><span class="luke"><span class="fasit" hidden>1</span></span> mm</td></tr></table><p>Hvilken er grovgjenge?</p><div class="valg"><span>M16<span class="fasit" hidden>✓</span></span><span>M16×1,5</span><span>M16×1</span></div><p>Bor for M16 (<a href="https://verkstedhandboka.vercel.app/#m3-hull" target="_blank" rel="noopener">Verkstedhåndboka 3.9</a>):</p><table class="sporsmal"><tr><td>Kjernehullbor</td><td>Ø <span class="luke"><span class="fasit" hidden>14</span></span></td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">3</span>Gjeng et hull M10</h2>
+ <p>Sett tallene 1–5 i riktig rekkefølge. Slå opp boret i <a href="https://verkstedhandboka.vercel.app/#m3-hull" target="_blank" rel="noopener">Verkstedhåndboka 3.9</a>.</p><table class="tabell smal"><tr><th>Nr.</th><th>Arbeid</th></tr><tr><td><span class="fasit" hidden>3</span></td><td>Senk hullet (lag fas)</td></tr><tr><td><span class="fasit" hidden>1</span></td><td>Merk opp og kjørn</td></tr><tr><td><span class="fasit" hidden>4</span></td><td>Gjeng med tapp 1, 2 og 3 i vindeisen, med skjærevæske</td></tr><tr><td><span class="fasit" hidden>2</span></td><td>Bor kjernehullet, Ø <span class="luke"><span class="fasit" hidden>8,5</span></span></td></tr><tr><td><span class="fasit" hidden>5</span></td><td>Rengjør og prøv med en skrue</td></tr></table><p>Hva heter håndtaket du holder gjengetappen i?</p><div class="svar"><span class="fasit" hidden>Vindeisen (gjengetappholder)</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">4</span>Tiltrekkingsmoment</h2>
+ <p>En skrue <b>M20</b>, fasthetsklasse <b>8.8</b>, friksjon µ = 0,12. Slå opp i <a href="https://verkstedhandboka.vercel.app/#e5-moment" target="_blank" rel="noopener">Verkstedhåndboka 5.2</a>.</p><table class="sporsmal"><tr><td>Moment</td><td><span class="luke"><span class="fasit" hidden>416</span></span> Nm</td></tr></table><p>Hva bruker du en momentnøkkel til?</p><div class="svar"><span class="fasit" hidden>Til å trekke til skruer og muttere med riktig moment (Nm), ikke for løst og ikke så hardt at skruen ryker.</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">5</span>Spor for sikringsring</h2>
+ <p>Akselen er Ø50. Slå opp sporet i <a href="https://verkstedhandboka.vercel.app/#e5-sikring" target="_blank" rel="noopener">Verkstedhåndboka 5.7</a> (DIN 471).</p><div class="tegning"><svg viewBox="0 0 460 230" role="img" aria-label="Aksel Ø50 sett fra siden med et spor for sikringsring. Spordiameteren er merket d2 og sporbredden m."><path d="M40 60 H280 V72 H298 V60 H420 V180 H298 V168 H280 V180 H40 Z" fill="#d7dce1" stroke="var(--ink)" stroke-width="2.5"/><path d="M24 120 H436" stroke="var(--ink)" stroke-width="1" stroke-dasharray="14 4 3 4"/><g stroke="var(--ink)" stroke-width="1.5" fill="none"><path d="M90 60 V180"/><path d="M85 68 L90 60 L95 68 M85 172 L90 180 L95 172"/><path d="M289 72 V168"/><path d="M284 80 L289 72 L294 80 M284 160 L289 168 L294 160"/><path d="M280 58 V26 M298 58 V26 M256 34 H322"/><path d="M272 30 L280 34 L272 38 M306 30 L298 34 L306 38"/></g><g font-size="20" font-weight="700" fill="var(--ink)"><text x="98" y="114">Ø50</text><text x="302" y="128">d₂</text><text x="282" y="20">m</text></g><text x="230" y="214" text-anchor="middle" font-size="13" fill="var(--muted)">Sporet er tegnet større enn i virkeligheten.</text></svg></div><table class="sporsmal"><tr><td>Spordiameter d₂</td><td><span class="luke"><span class="fasit" hidden>47</span></span> mm</td></tr><tr><td>Sporbredde m</td><td><span class="luke"><span class="fasit" hidden>2,15</span></span> mm</td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">6</span>Kilespor</h2>
+ <p>Akselen er Ø60. Slå opp kilesporet i <a href="https://verkstedhandboka.vercel.app/#e5-kiler" target="_blank" rel="noopener">Verkstedhåndboka 5.5</a> (passfeder).</p><div class="tegning" style="max-width:300px"><svg viewBox="0 0 320 280" role="img" aria-label="Snitt gjennom aksel Ø60 med kilespor øverst. Sporbredden er merket b og spordybden t1."><defs><pattern id="skr" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><path d="M0 0 V10" stroke="var(--ink)" stroke-width="1.2"/></pattern></defs><path d="M130 54.6 V73 H190 V54.6 A100 100 0 1 1 130 54.6 Z" fill="url(#skr)" stroke="var(--ink)" stroke-width="2.5"/><g stroke="var(--ink)" stroke-width="1.5" fill="none"><path d="M130 50 V22 M190 50 V22 M114 30 H206"/><path d="M122 26 L130 30 L122 34 M198 26 L190 30 L198 34"/><path d="M194 50 H252 M194 73 H252 M244 30 V93"/><path d="M240 42 L244 50 L248 42 M240 81 L244 73 L248 81"/><path d="M60 150 H260" stroke-dasharray="12 4 3 4"/></g><g font-size="20" font-weight="700" fill="var(--ink)"><text x="152" y="20">b</text><text x="254" y="68">t₁</text><text x="124" y="186" fill="var(--ink)" stroke="var(--surface,#fff)" stroke-width="6" paint-order="stroke">Ø60</text></g></svg></div><table class="sporsmal"><tr><td>Sporbredde b</td><td><span class="luke"><span class="fasit" hidden>18</span></span> mm</td></tr><tr><td>Spordybde i akselen t₁</td><td><span class="luke"><span class="fasit" hidden>7</span></span> mm</td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">7</span>Løsbar eller ikke? Kryss av.</h2>
+ <table class="tabell"><tr><th></th><th>🔩 Løsbar</th><th>🔥 Ikke løsbar</th></tr><tr><td>Skrue og mutter</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>Sveis</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Nagle</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Sikringsring</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>Lim</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Kile</td><td><span class="fasit" hidden>✗</span></td><td></td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">8</span>Lager og belastning</h2>
+ <div class="ordbank"><span>på tvers av</span><span>langs</span></div><p class="setning">Radiallager tar krefter <span class="luke"><span class="fasit" hidden>på tvers av</span></span> akselen.<br>Aksiallager tar krefter <span class="luke"><span class="fasit" hidden>langs</span></span> akselen.</p><p>Glidelager: hva gir lang levetid? Sett ring rundt <b>alle</b> som stemmer.</p><div class="valg"><span>Riktig smøring<span class="fasit" hidden>✓</span></span><span>Holde skitt ute<span class="fasit" hidden>✓</span></span><span>Sjekke slark<span class="fasit" hidden>✓</span></span><span>Kjøre uten olje</span><span>Riktig last<span class="fasit" hidden>✓</span></span></div><table class="tabell"><tr><th></th><th>Statisk</th><th>Dynamisk</th></tr><tr><td>En hylle som bærer en kasse</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>En aksel som roterer med vekslende last</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>En bro med tog som kjører over</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>En skrue som holder en plate i ro</td><td><span class="fasit" hidden>✗</span></td><td></td></tr></table>
+</div>
+<div class="del">
+  <div>
+    <h2>Sveising og skjæring</h2>
+    <div class="steg"><p><span>1</span> Gassen eller dekket beskytter smelta mot lufta.</p><p><span>2</span> Riktig metode til riktig jobb.</p></div>
+  </div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">9</span>Elektrode og dekkgass</h2>
+ <p>Hva gjør dekket på elektroden? Sett ring rundt <b>alle</b> som stemmer.</p><div class="valg"><span>Lager gass som beskytter smelta<span class="fasit" hidden>✓</span></span><span>Lager slagg over sømmen<span class="fasit" hidden>✓</span></span><span>Gjør lysbuen stabil<span class="fasit" hidden>✓</span></span><span>Kjøler elektroden</span></div><table class="sporsmal"><tr><td>Dekkgassveising med <b>inert</b> gass (argon)</td><td><span class="luke"><span class="fasit" hidden>MIG</span></span></td></tr><tr><td>Dekkgassveising med <b>aktiv</b> gass (CO₂-blanding)</td><td><span class="luke"><span class="fasit" hidden>MAG</span></span></td></tr></table><p>Fordeler med elektrodesveising? Sett ring.</p><div class="valg"><span>Tåler vind, kan brukes ute<span class="fasit" hidden>✓</span></span><span>Enkelt og lett utstyr<span class="fasit" hidden>✓</span></span><span>Raskest av alle</span><span>Ingen gassflaske<span class="fasit" hidden>✓</span></span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">10</span>Sveisefeil</h2>
+ <p>Nevn tre sveisefeil.</p><table class="sporsmal"><tr><td>1</td><td><span class="luke"><span class="fasit" hidden>porer</span></span></td></tr><tr><td>2</td><td><span class="luke"><span class="fasit" hidden>sprekker</span></span></td></tr><tr><td>3</td><td><span class="luke"><span class="fasit" hidden>bindingsfeil / slagg / sidekutt</span></span></td></tr></table><p>Sømmen har mange små hull (porer). Hva kan årsaken være?</p><div class="svar"><span class="fasit" hidden>For lite dekkgass eller trekk, skitt, rust, fett eller fukt på stålet.</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">11</span>Plasmaskjæring</h2>
+ <p>Plasmaskjæreren kan skjære i … Sett ring rundt <b>alle</b> som stemmer.</p><div class="valg"><span>Stål<span class="fasit" hidden>✓</span></span><span>Rustfritt stål<span class="fasit" hidden>✓</span></span><span>Aluminium<span class="fasit" hidden>✓</span></span><span>Kobber<span class="fasit" hidden>✓</span></span><span>Tre</span></div>
+</div>
+<div class="del">
+  <div>
+    <h2>Boring og dreiing</h2>
+    <div class="steg"><p><span>1</span> Slå opp v<sub>c</sub>, bruk midten av området.</p><p><span>2</span> Regn n = v<sub>c</sub> · 1000 / (π · D).</p></div>
+  </div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">12</span>Dreiebenken</h2>
+ <div class="tegning"><svg data-bilde="dreiebenk" data-alt="Dreiebenk" viewBox="0 0 600 300" role="img" aria-label="Dreiebenk sett forfra med seks deler merket 1 til 6: 1 spindeldokken til venstre, 2 chucken, 3 sleiden med stålholderen, 4 bakdokken til høyre, 5 vangen, 6 ledeskruen og matestangen foran vangen"><rect x="70" y="176" width="110" height="100" fill="#6f8f7a" stroke="#2b3138" stroke-width="2"/><rect x="420" y="176" width="110" height="100" fill="#6f8f7a" stroke="#2b3138" stroke-width="2"/><rect x="60" y="168" width="480" height="14" fill="#5c7866" stroke="#2b3138" stroke-width="2"/><path d="M180 172 H540" stroke="#2b3138" stroke-width="3"/><path d="M180 178 H540" stroke="#d7dce1" stroke-width="2"/><rect x="60" y="138" width="480" height="30" fill="#8aa695" stroke="#2b3138" stroke-width="2"/><path d="M60 146 H540" stroke="#2b3138" stroke-width="1"/><rect x="60" y="54" width="120" height="84" rx="4" fill="#7a9a86" stroke="#2b3138" stroke-width="2"/><circle cx="92" cy="80" r="7" fill="#ddd" stroke="#2b3138" stroke-width="2"/><path d="M92 80 l10 -14" stroke="#2b3138" stroke-width="2"/><circle cx="130" cy="110" r="6" fill="#ddd" stroke="#2b3138" stroke-width="2"/><path d="M130 110 l12 -10" stroke="#2b3138" stroke-width="2"/><rect x="180" y="62" width="26" height="72" rx="4" fill="#b9c1c9" stroke="#2b3138" stroke-width="2"/><rect x="206" y="78" width="12" height="10" fill="#8d959d" stroke="#2b3138" stroke-width="2"/><rect x="206" y="108" width="12" height="10" fill="#8d959d" stroke="#2b3138" stroke-width="2"/><rect x="206" y="88" width="190" height="20" fill="#d7dce1" stroke="#2b3138" stroke-width="2"/><path d="M200 98 H420" stroke="#2b3138" stroke-width="1" stroke-dasharray="10 4 2 4"/><path d="M396 98 L410 91 V105 Z" fill="#8d959d" stroke="#2b3138" stroke-width="2"/><rect x="410" y="90" width="40" height="16" fill="#b9c1c9" stroke="#2b3138" stroke-width="2"/><path d="M450 70 H520 V138 H440 V100 Z" fill="#7a9a86" stroke="#2b3138" stroke-width="2"/><circle cx="530" cy="98" r="8" fill="#ddd" stroke="#2b3138" stroke-width="2"/><path d="M520 98 H530" stroke="#2b3138" stroke-width="2"/><rect x="260" y="126" width="100" height="12" fill="#7a9a86" stroke="#2b3138" stroke-width="2"/><rect x="275" y="114" width="70" height="12" fill="#8aa695" stroke="#2b3138" stroke-width="2"/><rect x="296" y="104" width="28" height="12" fill="#5d666f" stroke="#2b3138" stroke-width="2"/><path d="M310 104 L312 108" stroke="#2b3138"/><rect x="268" y="168" width="84" height="56" rx="3" fill="#7a9a86" stroke="#2b3138" stroke-width="2"/><circle cx="292" cy="196" r="13" fill="#ddd" stroke="#2b3138" stroke-width="2"/><circle cx="292" cy="196" r="3" fill="#2b3138"/><path d="M330 186 v18" stroke="#2b3138" stroke-width="4" stroke-linecap="round"/><path d="M100 28 L110 56" stroke="var(--orange)" stroke-width="2.5"/><circle cx="100" cy="28" r="13" fill="var(--orange)"/><text x="100" y="33" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">1</text><path d="M192 28 L192 62" stroke="var(--orange)" stroke-width="2.5"/><circle cx="192" cy="28" r="13" fill="var(--orange)"/><text x="192" y="33" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">2</text><path d="M310 50 L310 104" stroke="var(--orange)" stroke-width="2.5"/><circle cx="310" cy="50" r="13" fill="var(--orange)"/><text x="310" y="55" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">3</text><path d="M490 40 L480 72" stroke="var(--orange)" stroke-width="2.5"/><circle cx="490" cy="40" r="13" fill="var(--orange)"/><text x="490" y="45" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">4</text><path d="M572 150 L540 152" stroke="var(--orange)" stroke-width="2.5"/><circle cx="572" cy="150" r="13" fill="var(--orange)"/><text x="572" y="155" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">5</text><path d="M216 226 L216 174" stroke="var(--orange)" stroke-width="2.5"/><circle cx="216" cy="226" r="13" fill="var(--orange)"/><text x="216" y="231" text-anchor="middle" font-size="15" font-weight="800" fill="#fff">6</text></svg></div><div class="ordbank"><span>vange</span><span>bakdokke</span><span>chuck</span><span>spindeldokke</span><span>sleide med stålholder</span><span>ledeskrue og matestang</span></div><table class="sporsmal"><tr><td>1</td><td><span class="luke"><span class="fasit" hidden>spindeldokke</span></span></td></tr><tr><td>2</td><td><span class="luke"><span class="fasit" hidden>chuck</span></span></td></tr><tr><td>3</td><td><span class="luke"><span class="fasit" hidden>sleide med stålholder</span></span></td></tr><tr><td>4</td><td><span class="luke"><span class="fasit" hidden>bakdokke</span></span></td></tr><tr><td>5</td><td><span class="luke"><span class="fasit" hidden>vange</span></span></td></tr><tr><td>6</td><td><span class="luke"><span class="fasit" hidden>ledeskrue og matestang</span></span></td></tr></table><p>Nevn tre jobber du gjør med bakdokken.</p><div class="svar"><span class="fasit" hidden>Senterbore, bore, støtte lange emner med spiss (dreie mellom spisser), brotsje, gjenge med tapp.</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">13</span>Begreper</h2>
+ <table class="tabell"><tr><th>Begrep</th><th>Hva er det?</th><th>Enhet</th></tr><tr><td>Kuttdybde a<sub>p</sub></td><td><span class="fasit" hidden>hvor dypt stålet skjærer</span></td><td><span class="fasit" hidden>mm</span></td></tr><tr><td>Mating f</td><td><span class="fasit" hidden>hvor langt stålet flytter seg per omdreining</span></td><td><span class="fasit" hidden>mm/omdr</span></td></tr><tr><td>Omdreining n</td><td><span class="fasit" hidden>hvor mange ganger emnet går rundt per minutt</span></td><td><span class="fasit" hidden>o/min</span></td></tr><tr><td>Skjærehastighet v<sub>c</sub></td><td><span class="fasit" hidden>farten i ytterkanten av emnet/verktøyet</span></td><td><span class="fasit" hidden>m/min</span></td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">14</span>Slå opp skjærehastigheten</h2>
+ <p>Bruk tabellen «Skjærehastighet v<sub>c</sub>» i <a href="https://verkstedhandboka.vercel.app/#m3-data" target="_blank" rel="noopener">Verkstedhåndboka 3.11</a>.</p><table class="sporsmal"><tr><td>Dreie S355 med hardmetall</td><td><span class="luke"><span class="fasit" hidden>180–280</span></span> m/min</td></tr><tr><td>Dreie rustfritt med hardmetall</td><td><span class="luke"><span class="fasit" hidden>120–200</span></span> m/min</td></tr><tr><td>Bore messing med HSS-bor</td><td><span class="luke"><span class="fasit" hidden>40–80</span></span> m/min</td></tr><tr><td>Bore S355 med HSS-bor</td><td><span class="luke"><span class="fasit" hidden>20–30</span></span> m/min</td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">15</span>Finn turtallet</h2>
+ <p>Bruk midten av v<sub>c</sub>-området. Regn med formelen i <a href="https://verkstedhandboka.vercel.app/#m3-dreiing" target="_blank" rel="noopener">Verkstedhåndboka 3.2</a>, eller les av nomogrammet i <a href="https://verkstedhandboka.vercel.app/#m3-nomogram" target="_blank" rel="noopener">Verkstedhåndboka 3.13</a>.</p><table class="tabell"><tr><th>Materiale</th><th>Verktøy</th><th>v<sub>c</sub> (m/min)</th><th>D (mm)</th><th>n (o/min)</th></tr><tr><td>S355</td><td>Hardmetall</td><td><span class="fasit" hidden>230</span></td><td>24</td><td><span class="fasit" hidden>ca. 3050</span></td></tr><tr><td>S355</td><td>Hardmetall</td><td><span class="fasit" hidden>230</span></td><td>30</td><td><span class="fasit" hidden>ca. 2440</span></td></tr><tr><td>S355</td><td>Hardmetall</td><td><span class="fasit" hidden>230</span></td><td>60</td><td><span class="fasit" hidden>ca. 1220</span></td></tr><tr><td>S355</td><td>Hardmetall</td><td><span class="fasit" hidden>230</span></td><td>200</td><td><span class="fasit" hidden>ca. 366</span></td></tr><tr><td>Rustfritt</td><td>Hardmetall</td><td><span class="fasit" hidden>160</span></td><td>100</td><td><span class="fasit" hidden>ca. 509</span></td></tr><tr><td>Rustfritt</td><td>Hardmetall</td><td><span class="fasit" hidden>160</span></td><td>140</td><td><span class="fasit" hidden>ca. 364</span></td></tr><tr><td>Messing</td><td>HSS-bor</td><td><span class="fasit" hidden>60</span></td><td>20</td><td><span class="fasit" hidden>ca. 955</span></td></tr></table><p>Du bytter til et <b>større</b> bor. Turtallet må bli …</p><div class="valg"><span>høyere</span><span>lavere<span class="fasit" hidden>✓</span></span></div><p>Hvorfor?</p><div class="svar"><span class="fasit" hidden>Større diameter gir høyere fart i ytterkanten. Uten lavere turtall blir v<sub>c</sub> for høy og boret blir varmt og slitt.</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">16</span>Boring</h2>
+ <p>Bor med <b>konisk tange</b> kan ikke settes i en chuck. Hvordan festes de?</p><div class="svar"><span class="fasit" hidden>Rett i spindelen (morsekonus), eventuelt med en overgangshylse. Drives ut med en kile.</span></div><p>Du skal bore Ø35. Hva gjør du? Sett ring.</p><div class="valg"><span>Borer Ø35 med en gang</span><span>Forborer med et lite bor og borer opp i trinn<span class="fasit" hidden>✓</span></span></div><p>Hva gjør skjærevæsken? Sett ring rundt <b>alle</b> som stemmer.</p><div class="valg"><span>Kjøler<span class="fasit" hidden>✓</span></span><span>Smører<span class="fasit" hidden>✓</span></span><span>Fører bort spon<span class="fasit" hidden>✓</span></span><span>Gjør boret mykere</span></div><p>Hva betyr det at et hull er <b>forsenket</b>?</p><div class="svar"><span class="fasit" hidden>Hullet er gjort kjegleformet øverst, så skruehodet (senkskrue) kommer i flukt med flaten.</span></div>
+</div>
+<div class="del">
+  <div>
+    <h2>Tegning, toleranser og måling</h2>
+    <div class="steg"><p><span>1</span> Grunnmål + avvik = grensemål.</p><p><span>2</span> Stor bokstav = hull, liten bokstav = aksel.</p></div>
+  </div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">17</span>Toleransebegreper</h2>
+ <div class="tegning"><svg viewBox="0 0 480 230" role="img" aria-label="Toleransefelt for en aksel under nullinjen. Pil A går fra nullinjen til toppen av feltet, B fra nullinjen til bunnen av feltet, C er høyden på feltet, og D går fra bunnen opp til nullinjen."><path d="M20 70 H460" stroke="var(--ink)" stroke-width="2.5"/><text x="400" y="62" font-size="13" fill="var(--ink)">nullinje</text><rect x="200" y="92" width="90" height="48" fill="#f8ae5a" stroke="var(--ink)" stroke-width="2"/><path d="M20 214 H200" stroke="var(--ink)" stroke-width="1.5"/><g stroke="var(--ink)" stroke-width="1.4" fill="none"><path d="M290 92 H360 M290 140 H420"/><path d="M340 70 V92 M336 78 L340 70 L344 78 M336 84 L340 92 L344 84"/><path d="M400 70 V140 M396 78 L400 70 L404 78 M396 132 L400 140 L404 132"/><path d="M180 92 V140 M176 100 L180 92 L184 100 M176 132 L180 140 L184 132 M184 92 H200 M184 140 H200"/><path d="M80 214 V70 M76 78 L80 70 L84 78 M76 206 L80 214 L84 206"/></g><g font-size="18" font-weight="800" fill="var(--orange)"><text x="348" y="88">A</text><text x="408" y="112">B</text><text x="156" y="122">C</text><text x="88" y="150">D</text></g></svg></div><div class="ordbank"><span>grunnmål (basismål)</span><span>øvre avvik</span><span>nedre avvik</span><span>toleranse</span></div><table class="sporsmal"><tr><td>A</td><td><span class="luke"><span class="fasit" hidden>øvre avvik</span></span></td></tr><tr><td>B</td><td><span class="luke"><span class="fasit" hidden>nedre avvik</span></span></td></tr><tr><td>C</td><td><span class="luke"><span class="fasit" hidden>toleranse</span></span></td></tr><tr><td>D</td><td><span class="luke"><span class="fasit" hidden>grunnmål (basismål)</span></span></td></tr></table><p class="setning">Øvre grensemål er det <span class="luke"><span class="fasit" hidden>største</span></span> målet som er godkjent. Nedre grensemål er det <span class="luke"><span class="fasit" hidden>minste</span></span>.</p><p>Ø30 H7: stor H betyr</p><div class="valg"><span>hull<span class="fasit" hidden>✓</span></span><span>aksel</span></div><p>Ø30 h7: liten h betyr</p><div class="valg"><span>hull</span><span>aksel<span class="fasit" hidden>✓</span></span></div><p>Hvorfor må du vite toleransen før du maskinerer?</p><div class="svar"><span class="fasit" hidden>Da vet du hvor nøyaktig du må lage delen, og velger riktig verktøy, skjæredata og måleverktøy. Ellers kan delen bli kassert.</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">18</span>Slå opp ISO-toleranser</h2>
+ <p>Bruk <a href="https://verkstedhandboka.vercel.app/#t2-tol" target="_blank" rel="noopener">Verkstedhåndboka 2.2</a>. Skriv i mm.</p><table class="tabell"><tr><th></th><th>Øvre avvik</th><th>Nedre avvik</th><th>Øvre grensemål</th><th>Nedre grensemål</th><th>Toleranse</th></tr><tr><td><b>Ø42 H7</b></td><td><span class="fasit" hidden>+0,025</span></td><td><span class="fasit" hidden>0</span></td><td><span class="fasit" hidden>42,025</span></td><td><span class="fasit" hidden>42,000</span></td><td><span class="fasit" hidden>0,025</span></td></tr><tr><td><b>Ø30 h7</b></td><td><span class="fasit" hidden>0</span></td><td><span class="fasit" hidden>−0,021</span></td><td><span class="fasit" hidden>30,000</span></td><td><span class="fasit" hidden>29,979</span></td><td><span class="fasit" hidden>0,021</span></td></tr><tr><td><b>Ø92 js6</b></td><td><span class="fasit" hidden>+0,011</span></td><td><span class="fasit" hidden>−0,011</span></td><td><span class="fasit" hidden>92,011</span></td><td><span class="fasit" hidden>91,989</span></td><td><span class="fasit" hidden>0,022</span></td></tr><tr><td><b>Ø18 M5</b></td><td><span class="fasit" hidden>−0,004</span></td><td><span class="fasit" hidden>−0,012</span></td><td><span class="fasit" hidden>17,996</span></td><td><span class="fasit" hidden>17,988</span></td><td><span class="fasit" hidden>0,008</span></td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">19</span>Les tegningen</h2>
+ <div class="tegning"><svg viewBox="0 0 520 290" role="img" aria-label="Arbeidstegning av en aksling: to ender Ø20, midtparti Ø26 ±0,2, endene er 40 lange og hele akslingen 120. Ruhet Ra 3,2. Tittelfelt: materiale automatstål, toleranse for mål uten toleranse NS-ISO 2768-1 middels."><g fill="none" stroke="var(--ink)" stroke-width="2.5"><path d="M60 77 H192 V67 H324 V77 H456 V143 H324 V153 H192 V143 H60 Z"/><path d="M192 77 V143 M324 77 V143"/></g><path d="M44 110 H472" stroke="var(--ink)" stroke-width="1" stroke-dasharray="14 4 3 4"/><g stroke="var(--ink)" stroke-width="1.3" fill="none"><path d="M60 146 V196 M192 156 V182 M324 156 V182 M456 146 V196"/><path d="M60 176 H192 M324 176 H456 M60 192 H456"/><path d="M68 172 L60 176 L68 180 M184 172 L192 176 L184 180 M332 172 L324 176 L332 180 M448 172 L456 176 L448 180 M68 188 L60 192 L68 196 M448 188 L456 192 L448 196"/><path d="M100 77 V143 M96 85 L100 77 L104 85 M96 135 L100 143 L104 135"/><path d="M258 67 V153 M254 75 L258 67 L262 75 M254 145 L258 153 L262 145"/><path d="M60 40 l8 12 l18 -30 h40"/></g><g font-size="16" font-weight="700" fill="var(--ink)"><text x="108" y="115">Ø20</text><text x="266" y="115">Ø26 ±0,2</text><text x="126" y="170" text-anchor="middle">40</text><text x="390" y="170" text-anchor="middle">40</text><text x="258" y="210" text-anchor="middle">120</text><text x="92" y="18">Ra 3,2</text></g><g fill="none" stroke="var(--ink)" stroke-width="1.5"><rect x="20" y="226" width="480" height="56"/><path d="M20 254 H500 M330 226 V282"/></g><g font-size="13" fill="var(--ink)"><text x="28" y="245">Navn: Aksling</text><text x="338" y="245">Materiale: Automatstål</text><text x="28" y="273">Mål uten toleranse: NS-ISO 2768-1 middels</text><text x="338" y="273">Mål i mm</text></g></svg></div><p>Mål uten toleranse: se <a href="https://verkstedhandboka.vercel.app/#t2-gen" target="_blank" rel="noopener">Verkstedhåndboka 2.5</a> (ISO 2768-m).</p><table class="sporsmal"><tr><td>Toleranse på lengden 120</td><td>± <span class="luke"><span class="fasit" hidden>0,3</span></span> mm</td></tr><tr><td>Toleranse på lengden 40</td><td>± <span class="luke"><span class="fasit" hidden>0,3</span></span> mm</td></tr><tr><td>Materiale</td><td><span class="luke"><span class="fasit" hidden>automatstål</span></span></td></tr><tr><td>Overflateruhet</td><td>Ra <span class="luke"><span class="fasit" hidden>3,2</span></span> µm</td></tr><tr><td>Mating med nesradius 1,2 mm (<a href="https://verkstedhandboka.vercel.app/#m3-valg" target="_blank" rel="noopener">Verkstedhåndboka 3.1</a>)</td><td><span class="luke"><span class="fasit" hidden>0,35–0,6</span></span> mm/omdr</td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">20</span>Pasninger</h2>
+ <div class="ordbank"><span>klaringspasning</span><span>mellompasning</span><span>presspasning</span></div><div class="tre"><div class="kort"><svg viewBox="0 0 200 150" style="max-height:160px" role="img" aria-label="Toleransefelt: hull over nullinjen, akselens felt ligger under nullinjen"><rect x="30" y="58" width="56" height="34" fill="#8fd3f4" stroke="var(--ink)" stroke-width="2"/><rect x="114" y="98" width="56" height="26" fill="#f8ae5a" stroke="var(--ink)" stroke-width="2"/><path d="M8 92 H192" stroke="var(--ink)" stroke-width="2.5"/><text x="10" y="86" font-size="18" fill="var(--ink)">0</text><text x="58" y="114" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">Hull</text><text x="142" y="144" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">Aksel</text></svg><span class="luke"><span class="fasit" hidden>klaringspasning</span></span></div><div class="kort"><svg viewBox="0 0 200 150" style="max-height:160px" role="img" aria-label="Toleransefelt: hull over nullinjen, akselens felt overlapper hullets felt"><rect x="30" y="58" width="56" height="34" fill="#8fd3f4" stroke="var(--ink)" stroke-width="2"/><rect x="114" y="72" width="56" height="32" fill="#f8ae5a" stroke="var(--ink)" stroke-width="2"/><path d="M8 92 H192" stroke="var(--ink)" stroke-width="2.5"/><text x="10" y="86" font-size="18" fill="var(--ink)">0</text><text x="58" y="114" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">Hull</text><text x="142" y="124" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">Aksel</text></svg><span class="luke"><span class="fasit" hidden>mellompasning</span></span></div><div class="kort"><svg viewBox="0 0 200 150" style="max-height:160px" role="img" aria-label="Toleransefelt: hull over nullinjen, akselens felt ligger over hullets felt"><rect x="30" y="58" width="56" height="34" fill="#8fd3f4" stroke="var(--ink)" stroke-width="2"/><rect x="114" y="24" width="56" height="28" fill="#f8ae5a" stroke="var(--ink)" stroke-width="2"/><path d="M8 92 H192" stroke="var(--ink)" stroke-width="2.5"/><text x="10" y="86" font-size="18" fill="var(--ink)">0</text><text x="58" y="114" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">Hull</text><text x="142" y="72" text-anchor="middle" font-size="19" font-weight="700" fill="var(--ink)">Aksel</text></svg><span class="luke"><span class="fasit" hidden>presspasning</span></span></div></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">21</span>Les av skyvelæret</h2>
+ <img class="bilde" src="filer/skyvelaere-foto.webp" alt="Foto av skyvelære med 0,05 mm nonius" width="1200" height="639" loading="lazy" decoding="async"><table class="sporsmal"><tr><td>Målet er</td><td><span class="luke"><span class="fasit" hidden>110,00</span></span> mm</td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">22</span>Les av mikrometeret</h2>
+ <img class="bilde" src="filer/mikrometer-foto.webp" alt="Foto av mikrometer, hylse og trommel" width="1200" height="530" loading="lazy" decoding="async"><table class="sporsmal"><tr><td>Målet er</td><td><span class="luke"><span class="fasit" hidden>40,81</span></span> mm</td></tr></table><p>Hvilket måleområde har dette mikrometeret?</p><div class="valg"><span>0–25 mm</span><span>25–50 mm<span class="fasit" hidden>✓</span></span><span>50–75 mm</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">23</span>Måleverktøy</h2>
+ <table class="sporsmal"><tr><td>Måle 1/10 mm</td><td><span class="luke"><span class="fasit" hidden>skyvelære</span></span></td></tr><tr><td>Måle 1/100 mm</td><td><span class="luke"><span class="fasit" hidden>mikrometer</span></span></td></tr><tr><td>Riktig måletemperatur</td><td><span class="luke"><span class="fasit" hidden>20</span></span> °C</td></tr></table><p>Skruen bak på mikrometeret (skralle / friksjonsskrue). Hva er den til?</p><div class="svar"><span class="fasit" hidden>Den gir alltid samme målekraft, så du ikke skrur for hardt og får feil mål.</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">24</span>Passbiter</h2>
+ <div class="tegning" style="max-width:340px"><svg data-bilde="passbiter" data-alt="Passbiter" viewBox="0 0 340 130" role="img" aria-label="Tre passbiter: rektangulære, blanke stålklosser med målet gravert på siden, 1,005, 20 og 50"><path d="M20 70 L46 54.4 L106 54.4 L80 70 Z" fill="#e6eaee" stroke="#4a545e" stroke-width="1.5"/><path d="M80 70 L106 54.4 L106 88.4 L80 104 Z" fill="#9aa4ae" stroke="#4a545e" stroke-width="1.5"/><rect x="20" y="70" width="60" height="34" fill="#c3cbd3" stroke="#4a545e" stroke-width="1.5"/><text x="50.0" y="92.0" text-anchor="middle" font-size="14" fill="#2b3138" font-weight="700">1,005</text><path d="M120 54 L146 38.4 L216 38.4 L190 54 Z" fill="#e6eaee" stroke="#4a545e" stroke-width="1.5"/><path d="M190 54 L216 38.4 L216 88.4 L190 104 Z" fill="#9aa4ae" stroke="#4a545e" stroke-width="1.5"/><rect x="120" y="54" width="70" height="50" fill="#c3cbd3" stroke="#4a545e" stroke-width="1.5"/><text x="155.0" y="84.0" text-anchor="middle" font-size="14" fill="#2b3138" font-weight="700">20</text><path d="M230 30 L256 14.4 L326 14.4 L300 30 Z" fill="#e6eaee" stroke="#4a545e" stroke-width="1.5"/><path d="M300 30 L326 14.4 L326 88.4 L300 104 Z" fill="#9aa4ae" stroke="#4a545e" stroke-width="1.5"/><rect x="230" y="30" width="70" height="74" fill="#c3cbd3" stroke="#4a545e" stroke-width="1.5"/><text x="265.0" y="72.0" text-anchor="middle" font-size="14" fill="#2b3138" font-weight="700">50</text></svg></div><p>Hva brukes passbiter til? Sett ring rundt <b>alle</b> som stemmer.</p><div class="valg"><span>Kontrollere og kalibrere måleverktøy<span class="fasit" hidden>✓</span></span><span>Stille inn måleinstrumenter<span class="fasit" hidden>✓</span></span><span>Måle lange rør</span><span>Lage et nøyaktig referansemål<span class="fasit" hidden>✓</span></span></div>
+</div>
+<div class="del">
+  <div>
+    <h2>Materialer</h2>
+    <div class="steg"><p><span>1</span> Lettmetall: lav densitet. Tungmetall: høy densitet.</p><p><span>2</span> Herding gjør stål hardt, anløping gjør det seigere.</p></div>
+  </div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">25</span>Lett- eller tungmetall? Kryss av.</h2>
+ <table class="tabell"><tr><th></th><th>🪶 Lettmetall</th><th>🧱 Tungmetall</th></tr><tr><td>Aluminium</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>Bly</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Magnesium</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>Kobber</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Titan</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>Jern</td><td></td><td><span class="fasit" hidden>✗</span></td></tr></table><p class="hint">💡 Slå opp densiteten i <a href="https://verkstedhandboka.vercel.app/#m7-oversikt" target="_blank" rel="noopener">Verkstedhåndboka 7.1</a> hvis du er usikker.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">26</span>Herding og anløping</h2>
+ <div class="ordbank"><span>bråkjøler</span><span>hardt</span><span>sprøtt</span><span>anløper</span><span>seigere</span></div><p class="setning">Du varmer stålet til det er rødglødende og <span class="luke"><span class="fasit" hidden>bråkjøler</span></span> det i vann eller olje.<br>Da blir stålet <span class="luke"><span class="fasit" hidden>hardt</span></span>, men også <span class="luke"><span class="fasit" hidden>sprøtt</span></span>.<br>Derfor <span class="luke"><span class="fasit" hidden>anløper</span></span> vi: varmer det litt opp igjen, så det blir <span class="luke"><span class="fasit" hidden>seigere</span></span>.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">27</span>Strekkprøving</h2>
+ <div class="tegning" style="max-width:420px"><svg viewBox="0 0 420 240" role="img" aria-label="Strekkprøvekurve: spenning oppover, forlengelse bortover. Kurven stiger rett, flater ut og går til brudd. Tre punkter er merket A, B og C."><path d="M50 20 V210 H400" stroke="var(--ink)" stroke-width="2" fill="none"/><path d="M50 210 L92 90 L98 96 L104 88 L110 94 C160 40 260 30 320 60 C340 72 350 90 356 104" stroke="var(--u)" stroke-width="3.5" fill="none"/><path d="M356 104 l4 10 M352 108 l8 4" stroke="var(--u)" stroke-width="3"/><g font-size="13" fill="var(--ink)"><text x="56" y="16">Spenning</text><text x="300" y="232">Forlengelse</text></g><g font-size="18" font-weight="800" fill="var(--orange)"><text x="80" y="170">A</text><text x="96" y="72">B</text><text x="364" y="100">C</text></g><g stroke="var(--orange)" stroke-width="2"><path d="M100 78 L100 88"/></g></svg></div><div class="ordbank"><span>elastisk område</span><span>flytegrense</span><span>brudd</span></div><table class="sporsmal"><tr><td>A</td><td><span class="luke"><span class="fasit" hidden>elastisk område</span></span></td></tr><tr><td>B</td><td><span class="luke"><span class="fasit" hidden>flytegrense</span></span></td></tr><tr><td>C</td><td><span class="luke"><span class="fasit" hidden>brudd</span></span></td></tr></table><p>Hva er flytegrensen?</p><div class="svar"><span class="fasit" hidden>Spenningen der materialet begynner å strekke seg varig. Under flytegrensen går det tilbake til samme form.</span></div>
+</div>
+<div class="oppg">
+ <h2><span class="nr">28</span>Testing av materialer. Kryss av.</h2>
+ <table class="tabell"><tr><th></th><th>💥 Ødelegger prøven</th><th>🔍 Uten å ødelegge (NDT)</th></tr><tr><td>Strekkprøving</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>Slagprøving (Charpy)</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>Penetrant (rødsprit)</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Magnetpulver</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Ultralyd</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Røntgen</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Bøyeprøving</td><td><span class="fasit" hidden>✗</span></td><td></td></tr></table><p>Nevn tre legeringselementer i stål.</p><table class="sporsmal"><tr><td>1</td><td><span class="luke"><span class="fasit" hidden>krom</span></span></td></tr><tr><td>2</td><td><span class="luke"><span class="fasit" hidden>nikkel</span></span></td></tr><tr><td>3</td><td><span class="luke"><span class="fasit" hidden>molybden / mangan / vanadium</span></span></td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">29</span>Pneumatikk og hydraulikk. Kryss av.</h2>
+ <table class="tabell"><tr><th></th><th>💨 Pneumatikk</th><th>🛢️ Hydraulikk</th></tr><tr><td>Bruker luft</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>Bruker olje</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Gir svært stor kraft</td><td></td><td><span class="fasit" hidden>✗</span></td></tr><tr><td>Rask og ren, men fjærende</td><td><span class="fasit" hidden>✗</span></td><td></td></tr><tr><td>Lekkasje gir søl</td><td></td><td><span class="fasit" hidden>✗</span></td></tr></table>
+</div>
+<div class="oppg">
+ <h2><span class="nr">30</span>Exit-lapp</h2>
+ <p>Nevn 10 håndverktøy vi bruker i TIF-fagene.</p><table class="tabell"><tr><td></td><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td><td></td></tr></table><div class="svar"><span class="fasit" hidden>F.eks.: hammer, fil, baufil, skrutrekker, fastnøkkel, ringnøkkel, unbrakonøkkel, tang, kjørner, ripenål, vinkelhake, vindeisen, gjengetapp, gjengebakke, momentnøkkel.</span></div>
+</div>
+
+<p class="mer">Mer øving: <a href="klar-for-bestatt.html">Klar for bestått?</a> · <a href="../maleteknikk/skyvelaere-og-mikrometer.html">Skyvelære og mikrometer</a> · <a href="https://simulatorer.vercel.app/skjaeredata.html">Skjæredata-simulatoren</a> · <a href="https://simulatorer.vercel.app/toleranser.html">Toleranse-simulatoren</a> · <a href="https://simulatorer.vercel.app/momentnokkel.html">Momentnøkkel-simulatoren</a> · <a href="https://simulatorer.vercel.app/gjenger.html">Gjenge-simulatoren</a> · <a href="https://simulatorer.vercel.app/strekkprove.html">Strekkprøve-simulatoren</a></p>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const fb = $("fasitBtn");
+fb.addEventListener("click", () => {
+  const på = fb.getAttribute("aria-pressed") !== "true";
+  fb.setAttribute("aria-pressed", på);
+  fb.textContent = på ? "Skjul fasit" : "Vis fasit";
+  document.querySelectorAll(".fasit").forEach(e => e.hidden = !på);
+});
+
+// Kopier til OneNote (samme som på Steg for steg-siden): figurer blir bilder, valg blir ◯ (✔ når fasit vises), kort blir tabeller.
+async function svgTilPng(svg, farge) {
+  const vb = svg.viewBox.baseVal, w = Math.round(vb.width * 1.4), h = Math.round(vb.height * 1.4);
+  const c = svg.cloneNode(true);
+  c.setAttribute("xmlns", "http://www.w3.org/2000/svg"); c.setAttribute("width", w); c.setAttribute("height", h);
+  [c, ...c.querySelectorAll("*")].forEach(e => [...e.attributes].forEach(a => {
+    if (a.value.includes("var(")) e.setAttribute(a.name, a.value.replace(/var\((--[\w-]+)\)/g, (_, v) => farge(v)));
+  }));
+  c.querySelectorAll(".flow").forEach(e => e.removeAttribute("class"));
+  const img = new Image();
+  img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(new XMLSerializer().serializeToString(c));
+  await img.decode();
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const cx = cv.getContext("2d"); cx.fillStyle = "#fff"; cx.fillRect(0, 0, w, h); cx.drawImage(img, 0, 0, w, h);
+  return [cv.toDataURL("image/png"), Math.min(w, 420)];
+}
+$("copyBtn").addEventListener("click", async () => {
+  const msg = $("copyMsg"), rot = document.documentElement, tema = rot.dataset.theme;
+  rot.dataset.theme = "light"; // OneNote har hvit bakgrunn
+  const stil = getComputedStyle(rot), farge = v => stil.getPropertyValue(v).trim() || "#000";
+  const vis = fb.getAttribute("aria-pressed") === "true";
+  const src = $("oppgavetekst"), kl = src.cloneNode(true);
+  kl.querySelectorAll(".top,.navn,.no-print").forEach(e => e.remove());
+  const svgs = [...src.querySelectorAll("svg")], ks = [...kl.querySelectorAll("svg")];
+  for (let i = 0; i < svgs.length; i++) {
+    if (svgs[i].closest(".top")) continue;
+    try { const [url, w] = await svgTilPng(svgs[i], farge); const im = document.createElement("img"); im.src = url; im.width = svgs[i].closest(".kort,.to,.regn") ? Math.min(w, 200) : w; ks[i].replaceWith(im); }
+    catch (e) { ks[i].remove(); }
+  }
+  if (tema) rot.dataset.theme = tema; else delete rot.dataset.theme;
+  kl.querySelectorAll("img").forEach(i => { i.src = i.src; i.removeAttribute("loading"); i.removeAttribute("decoding");
+    if (i.width > 560) { i.height = Math.round(i.height * 560 / i.width); i.width = 560; } });
+  kl.querySelectorAll(".nr").forEach(n => n.textContent = n.textContent + ". ");
+  kl.querySelectorAll(".valg").forEach(v => {
+    const p = document.createElement("p");
+    p.textContent = [...v.children].map(s => {
+      const f = s.querySelector(".fasit"), riktig = f && vis; if (f) f.remove();
+      return (riktig ? "✔ " : "◯ ") + s.textContent.trim();
+    }).join("\u00a0\u00a0\u00a0\u00a0 ");
+    v.replaceWith(p);
+  });
+  kl.querySelectorAll(".fasit").forEach(f => { if (!vis) f.remove(); else f.style.color = "#2b8a3e"; });
+  kl.querySelectorAll(".luke").forEach(l => { if (!l.textContent.trim()) l.textContent = "________"; });
+  kl.querySelectorAll(".svar").forEach(s => { const p = document.createElement("p"); p.textContent = s.textContent.trim() || "______________________________"; s.replaceWith(p); });
+  kl.querySelectorAll(".ordbank").forEach(o => { const p = document.createElement("p"); p.innerHTML = "<b>Ord:</b> " + [...o.children].map(s => s.textContent).join(" · "); o.replaceWith(p); });
+  kl.querySelectorAll(".tre,.bilder,.to").forEach(g => {
+    const t = document.createElement("table"), tr = t.insertRow();
+    [...g.children].forEach(k => { const td = tr.insertCell(); td.innerHTML = k.innerHTML; td.style.cssText = "border:1px solid #999;padding:6px;vertical-align:top;text-align:center"; });
+    g.replaceWith(t);
+  });
+  kl.querySelectorAll("table").forEach(t => { t.setAttribute("border", "1"); t.style.borderCollapse = "collapse"; t.querySelectorAll("td").forEach(c => { c.style.border = "1px solid #999"; c.style.padding = "4px 8px"; }); });
+  kl.querySelectorAll("[class]").forEach(e => e.removeAttribute("class"));
+  // Lenke til elevversjonen av denne siden (også når den kopieres fra lærersiden).
+  const lenke = location.origin + location.pathname.replace(/^\/laerer-[^/]+\//, "/").replace(/\.html$/, "");
+  const html = "<h2>" + document.querySelector("h1").textContent + "</h2><p>Navn: ______________________</p>" + kl.innerHTML +
+    '<p>Oppgavene på nett: <a href="' + lenke + '">' + lenke + "</a></p>", text = kl.innerText;
+  try {
+    await navigator.clipboard.write([new ClipboardItem({ "text/html": new Blob([html], { type: "text/html" }), "text/plain": new Blob([text], { type: "text/plain" }) })]);
+    msg.textContent = "Kopiert! Lim inn i OneNote med Ctrl+V";
+  } catch (err) {
+    const box = document.createElement("div"); box.contentEditable = "true"; box.innerHTML = html;
+    box.style.cssText = "position:fixed;left:-9999px"; document.body.appendChild(box);
+    const r = document.createRange(); r.selectNodeContents(box); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    const ok = document.execCommand("copy"); sel.removeAllRanges(); box.remove();
+    msg.textContent = ok ? "Kopiert! Lim inn i OneNote med Ctrl+V" : "Kunne ikke kopiere. Merk teksten og bruk Ctrl+C.";
+  }
+});
+
+</script>
+<script>
+/* Kom eleven fra en leksjon? Da viser første lenke «Tilbake til leksjonen». */
+(function(){try{var r=document.referrer,u=new URL(r);if(u.origin===location.origin&&/\/leksjon-[^/]*\.html$/.test(u.pathname)){var a=document.querySelector(".tilbake a");a.href=r;a.textContent="← Tilbake til leksjonen";var b=a.parentNode.querySelectorAll("a");for(var k=1;k<b.length;k++)b[k].remove();}}catch(e){}})();
+</script>
+</body>
+</html>
