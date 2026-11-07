@@ -21,7 +21,7 @@ function finn(dir) {
 // Oppgavebank: ekstra oppgaveark, bygges som leksjonene (elevversjon uten fasit, lærerversjon med).
 const MAPPER = ["vg1", "vg2", "vg3", "oppgavebank"];
 for (const trinn of MAPPER) finn(trinn);
-const filer = ["index.html", ...leksjoner];
+const filer = ["index.html", "bildekilder.html", ...leksjoner];
 
 // Fjerner <tag class="klasse ...">...</tag> med alt innhold (også nestede tag).
 function fjernElement(s, navn, klasse) {
@@ -238,7 +238,7 @@ for (const fil of filer) {
     // Demper animasjoner som ikke synes, så sidene går lett også på mobil (se spar-strom.js).
     innhold = innhold.replace(/<head(\s[^>]*)?>/i, (m) => `${m}\n<script>\n${SPAR}</script>`);
     // Eleven skriver svarene rett i oppgavene og kan skrive ut / lagre som PDF (se utfylling.js).
-    if (fil !== "index.html" && !erProve(fil)) innhold = innhold.replace(/<\/body>/i, () => `<script>\n${UTFYLLING}</script>\n</body>`);
+    if (fil !== "index.html" && fil !== "bildekilder.html" && !erProve(fil)) innhold = innhold.replace(/<\/body>/i, () => `<script>\n${UTFYLLING}</script>\n</body>`);
     // Trykk på et bilde for å se det i fullskjerm (fungerer også på mobil og fremviser).
     if (/<img data-fullskjerm/.test(innhold)) innhold = innhold.replace(/<\/body>/i, () => `<script>\n${FULLSKJERM}</script>\n</body>`);
     const mål = path.join(mappe, fil);
