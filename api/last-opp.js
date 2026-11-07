@@ -40,7 +40,7 @@ const github = (sti, metode, body) => fetch(`https://api.github.com/repos/${REPO
 
 // Sletter en fil i en filer/-mappe. GitHub krever filens sha, så den hentes først.
 async function slettFil(sti, res) {
-  if (!/^vg[12]\/[a-z0-9-]+\/filer\/[A-Za-z0-9_.-]+$/.test(sti) || sti.includes(".."))
+  if (!/^(vg[12]|oppgavebank)\/[a-z0-9-]+\/filer\/[A-Za-z0-9_.-]+$/.test(sti) || sti.includes(".."))
     return res.status(400).json({ feil: "Ugyldig fil" });
   const finnes = await github(sti, "GET");
   if (!finnes.ok) return res.status(404).json({ feil: "Fant ikke filen. Den er kanskje slettet allerede." });
@@ -69,7 +69,7 @@ module.exports = async (req, res) => {
   if (!innlogget(req)) return res.status(401).json({ feil: "Du må være logget inn på lærersiden. Last inn siden på nytt og logg inn." });
   if (!(process.env.GITHUB_TOKEN || "").trim()) return res.status(500).json({ feil: "GITHUB_TOKEN mangler i Vercel" });
   if (slett) return slettFil(slett, res);
-  if (!/^vg[12]\/[a-z0-9-]+$/.test(mappe || "") || (bilde ? !/^[a-z0-9-]+$/.test(bilde) : !/^leksjon-\d+-[A-Za-z0-9_-]+-$/.test(prefiks || "")))
+  if (!(bilde ? /^(vg[12]|oppgavebank)\/[a-z0-9-]+$/ : /^vg[12]\/[a-z0-9-]+$/).test(mappe || "") || (bilde ? !/^[a-z0-9-]+$/.test(bilde) : !/^leksjon-\d+-[A-Za-z0-9_-]+-$/.test(prefiks || "")))
     return res.status(400).json({ feil: "Ugyldig mappe eller del" });
 
   try {

@@ -98,7 +98,7 @@ function laererversjon(s, fil) {
       `Skriv ut uten fasit (eller lagre som PDF), eller bruk «Kopier til OneNote».`
     : `<a href="/${LAERER_STI}/" ${HJEM}>⌂ Hjem</a> <b>Lærerversjon med fasit.</b> ` +
       `<a href="/${fil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Elevversjon av denne ${steg || bank ? "siden" : "leksjonen"}</a> (uten fasit, del denne med ${steg ? "eleven" : "klassen"}).` +
-      (/^leksjon-\d+-/.test(path.basename(fil)) && !steg ? ` · <button onclick="document.body.classList.toggle('vis-filplass')" style="font:inherit;color:#fff;background:none;border:1px solid #fff;border-radius:99px;padding:1px 10px;cursor:pointer">📎 Vis/skjul plass for filer</button>` : "") +
+      ((/^leksjon-\d+-/.test(path.basename(fil)) || (bank && s.includes("data-bilde="))) && !steg ? ` · <button onclick="document.body.classList.toggle('vis-filplass')" style="font:inherit;color:#fff;background:none;border:1px solid #fff;border-radius:99px;padding:1px 10px;cursor:pointer">📎 Vis/skjul plass for filer</button>` : "") +
       (filer.includes(stegFil) ? ` · <a href="/${LAERER_STI}/${stegFil.replace(/\\/g, "/").replace(/\.html$/, "")}" ${LENKE}>Steg for steg</a> (tilpassede oppgaver)` : "");
   const ut = ` · <a href="/${LAERER_STI}/logg-ut" ${LENKE}>Logg ut</a>`;
   return s.replace(/<body([^>]*)>/i, () => `<body$1>\n<style>@media print{.laererfelt{display:none}} body:not(.vis-filplass) .filplass{display:none!important}</style><div class="laererfelt" ${FELT}>${felt}${ut}</div>`);
@@ -168,7 +168,10 @@ function vedlegg(s, fil, laerer) {
 const BILDETYPER = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
 function tegningTilBilde(s, fil, laerer) {
   const mappe = path.dirname(fil).replace(/\\/g, "/");
-  const admin = laerer && /^leksjon-\d+-/.test(path.basename(fil)) && !fil.endsWith(STEG);
+  // Oppgavebank-ark (ikke steg for steg) kan også bytte tegninger, så bildet kan lastes opp der.
+  const bank = fil.startsWith("oppgavebank") && !/^leksjon-\d+-/.test(path.basename(fil));
+  const admin = laerer && (/^leksjon-\d+-/.test(path.basename(fil)) || bank) && !fil.endsWith(STEG);
+  if (admin && bank && s.includes("data-bilde=")) s = s.replace(/<\/body>/i, () => `<script>\n${ADMIN}</script>\n</body>`);
   return s.replace(/<svg\b[^>]*\bdata-bilde="([a-z0-9-]+)"[^>]*>[\s\S]*?<\/svg>/g, (svg, navn) => {
     const alt = esc((svg.match(/data-alt="([^"]*)"/) || [, navn])[1]);
     const f = BILDETYPER.map(t => `bilde-${navn}${t}`).find(f => fs.existsSync(path.join(__dirname, mappe, FILER, f)));
