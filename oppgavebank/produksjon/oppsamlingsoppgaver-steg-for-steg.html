@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Oppgavebank · Klar for bestått: Produksjon og tjenester</title>
+<title>Oppgavebank · Oppsamlingsoppgaver: Steg for steg</title>
 <style>
-/* Oppgavebank: «Klar for bestått» i Produksjon og tjenester (Vg1 TIF). Ett eller flere spørsmål per kompetansemål. Maskinelementene i oppgave 9 kan byttes med bilde (data-bilde). */
+/* Oppgavebank: «Oppsamlingsoppgaver» i Produksjon og tjenester (Vg1 TIF). Ett eller flere spørsmål per kompetansemål. Maskinelementene i oppgave 9 kan byttes med bilde (data-bilde). */
 /* Tilpassede oppgaver: stor skrift, én oppgave per kort, figurer framfor tekst. Samme farger som leksjonen (U blå, I kobber, R grønn). */
 :root{
   --bg:#f5f7fa; --surface:#ffffff; --ink:#14181d; --muted:#56606c; --line:#d9dfe6;
@@ -140,14 +140,15 @@ details.laerer summary{cursor:pointer;font-weight:700;color:var(--bad)}
 details.laerer p{margin:.5rem 0}
 .malnotat td,.malnotat th{height:auto;padding:4px 8px}
 @media (max-width:620px){.regn{grid-template-columns:1fr} .tre{grid-template-columns:1fr} .tabell th,.tabell td{padding:6px 4px;font-size:.85rem}}
+.hint{background:var(--bg);border-radius:12px;padding:8px 12px;color:var(--muted);font-size:.95rem}
 </style>
 <div class="wrap" id="oppgavetekst">
 
 <div class="top">
   <div>
-    <p class="tilbake no-print">Repeter: <a href="../../vg1/hms/leksjon-1-trygt-pa-verkstedet.html">HMS 1</a><a href="../../vg1/hms/leksjon-2-kjemikalier-og-sikkerhetsdatablad.html">HMS 2</a><a href="../../vg1/verktoy/leksjon-1-handverktoy-og-maskiner.html">Verktøy 1</a><a href="../../vg1/verktoy/leksjon-2-mal-og-les-av-tegningen.html">Verktøy 2</a><a href="../../vg1/maskinelementer/leksjon-1-demonter-og-monter.html">Maskinelementer</a><a href="../../vg1/sammenfoying/leksjon-1-skru-lim-og-sveis.html">Sammenføying</a><a href="../../vg1/materialer/leksjon-1-materialer-og-miljo.html">Materialer og miljø</a><a href="../../vg1/ide-til-produkt/leksjon-1-fra-ide-til-produkt.html">Fra idé til produkt</a></p>
+    <p class="tilbake no-print"><a href="oppsamlingsoppgaver.html">← Til hele arket</a></p>
     <p class="tag">Oppgavebank · Produksjon og tjenester · Vg1</p>
-    <h1>Klar for bestått?</h1>
+    <h1>Steg for steg: Oppsamlingsoppgaver</h1>
   </div>
   <div class="tools">
     <button type="button" id="copyBtn">Kopier til OneNote</button>
@@ -156,34 +157,9 @@ details.laerer p{margin:.5rem 0}
 </div>
 <p class="navn">Navn: ______________________ <span id="copyMsg" role="status" style="color:var(--muted);font-size:.85rem;margin-left:1rem"></span></p>
 
-<details class="laerer no-print"><summary>For læreren: hva arket dekker</summary>
- <p>Arket dekker kjernen i alle 13 kompetansemålene i Produksjon og tjenester (Vg1 TIF, TIP01-03) på grunnleggende nivå. En elev som får til omtrent halvparten, og minst én oppgave riktig per mål, bør ligge an til bestått.</p>
- <table class="tabell malnotat">
-  <tr><th>Mål</th><th>Oppgave</th><th>Leksjon</th></tr>
-  <tr><td>1 HMS: materialer, teknikker og utstyr</td><td>1, 2</td><td>HMS 1</td></tr>
-  <tr><td>2 Ergonomi, folkehelse og samfunnsøkonomi</td><td>3</td><td>HMS 1</td></tr>
-  <tr><td>3 Verktøy, måleverktøy, maskiner, lese tegning</td><td>6, 7</td><td>Verktøy 1–2</td></tr>
-  <tr><td>4 Planlegge, utføre og dokumentere</td><td>10, 15</td><td>Maskinelementer, Fra idé til produkt</td></tr>
-  <tr><td>5 Demontere og montere maskinelementer</td><td>9, 10</td><td>Maskinelementer</td></tr>
-  <tr><td>6 Beskrive arbeid ut fra tegning og prosedyre</td><td>13</td><td>Maskinelementer, Tegning og DAK</td></tr>
-  <tr><td>7 Materialegenskaper og ytre miljø</td><td>16</td><td>Materialer og miljø</td></tr>
-  <tr><td>8 Kjemiske stoffer: bruk, gjenbruk og lagring</td><td>5, 17</td><td>HMS 2, Materialer og miljø</td></tr>
-  <tr><td>9 Termisk, kjemisk og mekanisk sammenføying</td><td>11, 12</td><td>Sammenføying</td></tr>
-  <tr><td>10 Sikkerhetsdatablad og risikovurdering</td><td>4</td><td>HMS 2</td></tr>
-  <tr><td>11 Digitale hjelpemidler og tabeller</td><td>8, 16</td><td>Verktøy 2</td></tr>
-  <tr><td>12 Arbeidsgang fra idé til sluttprodukt</td><td>14</td><td>Fra idé til produkt</td></tr>
-  <tr><td>13 Bærekraftig utvikling</td><td>18</td><td>Materialer og miljø, Fra idé til produkt</td></tr>
-  <tr><td>Hele faget</td><td>19 (exit-lapp)</td><td>Alle</td></tr>
- </table>
- <p>Oppgave 8 og 16 krever oppslag i Verkstedhåndboka. Gjennomføringsdelene (bruke verktøy, sveise, demontere) må vurderes praktisk i verkstedet.</p>
+<details class="laerer no-print"><summary>For læreren</summary>
+ <p>Kortversjon med hjelp: oppgave N dekker kompetansemål N (1–13).</p>
 </details>
-
-<div class="del forst">
-  <div>
-    <h2>HMS og kjemikalier</h2>
-    <div class="steg"><p><span>1</span> Tenk: hva kan gå galt?</p><p><span>2</span> Les etiketten og sikkerhetsdatabladet.</p></div>
-  </div>
-</div>
 
 <div class="oppg">
  <h2><span class="nr">1</span>Hva betyr skiltet?</h2>
@@ -196,18 +172,10 @@ details.laerer p{margin:.5rem 0}
   <div class="kort"><svg viewBox="0 0 120 120" role="img" aria-label="Gul trekant med svart kant og et utropstegn"><path d="M60 10 L114 106 H6 Z" fill="#ffcf4a" stroke="#14181d" stroke-width="6" stroke-linejoin="round"/><rect x="55" y="42" width="10" height="38" rx="3" fill="#14181d"/><circle cx="60" cy="92" r="6" fill="#14181d"/></svg>
    <div class="valg"><span>Påbud</span><span>Forbud</span><span>Fare<span class="fasit" hidden>✓</span></span></div></div>
  </div>
+ <p class="hint">💡 Blå = du MÅ. Rød = du må IKKE. Gul = pass på.</p>
 </div>
-
 <div class="oppg">
- <h2><span class="nr">2</span>Du skal dreie i dreiebenken</h2>
- <p>Skriv hva du må gjøre og ha på deg.</p>
- <div class="svar"><span class="fasit" hidden>Vernebriller, vernesko, håret satt opp, stoppe maskinen før du måler</span></div>
- <p>Hvorfor skal du <b>ikke</b> ha hansker ved dreiebenken?</p>
- <div class="svar"><span class="fasit" hidden>Hansken kan bli dratt inn av det som roterer, og hånda følger med.</span></div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">3</span>Løft riktig</h2>
+ <h2><span class="nr">2</span>Løft riktig</h2>
  <div class="to">
   <div><svg viewBox="0 0 160 170" role="img" aria-label="Strekfigur A løfter en kasse med strake bein og krum rygg">
    <path d="M10 162 H150" stroke="var(--muted)" stroke-width="2"/>
@@ -219,107 +187,20 @@ details.laerer p{margin:.5rem 0}
    <g stroke="var(--ink)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="70" cy="52" r="10"/><path d="M68 64 L64 116"/><path d="M64 116 L100 108 L96 160 M64 116 L88 124 L80 160"/><path d="M68 72 L96 118"/></g>
    <rect x="94" y="114" width="30" height="30" fill="var(--i-soft)" stroke="var(--i)" stroke-width="3"/><text x="15" y="25" font-size="22" font-weight="800" fill="var(--ink)">B</text></svg>
    <div class="valg"><span>Riktig<span class="fasit" hidden>✓</span></span><span>Feil</span></div></div>
- </div>
- <p>Hvorfor tjener både bedriften og samfunnet på god ergonomi?</p>
- <div class="svar"><span class="fasit" hidden>Færre skader og sykmeldinger. Folk kan jobbe lenger, bedriften får mer gjort, og samfunnet betaler mindre i sykepenger og behandling.</span></div>
+  <p class="hint">💡 Bøy knærne, hold ryggen rett og kassen tett inntil deg.</p>
 </div>
-
 <div class="oppg">
- <h2><span class="nr">4</span>Farlige kjemikalier</h2>
- <p>Sett ring rundt hva faresymbolet betyr.</p>
- <div class="to">
-  <div><svg viewBox="0 0 120 120" role="img" aria-label="Rødt ruteformet faresymbol med en flamme"><path d="M60 6 L114 60 L60 114 L6 60 Z" fill="#fff" stroke="#c92a2a" stroke-width="7"/><path d="M60 30 C72 48 80 56 76 72 C73 84 47 84 44 72 C42 62 50 58 52 48 C56 54 58 56 60 58 C62 48 58 40 60 30 Z" fill="#14181d"/><rect x="40" y="82" width="40" height="5" fill="#14181d"/></svg>
-   <div class="valg"><span>Brannfarlig<span class="fasit" hidden>✓</span></span><span>Etsende</span><span>Giftig</span></div></div>
-  <div><svg viewBox="0 0 120 120" role="img" aria-label="Rødt ruteformet faresymbol med hodeskalle"><path d="M60 6 L114 60 L60 114 L6 60 Z" fill="#fff" stroke="#c92a2a" stroke-width="7"/><circle cx="60" cy="50" r="16" fill="#14181d"/><rect x="51" y="60" width="18" height="10" fill="#14181d"/><circle cx="54" cy="49" r="4" fill="#fff"/><circle cx="66" cy="49" r="4" fill="#fff"/><path d="M40 76 L80 90 M80 76 L40 90" stroke="#14181d" stroke-width="6"/></svg>
-   <div class="valg"><span>Brannfarlig</span><span>Etsende</span><span>Giftig<span class="fasit" hidden>✓</span></span></div></div>
- </div>
- <p class="setning">Hvilket verneutstyr du trenger, står i <span class="luke"><span class="fasit" hidden>sikkerhetsdatabladet</span></span>.<br>
- Før du bruker et farlig kjemikalie, gjør du en <span class="luke"><span class="fasit" hidden>risikovurdering</span></span>.<br>
- Damp fra løsemidler fjernes med <span class="luke"><span class="fasit" hidden>avtrekk</span></span>.</p>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">5</span>Riktig lagring? Kryss av.</h2>
- <table class="tabell">
-  <tr><th>Lagring</th><th>✅ Riktig</th><th>❌ Feil</th></tr>
-  <tr><td>Tynner i brannskapet</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
-  <tr><td>Syre og lut på samme hylle</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
-  <tr><td>Rest av kjemikalie i en brusflaske</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
-  <tr><td>Lukket boks med etikett</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
-  <tr><td>Malingsrester i restavfallet</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
- </table>
-</div>
-
-<div class="del">
-  <div>
-    <h2>Verktøy, måling og tabeller</h2>
-    <div class="steg"><p><span>1</span> Alle mål er i <b>mm</b>.</p><p><span>2</span> Finn raden, les av i riktig kolonne.</p></div>
-  </div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">6</span>Les tegningen</h2>
- <div class="tegning"><svg viewBox="0 0 460 270" role="img" aria-label="Tegning av en plate 100 lang og 50 ±0,2 høy, med et hull Ø10. Midten av hullet er 25 fra venstre kant.">
-  <defs><marker id="pt1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 1 L10 5 L0 9 Z" fill="var(--ink)"/></marker></defs>
-  <rect x="50" y="90" width="300" height="150" fill="var(--surface)" stroke="var(--ink)" stroke-width="3"/>
-  <circle cx="125" cy="165" r="15" fill="var(--bg)" stroke="var(--ink)" stroke-width="3"/>
-  <path d="M125 141 V189 M101 165 H149" stroke="var(--ink)" stroke-width="1" stroke-dasharray="10 3 2 3"/>
-  <g stroke="var(--ink)" stroke-width="1.2"><path d="M50 86 V26 M350 86 V26 M354 90 H450 M354 240 H450 M125 145 V54"/></g>
-  <g stroke="var(--ink)" stroke-width="1.5" marker-start="url(#pt1)" marker-end="url(#pt1)"><path d="M52 34 H348"/><path d="M440 92 V238"/><path d="M52 62 H123"/></g>
-  <path d="M136 154 L190 120 H230" stroke="var(--ink)" stroke-width="1.5" fill="none" marker-start="url(#pt1)"/>
-  <g font-size="20"><text x="200" y="26" text-anchor="middle">100</text><text x="360" y="172">50 ±0,2</text><text x="88" y="56" text-anchor="middle">25</text><text x="194" y="114">Ø10</text></g>
- </svg></div>
- <table class="sporsmal">
-  <tr><td>Hvor lang er platen?</td><td><span class="luke"><span class="fasit" hidden>100</span></span> mm</td></tr>
-  <tr><td>Hvor stort er hullet?</td><td>Ø <span class="luke"><span class="fasit" hidden>10</span></span> mm</td></tr>
-  <tr><td>Minste høyde som er godkjent</td><td><span class="luke"><span class="fasit" hidden>49,8</span></span> mm</td></tr>
-  <tr><td>Største høyde som er godkjent</td><td><span class="luke"><span class="fasit" hidden>50,2</span></span> mm</td></tr>
- </table>
- <p>Du måler høyden til <b>50,3</b> mm. Sett ring.</p>
- <div class="valg"><span>Godkjent</span><span>For høy<span class="fasit" hidden>✓</span></span><span>For lav</span></div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">7</span>Hva bruker du?</h2>
+ <h2><span class="nr">3</span>Hva bruker du?</h2>
  <p>Sett ring rundt det beste verktøyet.</p>
  <table class="jn">
   <tr><td class="ikon" aria-hidden="true">📏</td><td>Måle lengden på et rør, ca. 2 m</td><td><div class="valg"><span>Målebånd<span class="fasit" hidden>✓</span></span><span>Skyvelære</span><span>Mikrometer</span></div></td></tr>
   <tr><td class="ikon" aria-hidden="true">🔩</td><td>Måle et boret hull, Ø10 ±0,1</td><td><div class="valg"><span>Målebånd</span><span>Skyvelære<span class="fasit" hidden>✓</span></span><span>Mikrometer</span></div></td></tr>
   <tr><td class="ikon" aria-hidden="true">⚙️</td><td>Måle en aksel, Ø20 ±0,01</td><td><div class="valg"><span>Målebånd</span><span>Skyvelære</span><span>Mikrometer<span class="fasit" hidden>✓</span></span></div></td></tr>
-  <tr><td class="ikon" aria-hidden="true">🪚</td><td>Dele et vinkeljern i to</td><td><div class="valg"><span>Baufil<span class="fasit" hidden>✓</span></span><span>Fil</span><span>Gjengetapp</span></div></td></tr>
  </table>
+ <p class="hint">💡 Lang = målebånd. ±0,1 = skyvelære. ±0,01 = mikrometer.</p>
 </div>
-
 <div class="oppg">
- <h2><span class="nr">8</span>Slå opp</h2>
- <p>Bruk <a href="https://verkstedhandboka.vercel.app/#m3-gjengebor" target="_blank" rel="noopener">Verkstedhåndboka<span class="hb-detalj"> 3.10</span></a><span class="hb-detalj"> (kjernehull) og <a href="https://verkstedhandboka.vercel.app/#m3-nomogram" target="_blank" rel="noopener">3.13</a> (turtall)</span>, eller Skjæredata-simulatoren.</p>
- <table class="sporsmal">
-  <tr><td>Du skal lage <b>M10</b>. Hvilket bor?</td><td>Ø <span class="luke"><span class="fasit" hidden>8,5</span></span></td></tr>
-  <tr><td>Turtall for HSS-bor <b>Ø8</b> i stål</td><td><span class="luke"><span class="fasit" hidden>ca. 1000</span></span> o/min</td></tr>
- </table>
-</div>
-
-<div class="del">
-  <div>
-    <h2>Maskinelementer og sammenføying</h2>
-    <div class="steg"><p><span>1</span> Merk delene når du tar fra hverandre.</p><p><span>2</span> Monter i motsatt rekkefølge.</p></div>
-  </div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">9</span>Hva heter delen?</h2>
- <div class="tre">
-  <div class="kort"><svg data-bilde="kulelager" data-alt="Kulelager" viewBox="0 0 120 120" role="img" aria-label="Kulelager sett forfra: ytre ring, kuler og indre ring"><circle cx="60" cy="60" r="52" fill="var(--line)" stroke="var(--ink)" stroke-width="3"/><circle cx="60" cy="60" r="40" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><g fill="var(--muted)" stroke="var(--ink)" stroke-width="1.5"><circle cx="60" cy="25" r="8"/><circle cx="95" cy="60" r="8"/><circle cx="60" cy="95" r="8"/><circle cx="25" cy="60" r="8"/><circle cx="85" cy="35" r="8"/><circle cx="85" cy="85" r="8"/><circle cx="35" cy="85" r="8"/><circle cx="35" cy="35" r="8"/></g><circle cx="60" cy="60" r="24" fill="var(--line)" stroke="var(--ink)" stroke-width="2"/><circle cx="60" cy="60" r="15" fill="var(--bg)" stroke="var(--ink)" stroke-width="2"/></svg>
-   <span class="luke"><span class="fasit" hidden>kulelager</span></span></div>
-  <div class="kort"><svg data-bilde="tannhjul" data-alt="Tannhjul" role="img" aria-label="Tannhjul med tenner, nav og kilespor" viewBox="0 0 120 120"><path d="M55.2 17.3Q55.8 11.7 57.3 6.1A54 54 0 0 1 62.7 6.1Q64.2 11.7 64.8 17.3A43 43 0 0 1 74.2 19.4Q77.2 14.6 81 10.3A54 54 0 0 1 85.8 12.6Q84.8 18.3 82.9 23.6A43 43 0 0 1 90.4 29.6Q95.1 26.6 100.5 24.3A54 54 0 0 1 103.8 28.5Q100.4 33.2 96.4 37.1A43 43 0 0 1 100.6 45.8Q106.2 45.1 112 45.4A54 54 0 0 1 113.2 50.6Q108 53.4 102.7 55.2A43 43 0 0 1 102.7 64.8Q108 66.6 113.2 69.4A54 54 0 0 1 112 74.6Q106.2 74.9 100.6 74.2A43 43 0 0 1 96.4 82.9Q100.4 86.8 103.8 91.5A54 54 0 0 1 100.5 95.7Q95.1 93.4 90.4 90.4A43 43 0 0 1 82.9 96.4Q84.8 101.7 85.8 107.4A54 54 0 0 1 81 109.7Q77.2 105.4 74.2 100.6A43 43 0 0 1 64.8 102.7Q64.2 108.3 62.7 113.9A54 54 0 0 1 57.3 113.9Q55.8 108.3 55.2 102.7A43 43 0 0 1 45.8 100.6Q42.8 105.4 39 109.7A54 54 0 0 1 34.2 107.4Q35.2 101.7 37.1 96.4A43 43 0 0 1 29.6 90.4Q24.9 93.4 19.5 95.7A54 54 0 0 1 16.2 91.5Q19.6 86.8 23.6 82.9A43 43 0 0 1 19.4 74.2Q13.8 74.9 8 74.6A54 54 0 0 1 6.8 69.4Q12 66.6 17.3 64.8A43 43 0 0 1 17.3 55.2Q12 53.4 6.8 50.6A54 54 0 0 1 8 45.4Q13.8 45.1 19.4 45.8A43 43 0 0 1 23.6 37.1Q19.6 33.2 16.2 28.5A54 54 0 0 1 19.5 24.3Q24.9 26.6 29.6 29.6A43 43 0 0 1 37.1 23.6Q35.2 18.3 34.2 12.6A54 54 0 0 1 39 10.3Q42.8 14.6 45.8 19.4A43 43 0 0 1 55.2 17.3Z" fill="var(--line)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/><circle cx="60" cy="60" r="34" fill="var(--ink)" fill-opacity=".1" stroke="var(--ink)" stroke-width="1.5"/><circle cx="60" cy="60" r="20" fill="var(--line)" stroke="var(--ink)" stroke-width="2"/><path d="M57 50.5V46H63V50.5A10 10 0 1 1 57 50.5Z" fill="var(--bg)" stroke="var(--ink)" stroke-width="2"/></svg>
-   <span class="luke"><span class="fasit" hidden>tannhjul</span></span></div>
-  <div class="kort"><svg data-bilde="laasering" data-alt="Låsering" role="img" aria-label="Låsering: åpen ring med to ører med hull" viewBox="0 0 120 120"><g fill="var(--ink)" stroke="var(--ink)" stroke-width="5" stroke-linejoin="round"><path d="M79.3 24.5 82.7 26.3 86 28.5 89.1 31 91.9 33.7 94.5 36.7 96.8 39.9 98.8 43.3 100.5 46.9 101.9 50.5 102.9 54.4 103.6 58.2 104 62.2 103.9 66.1 103.6 70 102.9 73.9 101.8 77.7 100.4 81.4 98.7 84.9 96.7 88.3 94.4 91.5 91.8 94.5 88.9 97.2 85.8 99.6 82.5 101.8 79.1 103.7 75.4 105.2 71.7 106.4 67.8 107.3 63.9 107.8 60 108 56.1 107.8 52.2 107.3 48.3 106.4 44.6 105.2 40.9 103.7 37.5 101.8 34.2 99.6 31.1 97.2 28.2 94.5 25.6 91.5 23.3 88.3 21.3 84.9 19.6 81.4 18.2 77.7 17.1 73.9 16.4 70 16.1 66.1 16 62.2 16.4 58.2 17.1 54.4 18.1 50.5 19.5 46.9 21.2 43.3 23.2 39.9 25.5 36.7 28.1 33.7 30.9 31 34 28.5 37.3 26.3 40.7 24.5 L43.1 29.3 40.1 31.1 37.4 33.2 34.9 35.5 32.6 38 30.6 40.8 28.9 43.6 27.5 46.6 26.3 49.8 25.5 52.9 25 56.1 24.8 59.3 24.9 62.5 25.2 65.7 25.9 68.7 26.8 71.7 27.9 74.5 29.3 77.2 30.9 79.7 32.7 82.1 34.6 84.3 36.7 86.3 39 88.1 41.4 89.7 43.8 91.1 46.4 92.3 49 93.3 51.7 94 54.5 94.6 57.2 94.9 60 95 62.8 94.9 65.5 94.6 68.3 94 71 93.3 73.6 92.3 76.2 91.1 78.6 89.7 81 88.1 83.3 86.3 85.4 84.3 87.3 82.1 89.1 79.7 90.7 77.2 92.1 74.5 93.2 71.7 94.1 68.7 94.8 65.7 95.1 62.5 95.2 59.3 95 56.1 94.5 52.9 93.7 49.8 92.5 46.6 91.1 43.6 89.4 40.8 87.4 38 85.1 35.5 82.6 33.2 79.9 31.1 76.9 29.3Z"/><circle cx="37.5" cy="25" r="8.5"/><circle cx="82.5" cy="25" r="8.5"/></g><g fill="var(--line)"><path d="M79.3 24.5 82.7 26.3 86 28.5 89.1 31 91.9 33.7 94.5 36.7 96.8 39.9 98.8 43.3 100.5 46.9 101.9 50.5 102.9 54.4 103.6 58.2 104 62.2 103.9 66.1 103.6 70 102.9 73.9 101.8 77.7 100.4 81.4 98.7 84.9 96.7 88.3 94.4 91.5 91.8 94.5 88.9 97.2 85.8 99.6 82.5 101.8 79.1 103.7 75.4 105.2 71.7 106.4 67.8 107.3 63.9 107.8 60 108 56.1 107.8 52.2 107.3 48.3 106.4 44.6 105.2 40.9 103.7 37.5 101.8 34.2 99.6 31.1 97.2 28.2 94.5 25.6 91.5 23.3 88.3 21.3 84.9 19.6 81.4 18.2 77.7 17.1 73.9 16.4 70 16.1 66.1 16 62.2 16.4 58.2 17.1 54.4 18.1 50.5 19.5 46.9 21.2 43.3 23.2 39.9 25.5 36.7 28.1 33.7 30.9 31 34 28.5 37.3 26.3 40.7 24.5 L43.1 29.3 40.1 31.1 37.4 33.2 34.9 35.5 32.6 38 30.6 40.8 28.9 43.6 27.5 46.6 26.3 49.8 25.5 52.9 25 56.1 24.8 59.3 24.9 62.5 25.2 65.7 25.9 68.7 26.8 71.7 27.9 74.5 29.3 77.2 30.9 79.7 32.7 82.1 34.6 84.3 36.7 86.3 39 88.1 41.4 89.7 43.8 91.1 46.4 92.3 49 93.3 51.7 94 54.5 94.6 57.2 94.9 60 95 62.8 94.9 65.5 94.6 68.3 94 71 93.3 73.6 92.3 76.2 91.1 78.6 89.7 81 88.1 83.3 86.3 85.4 84.3 87.3 82.1 89.1 79.7 90.7 77.2 92.1 74.5 93.2 71.7 94.1 68.7 94.8 65.7 95.1 62.5 95.2 59.3 95 56.1 94.5 52.9 93.7 49.8 92.5 46.6 91.1 43.6 89.4 40.8 87.4 38 85.1 35.5 82.6 33.2 79.9 31.1 76.9 29.3Z"/><circle cx="37.5" cy="25" r="8.5"/><circle cx="82.5" cy="25" r="8.5"/></g><circle cx="37.5" cy="25" r="3.5" fill="var(--bg)"/><circle cx="82.5" cy="25" r="3.5" fill="var(--bg)"/></svg>
-   <span class="luke"><span class="fasit" hidden>låsering</span></span></div>
- </div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">10</span>Bytt lageret</h2>
+ <h2><span class="nr">4</span>Bytt lageret</h2>
  <p>Sett tallene 1–4 i riktig rekkefølge for <b>demontering</b>.</p>
  <table class="tabell smal">
   <tr><th>Nr.</th><th>Arbeid</th></tr>
@@ -328,38 +209,23 @@ details.laerer p{margin:.5rem 0}
   <tr><td><span class="fasit" hidden>4</span></td><td>Rengjør og kontroller akselen</td></tr>
   <tr><td><span class="fasit" hidden>2</span></td><td>Ta av låseringen</td></tr>
  </table>
- <p>Når du monterer, gjør du det i <span class="luke"><span class="fasit" hidden>motsatt</span></span> rekkefølge. Til slutt skriver du det i <span class="luke"><span class="fasit" hidden>arbeidsordren / loggen</span></span>.</p>
+ <p class="hint">💡 Merk først. Det som holder lageret fast, tar du av før lageret.</p>
 </div>
-
 <div class="oppg">
- <h2><span class="nr">11</span>Hvilken type sammenføying? Kryss av.</h2>
- <table class="tabell">
-  <tr><th>Metode</th><th>🔥 Termisk</th><th>🧪 Kjemisk</th><th>🔩 Mekanisk</th></tr>
-  <tr><td>Sveising</td><td><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
-  <tr><td>Liming</td><td></td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
-  <tr><td>Skrue og mutter</td><td></td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
-  <tr><td>Lodding</td><td><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
-  <tr><td>Nagling</td><td></td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
- </table>
+ <h2><span class="nr">5</span>Hva heter delen?</h2>
+ <div class="ordbank"><span>kulelager</span><span>tannhjul</span><span>låsering</span></div>
+ <div class="tre">
+  <div class="kort"><svg data-bilde="kulelager" data-alt="Kulelager" viewBox="0 0 120 120" role="img" aria-label="Kulelager sett forfra: ytre ring, kuler og indre ring"><circle cx="60" cy="60" r="52" fill="var(--line)" stroke="var(--ink)" stroke-width="3"/><circle cx="60" cy="60" r="40" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/><g fill="var(--muted)" stroke="var(--ink)" stroke-width="1.5"><circle cx="60" cy="25" r="8"/><circle cx="95" cy="60" r="8"/><circle cx="60" cy="95" r="8"/><circle cx="25" cy="60" r="8"/><circle cx="85" cy="35" r="8"/><circle cx="85" cy="85" r="8"/><circle cx="35" cy="85" r="8"/><circle cx="35" cy="35" r="8"/></g><circle cx="60" cy="60" r="24" fill="var(--line)" stroke="var(--ink)" stroke-width="2"/><circle cx="60" cy="60" r="15" fill="var(--bg)" stroke="var(--ink)" stroke-width="2"/></svg>
+   <span class="luke"><span class="fasit" hidden>kulelager</span></span></div>
+  <div class="kort"><svg data-bilde="tannhjul" data-alt="Tannhjul" role="img" aria-label="Tannhjul med tenner, nav og kilespor" viewBox="0 0 120 120"><path d="M55.2 17.3Q55.8 11.7 57.3 6.1A54 54 0 0 1 62.7 6.1Q64.2 11.7 64.8 17.3A43 43 0 0 1 74.2 19.4Q77.2 14.6 81 10.3A54 54 0 0 1 85.8 12.6Q84.8 18.3 82.9 23.6A43 43 0 0 1 90.4 29.6Q95.1 26.6 100.5 24.3A54 54 0 0 1 103.8 28.5Q100.4 33.2 96.4 37.1A43 43 0 0 1 100.6 45.8Q106.2 45.1 112 45.4A54 54 0 0 1 113.2 50.6Q108 53.4 102.7 55.2A43 43 0 0 1 102.7 64.8Q108 66.6 113.2 69.4A54 54 0 0 1 112 74.6Q106.2 74.9 100.6 74.2A43 43 0 0 1 96.4 82.9Q100.4 86.8 103.8 91.5A54 54 0 0 1 100.5 95.7Q95.1 93.4 90.4 90.4A43 43 0 0 1 82.9 96.4Q84.8 101.7 85.8 107.4A54 54 0 0 1 81 109.7Q77.2 105.4 74.2 100.6A43 43 0 0 1 64.8 102.7Q64.2 108.3 62.7 113.9A54 54 0 0 1 57.3 113.9Q55.8 108.3 55.2 102.7A43 43 0 0 1 45.8 100.6Q42.8 105.4 39 109.7A54 54 0 0 1 34.2 107.4Q35.2 101.7 37.1 96.4A43 43 0 0 1 29.6 90.4Q24.9 93.4 19.5 95.7A54 54 0 0 1 16.2 91.5Q19.6 86.8 23.6 82.9A43 43 0 0 1 19.4 74.2Q13.8 74.9 8 74.6A54 54 0 0 1 6.8 69.4Q12 66.6 17.3 64.8A43 43 0 0 1 17.3 55.2Q12 53.4 6.8 50.6A54 54 0 0 1 8 45.4Q13.8 45.1 19.4 45.8A43 43 0 0 1 23.6 37.1Q19.6 33.2 16.2 28.5A54 54 0 0 1 19.5 24.3Q24.9 26.6 29.6 29.6A43 43 0 0 1 37.1 23.6Q35.2 18.3 34.2 12.6A54 54 0 0 1 39 10.3Q42.8 14.6 45.8 19.4A43 43 0 0 1 55.2 17.3Z" fill="var(--line)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/><circle cx="60" cy="60" r="34" fill="var(--ink)" fill-opacity=".1" stroke="var(--ink)" stroke-width="1.5"/><circle cx="60" cy="60" r="20" fill="var(--line)" stroke="var(--ink)" stroke-width="2"/><path d="M57 50.5V46H63V50.5A10 10 0 1 1 57 50.5Z" fill="var(--bg)" stroke="var(--ink)" stroke-width="2"/></svg>
+   <span class="luke"><span class="fasit" hidden>tannhjul</span></span></div>
+  <div class="kort"><svg data-bilde="laasering" data-alt="Låsering" role="img" aria-label="Låsering: åpen ring med to ører med hull" viewBox="0 0 120 120"><g fill="var(--ink)" stroke="var(--ink)" stroke-width="5" stroke-linejoin="round"><path d="M79.3 24.5 82.7 26.3 86 28.5 89.1 31 91.9 33.7 94.5 36.7 96.8 39.9 98.8 43.3 100.5 46.9 101.9 50.5 102.9 54.4 103.6 58.2 104 62.2 103.9 66.1 103.6 70 102.9 73.9 101.8 77.7 100.4 81.4 98.7 84.9 96.7 88.3 94.4 91.5 91.8 94.5 88.9 97.2 85.8 99.6 82.5 101.8 79.1 103.7 75.4 105.2 71.7 106.4 67.8 107.3 63.9 107.8 60 108 56.1 107.8 52.2 107.3 48.3 106.4 44.6 105.2 40.9 103.7 37.5 101.8 34.2 99.6 31.1 97.2 28.2 94.5 25.6 91.5 23.3 88.3 21.3 84.9 19.6 81.4 18.2 77.7 17.1 73.9 16.4 70 16.1 66.1 16 62.2 16.4 58.2 17.1 54.4 18.1 50.5 19.5 46.9 21.2 43.3 23.2 39.9 25.5 36.7 28.1 33.7 30.9 31 34 28.5 37.3 26.3 40.7 24.5 L43.1 29.3 40.1 31.1 37.4 33.2 34.9 35.5 32.6 38 30.6 40.8 28.9 43.6 27.5 46.6 26.3 49.8 25.5 52.9 25 56.1 24.8 59.3 24.9 62.5 25.2 65.7 25.9 68.7 26.8 71.7 27.9 74.5 29.3 77.2 30.9 79.7 32.7 82.1 34.6 84.3 36.7 86.3 39 88.1 41.4 89.7 43.8 91.1 46.4 92.3 49 93.3 51.7 94 54.5 94.6 57.2 94.9 60 95 62.8 94.9 65.5 94.6 68.3 94 71 93.3 73.6 92.3 76.2 91.1 78.6 89.7 81 88.1 83.3 86.3 85.4 84.3 87.3 82.1 89.1 79.7 90.7 77.2 92.1 74.5 93.2 71.7 94.1 68.7 94.8 65.7 95.1 62.5 95.2 59.3 95 56.1 94.5 52.9 93.7 49.8 92.5 46.6 91.1 43.6 89.4 40.8 87.4 38 85.1 35.5 82.6 33.2 79.9 31.1 76.9 29.3Z"/><circle cx="37.5" cy="25" r="8.5"/><circle cx="82.5" cy="25" r="8.5"/></g><g fill="var(--line)"><path d="M79.3 24.5 82.7 26.3 86 28.5 89.1 31 91.9 33.7 94.5 36.7 96.8 39.9 98.8 43.3 100.5 46.9 101.9 50.5 102.9 54.4 103.6 58.2 104 62.2 103.9 66.1 103.6 70 102.9 73.9 101.8 77.7 100.4 81.4 98.7 84.9 96.7 88.3 94.4 91.5 91.8 94.5 88.9 97.2 85.8 99.6 82.5 101.8 79.1 103.7 75.4 105.2 71.7 106.4 67.8 107.3 63.9 107.8 60 108 56.1 107.8 52.2 107.3 48.3 106.4 44.6 105.2 40.9 103.7 37.5 101.8 34.2 99.6 31.1 97.2 28.2 94.5 25.6 91.5 23.3 88.3 21.3 84.9 19.6 81.4 18.2 77.7 17.1 73.9 16.4 70 16.1 66.1 16 62.2 16.4 58.2 17.1 54.4 18.1 50.5 19.5 46.9 21.2 43.3 23.2 39.9 25.5 36.7 28.1 33.7 30.9 31 34 28.5 37.3 26.3 40.7 24.5 L43.1 29.3 40.1 31.1 37.4 33.2 34.9 35.5 32.6 38 30.6 40.8 28.9 43.6 27.5 46.6 26.3 49.8 25.5 52.9 25 56.1 24.8 59.3 24.9 62.5 25.2 65.7 25.9 68.7 26.8 71.7 27.9 74.5 29.3 77.2 30.9 79.7 32.7 82.1 34.6 84.3 36.7 86.3 39 88.1 41.4 89.7 43.8 91.1 46.4 92.3 49 93.3 51.7 94 54.5 94.6 57.2 94.9 60 95 62.8 94.9 65.5 94.6 68.3 94 71 93.3 73.6 92.3 76.2 91.1 78.6 89.7 81 88.1 83.3 86.3 85.4 84.3 87.3 82.1 89.1 79.7 90.7 77.2 92.1 74.5 93.2 71.7 94.1 68.7 94.8 65.7 95.1 62.5 95.2 59.3 95 56.1 94.5 52.9 93.7 49.8 92.5 46.6 91.1 43.6 89.4 40.8 87.4 38 85.1 35.5 82.6 33.2 79.9 31.1 76.9 29.3Z"/><circle cx="37.5" cy="25" r="8.5"/><circle cx="82.5" cy="25" r="8.5"/></g><circle cx="37.5" cy="25" r="3.5" fill="var(--bg)"/><circle cx="82.5" cy="25" r="3.5" fill="var(--bg)"/></svg>
+   <span class="luke"><span class="fasit" hidden>låsering</span></span></div>
+ </div>
+ <p class="hint">💡 Kuler inni = lager. Tenner = tannhjul. Åpen ring = låsering.</p>
 </div>
-
 <div class="oppg">
- <h2><span class="nr">12</span>Skal kunne tas fra hverandre</h2>
- <p>En dekkplate må av for service hvert år. Hvilken metode er best?</p>
- <div class="svar"><span class="fasit" hidden>Skruer</span></div>
- <p>Hvorfor?</p>
- <div class="svar"><span class="fasit" hidden>Skruer kan løsnes og settes på igjen. De andre må ødelegges for å få platen av.</span></div>
-</div>
-
-<div class="del">
-  <div>
-    <h2>Fra tegning til produkt</h2>
-    <div class="steg"><p><span>1</span> Tegningen og stykklisten sier hva du skal lage.</p><p><span>2</span> Planlegg, lag, kontroller og skriv ned.</p></div>
-  </div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">13</span>Fyll ut stykklisten</h2>
+ <h2><span class="nr">6</span>Fyll ut stykklisten</h2>
  <div class="tegning"><svg viewBox="0 0 460 240" role="img" aria-label="Sprengskisse: øverst fire skruer merket 2, i midten en plate merket 1 med fire hull, nederst fire muttere merket 3.">
   <g stroke="var(--ink)" stroke-width="2.5" fill="var(--surface)">
    <g><rect x="96" y="20" width="22" height="10"/><rect x="102" y="30" width="10" height="44"/></g>
@@ -381,12 +247,59 @@ details.laerer p{margin:.5rem 0}
   <tr><td>2</td><td>Skrue M8</td><td><span class="fasit" hidden>4</span></td></tr>
   <tr><td>3</td><td>Mutter M8</td><td><span class="fasit" hidden>4</span></td></tr>
  </table>
- <p>Beskriv kort hvordan du setter det sammen.</p>
- <div class="svar"><span class="fasit" hidden>Legg platen (1), stikk de fire skruene (2) gjennom hullene, skru på de fire mutterne (3) og stram.</span></div>
+ <p class="hint">💡 Tell delene med samme nummer på tegningen.</p>
 </div>
-
 <div class="oppg">
- <h2><span class="nr">14</span>Fra idé til ferdig produkt</h2>
+ <h2><span class="nr">7</span>Kjenn materialet</h2>
+ <p>Kryss av for det som passer. En rad kan ha to kryss eller ingen.</p>
+ <table class="tabell">
+  <tr><th>Materiale</th><th>🧲 Magnetisk</th><th>🟫 Ruster</th></tr>
+  <tr><td>Vanlig stål</td><td><span class="fasit" hidden>✗</span></td><td><span class="fasit" hidden>✗</span></td></tr>
+  <tr><td>Aluminium</td><td></td><td></td></tr>
+  <tr><td>Kobber</td><td></td><td></td></tr>
+ </table>
+ <p class="hint">💡 Prøv med en magnet i verkstedet. Rust er brun og kommer på jern og stål.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">8</span>Riktig lagring? Kryss av.</h2>
+ <table class="tabell">
+  <tr><th>Lagring</th><th>✅ Riktig</th><th>❌ Feil</th></tr>
+  <tr><td>Tynner i brannskapet</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+  <tr><td>Syre og lut på samme hylle</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+  <tr><td>Rest av kjemikalie i en brusflaske</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+  <tr><td>Lukket boks med etikett</td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
+  <tr><td>Malingsrester i restavfallet</td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
+ </table>
+ <p class="hint">💡 Kjemikalier skal stå i riktig boks med etikett, aldri sammen med noe de kan reagere med.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">9</span>Skal kunne tas fra hverandre</h2>
+ <p>En dekkplate må av for service hvert år. Hvilken metode er best?</p>
+ <div class="svar"><span class="fasit" hidden>Skruer</span></div>
+ <p class="hint">💡 Hva kan du løsne og sette på igjen?</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">10</span>Farlige kjemikalier</h2>
+ <p>Sett ring rundt hva faresymbolet betyr.</p>
+ <div class="to">
+  <div><svg viewBox="0 0 120 120" role="img" aria-label="Rødt ruteformet faresymbol med en flamme"><path d="M60 6 L114 60 L60 114 L6 60 Z" fill="#fff" stroke="#c92a2a" stroke-width="7"/><path d="M60 30 C72 48 80 56 76 72 C73 84 47 84 44 72 C42 62 50 58 52 48 C56 54 58 56 60 58 C62 48 58 40 60 30 Z" fill="#14181d"/><rect x="40" y="82" width="40" height="5" fill="#14181d"/></svg>
+   <div class="valg"><span>Brannfarlig<span class="fasit" hidden>✓</span></span><span>Etsende</span><span>Giftig</span></div></div>
+  <div><svg viewBox="0 0 120 120" role="img" aria-label="Rødt ruteformet faresymbol med hodeskalle"><path d="M60 6 L114 60 L60 114 L6 60 Z" fill="#fff" stroke="#c92a2a" stroke-width="7"/><circle cx="60" cy="50" r="16" fill="#14181d"/><rect x="51" y="60" width="18" height="10" fill="#14181d"/><circle cx="54" cy="49" r="4" fill="#fff"/><circle cx="66" cy="49" r="4" fill="#fff"/><path d="M40 76 L80 90 M80 76 L40 90" stroke="#14181d" stroke-width="6"/></svg>
+   <div class="valg"><span>Brannfarlig</span><span>Etsende</span><span>Giftig<span class="fasit" hidden>✓</span></span></div></div>
+ </div>
+ <p class="hint">💡 Flamme = brann. Hodeskalle = gift.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">11</span>Slå opp</h2>
+ <p>Bruk <a href="https://verkstedhandboka.vercel.app/#m3-gjengebor" target="_blank" rel="noopener">Verkstedhåndboka<span class="hb-detalj"> 3.10</span></a><span class="hb-detalj"> (kjernehull)</span>.</p>
+ <table class="sporsmal">
+  <tr><td>Du skal lage <b>M10</b>. Hvilket bor?</td><td>Ø <span class="luke"><span class="fasit" hidden>8,5</span></span></td></tr>
+ </table>
+ <p class="hint">💡 Finn raden «M10» i tabellen og les av borets diameter.</p>
+</div>
+<div class="oppg">
+ <h2><span class="nr">12</span>Fra idé til ferdig produkt</h2>
+ <div class="ordbank"><span>Kontrollere</span><span>Idé</span><span>Tegning</span><span>Lage</span><span>Skisse</span><span>Arbeidsplan</span></div>
  <div class="kjede">
   <div><b>1</b><span class="luke"><span class="fasit" hidden>Idé</span></span></div><i>→</i>
   <div><b>2</b><span class="luke"><span class="fasit" hidden>Skisse</span></span></div><i>→</i>
@@ -395,65 +308,14 @@ details.laerer p{margin:.5rem 0}
   <div><b>5</b><span class="luke"><span class="fasit" hidden>Lage</span></span></div><i>→</i>
   <div><b>6</b><span class="luke"><span class="fasit" hidden>Kontrollere</span></span></div>
  </div>
+ <p class="hint">💡 Du tenker først, så tegner du, så lager du, og til slutt sjekker du.</p>
 </div>
-
 <div class="oppg">
- <h2><span class="nr">15</span>Skriv det ned</h2>
- <p class="setning">Hva du skal gjøre, står i en <span class="luke"><span class="fasit" hidden>arbeidsordre</span></span>.<br>
- Før du starter maskinen, går du gjennom en <span class="luke"><span class="fasit" hidden>sjekkliste</span></span>.<br>
- Når du har smurt maskinen, skriver du det i <span class="luke"><span class="fasit" hidden>vedlikeholdsloggen</span></span>.<br>
- Når delen er ferdig, <span class="luke"><span class="fasit" hidden>måler</span></span> du den mot tegningen.</p>
-</div>
-
-<div class="del">
-  <div>
-    <h2>Materialer og miljø</h2>
-    <div class="steg"><p><span>1</span> Materialet bestemmer vekt, rust og gjenvinning.</p><p><span>2</span> Sorter avfallet riktig.</p></div>
-  </div>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">16</span>Kjenn materialet</h2>
- <p>Kryss av for det som passer. En rad kan ha to kryss eller ingen.</p>
- <table class="tabell">
-  <tr><th>Materiale</th><th>🧲 Magnetisk</th><th>🟫 Ruster</th></tr>
-  <tr><td>Vanlig stål</td><td><span class="fasit" hidden>✗</span></td><td><span class="fasit" hidden>✗</span></td></tr>
-  <tr><td>Aluminium</td><td></td><td></td></tr>
-  <tr><td>Kobber</td><td></td><td></td></tr>
- </table>
- <p>Slå opp densiteten i <a href="https://verkstedhandboka.vercel.app/#m7-oversikt" target="_blank" rel="noopener">Verkstedhåndboka<span class="hb-detalj"> 7.1</span></a>.</p>
- <table class="sporsmal">
-  <tr><td>Stål</td><td><span class="luke"><span class="fasit" hidden>7850</span></span> kg/m³</td></tr>
-  <tr><td>Aluminium</td><td><span class="luke"><span class="fasit" hidden>ca. 2700</span></span> kg/m³</td></tr>
-  <tr><td>Hvilket er lettest?</td><td><span class="luke"><span class="fasit" hidden>aluminium</span></span></td></tr>
- </table>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">17</span>Sorter avfallet. Kryss av.</h2>
- <table class="tabell">
-  <tr><th>Avfall</th><th>🔩 Metall</th><th>☠️ Farlig avfall</th><th>📦 Papp</th></tr>
-  <tr><td>Stålspon</td><td><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
-  <tr><td>Brukt oljefilter</td><td></td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
-  <tr><td>Rester av maling</td><td></td><td><span class="fasit" hidden>✗</span></td><td></td></tr>
-  <tr><td>Kapp av aluminium</td><td><span class="fasit" hidden>✗</span></td><td></td><td></td></tr>
-  <tr><td>Emballasje fra leverandør</td><td></td><td></td><td><span class="fasit" hidden>✗</span></td></tr>
- </table>
-</div>
-
-<div class="oppg">
- <h2><span class="nr">18</span>Bærekraftig produkt</h2>
+ <h2><span class="nr">13</span>Bærekraftig produkt</h2>
  <p>Hva gjør et produkt mer bærekraftig? Skriv så mange du kan.</p>
  <div class="svar"><span class="fasit" hidden>Kan repareres, materialet kan gjenvinnes, varer lenge, kort transport</span></div>
+ <p class="hint">💡 Tenk: lenge, reparere, gjenvinne, kort vei.</p>
 </div>
-
-<div class="oppg">
- <h2><span class="nr">19</span>Exit-lapp</h2>
- <p>Du skal lage en krok av flattstål. Beskriv kort arbeidsgangen, og nevn én ting du gjør for å jobbe <b>trygt</b> og én for <b>miljøet</b>.</p>
- <div class="svar"><span class="fasit" hidden>F.eks.: skisse og tegning, kappe, file grader, bore hull, bøye, kontrollere mål. Trygt: vernebriller og fest emnet i skrustikka. Miljø: kappe lite svinn og legge restene i metallcontaineren.</span></div>
-</div>
-
-<p class="mer">Mer øving: <a href="../maleteknikk/mal-og-les-av-tegningen.html">Mål og les av tegningen</a> · <a href="../maleteknikk/skyvelaere-og-mikrometer.html">Skyvelære og mikrometer</a> · <a href="https://simulatorer.vercel.app/skjaeredata.html">Skjæredata-simulatoren</a> · <a href="https://simulatorer.vercel.app/momentnokkel.html">Momentnøkkel-simulatoren</a></p>
 
 </div>
 
